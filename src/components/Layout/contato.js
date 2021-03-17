@@ -8,30 +8,28 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     height: 'auto',
   },
-  imgMobile: {
-    maxWidth: '1110px',
-    maxHeight: '500px',
-    width: '100%',
-    height: 'auto',
-  },
 }));
 
-const home = () => {
+const contato = () => {
   const classes = useStyles();
   return (
     <div>
       <Hidden smDown>
-        <img src="images/home/img01.png" alt="img01" className={classes.img} />
+        <img
+          src="images/home/contato.png"
+          alt="img01"
+          className={classes.img}
+        />
       </Hidden>
       <Hidden smUp>
         <img
-          src="images/home/telaHome.png"
+          src="images/home/contatoMobile.png"
           alt="img01"
-          className={classes.imgMobile}
+          className={classes.img}
         />
       </Hidden>
     </div>
   );
 };
 
-export default home;
+export default contato;

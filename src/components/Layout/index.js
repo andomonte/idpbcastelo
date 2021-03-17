@@ -23,7 +23,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import PesquisaIgreja from 'src/components/idpbNacional/pesquisa/igreja';
 import CloseIcon from '@material-ui/icons/CancelPresentation';
 import Navbar from './navBar_redesSociais';
-import Carrossel from '../carrossel';
+// import Carrossel from '../carrossel';
+import Contato from './contato';
 import Home from './home';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -31,6 +32,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     width: 500,
+    justifyContent: 'center',
     backgroundColor: theme.palette.background.default,
     [theme.breakpoints.between('xl', 'lg')]: {
       width: 500,
@@ -190,6 +192,7 @@ function Layout({ item, title }) {
   let LabelIgreja = '';
   let LabelHome = '';
   let LabelContatos = '';
+  const Login = 'Login';
   if (desktop) {
     LabelIgreja = 'Igreja';
     LabelHome = 'Home';
@@ -278,7 +281,7 @@ function Layout({ item, title }) {
                 startIcon={<AccountCircle />}
                 onClick={() => signIn('google')}
               >
-                Login
+                {Login}
               </Button>
             ) : (
               <Box display="flex" alignItems="center">
@@ -304,10 +307,10 @@ function Layout({ item, title }) {
           {/* {children} */}
           <Box className={classes.tabPanel}>
             <TabPanel value={value} index={0}>
-              <Carrossel />
+              <Home />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Home />
+              <Contato />
             </TabPanel>
             <TabPanel value={value} index={2}>
               <PesquisaIgreja item={item} />

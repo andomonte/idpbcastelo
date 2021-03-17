@@ -36,17 +36,17 @@ const useStyles = makeStyles(() => ({
 const slideShow = [
   {
     imagel: 'images/home/img01.png',
-    imager: './images/home/img01Mobile.png',
+    imager: './images/home/telaHome.png',
     title: 'Ano da Decisão',
   },
   {
     imagel: 'images/home/contato.png',
-    imager: './images/home/contatoMobile.png',
+    imager: './images/home/telaHome.png',
     title: 'segundo Slide',
   },
   {
     imagel: 'images/IDPBNAC.png',
-    imager: './images/contatoMobile.png',
+    imager: './images/teleHome.png',
     title: 'Terceiro Slide',
   },
 ];
