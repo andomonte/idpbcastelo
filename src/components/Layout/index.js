@@ -21,6 +21,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import PesquisaIgreja from 'src/components/idpbNacional/pesquisa/igreja';
+import CloseIcon from '@material-ui/icons/CancelPresentation';
 import Navbar from './navBar_redesSociais';
 import Carrossel from '../carrossel';
 import Home from './home';
@@ -31,12 +32,15 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     width: 500,
     backgroundColor: theme.palette.background.default,
-    [theme.breakpoints.down('md')]: {
-      width: 400,
+    [theme.breakpoints.between('xl', 'lg')]: {
+      width: 500,
+    },
+    [theme.breakpoints.between('md', 'sm')]: {
+      width: 200,
     },
 
-    [theme.breakpoints.down('sm')]: {
-      width: 200,
+    [theme.breakpoints.down('xs')]: {
+      width: 80,
     },
   },
   root: {
@@ -87,7 +91,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: +drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: +drawerWidth,
+    },
   },
   drawerHeader: {
     display: 'flex',
@@ -180,7 +186,15 @@ function Layout({ item, title }) {
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  let LabelIgreja = '';
+  let LabelHome = '';
+  let LabelContatos = '';
+  if (desktop) {
+    LabelIgreja = 'Igreja';
+    LabelHome = 'Home';
+    LabelContatos = 'Contatos';
+  }
 
   const handleDrawerOpen = () => {
     if (!open) {
@@ -193,7 +207,9 @@ function Layout({ item, title }) {
   };
 
   const handleDrawerClose = () => {
-    if (desktop && open) {
+    // console.log(mobile);
+
+    if (desktop) {
       setOpen(true);
     }
     if (mobile) {
@@ -212,10 +228,19 @@ function Layout({ item, title }) {
         <AppBar className={classes.root2} color="default">
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
-              <MenuIcon
-                className={classes.hamburger}
-                onClick={handleDrawerOpen}
-              />
+              {open && mobile ? (
+                <CloseIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+              {!open && mobile ? (
+                <MenuIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+
               <Hidden mdDown>
                 <img
                   src="/images/IDPBNAC.png"
@@ -234,10 +259,13 @@ function Layout({ item, title }) {
                 showLabels
                 className={classes.rootTopbarIcon}
               >
-                <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-                <BottomNavigationAction label="Contatos" icon={<CallIcon />} />
+                <BottomNavigationAction label={LabelHome} icon={<HomeIcon />} />
                 <BottomNavigationAction
-                  label="Igrejas"
+                  label={LabelContatos}
+                  icon={<CallIcon />}
+                />
+                <BottomNavigationAction
+                  label={LabelIgreja}
                   icon={<LocationOnIcon />}
                 />
               </BottomNavigation>
@@ -250,7 +278,7 @@ function Layout({ item, title }) {
                 startIcon={<AccountCircle />}
                 onClick={() => signIn('google')}
               >
-                Entrar
+                Login
               </Button>
             ) : (
               <Box display="flex" alignItems="center">
