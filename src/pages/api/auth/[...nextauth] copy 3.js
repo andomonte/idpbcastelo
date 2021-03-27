@@ -8,7 +8,7 @@ const providers = [
     authorize: async (credentials) => {
       try {
         const user = await axios.post(
-          `/login`,
+          `/logi`,
           {
             user: {
               password: credentials.password,
