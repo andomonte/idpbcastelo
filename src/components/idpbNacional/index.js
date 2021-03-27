@@ -142,10 +142,10 @@ function TabPanel(props) {
 function IdpbNacional({ item, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   let LabelIgreja = '';
   let LabelHome = '';
   let LabelContatos = '';
@@ -169,12 +169,12 @@ function IdpbNacional({ item, title }) {
   const handleDrawerClose = () => {
     // console.log(mobile);
 
-    if (mobile) {
-      setOpen(false);
+    if (desktop && !open) {
+      setOpen(true);
     }
   };
   return (
-    <div>
+    <div onLoad={handleDrawerClose}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
