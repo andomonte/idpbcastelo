@@ -2,28 +2,15 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { signIn, signOut, useSession } from 'next-auth/client';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-import HomeIcon from '@material-ui/icons/Home';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import Hidden from '@material-ui/core/Hidden';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import CloseIcon from '@material-ui/icons/CancelPresentation';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import PesquisaIgreja from './pesquisa/igreja';
-import Navbar from './navBar_redesSociais';
-import Contato from './contato';
-import Home from './home';
+import Login from 'src/components/botaoLogin';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -118,86 +105,20 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
-
-  /* desktopDrawer: {
+  desktopDrawer: {
     width: 240,
     top: 56,
     height: 'calc(100% - 64px)',
     borderRight: 'none',
   },
-  wrapper: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64,
-    [theme.breakpoints.up('lg')]: {
-      paddingLeft: 256,
-    },
-  },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-  },
-  content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-
-  search: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    height: 35,
-    width: 700,
-  },
-  input: {
-    flex: 1,
-  }, */
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={0}>{children}</Box>}
-    </div>
-  );
-}
-
-function Layout({ item, title }) {
+function IdpbLogin({ item, title }) {
   const classes = useStyles();
-  const [session] = useSession();
-  const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
-  const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelIgreja = '';
-  let LabelHome = '';
-  let LabelContatos = '';
-  const Login = 'Login';
-  if (desktop) {
-    LabelIgreja = 'Igreja';
-    LabelHome = 'Home';
-    LabelContatos = 'Contatos';
-  }
-
+  console.log(item);
   const handleDrawerOpen = () => {
     if (!open) {
       setOpen(true);
@@ -230,7 +151,7 @@ function Layout({ item, title }) {
             <Toolbar className={classes.toolbar}>
               <Box display="flex" alignItems="center">
                 {open ? (
-                  <CloseIcon
+                  <MenuOpenIcon
                     className={classes.hamburger}
                     onClick={handleDrawerOpen}
                   />
@@ -251,56 +172,10 @@ function Layout({ item, title }) {
                 </Hidden>
               </Box>
 
-              <Box display="flex">
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  showLabels
-                  className={classes.rootTopbarIcon}
-                >
-                  <BottomNavigationAction
-                    label={LabelHome}
-                    icon={<HomeIcon />}
-                  />
-                  <BottomNavigationAction
-                    label={LabelContatos}
-                    icon={<CallIcon />}
-                  />
-                  <BottomNavigationAction
-                    label={LabelIgreja}
-                    icon={<LocationOnIcon />}
-                  />
-                </BottomNavigation>
-              </Box>
-              {!session ? (
-                <Button
-                  color="secondary"
-                  component="a"
-                  variant="outlined"
-                  startIcon={<AccountCircle />}
-                  onClick={() => signIn('google')}
-                >
-                  {Login}
-                </Button>
-              ) : (
-                <Box display="flex" alignItems="center">
-                  <Avatar
-                    onClick={() => signOut()}
-                    alt="User"
-                    className={classes.avatar}
-                    src={session?.user?.image}
-                  />
-                </Box>
-              )}
+              <Login />
             </Toolbar>
           </ClickAwayListener>
         </AppBar>
-
-        <Drawer variant="persistent" anchor="left" open={open}>
-          <Navbar />
-        </Drawer>
 
         <main
           className={clsx(classes.contentMain, {
@@ -309,20 +184,10 @@ function Layout({ item, title }) {
         >
           <div className={classes.drawerHeader} />
           {/* {children} */}
-
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Contato />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <PesquisaIgreja item={item} />
-          </TabPanel>
         </main>
       </div>
     </div>
   );
 }
 
-export { Layout, TabPanel };
+export default IdpbLogin;

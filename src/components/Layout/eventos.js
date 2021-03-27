@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function pesquisar() {
+export default function eventos() {
   const classes = useStyles();
   return (
     <Paper component="form" className={classes.search}>

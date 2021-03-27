@@ -1,9 +1,9 @@
 import React from 'react';
-import { Layout } from 'src/components/Layout';
+import { IdpbNacional } from 'src/components/idpbNacional';
 import selectRoutes from 'src/database/selectRoutes';
 
 function Home() {
-  return <Layout title="SISTEMA-IDPB" />;
+  return <IdpbNacional title="SISTEMA-IDPB" />;
 }
 
 export async function getStaticProps() {

@@ -1,7 +1,5 @@
 // Display posts in frontend (in /pages/index.tsx)
 import React from 'react';
-import useSWR from 'swr';
-import fetch from 'unfetch';
 import { Box, Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FuzzySearch from 'fuzzy-search'; // Or: var FuzzySearch = require('fuzzy-search');
@@ -68,12 +66,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const fetcher = (url) => fetch(url).then((r) => r.json());
-
-export default function App() {
+function Igreja(query) {
   const classes = useStyles();
-  const { data, error } = useSWR('/api/consultaDados', fetcher);
-  const [query, updateQuery] = React.useState(null);
+
+  const [querys, updateQuery] = React.useState(null);
   const [valor, setValor] = React.useState('');
 
   const handleChange = ({ currentTarget }) => {
@@ -99,13 +95,12 @@ export default function App() {
   };
 
   //= para procurar os dados  ==========================================
-  const searcher = new FuzzySearch(data, ['igreja', 'logradouro'], {
+  const searcher = new FuzzySearch(query.item, ['igreja', 'logradouro'], {
     caseSensitive: false,
   });
-  const result = searcher.search(query);
-
-  if (error) return <div>An error occured.</div>;
-  if (!data) return <div>Loading ...</div>;
+  const result = searcher.search(querys);
+  if (query === 'error') return <div>Erro ao acessar o Banco.</div>;
+  if (!query) return <div>Carregando ...</div>;
   //= =================================================================
 
   return (
@@ -155,3 +150,5 @@ export default function App() {
     </Box>
   );
 }
+
+export default Igreja;

@@ -271,6 +271,14 @@ model Ministros {
   createdAt         DateTime @db.DateTime(0)
   updatedAt         DateTime @db.DateTime(0)
 }
+model Usuarios {
+  id           Int      @id @default(autoincrement())
+  loginUsuario String   @db.VarChar(255)
+  senha        String   @db.VarChar(255)
+  createdAt    DateTime @db.DateTime(0)
+  updatedAt    DateTime @db.DateTime(0)
+  nivelUsuario String   @db.VarChar(45)
+}
 
 model MinistrosIDPBs {
   id                  Int      @id @default(autoincrement())
@@ -354,11 +362,3 @@ model users {
   salt      String   @db.VarChar(45)
 }
 
-model Usuarios {
-  id           Int      @id @default(autoincrement())
-  loginUsuario String   @db.VarChar(255)
-  senha        String   @db.VarChar(255)
-  createdAt    DateTime @db.DateTime(0)
-  updatedAt    DateTime @db.DateTime(0)
-  nivelUsuario String   @db.VarChar(45)
-}

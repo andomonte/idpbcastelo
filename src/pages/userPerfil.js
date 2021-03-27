@@ -1,26 +1,24 @@
 import React from 'react';
-import { IdpbMissoes } from 'src/components/idpbMissoes';
+import { Perfil } from 'src/components/perfil/index';
 import { PrismaClient } from '@prisma/client';
-import selectRoutes from 'src/database/selectRoutes';
 
 // import useSWR from 'swr';
 // import fetch from 'unfetch';
 
-function Missoes({ org }) {
-  return <IdpbMissoes item={org} title="SISTEMA-IDPB" />;
+function userPerfil({ org }) {
+  return <Perfil item={org} title="SISTEMA-IDPB" />;
 }
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
-  const tela = await selectRoutes();
+
   const prisma = new PrismaClient();
-  const posts = await prisma.igrejas.findMany();
+  const posts = await prisma.usuarios.findMany();
   return {
     props: {
       org: JSON.parse(JSON.stringify(posts)),
-      tela: JSON.parse(JSON.stringify(tela)),
     }, // will be passed to the page component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };
 };
 
-export default Missoes;
+export default userPerfil;

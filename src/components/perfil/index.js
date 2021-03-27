@@ -2,28 +2,27 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { signIn, signOut, useSession } from 'next-auth/client';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-import HomeIcon from '@material-ui/icons/Home';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CallIcon from '@material-ui/icons/Call';
+import InsertChartIcon from '@material-ui/icons/InsertChart';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import CloseIcon from '@material-ui/icons/CancelPresentation';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import PesquisaIgreja from './pesquisa/igreja';
+import Login from 'src/components/botaoLogin';
+// import PerfilIcon from 'src/components/icones/perfil';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import Eventos from './eventos';
 import Navbar from './navBar_redesSociais';
-import Contato from './contato';
-import Home from './home';
+import Relatorios from './relatorios';
+import MeuPerfil from './meuPerfil';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -118,50 +117,12 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
-
-  /* desktopDrawer: {
+  desktopDrawer: {
     width: 240,
     top: 56,
     height: 'calc(100% - 64px)',
     borderRight: 'none',
   },
-  wrapper: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64,
-    [theme.breakpoints.up('lg')]: {
-      paddingLeft: 256,
-    },
-  },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-  },
-  content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-
-  search: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    height: 35,
-    width: 700,
-  },
-  input: {
-    flex: 1,
-  }, */
 }));
 
 function TabPanel(props) {
@@ -180,9 +141,8 @@ function TabPanel(props) {
   );
 }
 
-function Layout({ item, title }) {
+function Perfil({ item, title }) {
   const classes = useStyles();
-  const [session] = useSession();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
@@ -191,11 +151,11 @@ function Layout({ item, title }) {
   let LabelIgreja = '';
   let LabelHome = '';
   let LabelContatos = '';
-  const Login = 'Login';
+
   if (desktop) {
-    LabelIgreja = 'Igreja';
-    LabelHome = 'Home';
-    LabelContatos = 'Contatos';
+    LabelIgreja = 'Eventos';
+    LabelHome = 'Meu Perfil';
+    LabelContatos = 'Relatórios';
   }
 
   const handleDrawerOpen = () => {
@@ -230,7 +190,7 @@ function Layout({ item, title }) {
             <Toolbar className={classes.toolbar}>
               <Box display="flex" alignItems="center">
                 {open ? (
-                  <CloseIcon
+                  <MenuOpenIcon
                     className={classes.hamburger}
                     onClick={handleDrawerOpen}
                   />
@@ -262,11 +222,11 @@ function Layout({ item, title }) {
                 >
                   <BottomNavigationAction
                     label={LabelHome}
-                    icon={<HomeIcon />}
+                    icon={<AccountBoxIcon />}
                   />
                   <BottomNavigationAction
                     label={LabelContatos}
-                    icon={<CallIcon />}
+                    icon={<InsertChartIcon />}
                   />
                   <BottomNavigationAction
                     label={LabelIgreja}
@@ -274,31 +234,18 @@ function Layout({ item, title }) {
                   />
                 </BottomNavigation>
               </Box>
-              {!session ? (
-                <Button
-                  color="secondary"
-                  component="a"
-                  variant="outlined"
-                  startIcon={<AccountCircle />}
-                  onClick={() => signIn('google')}
-                >
-                  {Login}
-                </Button>
-              ) : (
-                <Box display="flex" alignItems="center">
-                  <Avatar
-                    onClick={() => signOut()}
-                    alt="User"
-                    className={classes.avatar}
-                    src={session?.user?.image}
-                  />
-                </Box>
-              )}
+              <Login />
             </Toolbar>
           </ClickAwayListener>
         </AppBar>
 
-        <Drawer variant="persistent" anchor="left" open={open}>
+        <Drawer
+          variant="persistent"
+          anchor="left"
+          open={open}
+          className={classes.drawer}
+          classes={{ paper: classes.desktopDrawer }}
+        >
           <Navbar />
         </Drawer>
 
@@ -311,13 +258,13 @@ function Layout({ item, title }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home />
+            <MeuPerfil />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Contato />
+            <Relatorios />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <PesquisaIgreja item={item} />
+            <Eventos item={item} />
           </TabPanel>
         </main>
       </div>
@@ -325,4 +272,4 @@ function Layout({ item, title }) {
   );
 }
 
-export { Layout, TabPanel };
+export { Perfil, TabPanel };
