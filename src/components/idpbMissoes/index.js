@@ -174,7 +174,7 @@ function IdpbMissoes({ item, title }) {
     }
   };
   return (
-    <div>
+    <div onLoad={handleDrawerClose}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
