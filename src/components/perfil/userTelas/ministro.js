@@ -180,7 +180,7 @@ function TelaMinistro({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].Niveluser}
+                    {dadosUser[0].NivelUser}
                   </Typography>
                 </Box>
               )}
@@ -372,7 +372,7 @@ function TelaMinistro({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].Niveluser}
+                    {dadosUser[0].NivelUser}
                   </Typography>
                 </Box>
               )}

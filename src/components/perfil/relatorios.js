@@ -10,7 +10,7 @@ const Relatorios = ({ item, secao }) => {
     signOut({
       callbackUrl: `${window.location.origin}`,
     });
-  const route = dadosUser[0].Niveluser;
+  const route = dadosUser[0].NivelUser;
 
   switch (route) {
     case 'ministro':

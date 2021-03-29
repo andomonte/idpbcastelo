@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 function userPerfil({ org }) {
   return <Perfil item={org} title="SISTEMA-IDPB" />;
 }
+
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 

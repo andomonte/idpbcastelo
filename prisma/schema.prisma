@@ -237,6 +237,7 @@ model users {
   membros          String   @db.VarChar(45)
   vinculadaA       String?  @db.VarChar(45)
   dataFundacao     String?  @db.VarChar(45)
+  usuarios         String?  @db.VarChar(45)
   createdAt        DateTime @db.DateTime(0)
 
   @@id([id, email])
