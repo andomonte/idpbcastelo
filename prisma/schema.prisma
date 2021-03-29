@@ -119,30 +119,6 @@ model IgrejasAMs {
   updatedAt          DateTime @db.DateTime(0)
 }
 
-model InscritosConvAM2s {
-  id                Int      @id @default(autoincrement())
-  nome              String   @db.VarChar(255)
-  grauMinisterial   String   @db.VarChar(255)
-  cpf               String   @unique @db.VarChar(255)
-  rg                String   @db.VarChar(255)
-  email             String   @db.VarChar(255)
-  sexo              String   @db.VarChar(255)
-  nascimento        String   @db.VarChar(255)
-  civil             String   @db.VarChar(255)
-  celular           String   @db.VarChar(255)
-  zap               String   @db.VarChar(255)
-  igreja            String   @db.VarChar(255)
-  cidade            String   @db.VarChar(255)
-  statusdaInscricao String   @db.VarChar(255)
-  transporte        String   @db.VarChar(255)
-  distrito          String   @db.VarChar(255)
-  formaDePagamento  String   @db.VarChar(255)
-  anuidade          String?  @default("ISENTO") @db.VarChar(255)
-  fotoInscrito      String?  @db.VarChar(255)
-  createdAt         DateTime @db.DateTime(0)
-  updatedAt         DateTime @db.DateTime(0)
-}
-
 model InscritosConvAMs {
   id                Int      @id @default(autoincrement())
   nome              String   @db.VarChar(255)
@@ -163,6 +139,116 @@ model InscritosConvAMs {
   distrito          String   @db.VarChar(255)
   formaDePagamento  String   @db.VarChar(255)
   anuidade          String?  @db.VarChar(255)
+  createdAt         DateTime @db.DateTime(0)
+  updatedAt         DateTime @db.DateTime(0)
+}
+
+model Usuarios {
+  id           Int      @id @default(autoincrement())
+  loginUsuario String   @db.VarChar(255)
+  senha        String   @db.VarChar(255)
+  createdAt    DateTime @db.DateTime(0)
+  updatedAt    DateTime @db.DateTime(0)
+  nivelUsuario String   @db.VarChar(45)
+}
+
+model Ministros {
+  id                Int      @id @default(autoincrement())
+  nome              String   @db.VarChar(255)
+  cpf               String   @unique @db.VarChar(255)
+  credencial        String   @db.VarChar(255)
+  rg                String   @db.VarChar(255)
+  email             String   @db.VarChar(255)
+  sexo              String   @db.VarChar(255)
+  nascimento        String   @db.VarChar(255)
+  civil             String   @db.VarChar(255)
+  naturalidade      String   @db.VarChar(255)
+  nacionalidade     String   @db.VarChar(255)
+  celular           String   @db.VarChar(255)
+  zap               String   @db.VarChar(255)
+  fixo              String?  @db.VarChar(255)
+  estadoNascimento  String   @db.VarChar(255)
+  Qytfilhos         String   @db.VarChar(255)
+  pis               String   @db.VarChar(255)
+  dataConvers_o     String   @map("dataConversão") @db.VarChar(255)
+  dataMinist_rio    String   @map("dataMinistério") @db.VarChar(255)
+  escolaridade      String   @db.VarChar(255)
+  forma__o          String?  @map("formação") @db.VarChar(255)
+  conjuge           String   @db.VarChar(255)
+  nascConjuge       String   @db.VarChar(255)
+  foneConjuge       String   @db.VarChar(255)
+  logradouro        String   @db.VarChar(255)
+  cep               String   @db.VarChar(255)
+  numero            String   @db.VarChar(255)
+  bairro            String   @db.VarChar(255)
+  complemento       String?  @db.VarChar(255)
+  localidade        String   @db.VarChar(255)
+  estado            String   @db.VarChar(255)
+  igrejaId          Int
+  dataPastoreio     String   @db.VarChar(255)
+  moramComMinistro  String   @db.VarChar(255)
+  sResidencia       String   @db.VarChar(255)
+  vAluguel          String?  @db.VarChar(255)
+  locatario         String?  @db.VarChar(255)
+  dataContrato      String?  @db.VarChar(255)
+  vFinanciamento    String?  @db.VarChar(255)
+  propriet_rio      String?  @map("proprietário") @db.VarChar(255)
+  dataFinanciamento String?  @db.VarChar(255)
+  usoDizimo         String?  @db.VarChar(255)
+  prebenda          String?  @db.VarChar(255)
+  ajudaAluguel      String?  @db.VarChar(255)
+  outrasAjudasMM    String?  @db.VarChar(255)
+  dataAjudaMM       String?  @db.VarChar(255)
+  rendaExtra        String?  @db.VarChar(255)
+  obs               String?  @db.VarChar(255)
+  createdAt         DateTime @db.DateTime(0)
+  updatedAt         DateTime @db.DateTime(0)
+}
+
+model Mocoes {
+  id        Int      @id @default(autoincrement())
+  descricao String   @db.VarChar(255)
+  status    String   @db.VarChar(255)
+  Mostrar   String   @default("SIM") @db.VarChar(45)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+}
+
+model sessions {
+  session_id String  @id @db.VarChar(128)
+  expires    Int     @db.UnsignedInt
+  data       String? @db.MediumText
+}
+
+model users {
+  id        Int      @id @default(autoincrement())
+  email     String   @db.VarChar(45)
+  password  String   @db.VarChar(45)
+  createdAt DateTime @db.DateTime(0)
+  hash      String   @db.VarChar(45)
+  salt      String   @db.VarChar(45)
+}
+
+model InscritosConvAM2s {
+  id                Int      @id @default(autoincrement())
+  nome              String   @db.VarChar(255)
+  grauMinisterial   String   @db.VarChar(255)
+  cpf               String   @unique @db.VarChar(255)
+  rg                String   @db.VarChar(255)
+  email             String   @db.VarChar(255)
+  sexo              String   @db.VarChar(255)
+  nascimento        String   @db.VarChar(255)
+  civil             String   @db.VarChar(255)
+  celular           String   @db.VarChar(255)
+  zap               String   @db.VarChar(255)
+  igreja            String   @db.VarChar(255)
+  cidade            String   @db.VarChar(255)
+  statusdaInscricao String   @db.VarChar(255)
+  transporte        String   @db.VarChar(255)
+  distrito          String   @db.VarChar(255)
+  formaDePagamento  String   @db.VarChar(255)
+  anuidade          String?  @default("ISENTO") @db.VarChar(255)
+  fotoInscrito      String?  @db.VarChar(255)
   createdAt         DateTime @db.DateTime(0)
   updatedAt         DateTime @db.DateTime(0)
 }
@@ -219,67 +305,6 @@ model inscritosMesMissionarios {
   updatedAt     DateTime @db.DateTime(0)
 }
 
-model Ministros {
-  id                Int      @id @default(autoincrement())
-  nome              String   @db.VarChar(255)
-  cpf               String   @unique @db.VarChar(255)
-  credencial        String   @db.VarChar(255)
-  rg                String   @db.VarChar(255)
-  email             String   @db.VarChar(255)
-  sexo              String   @db.VarChar(255)
-  nascimento        String   @db.VarChar(255)
-  civil             String   @db.VarChar(255)
-  naturalidade      String   @db.VarChar(255)
-  nacionalidade     String   @db.VarChar(255)
-  celular           String   @db.VarChar(255)
-  zap               String   @db.VarChar(255)
-  fixo              String?  @db.VarChar(255)
-  estadoNascimento  String   @db.VarChar(255)
-  Qytfilhos         String   @db.VarChar(255)
-  pis               String   @db.VarChar(255)
-  dataConvers_o     String   @map("dataConversão") @db.VarChar(255)
-  dataMinist_rio    String   @map("dataMinistério") @db.VarChar(255)
-  escolaridade      String   @db.VarChar(255)
-  forma__o          String?  @map("formação") @db.VarChar(255)
-  conjuge           String   @db.VarChar(255)
-  nascConjuge       String   @db.VarChar(255)
-  foneConjuge       String   @db.VarChar(255)
-  logradouro        String   @db.VarChar(255)
-  cep               String   @db.VarChar(255)
-  numero            String   @db.VarChar(255)
-  bairro            String   @db.VarChar(255)
-  complemento       String?  @db.VarChar(255)
-  localidade        String   @db.VarChar(255)
-  estado            String   @db.VarChar(255)
-  igrejaId          Int
-  dataPastoreio     String   @db.VarChar(255)
-  moramComMinistro  String   @db.VarChar(255)
-  sResidencia       String   @db.VarChar(255)
-  vAluguel          String?  @db.VarChar(255)
-  locatario         String?  @db.VarChar(255)
-  dataContrato      String?  @db.VarChar(255)
-  vFinanciamento    String?  @db.VarChar(255)
-  propriet_rio      String?  @map("proprietário") @db.VarChar(255)
-  dataFinanciamento String?  @db.VarChar(255)
-  usoDizimo         String?  @db.VarChar(255)
-  prebenda          String?  @db.VarChar(255)
-  ajudaAluguel      String?  @db.VarChar(255)
-  outrasAjudasMM    String?  @db.VarChar(255)
-  dataAjudaMM       String?  @db.VarChar(255)
-  rendaExtra        String?  @db.VarChar(255)
-  obs               String?  @db.VarChar(255)
-  createdAt         DateTime @db.DateTime(0)
-  updatedAt         DateTime @db.DateTime(0)
-}
-model Usuarios {
-  id           Int      @id @default(autoincrement())
-  loginUsuario String   @db.VarChar(255)
-  senha        String   @db.VarChar(255)
-  createdAt    DateTime @db.DateTime(0)
-  updatedAt    DateTime @db.DateTime(0)
-  nivelUsuario String   @db.VarChar(45)
-}
-
 model MinistrosIDPBs {
   id                  Int      @id @default(autoincrement())
   Nome                String   @db.VarChar(255)
@@ -312,7 +337,7 @@ model MinistrosIDPBs {
   EstadoNascimento    String   @db.VarChar(255)
   Nacionalidade       String   @db.VarChar(255)
   Igreja              String   @db.VarChar(255)
-  FuncaoNaIgreja      String   @default(" \"") @db.VarChar(125)
+  FuncaoNaIgreja      String   @default("0") @db.VarChar(225)
   CEPIgreja           String?  @db.VarChar(255)
   LogradouroIgreja    String   @db.VarChar(255)
   NumeroIgreja        String?  @db.VarChar(45)
@@ -337,28 +362,3 @@ model MinistrosIDPBs {
   createdAt           DateTime @db.DateTime(0)
   updatedAt           DateTime @db.DateTime(0)
 }
-
-model Mocoes {
-  id        Int      @id @default(autoincrement())
-  descricao String   @db.VarChar(255)
-  status    String   @db.VarChar(255)
-  Mostrar   String   @default("SIM") @db.VarChar(45)
-  createdAt DateTime @db.DateTime(0)
-  updatedAt DateTime @db.DateTime(0)
-}
-
-model sessions {
-  session_id String  @id @db.VarChar(128)
-  expires    Int     @db.UnsignedInt
-  data       String? @db.MediumText
-}
-
-model users {
-  id        Int      @id @default(autoincrement())
-  email     String   @db.VarChar(45)
-  password  String   @db.VarChar(45)
-  createdAt DateTime @db.DateTime(0)
-  hash      String   @db.VarChar(45)
-  salt      String   @db.VarChar(45)
-}
-

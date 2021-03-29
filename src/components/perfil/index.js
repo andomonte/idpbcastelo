@@ -19,6 +19,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import { useSession } from 'next-auth/client';
 import Eventos from './eventos';
 import Navbar from './navBar_redesSociais';
 import Relatorios from './relatorios';
@@ -30,7 +31,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     width: 500,
-    justifyContent: 'start',
+    justifyContent: 'space-around',
     backgroundColor: theme.palette.background.default,
     [theme.breakpoints.between('xl', 'lg')]: {
       width: 500,
@@ -147,6 +148,7 @@ function Perfil({ item, title }) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [session] = useSession();
   // const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   let LabelIgreja = '';
   let LabelHome = '';
@@ -259,7 +261,7 @@ function Perfil({ item, title }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <MeuPerfil />
+            {session && <MeuPerfil item={item} secao={session} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Relatorios />

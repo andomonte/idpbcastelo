@@ -28,7 +28,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     width: 500,
-    justifyContent: 'start',
+    justifyContent: 'space-around',
     backgroundColor: theme.palette.background.default,
     [theme.breakpoints.between('xl', 'lg')]: {
       width: 500,
