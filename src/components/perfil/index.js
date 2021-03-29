@@ -183,7 +183,10 @@ function Perfil({ item, title }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name="viewport"
+          content="notranslate, initial-scale=1.0, width=device-width"
+        />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
@@ -264,7 +267,7 @@ function Perfil({ item, title }) {
             {session && <MeuPerfil item={item} secao={session} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Relatorios />
+            {session && <Relatorios item={item} secao={session} />}
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Eventos item={item} />

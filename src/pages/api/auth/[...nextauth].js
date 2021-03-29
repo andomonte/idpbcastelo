@@ -69,8 +69,7 @@ const options = {
       console.log(profile.email, dados[0], valorUsuario);
       if (
         account.provider === 'google' &&
-        profile.verified_email === true &&
-        dados[0] //  profile.email.endsWith(verifiedEmail)
+        profile.verified_email === true //  profile.email.endsWith(verifiedEmail)
       ) {
         return true;
       }

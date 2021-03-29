@@ -80,7 +80,7 @@ const defaultProps = {
   m: 1,
   border: 1,
 };
-function meuPerfil({ item, secao }) {
+function TelaMinistro({ item, secao }) {
   const classes = useStyles();
 
   const dadosUser = item.filter((val) => val.email === secao.user.email);
@@ -479,4 +479,4 @@ function meuPerfil({ item, secao }) {
   );
 }
 
-export default meuPerfil;
+export default TelaMinistro;

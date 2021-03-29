@@ -222,6 +222,7 @@ model sessions {
 
 model users {
   id               Int      @default(autoincrement())
+  userNivel        String   @db.VarChar(45)
   nome             String?  @db.VarChar(155)
   matricula        String?  @db.VarChar(45)
   grauMinisterial  String   @db.VarChar(45)

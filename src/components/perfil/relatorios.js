@@ -1,35 +1,22 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
+import { signOut } from 'next-auth/client';
+import React from 'react';
+import TelaMinistro from './userTelas/ministro';
 
-const useStyles = makeStyles(() => ({
-  img: {
-    maxWidth: '1110px',
-    maxHeight: '544px',
-    width: '100%',
-    height: 'auto',
-  },
-}));
+const Relatorios = ({ item, secao }) => {
+  const dadosUser = item.filter((val) => val.email === secao.user.email);
+  console.log(dadosUser.length);
+  if (dadosUser.length === 0)
+    signOut({
+      callbackUrl: `${window.location.origin}`,
+    });
+  const route = dadosUser[0].userNivel;
 
-const Relatorios = () => {
-  const classes = useStyles();
-  return (
-    <div>
-      <Hidden smDown>
-        <img
-          src="images/home/contato.png"
-          alt="img01"
-          className={classes.img}
-        />
-      </Hidden>
-      <Hidden smUp>
-        <img
-          src="images/home/contatoMobile.png"
-          alt="img01"
-          className={classes.img}
-        />
-      </Hidden>
-    </div>
-  );
+  switch (route) {
+    case 'ministro':
+      return <TelaMinistro item={item} secao={secao} />;
+    default:
+      return <Padrao />;
+  }
 };
 
 export default Relatorios;
