@@ -180,7 +180,7 @@ function meuPerfil({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].userNivel}
+                    {dadosUser[0].Niveluser}
                   </Typography>
                 </Box>
               )}
@@ -372,7 +372,7 @@ function meuPerfil({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].userNivel}
+                    {dadosUser[0].Niveluser}
                   </Typography>
                 </Box>
               )}
