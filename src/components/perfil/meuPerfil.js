@@ -182,7 +182,6 @@ function meuPerfil({ item, secao }) {
                   >
                     {dadosUser[0].userNivel}
                   </Typography>
-                  <small>fim:</small>
                 </Box>
               )}
             </Box>
@@ -375,7 +374,6 @@ function meuPerfil({ item, secao }) {
                   >
                     {dadosUser[0].userNivel}
                   </Typography>
-                  <small>fim:</small>
                 </Box>
               )}
             </Box>
