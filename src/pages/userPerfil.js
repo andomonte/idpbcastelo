@@ -13,7 +13,7 @@ export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
   const prisma = new PrismaClient();
-  const posts = await prisma.users.findMany();
+  const posts = await prisma.user2.findMany();
   return {
     props: {
       org: JSON.parse(JSON.stringify(posts)),
