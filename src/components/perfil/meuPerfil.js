@@ -84,7 +84,7 @@ function meuPerfil({ item, secao }) {
   const classes = useStyles();
 
   const dadosUser = item.filter((val) => val.email === secao.user.email);
-  console.log(dadosUser.length);
+  console.log(dadosUser[0].userNivel);
   if (dadosUser.length === 0)
     signOut({
       callbackUrl: `${window.location.origin}`,
