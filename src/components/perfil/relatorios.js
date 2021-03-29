@@ -1,6 +1,7 @@
 import { signOut } from 'next-auth/client';
 import React from 'react';
 import TelaMinistro from './userTelas/ministro';
+import Padrao from './userTelas/telaPadrao';
 
 const Relatorios = ({ item, secao }) => {
   const dadosUser = item.filter((val) => val.email === secao.user.email);
