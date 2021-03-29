@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
-
+import { signOut } from 'next-auth/client';
 import { Box, Typography } from '@material-ui/core';
 import React from 'react';
 
@@ -10,13 +10,19 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '1410px',
     maxHeight: '600px',
     width: '100%',
-    height: '100%',
+    height: 'auto',
   },
   imgMobile: {
     maxWidth: '1110px',
     maxHeight: '500px',
     width: '100%',
     height: 'auto',
+  },
+  page: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   caption: {
     marginTop: -10,
@@ -32,10 +38,11 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '20px',
     },
     [theme.breakpoints.down('md')]: {
-      fontSize: '18px',
+      fontSize: '14px',
     },
   },
   typography: {
+    color: 'black',
     fontWeight: 1000,
     marginTop: -10,
     marginLeft: 5,
@@ -52,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rotulo: {
+    color: 'blue',
     textTransform: 'capitalize',
     fontWeight: 500,
     display: '-webkit-box',
@@ -67,208 +75,407 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
+const defaultProps = {
+  bgcolor: 'background.paper',
+  m: 1,
+  border: 1,
+};
 function meuPerfil({ item, secao }) {
   const classes = useStyles();
 
-  const dadosUser = item.filter(
-    (val) =>
-      val.Email === secao.user.email && val.GrauMinisterial !== 'CÔNJUGE',
-  );
-
+  const dadosUser = item.filter((val) => val.email === secao.user.email);
+  console.log(dadosUser.length);
+  if (dadosUser.length === 0)
+    signOut({
+      callbackUrl: `${window.location.origin}`,
+    });
   return (
-    <div>
-      <Hidden smDown>
-        <Grid container className={classes.root} spacing={2}>
-          <Grid item xs={8} lg={8}>
-            {dadosUser && (
-              <Box m={4}>
-                <img src={secao.user.image} alt="" width="130" />
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Nome:</small>
-                </Typography>
+    <Box display="flex" justifyContent="center">
+      <Hidden smDown borderColor="primary.main" {...defaultProps}>
+        <Grid container className={classes.root} spacing={0}>
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            <Box borderRadius={16} {...defaultProps}>
+              {dadosUser && (
+                <Box m={4}>
+                  <img src={secao.user.image} alt="" width="130" />
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Nome:</small>
+                  </Typography>
 
-                <Typography
-                  className={classes.caption}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  {dadosUser[0].Nome}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Fução:</small>
-                </Typography>
+                  <Typography
+                    className={classes.caption}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    {dadosUser[0].nome}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Fução:</small>
+                  </Typography>
 
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textSecondary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].FuncaoNaIgreja} da {dadosUser[0].Igreja}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Credencial:</small>
-                </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].funcaoNaIgreja}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Credencial:</small>
+                  </Typography>
 
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textSecondary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].Matricula}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Grau Ministerial:</small>
-                </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].matricula}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Grau Ministerial:</small>
+                  </Typography>
 
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textSecondary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].GrauMinisterial}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Mora em:</small>
-                </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].grauMinisterial}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Mora em:</small>
+                  </Typography>
 
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].Cidade}-{dadosUser[0].UF}
-                </Typography>
-              </Box>
-            )}
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].cidade}-{dadosUser[0].estado}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            <Box borderRadius={16} {...defaultProps}>
+              {dadosUser && (
+                <Box m={4}>
+                  <img src={dadosUser[0].imgIgreja} alt="" width="125" />
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Igreja:</small>
+                  </Typography>
+
+                  <Typography
+                    className={classes.caption}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    {dadosUser[0].igreja}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Pastor Presidente:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].pastorPresidente}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Quantidade de Membros:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].membros}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Vínculada a:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].vinculadaA}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Data da Fundação:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].dataFundacao}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Hidden>
       <Hidden mdUp>
-        <Grid container className={classes.root} spacing={2}>
-          <Grid item xs={12} lg={12}>
-            {dadosUser && (
-              <Box m={4}>
-                <img src={secao.user.image} alt="" width="100" />
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Nome:</small>
-                </Typography>
+        <Grid container className={classes.root} spacing={0}>
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            <Box borderRadius={16} {...defaultProps}>
+              {dadosUser && (
+                <Box m={4}>
+                  <img src={secao.user.image} alt="" width="130" />
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Nome:</small>
+                  </Typography>
 
-                <Typography
-                  className={classes.caption}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  {dadosUser[0].Nome}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Fução:</small>
-                </Typography>
+                  <Typography
+                    className={classes.caption}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    {dadosUser[0].nome}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Fução:</small>
+                  </Typography>
 
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textPrimary"
-                  className={classes.caption}
-                >
-                  {dadosUser[0].FuncaoNaIgreja} da {dadosUser[0].Igreja}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Credencial:</small>
-                </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].funcaoNaIgreja}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Credencial:</small>
+                  </Typography>
 
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textPrimary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].Matricula}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Grau Ministerial:</small>
-                </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].matricula}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Grau Ministerial:</small>
+                  </Typography>
 
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textPrimary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].GrauMinisterial}
-                </Typography>
-                <Typography
-                  className={classes.rotulo}
-                  gutterBottom
-                  variant="body1"
-                  color="textPrimary"
-                >
-                  <small>Mora em:</small>
-                </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].grauMinisterial}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Mora em:</small>
+                  </Typography>
 
-                <Typography
-                  variant="body1"
-                  color="textPrimary"
-                  className={classes.typography}
-                >
-                  {dadosUser[0].Cidade}-{dadosUser[0].UF}
-                </Typography>
-              </Box>
-            )}
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].cidade}-{dadosUser[0].estado}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            <Box borderRadius={16} {...defaultProps}>
+              {dadosUser && (
+                <Box m={4}>
+                  <img src={dadosUser[0].imgIgreja} alt="" width="125" />
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Igreja:</small>
+                  </Typography>
+
+                  <Typography
+                    className={classes.caption}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    {dadosUser[0].igreja}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Pastor Presidente:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].pastorPresidente}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Quantidade de Membros:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].membros}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Vínculada a:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].vinculadaA}
+                  </Typography>
+                  <Typography
+                    className={classes.rotulo}
+                    gutterBottom
+                    variant="body1"
+                    color="textPrimary"
+                  >
+                    <small>Data da Fundação:</small>
+                  </Typography>
+
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.typography}
+                  >
+                    {dadosUser[0].dataFundacao}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Hidden>
-    </div>
+    </Box>
   );
 }
 

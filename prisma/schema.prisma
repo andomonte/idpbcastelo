@@ -221,12 +221,24 @@ model sessions {
 }
 
 model users {
-  id        Int      @id @default(autoincrement())
-  email     String   @db.VarChar(45)
-  password  String   @db.VarChar(45)
-  createdAt DateTime @db.DateTime(0)
-  hash      String   @db.VarChar(45)
-  salt      String   @db.VarChar(45)
+  id               Int      @default(autoincrement())
+  nome             String?  @db.VarChar(155)
+  matricula        String?  @db.VarChar(45)
+  grauMinisterial  String   @db.VarChar(45)
+  funcaoNaIgreja   String?  @db.VarChar(45)
+  funcaoIDPB       String?  @db.VarChar(100)
+  email            String   @db.VarChar(45)
+  cidade           String?  @db.VarChar(45)
+  estado           String?  @db.VarChar(45)
+  igreja           String   @db.VarChar(45)
+  imgIgreja        String?  @db.VarChar(145)
+  pastorPresidente String?  @db.VarChar(45)
+  membros          String   @db.VarChar(45)
+  vinculadaA       String?  @db.VarChar(45)
+  dataFundacao     String?  @db.VarChar(45)
+  createdAt        DateTime @db.DateTime(0)
+
+  @@id([id, email])
 }
 
 model InscritosConvAM2s {
