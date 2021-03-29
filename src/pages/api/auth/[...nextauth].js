@@ -13,7 +13,7 @@ const valorUsuario = 'inicio';
   console.log(valorUsuario);
   return data;
 } */
-console.log(valorUsuario);
+
 const usuarios = [
   {
     email: 'andomonte@gmail.com',

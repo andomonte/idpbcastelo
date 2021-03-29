@@ -145,11 +145,11 @@ function TabPanel(props) {
 function Perfil({ item, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
-  // const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   let LabelIgreja = '';
   let LabelHome = '';
   let LabelContatos = '';
@@ -173,8 +173,8 @@ function Perfil({ item, title }) {
   const handleDrawerClose = () => {
     // console.log(mobile);
 
-    if (desktop && !open) {
-      setOpen(true);
+    if (mobile && open) {
+      setOpen(false);
     }
   };
 
