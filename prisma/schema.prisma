@@ -354,7 +354,7 @@ model MinistrosIDPBs {
   updatedAt           DateTime @db.DateTime(0)
 }
 
-model user2 {
+model user {
   id               Int      @default(autoincrement())
   NivelUser        String   @db.VarChar(45)
   nome             String?  @db.VarChar(155)
