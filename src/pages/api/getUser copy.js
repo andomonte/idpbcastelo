@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+//import { PrismaClient } from '@prisma/client';
+import prisma from 'src/lib/prisma';
 
-const prisma = new PrismaClient();
 
 async function main(credencials) {
   // ... you will write your Prisma Client queries here

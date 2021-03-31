@@ -1,7 +1,7 @@
 import React from 'react';
 import { Perfil } from 'src/components/perfil/index';
-import { PrismaClient } from '@prisma/client';
-
+//import { PrismaClient } from '@prisma/client';
+import prisma from 'src/lib/prisma';
 // import useSWR from 'swr';
 // import fetch from 'unfetch';
 
@@ -12,7 +12,7 @@ function userPerfil({ org }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const prisma = new PrismaClient();
+
   const posts = await prisma.user.findMany();
   return {
     props: {

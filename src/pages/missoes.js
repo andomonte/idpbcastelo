@@ -1,8 +1,7 @@
 import React from 'react';
 import { IdpbMissoes } from 'src/components/idpbMissoes';
-import { PrismaClient } from '@prisma/client';
+import prisma from 'src/lib/prisma';
 import selectRoutes from 'src/database/selectRoutes';
-
 // import useSWR from 'swr';
 // import fetch from 'unfetch';
 
@@ -12,7 +11,7 @@ function Missoes({ org }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
   const tela = await selectRoutes();
-  const prisma = new PrismaClient();
+ 
   const posts = await prisma.igrejas.findMany();
   return {
     props: {

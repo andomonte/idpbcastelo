@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
+import prisma from 'src/lib/prisma';
 
-const prisma = new PrismaClient();
+
 export default async function handle(req, res) {
   const posts = await prisma.igrejas.findMany();
   res.statuCode = 200;

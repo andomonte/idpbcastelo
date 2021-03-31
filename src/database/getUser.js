@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from 'src/lib/prisma';
 
 function getUser({ org }) {
   // ... you will write your Prisma Client queries here
@@ -8,7 +8,7 @@ function getUser({ org }) {
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
-  const prisma = new PrismaClient();
+ 
   const posts = await prisma.users.findMany();
   return {
     props: {

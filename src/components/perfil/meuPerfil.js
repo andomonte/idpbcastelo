@@ -275,7 +275,7 @@ function meuPerfil({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].dataFundacao}
+                    {dadosUser[0].codigoIgreja}
                   </Typography>
                 </Box>
               )}
@@ -467,7 +467,7 @@ function meuPerfil({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].dataFundacao}
+                    {dadosUser[0].codigoIgreja}
                   </Typography>
                 </Box>
               )}

@@ -370,7 +370,7 @@ model user {
   pastorPresidente String?  @db.VarChar(45)
   membros          String   @db.VarChar(45)
   vinculadaA       String?  @db.VarChar(45)
-  dataFundacao     String?  @db.VarChar(45)
+  codigoIgreja     String?  @db.VarChar(45)
   createdAt        DateTime @db.DateTime(0)
 
   @@id([id, email])

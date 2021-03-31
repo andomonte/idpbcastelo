@@ -4,6 +4,18 @@ import Grid from '@material-ui/core/Grid';
 import { signOut } from 'next-auth/client';
 import { Box, Typography } from '@material-ui/core';
 import React from 'react';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import IconButton from '@material-ui/core/IconButton';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import ListItem from '@material-ui/core/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -74,6 +86,13 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
     },
   },
+  iconButtonLabel: {
+    display: 'flex',
+    flexDirection: 'column',
+    fontSize: '14px',
+    color: 'black',
+    marginRight: 10,
+  },
 }));
 const defaultProps = {
   bgcolor: 'background.paper',
@@ -82,205 +101,58 @@ const defaultProps = {
 };
 function TelaMinistro({ item, secao }) {
   const classes = useStyles();
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   console.log(dadosUser.length);
-  if (dadosUser.length === 0)
+  if (dadosUser.length === 0) {
     signOut({
       callbackUrl: `${window.location.origin}`,
     });
+  }
   return (
-    <Box display="flex" justifyContent="center">
+    <Box>
       <Hidden smDown borderColor="primary.main" {...defaultProps}>
-        <Grid container className={classes.root} spacing={0}>
-          <Grid item xs={12} md={12} lg={6} xl={6}>
-            <Box borderRadius={16} {...defaultProps}>
-              {dadosUser && (
-                <Box m={4}>
-                  <img src={secao.user.image} alt="" width="130" />
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Nome:</small>
-                  </Typography>
+        <Grid item xs={12} md={12} lg={12} xl={12}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container justify="space-around">
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="dd/MM/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Data do Relatório"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
 
-                  <Typography
-                    className={classes.caption}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    {dadosUser[0].nome}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Fução:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].funcaoNaIgreja}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Credencial:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].matricula}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Grau Ministerial:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].grauMinisterial}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Tipo de Usuario:</small>
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].NivelUser}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} md={12} lg={6} xl={6}>
-            <Box borderRadius={16} {...defaultProps}>
-              {dadosUser && (
-                <Box m={4}>
-                  <img src={dadosUser[0].imgIgreja} alt="" width="125" />
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Igreja:</small>
-                  </Typography>
-
-                  <Typography
-                    className={classes.caption}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    {dadosUser[0].igreja}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Pastor Presidente:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].pastorPresidente}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Quantidade de Membros:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].membros}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Vínculada a:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].vinculadaA}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Data da Fundação:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].dataFundacao}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </Grid>
+              <IconButton classes={{ label: classes.iconButtonLabel }}>
+                <NoteAddIcon style={{ fontSize: 30 }} color="primary" />
+                <div>Novo</div>
+              </IconButton>
+            </Grid>
+          </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item xs={12} md={12} lg={12} xl={12}>
+          <Box
+            ml={10}
+            mr={10}
+            width="auto"
+            //            maxWidth={1200}
+            height={500}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            relatorios
+          </Box>
         </Grid>
       </Hidden>
       <Hidden mdUp>
@@ -467,7 +339,7 @@ function TelaMinistro({ item, secao }) {
                     color="textSecondary"
                     className={classes.typography}
                   >
-                    {dadosUser[0].dataFundacao}
+                    {dadosUser[0].codigoIgreja}
                   </Typography>
                 </Box>
               )}
