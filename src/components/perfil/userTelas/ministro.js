@@ -330,7 +330,7 @@ function TelaMinistro({ item, secao }) {
                     variant="body1"
                     color="textPrimary"
                   >
-                    <small>Data da Fundação:</small>
+                    <small>Codigo da Igreja:</small>
                   </Typography>
 
                   <Typography
