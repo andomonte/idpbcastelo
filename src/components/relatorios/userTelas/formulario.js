@@ -112,7 +112,7 @@ function formulario({ item, Data, Semana }) {
 
   //----------------------------------------------------------------------
 
-  const url = `${window.location.origin}/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
+  const url = `/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
   const { data, error } = useSWR(url, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
