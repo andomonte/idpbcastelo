@@ -2,22 +2,39 @@ import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { signOut } from 'next-auth/client';
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import React from 'react';
-import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import IconButton from '@material-ui/core/IconButton';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import ListItem from '@material-ui/core/ListItem';
+
+import moment from 'moment';
+import Formulario from './formulario';
 
 const useStyles = makeStyles((theme) => ({
+  box: {
+    display: 'flex',
+    alignItems: 'justify',
+    marginTop: 2,
+  },
+  box2: {
+    marginTop: 20,
+    [theme.breakpoints.down('md')]: {
+      marginTop: 2,
+    },
+
+    // justifyContent: 'center',
+  },
+
+  texto: {
+    fontSize: '25px',
+    fontWeight: 1000,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '16px',
+    },
+  },
   img: {
     maxWidth: '1410px',
     maxHeight: '600px',
@@ -93,34 +110,89 @@ const useStyles = makeStyles((theme) => ({
     color: 'black',
     marginRight: 10,
   },
+  margin: {
+    margin: theme.spacing(1),
+  },
 }));
 const defaultProps = {
   bgcolor: 'background.paper',
   m: 1,
   border: 1,
 };
+
 function TelaMinistro({ item, secao }) {
+  let enviarDia;
+  let enviarData;
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [open, setIsPickerOpen] = React.useState(false);
 
-  const handleDateChange = (date) => {
+  // const [selectedDate, setDate] = useState(moment());
+  const [inputValue, setInputValue] = React.useState(
+    moment(new Date()).format('DD/MM/YYYY'),
+  );
+
+  //= ================================================================
+
+  const dates = selectedDate;
+  const firstDay = new Date(dates.getFullYear(), dates.getMonth(), 1).getDay();
+  // const lastDay = new Date(dates.getFullYear(), dates.getMonth() + 1, 0);
+  let firstSunday;
+
+  if (firstDay > 0) {
+    firstSunday = 1 + (7 - firstDay);
+  }
+
+  //= ==============================================================
+  const handleDateChange = (date, value) => {
+    setInputValue(value);
     setSelectedDate(date);
+    setIsPickerOpen(false);
+  };
+  //= ==================================================================
+
+  const getData = () => {
+    enviarData = inputValue;
+    enviarDia = Number(inputValue.slice(0, 2));
+
+    //  setData(moment(inputValue).format('DD/MM/YYYY'));
   };
 
+  //= ============================================================
+  const handleDateClick = () => {
+    //   setSelectedDate();
+    setIsPickerOpen(true);
+  };
   const dadosUser = item.filter((val) => val.email === secao.user.email);
-  console.log(dadosUser.length);
   if (dadosUser.length === 0) {
     signOut({
       callbackUrl: `${window.location.origin}`,
     });
   }
+
+  const mes = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
+  ];
+
   return (
-    <Box>
-      <Hidden smDown borderColor="primary.main" {...defaultProps}>
+    <Box className={classes.box2}>
+      <Hidden smDown>
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container justify="space-around">
+            <Grid container justify="center">
               <KeyboardDatePicker
+                open={open}
                 disableToolbar
                 variant="inline"
                 format="dd/MM/yyyy"
@@ -128,224 +200,176 @@ function TelaMinistro({ item, secao }) {
                 id="date-picker-inline"
                 label="Data do Relatório"
                 value={selectedDate}
+                inputValue={inputValue}
+                onClick={handleDateClick}
                 onChange={handleDateChange}
+                onClose={getData()}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
               />
-
-              <IconButton classes={{ label: classes.iconButtonLabel }}>
-                <NoteAddIcon style={{ fontSize: 30 }} color="primary" />
-                <div>Novo</div>
-              </IconButton>
             </Grid>
+            <Box
+              mt={4}
+              mb={2}
+              ml={0}
+              className={classes.texto}
+              textAlign="center"
+            >
+              Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
+            </Box>
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item xs={12} md={12} lg={12} xl={12}>
-          <Box
-            ml={10}
-            mr={10}
-            width="auto"
-            //            maxWidth={1200}
-            height={500}
-            borderRadius={16}
-            {...defaultProps}
-          >
-            relatorios
-          </Box>
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          //    style={{ minHeight: '100vh' }}
+        >
+          <Grid>
+            <Box
+              className={classes.box}
+              mt={3}
+              ml={0}
+              mr={0}
+              //  alignContent="center"
+              // justifyContent="center"
+              width="100%"
+              //            maxWidth={1200}
+              height="auto"
+              borderRadius={16}
+              {...defaultProps}
+            >
+              {enviarDia < firstSunday + 7 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={1}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={2}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={3}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={4}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 27 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={5}
+                />
+              ) : null}
+            </Box>
+          </Grid>
         </Grid>
       </Hidden>
       <Hidden mdUp>
-        <Grid container className={classes.root} spacing={0}>
-          <Grid item xs={12} md={12} lg={6} xl={6}>
-            <Box borderRadius={16} {...defaultProps}>
-              {dadosUser && (
-                <Box m={4}>
-                  <img src={secao.user.image} alt="" width="130" />
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Nome:</small>
-                  </Typography>
-
-                  <Typography
-                    className={classes.caption}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    {dadosUser[0].nome}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Fução:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].funcaoNaIgreja}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Credencial:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].matricula}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Grau Ministerial:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].grauMinisterial}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Tipo de Usuario:</small>
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].NivelUser}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} md={12} lg={6} xl={6}>
-            <Box borderRadius={16} {...defaultProps}>
-              {dadosUser && (
-                <Box m={4}>
-                  <img src={dadosUser[0].imgIgreja} alt="" width="125" />
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Igreja:</small>
-                  </Typography>
-
-                  <Typography
-                    className={classes.caption}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    {dadosUser[0].igreja}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Pastor Presidente:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].pastorPresidente}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Quantidade de Membros:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].membros}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Vínculada a:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].vinculadaA}
-                  </Typography>
-                  <Typography
-                    className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
-                  >
-                    <small>Codigo da Igreja:</small>
-                  </Typography>
-
-                  <Typography
-                    display="block"
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.typography}
-                  >
-                    {dadosUser[0].codigoIgreja}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </Grid>
+        <Grid item xs={12} md={12} lg={12} xl={12}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container justify="center">
+              <KeyboardDatePicker
+                open={open}
+                disableToolbar
+                variant="inline"
+                format="dd/MM/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Data do Relatório"
+                value={selectedDate}
+                onClick={handleDateClick}
+                onChange={handleDateChange}
+                //                setData(moment(e.getUTCDate()).format('DD/MM/YYYY'));
+                onClose={getData}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+              <Box mt={4} ml={2} className={classes.texto} textAlign="center">
+                Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
+              </Box>
+              {/* <IconButton classes={{ label: classes.iconButtonLabel }}>
+                <NoteAddIcon style={{ fontSize: 30 }} color="primary" />
+                <div>Novo</div>
+              </IconButton> */}
+            </Grid>
+          </MuiPickersUtilsProvider>
         </Grid>
+
+        <Box
+          className={classes.box}
+          mt={3}
+          ml={1}
+          mr={1}
+          width="auto"
+          //            maxWidth={1200}
+          height="auto"
+          borderRadius={16}
+          {...defaultProps}
+        >
+          {enviarDia < firstSunday + 7 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={1}
+            />
+          ) : null}
+          {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={2}
+            />
+          ) : null}
+          {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={3}
+            />
+          ) : null}
+          {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={4}
+            />
+          ) : null}
+          {enviarDia > firstSunday + 27 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={5}
+            />
+          ) : null}
+        </Box>
       </Hidden>
     </Box>
   );

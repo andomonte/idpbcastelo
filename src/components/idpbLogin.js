@@ -113,12 +113,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbLogin({ item, title }) {
+function IdpbLogin({ title }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log(item);
+  // console.log(item);
   const handleDrawerOpen = () => {
     if (!open) {
       setOpen(true);

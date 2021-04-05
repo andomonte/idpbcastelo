@@ -1,17 +1,9 @@
 import prisma from 'src/lib/prisma';
-async function main() {
-  // ... you will write your Prisma Client queries here
-  // const allUsers = await fetch(`prisma.${table}.findMany()`);
 
-  const usuario = await prisma.Usuarios.findMany();
-  return usuario;
+export default async function handle(req, res) {
+  const posts = await prisma.Usuarios.findMany();
+  res.statuCode = 200;
+  res.setHeader('Content-Type', 'aplication/json');
+  //  res.end(JSON.stringify({ posts }));
+  res.json(posts);
 }
-main()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-
-export default main;

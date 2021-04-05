@@ -101,11 +101,11 @@ const primaryMenuLogin = [
 
 const secondaryManu = [
   { id: 1, label: 'EMT', icon: SchoolIcon },
-  { id: 2, label: 'MM-NORDESTE', icon: History },
-  { id: 3, label: 'MM-CENTROESTE', icon: History },
-  { id: 4, label: 'MM-SULDESTE', icon: History },
-  { id: 5, label: 'MM-SUL', icon: History },
-  { id: 6, label: 'MM-INTERNACIONAL', icon: History },
+  { id: 2, label: 'MM-Nordeste', icon: History },
+  { id: 3, label: 'MM-CentroOeste', icon: History },
+  { id: 4, label: 'MM-Suldeste', icon: History },
+  { id: 5, label: 'MM-Sul', icon: History },
+  { id: 6, label: 'MM-Internacional', icon: History },
 ];
 
 const redeSociais = [

@@ -1,6 +1,5 @@
 import {
   makeStyles,
-  Hidden,
   Box,
   List,
   ListItem,
@@ -13,7 +12,6 @@ import {
   //  Button,
 } from '@material-ui/core';
 
-import History from '@material-ui/icons/History';
 // import { useState } from 'react';
 import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
@@ -21,9 +19,7 @@ import IconBrasil from 'src/components/icones/brasil';
 import IconMissoes from 'src/components/icones/missoes';
 // import IconEMT from 'src/components/icones/emt';
 import SchoolIcon from '@material-ui/icons/School';
-import FacebookIcon from 'src/components/icones/facebook';
-import YouTubeIcon from 'src/components/icones/youtube';
-import InstagramIcon from 'src/components/icones/instagram';
+
 import { useSession } from 'next-auth/client';
 import IconIdpb from 'src/components/icones/idpb';
 import iconesPerfil from 'src/components/icones/perfil';
@@ -99,35 +95,6 @@ const primaryMenuLogin = [
   { id: 4, label: 'Meu-Perfil', path: '/userPerfil', icon: iconesPerfil },
 ];
 
-const secondaryManu = [
-  { id: 1, label: 'EMT', icon: SchoolIcon },
-  { id: 2, label: 'MM-NORDESTE', icon: History },
-  { id: 3, label: 'MM-CENTROESTE', icon: History },
-  { id: 4, label: 'MM-SULDESTE', icon: History },
-  { id: 5, label: 'MM-SUL', icon: History },
-  { id: 6, label: 'MM-INTERNACIONAL', icon: History },
-];
-
-const redeSociais = [
-  {
-    id: 1,
-    label: 'FaceBook',
-    path: 'https://www.facebook.com/IgrejadeDeusPentecostaldoBrasil/?fref=ts',
-    icon: FacebookIcon,
-  },
-  {
-    id: 2,
-    label: 'YouTube',
-    path: 'https://www.youtube.com/channel/UCHNovnY-gkNsG5LRlkjGSTQ',
-    icon: YouTubeIcon,
-  },
-  {
-    id: 3,
-    label: 'Instagran',
-    icon: InstagramIcon,
-    path: 'https://www.instagram.com/idpbnacional/',
-  },
-];
 function navBar() {
   const classes = useStyles();
   const router = useRouter();
@@ -194,62 +161,6 @@ function navBar() {
             })}
       </List>
       <Divider />
-      <List>
-        {secondaryManu.map((itemSecondary) => {
-          const Icon = itemSecondary.icon;
-          return (
-            <ListItem
-              key={itemSecondary.id}
-              button
-              classes={{ root: classes.listItem }}
-              selected={isSelected(itemSecondary)}
-            >
-              <ListItemIcon>
-                <Icon
-                  style={{ color: isSelected(itemSecondary) && '#f44336' }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                classes={{
-                  primary: classes.listItemText,
-                }}
-                primary={itemSecondary.label}
-              />
-            </ListItem>
-          );
-        })}
-      </List>
-      <Hidden smDown>
-        <Divider />
-        <Box>
-          <List>
-            {redeSociais.map((lista) => {
-              const Icon = lista.icon;
-              return (
-                <ListItem
-                  key={lista.id}
-                  button
-                  classes={{ root: classes.listItem }}
-                  selected={isSelected(lista)}
-                  onClick={() => {
-                    router.push(lista.path);
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon style={{ color: isSelected(lista) && '#f44336' }} />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.listItemText,
-                    }}
-                    primary={lista.label}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-        </Box>
-      </Hidden>
     </Box>
   );
   return content;

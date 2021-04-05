@@ -5,7 +5,7 @@ import Padrao from './userTelas/telaPadrao';
 
 const Relatorios = ({ item, secao }) => {
   const dadosUser = item.filter((val) => val.email === secao.user.email);
-  console.log(dadosUser.length);
+  // console.log(dadosUser.length);
   if (dadosUser.length === 0)
     signOut({
       callbackUrl: `${window.location.origin}`,

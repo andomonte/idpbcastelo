@@ -20,10 +20,11 @@ import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { useSession } from 'next-auth/client';
-import Eventos from './eventos';
+// import Eventos from './eventos';
 import Navbar from './navBar_redesSociais';
 import Relatorios from './relatorios';
 import MeuPerfil from './meuPerfil';
+import Padrao from './userTelas/telaPadrao';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -270,7 +271,8 @@ function Perfil({ item, title }) {
             {session && <Relatorios item={item} secao={session} />}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Eventos item={item} />
+            {/*  <Eventos item={item} /> */}
+            <Padrao />
           </TabPanel>
         </main>
       </div>

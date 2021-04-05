@@ -8,7 +8,7 @@ function getUsuarios({ org }) {
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
- 
+
   const posts = await prisma.Usuarios.findMany();
   return {
     props: {

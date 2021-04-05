@@ -375,3 +375,18 @@ model user {
 
   @@id([id, email])
 }
+
+model relatorios {
+  id            Int    @id @default(autoincrement())
+  igreja        String @db.VarChar(145)
+  codigoIgreja  String @db.VarChar(45)
+  semana        Int
+  mes           String @db.VarChar(45)
+  ano           String @db.VarChar(45)
+  adultos       String @db.VarChar(45)
+  criancas      String @db.VarChar(45)
+  conversoes    String @db.VarChar(45)
+  ofertas       String @db.VarChar(45)
+  visitantes    String @db.VarChar(45)
+  dataRelatorio String @db.VarChar(45)
+}
