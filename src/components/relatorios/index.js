@@ -11,19 +11,20 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import InsertChartIcon from '@material-ui/icons/InsertChart';
+
+import MultilineChartIcon from '@material-ui/icons/MultilineChart';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import EventIcon from '@material-ui/icons/Event';
 import { useSession } from 'next-auth/client';
-// import Eventos from './eventos';
+import PeopleIcon from '@material-ui/icons/People';
+import Evento from './eventos';
 import Navbar from './navBar_redesSociais';
-import Relatorios from './relatorios';
-import MeuPerfil from './meuPerfil';
+import Culto from './culto';
+
 import Padrao from './userTelas/telaPadrao';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
@@ -151,14 +152,14 @@ function PageRelatorios({ item, title }) {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelIgreja = '';
-  let LabelHome = '';
-  let LabelContatos = '';
+  let LabelAnalisar = '';
+  let LabelCulto = '';
+  let LabelEvento = '';
 
   if (desktop) {
-    LabelIgreja = 'Eventos';
-    LabelHome = 'Meu Perfil';
-    LabelContatos = 'Relatórios';
+    LabelAnalisar = 'Analisar';
+    LabelEvento = 'Evento';
+    LabelCulto = 'Culto';
   }
 
   const handleDrawerOpen = () => {
@@ -228,16 +229,16 @@ function PageRelatorios({ item, title }) {
                   className={classes.rootTopbarIcon}
                 >
                   <BottomNavigationAction
-                    label={LabelHome}
-                    icon={<AccountBoxIcon />}
+                    label={LabelCulto}
+                    icon={<PeopleIcon />}
                   />
                   <BottomNavigationAction
-                    label={LabelContatos}
-                    icon={<InsertChartIcon />}
+                    label={LabelEvento}
+                    icon={<EventIcon />}
                   />
                   <BottomNavigationAction
-                    label={LabelIgreja}
-                    icon={<LocationOnIcon />}
+                    label={LabelAnalisar}
+                    icon={<MultilineChartIcon />}
                   />
                 </BottomNavigation>
               </Box>
@@ -265,10 +266,10 @@ function PageRelatorios({ item, title }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            {session && <MeuPerfil item={item} secao={session} />}
+            {session && <Culto item={item} secao={session} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {session && <Relatorios item={item} secao={session} />}
+            {session && <Evento item={item} secao={session} />}
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}

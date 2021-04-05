@@ -3,7 +3,7 @@ import React from 'react';
 import TelaMinistro from './userTelas/ministro';
 import Padrao from './userTelas/telaPadrao';
 
-const Relatorios = ({ item, secao }) => {
+const Culto = ({ item, secao }) => {
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   // console.log(dadosUser.length);
   if (dadosUser.length === 0)
@@ -20,4 +20,4 @@ const Relatorios = ({ item, secao }) => {
   }
 };
 
-export default Relatorios;
+export default Culto;

@@ -301,14 +301,15 @@ function TelaMinistro({ item, secao }) {
                 value={selectedDate}
                 onClick={handleDateClick}
                 onChange={handleDateChange}
+                size="small"
                 //                setData(moment(e.getUTCDate()).format('DD/MM/YYYY'));
                 onClose={getData}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
               />
-              <Box mt={4} ml={2} className={classes.texto} textAlign="center">
-                Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
+              <Box mt={1} ml={2} className={classes.texto} textAlign="center">
+                Mês de {mes[selectedDate.getMonth()]}{' '}
               </Box>
               {/* <IconButton classes={{ label: classes.iconButtonLabel }}>
                 <NoteAddIcon style={{ fontSize: 30 }} color="primary" />

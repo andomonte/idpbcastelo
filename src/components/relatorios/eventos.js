@@ -1,38 +1,23 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import { Box } from '@material-ui/core';
+import { signOut } from 'next-auth/client';
+import React from 'react';
+// import TelaMinistro from './userTelas/ministro';
+import Padrao from './userTelas/telaPadrao';
 
-const useStyles = makeStyles(() => ({
-  search: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    height: 45,
-    width: '100%',
-    borderRadius: 16,
-  },
-  input: {
-    flex: 1,
-    padding: 10,
-  },
-}));
+const Evento = ({ item, secao }) => {
+  const dadosUser = item.filter((val) => val.email === secao.user.email);
+  // console.log(dadosUser.length);
+  if (dadosUser.length === 0)
+    signOut({
+      callbackUrl: `${window.location.origin}`,
+    });
+  const route = dadosUser[0].NivelUser;
 
-export default function eventos() {
-  const classes = useStyles();
-  return (
-    <Paper component="form" className={classes.search}>
-      <Box />
-      <InputBase
-        className={classes.input}
-        placeholder="Pesquisar Igreja"
-        inputProps={{ 'aria-label': 'search google maps' }}
-      />
-      <IconButton type="submit" aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
-  );
-}
+  switch (route) {
+    case 'ministro':
+      return <Padrao item={item} secao={secao} />;
+    default:
+      return <Padrao />;
+  }
+};
+
+export default Evento;
