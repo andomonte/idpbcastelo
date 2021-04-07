@@ -308,15 +308,16 @@ function TelaMinistro({ item, secao }) {
                   'aria-label': 'change date',
                 }}
               />
-              <Box mt={1} ml={2} className={classes.texto} textAlign="center">
-                Mês de {mes[selectedDate.getMonth()]}{' '}
-              </Box>
+
               {/* <IconButton classes={{ label: classes.iconButtonLabel }}>
                 <NoteAddIcon style={{ fontSize: 30 }} color="primary" />
                 <div>Novo</div>
               </IconButton> */}
             </Grid>
           </MuiPickersUtilsProvider>
+          <Box mt={1} ml={2} className={classes.texto} textAlign="center">
+            Mês de {mes[selectedDate.getMonth()]}{' '}
+          </Box>
         </Grid>
 
         <Box

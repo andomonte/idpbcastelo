@@ -152,9 +152,9 @@ function PageRelatorios({ item, title }) {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelAnalisar = '';
-  let LabelCulto = '';
-  let LabelEvento = '';
+  let LabelAnalisar = 'Analisar';
+  let LabelCulto = 'Culto';
+  let LabelEvento = 'Evento';
 
   if (desktop) {
     LabelAnalisar = 'Analisar';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import useSWR, { mutate } from 'swr';
+
 import { Box } from '@material-ui/core';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -13,6 +13,8 @@ import { yellow } from '@material-ui/core/colors';
 import AddIcon from '@material-ui/icons/Add';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
+import { useSession, signOut } from 'next-auth/client';
+import useSWR, { mutate } from 'swr';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -106,6 +108,7 @@ function formulario({ item, Data, Semana }) {
 
   const mes = String(Number(Data.slice(3, 5)));
   const ano = Data.slice(6, 10);
+  const [session] = useSession();
 
   const [editar, setEditar] = React.useState();
   const [igreja] = React.useState(item[0].igreja);
@@ -126,7 +129,7 @@ function formulario({ item, Data, Semana }) {
   //----------------------------------------------------------------------
 
   const url = `${window.location.origin}/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
-  console.log('vai', url);
+
   const { data, error } = useSWR(url, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
@@ -226,432 +229,23 @@ function formulario({ item, Data, Semana }) {
     }
   };
   return (
-    <Box
-      mt={3}
-      className={classes.box}
-      width="100%"
-      //            maxWidth={1200}
-      height="auto"
-      borderRadius={16}
-    >
-      <Hidden smDown>
-        <form
-          noValidate
-          autoComplete="off"
+    <>
+      {session ? (
+        <Box
+          mt={3}
+          className={classes.box}
           width="100%"
-          className={classes.root}
+          //            maxWidth={1200}
+          height="auto"
+          borderRadius={16}
         >
-          <TextField
-            id="igreja"
-            label="Igreja"
-            variant="outlined"
-            value={item[0].igreja}
-            disabled
-            size="small"
-            className={classes.tf_12}
-          />
-
-          <TextField
-            id="codigoIgreja"
-            label="Código da Igreja"
-            variant="outlined"
-            value={item[0].codigoIgreja}
-            disabled
-            className={classes.tf_4}
-            size="small"
-          />
-          {dadosRel.length !== 0 ? (
-            <TextField
-              id="data"
-              label="Data do Relatório"
-              variant="outlined"
-              value={DataRelatorio}
-              disabled
-              className={classes.tf_4}
-              size="small"
-            />
-          ) : (
-            <TextField
-              id="data"
-              label="Data do Relatório"
-              variant="outlined"
-              value={dataRelatorio}
-              disabled
-              className={classes.tf_4}
-              size="small"
-              inputRef={atualizarData}
-            />
-          )}
-
-          <TextField
-            id="Semana"
-            label="Semana Nº:"
-            variant="outlined"
-            value={sem}
-            disabled
-            className={classes.tf_4}
-            size="small"
-          />
-
-          <br />
-          <br />
-          {editar ? (
-            <TextField
-              // error={text === ''}
-              className={classes.tf_6}
-              id="Adultos"
-              label="Membros Adultos"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={(e) => setAdultos(e.target.value)}
-              error={validarAdultos === 'nao'}
-              onFocus={(e) => setAdultos(e.target.value)}
-              helperText={error ? 'Não pode ser Vazio!' : ''}
-              onBlur={
-                adultos === ''
-                  ? () => setValidarAdultos('nao')
-                  : () => setValidarAdultos('sim')
-              }
-              //  autoFocus
-              inputRef={
-                adultos === '' ? (input) => input && input.focus() : null
-              }
-              variant="outlined"
-              placeholder=""
-              size="small"
-            />
-          ) : (
-            <TextField
-              className={classes.tf_6}
-              id="Adultos"
-              label="Membros Adultos"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={Adultos}
-              variant="outlined"
-              placeholder=""
-              size="small"
-              disabled
-            />
-          )}
-
-          {editar ? (
-            <TextField
-              className={classes.tf_6}
-              id="Crianças"
-              label="Membros Crianças"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              placeholder=""
-              size="small"
-              onBlur={
-                criancas === ''
-                  ? () => setValidarCriancas('nao')
-                  : () => setValidarCriancas('sim')
-              }
-              onChange={(e) => setCriancas(e.target.value)}
-              error={validarCriancas === 'nao'}
-              onFocus={(e) => setCriancas(e.target.value)}
-              helperText={error ? 'Não pode ser Vazio!' : ''}
-              inputRef={
-                !criancas && adultos ? (input) => input && input.focus() : null
-              }
-            />
-          ) : (
-            <TextField
-              className={classes.tf_6}
-              id="Crianças"
-              label="Membros Crianças"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={Crianças}
-              variant="outlined"
-              placeholder=""
-              size="small"
-              disabled
-            />
-          )}
-
-          {editar ? (
-            <TextField
-              className={classes.tf_4}
-              id="Visitantes"
-              label="Visitantes"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              placeholder=""
-              size="small"
-              onBlur={
-                visitantes === ''
-                  ? () => setValidarVisitantes('nao')
-                  : () => setValidarVisitantes('sim')
-              }
-              onChange={(e) => setVisitantes(e.target.value)}
-              error={validarVisitantes === 'nao'}
-              onFocus={(e) => setVisitantes(e.target.value)}
-              helperText={error ? 'Não pode ser Vazio!' : ''}
-              inputRef={
-                !visitantes && criancas && adultos
-                  ? (input) => input && input.focus()
-                  : null
-              }
-            />
-          ) : (
-            <TextField
-              className={classes.tf_4}
-              id="Visitantes"
-              label="Visitantes"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={Visitantes}
-              variant="outlined"
-              placeholder=""
-              size="small"
-              disabled
-            />
-          )}
-          {editar ? (
-            <TextField
-              id="conversoes"
-              label="Conversões"
-              variant="outlined"
-              className={classes.tf_4}
-              size="small"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder=""
-              onBlur={
-                conversoes === ''
-                  ? () => setValidarConversoes('nao')
-                  : () => setValidarConversoes('sim')
-              }
-              onChange={(e) => setConversoes(e.target.value)}
-              error={validarConversoes === 'nao'}
-              onFocus={(e) => setConversoes(e.target.value)}
-              helperText={error ? 'Não pode ser Vazio!' : ''}
-              inputRef={
-                !conversoes && visitantes && criancas && adultos
-                  ? (input) => input && input.focus()
-                  : null
-              }
-            />
-          ) : (
-            <TextField
-              id="conversoes"
-              label="Conversões:"
-              variant="outlined"
-              value={Conversoes}
-              disabled
-              className={classes.tf_4}
-              size="small"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder=""
-            />
-          )}
-          {editar ? (
-            <TextField
-              id="Ofertas"
-              label="Ofertas:"
-              variant="outlined"
-              className={classes.tf_4}
-              size="small"
-              type="string"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onBlur={
-                ofertas === ''
-                  ? () => setValidarOfertas('nao')
-                  : () => setValidarOfertas('sim')
-              }
-              onChange={(e) => setOfertas(e.target.value)}
-              error={validarOfertas === 'nao'}
-              onFocus={(e) => setOfertas(e.target.value)}
-              helperText={error ? 'Não pode ser Vazio!' : ''}
-              placeholder=""
-              inputRef={
-                !ofertas && conversoes && visitantes && criancas && adultos
-                  ? (input) => input && input.focus()
-                  : null
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
-                ),
-              }}
-            />
-          ) : (
-            <TextField
-              id="Ofertas"
-              label="Ofertas:"
-              variant="outlined"
-              value={Ofertas}
-              disabled
-              className={classes.tf_4}
-              size="small"
-              type="string"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder=""
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
-                ),
-              }}
-            />
-          )}
-          <br />
-          <br />
-          {dadosRel.length === 0 ? (
-            <Box className={classes.box}>
-              {!editar ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<AddIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Novo
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  size="small"
-                  color="secundary"
-                  className={classes.buttonCancel}
-                  startIcon={<ReplyRoundedIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Voltar
-                </Button>
-              )}
-              {!editar || !valid() ? (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
-                  disabled
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
-
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              )}
-            </Box>
-          ) : (
-            <Box className={classes.box}>
-              {!editar ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<EditIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Editar
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  size="small"
-                  color="secundary"
-                  className={classes.buttonCancel}
-                  startIcon={<ReplyRoundedIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Voltar
-                </Button>
-              )}
-              {!editar || !valid() ? (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
-                  disabled
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
-
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              )}
-            </Box>
-          )}
-        </form>
-      </Hidden>
-      <Hidden mdUp>
-        <form
-          noValidate
-          autoComplete="off"
-          width="100%"
-          className={classes.root}
-        >
-          <Grid item xs={12}>
-            <Box className={classes.novoBox}>
+          <Hidden smDown>
+            <form
+              noValidate
+              autoComplete="off"
+              width="100%"
+              className={classes.root}
+            >
               <TextField
                 id="igreja"
                 label="Igreja"
@@ -659,449 +253,870 @@ function formulario({ item, Data, Semana }) {
                 value={item[0].igreja}
                 disabled
                 size="small"
-                className={classes.tf_m}
+                className={classes.tf_12}
               />
-            </Box>
-          </Grid>
-          <Box flexDirection="row" display={{ xs: 'none', sm: 'block' }}>
-            <Grid item xs={12}>
-              <Box className={classes.novoBox}>
+
+              <TextField
+                id="codigoIgreja"
+                label="Código da Igreja"
+                variant="outlined"
+                value={item[0].codigoIgreja}
+                disabled
+                className={classes.tf_4}
+                size="small"
+              />
+              {dadosRel.length !== 0 ? (
                 <TextField
-                  id="codigoIgreja"
-                  label="Código"
+                  id="data"
+                  label="Data do Relatório"
                   variant="outlined"
-                  value={item[0].codigoIgreja}
+                  value={DataRelatorio}
                   disabled
-                  className={classes.tf_m}
+                  className={classes.tf_4}
                   size="small"
                 />
-              </Box>
-            </Grid>
-          </Box>
-          <Box display="flex" flexDirection="row">
-            <Grid item xs={7}>
-              <Box className={classes.novoBox}>
-                {dadosRel.length !== 0 ? (
-                  <TextField
-                    id="data"
-                    label="Data"
-                    variant="outlined"
-                    value={DataRelatorio}
-                    disabled
-                    className={classes.tf_m}
-                    size="small"
-                  />
-                ) : (
-                  <TextField
-                    id="data"
-                    label="Data"
-                    variant="outlined"
-                    value={dataRelatorio}
-                    disabled
-                    className={classes.tf_m}
-                    size="small"
-                    inputRef={atualizarData}
-                  />
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={5}>
-              <Box className={classes.novoBox}>
+              ) : (
                 <TextField
-                  id="Semana"
-                  label="Semana Nº:"
+                  id="data"
+                  label="Data do Relatório"
                   variant="outlined"
-                  value={sem}
+                  value={dataRelatorio}
                   disabled
-                  className={classes.tf_m}
+                  className={classes.tf_4}
+                  size="small"
+                  inputRef={atualizarData}
+                />
+              )}
+
+              <TextField
+                id="Semana"
+                label="Semana Nº:"
+                variant="outlined"
+                value={sem}
+                disabled
+                className={classes.tf_4}
+                size="small"
+              />
+
+              <br />
+              <br />
+              {editar ? (
+                <TextField
+                  // error={text === ''}
+                  className={classes.tf_6}
+                  id="Adultos"
+                  label="Membros Adultos"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={(e) => setAdultos(e.target.value)}
+                  error={validarAdultos === 'nao'}
+                  onFocus={(e) => setAdultos(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  onBlur={
+                    adultos === ''
+                      ? () => setValidarAdultos('nao')
+                      : () => setValidarAdultos('sim')
+                  }
+                  //  autoFocus
+                  inputRef={
+                    adultos === '' ? (input) => input && input.focus() : null
+                  }
+                  variant="outlined"
+                  placeholder=""
                   size="small"
                 />
-              </Box>
-            </Grid>
-          </Box>
-
-          <br />
-          <Box display="flex" flexDirection="row">
-            <Grid item xs={6}>
-              <Box className={classes.novoBox}>
-                {editar ? (
-                  <TextField
-                    // error={text === ''}
-                    className={classes.tf_m}
-                    id="Adultos"
-                    label="Adultos"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onChange={(e) => setAdultos(e.target.value)}
-                    error={validarAdultos === 'nao'}
-                    onFocus={(e) => setAdultos(e.target.value)}
-                    helperText={error ? 'Não pode ser Vazio!' : ''}
-                    onBlur={
-                      adultos === ''
-                        ? () => setValidarAdultos('nao')
-                        : () => setValidarAdultos('sim')
-                    }
-                    //  autoFocus
-                    inputRef={
-                      adultos === '' ? (input) => input && input.focus() : null
-                    }
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                  />
-                ) : (
-                  <TextField
-                    className={classes.tf_m}
-                    id="Adultos"
-                    label="Adultos"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={Adultos}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    disabled
-                  />
-                )}
-              </Box>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Box className={classes.novoBox}>
-                {editar ? (
-                  <TextField
-                    className={classes.tf_m}
-                    id="Crianças"
-                    label="Crianças"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    onBlur={
-                      criancas === ''
-                        ? () => setValidarCriancas('nao')
-                        : () => setValidarCriancas('sim')
-                    }
-                    onChange={(e) => setCriancas(e.target.value)}
-                    error={validarCriancas === 'nao'}
-                    onFocus={(e) => setCriancas(e.target.value)}
-                    helperText={error ? 'Não pode ser Vazio!' : ''}
-                    inputRef={
-                      !criancas && adultos
-                        ? (input) => input && input.focus()
-                        : null
-                    }
-                  />
-                ) : (
-                  <TextField
-                    className={classes.tf_m}
-                    id="Crianças"
-                    label="Crianças"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={Crianças}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    disabled
-                  />
-                )}
-              </Box>
-            </Grid>
-          </Box>
-
-          <Box display="flex" flexDirection="row">
-            <Grid item xs={6}>
-              <Box className={classes.novoBox}>
-                {editar ? (
-                  <TextField
-                    className={classes.tf_m}
-                    id="Visitantes"
-                    label="Visitantes"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    onBlur={
-                      visitantes === ''
-                        ? () => setValidarVisitantes('nao')
-                        : () => setValidarVisitantes('sim')
-                    }
-                    onChange={(e) => setVisitantes(e.target.value)}
-                    error={validarVisitantes === 'nao'}
-                    onFocus={(e) => setVisitantes(e.target.value)}
-                    helperText={error ? 'Não pode ser Vazio!' : ''}
-                    inputRef={
-                      !visitantes && criancas && adultos
-                        ? (input) => input && input.focus()
-                        : null
-                    }
-                  />
-                ) : (
-                  <TextField
-                    className={classes.tf_m}
-                    id="Visitantes"
-                    label="Visitantes"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={Visitantes}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    disabled
-                  />
-                )}
-              </Box>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Box className={classes.novoBox}>
-                {editar ? (
-                  <TextField
-                    id="conversoes"
-                    label="Conversões"
-                    variant="outlined"
-                    className={classes.tf_m}
-                    size="small"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    placeholder=""
-                    onBlur={
-                      conversoes === ''
-                        ? () => setValidarConversoes('nao')
-                        : () => setValidarConversoes('sim')
-                    }
-                    onChange={(e) => setConversoes(e.target.value)}
-                    error={validarConversoes === 'nao'}
-                    onFocus={(e) => setConversoes(e.target.value)}
-                    helperText={error ? 'Não pode ser Vazio!' : ''}
-                    inputRef={
-                      !conversoes && visitantes && criancas && adultos
-                        ? (input) => input && input.focus()
-                        : null
-                    }
-                  />
-                ) : (
-                  <TextField
-                    id="conversoes"
-                    label="Conversões:"
-                    variant="outlined"
-                    value={Conversoes}
-                    disabled
-                    className={classes.tf_m}
-                    size="small"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    placeholder=""
-                  />
-                )}
-              </Box>
-            </Grid>
-          </Box>
-          <Box display="flex" flexDirection="row">
-            <Grid item xs={12}>
-              <Box className={classes.novoBox}>
-                {editar ? (
-                  <TextField
-                    id="Ofertas"
-                    label="Ofertas:"
-                    variant="outlined"
-                    className={classes.tf_m}
-                    size="small"
-                    type="string"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onBlur={
-                      ofertas === ''
-                        ? () => setValidarOfertas('nao')
-                        : () => setValidarOfertas('sim')
-                    }
-                    onChange={(e) => setOfertas(e.target.value)}
-                    error={validarOfertas === 'nao'}
-                    onFocus={(e) => setOfertas(e.target.value)}
-                    helperText={error ? 'Não pode ser Vazio!' : ''}
-                    placeholder=""
-                    inputRef={
-                      !ofertas &&
-                      conversoes &&
-                      visitantes &&
-                      criancas &&
-                      adultos
-                        ? (input) => input && input.focus()
-                        : null
-                    }
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">R$</InputAdornment>
-                      ),
-                    }}
-                  />
-                ) : (
-                  <TextField
-                    id="Ofertas"
-                    label="Ofertas:"
-                    variant="outlined"
-                    value={Ofertas}
-                    disabled
-                    className={classes.tf_m}
-                    size="small"
-                    type="string"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    placeholder=""
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">R$</InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
-              </Box>
-            </Grid>
-          </Box>
-
-          {dadosRel.length === 0 ? (
-            <Box className={classes.box}>
-              {!editar ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<AddIcon />}
-                  onClick={handleClick}
-                  mt={2}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Novo
-                </Button>
               ) : (
-                <Button
-                  variant="contained"
+                <TextField
+                  className={classes.tf_6}
+                  id="Adultos"
+                  label="Membros Adultos"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={Adultos}
+                  variant="outlined"
+                  placeholder=""
                   size="small"
-                  color="secundary"
-                  className={classes.buttonCancel}
-                  startIcon={<ReplyRoundedIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Voltar
-                </Button>
-              )}
-              {!editar || !valid() ? (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
                   disabled
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
+                />
+              )}
 
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              )}
-            </Box>
-          ) : (
-            <Box className={classes.box}>
-              {!editar ? (
-                <Button
-                  variant="contained"
-                  color="primary"
+              {editar ? (
+                <TextField
+                  className={classes.tf_6}
+                  id="Crianças"
+                  label="Membros Crianças"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  placeholder=""
                   size="small"
-                  className={classes.button}
-                  startIcon={<EditIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Editar
-                </Button>
+                  onBlur={
+                    criancas === ''
+                      ? () => setValidarCriancas('nao')
+                      : () => setValidarCriancas('sim')
+                  }
+                  onChange={(e) => setCriancas(e.target.value)}
+                  error={validarCriancas === 'nao'}
+                  onFocus={(e) => setCriancas(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  inputRef={
+                    !criancas && adultos
+                      ? (input) => input && input.focus()
+                      : null
+                  }
+                />
               ) : (
-                <Button
-                  variant="contained"
+                <TextField
+                  className={classes.tf_6}
+                  id="Crianças"
+                  label="Membros Crianças"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={Crianças}
+                  variant="outlined"
+                  placeholder=""
                   size="small"
-                  color="secundary"
-                  className={classes.buttonCancel}
-                  startIcon={<ReplyRoundedIcon />}
-                  onClick={handleClick}
-                  mt={3}
-                  //  startIcon={<SaveIcon />}
-                >
-                  Voltar
-                </Button>
-              )}
-              {!editar || !valid() ? (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
                   disabled
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                  onClick={submitData}
-                  mt={3}
-
-                  //  startIcon={<SaveIcon />}
-                >
-                  Salvar
-                </Button>
+                />
               )}
-            </Box>
-          )}
-        </form>
-      </Hidden>
-    </Box>
+
+              {editar ? (
+                <TextField
+                  className={classes.tf_4}
+                  id="Visitantes"
+                  label="Visitantes"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  placeholder=""
+                  size="small"
+                  onBlur={
+                    visitantes === ''
+                      ? () => setValidarVisitantes('nao')
+                      : () => setValidarVisitantes('sim')
+                  }
+                  onChange={(e) => setVisitantes(e.target.value)}
+                  error={validarVisitantes === 'nao'}
+                  onFocus={(e) => setVisitantes(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  inputRef={
+                    !visitantes && criancas && adultos
+                      ? (input) => input && input.focus()
+                      : null
+                  }
+                />
+              ) : (
+                <TextField
+                  className={classes.tf_4}
+                  id="Visitantes"
+                  label="Visitantes"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={Visitantes}
+                  variant="outlined"
+                  placeholder=""
+                  size="small"
+                  disabled
+                />
+              )}
+              {editar ? (
+                <TextField
+                  id="conversoes"
+                  label="Conversões"
+                  variant="outlined"
+                  className={classes.tf_4}
+                  size="small"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder=""
+                  onBlur={
+                    conversoes === ''
+                      ? () => setValidarConversoes('nao')
+                      : () => setValidarConversoes('sim')
+                  }
+                  onChange={(e) => setConversoes(e.target.value)}
+                  error={validarConversoes === 'nao'}
+                  onFocus={(e) => setConversoes(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  inputRef={
+                    !conversoes && visitantes && criancas && adultos
+                      ? (input) => input && input.focus()
+                      : null
+                  }
+                />
+              ) : (
+                <TextField
+                  id="conversoes"
+                  label="Conversões:"
+                  variant="outlined"
+                  value={Conversoes}
+                  disabled
+                  className={classes.tf_4}
+                  size="small"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder=""
+                />
+              )}
+              {editar ? (
+                <TextField
+                  id="Ofertas"
+                  label="Ofertas:"
+                  variant="outlined"
+                  className={classes.tf_4}
+                  size="small"
+                  type="string"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onBlur={
+                    ofertas === ''
+                      ? () => setValidarOfertas('nao')
+                      : () => setValidarOfertas('sim')
+                  }
+                  onChange={(e) => setOfertas(e.target.value)}
+                  error={validarOfertas === 'nao'}
+                  onFocus={(e) => setOfertas(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  placeholder=""
+                  inputRef={
+                    !ofertas && conversoes && visitantes && criancas && adultos
+                      ? (input) => input && input.focus()
+                      : null
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
+                />
+              ) : (
+                <TextField
+                  id="Ofertas"
+                  label="Ofertas:"
+                  variant="outlined"
+                  value={Ofertas}
+                  disabled
+                  className={classes.tf_4}
+                  size="small"
+                  type="string"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder=""
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+              <br />
+              <br />
+              {dadosRel.length === 0 ? (
+                <Box className={classes.box}>
+                  {!editar ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<AddIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Novo
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="secundary"
+                      className={classes.buttonCancel}
+                      startIcon={<ReplyRoundedIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Voltar
+                    </Button>
+                  )}
+                  {!editar || !valid() ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+                      disabled
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  )}
+                </Box>
+              ) : (
+                <Box className={classes.box}>
+                  {!editar ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<EditIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Editar
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="secundary"
+                      className={classes.buttonCancel}
+                      startIcon={<ReplyRoundedIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Voltar
+                    </Button>
+                  )}
+                  {!editar || !valid() ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+                      disabled
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  )}
+                </Box>
+              )}
+            </form>
+          </Hidden>
+          <Hidden mdUp>
+            <form
+              noValidate
+              autoComplete="off"
+              width="100%"
+              className={classes.root}
+            >
+              <Grid item xs={12}>
+                <Box className={classes.novoBox}>
+                  <TextField
+                    id="igreja"
+                    label="Igreja"
+                    variant="outlined"
+                    value={item[0].igreja}
+                    disabled
+                    size="small"
+                    className={classes.tf_m}
+                  />
+                </Box>
+              </Grid>
+              <Box flexDirection="row" display={{ xs: 'none', sm: 'block' }}>
+                <Grid item xs={12}>
+                  <Box className={classes.novoBox}>
+                    <TextField
+                      id="codigoIgreja"
+                      label="Código"
+                      variant="outlined"
+                      value={item[0].codigoIgreja}
+                      disabled
+                      className={classes.tf_m}
+                      size="small"
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+              <Box display="flex" flexDirection="row">
+                <Grid item xs={7}>
+                  <Box className={classes.novoBox}>
+                    {dadosRel.length !== 0 ? (
+                      <TextField
+                        id="data"
+                        label="Data"
+                        variant="outlined"
+                        value={DataRelatorio}
+                        disabled
+                        className={classes.tf_m}
+                        size="small"
+                      />
+                    ) : (
+                      <TextField
+                        id="data"
+                        label="Data"
+                        variant="outlined"
+                        value={dataRelatorio}
+                        disabled
+                        className={classes.tf_m}
+                        size="small"
+                        inputRef={atualizarData}
+                      />
+                    )}
+                  </Box>
+                </Grid>
+                <Grid item xs={5}>
+                  <Box className={classes.novoBox}>
+                    <TextField
+                      id="Semana"
+                      label="Semana Nº:"
+                      variant="outlined"
+                      value={sem}
+                      disabled
+                      className={classes.tf_m}
+                      size="small"
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+
+              <br />
+              <Box display="flex" flexDirection="row">
+                <Grid item xs={6}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        // error={text === ''}
+                        className={classes.tf_m}
+                        id="Adultos"
+                        label="Adultos"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onChange={(e) => setAdultos(e.target.value)}
+                        error={validarAdultos === 'nao'}
+                        onFocus={(e) => setAdultos(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        onBlur={
+                          adultos === ''
+                            ? () => setValidarAdultos('nao')
+                            : () => setValidarAdultos('sim')
+                        }
+                        //  autoFocus
+                        inputRef={
+                          adultos === ''
+                            ? (input) => input && input.focus()
+                            : null
+                        }
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                      />
+                    ) : (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Adultos"
+                        label="Adultos"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={Adultos}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      />
+                    )}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Crianças"
+                        label="Crianças"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        onBlur={
+                          criancas === ''
+                            ? () => setValidarCriancas('nao')
+                            : () => setValidarCriancas('sim')
+                        }
+                        onChange={(e) => setCriancas(e.target.value)}
+                        error={validarCriancas === 'nao'}
+                        onFocus={(e) => setCriancas(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        inputRef={
+                          !criancas && adultos
+                            ? (input) => input && input.focus()
+                            : null
+                        }
+                      />
+                    ) : (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Crianças"
+                        label="Crianças"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={Crianças}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      />
+                    )}
+                  </Box>
+                </Grid>
+              </Box>
+
+              <Box display="flex" flexDirection="row">
+                <Grid item xs={6}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Visitantes"
+                        label="Visitantes"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        onBlur={
+                          visitantes === ''
+                            ? () => setValidarVisitantes('nao')
+                            : () => setValidarVisitantes('sim')
+                        }
+                        onChange={(e) => setVisitantes(e.target.value)}
+                        error={validarVisitantes === 'nao'}
+                        onFocus={(e) => setVisitantes(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        inputRef={
+                          !visitantes && criancas && adultos
+                            ? (input) => input && input.focus()
+                            : null
+                        }
+                      />
+                    ) : (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Visitantes"
+                        label="Visitantes"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={Visitantes}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      />
+                    )}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        id="conversoes"
+                        label="Conversões"
+                        variant="outlined"
+                        className={classes.tf_m}
+                        size="small"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        placeholder=""
+                        onBlur={
+                          conversoes === ''
+                            ? () => setValidarConversoes('nao')
+                            : () => setValidarConversoes('sim')
+                        }
+                        onChange={(e) => setConversoes(e.target.value)}
+                        error={validarConversoes === 'nao'}
+                        onFocus={(e) => setConversoes(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        inputRef={
+                          !conversoes && visitantes && criancas && adultos
+                            ? (input) => input && input.focus()
+                            : null
+                        }
+                      />
+                    ) : (
+                      <TextField
+                        id="conversoes"
+                        label="Conversões:"
+                        variant="outlined"
+                        value={Conversoes}
+                        disabled
+                        className={classes.tf_m}
+                        size="small"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        placeholder=""
+                      />
+                    )}
+                  </Box>
+                </Grid>
+              </Box>
+              <Box display="flex" flexDirection="row">
+                <Grid item xs={12}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        id="Ofertas"
+                        label="Ofertas:"
+                        variant="outlined"
+                        className={classes.tf_m}
+                        size="small"
+                        type="string"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onBlur={
+                          ofertas === ''
+                            ? () => setValidarOfertas('nao')
+                            : () => setValidarOfertas('sim')
+                        }
+                        onChange={(e) => setOfertas(e.target.value)}
+                        error={validarOfertas === 'nao'}
+                        onFocus={(e) => setOfertas(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        placeholder=""
+                        inputRef={
+                          !ofertas &&
+                          conversoes &&
+                          visitantes &&
+                          criancas &&
+                          adultos
+                            ? (input) => input && input.focus()
+                            : null
+                        }
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    ) : (
+                      <TextField
+                        id="Ofertas"
+                        label="Ofertas:"
+                        variant="outlined"
+                        value={Ofertas}
+                        disabled
+                        className={classes.tf_m}
+                        size="small"
+                        type="string"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        placeholder=""
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
+                  </Box>
+                </Grid>
+              </Box>
+
+              {dadosRel.length === 0 ? (
+                <Box className={classes.box}>
+                  {!editar ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<AddIcon />}
+                      onClick={handleClick}
+                      mt={2}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Novo
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="secundary"
+                      className={classes.buttonCancel}
+                      startIcon={<ReplyRoundedIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Voltar
+                    </Button>
+                  )}
+                  {!editar || !valid() ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+                      disabled
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  )}
+                </Box>
+              ) : (
+                <Box className={classes.box}>
+                  {!editar ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<EditIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Editar
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="secundary"
+                      className={classes.buttonCancel}
+                      startIcon={<ReplyRoundedIcon />}
+                      onClick={handleClick}
+                      mt={3}
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Voltar
+                    </Button>
+                  )}
+                  {!editar || !valid() ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+                      disabled
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      className={classes.button}
+                      startIcon={<SaveIcon />}
+                      onClick={submitData}
+                      mt={3}
+
+                      //  startIcon={<SaveIcon />}
+                    >
+                      Salvar
+                    </Button>
+                  )}
+                </Box>
+              )}
+            </form>
+          </Hidden>
+        </Box>
+      ) : (
+        signOut({
+          callbackUrl: `${window.location.origin}`,
+        })
+      )}
+    </>
   );
 }
 

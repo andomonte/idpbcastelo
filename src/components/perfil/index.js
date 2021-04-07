@@ -11,23 +11,22 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import InsertChartIcon from '@material-ui/icons/InsertChart';
+
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import PersonIcon from '@material-ui/icons/Person';
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import Navbar from './navBar_redesSociais';
-import Relatorios from './relatorios';
+import Igreja from './igreja';
 import MeuPerfil from './meuPerfil';
 import Padrao from './userTelas/telaPadrao';
-// import Carrossel from '../carrossel';
-// import GoogleMaps from './googleMap';
-// import Pesquisar from './pesquisar';
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -143,7 +142,7 @@ function TabPanel(props) {
   );
 }
 
-function Perfil({ item, title }) {
+function Perfil({ item, title, ministros, igrejas }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -151,14 +150,14 @@ function Perfil({ item, title }) {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelIgreja = '';
-  let LabelHome = '';
-  let LabelContatos = '';
+  let LabelIgreja = 'Igreja';
+  let LabelHome = 'Pefil';
+  let LabelEquipe = 'Equipe';
 
   if (desktop) {
-    LabelIgreja = 'Eventos';
-    LabelHome = 'Meu Perfil';
-    LabelContatos = 'Relatórios';
+    LabelIgreja = 'Igreja';
+    LabelHome = 'Pefil';
+    LabelEquipe = 'Equipe';
   }
 
   const handleDrawerOpen = () => {
@@ -218,26 +217,28 @@ function Perfil({ item, title }) {
                 </Hidden>
               </Box>
 
-              <Box display="flex">
+              <Box display="flex" m={0}>
                 <BottomNavigation
                   value={value}
                   onChange={(event, newValue) => {
                     setValue(newValue);
                   }}
+                  fontSize="large"
                   showLabels
                   className={classes.rootTopbarIcon}
                 >
                   <BottomNavigationAction
                     label={LabelHome}
-                    icon={<AccountBoxIcon />}
+                    icon={<PersonIcon />}
                   />
-                  <BottomNavigationAction
-                    label={LabelContatos}
-                    icon={<InsertChartIcon />}
-                  />
+
                   <BottomNavigationAction
                     label={LabelIgreja}
-                    icon={<LocationOnIcon />}
+                    icon={<AccountBalanceIcon />}
+                  />
+                  <BottomNavigationAction
+                    label={LabelEquipe}
+                    icon={<GroupWorkIcon />}
                   />
                 </BottomNavigation>
               </Box>
@@ -264,11 +265,15 @@ function Perfil({ item, title }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            {session && <MeuPerfil item={item} secao={session} />}
+          <TabPanel value={value} index={0}>
+            {session && (
+              <MeuPerfil item={item} secao={session} ministros={ministros} />
+            )}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {session && <Relatorios item={item} secao={session} />}
+            {session && (
+              <Igreja item={item} secao={session} igrejas={igrejas} />
+            )}
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}

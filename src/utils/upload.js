@@ -1,7 +1,7 @@
 import aws from 'aws-sdk';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
-import crypto from 'crypto';
+// import crypto from 'crypto';
 
 aws.config.update({
   secretAccessKey: process.env.AWSSECRET_KEY,
@@ -23,13 +23,13 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key(req, file, cb) {
-      crypto.randomBytes(16, (err, hash) => {
-        if (err) cb(err);
+      //      crypto.randomBytes(16, (err, hash) => {
+      // if (err) cb(err);
 
-        const fileName = `${hash.toString('hex')}-${file.originalname}`;
-
-        cb(null, fileName);
-      });
+      //    const fileName = `${hash.toString('hex')}-${file.originalname}`;
+      const fileName = `${file.originalname}`;
+      cb(null, fileName);
+      // });
     },
   }),
 });

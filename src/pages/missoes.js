@@ -8,10 +8,11 @@ import selectRoutes from 'src/database/selectRoutes';
 function Missoes({ org }) {
   return <IdpbMissoes item={org} title="SISTEMA-IDPB" />;
 }
+
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
   const tela = await selectRoutes();
- 
+
   const posts = await prisma.igrejas.findMany();
   return {
     props: {
