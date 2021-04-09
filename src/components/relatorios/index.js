@@ -25,7 +25,7 @@ import Evento from './eventos';
 import Navbar from './navBar_redesSociais';
 import Culto from './culto';
 
-import Padrao from './userTelas/telaPadrao';
+import Analisar from './analisar';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -273,7 +273,7 @@ function PageRelatorios({ item, title }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            <Padrao />
+            <Analisar item={item} secao={session} />
           </TabPanel>
         </main>
       </div>

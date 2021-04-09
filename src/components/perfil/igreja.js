@@ -118,7 +118,7 @@ function Igreja({ item, secao, igrejas }) {
   const dadosIgreja = igrejas.filter(
     (val) => val.codigoIgreja === item[0].codigoIgreja,
   );
-  console.log(item[0].codigoIgreja, igrejas);
+
   return (
     <Box>
       <Hidden smDown>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
+import { green, yellow } from '@material-ui/core/colors';
 import { Box } from '@material-ui/core';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -9,12 +9,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SaveIcon from '@material-ui/icons/Save';
 import ReplyRoundedIcon from '@material-ui/icons/ReplyRounded';
-import { yellow } from '@material-ui/core/colors';
+
 import AddIcon from '@material-ui/icons/Add';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { useSession, signOut } from 'next-auth/client';
 import useSWR, { mutate } from 'swr';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -99,6 +100,14 @@ const useStyles = makeStyles((theme) => ({
       width: '110px',
     },
   },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
 function formulario({ item, Data, Semana }) {
@@ -125,7 +134,8 @@ function formulario({ item, Data, Semana }) {
   const [validarVisitantes, setValidarVisitantes] = React.useState('sim');
   const [validarConversoes, setValidarConversoes] = React.useState('sim');
   const [validarOfertas, setValidarOfertas] = React.useState('sim');
-
+  const [contador, setContador] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   //----------------------------------------------------------------------
 
   const url = `${window.location.origin}/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
@@ -175,8 +185,10 @@ function formulario({ item, Data, Semana }) {
     setOfertas(Ofertas);
     setDataRelatorio(Data);
 
-    if (!editar) setEditar(true);
-    else {
+    if (!editar) {
+      setEditar(true);
+      setContador('0');
+    } else {
       setEditar(false);
     }
   };
@@ -190,7 +202,7 @@ function formulario({ item, Data, Semana }) {
   const submitData = async (e) => {
     e.preventDefault();
     const valida = valid();
-
+    setLoading(true);
     // const dataRelatorio = DataRelatorio;
 
     if (valida) {
@@ -208,6 +220,7 @@ function formulario({ item, Data, Semana }) {
           dataRelatorio,
           ofertas,
         };
+
         let urlCreate = '';
         if (dadosRel.length === 0) {
           urlCreate = `${window.location.origin}/api/criarRelatorio`;
@@ -220,7 +233,7 @@ function formulario({ item, Data, Semana }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
-
+        setLoading(false);
         setEditar(false);
         mutate(url);
       } catch (errors) {
@@ -302,7 +315,6 @@ function formulario({ item, Data, Semana }) {
               <br />
               {editar ? (
                 <TextField
-                  // error={text === ''}
                   className={classes.tf_6}
                   id="Adultos"
                   label="Membros Adultos"
@@ -317,12 +329,13 @@ function formulario({ item, Data, Semana }) {
                   onBlur={
                     adultos === ''
                       ? () => setValidarAdultos('nao')
-                      : () => setValidarAdultos('sim')
+                      : (() => setValidarAdultos('sim'), () => setContador('1'))
                   }
-                  //  autoFocus
-                  inputRef={
-                    adultos === '' ? (input) => input && input.focus() : null
-                  }
+                  inputRef={(input) => {
+                    if (input != null && contador === '0') {
+                      input.focus();
+                    }
+                  }}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -365,11 +378,6 @@ function formulario({ item, Data, Semana }) {
                   error={validarCriancas === 'nao'}
                   onFocus={(e) => setCriancas(e.target.value)}
                   helperText={error ? 'Não pode ser Vazio!' : ''}
-                  inputRef={
-                    !criancas && adultos
-                      ? (input) => input && input.focus()
-                      : null
-                  }
                 />
               ) : (
                 <TextField
@@ -409,11 +417,6 @@ function formulario({ item, Data, Semana }) {
                   error={validarVisitantes === 'nao'}
                   onFocus={(e) => setVisitantes(e.target.value)}
                   helperText={error ? 'Não pode ser Vazio!' : ''}
-                  inputRef={
-                    !visitantes && criancas && adultos
-                      ? (input) => input && input.focus()
-                      : null
-                  }
                 />
               ) : (
                 <TextField
@@ -452,11 +455,6 @@ function formulario({ item, Data, Semana }) {
                   error={validarConversoes === 'nao'}
                   onFocus={(e) => setConversoes(e.target.value)}
                   helperText={error ? 'Não pode ser Vazio!' : ''}
-                  inputRef={
-                    !conversoes && visitantes && criancas && adultos
-                      ? (input) => input && input.focus()
-                      : null
-                  }
                 />
               ) : (
                 <TextField
@@ -481,7 +479,7 @@ function formulario({ item, Data, Semana }) {
                   variant="outlined"
                   className={classes.tf_4}
                   size="small"
-                  type="string"
+                  type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -495,11 +493,6 @@ function formulario({ item, Data, Semana }) {
                   onFocus={(e) => setOfertas(e.target.value)}
                   helperText={error ? 'Não pode ser Vazio!' : ''}
                   placeholder=""
-                  inputRef={
-                    !ofertas && conversoes && visitantes && criancas && adultos
-                      ? (input) => input && input.focus()
-                      : null
-                  }
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">R$</InputAdornment>
@@ -515,7 +508,7 @@ function formulario({ item, Data, Semana }) {
                   disabled
                   className={classes.tf_4}
                   size="small"
-                  type="string"
+                  type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -586,6 +579,12 @@ function formulario({ item, Data, Semana }) {
                     >
                       Salvar
                     </Button>
+                  )}
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
                   )}
                 </Box>
               ) : (
@@ -733,7 +732,6 @@ function formulario({ item, Data, Semana }) {
                   <Box className={classes.novoBox}>
                     {editar ? (
                       <TextField
-                        // error={text === ''}
                         className={classes.tf_m}
                         id="Adultos"
                         label="Adultos"
@@ -741,24 +739,24 @@ function formulario({ item, Data, Semana }) {
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        onChange={(e) => setAdultos(e.target.value)}
-                        error={validarAdultos === 'nao'}
-                        onFocus={(e) => setAdultos(e.target.value)}
-                        helperText={error ? 'Não pode ser Vazio!' : ''}
-                        onBlur={
-                          adultos === ''
-                            ? () => setValidarAdultos('nao')
-                            : () => setValidarAdultos('sim')
-                        }
-                        //  autoFocus
-                        inputRef={
-                          adultos === ''
-                            ? (input) => input && input.focus()
-                            : null
-                        }
                         variant="outlined"
                         placeholder=""
                         size="small"
+                        onBlur={
+                          adultos === ''
+                            ? () => setValidarAdultos('nao')
+                            : (() => setValidarAdultos('sim'),
+                              () => setContador('1'))
+                        }
+                        onChange={(e) => setAdultos(e.target.value)}
+                        error={validarCriancas === 'nao'}
+                        onFocus={(e) => setAdultos(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        inputRef={(input) => {
+                          if (input != null && contador === '0') {
+                            input.focus();
+                          }
+                        }}
                       />
                     ) : (
                       <TextField
@@ -802,11 +800,6 @@ function formulario({ item, Data, Semana }) {
                         error={validarCriancas === 'nao'}
                         onFocus={(e) => setCriancas(e.target.value)}
                         helperText={error ? 'Não pode ser Vazio!' : ''}
-                        inputRef={
-                          !criancas && adultos
-                            ? (input) => input && input.focus()
-                            : null
-                        }
                       />
                     ) : (
                       <TextField
@@ -852,11 +845,6 @@ function formulario({ item, Data, Semana }) {
                         error={validarVisitantes === 'nao'}
                         onFocus={(e) => setVisitantes(e.target.value)}
                         helperText={error ? 'Não pode ser Vazio!' : ''}
-                        inputRef={
-                          !visitantes && criancas && adultos
-                            ? (input) => input && input.focus()
-                            : null
-                        }
                       />
                     ) : (
                       <TextField
@@ -900,11 +888,6 @@ function formulario({ item, Data, Semana }) {
                         error={validarConversoes === 'nao'}
                         onFocus={(e) => setConversoes(e.target.value)}
                         helperText={error ? 'Não pode ser Vazio!' : ''}
-                        inputRef={
-                          !conversoes && visitantes && criancas && adultos
-                            ? (input) => input && input.focus()
-                            : null
-                        }
                       />
                     ) : (
                       <TextField
@@ -935,7 +918,7 @@ function formulario({ item, Data, Semana }) {
                         variant="outlined"
                         className={classes.tf_m}
                         size="small"
-                        type="string"
+                        type="number"
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -949,15 +932,6 @@ function formulario({ item, Data, Semana }) {
                         onFocus={(e) => setOfertas(e.target.value)}
                         helperText={error ? 'Não pode ser Vazio!' : ''}
                         placeholder=""
-                        inputRef={
-                          !ofertas &&
-                          conversoes &&
-                          visitantes &&
-                          criancas &&
-                          adultos
-                            ? (input) => input && input.focus()
-                            : null
-                        }
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">R$</InputAdornment>
@@ -973,7 +947,7 @@ function formulario({ item, Data, Semana }) {
                         disabled
                         className={classes.tf_m}
                         size="small"
-                        type="string"
+                        type="number"
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -1105,6 +1079,12 @@ function formulario({ item, Data, Semana }) {
                     >
                       Salvar
                     </Button>
+                  )}
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
                   )}
                 </Box>
               )}

@@ -10,6 +10,6 @@ export default async function handle(req, res) {
       ...req.body,
     },
   });
-  console.log(result);
+
   res.json(result);
 }
