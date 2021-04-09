@@ -10,7 +10,7 @@ const data = {
       label: 'Membros Adultos',
       data: membros,
       fill: false,
-      backgroundColor: 'rgb(255, 99, 132)',
+      backgroundColor: 'rgb(255, 99, 13)',
       borderColor: 'rgba(255, 99, 132, 0.2)',
       yAxisID: 'y-axis-1',
     },
