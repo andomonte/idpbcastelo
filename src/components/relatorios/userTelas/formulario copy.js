@@ -109,20 +109,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -12,
   },
 }));
-function formatarMoeda(props) {
-  // const elemento = document.getElementById('Ofertas');
-  let valor = props;
-  valor += '';
-  valor = Number(valor.replace(/[\D]+/g, ''));
-  valor += '';
-  valor = valor.replace(/([0-9]{2})$/g, ',$1');
-
-  if (valor.length > 6) {
-    valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, '.$1,$2');
-  }
-  return String(valor);
-  // elemento.value = valor;
-}
 
 function formulario({ item, Data, Semana }) {
   const classes = useStyles();
@@ -151,7 +137,7 @@ function formulario({ item, Data, Semana }) {
   const [contador, setContador] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   //----------------------------------------------------------------------
-  // <Number locale="de-DE">{ofertas}</Number>;
+
   const url = `${window.location.origin}/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
 
   const { data, error } = useSWR(url, fetcher);
@@ -168,7 +154,7 @@ function formulario({ item, Data, Semana }) {
   let Crianças = '';
   let Visitantes = '';
   let Conversoes = '';
-  let Ofertas = 0;
+  let Ofertas = '';
   let ids = '';
   if (dadosRel.length !== 0) {
     DataRelatorio = dadosRel[0].dataRelatorio;
@@ -182,6 +168,7 @@ function formulario({ item, Data, Semana }) {
   }
 
   //--------------------------------------------------------------------------
+
   //--------------------------------------------------------------------------
   const valid = () => {
     if (!adultos || !criancas || !visitantes || !conversoes || !ofertas) {
@@ -349,7 +336,6 @@ function formulario({ item, Data, Semana }) {
                       input.focus();
                     }
                   }}
-                  value={adultos}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -380,7 +366,6 @@ function formulario({ item, Data, Semana }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={criancas}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -420,7 +405,6 @@ function formulario({ item, Data, Semana }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={visitantes}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -454,7 +438,6 @@ function formulario({ item, Data, Semana }) {
                 <TextField
                   id="conversoes"
                   label="Conversões"
-                  value={conversoes}
                   variant="outlined"
                   className={classes.tf_4}
                   size="small"
@@ -493,11 +476,10 @@ function formulario({ item, Data, Semana }) {
                 <TextField
                   id="Ofertas"
                   label="Ofertas:"
-                  value={String(formatarMoeda(ofertas))}
                   variant="outlined"
                   className={classes.tf_4}
                   size="small"
-                  type="string"
+                  type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -522,11 +504,11 @@ function formulario({ item, Data, Semana }) {
                   id="Ofertas"
                   label="Ofertas:"
                   variant="outlined"
-                  value={String(formatarMoeda(Ofertas))}
+                  value={Ofertas}
                   disabled
                   className={classes.tf_4}
                   size="small"
-                  type="string"
+                  type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -763,7 +745,6 @@ function formulario({ item, Data, Semana }) {
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={adultos}
                         variant="outlined"
                         placeholder=""
                         size="small"
@@ -813,7 +794,6 @@ function formulario({ item, Data, Semana }) {
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={criancas}
                         variant="outlined"
                         placeholder=""
                         size="small"
@@ -859,7 +839,6 @@ function formulario({ item, Data, Semana }) {
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={visitantes}
                         variant="outlined"
                         placeholder=""
                         size="small"
@@ -898,7 +877,6 @@ function formulario({ item, Data, Semana }) {
                       <TextField
                         id="conversoes"
                         label="Conversões"
-                        value={conversoes}
                         variant="outlined"
                         className={classes.tf_m}
                         size="small"
@@ -943,11 +921,10 @@ function formulario({ item, Data, Semana }) {
                       <TextField
                         id="Ofertas"
                         label="Ofertas:"
-                        value={String(formatarMoeda(ofertas))}
                         variant="outlined"
                         className={classes.tf_m}
                         size="small"
-                        type="string"
+                        type="number"
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -972,11 +949,11 @@ function formulario({ item, Data, Semana }) {
                         id="Ofertas"
                         label="Ofertas:"
                         variant="outlined"
-                        value={String(formatarMoeda(Ofertas))}
+                        value={Ofertas}
                         disabled
                         className={classes.tf_m}
                         size="small"
-                        type="string"
+                        type="number"
                         InputLabelProps={{
                           shrink: true,
                         }}
