@@ -5,7 +5,7 @@ import Providers from 'next-auth/providers';
 
 // const data = getUsuarios();
 // Configure one or more authentication providers
-const valorUsuario = 'inicio';
+
 /* function Useres() {
   const fetcher = (url) => fetch(url).then((r) => r.json());
   const { data } = useSWR('/api/getUser', fetcher);
@@ -13,21 +13,6 @@ const valorUsuario = 'inicio';
   console.log(valorUsuario);
   return data;
 } */
-
-const usuarios = [
-  {
-    email: 'andomonte@gmail.com',
-    nivel: 'master',
-  },
-  {
-    email: 'andomonte2@gmail.com',
-    nivel: 'aracaju',
-  },
-  {
-    email: 'leamoura75@gmail.com',
-    nivel: 'Castelo',
-  },
-];
 
 // const fetcher = (url) => fetch(url).then((r) => r.json());
 // const { data } => //useSWR('/api/getUser', fetcher);
@@ -49,10 +34,10 @@ const options = {
         'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
       // callbackUrl: `${window.location.origin}/pefil`, // $ { id }
     }),
-    Providers.Facebook({
+    /*   Providers.Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    }),
+    }), */
   ],
   callbacks: {
     async signIn(user, account, profile) {
