@@ -497,7 +497,7 @@ function meuPerfil({ item, secao, ministros }) {
               </Box>
               <Divider />
               <Box m={1} flexDirection="row" display="flex">
-                <Grid item xs={8}>
+                <Grid item xs={9}>
                   <Box mt={0}>
                     <Typography
                       className={classes.rotulo}
@@ -518,14 +518,15 @@ function meuPerfil({ item, secao, ministros }) {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={4}>
+
+                <Grid item xs={2}>
                   <Box>
                     <Typography
                       className={classes.rotulo}
                       gutterBottom
                       variant="body1"
                       color="textPrimary"
-                      align="left"
+                      align="center"
                     >
                       <small>Anuidade:</small>
                     </Typography>
@@ -535,13 +536,9 @@ function meuPerfil({ item, secao, ministros }) {
                       gutterBottom
                       variant="body1"
                       color="textPrimary"
-                      align="left"
+                      align="center"
                     >
-                      {dadosMinistro[0].Anuidade === 'OK' ? (
-                        <small>Anuidade em dia</small>
-                      ) : (
-                        <small>Anuidade Pendente</small>
-                      )}
+                      {dadosMinistro[0].Anuidade}
                     </Typography>
                   </Box>
                 </Grid>
@@ -570,7 +567,7 @@ function meuPerfil({ item, secao, ministros }) {
                 </Grid>
               </Box>
               <Box m={1} flexDirection="row" display="flex">
-                <Grid item xs={8}>
+                <Grid item xs={6}>
                   <Box mt={0}>
                     <Typography
                       className={classes.rotulo}
@@ -591,37 +588,10 @@ function meuPerfil({ item, secao, ministros }) {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                   <Box>
                     <Typography
-                      align="left"
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Nascimento:</small>
-                    </Typography>
-
-                    <Typography
-                      align="left"
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].DataNascimento}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
-
-              <Divider />
-              <Box m={1} flexDirection="row" display="flex">
-                <Grid item xs={8}>
-                  <Box>
-                    <Typography
-                      align="left"
+                      align="center"
                       className={classes.rotulo}
                       gutterBottom
                       variant="body1"
@@ -631,7 +601,7 @@ function meuPerfil({ item, secao, ministros }) {
                     </Typography>
 
                     <Typography
-                      align="left"
+                      align="center"
                       className={classes.caption}
                       gutterBottom
                       variant="body1"
@@ -641,107 +611,8 @@ function meuPerfil({ item, secao, ministros }) {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={4}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                      align="left"
-                    >
-                      <small>Estado Civil:</small>
-                    </Typography>
-
-                    <Typography
-                      align="left"
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].EstadoCivil}
-                    </Typography>
-                  </Box>
-                </Grid>
               </Box>
 
-              <Divider />
-              <Box m={1} flexDirection="row" display="flex">
-                <Grid item xs={12}>
-                  <Box>
-                    <Typography
-                      align="left"
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Nome do Cônjuge:</small>
-                    </Typography>
-
-                    <Typography
-                      align="left"
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Conjuge}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
-
-              <Divider />
-              <Box m={1} flexDirection="row" display="flex">
-                <Grid item xs={8}>
-                  <Box>
-                    <Typography
-                      align="left"
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Email:</small>
-                    </Typography>
-
-                    <Typography
-                      align="left"
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Email}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                      align="left"
-                    >
-                      <small>CEP:</small>
-                    </Typography>
-
-                    <Typography
-                      align="left"
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].CEP}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
               <Divider />
               <Box m={1} flexDirection="row" display="flex">
                 <Grid item xs={12}>
@@ -762,8 +633,156 @@ function meuPerfil({ item, secao, ministros }) {
                       color="textPrimary"
                     >
                       {dadosMinistro[0].Logradouro} - {dadosMinistro[0].Numero},{' '}
-                      {dadosMinistro[0].Bairro}, {dadosMinistro[0].Cidade}-
-                      {dadosMinistro[0].UF}
+                      {dadosMinistro[0].Bairro}, {dadosMinistro[0].CEP},{' '}
+                      {dadosMinistro[0].Cidade}-{dadosMinistro[0].UF}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Box>
+              <Divider />
+              <Box m={1} flexDirection="row" display="flex">
+                <Grid item xs={4}>
+                  <Box>
+                    <Typography
+                      className={classes.rotulo}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                      align="center"
+                    >
+                      <small>Estado Civil:</small>
+                    </Typography>
+
+                    <Typography
+                      align="center"
+                      className={classes.caption}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].EstadoCivil}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={8}>
+                  <Box>
+                    <Typography
+                      align="center"
+                      className={classes.rotulo}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <small>Nome do Cônjuge:</small>
+                    </Typography>
+
+                    <Typography
+                      align="center"
+                      className={classes.caption}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].Conjuge}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Box>
+              <Divider />
+              <Box m={1} flexDirection="row" display="flex">
+                <Grid item xs={7}>
+                  <Box>
+                    <Typography
+                      align="center"
+                      className={classes.rotulo}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <small>Email:</small>
+                    </Typography>
+
+                    <Typography
+                      align="center"
+                      className={classes.caption}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].Email}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={5}>
+                  <Box>
+                    <Typography
+                      align="center"
+                      className={classes.rotulo}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <small>Nascimento:</small>
+                    </Typography>
+
+                    <Typography
+                      align="center"
+                      className={classes.caption}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].DataNascimento}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Box>
+
+              <Divider />
+              <Box m={1} flexDirection="row" display="flex">
+                <Grid item xs={7}>
+                  <Box>
+                    <Typography
+                      align="center"
+                      className={classes.rotulo}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <small>Formação Escolar:</small>
+                    </Typography>
+
+                    <Typography
+                      align="center"
+                      className={classes.caption}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].FormacaoEscolar}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={5}>
+                  <Box>
+                    <Typography
+                      align="center"
+                      className={classes.rotulo}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <small>Natural de:</small>
+                    </Typography>
+
+                    <Typography
+                      align="center"
+                      className={classes.caption}
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].Cidade} - {dadosMinistro[0].UF}
                     </Typography>
                   </Box>
                 </Grid>

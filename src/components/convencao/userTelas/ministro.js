@@ -9,13 +9,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import InputLabel from '@material-ui/core/InputLabel';
+
 import moment from 'moment';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Grafico2 from './graficos2';
-import Grafico1 from './graficos1';
+import Formulario from './formulario';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -117,13 +113,6 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  formControl: {
-    // marginBottom: 4,
-    marginTop: -25,
-    marginLeft: 20,
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
 }));
 const defaultProps = {
   bgcolor: 'background.paper',
@@ -131,24 +120,28 @@ const defaultProps = {
   border: 1,
 };
 
-function GraficoMinistro({ item, secao }) {
-  // let enviarDia;
+function TelaMinistro({ item, secao }) {
+  let enviarDia;
   let enviarData;
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [open, setIsPickerOpen] = React.useState(false);
-  const [age, setAge] = React.useState(0);
+
   // const [selectedDate, setDate] = useState(moment());
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
   );
-  const tipoGrafico = ['linhas', 'barras', 'outros'];
+
   //= ================================================================
 
-  // const dates = selectedDate;
-  // const firstDay = new Date(dates.getFullYear(), dates.getMonth(), 1).getDay();
+  const dates = selectedDate;
+  const firstDay = new Date(dates.getFullYear(), dates.getMonth(), 1).getDay();
   // const lastDay = new Date(dates.getFullYear(), dates.getMonth() + 1, 0);
-  // let firstSunday;
+  let firstSunday;
+
+  if (firstDay > 0) {
+    firstSunday = 1 + (7 - firstDay);
+  }
 
   //= ==============================================================
   const handleDateChange = (date, value) => {
@@ -160,18 +153,11 @@ function GraficoMinistro({ item, secao }) {
 
   const getData = () => {
     enviarData = inputValue;
-    //   enviarDia = Number(inputValue.slice(0, 2));
+    enviarDia = Number(inputValue.slice(0, 2));
 
     //  setData(moment(inputValue).format('DD/MM/YYYY'));
   };
-  //= ============================================================
-  // selecionar tipo de grafico
-  //= ============================================================
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-    //  console.log('age', age);
-  };
   //= ============================================================
   const handleDateClick = () => {
     //   setSelectedDate();
@@ -230,29 +216,11 @@ function GraficoMinistro({ item, secao }) {
               className={classes.texto}
               textAlign="center"
             >
-              Graficos Mês de {mes[selectedDate.getMonth()]}{' '}
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Age
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={age}
-                  onChange={handleChange}
-                  label="Age"
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+              Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
             </Box>
           </MuiPickersUtilsProvider>
         </Grid>
         <Grid
-          item
-          xl={12}
           container
           spacing={0}
           direction="column"
@@ -260,16 +228,62 @@ function GraficoMinistro({ item, secao }) {
           justify="center"
           //    style={{ minHeight: '100vh' }}
         >
-          <Box
-            className={classes.box}
-            mt={3}
-            ml={0}
-            mr={0}
-            borderRadius={16}
-            {...defaultProps}
-          >
-            <Grafico1 />
-          </Box>
+          <Grid>
+            <Box
+              className={classes.box}
+              mt={3}
+              ml={0}
+              mr={0}
+              //  alignContent="center"
+              // justifyContent="center"
+              width="100%"
+              //            maxWidth={1200}
+              height="auto"
+              borderRadius={16}
+              {...defaultProps}
+            >
+              {enviarDia < firstSunday + 7 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={1}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={2}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={3}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={4}
+                />
+              ) : null}
+              {enviarDia > firstSunday + 27 ? (
+                <Formulario
+                  item={dadosUser}
+                  secao={secao}
+                  Data={enviarData}
+                  Semana={5}
+                />
+              ) : null}
+            </Box>
+          </Grid>
         </Grid>
       </Hidden>
       <Hidden mdUp>
@@ -285,97 +299,80 @@ function GraficoMinistro({ item, secao }) {
                 id="date-picker-inline"
                 label="Data do Relatório"
                 value={selectedDate}
-                inputValue={inputValue}
                 onClick={handleDateClick}
                 onChange={handleDateChange}
-                onClose={getData()}
+                //                setData(moment(e.getUTCDate()).format('DD/MM/YYYY'));
+                onClose={getData}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
               />
+              <Box mt={4} ml={2} className={classes.texto} textAlign="center">
+                Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
+              </Box>
+              {/* <IconButton classes={{ label: classes.iconButtonLabel }}>
+                <NoteAddIcon style={{ fontSize: 30 }} color="primary" />
+                <div>Novo</div>
+              </IconButton> */}
             </Grid>
-            <Box
-              mt={4}
-              mb={2}
-              ml={0}
-              className={classes.texto}
-              textAlign="center"
-            >
-              Mês de {mes[selectedDate.getMonth()]}{' '}
-              <FormControl className={classes.formControl}>
-                <InputLabel id="tGrafico">Tipo</InputLabel>
-                <Select
-                  labelId="tGrafico"
-                  id="tGrafico"
-                  value={age}
-                  onChange={handleChange}
-                  label="Tipo"
-                  displayEmpty
-                  className={classes.selectEmpty}
-                >
-                  <MenuItem value={0}>Linha</MenuItem>
-                  <MenuItem value={1}>Barras</MenuItem>
-                  <MenuItem value={2}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid
-          item
-          xl={12}
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          //    style={{ minHeight: '100vh' }}
+
+        <Box
+          className={classes.box}
+          mt={3}
+          ml={1}
+          mr={1}
+          width="auto"
+          //            maxWidth={1200}
+          height="auto"
+          borderRadius={16}
+          {...defaultProps}
         >
-          <Box
-            className={classes.box}
-            mt={3}
-            ml={0}
-            mr={0}
-            borderRadius={16}
-            {...defaultProps}
-          >
-            <Grafico1
-              item={item}
+          {enviarDia < firstSunday + 7 ? (
+            <Formulario
+              item={dadosUser}
               secao={secao}
               Data={enviarData}
-              tipo={tipoGrafico[age]}
+              Semana={1}
             />
-          </Box>
-        </Grid>
-        <Grid
-          item
-          xl={12}
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          //    style={{ minHeight: '100vh' }}
-        >
-          <Box
-            className={classes.box}
-            mt={3}
-            ml={0}
-            mr={0}
-            borderRadius={16}
-            {...defaultProps}
-          >
-            <Grafico2
-              item={item}
+          ) : null}
+          {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
+            <Formulario
+              item={dadosUser}
               secao={secao}
               Data={enviarData}
-              tipo={tipoGrafico[age]}
+              Semana={2}
             />
-          </Box>
-        </Grid>
+          ) : null}
+          {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={3}
+            />
+          ) : null}
+          {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={4}
+            />
+          ) : null}
+          {enviarDia > firstSunday + 27 ? (
+            <Formulario
+              item={dadosUser}
+              secao={secao}
+              Data={enviarData}
+              Semana={5}
+            />
+          ) : null}
+        </Box>
       </Hidden>
     </Box>
   );
 }
 
-export default GraficoMinistro;
+export default TelaMinistro;

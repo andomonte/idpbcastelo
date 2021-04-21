@@ -1,19 +1,41 @@
 import React from 'react';
 import { Perfil } from 'src/components/perfil/index';
+import { useSession } from 'next-auth/client';
 // import { PrismaClient } from '@prisma/client';
 import prisma from 'src/lib/prisma';
 // import useSWR from 'swr';
 // import fetch from 'unfetch';
+import { Convenção } from 'src/components/convencao/index';
 
 function userPerfil({ org, ministros, igrejas }) {
-  return (
-    <Perfil
-      item={org}
-      title="SISTEMA-IDPB"
-      ministros={ministros}
-      igrejas={igrejas}
-    />
-  );
+  const [session] = useSession();
+  let secao = [{ email: '' }];
+  if (session) {
+    secao = org.filter((val) => val.email === session.user.email);
+    console.log(secao[0].NivelUser);
+
+    return (
+      <>
+        {secao[0].NivelUser === 'ministro' ? (
+          <Perfil
+            item={org}
+            title="SISTEMA-IDPB"
+            ministros={ministros}
+            igrejas={igrejas}
+          />
+        ) : null}
+        {secao[0].NivelUser === 'convenção' ? (
+          <Convenção
+            item={org}
+            title="SISTEMA-IDPB"
+            ministros={ministros}
+            igrejas={igrejas}
+          />
+        ) : null}
+      </>
+    );
+  }
+  return <h4> IDPB - Pregando a palavra no poder do Espírito Santo </h4>;
 }
 
 export const getStaticProps = async () => {
