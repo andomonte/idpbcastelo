@@ -142,7 +142,7 @@ function GraficoMinistro({ item, secao }) {
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
   );
-  const tipoGrafico = ['linhas', 'barras', 'outros'];
+  const tipoGrafico = ['linhas', 'barras', 'acumulados'];
   //= ================================================================
 
   // const dates = selectedDate;
@@ -315,7 +315,7 @@ function GraficoMinistro({ item, secao }) {
                 >
                   <MenuItem value={0}>Linha</MenuItem>
                   <MenuItem value={1}>Barras</MenuItem>
-                  <MenuItem value={2}>Thirty</MenuItem>
+                  <MenuItem value={2}>Acumulados</MenuItem>
                 </Select>
               </FormControl>
             </Box>

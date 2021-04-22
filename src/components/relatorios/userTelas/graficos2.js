@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, Bar } from '@reactchartjs/react-chart.js';
+import { Line, Bar, Pie } from '@reactchartjs/react-chart.js';
 import { signOut } from 'next-auth/client';
 import useSWR from 'swr';
 import axios from 'axios';
@@ -32,7 +32,6 @@ function Graficos({ item, secao, Data, tipo }) {
       // console.log(ofertas);
     }
   }
-
   const dataGrafic = {
     labels: ['Semana-1', 'Semana-2', 'Semana-3', 'Semana-4'],
     datasets: [
@@ -63,6 +62,19 @@ function Graficos({ item, secao, Data, tipo }) {
     ],
   };
 
+  const dataGrafic2 = {
+    labels: ['S1', 'S2', 'S3', 'S4', 'S5'],
+    datasets: [
+      {
+        label: 'Ofertas do Mês',
+        data: [ofertas[0], ofertas[1], ofertas[2], ofertas[3], ofertas[4]],
+        backgroundColor: ['#388e3c', '#283593', '#ff9800', '#546e7a'],
+        borderColor: ['#43a047', '#1a237e', '#ffa726', '#6d4c41', '#78909c'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   const options = {
     scales: {
       yAxes: [
@@ -72,6 +84,7 @@ function Graficos({ item, secao, Data, tipo }) {
           display: true,
           position: 'left',
           id: 'y-axis-1',
+          showAllTooltips: false,
         },
         {
           ticks: { beginAtZero: true },
@@ -90,6 +103,7 @@ function Graficos({ item, secao, Data, tipo }) {
     <>
       {tipo === 'linhas' ? <Line data={dataGrafic} options={options} /> : null}
       {tipo === 'barras' ? <Bar data={dataGrafic} options={options} /> : null}
+      {tipo === 'acumulados' ? <Pie data={dataGrafic2} /> : null}
     </>
   );
 }
