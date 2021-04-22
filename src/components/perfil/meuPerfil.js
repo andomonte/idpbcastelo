@@ -118,9 +118,7 @@ function meuPerfil({ item, secao, ministros }) {
       callbackUrl: `${window.location.origin}`,
     });
   const dadosMinistro = ministros.filter(
-    (val) =>
-      val.Email === dadosUser[0].email &&
-      val.Matricula === dadosUser[0].matricula,
+    (val) => val.Email === dadosUser[0].email,
   );
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
 

@@ -231,20 +231,20 @@ function GraficoMinistro({ item, secao }) {
               textAlign="center"
             >
               Graficos Mês de {mes[selectedDate.getMonth()]}{' '}
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Age
-                </InputLabel>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="tGrafico">Tipo</InputLabel>
                 <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
+                  labelId="tGrafico"
+                  id="tGrafico"
                   value={age}
                   onChange={handleChange}
-                  label="Age"
+                  label="Tipo"
+                  displayEmpty
+                  className={classes.selectEmpty}
                 >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value={0}>Linha</MenuItem>
+                  <MenuItem value={1}>Barras</MenuItem>
+                  <MenuItem value={2}>Acumulados</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -255,7 +255,7 @@ function GraficoMinistro({ item, secao }) {
           xl={12}
           container
           spacing={0}
-          direction="column"
+          // direction="column"
           alignItems="center"
           justify="center"
           //    style={{ minHeight: '100vh' }}
@@ -268,7 +268,68 @@ function GraficoMinistro({ item, secao }) {
             borderRadius={16}
             {...defaultProps}
           >
-            <Grafico1 />
+            <Grafico1
+              item={item}
+              secao={secao}
+              Data={enviarData}
+              tipo="linhas"
+            />
+          </Box>
+          <Box
+            className={classes.box}
+            mt={3}
+            ml={5}
+            mr={0}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            <Grafico1
+              item={item}
+              secao={secao}
+              Data={enviarData}
+              tipo="barras"
+            />
+          </Box>
+          <Box
+            className={classes.box}
+            mt={3}
+            ml={5}
+            mr={0}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            <Grafico1
+              item={item}
+              secao={secao}
+              Data={enviarData}
+              tipo="acumulados"
+            />
+          </Box>
+        </Grid>
+        <Grid
+          item
+          xl={12}
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          //          style={{ height: '40vh', with: '500px' }}
+        >
+          <Box
+            className={classes.box}
+            mt={3}
+            ml={0}
+            mr={0}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            <Grafico2
+              item={item}
+              secao={secao}
+              Data={enviarData}
+              tipo={tipoGrafico[age]}
+            />
           </Box>
         </Grid>
       </Hidden>
