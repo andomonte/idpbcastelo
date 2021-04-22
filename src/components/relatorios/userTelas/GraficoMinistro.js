@@ -231,22 +231,6 @@ function GraficoMinistro({ item, secao }) {
               textAlign="center"
             >
               Graficos Mês de {mes[selectedDate.getMonth()]}{' '}
-              <FormControl className={classes.formControl}>
-                <InputLabel id="tGrafico">Tipo</InputLabel>
-                <Select
-                  labelId="tGrafico"
-                  id="tGrafico"
-                  value={age}
-                  onChange={handleChange}
-                  label="Tipo"
-                  displayEmpty
-                  className={classes.selectEmpty}
-                >
-                  <MenuItem value={0}>Linha</MenuItem>
-                  <MenuItem value={1}>Barras</MenuItem>
-                  <MenuItem value={2}>Acumulados</MenuItem>
-                </Select>
-              </FormControl>
             </Box>
           </MuiPickersUtilsProvider>
         </Grid>
@@ -265,6 +249,7 @@ function GraficoMinistro({ item, secao }) {
             mt={3}
             ml={0}
             mr={0}
+            mb={5}
             borderRadius={16}
             {...defaultProps}
           >
@@ -280,6 +265,7 @@ function GraficoMinistro({ item, secao }) {
             mt={3}
             ml={5}
             mr={0}
+            mb={5}
             borderRadius={16}
             {...defaultProps}
           >
@@ -295,6 +281,7 @@ function GraficoMinistro({ item, secao }) {
             mt={3}
             ml={5}
             mr={0}
+            mb={5}
             borderRadius={16}
             {...defaultProps}
           >
@@ -311,7 +298,6 @@ function GraficoMinistro({ item, secao }) {
           xl={12}
           container
           spacing={0}
-          direction="column"
           alignItems="center"
           justify="center"
           //          style={{ height: '40vh', with: '500px' }}
@@ -328,7 +314,37 @@ function GraficoMinistro({ item, secao }) {
               item={item}
               secao={secao}
               Data={enviarData}
-              tipo={tipoGrafico[age]}
+              tipo="linhas"
+            />
+          </Box>
+          <Box
+            className={classes.box}
+            mt={3}
+            ml={5}
+            mr={0}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            <Grafico2
+              item={item}
+              secao={secao}
+              Data={enviarData}
+              tipo="barras"
+            />
+          </Box>
+          <Box
+            className={classes.box}
+            mt={5}
+            ml={5}
+            mr={0}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            <Grafico2
+              item={item}
+              secao={secao}
+              Data={enviarData}
+              tipo="acumulados"
             />
           </Box>
         </Grid>

@@ -33,7 +33,7 @@ function Graficos({ item, secao, Data, tipo }) {
     }
   }
   const dataGrafic = {
-    labels: ['Semana-1', 'Semana-2', 'Semana-3', 'Semana-4'],
+    labels: ['sem-1', 'sem-2', 'sem-3', 'sem-4', 'sem-5'],
     datasets: [
       {
         label: 'Visit.',
@@ -47,8 +47,8 @@ function Graficos({ item, secao, Data, tipo }) {
         label: 'Conver.',
         data: conversoes,
         fill: false,
-        backgroundColor: '#43a047',
-        borderColor: '#388e3c',
+        backgroundColor: '#ffff00',
+        borderColor: '#faff01',
         yAxisID: 'y-axis-1',
       },
       {
@@ -63,13 +63,19 @@ function Graficos({ item, secao, Data, tipo }) {
   };
 
   const dataGrafic2 = {
-    labels: ['S1', 'S2', 'S3', 'S4', 'S5'],
+    labels: ['sem-1', 'sem-2', 'sem-3', 'sem-4', 'sem-5'],
     datasets: [
       {
         label: 'Ofertas do Mês',
         data: [ofertas[0], ofertas[1], ofertas[2], ofertas[3], ofertas[4]],
-        backgroundColor: ['#388e3c', '#283593', '#ff9800', '#546e7a'],
-        borderColor: ['#43a047', '#1a237e', '#ffa726', '#6d4c41', '#78909c'],
+        backgroundColor: [
+          '#283593',
+          '#388e3c',
+          '#ff9800',
+          '#6d4c41',
+          '#546e7a',
+        ],
+        borderColor: ['#1a237e', '#43a047', '#ffa726', '#6d4c41', '#78909c'],
         borderWidth: 1,
       },
     ],
