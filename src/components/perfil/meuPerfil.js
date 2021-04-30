@@ -112,7 +112,6 @@ function meuPerfil({ item, secao, ministros }) {
   const classes = useStyles();
 
   const dadosUser = item.filter((val) => val.email === secao.user.email);
-
   if (dadosUser.length === 0)
     signOut({
       callbackUrl: `${window.location.origin}`,

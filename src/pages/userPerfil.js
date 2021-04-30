@@ -10,9 +10,11 @@ import { Convenção } from 'src/components/convencao/index';
 function userPerfil({ org, ministros, igrejas }) {
   const [session] = useSession();
   let secao = [{ email: '' }];
+  // console.log(org, 'organização');
   if (session) {
     secao = org.filter((val) => val.email === session.user.email);
-    console.log(secao[0].NivelUser);
+    // console.log(secao[0].NivelUser);
+    //
 
     return (
       <>

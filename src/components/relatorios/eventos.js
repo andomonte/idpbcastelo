@@ -15,6 +15,8 @@ const Evento = ({ item, secao }) => {
   switch (route) {
     case 'ministro':
       return <Padrao item={item} secao={secao} />;
+    case 'adm_MM':
+      return <Padrao item={item} secao={secao} />;
     default:
       return <Padrao />;
   }

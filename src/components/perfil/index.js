@@ -26,6 +26,7 @@ import Navbar from './navBar_redesSociais';
 import Igreja from './igreja';
 import MeuPerfil from './meuPerfil';
 import Padrao from './userTelas/telaPadrao';
+import CadastroUser from './userTelas/cadastroUser';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -277,7 +278,8 @@ function Perfil({ item, title, ministros, igrejas }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            <Padrao />
+            {item.NivelUser === 'ministro' ? <Padrao /> : null}
+            {item.NivelUser === 'adm_MM' ? <CadastroUser /> : null}
           </TabPanel>
         </main>
       </div>
