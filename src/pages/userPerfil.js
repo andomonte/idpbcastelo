@@ -3,8 +3,7 @@ import { Perfil } from 'src/components/perfil/index';
 import { useSession } from 'next-auth/client';
 // import { PrismaClient } from '@prisma/client';
 import prisma from 'src/lib/prisma';
-// import useSWR from 'swr';
-// import fetch from 'unfetch';
+
 import { Convenção } from 'src/components/convencao/index';
 
 function userPerfil({ org, ministros, igrejas }) {
