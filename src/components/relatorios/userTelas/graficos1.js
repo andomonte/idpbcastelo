@@ -78,6 +78,14 @@ function Graficos({ item, secao, Data, tipo }) {
     ],
   };
   const dataGrafic2 = {
+    title: {
+      display: true,
+      text: 'Total de Presentes do Mês',
+    },
+    legend: {
+      position: 'left',
+      display: true,
+    },
     labels: ['Adultos', 'Crianças', 'Visitantes', 'Conversões'],
     datasets: [
       {
@@ -106,7 +114,9 @@ function Graficos({ item, secao, Data, tipo }) {
     <>
       {tipo === 'linhas' ? <Line data={dataGrafic} options={options} /> : null}
       {tipo === 'barras' ? <Bar data={dataGrafic} options={options} /> : null}
-      {tipo === 'acumulados' ? <Pie data={dataGrafic2} /> : null}
+      {tipo === 'acumulados' ? (
+        <Pie data={dataGrafic2} options={dataGrafic2} />
+      ) : null}
     </>
   );
 }

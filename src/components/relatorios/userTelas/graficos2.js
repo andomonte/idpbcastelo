@@ -63,10 +63,21 @@ function Graficos({ item, secao, Data, tipo }) {
   };
 
   const dataGrafic2 = {
-    labels: ['sem-1', 'sem-2', 'sem-3', 'sem-4', 'sem-5'],
+    title: {
+      display: true,
+      text: 'Ofertas do Mês',
+    },
+
+    legend: {
+      position: 'left',
+      display: true,
+      labels: {
+        color: 'rgb(255, 99, 132)',
+      },
+    },
+    labels: ['semana-1', 'semana-2', 'semana-3', 'semana-4', 'semana-5'],
     datasets: [
       {
-        label: 'Ofertas do Mês',
         data: [ofertas[0], ofertas[1], ofertas[2], ofertas[3], ofertas[4]],
         backgroundColor: [
           '#283593',
@@ -109,7 +120,9 @@ function Graficos({ item, secao, Data, tipo }) {
     <>
       {tipo === 'linhas' ? <Line data={dataGrafic} options={options} /> : null}
       {tipo === 'barras' ? <Bar data={dataGrafic} options={options} /> : null}
-      {tipo === 'acumulados' ? <Pie data={dataGrafic2} /> : null}
+      {tipo === 'acumulados' ? (
+        <Pie data={dataGrafic2} options={dataGrafic2} />
+      ) : null}
     </>
   );
 }
