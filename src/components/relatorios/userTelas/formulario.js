@@ -177,11 +177,12 @@ function formulario({ item, Data, Semana }) {
     Visitantes = dadosRel[0].visitantes;
     sem = dadosRel[0].semana;
     Conversoes = dadosRel[0].conversoes;
-    Ofertas = dadosRel[0].ofertas;
+    Ofertas = String(formatarMoeda(dadosRel[0].ofertas));
     ids = dadosRel[0].id;
   }
 
   //--------------------------------------------------------------------------
+  console.log(ofertas, Ofertas);
   //--------------------------------------------------------------------------
   const valid = () => {
     if (!adultos || !criancas || !visitantes || !conversoes || !ofertas) {
@@ -195,7 +196,7 @@ function formulario({ item, Data, Semana }) {
     setCriancas(Crianças);
     setVisitantes(Visitantes);
     setConversoes(Conversoes);
-    setOfertas(Ofertas);
+    setOfertas(String(formatarMoeda(Ofertas)));
     setDataRelatorio(Data);
 
     if (!editar) {
@@ -231,7 +232,7 @@ function formulario({ item, Data, Semana }) {
           visitantes,
           conversoes,
           dataRelatorio,
-          ofertas,
+          ofertas: String(formatarMoeda(ofertas)),
         };
 
         let urlCreate = '';
