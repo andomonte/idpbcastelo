@@ -116,9 +116,9 @@ function Igreja({ item, secao, igrejas }) {
     });
   // const dadosIgreja = getDados(item[0].codigoIgreja);
   const dadosIgreja = igrejas.filter(
-    (val) => val.codigoIgreja === item[0].codigoIgreja,
+    (val) => val.codigoIgreja === dadosUser[0].codigoIgreja,
   );
-
+  console.log(dadosIgreja, dadosUser[0].codigoIgreja);
   return (
     <Box>
       <Hidden smDown>
@@ -207,7 +207,7 @@ function Igreja({ item, secao, igrejas }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosIgreja[0].vinculado} - {dadosIgreja[0].supervisao}
+                      {dadosIgreja[0].vinculado} -{dadosIgreja[0].supervisao}
                     </Typography>
                   </Box>
                 </Grid>
@@ -256,8 +256,10 @@ function Igreja({ item, secao, igrejas }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosIgreja[0].logradouro} - {dadosIgreja[0].numero},{' '}
-                      {dadosIgreja[0].bairro}, {dadosIgreja[0].cep},{' '}
+                      {dadosIgreja[0].logradouro} -{dadosIgreja[0].numero},{' '}
+                      {dadosIgreja[0].bairro}
+                      ,{dadosIgreja[0].cep}
+                      ,{' '}
                       {dadosIgreja[0].localidade}-{dadosIgreja[0].estado}
                     </Typography>
                   </Box>
@@ -661,7 +663,7 @@ function Igreja({ item, secao, igrejas }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosIgreja[0].vinculado} - {dadosIgreja[0].supervisao}
+                      {dadosIgreja[0].vinculado} -{dadosIgreja[0].supervisao}
                     </Typography>
                   </Box>
                 </Grid>
@@ -705,8 +707,10 @@ function Igreja({ item, secao, igrejas }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosIgreja[0].logradouro} - {dadosIgreja[0].numero},{' '}
-                      {dadosIgreja[0].bairro}, {dadosIgreja[0].cep},{' '}
+                      {dadosIgreja[0].logradouro} -{dadosIgreja[0].numero},{' '}
+                      {dadosIgreja[0].bairro}
+                      ,{dadosIgreja[0].cep}
+                      ,{' '}
                       {dadosIgreja[0].localidade}-{dadosIgreja[0].estado}
                     </Typography>
                   </Box>

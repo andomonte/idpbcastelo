@@ -2,6 +2,7 @@ import { signOut } from 'next-auth/client';
 import React from 'react';
 // import TelaMinistro from './userTelas/ministro';
 import Padrao from './userTelas/telaPadrao';
+import TelaEventos from './userTelas/telaEventos';
 
 const Evento = ({ item, secao }) => {
   const dadosUser = item.filter((val) => val.email === secao.user.email);
@@ -14,7 +15,7 @@ const Evento = ({ item, secao }) => {
 
   switch (route) {
     case 'ministro':
-      return <Padrao item={item} secao={secao} />;
+      return <TelaEventos item={item} secao={secao} />;
     case 'adm_MM':
       return <Padrao item={item} secao={secao} />;
     default:
