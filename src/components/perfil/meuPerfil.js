@@ -256,9 +256,13 @@ function meuPerfil({ item, secao, ministros }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosMinistro[0].Logradouro} - {dadosMinistro[0].Numero},{' '}
-                      {dadosMinistro[0].Bairro}, {dadosMinistro[0].CEP},{' '}
-                      {dadosMinistro[0].Cidade}-{dadosMinistro[0].UF}
+                      {dadosMinistro[0].Logradouro}
+-{dadosMinistro[0].Numero}
+,{' '}
+                      {dadosMinistro[0].Bairro},{dadosMinistro[0].CEP},
+{' '}
+                      {dadosMinistro[0].Cidade}
+-{dadosMinistro[0].UF}
                     </Typography>
                   </Box>
                 </Grid>
@@ -413,7 +417,7 @@ function meuPerfil({ item, secao, ministros }) {
                       color="textSecondary"
                       className={classes.typography}
                     >
-                      {dadosMinistro[0].Cidade} - {dadosMinistro[0].UF}
+                      {dadosMinistro[0].Cidade} -{dadosMinistro[0].UF}
                     </Typography>
                   </Box>
                 </Grid>
@@ -758,8 +762,8 @@ function meuPerfil({ item, secao, ministros }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosMinistro[0].Logradouro} - {dadosMinistro[0].Numero},{' '}
-                      {dadosMinistro[0].Bairro}, {dadosMinistro[0].Cidade}-
+                      {dadosMinistro[0].Logradouro} -{dadosMinistro[0].Numero},{' '}
+                      {dadosMinistro[0].Bairro},{dadosMinistro[0].Cidade}-
                       {dadosMinistro[0].UF}
                     </Typography>
                   </Box>
