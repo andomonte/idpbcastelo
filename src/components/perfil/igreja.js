@@ -257,9 +257,7 @@ function Igreja({ item, secao, igrejas }) {
                       color="textPrimary"
                     >
                       {dadosIgreja[0].logradouro} -{dadosIgreja[0].numero},{' '}
-                      {dadosIgreja[0].bairro}
-                      ,{dadosIgreja[0].cep}
-                      ,{' '}
+                      {dadosIgreja[0].bairro},{dadosIgreja[0].cep},{' '}
                       {dadosIgreja[0].localidade}-{dadosIgreja[0].estado}
                     </Typography>
                   </Box>
@@ -708,9 +706,7 @@ function Igreja({ item, secao, igrejas }) {
                       color="textPrimary"
                     >
                       {dadosIgreja[0].logradouro} -{dadosIgreja[0].numero},{' '}
-                      {dadosIgreja[0].bairro}
-                      ,{dadosIgreja[0].cep}
-                      ,{' '}
+                      {dadosIgreja[0].bairro},{dadosIgreja[0].cep},{' '}
                       {dadosIgreja[0].localidade}-{dadosIgreja[0].estado}
                     </Typography>
                   </Box>
