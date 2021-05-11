@@ -5,15 +5,37 @@ import { useSession } from 'next-auth/client';
 import prisma from 'src/lib/prisma';
 
 import { Convenção } from 'src/components/convencao/index';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box } from '@material-ui/core';
 
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}));
 function userPerfil({ org, ministros, igrejas }) {
+  const classes = useStyles();
   const [session] = useSession();
   let secao = [{ email: '' }];
   // console.log(org, 'organização');
   if (session) {
     secao = org.filter((val) => val.email === session.user.email);
-    // console.log(secao[0].NivelUser);
-    //
+    console.log(session.user.email);
+    if (secao.length === 0) {
+      return (
+        <Box mt={5}>
+          <br />
+          <br />
+          <Box mt={5} className={classes.root}>
+            Ocorreu um Erro ao fazer o Login
+          </Box>
+          <Box className={classes.root}>email: {session.user.email}</Box>
+          <Box className={classes.root}>não foi cadastrado</Box>
+        </Box>
+      );
+    }
 
     return (
       <>
@@ -36,7 +58,12 @@ function userPerfil({ org, ministros, igrejas }) {
       </>
     );
   }
-  return <h4> IDPB - Pregando a palavra no poder do Espírito Santo </h4>;
+  return (
+    <h4 style={{ alignItems: 'center', justifyContent: 'center' }}>
+      {' '}
+      IDPB - Pregando a palavra no poder do Espírito Santo{' '}
+    </h4>
+  );
 }
 
 export const getStaticProps = async () => {
