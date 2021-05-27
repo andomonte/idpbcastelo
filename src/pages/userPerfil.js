@@ -22,7 +22,7 @@ function userPerfil({ org, ministros, igrejas }) {
   // console.log(org, 'organização');
   if (session) {
     secao = org.filter((val) => val.email === session.user.email);
-    console.log(session.user.email);
+    //  console.log(session.user.email);
     if (secao.length === 0) {
       return (
         <Box mt={5}>

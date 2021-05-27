@@ -37,7 +37,7 @@ function Graficos({ item, secao, Data, tipo }) {
   if (adultos[2]) tAdultos += Number(adultos[2]);
   if (adultos[3]) tAdultos += Number(adultos[3]);
   if (adultos[4]) tAdultos += Number(adultos[1]);
-  console.log(tAdultos);
+  // console.log(tAdultos);
   let tCrianças = 0;
   if (crianças[0]) tCrianças += Number(crianças[0]);
   if (crianças[1]) tCrianças += Number(crianças[1]);

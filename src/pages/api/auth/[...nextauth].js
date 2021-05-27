@@ -10,7 +10,7 @@ import Providers from 'next-auth/providers';
   const fetcher = (url) => fetch(url).then((r) => r.json());
   const { data } = useSWR('/api/getUser', fetcher);
   valorUsuario = 'JSON.parse(JSON.stringify(data))';
-  console.log(valorUsuario);
+ // console.log(valorUsuario);
   return data;
 } */
 

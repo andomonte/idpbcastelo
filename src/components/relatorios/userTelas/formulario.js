@@ -182,7 +182,7 @@ function formulario({ item, Data, Semana }) {
   }
 
   //--------------------------------------------------------------------------
-  console.log(ofertas, Ofertas);
+  // console.log(ofertas, Ofertas);
   //--------------------------------------------------------------------------
   const valid = () => {
     if (!adultos || !criancas || !visitantes || !conversoes || !ofertas) {
@@ -775,7 +775,7 @@ function formulario({ item, Data, Semana }) {
                               () => setContador('1'))
                         }
                         onChange={(e) => setAdultos(e.target.value)}
-                        error={validarCriancas === 'nao'}
+                        error={validarAdultos === 'nao'}
                         onFocus={(e) => setAdultos(e.target.value)}
                         helperText={error ? 'Não pode ser Vazio!' : ''}
                         inputRef={(input) => {

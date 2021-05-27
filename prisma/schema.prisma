@@ -412,3 +412,21 @@ model InscritosConvRRs {
   createdAt         DateTime @db.DateTime(0)
   updatedAt         DateTime @db.DateTime(0)
 }
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Eventos {
+  id           Int     @id @default(autoincrement())
+  igreja       String  @db.VarChar(100)
+  codigoIgreja String  @db.VarChar(45)
+  dataEvento   String  @db.VarChar(45)
+  evento       String  @db.VarChar(500)
+  adultos      String  @db.VarChar(45)
+  criancas     String  @db.VarChar(45)
+  visitantes   String  @db.VarChar(45)
+  conversoes   String  @db.VarChar(45)
+  img01        String  @db.VarChar(545)
+  img02        String? @db.VarChar(245)
+  img03        String? @db.VarChar(245)
+  img04        String? @db.VarChar(245)
+  img05        String? @db.VarChar(245)
+}
