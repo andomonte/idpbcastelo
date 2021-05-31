@@ -13,6 +13,7 @@ import { useSession, signOut } from 'next-auth/client';
 import useSWR, { mutate } from 'swr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import React, { useCallback, useEffect } from 'react';
+import Image from 'material-ui-image';
 // import { signOut } from 'next-auth/client';
 import { Box, Button, Modal, Avatar } from '@material-ui/core';
 import Dropzone, { useDropzone } from 'react-dropzone';
@@ -24,8 +25,12 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import { MdCheckCircle, MdError, MdLink } from 'react-icons/md';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import JsFileDownloader from 'js-file-downloader';
+
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
+// const download = require('image-downloader');
 
 const dragActive = css`
   border-color: #76ff03;
@@ -67,6 +72,15 @@ const useStyles = makeStyles((theme) => ({
   boxInterno: {
     width: '100%',
     maxWidth: '400px',
+    margin: '3px',
+    background: '#fff',
+    borderRadius: '4px',
+    padding: '20px',
+  },
+  boxImage: {
+    width: '100%',
+    maxWidth: '600px',
+    maxHeight: '400',
     margin: '3px',
     background: '#fff',
     borderRadius: '4px',
@@ -206,6 +220,7 @@ const useStyles = makeStyles((theme) => ({
 function formulario({ item, Data }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [openImage, setOpenImage] = React.useState(false);
   const [send, setSend] = React.useState(false);
   const [fileObjects, setFileObjects] = React.useState([]);
   const [contagem, setContagem] = React.useState([]);
@@ -237,9 +252,12 @@ function formulario({ item, Data }) {
   let Img04 = '';
   let Img05 = '';
   let progresso = 0;
+
+  const [contImage, setContImage] = React.useState(0);
   const [contador, setContador] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const arraytoSend = [];
+  let arrayImage = [];
 
   //----------------------------------------------------------------------
   const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}/${dataEvento}`;
@@ -327,6 +345,9 @@ function formulario({ item, Data }) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleCloseImagem = () => {
+    setOpenImage(false);
   };
   const fileSend = () => {
     /*  for (let i = 0; i < 5; i += 1) {
@@ -531,6 +552,39 @@ function formulario({ item, Data }) {
       setEditar(false);
     }
   };
+  const handleOpenImage = () => {
+    setOpenImage(true);
+  };
+  const handleBaixarImage = async () => {
+    //    const valor = downloadS3(arrayImage[contImage]);
+    // const ini = arrayImage[contImage].indexOf('img');
+    //  const nomeImg = arrayImage[contImage].slice(ini);
+
+    api
+      .post('api/baixarImagem', { dados: arrayImage[contImage] })
+      .then((response) => {
+        if (response) console.log(response);
+        new JsFileDownloader({
+          url: `/public/images/temp/arrayImage[contImage]`,
+        })
+          .then(() => {
+            // Called when download ended
+          })
+          .catch((error) => {
+            // Called when an error occurred
+          });
+
+        //  updateFile(uploadedFile.id, { uploaded: true });
+      })
+      .catch(() => {
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+    setOpenImage(false);
+  };
+  const handleContImage = () => {
+    setContImage(contImage + 1);
+    if (contImage > 3) setContImage(0);
+  };
   //--------------------------------------------------------------------------
   //--------------------------------------------------------------------------
 
@@ -577,6 +631,49 @@ function formulario({ item, Data }) {
       }
     }
   };
+  function ShowImage() {
+    arrayImage = [Img01, Img02, Img03, Img04, Img05];
+
+    return (
+      <Modal
+        open={openImage}
+        onClose={handleCloseImagem}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Box className={classes.boxUp}>
+          <ClickAwayListener onClickAway={handleCloseImagem}>
+            <Box className={classes.boxImage}>
+              <Image onClick={handleContImage} src={arrayImage[contImage]} />
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-around"
+                mt={2}
+              >
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={handleCloseImagem}
+                  className={classes.buttonCancel}
+                >
+                  Fechar
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  className={classes.buttonGreen}
+                  onClick={handleBaixarImage}
+                >
+                  Baixar
+                </Button>
+              </Box>
+            </Box>
+          </ClickAwayListener>
+        </Box>
+      </Modal>
+    );
+  }
   function TelaEventos() {
     return (
       <Modal
@@ -1000,7 +1097,12 @@ function formulario({ item, Data }) {
                       flexDirection="column"
                       alignItems="center"
                     >
-                      <Avatar variant="square" alt="Remy Sharp" src={img01} />
+                      <Avatar
+                        variant="square"
+                        alt="Remy Sharp"
+                        src={img01}
+                        type="button"
+                      />
                       img-01
                     </Box>
                   ) : (
@@ -1010,7 +1112,12 @@ function formulario({ item, Data }) {
                         flexDirection="column"
                         alignItems="center"
                       >
-                        <Avatar variant="square" alt="Remy Sharp" src={Img01} />
+                        <Avatar
+                          variant="square"
+                          alt="Remy Sharp"
+                          src={Img01}
+                          onClick={handleOpenImage}
+                        />
                         img-01
                       </Box>
                     )
@@ -1260,6 +1367,7 @@ function formulario({ item, Data }) {
         })
       )}
       {open && <TelaEventos />}
+      {openImage && <ShowImage />}
     </>
   );
 }

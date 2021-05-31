@@ -5,7 +5,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { Box } from '@material-ui/core';
-import Image from 'material-ui-image';
+import Image from 'next/image';
 import MicIcon from '@material-ui/icons/Mic';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';

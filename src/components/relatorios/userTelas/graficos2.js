@@ -15,7 +15,7 @@ function Graficos({ item, secao, Data, tipo }) {
   const mes = String(Number(Data.slice(3, 5)));
   const ano = Data.slice(6, 10);
   //  const [session] = useSession();
-  const url = `${window.location.origin}/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
+  const url = `${window.location.origin}/api/consultaDados/${dadosUser[0].codigoIgreja}/${mes}/${ano}`;
 
   const visitantes = [];
   const conversoes = [];

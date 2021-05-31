@@ -15,14 +15,16 @@ function Graficos({ item, secao, Data, tipo }) {
   const mes = String(Number(Data.slice(3, 5)));
   const ano = Data.slice(6, 10);
   //  const [session] = useSession();
-  const url = `${window.location.origin}/api/consultaDados/${item[0].codigoIgreja}/${mes}/${ano}`;
+
   const adultos = [];
   const crianças = [];
   const visitantes = [];
   const conversoes = [];
-
+  const url = `${window.location.origin}/api/consultaDados/${dadosUser[0].codigoIgreja}/${mes}/${ano}`;
   const { data } = useSWR(url, fetcher);
+
   if (data) {
+    console.log('data', data);
     for (let i = 0; i < data.length; i += 1) {
       adultos[data[i].semana - 1] = data[i].adultos;
       crianças[data[i].semana - 1] = data[i].criancas;
@@ -36,26 +38,26 @@ function Graficos({ item, secao, Data, tipo }) {
   if (adultos[1]) tAdultos += Number(adultos[1]);
   if (adultos[2]) tAdultos += Number(adultos[2]);
   if (adultos[3]) tAdultos += Number(adultos[3]);
-  if (adultos[4]) tAdultos += Number(adultos[1]);
+  if (adultos[4]) tAdultos += Number(adultos[4]);
   // console.log(tAdultos);
   let tCrianças = 0;
   if (crianças[0]) tCrianças += Number(crianças[0]);
   if (crianças[1]) tCrianças += Number(crianças[1]);
   if (crianças[2]) tCrianças += Number(crianças[2]);
   if (crianças[3]) tCrianças += Number(crianças[3]);
-  if (crianças[4]) tCrianças += Number(crianças[1]);
+  if (crianças[4]) tCrianças += Number(crianças[4]);
   let tVisitantes = 0;
   if (visitantes[0]) tVisitantes += Number(visitantes[0]);
   if (visitantes[1]) tVisitantes += Number(visitantes[1]);
   if (visitantes[2]) tVisitantes += Number(visitantes[2]);
   if (visitantes[3]) tVisitantes += Number(visitantes[3]);
-  if (visitantes[4]) tVisitantes += Number(visitantes[1]);
+  if (visitantes[4]) tVisitantes += Number(visitantes[4]);
   let tConversoes = 0;
   if (conversoes[0]) tConversoes += Number(conversoes[0]);
   if (conversoes[1]) tConversoes += Number(conversoes[1]);
   if (conversoes[2]) tConversoes += Number(conversoes[2]);
   if (conversoes[3]) tConversoes += Number(conversoes[3]);
-  if (conversoes[4]) tConversoes += Number(conversoes[1]);
+  if (conversoes[4]) tConversoes += Number(conversoes[4]);
   const dataGrafic = {
     labels: ['sem-1', 'sem-2', 'sem-3', 'sem-4', 'sem-5'],
     datasets: [
