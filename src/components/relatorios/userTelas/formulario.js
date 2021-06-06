@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 10,
     textAlign: 'center',
     // marginRight: 8,
-    width: '120px',
+    width: '150px',
     // alignItems: 'center',
     [theme.breakpoints.down('md')]: {
       marginLeft: 10,
@@ -139,15 +139,19 @@ function formulario({ item, Data, Semana }) {
   const [semana] = React.useState(Semana);
   const [dataRelatorio, setDataRelatorio] = React.useState(Data);
   const [adultos, setAdultos] = React.useState('');
+  const [adolecentes, setAdolecentes] = React.useState('');
   const [criancas, setCriancas] = React.useState('');
   const [visitantes, setVisitantes] = React.useState('');
   const [conversoes, setConversoes] = React.useState('');
   const [ofertas, setOfertas] = React.useState('');
+  const [dizimos, setDizimos] = React.useState('');
   const [validarAdultos, setValidarAdultos] = React.useState('sim');
+  const [validarAdolecentes, setValidarAdolecentes] = React.useState('sim');
   const [validarCriancas, setValidarCriancas] = React.useState('sim');
   const [validarVisitantes, setValidarVisitantes] = React.useState('sim');
   const [validarConversoes, setValidarConversoes] = React.useState('sim');
   const [validarOfertas, setValidarOfertas] = React.useState('sim');
+  const [validarDizimos, setValidarDizimos] = React.useState('sim');
   const [contador, setContador] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   //----------------------------------------------------------------------
@@ -165,19 +169,23 @@ function formulario({ item, Data, Semana }) {
   let DataRelatorio = 'dd/mm/aaaa';
   let sem = Semana;
   let Adultos = '';
+  let Adolecentes = '';
   let Crianças = '';
   let Visitantes = '';
   let Conversoes = '';
   let Ofertas = 0;
+  let Dizimos = 0;
   let ids = '';
   if (dadosRel.length !== 0) {
     DataRelatorio = dadosRel[0].dataRelatorio;
     Adultos = dadosRel[0].adultos;
+    Adolecentes = dadosRel[0].adolecentes;
     Crianças = dadosRel[0].criancas;
     Visitantes = dadosRel[0].visitantes;
     sem = dadosRel[0].semana;
     Conversoes = dadosRel[0].conversoes;
     Ofertas = String(formatarMoeda(dadosRel[0].ofertas));
+    Dizimos = String(formatarMoeda(dadosRel[0].dizimos));
     ids = dadosRel[0].id;
   }
 
@@ -185,7 +193,15 @@ function formulario({ item, Data, Semana }) {
   // console.log(ofertas, Ofertas);
   //--------------------------------------------------------------------------
   const valid = () => {
-    if (!adultos || !criancas || !visitantes || !conversoes || !ofertas) {
+    if (
+      !adultos ||
+      !adolecentes ||
+      !criancas ||
+      !visitantes ||
+      !conversoes ||
+      !ofertas ||
+      !dizimos
+    ) {
       return false;
     }
     return true;
@@ -193,10 +209,12 @@ function formulario({ item, Data, Semana }) {
   //--------------------------------------------------------------------------
   const handleClick = () => {
     setAdultos(Adultos);
+    setAdolecentes(Adolecentes);
     setCriancas(Crianças);
     setVisitantes(Visitantes);
     setConversoes(Conversoes);
     setOfertas(String(formatarMoeda(Ofertas)));
+    setDizimos(String(formatarMoeda(Dizimos)));
     setDataRelatorio(Data);
 
     if (!editar) {
@@ -228,11 +246,13 @@ function formulario({ item, Data, Semana }) {
           mes,
           ano,
           adultos,
+          adolecentes,
           criancas,
           visitantes,
           conversoes,
           dataRelatorio,
           ofertas: String(formatarMoeda(ofertas)),
+          dizimos: String(formatarMoeda(dizimos)),
         };
 
         let urlCreate = '';
@@ -321,7 +341,7 @@ function formulario({ item, Data, Semana }) {
                 variant="outlined"
                 value={sem}
                 disabled
-                className={classes.tf_4}
+                className={classes.tf_3}
                 size="small"
               />
 
@@ -331,7 +351,7 @@ function formulario({ item, Data, Semana }) {
                 <TextField
                   className={classes.tf_6}
                   id="Adultos"
-                  label="Membros Adultos"
+                  label="Membros com + 18"
                   type="number"
                   InputLabelProps={{
                     shrink: true,
@@ -359,12 +379,52 @@ function formulario({ item, Data, Semana }) {
                 <TextField
                   className={classes.tf_6}
                   id="Adultos"
-                  label="Membros Adultos"
+                  label="Membros com + 18"
                   type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
                   value={Adultos}
+                  variant="outlined"
+                  placeholder=""
+                  size="small"
+                  disabled
+                />
+              )}
+              {editar ? (
+                <TextField
+                  className={classes.tf_6}
+                  id="Adolecentes"
+                  label="Membros com + 12"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={(e) => setAdolecentes(e.target.value)}
+                  error={validarAdolecentes === 'nao'}
+                  onFocus={(e) => setAdolecentes(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  onBlur={
+                    adolecentes === ''
+                      ? () => setValidarAdolecentes('nao')
+                      : (() => setValidarAdolecentes('sim'),
+                        () => setContador('1'))
+                  }
+                  value={adolecentes}
+                  variant="outlined"
+                  placeholder=""
+                  size="small"
+                />
+              ) : (
+                <TextField
+                  className={classes.tf_6}
+                  id="Adolecentes"
+                  label="Membros com + 12"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={Adolecentes}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -414,7 +474,7 @@ function formulario({ item, Data, Semana }) {
 
               {editar ? (
                 <TextField
-                  className={classes.tf_4}
+                  className={classes.tf_6}
                   id="Visitantes"
                   label="Visitantes"
                   type="number"
@@ -437,7 +497,7 @@ function formulario({ item, Data, Semana }) {
                 />
               ) : (
                 <TextField
-                  className={classes.tf_4}
+                  className={classes.tf_6}
                   id="Visitantes"
                   label="Visitantes"
                   type="number"
@@ -457,7 +517,7 @@ function formulario({ item, Data, Semana }) {
                   label="Conversões"
                   value={conversoes}
                   variant="outlined"
-                  className={classes.tf_4}
+                  className={classes.tf_6}
                   size="small"
                   type="number"
                   InputLabelProps={{
@@ -481,7 +541,7 @@ function formulario({ item, Data, Semana }) {
                   variant="outlined"
                   value={Conversoes}
                   disabled
-                  className={classes.tf_4}
+                  className={classes.tf_6}
                   size="small"
                   type="number"
                   InputLabelProps={{
@@ -496,7 +556,7 @@ function formulario({ item, Data, Semana }) {
                   label="Ofertas:"
                   value={String(formatarMoeda(ofertas))}
                   variant="outlined"
-                  className={classes.tf_4}
+                  className={classes.tf_6}
                   size="small"
                   type="string"
                   InputLabelProps={{
@@ -525,7 +585,56 @@ function formulario({ item, Data, Semana }) {
                   variant="outlined"
                   value={String(formatarMoeda(Ofertas))}
                   disabled
-                  className={classes.tf_4}
+                  className={classes.tf_6}
+                  size="small"
+                  type="string"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder=""
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+              {editar ? (
+                <TextField
+                  id="Dizimos"
+                  label="Dizimos:"
+                  value={String(formatarMoeda(ofertas))}
+                  variant="outlined"
+                  className={classes.tf_6}
+                  size="small"
+                  type="string"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onBlur={
+                    ofertas === ''
+                      ? () => setValidarDizimos('nao')
+                      : () => setValidarDizimos('sim')
+                  }
+                  onChange={(e) => setDizimos(e.target.value)}
+                  error={validarDizimos === 'nao'}
+                  onFocus={(e) => setDizimos(e.target.value)}
+                  helperText={error ? 'Não pode ser Vazio!' : ''}
+                  placeholder=""
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
+                />
+              ) : (
+                <TextField
+                  id="Dizimos"
+                  label="Dizimos:"
+                  variant="outlined"
+                  value={String(formatarMoeda(Dizimos))}
+                  disabled
+                  className={classes.tf_6}
                   size="small"
                   type="string"
                   InputLabelProps={{
@@ -570,35 +679,19 @@ function formulario({ item, Data, Semana }) {
                       Voltar
                     </Button>
                   )}
-                  {!editar || !valid() ? (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      className={classes.button}
-                      startIcon={<SaveIcon />}
-                      onClick={submitData}
-                      mt={3}
-                      disabled
-                      //  startIcon={<SaveIcon />}
-                    >
-                      Salvar
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      className={classes.button}
-                      startIcon={<SaveIcon />}
-                      onClick={submitData}
-                      mt={3}
-
-                      //  startIcon={<SaveIcon />}
-                    >
-                      Salvar
-                    </Button>
-                  )}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    className={classes.button}
+                    startIcon={<SaveIcon />}
+                    onClick={submitData}
+                    mt={3}
+                    disabled={!!(!editar || !valid())}
+                    //  startIcon={<SaveIcon />}
+                  >
+                    Salvar
+                  </Button>
                   {loading && (
                     <CircularProgress
                       size={24}
@@ -635,35 +728,19 @@ function formulario({ item, Data, Semana }) {
                       Voltar
                     </Button>
                   )}
-                  {!editar || !valid() ? (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      className={classes.button}
-                      startIcon={<SaveIcon />}
-                      onClick={submitData}
-                      mt={3}
-                      disabled
-                      //  startIcon={<SaveIcon />}
-                    >
-                      Salvar
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      className={classes.button}
-                      startIcon={<SaveIcon />}
-                      onClick={submitData}
-                      mt={3}
-
-                      //  startIcon={<SaveIcon />}
-                    >
-                      Salvar
-                    </Button>
-                  )}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    className={classes.button}
+                    startIcon={<SaveIcon />}
+                    onClick={submitData}
+                    mt={3}
+                    disabled={!!(!editar || !valid())}
+                    //  startIcon={<SaveIcon />}
+                  >
+                    Salvar
+                  </Button>
                 </Box>
               )}
               {loading && (
@@ -710,7 +787,7 @@ function formulario({ item, Data, Semana }) {
                 </Grid>
               </Box>
               <Box display="flex" flexDirection="row">
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                   <Box className={classes.novoBox}>
                     {dadosRel.length !== 0 ? (
                       <TextField
@@ -736,7 +813,7 @@ function formulario({ item, Data, Semana }) {
                     )}
                   </Box>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={6}>
                   <Box className={classes.novoBox}>
                     <TextField
                       id="Semana"
@@ -753,13 +830,13 @@ function formulario({ item, Data, Semana }) {
 
               <br />
               <Box display="flex" flexDirection="row">
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Box className={classes.novoBox}>
                     {editar ? (
                       <TextField
                         className={classes.tf_m}
                         id="Adultos"
-                        label="Adultos"
+                        label="+ 18"
                         type="number"
                         InputLabelProps={{
                           shrink: true,
@@ -788,7 +865,7 @@ function formulario({ item, Data, Semana }) {
                       <TextField
                         className={classes.tf_m}
                         id="Adultos"
-                        label="Adultos"
+                        label="+ 18"
                         type="number"
                         InputLabelProps={{
                           shrink: true,
@@ -802,8 +879,52 @@ function formulario({ item, Data, Semana }) {
                     )}
                   </Box>
                 </Grid>
+                <Grid item xs={4}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Adolecentes"
+                        label="+ 12"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={adolecentes}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        onBlur={
+                          adolecentes === ''
+                            ? () => setValidarAdolecentes('nao')
+                            : (() => setValidarAdolecentes('sim'),
+                              () => setContador('1'))
+                        }
+                        onChange={(e) => setAdolecentes(e.target.value)}
+                        error={validarAdolecentes === 'nao'}
+                        onFocus={(e) => setAdolecentes(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                      />
+                    ) : (
+                      <TextField
+                        className={classes.tf_m}
+                        id="Adolecentes"
+                        label="+ 12"
+                        type="number"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={Adolecentes}
+                        variant="outlined"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      />
+                    )}
+                  </Box>
+                </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Box className={classes.novoBox}>
                     {editar ? (
                       <TextField
@@ -938,7 +1059,7 @@ function formulario({ item, Data, Semana }) {
                 </Grid>
               </Box>
               <Box display="flex" flexDirection="row">
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <Box className={classes.novoBox}>
                     {editar ? (
                       <TextField
@@ -974,6 +1095,59 @@ function formulario({ item, Data, Semana }) {
                         label="Ofertas:"
                         variant="outlined"
                         value={String(formatarMoeda(Ofertas))}
+                        disabled
+                        className={classes.tf_m}
+                        size="small"
+                        type="string"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        placeholder=""
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box className={classes.novoBox}>
+                    {editar ? (
+                      <TextField
+                        id="Dizimos"
+                        label="Dizimos:"
+                        value={String(formatarMoeda(dizimos))}
+                        variant="outlined"
+                        className={classes.tf_m}
+                        size="small"
+                        type="string"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onBlur={
+                          dizimos === ''
+                            ? () => setValidarDizimos('nao')
+                            : () => setValidarDizimos('sim')
+                        }
+                        onChange={(e) => setDizimos(e.target.value)}
+                        error={validarDizimos === 'nao'}
+                        onFocus={(e) => setDizimos(e.target.value)}
+                        helperText={error ? 'Não pode ser Vazio!' : ''}
+                        placeholder=""
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    ) : (
+                      <TextField
+                        id="Dizimos"
+                        label="Dizimos:"
+                        variant="outlined"
+                        value={String(formatarMoeda(Dizimos))}
                         disabled
                         className={classes.tf_m}
                         size="small"

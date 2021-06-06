@@ -1,68 +1,99 @@
-import aws from 'aws-sdk';
-import download from 'image-downloader';
-import path, { extname } from 'path';
-import fs from 'fs';
-import { type } from 'os';
+// import aws from 'aws-sdk';
+// import download from 'image-downloader';
+import path from 'path';
+import fs from 'fs'; /* async function baixarArquivo(valor) {
+  let nomeArq = '';
+  const dirPath = path.join(__dirname, '../../../../public/images/temp');
+  const options = {
+    url: valor,
+    dest: dirPath, // will be saved to /path/to/dest/image.jpg
+  };
+ */ /* async function downloadS3(s3, params) {
+  (async () => {
+    try {
+      const file = await s3.getObject(params).promise();
+      console.log('aqui não', file);
+      fileDownload(file, 'filename.csv');
+      return file;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  })();
+} */ // const result = downloadS3(valor);
+// import downloads from 'src/utils/download';
+// import fileDownload from 'js-file-download';
+/*  await download
+    .image(options)
+    .then(({ filename }) => {
+      nomeArq = filename;
+      console.log('Saved to', nomeArq); // saved to /path/to/dest/image.jpg
+      return nomeArq;
+    })
+    .catch((err) => console.error(err));
+  return nomeArq;
+} */ export default async function handle(
+  req,
+  res,
+) {
+  const valor = { ...req.body };
+  const dirPath = path.join(__dirname, '../../../../public/images/temp');
 
-function downloadS3(img) {
-  const ACCESS_KEY_ID = process.env.AWSACCESS_KEY;
+  //  await baixarArquivo(valor.dados);
+  // await downloads(valor.name);
+  // const dirRota = path.join(__dirname, '../../../../src/pages/temp');
+  // if (result) baixarPC(result);
+  // console.log(result);
+  fs.rename(
+    `${dirPath}/${valor.name}`,
+    `${dirPath}/imgTemp${valor.tipo}`,
+    (err) => {
+      if (err) console.log(`ERROR: ${err}`);
+      else console.log('ok');
+    },
+  );
+  res.json('ok');
+}
+
+/* const dirPath = path.join(__dirname, '../../../../public/images/temp');
+await baixarArquivo(valor.dados);
+// const dirRota = path.join(__dirname, '../../../../src/pages/temp');
+// if (result) baixarPC(result);
+// console.log(result);
+fs.rename(
+  `${dirPath}/${valor.name}`,
+  `${dirPath}/imgTemp${valor.tipo}`,
+  (err) => {
+    if (err) console.log(`ERROR: ${err}`);
+    else console.log('ok');
+  },
+);
+ */
+
+/* const ACCESS_KEY_ID = process.env.AWSACCESS_KEY;
   const SECRET_ACCESS_KEY = process.env.AWSSECRET_KEY;
   const BUCKET_NAME = 'sistemaidpb';
 
-  console.log('img', img.dados);
+  console.log('img', valor.name, ACCESS_KEY_ID);
   const s3 = new aws.S3({
     accessKeyId: ACCESS_KEY_ID,
     secretAccessKey: SECRET_ACCESS_KEY,
   });
 
   const params = {
-    Key: img.dados,
+    Key: valor.name,
     Bucket: BUCKET_NAME,
   };
 
-  const arquivo = s3.getObject(params, (error, data) => {
-    if (error != null) {
-      console.log('deu erro: ', error);
+  // const response = await downloadS3(s3, params);
 
-      //    alert(`Failed to retrieve an object: ${error}`);
-    } else {
-      //  console.log('vai dados', data);
-      //  baixarPC(data);
-      //      alert(`Loaded ${data.ContentLength} bytes`);
-      // do something with data.Body
+  (async () => {
+    try {
+      const file = await s3.getObject(params).promise();
+      console.log('aqui não', file.Body);
+      res.json(file);
+    } catch (err) {
+      console.log(err);
+      res.json(err);
     }
-  });
-  return arquivo;
-}
-export default function handle(req, res) {
-  const valor = { ...req.body };
-  let nomeArq = '';
-  let extArq = '';
-  const dirPath = path.join(__dirname, '../../../../public/images/temp');
-  const dirRota = path.join(__dirname, '../../../../src/pages/temp');
-  const options = {
-    url: valor.dados,
-    dest: dirPath, // will be saved to /path/to/dest/image.jpg
-  };
-  // const result = downloadS3(valor);
-  download
-    .image(options)
-    .then(({ filename }) => {
-      nomeArq = filename;
-      extArq = filename.split('.').slice(1).join('.');
-      console.log('Saved to', nomeArq, extArq); // saved to /path/to/dest/image.jpg
-    })
-    .catch((err) => console.error(err));
-  // if (result) baixarPC(result);
-  // console.log(result);
-  //  fs.rename(`${dirPath}/${nomeArq}`, `${dirPath}/imgTemp`, (err) => {
-  //    if (err) console.log(`ERROR: ${err}`);
-  //  });
-  //  fs.rename(`${dirPath}/${nomeArq}`, `${dirRota}/imgTemp`, (err) => {
-
-  /*   fs.copyFile(`${dirPath}/${nomeArq}`, `${dirRota}/`, (err) => {
-    if (err) throw err;
-    console.log('source.txt was copied to destination.txt');
-  }); */
-  res.json('OK');
-}
+  })(); */

@@ -134,9 +134,9 @@ export default function TelaEventos() {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleOpen = () => {
+  /* const handleOpen = () => {
     setOpen(true);
-  };
+  }; */
   function MyDropzone() {
     const onDrop = useCallback((acceptedFiles) => {
       console.log('acceptedFiles', acceptedFiles);

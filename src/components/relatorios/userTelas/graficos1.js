@@ -17,6 +17,7 @@ function Graficos({ item, secao, Data, tipo }) {
   //  const [session] = useSession();
 
   const adultos = [];
+  const adolecentes = [];
   const crianças = [];
   const visitantes = [];
   const conversoes = [];
@@ -24,9 +25,10 @@ function Graficos({ item, secao, Data, tipo }) {
   const { data } = useSWR(url, fetcher);
 
   if (data) {
-    console.log('data', data);
+    //    console.log('data', data);
     for (let i = 0; i < data.length; i += 1) {
       adultos[data[i].semana - 1] = data[i].adultos;
+      adolecentes[data[i].semana - 1] = data[i].adolecentes;
       crianças[data[i].semana - 1] = data[i].criancas;
       visitantes[data[i].semana - 1] = data[i].visitantes;
       conversoes[data[i].semana - 1] = data[i].conversoes;
@@ -40,6 +42,14 @@ function Graficos({ item, secao, Data, tipo }) {
   if (adultos[3]) tAdultos += Number(adultos[3]);
   if (adultos[4]) tAdultos += Number(adultos[4]);
   // console.log(tAdultos);
+
+  let tAdolecentes = 0;
+  if (adolecentes[0]) tAdolecentes += Number(adolecentes[0]);
+  if (adolecentes[1]) tAdolecentes += Number(adolecentes[1]);
+  if (adolecentes[2]) tAdolecentes += Number(adolecentes[2]);
+  if (adolecentes[3]) tAdolecentes += Number(adolecentes[3]);
+  if (adolecentes[4]) tAdolecentes += Number(adolecentes[4]);
+
   let tCrianças = 0;
   if (crianças[0]) tCrianças += Number(crianças[0]);
   if (crianças[1]) tCrianças += Number(crianças[1]);
@@ -62,13 +72,22 @@ function Graficos({ item, secao, Data, tipo }) {
     labels: ['sem-1', 'sem-2', 'sem-3', 'sem-4', 'sem-5'],
     datasets: [
       {
-        label: 'Adultos',
+        label: '+ 18',
         data: adultos,
         fill: false,
         backgroundColor: '#283593',
         borderColor: '#1a237e',
         yAxisID: 'y-axis-1',
       },
+      {
+        label: '+ 12',
+        data: adolecentes,
+        fill: false,
+        backgroundColor: '#e040fb',
+        borderColor: '#e040fb',
+        yAxisID: 'y-axis-1',
+      },
+
       {
         label: 'Crianças',
         data: crianças,
@@ -88,13 +107,19 @@ function Graficos({ item, secao, Data, tipo }) {
       position: 'left',
       display: true,
     },
-    labels: ['Adultos', 'Crianças', 'Visitantes', 'Conversões'],
+    labels: ['Adultos', 'Adolecentes', 'Crianças', 'Visitantes', 'Conversões'],
     datasets: [
       {
         label: 'Ofertas do Mês',
-        data: [tAdultos, tCrianças, tVisitantes, tConversoes],
-        backgroundColor: ['#283593', '#388e3c', '#ff9800', '#ffff00'],
-        borderColor: ['#1a237e', '#43a047', '#ffa726', '#c0ca33'],
+        data: [tAdultos, tAdolecentes, tCrianças, tVisitantes, tConversoes],
+        backgroundColor: [
+          '#283593',
+          '#e040fb',
+          '#388e3c',
+          '#ff9800',
+          '#ffff00',
+        ],
+        borderColor: ['#1a237e', '#e040fb', '#43a047', '#ffa726', '#c0ca33'],
         borderWidth: 1,
       },
     ],

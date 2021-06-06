@@ -24,7 +24,17 @@ import { useSession } from 'next-auth/client';
 import IconIdpb from 'src/components/icones/idpb';
 import iconesPerfil from 'src/components/icones/perfil';
 import React from 'react';
-import AssessmentIcon from '@material-ui/icons/Assessment';
+// import AssignmentIcon from '@material-ui/icons/Assignment';
+// import BackupIcon from '@material-ui/icons/Backup';
+// import AccountBoxIcon from '@material-ui/icons/AccountBox';
+// import PollIcon from '@material-ui/icons/Poll';
+// import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+// import CakeIcon from '@material-ui/icons/Cake';
+import iconesBirthdayCake from 'src/components/icones/birthdayCake';
+import iconesFinanças from 'src/components/icones/finanças';
+import iconesAnalise from 'src/components/icones/analise';
+import iconeAtualizarDados from 'src/components/icones/atualizarDados';
+import iconeRelatorio from 'src/components/icones/relatorio';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -81,7 +91,26 @@ const primaryMenu = [
 
 const secondaryManu = [
   { id: 1, label: 'Sobre', path: '/userPerfil', icon: iconesPerfil },
-  { id: 2, label: 'Relatórios', path: '/relatorios', icon: AssessmentIcon },
+  { id: 2, label: 'Relatórios', path: '/relatorios', icon: iconeRelatorio },
+  {
+    id: 3,
+    label: 'Atualizar / Inserir',
+    path: '/atualizar',
+    icon: iconeAtualizarDados,
+  },
+  { id: 4, label: 'Analisar Dados', path: '/analisar', icon: iconesAnalise },
+  {
+    id: 5,
+    label: 'Relatório Financeiro',
+    path: '/financeiro',
+    icon: iconesFinanças,
+  },
+  {
+    id: 6,
+    label: 'Aniversariantes',
+    path: '/aniversariantes',
+    icon: iconesBirthdayCake,
+  },
 ];
 function navBar() {
   const classes = useStyles();

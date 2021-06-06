@@ -1,16 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import UploadFile from './uploadFile';
 
 export default function SimpleModal() {
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const [open, setOpen] = React.useState(true);
 
   const handleClose = () => {
     setOpen(false);

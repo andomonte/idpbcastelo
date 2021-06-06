@@ -24,7 +24,7 @@ import { useSession } from 'next-auth/client';
 import IconIdpb from 'src/components/icones/idpb';
 import iconesPerfil from 'src/components/icones/perfil';
 import React from 'react';
-import AssessmentIcon from '@material-ui/icons/Assessment';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -81,7 +81,21 @@ const primaryMenu = [
 
 const secondaryManu = [
   { id: 1, label: 'Sobre', path: '/userPerfil', icon: iconesPerfil },
-  { id: 2, label: 'Relatórios', path: '/relatorios', icon: AssessmentIcon },
+  { id: 2, label: 'Relatórios', path: '/relatorios', icon: AssignmentIcon },
+  {
+    id: 3,
+    label: 'Atualizar / Inserir',
+    path: '/atualizar',
+    icon: AssignmentIcon,
+  },
+  { id: 4, label: 'Analisar Dados', path: '/analisar', icon: AssignmentIcon },
+  { id: 5, label: 'Financeiro', path: '/financeiro', icon: AssignmentIcon },
+  {
+    id: 6,
+    label: 'Aniversariantes',
+    path: '/aniversariantes',
+    icon: AssignmentIcon,
+  },
 ];
 function navBar() {
   const classes = useStyles();

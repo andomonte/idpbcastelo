@@ -1,9 +1,11 @@
 import React from 'react';
 import { Icon } from '@material-ui/core';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const statistic = () => (
   <Icon>
-    <img src="images/statistic.svg" height={25} width={25} alt="brasil" />
+    <AssignmentIcon style={{ color: '#9c27b0' }} />
+    {/* <img src="images/relatorio.svg" height={25} width={25} alt="relatorio" /> */}
   </Icon>
 );
 

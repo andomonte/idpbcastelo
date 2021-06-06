@@ -232,12 +232,11 @@ function TelaMinistro({ item, secao }) {
             <Box
               className={classes.box}
               mt={3}
-              ml={2}
-              mr={2}
+              ml={0}
+              mr={0}
               //  alignContent="center"
               // justifyContent="center"
-              //              width="100%"
-              width="auto"
+              width="100%"
               //            maxWidth={1200}
               height="auto"
               borderRadius={16}
@@ -302,23 +301,21 @@ function TelaMinistro({ item, secao }) {
                 value={selectedDate}
                 onClick={handleDateClick}
                 onChange={handleDateChange}
-                size="small"
                 //                setData(moment(e.getUTCDate()).format('DD/MM/YYYY'));
                 onClose={getData}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
               />
-
+              <Box mt={4} ml={2} className={classes.texto} textAlign="center">
+                Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
+              </Box>
               {/* <IconButton classes={{ label: classes.iconButtonLabel }}>
                 <NoteAddIcon style={{ fontSize: 30 }} color="primary" />
                 <div>Novo</div>
               </IconButton> */}
             </Grid>
           </MuiPickersUtilsProvider>
-          <Box mt={1} ml={2} className={classes.texto} textAlign="center">
-            Mês de {mes[selectedDate.getMonth()]}{' '}
-          </Box>
         </Grid>
 
         <Box
@@ -327,8 +324,7 @@ function TelaMinistro({ item, secao }) {
           ml={1}
           mr={1}
           width="auto"
-          //  width="100%"
-          //          maxWidth={1200}
+          //            maxWidth={1200}
           height="auto"
           borderRadius={16}
           {...defaultProps}

@@ -26,7 +26,7 @@ import { MdCheckCircle, MdError, MdLink } from 'react-icons/md';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import JsFileDownloader from 'js-file-downloader';
+// import JsFileDownloader from 'js-file-downloader';
 
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
@@ -233,6 +233,7 @@ function formulario({ item, Data }) {
   const [codigoIgreja] = React.useState(item[0].codigoIgreja);
   const [evento, setEvento] = React.useState('');
   const [adultos, setAdultos] = React.useState('');
+  const [adolecentes, setAdolecentes] = React.useState('');
   const [criancas, setCriancas] = React.useState('');
   const [visitantes, setVisitantes] = React.useState('');
   const [conversoes, setConversoes] = React.useState('');
@@ -243,6 +244,7 @@ function formulario({ item, Data }) {
   const [img05, setImg05] = React.useState('');
   const [validarEvento, setValidarEvento] = React.useState('sim');
   const [validarAdultos, setValidarAdultos] = React.useState('sim');
+  const [validarAdolecentes, setValidarAdolecentes] = React.useState('sim');
   const [validarCriancas, setValidarCriancas] = React.useState('sim');
   const [validarVisitantes, setValidarVisitantes] = React.useState('sim');
   const [validarConversoes, setValidarConversoes] = React.useState('sim');
@@ -451,7 +453,7 @@ function formulario({ item, Data }) {
             </DropContainer>
           )}
         </Dropzone>
-
+        {/* type: file.name.str.substr('.'), */}
         {fileObjects.length > 0 && <FileList files={fileObjects} />}
       </>
     );
@@ -468,6 +470,7 @@ function formulario({ item, Data }) {
   const dadosRel = data.filter((val) => val.dataEvento === dataEvento);
   let Evento = '';
   let Adultos = '';
+  let Adolecentes = '';
   let Crianças = '';
   let Visitantes = '';
   let Conversoes = '';
@@ -476,6 +479,7 @@ function formulario({ item, Data }) {
   if (dadosRel.length !== 0) {
     Evento = dadosRel[0].evento;
     Adultos = dadosRel[0].adultos;
+    Adolecentes = dadosRel[0].adolecentes;
     Crianças = dadosRel[0].criancas;
     Visitantes = dadosRel[0].visitantes;
     Conversoes = dadosRel[0].conversoes;
@@ -490,7 +494,14 @@ function formulario({ item, Data }) {
   //--------------------------------------------------------------------------
   //--------------------------------------------------------------------------
   const valid = () => {
-    if (!adultos || !criancas || !visitantes || !conversoes || !evento) {
+    if (
+      !adultos ||
+      !adolecentes ||
+      !criancas ||
+      !visitantes ||
+      !conversoes ||
+      !evento
+    ) {
       return false;
     }
     return true;
@@ -501,6 +512,7 @@ function formulario({ item, Data }) {
     setSend(false);
     setEvento(Evento);
     setAdultos(Adultos);
+    setAdolecentes(Adolecentes);
     setCriancas(Crianças);
     setVisitantes(Visitantes);
     setConversoes(Conversoes);
@@ -515,6 +527,7 @@ function formulario({ item, Data }) {
   const handleClick = () => {
     setEvento(Evento);
     setAdultos(Adultos);
+    setAdolecentes(Adolecentes);
     setCriancas(Crianças);
     setVisitantes(Visitantes);
     setConversoes(Conversoes);
@@ -537,6 +550,7 @@ function formulario({ item, Data }) {
 
     setEvento(Evento);
     setAdultos(Adultos);
+    setAdolecentes(Adolecentes);
     setCriancas(Crianças);
     setVisitantes(Visitantes);
     setConversoes(Conversoes);
@@ -555,32 +569,33 @@ function formulario({ item, Data }) {
   const handleOpenImage = () => {
     setOpenImage(true);
   };
-  const handleBaixarImage = async () => {
+  /*   const handleBaixarImage = async () => {
     //    const valor = downloadS3(arrayImage[contImage]);
     // const ini = arrayImage[contImage].indexOf('img');
-    //  const nomeImg = arrayImage[contImage].slice(ini);
-
+    // const nomeImg = arrayImage[contImage].slice(ini); // const nameFile = nomeImg;
+    /*    // const tipo = arrayImage[contImage].substring(
+      arrayImage[contImage].lastIndexOf('.'),
+    );
+ 
     api
-      .post('api/baixarImagem', { dados: arrayImage[contImage] })
-      .then((response) => {
-        if (response) console.log(response);
-        new JsFileDownloader({
-          url: `/public/images/temp/arrayImage[contImage]`,
-        })
-          .then(() => {
-            // Called when download ended
-          })
-          .catch((error) => {
-            // Called when an error occurred
-          });
-
-        //  updateFile(uploadedFile.id, { uploaded: true });
+      .post('api/baixarImagem', {
+        dados: arrayImage[contImage],
+        name: arrayImage[contImage].substring(
+          arrayImage[contImage].lastIndexOf('img'),
+        ),
+        tipo: arrayImage[contImage].substring(
+          arrayImage[contImage].lastIndexOf('.'),
+        ),
       })
+
+      .then(() => {})
+
       .catch(() => {
         //  updateFile(uploadedFile.id, { error: true });
       });
     setOpenImage(false);
-  };
+  }; */
+
   const handleContImage = () => {
     setContImage(contImage + 1);
     if (contImage > 3) setContImage(0);
@@ -601,6 +616,7 @@ function formulario({ item, Data }) {
           codigoIgreja,
           dataEvento,
           adultos,
+          adolecentes,
           criancas,
           visitantes,
           conversoes,
@@ -663,9 +679,9 @@ function formulario({ item, Data }) {
                   variant="contained"
                   size="small"
                   className={classes.buttonGreen}
-                  onClick={handleBaixarImage}
+                  onClick={handleContImage}
                 >
-                  Baixar
+                  Próxima
                 </Button>
               </Box>
             </Box>
@@ -747,7 +763,9 @@ function formulario({ item, Data }) {
     const uploadedFiles = fileObjects.map((file) => ({
       file,
       id: uniqueId(),
-      name: `img${file.id}_${dataEvento}_${item[0].codigoIgreja}`,
+      name: `img${file.id}_${dataEvento}_${
+        item[0].codigoIgreja
+      }${file.name.substring(file.name.lastIndexOf('.'))}`,
       readableSize: filesize(file.size),
       preview: URL.createObjectURL(file),
       progress: 0,
@@ -774,6 +792,7 @@ function formulario({ item, Data }) {
           codigoIgreja,
           dataEvento,
           adultos,
+          adolecentes,
           criancas,
           visitantes,
           conversoes,
@@ -910,13 +929,13 @@ function formulario({ item, Data }) {
               </Grid>
             </Box>
             <Box display="flex" flexDirection="row">
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Box className={classes.novoBox}>
                   {editar ? (
                     <TextField
                       className={classes.tf_m}
                       id="Adultos"
-                      label="Adultos"
+                      label="+ 18 anos"
                       type="number"
                       InputLabelProps={{
                         shrink: true,
@@ -939,7 +958,7 @@ function formulario({ item, Data }) {
                     <TextField
                       className={classes.tf_m}
                       id="Adultos"
-                      label="Adultos"
+                      label="+ 18 anos"
                       type="number"
                       InputLabelProps={{
                         shrink: true,
@@ -953,8 +972,51 @@ function formulario({ item, Data }) {
                   )}
                 </Box>
               </Grid>
+              <Grid item xs={4}>
+                <Box className={classes.novoBox}>
+                  {editar ? (
+                    <TextField
+                      className={classes.tf_m}
+                      id="Adolecentes"
+                      label="+ 12 anos"
+                      type="number"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={adolecentes}
+                      variant="outlined"
+                      placeholder=""
+                      size="small"
+                      onBlur={
+                        adolecentes === ''
+                          ? () => setValidarAdolecentes('nao')
+                          : () => setValidarAdolecentes('sim')
+                      }
+                      onChange={(e) => setAdolecentes(e.target.value)}
+                      error={validarAdolecentes === 'nao'}
+                      onFocus={(e) => setAdolecentes(e.target.value)}
+                      helperText={error ? 'Não pode ser Vazio!' : ''}
+                    />
+                  ) : (
+                    <TextField
+                      className={classes.tf_m}
+                      id="Adolecentes"
+                      label="+ 12 anos"
+                      type="number"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={Adolecentes}
+                      variant="outlined"
+                      placeholder="0"
+                      size="small"
+                      disabled
+                    />
+                  )}
+                </Box>
+              </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Box className={classes.novoBox}>
                   {editar ? (
                     <TextField

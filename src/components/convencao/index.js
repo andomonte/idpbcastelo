@@ -22,7 +22,7 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import Navbar from './navBar_redesSociais';
+import NavbarMinistro from '../navBar/ministos';
 import Painel from './painel';
 import Registro from './registro';
 import Padrao from './userTelas/telaPadrao';
@@ -177,10 +177,8 @@ function Convenção({ item, title, ministros, igrejas }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="notranslate, initial-scale=1.0, width=device-width"
-        />
+        <meta name="google" content="notranslate" />
+        <meta httpEquiv="Content-Language" content="pt-br" />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
@@ -248,7 +246,7 @@ function Convenção({ item, title, ministros, igrejas }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar />
+          <NavbarMinistro />
         </Drawer>
 
         <main

@@ -309,6 +309,7 @@ model MinistrosIDPBs {
   RG                  String   @db.VarChar(255)
   Sexo                String   @db.VarChar(255)
   JurisdicaoEstadual  String   @db.VarChar(255)
+  Distrito            String   @default("\"\"") @db.VarChar(45)
   GrauMinisterial     String   @db.VarChar(255)
   FormacaoEscolar     String?  @db.VarChar(255)
   Conjuge             String?  @db.VarChar(255)
@@ -382,11 +383,13 @@ model relatorios {
   mes           String @db.VarChar(45)
   ano           String @db.VarChar(45)
   adultos       String @db.VarChar(45)
+  adolecentes   String @db.VarChar(45)
   criancas      String @db.VarChar(45)
   conversoes    String @db.VarChar(45)
   ofertas       String @db.VarChar(45)
   visitantes    String @db.VarChar(45)
   dataRelatorio String @db.VarChar(45)
+  dizimos       String @db.VarChar(45)
 }
 
 model InscritosConvRRs {
@@ -421,6 +424,7 @@ model Eventos {
   dataEvento   String  @db.VarChar(45)
   evento       String  @db.VarChar(500)
   adultos      String  @db.VarChar(45)
+  adolecentes  String  @db.VarChar(45)
   criancas     String  @db.VarChar(45)
   visitantes   String  @db.VarChar(45)
   conversoes   String  @db.VarChar(45)

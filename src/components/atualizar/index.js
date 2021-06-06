@@ -143,7 +143,7 @@ function TabPanel(props) {
   );
 }
 
-function Perfil({ item, title, ministros, igrejas }) {
+function PageAtualizar({ item, title, ministros, igrejas }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -285,4 +285,4 @@ function Perfil({ item, title, ministros, igrejas }) {
   );
 }
 
-export { Perfil, TabPanel };
+export { PageAtualizar, TabPanel };

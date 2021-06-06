@@ -22,7 +22,7 @@ import EventIcon from '@material-ui/icons/Event';
 import { useSession } from 'next-auth/client';
 import PeopleIcon from '@material-ui/icons/People';
 import Evento from './eventos';
-import Navbar from './navBar_redesSociais';
+import NavbarMinistro from '../navBar/ministos';
 import Culto from './culto';
 
 import Analisar from './analisar';
@@ -185,10 +185,8 @@ function PageRelatorios({ item, title }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="notranslate, initial-scale=1.0, width=device-width"
-        />
+        <meta name="google" content="notranslate" />
+        <meta httpEquiv="Content-Language" content="pt-br" />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
@@ -254,7 +252,7 @@ function PageRelatorios({ item, title }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar />
+          <NavbarMinistro />
         </Drawer>
 
         <main

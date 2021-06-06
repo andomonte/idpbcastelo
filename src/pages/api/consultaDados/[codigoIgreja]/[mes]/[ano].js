@@ -5,7 +5,7 @@ export default async function handle(req, res) {
   const {
     query: { codigoIgreja, mes, ano },
   } = req;
-  console.log('dados do api', codigoIgreja, mes, ano);
+  // console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
   const posts = await prisma.relatorios.findMany({
     where: {
@@ -16,6 +16,6 @@ export default async function handle(req, res) {
   res.statuCode = 200;
   res.setHeader('Content-Type', 'aplication/json');
   //  res.end(JSON.stringify({ posts }));
-  console.log('POSTS:', posts);
+  // console.log('POSTS:', posts);
   res.json(posts);
 }
