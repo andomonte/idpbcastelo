@@ -24,8 +24,9 @@ import PeopleIcon from '@material-ui/icons/People';
 import Evento from './eventos';
 import NavbarMinistro from '../navBar/ministos';
 import Culto from './culto';
+import CelulasMM from './celulasMM';
 
-import Analisar from './analisar';
+// import Analisar from './analisar';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -271,7 +272,9 @@ function PageRelatorios({ item, title }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            <Analisar item={item} secao={session} />
+            {session && <CelulasMM item={item} secao={session} />}
+
+            {/* <Analisar item={item} secao={session} /> */}
           </TabPanel>
         </main>
       </div>

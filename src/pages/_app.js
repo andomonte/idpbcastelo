@@ -1,9 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+
 import { Provider } from 'next-auth/client';
 import theme from 'src/theme';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -23,6 +24,10 @@ export default function MyApp(props) {
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
         />
         <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" />
       </Head>

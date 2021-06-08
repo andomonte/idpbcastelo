@@ -603,7 +603,7 @@ function formulario({ item, Data, Semana }) {
                 <TextField
                   id="Dizimos"
                   label="Dizimos:"
-                  value={String(formatarMoeda(ofertas))}
+                  value={String(formatarMoeda(dizimos))}
                   variant="outlined"
                   className={classes.tf_6}
                   size="small"
