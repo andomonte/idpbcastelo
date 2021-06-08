@@ -1,7 +1,7 @@
 // next.config.js
 const withPlugins = require('next-compose-plugins');
 
-const withPWA = require('next-pwa');
+// const withPWA = require('next-pwa');
 
 module.exports = withPlugins([
   {
@@ -22,17 +22,6 @@ module.exports = withPlugins([
       MYSQL_PASSWORD: 'idpbMM981341',
     },
   },
-  [
-    withPWA,
-    {
-      pwa: {
-        disable: process.env.NODE_ENV === 'development',
-        dest: '/public',
-        register: true,
-        sw: '/sw.js',
-      },
-    },
-  ],
 
   // your other plugins here
 ]);
