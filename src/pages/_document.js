@@ -23,7 +23,7 @@ export default class MyDocument extends Document {
           <link rel="shortcut icon" href="/favicon.png" type="image/png" />
 
           <link rel="icon" href="/favicon.png" />
-          <link rel="manifest" href="/manifest.json" />
+          <link rel="manifest" href="/public/manifest.json" />
         </Head>
         <body>
           <Main />
