@@ -19,11 +19,15 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
-          <link rel="apple-touch-icon" href="/apple-icon.png" />
-          <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+          <link rel="manifest" href="images/manifest.json" />
+          <link rel="apple-touch-icon" href="images/apple-icon.png" />
+          <link
+            rel="shortcut icon"
+            href="images/favicon.png"
+            type="image/png"
+          />
 
-          <link rel="icon" href="/favicon.png" />
-          <link rel="manifest" href="/public/manifest.json" />
+          <link rel="icon" href="images/favicon.png" />
         </Head>
         <body>
           <Main />
