@@ -187,7 +187,7 @@ function PageRelatorios({ item, title }) {
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="google" content="notranslate" />
-        <meta httpEquiv="Content-Language" content="pt-br" />
+        <meta httpEquiv="Content-Language" content="en" />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
