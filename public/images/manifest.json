@@ -2,7 +2,7 @@
   "name": "Sistema IDPB",
   "short_name": "idpb-app",
   "description": "Nosso sistema das Igrejas IDPBs",
-  "theme_color": "#ffff8d",
+  "theme_color": "#304ffe",
   "background_color": "#121214",
   "display": "standalone",
   "lang": "pt-BR",
