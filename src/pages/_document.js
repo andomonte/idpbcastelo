@@ -27,7 +27,7 @@ export default class MyDocument extends Document {
             type="image/png"
           />
 
-          <link rel="icon" href="images/favicon.png" />
+          <link rel="icon" href="images/idpb.ico" />
         </Head>
         <body>
           <Main />
