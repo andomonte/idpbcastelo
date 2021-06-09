@@ -21,11 +21,6 @@ export default class MyDocument extends Document {
           />
           <link rel="manifest" href="images/manifest.json" />
           <link rel="apple-touch-icon" href="images/apple-icon.png" />
-          <link
-            rel="shortcut icon"
-            href="images/favicon.png"
-            type="image/png"
-          />
 
           <link rel="icon" href="images/idpb.ico" />
         </Head>
