@@ -15,6 +15,8 @@ const Analisar = ({ item, secao }) => {
   switch (route) {
     case 'ministro':
       return <GraficoMinistro item={item} secao={secao} />;
+    case 'sup-MM':
+      return <GraficoMinistro item={item} secao={secao} />;
     default:
       return <Padrao />;
   }

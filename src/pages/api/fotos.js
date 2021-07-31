@@ -5,6 +5,7 @@ import upload from 'src/utils/upload';
 const handler = nc()
   .use(upload.single('file'))
   .post((req, res) => {
+    // console.log(req.file);
     res.json({ Arquivo: 'Arquivado com sucesso' });
   });
 

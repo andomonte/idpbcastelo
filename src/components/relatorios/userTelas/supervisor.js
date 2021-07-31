@@ -11,7 +11,7 @@ import {
 } from '@material-ui/pickers';
 
 import moment from 'moment';
-import Formulario from './formulario';
+import Formulario from './formularioSupervisao';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -120,7 +120,7 @@ const defaultProps = {
   border: 1,
 };
 
-function TelaMinistro({ item, secao }) {
+function TelaSupervisor({ item, secao }) {
   let enviarDia;
   let enviarData;
   const classes = useStyles();
@@ -136,13 +136,23 @@ function TelaMinistro({ item, secao }) {
 
   const dates = selectedDate;
   const firstDay = new Date(dates.getFullYear(), dates.getMonth(), 1).getDay();
-  // const lastDay = new Date(dates.getFullYear(), dates.getMonth() + 1, 0);
+  const lastDay = new Date(
+    dates.getFullYear(),
+    dates.getMonth() + 1,
+    0,
+  ).getDate();
   let firstSunday;
-
+  let qtSemana;
   if (firstDay > 0) {
     firstSunday = 1 + (7 - firstDay);
   }
-
+  if (firstSunday + 28 <= lastDay) {
+    qtSemana = 5;
+    //  console.log('5 semanas', firstSunday, lastDay);
+  } else {
+    qtSemana = 6;
+    // console.log('4 semanas', firstSunday, lastDay);
+  }
   //= ==============================================================
   const handleDateChange = (date, value) => {
     setInputValue(value);
@@ -249,6 +259,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={1}
+                  qtSemana={qtSemana}
                 />
               ) : null}
               {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
@@ -257,6 +268,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={2}
+                  qtSemana={qtSemana}
                 />
               ) : null}
               {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
@@ -265,6 +277,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={3}
+                  qtSemana={qtSemana}
                 />
               ) : null}
               {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
@@ -273,6 +286,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={4}
+                  qtSemana={qtSemana}
                 />
               ) : null}
               {enviarDia > firstSunday + 27 ? (
@@ -281,6 +295,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={5}
+                  qtSemana={qtSemana}
                 />
               ) : null}
             </Box>
@@ -339,6 +354,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={1}
+              qtSemana={qtSemana}
             />
           ) : null}
           {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
@@ -347,6 +363,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={2}
+              qtSemana={qtSemana}
             />
           ) : null}
           {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
@@ -355,6 +372,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={3}
+              qtSemana={qtSemana}
             />
           ) : null}
           {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
@@ -363,6 +381,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={4}
+              qtSemana={qtSemana}
             />
           ) : null}
           {enviarDia > firstSunday + 27 ? (
@@ -371,6 +390,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={5}
+              qtSemana={qtSemana}
             />
           ) : null}
         </Box>
@@ -379,4 +399,4 @@ function TelaMinistro({ item, secao }) {
   );
 }
 
-export default TelaMinistro;
+export default TelaSupervisor;

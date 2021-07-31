@@ -47,6 +47,14 @@ function userPerfil({ org, ministros, igrejas }) {
             igrejas={igrejas}
           />
         ) : null}
+        {secao[0].NivelUser === 'sup-MM' ? (
+          <Perfil
+            item={org}
+            title="SISTEMA-IDPB"
+            ministros={ministros}
+            igrejas={igrejas}
+          />
+        ) : null}
         {secao[0].NivelUser === 'convenção' ? (
           <Convenção
             item={org}

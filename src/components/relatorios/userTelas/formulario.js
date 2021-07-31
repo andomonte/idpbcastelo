@@ -165,7 +165,7 @@ function formulario({ item, Data, Semana }) {
   if (!data) return <div>Loading...</div>;
   //---------------------------------------------------------------------------
   const dadosRel = data.filter((val) => val.semana === Semana);
-
+  // console.log('item supervisao', item[0].RegiaoIDPB);
   let DataRelatorio = 'dd/mm/aaaa';
   let sem = Semana;
   let Adultos = '';
@@ -241,6 +241,7 @@ function formulario({ item, Data, Semana }) {
       try {
         const body = {
           igreja,
+          supervisao: item[0].RegiaoIDPB,
           codigoIgreja,
           semana,
           mes,

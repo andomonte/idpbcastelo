@@ -155,7 +155,7 @@ function TelaMinistro({ item, secao }) {
       <Hidden smDown>
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container justify="space-around">
+            <Grid container justifyContent="space-around">
               <KeyboardDatePicker
                 disableToolbar
                 variant="inline"
@@ -197,7 +197,7 @@ function TelaMinistro({ item, secao }) {
             xl={12}
             container
             direction="column"
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="center"
           >
             <Box mt={4} mb={2} className={classes.texto} textAlign="center">

@@ -184,8 +184,9 @@ function Perfil({ item, title, ministros, igrejas }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
+        <meta name="google" value="notranslate" />
+        <meta httpEquiv="content-Language" content="pt-Br" />
         <meta name="google" content="notranslate" />
-        <meta httpEquiv="Content-Language" content="en" />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
@@ -278,6 +279,7 @@ function Perfil({ item, title, ministros, igrejas }) {
             {/*  <Eventos item={item} /> */}
             {item.NivelUser === 'ministro' ? <Padrao /> : null}
             {item.NivelUser === 'adm_MM' ? <CadastroUser /> : null}
+            {item.NivelUser === 'sup-MM' ? <Padrao /> : null}
           </TabPanel>
         </main>
       </div>

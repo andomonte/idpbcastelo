@@ -16,6 +16,8 @@ const Celulas = ({ item, secao }) => {
   switch (route) {
     case 'ministro':
       return <TelaCelulas item={item} secao={secao} />;
+    case 'sup-MM':
+      return <TelaCelulas item={item} secao={secao} />;
     case 'adm_MM':
       return <Padrao item={item} secao={secao} />;
     default:

@@ -204,7 +204,7 @@ function GraficoMinistro({ item, secao }) {
       <Hidden smDown>
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <KeyboardDatePicker
                 open={open}
                 disableToolbar
@@ -241,7 +241,7 @@ function GraficoMinistro({ item, secao }) {
           spacing={0}
           // direction="column"
           alignItems="center"
-          justify="center"
+          justifyContent="center"
           //    style={{ minHeight: '100vh' }}
         >
           <Box
@@ -299,7 +299,7 @@ function GraficoMinistro({ item, secao }) {
           container
           spacing={0}
           alignItems="center"
-          justify="center"
+          justifyContent="center"
           //          style={{ height: '40vh', with: '500px' }}
         >
           <Box
@@ -352,7 +352,7 @@ function GraficoMinistro({ item, secao }) {
       <Hidden mdUp>
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <KeyboardDatePicker
                 open={open}
                 disableToolbar
@@ -405,7 +405,7 @@ function GraficoMinistro({ item, secao }) {
           spacing={0}
           direction="column"
           alignItems="center"
-          justify="center"
+          justifyContent="center"
           //    style={{ minHeight: '100vh' }}
         >
           <Box
@@ -431,7 +431,7 @@ function GraficoMinistro({ item, secao }) {
           spacing={0}
           direction="column"
           alignItems="center"
-          justify="center"
+          justifyContent="center"
           //    style={{ minHeight: '100vh' }}
         >
           <Box

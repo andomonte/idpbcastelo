@@ -98,7 +98,7 @@ export default function TelaCelulass({ item, secao }) {
       >
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <KeyboardDatePicker
                 open={open}
                 disableToolbar

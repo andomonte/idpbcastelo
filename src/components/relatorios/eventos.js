@@ -18,6 +18,8 @@ const Evento = ({ item, secao }) => {
       return <TelaEventos item={item} secao={secao} />;
     case 'adm_MM':
       return <Padrao item={item} secao={secao} />;
+    case 'sup-MM':
+      return <Padrao item={item} secao={secao} />;
     default:
       return <Padrao />;
   }

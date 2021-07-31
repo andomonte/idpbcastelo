@@ -184,8 +184,8 @@ function PageAtualizar({ item, title, ministros, igrejas }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
+        <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
-        <meta httpEquiv="Content-Language" content="en" />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
@@ -275,8 +275,8 @@ function PageAtualizar({ item, title, ministros, igrejas }) {
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            {/*  <Eventos item={item} /> */}
             {item.NivelUser === 'ministro' ? <Padrao /> : null}
+            {item.NivelUser === 'sup-MM' ? <Padrao /> : null}
             {item.NivelUser === 'adm_MM' ? <CadastroUser /> : null}
           </TabPanel>
         </main>

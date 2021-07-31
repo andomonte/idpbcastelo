@@ -177,8 +177,8 @@ function Convenção({ item, title, ministros, igrejas }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
+        <meta httpEquiv="content-Language" content="pt-Br" />
         <meta name="google" content="notranslate" />
-        <meta httpEquiv="Content-Language" content="en" />
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 

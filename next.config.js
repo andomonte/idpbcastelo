@@ -16,6 +16,7 @@ const withPWA = require('next-pwa');
 
 module.exports = withPlugins([
   {
+    webpack5: false,
     env: {
       MYSQL_HOST: 'mysql669.umbler.com',
       MYSQL_PORT: '41890',

@@ -1,6 +1,7 @@
 import { signOut } from 'next-auth/client';
 import React from 'react';
 import TelaMinistro from './userTelas/ministro';
+import TelaSupervisor from './userTelas/supervisor';
 import Padrao from './userTelas/telaPadrao';
 
 const Culto = ({ item, secao }) => {
@@ -15,6 +16,8 @@ const Culto = ({ item, secao }) => {
   switch (route) {
     case 'ministro':
       return <TelaMinistro item={item} secao={secao} />;
+    case 'sup-MM':
+      return <TelaSupervisor item={item} secao={secao} />;
     default:
       return <Padrao />;
   }

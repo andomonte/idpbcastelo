@@ -366,7 +366,7 @@ model user {
   id           Int      @default(autoincrement())
   nome         String   @db.VarChar(255)
   NivelUser    String   @db.VarChar(45)
-  funcaoIDPB   String   @db.VarChar(100)
+  RegiaoIDPB   String   @db.VarChar(100)
   email        String   @db.VarChar(45)
   igreja       String   @db.VarChar(155)
   codigoIgreja String?  @db.VarChar(45)
@@ -379,6 +379,7 @@ model relatorios {
   id            Int    @id @default(autoincrement())
   igreja        String @db.VarChar(145)
   codigoIgreja  String @db.VarChar(45)
+  supervisao    String @db.VarChar(55)
   semana        Int
   mes           String @db.VarChar(45)
   ano           String @db.VarChar(45)
