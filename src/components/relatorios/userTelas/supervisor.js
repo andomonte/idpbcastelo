@@ -145,6 +145,8 @@ function TelaSupervisor({ item, secao }) {
   let qtSemana;
   if (firstDay > 0) {
     firstSunday = 1 + (7 - firstDay);
+  } else {
+    firstSunday = 1;
   }
   if (firstSunday + 28 <= lastDay) {
     qtSemana = 5;
@@ -196,7 +198,7 @@ function TelaSupervisor({ item, secao }) {
   ];
 
   return (
-    <Box className={classes.box2}>
+    <Box className={classes.box2} translate="no">
       <Hidden smDown>
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>

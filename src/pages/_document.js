@@ -6,9 +6,10 @@ import theme from 'src/theme';
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang="pr-BR" class="notranslate" translate="no">
         <Head>
           {/* PWA primary color */}
+          <meta name="google" content="notranslate" />
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="shortcut icon"

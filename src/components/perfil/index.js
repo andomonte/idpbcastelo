@@ -180,13 +180,14 @@ function Perfil({ item, title, ministros, igrejas }) {
   };
 
   return (
-    <div onLoad={handleDrawerClose}>
+    <div onLoad={handleDrawerClose} translate="no">
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
-        <meta name="google" value="notranslate" />
-        <meta httpEquiv="content-Language" content="pt-Br" />
+        <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 

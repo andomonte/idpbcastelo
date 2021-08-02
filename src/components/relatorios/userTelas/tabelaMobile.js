@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   table: {
-    padding: '0px 8px',
     marginLeft: -10,
     marginRight: -10,
     size: 'small',
@@ -202,55 +201,35 @@ export default function TabelaMobile({ dadosRel, item, qtSemana }) {
     if (igrejaSelecionada.length > 0) {
       ListaIgrejas.push(
         <div key={igrejaSelecionada[1].id}>
-          <StyledTableContainer
-            component={Paper}
-            style={{ border: '1px solid rgba(0,0,0,0.2)', padding: 4 }}
-          >
-            <Table fixedHeader={false} style={{ tableLayout: 'auto' }}>
+          <TableContainer component={Paper}>
+            <Table
+              className={classes.table}
+              size="small"
+              aria-label="a dense table"
+            >
               <TableHead size="small">
                 <TableRow key={newDadosRel[1].id} size="small">
-                  <TableCell
-                    className={classes.tableCell}
-                    style={{ width: 20 }}
-                  >
+                  <TableCell align="center" size="small">
                     Sem
                   </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    style={{ width: 20 }}
-                  >
+                  <TableCell size="small" align="center">
                     1
                   </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    style={{ width: 20 }}
-                  >
+                  <TableCell size="small" align="center">
                     2
                   </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    style={{ width: 20 }}
-                  >
+                  <TableCell size="small" align="center">
                     3
                   </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    style={{ width: 20 }}
-                  >
+                  <TableCell size="small" align="center">
                     4
                   </TableCell>
                   {qtSemana === 5 && (
-                    <TableCell
-                      className={classes.tableCell}
-                      style={{ width: 20 }}
-                    >
+                    <TableCell size="small" align="center">
                       5
                     </TableCell>
                   )}
-                  <TableCell
-                    className={classes.tableCell}
-                    style={{ width: 20 }}
-                  >
+                  <TableCell size="small" align="center">
                     M
                   </TableCell>
                 </TableRow>
@@ -276,7 +255,7 @@ export default function TabelaMobile({ dadosRel, item, qtSemana }) {
                 ))}
               </TableBody>
             </Table>
-          </StyledTableContainer>
+          </TableContainer>
         </div>,
       );
     }

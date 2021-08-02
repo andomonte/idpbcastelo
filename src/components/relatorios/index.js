@@ -186,8 +186,10 @@ function PageRelatorios({ item, title }) {
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
-        <meta httpEquiv="content-Language" content="pt-Br" />
+        <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
         {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 

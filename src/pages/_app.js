@@ -21,10 +21,12 @@ export default function MyApp(props) {
     <>
       <Head>
         <title>My page</title>
+
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
+
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
