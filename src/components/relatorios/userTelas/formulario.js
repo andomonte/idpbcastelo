@@ -163,6 +163,7 @@ function formulario({ item, Data, Semana }) {
   // useSWR('/api/consultaDados', fetcher);
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
+
   //---------------------------------------------------------------------------
   const dadosRel = data.filter((val) => val.semana === Semana);
   // console.log('item supervisao', item[0].RegiaoIDPB);

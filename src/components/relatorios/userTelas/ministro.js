@@ -141,8 +141,10 @@ function TelaMinistro({ item, secao }) {
 
   if (firstDay > 0) {
     firstSunday = 1 + (7 - firstDay);
+  } else {
+    firstSunday = 1;
   }
-
+  console.log(firstDay);
   //= ==============================================================
   const handleDateChange = (date, value) => {
     setInputValue(value);
@@ -154,7 +156,7 @@ function TelaMinistro({ item, secao }) {
   const getData = () => {
     enviarData = inputValue;
     enviarDia = Number(inputValue.slice(0, 2));
-
+    // console.log(inputValue, enviarData);
     //  setData(moment(inputValue).format('DD/MM/YYYY'));
   };
 
@@ -169,22 +171,7 @@ function TelaMinistro({ item, secao }) {
       callbackUrl: `${window.location.origin}`,
     });
   }
-
-  const mes = [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro',
-  ];
-
+  //  console.log(enviarData);
   return (
     <Box className={classes.box2}>
       <Hidden smDown>
@@ -209,15 +196,6 @@ function TelaMinistro({ item, secao }) {
                 }}
               />
             </Grid>
-            <Box
-              mt={4}
-              mb={2}
-              ml={0}
-              className={classes.texto}
-              textAlign="center"
-            >
-              Relatórios do Mês de {mes[selectedDate.getMonth()]}{' '}
-            </Box>
           </MuiPickersUtilsProvider>
         </Grid>
         <Grid
@@ -316,9 +294,6 @@ function TelaMinistro({ item, secao }) {
               </IconButton> */}
             </Grid>
           </MuiPickersUtilsProvider>
-          <Box mt={1} ml={2} className={classes.texto} textAlign="center">
-            Mês de {mes[selectedDate.getMonth()]}{' '}
-          </Box>
         </Grid>
 
         <Box

@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 import useSWR from 'swr';
 import axios from 'axios';
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   table: {
-    padding: 'none',
+    padding: '0px 8px',
     marginLeft: -10,
     marginRight: -10,
     size: 'small',
@@ -44,7 +44,24 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  tableCell: {
+    padding: '0px 0px',
+  },
 }));
+
+const StyledTableContainer = withStyles((theme) => ({
+  root: {
+    width: 'max-content',
+  },
+}))(TableContainer);
+const StyledTableCell = withStyles((theme) => ({
+  root: {
+    padding: '0px 0px',
+    '&:hover': {
+      backgroundColor: 'red',
+    },
+  },
+}))(TableCell);
 function createData(descricao, sem1, sem2, sem3, sem4, sem5, total) {
   return { descricao, sem1, sem2, sem3, sem4, sem5, total };
 }
@@ -185,35 +202,55 @@ export default function TabelaMobile({ dadosRel, item, qtSemana }) {
     if (igrejaSelecionada.length > 0) {
       ListaIgrejas.push(
         <div key={igrejaSelecionada[1].id}>
-          <TableContainer component={Paper}>
-            <Table
-              className={classes.table}
-              size="small"
-              aria-label="a dense table"
-            >
+          <StyledTableContainer
+            component={Paper}
+            style={{ border: '1px solid rgba(0,0,0,0.2)', padding: 4 }}
+          >
+            <Table fixedHeader={false} style={{ tableLayout: 'auto' }}>
               <TableHead size="small">
                 <TableRow key={newDadosRel[1].id} size="small">
-                  <TableCell align="center" size="small">
+                  <TableCell
+                    className={classes.tableCell}
+                    style={{ width: 20 }}
+                  >
                     Sem
                   </TableCell>
-                  <TableCell size="small" align="center">
+                  <TableCell
+                    className={classes.tableCell}
+                    style={{ width: 20 }}
+                  >
                     1
                   </TableCell>
-                  <TableCell size="small" align="center">
+                  <TableCell
+                    className={classes.tableCell}
+                    style={{ width: 20 }}
+                  >
                     2
                   </TableCell>
-                  <TableCell size="small" align="center">
+                  <TableCell
+                    className={classes.tableCell}
+                    style={{ width: 20 }}
+                  >
                     3
                   </TableCell>
-                  <TableCell size="small" align="center">
+                  <TableCell
+                    className={classes.tableCell}
+                    style={{ width: 20 }}
+                  >
                     4
                   </TableCell>
                   {qtSemana === 5 && (
-                    <TableCell size="small" align="center">
+                    <TableCell
+                      className={classes.tableCell}
+                      style={{ width: 20 }}
+                    >
                       5
                     </TableCell>
                   )}
-                  <TableCell size="small" align="center">
+                  <TableCell
+                    className={classes.tableCell}
+                    style={{ width: 20 }}
+                  >
                     M
                   </TableCell>
                 </TableRow>
@@ -239,7 +276,7 @@ export default function TabelaMobile({ dadosRel, item, qtSemana }) {
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
+          </StyledTableContainer>
         </div>,
       );
     }
