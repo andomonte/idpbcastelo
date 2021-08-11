@@ -256,13 +256,13 @@ function formulario({ item, Data }) {
               width="100%"
               className={classes.root}
             >
+              <Divider />
               <Grid item xs={12}>
                 <Box
                   className={classes.novoBox}
                   mt={-4}
-                  style={{ color: '#000' }}
+                  style={{ color: '#ffaa11' }}
                 >
-                  <br />
                   Supervisão:{' '}
                   <strong style={{ color: '#000' }}>
                     {item[0].RegiaoIDPB}{' '}
@@ -299,7 +299,7 @@ function formulario({ item, Data }) {
                         </Table>
                       </TableContainer>
                     ) : (
-                      <TabelaMobile dadosRel={data} item={item} mes={mes} />
+                      <TabelaMobile dadosRel={data} item={item} />
                       // <ResponsiveTable columns={columns} data={dataValue} />
                     )}
                   </Box>

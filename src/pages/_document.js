@@ -6,7 +6,7 @@ import theme from 'src/theme';
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="pr-BR" class="notranslate" translate="no">
+      <Html lang="pr-BR" content="notranslate" translate="no">
         <Head>
           {/* PWA primary color */}
           <meta name="google" content="notranslate" />

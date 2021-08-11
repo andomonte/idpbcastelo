@@ -5,11 +5,12 @@ export default async function handle(req, res) {
   const {
     query: { supervisao, mes, ano },
   } = req;
+
   // console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
   const posts = await prisma.relatorios.findMany({
     where: {
-      AND: [{ supervisao }, { mes }, { ano }],
+      AND: [{ supervisao }, { ano }],
     },
   });
   //  console.log(posts);

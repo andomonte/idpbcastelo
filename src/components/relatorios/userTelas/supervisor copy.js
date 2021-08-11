@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { signOut } from 'next-auth/client';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Divider } from '@material-ui/core';
 import React from 'react';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
@@ -161,14 +161,14 @@ function TelaSupervisor({ item, secao }) {
     let temCont = contMes - 1;
     if (temCont < 0) temCont = 11;
     setContMes(temCont);
-
+    console.log(mes[temCont]);
     setShowMes(mes[temCont]);
   };
   const handleAddMes = () => {
     let temCont = contMes + 1;
     if (temCont > 11) temCont = 0;
     setContMes(temCont);
-
+    console.log(mes[temCont]);
     setShowMes(mes[temCont]);
   };
   //= ============================================================
@@ -189,7 +189,7 @@ function TelaSupervisor({ item, secao }) {
       callbackUrl: `${window.location.origin}`,
     });
   }
-
+  console.log(dates, enviarData);
   return (
     <Box className={classes.box2} translate="no">
       <Hidden smDown>
@@ -200,7 +200,6 @@ function TelaSupervisor({ item, secao }) {
           direction="column"
           alignItems="center"
           justifyContent="center"
-
           //    style={{ minHeight: '100vh' }}
         >
           <Grid>
@@ -224,103 +223,98 @@ function TelaSupervisor({ item, secao }) {
         </Grid>
       </Hidden>
       <Hidden mdUp>
-        <Box alignItems="center">
-          <Box borderRadius={16} {...defaultProps} alignItems="center">
-            <Box mt={2} textAlign="center">
-              Data do Relatório
-            </Box>
-
+        <Box mt={2} textAlign="center">
+          Data do Relatório
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignText="center"
+          m={0}
+          bgcolor="background.paper"
+        >
+          <Grid item xs={5}>
             <Box
               display="flex"
-              justifyContent="center"
-              align="center"
-              m={0}
-              bgcolor="background.paper"
+              flexDirection="row"
+              alignItems="center"
+              borderRadius={16}
+              {...defaultProps}
+              style={{ backgroundColor: '#eeff41' }}
             >
-              <Grid item xs={6}>
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  flexDirection="row"
-                  borderRadius={16}
-                  {...defaultProps}
-                  style={{ backgroundColor: '#81d4fa', height: 30 }}
-                >
-                  <Grid item xs={2}>
-                    <Box mt={0.5} justifyContent="flex-start">
-                      <ArrowLeftIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
-                        color="primary"
-                        onClick={handleSubMes}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Box align="center">
-                      <strong>{showMes}</strong>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Box display="flex" flexGrow={1} justifyContent="flex-end">
-                      <ArrowRightIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
-                        color="primary"
-                        onClick={handleAddMes}
-                      />
-                    </Box>
-                  </Grid>
+              <Grid item xs={2}>
+                <Box mt={0.5} justifyContent="flex-start">
+                  <ArrowLeftIcon
+                    style={{ fontSize: 30 }}
+                    color="primary"
+                    onClick={handleSubMes}
+                  />
                 </Box>
               </Grid>
-              <Grid item xs={5}>
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  borderRadius={16}
-                  {...defaultProps}
-                  style={{ backgroundColor: '#81d4fa', height: 30 }}
-                >
-                  <Grid item xs={2}>
-                    <Box mt={0.5} justifyContent="flex-start">
-                      <ArrowLeftIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
-                        onClick={handleSubAno}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Box align="center">
-                      <strong>{showAno}</strong>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Box display="flex" flexGrow={1} justifyContent="flex-end">
-                      <ArrowRightIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
-                        color="primary"
-                        onClick={handleAddAno}
-                      />
-                    </Box>
-                  </Grid>
+              <Grid item xs={8}>
+                <Box align="center">
+                  <strong>{showMes}</strong>
+                </Box>
+              </Grid>
+              <Grid item xs={2}>
+                <Box display="flex" flexGrow={1} justifyContent="flex-end">
+                  <ArrowRightIcon
+                    style={{ fontSize: 30 }}
+                    color="primary"
+                    onClick={handleAddMes}
+                  />
                 </Box>
               </Grid>
             </Box>
-            <Grid item xs={12}>
-              <br />
-            </Grid>
-          </Box>
-          <Box
-            className={classes.box}
-            mt={3}
-            ml={1}
-            mr={1}
-            width="auto"
-            //  width="100%"
-            //          maxWidth={1200}
-            height="auto"
-          >
-            <Formulario item={dadosUser} secao={secao} Data={dates} />
-          </Box>
+          </Grid>
+          <Grid item xs={5}>
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              borderRadius={16}
+              {...defaultProps}
+              style={{ backgroundColor: '#eeff41' }}
+            >
+              <Grid item xs={2}>
+                <Box mt={0.5} justifyContent="flex-start">
+                  <ArrowLeftIcon
+                    style={{ fontSize: 30 }}
+                    color="primary"
+                    onClick={handleSubAno}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={8}>
+                <Box align="center">
+                  <strong>{showAno}</strong>
+                </Box>
+              </Grid>
+              <Grid item xs={2}>
+                <Box display="flex" flexGrow={1} justifyContent="flex-end">
+                  <ArrowRightIcon
+                    style={{ fontSize: 30 }}
+                    color="primary"
+                    onClick={handleAddAno}
+                  />
+                </Box>
+              </Grid>
+            </Box>
+          </Grid>
+        </Box>
+
+        <Box
+          className={classes.box}
+          mt={3}
+          ml={1}
+          mr={1}
+          width="auto"
+          //  width="100%"
+          //          maxWidth={1200}
+          height="auto"
+        >
+          {console.log(dates, enviarData)}
+          <Formulario item={dadosUser} secao={secao} Data={dates} />
         </Box>
       </Hidden>
     </Box>

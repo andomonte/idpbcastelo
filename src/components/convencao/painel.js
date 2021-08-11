@@ -598,7 +598,7 @@ function Igreja({ item, secao, igrejas }) {
         </Box>
       </Hidden>
       <Hidden mdUp>
-        <Box borderRadius={16} {...defaultProps}>
+        <Box borderRadius={16} {...sdefaultProp}>
           {dadosIgreja[0] && (
             <Box>
               <Box m={1} flexDirection="row" display="flex">
