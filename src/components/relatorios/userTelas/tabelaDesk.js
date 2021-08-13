@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Box, Button, Divider } from '@material-ui/core';
+import { Box, Button, Divider, Grid } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import SentimentSatisfiedTwoToneIcon from '@material-ui/icons/SentimentSatisfiedTwoTone';
 import SentimentDissatisfiedTwoToneIcon from '@material-ui/icons/SentimentDissatisfiedTwoTone';
@@ -75,25 +75,36 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1),
   },
 }));
-
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 const StyledTableContainer = withStyles(() => ({
   root: {
     width: 'max-content',
+    cursor: 'pointer',
   },
 }))(TableContainer);
-const StyledTableCell = withStyles(() => ({
+const StyledTableCell = withStyles((theme) => ({
   root: {
     padding: '0px 0px',
-    '&:hover': {
-      backgroundColor: 'red',
-    },
+  },
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
   },
 }))(TableCell);
 function createData(descricao, sem1, sem2, sem3, sem4, sem5, total) {
   return { descricao, sem1, sem2, sem3, sem4, sem5, total };
 }
 
-export default function TabelaMobile({ dadosRel, item, mes }) {
+export default function TabelaDesk({ dadosRel, item, mes }) {
   const classes = useStyles();
 
   const url = `${window.location.origin}/api/consultaRIgreja/${item[0].RegiaoIDPB}`;
@@ -121,8 +132,7 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
   const [age, setAge] = React.useState('');
   const [igrejaSelecionada, setIgrejaSelecionada] = React.useState([]);
   const [mesAnterior, setMesAnterior] = React.useState([]);
-  const [mediaMesAtual, setMediaMesAtual] = React.useState(0);
-  const [mediaMesAnterior, setMediaMesAnterior] = React.useState(0);
+
   const [open, setOpen] = React.useState(false);
   //------------------------------------------------------------------------
   const handleSelect = (event) => {
@@ -164,6 +174,20 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
 
   //-----------------------------------------------------------------------------
   let rows = [];
+  const adultos = [];
+  const adulMAnt = [];
+  const adolecentes = [];
+  const adolMAnt = [];
+  const criancas = [];
+  const criMAnt = [];
+  const visitantes = [];
+  const visMAnt = [];
+  const conversoes = [];
+  const convMAnt = [];
+  const ofertas = [];
+  const oferMAnt = [];
+  const dizimos = [];
+  const dizMAnt = [];
   let totalMesAtual = 0;
   let divisorMesAtual = 1;
   let dizimoMes = 0;
@@ -174,6 +198,7 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
   let totalMesAnterior = 0;
   let divisorMesAnteiror = 1;
   const mtMesAnterior = [];
+  const ListaIgrejas = [];
   const pc = [];
   if (igrejaSelecionada.length > 0) {
     totalMesAtual = 0;
@@ -228,7 +253,7 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
       );
       dadosMesAnterior[i].total = reducer;
       dadosMesAnterior[i].media = Number(reducer / mesAnterior.length).toFixed(
-        0,
+        1,
       );
       totalMesAnterior += dadosMesAnterior[i].total;
     }
@@ -250,11 +275,62 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
             Number(accumulator) + Number(currentValue[CabeçalhoTabela[i].item]),
           0,
         );
+        adultos[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adultos),
+          0,
+        );
+        adolecentes[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adolecentes),
+          0,
+        );
+        criancas[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.criancas),
+          0,
+        );
+        visitantes[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.visitantes),
+          0,
+        );
+        conversoes[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.conversoes),
+          0,
+        );
+
+        dizimos[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) +
+            Number(currentValue.dizimos.replace(',', '.')),
+          0,
+        );
+
+        ofertas[i] = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) +
+            Number(currentValue.ofertas.replace(',', '.')),
+          0,
+        );
+        dizimoMes = igrejaSelecionada.reduce(
+          (accumulator, currentValue) =>
+            parseFloat(accumulator) +
+            parseFloat(currentValue.dizimos.replace(',', '.')),
+          0,
+        );
+        ofertaMes = igrejaSelecionada.reduce(
+          (accumulator, currentValue) =>
+            parseFloat(accumulator) +
+            parseFloat(currentValue.ofertas.replace(',', '.')),
+          0,
+        );
 
         CabeçalhoTabela[i].total = reducer;
         CabeçalhoTabela[i].media = Number(
           reducer / mesAnalizado.length,
-        ).toFixed(0);
+        ).toFixed(1);
         totalMesAtual += CabeçalhoTabela[i].total;
       }
     }
@@ -278,10 +354,110 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
             Number(currentValue[dadosMesAnterior[i].item]),
           0,
         );
+
+        adulMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adultos),
+          0,
+        );
+        adolMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adolecentes),
+          0,
+        );
+        criMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.criancas),
+          0,
+        );
+        visMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.visitantes),
+          0,
+        );
+        convMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.conversoes),
+          0,
+        );
+
+        oferMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) +
+            Number(currentValue.ofertas.replace(',', '.')),
+          0,
+        );
+
+        dizMAnt[i] = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) +
+            Number(currentValue.dizimos.replace(',', '.')),
+          0,
+        );
+
+        //= =========================================================================
+
+        adultos[i] = Number(adultos[i] / mesAnalizado.length).toFixed(2);
+        adulMAnt[i] = Number(adulMAnt[i] / mesAnteriorAnalizado.length).toFixed(
+          2,
+        );
+        let div = 1;
+        if (adulMAnt[i] > 0) div = adulMAnt[i];
+        adultos[i] = (((adultos[i] - adulMAnt[i]) * 100) / div).toFixed(2);
+
+        adolecentes[i] = Number(adolecentes[i] / mesAnalizado.length).toFixed(
+          2,
+        );
+        adolMAnt[i] = Number(adolMAnt[i] / mesAnteriorAnalizado.length).toFixed(
+          2,
+        );
+
+        div = 1;
+        if (adolMAnt[i] > 0) div = adolMAnt[i];
+        adolecentes[i] = (((adolecentes[i] - adolMAnt[i]) * 100) / div).toFixed(
+          2,
+        );
+
+        criancas[i] = Number(criancas[i] / mesAnalizado.length).toFixed(2);
+        criMAnt[i] = Number(criMAnt[i] / mesAnteriorAnalizado.length).toFixed(
+          2,
+        );
+        div = 1;
+        if (criMAnt[i] > 0) div = criMAnt[i];
+        criancas[i] = (((criancas[i] - criMAnt[i]) * 100) / div).toFixed(2);
+
+        visitantes[i] = Number(visitantes[i] / mesAnalizado.length).toFixed(2);
+        visMAnt[i] = Number(visMAnt[i] / mesAnteriorAnalizado.length).toFixed(
+          2,
+        );
+        div = 1;
+        if (visMAnt[i] > 0) div = visMAnt[i];
+        visitantes[i] = (((visitantes[i] - visMAnt[i]) * 100) / div).toFixed(2);
+
+        conversoes[i] = Number(conversoes[i] / mesAnalizado.length).toFixed(2);
+        convMAnt[i] = Number(convMAnt[i] / mesAnteriorAnalizado.length).toFixed(
+          2,
+        );
+        div = 1;
+        if (convMAnt[i] > 0) div = convMAnt[i];
+        conversoes[i] = (((conversoes[i] - convMAnt[i]) * 100) / div).toFixed(
+          2,
+        );
+
+        div = 1;
+        if (oferMAnt[i] > 0) div = oferMAnt[i];
+        ofertas[i] = (((ofertas[i] - oferMAnt[i]) * 100) / div).toFixed(2);
+
+        div = 1;
+        if (dizMAnt[i] > 0) div = dizMAnt[i];
+        dizimos[i] = (((dizimos[i] - dizMAnt[i]) * 100) / div).toFixed(2);
+
+        //= ===========================================================================
+
         dadosMesAnterior[i].total = reducer;
         dadosMesAnterior[i].media = Number(
           reducer / mesAnteriorAnalizado.length,
-        ).toFixed(0);
+        ).toFixed(1);
         totalMesAnterior += dadosMesAnterior[i].total;
       }
     }
@@ -295,7 +471,7 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
         100
       ).toFixed(2);
     } else {
-      pc[index] = 'Sem Relatório';
+      pc[index] = '--';
     }
   };
 
@@ -346,7 +522,11 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
       CabeçalhoTabela[4].media && CabeçalhoTabela[4].media,
     ),
   ];
-
+  const defaultProps = {
+    bgcolor: 'background.paper',
+    m: 1,
+    border: 1,
+  };
   const windowWidth = window.innerWidth;
   if (data) {
     dataIgreja = data;
@@ -563,75 +743,282 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
       );
     }
 
-    /* if (igrejaSelecionada.length > 0) {
+    if (data) {
+      const largRotulo = windowWidth / 8 + 20;
+      const larg = (windowWidth - largRotulo) / 8;
       ListaIgrejas.push(
-        <div key={igrejaSelecionada[1].id}>
+        <Box key="data.id" p={1}>
           <TableContainer component={Paper}>
-            <Table
-              className={classes.table}
-              size="small"
-              aria-label="a dense table"
-            >
-              <TableHead size="small">
-                <TableRow key={newDadosRel[1].id} size="small">
-                  <TableCell align="center" size="small">
-                    Sem
-                  </TableCell>
-                  <TableCell size="small" align="center">
-                    1
-                  </TableCell>
-                  <TableCell size="small" align="center">
-                    2
-                  </TableCell>
-                  <TableCell size="small" align="center">
-                    3
-                  </TableCell>
-                  <TableCell size="small" align="center">
-                    4
-                  </TableCell>
-                  {qtSemana === 5 && (
-                    <TableCell size="small" align="center">
-                      5
-                    </TableCell>
-                  )}
-                  <TableCell size="small" align="center">
-                    M
-                  </TableCell>
+            <Table style={{ tableLayout: 'auto' }}>
+              <TableHead>
+                <TableRow key={data.igreja} height={45}>
+                  <StyledTableCell
+                    align="center"
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                  >
+                    Status
+                  </StyledTableCell>
+                  <StyledTableCell
+                    className={classes.tableCell}
+                    style={{ width: largRotulo }}
+                    align="center"
+                  >
+                    Igrejas
+                  </StyledTableCell>
+
+                  <StyledTableCell
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                    align="center"
+                  >
+                    Adultos
+                  </StyledTableCell>
+                  <StyledTableCell
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                    align="center"
+                  >
+                    Adolecentes
+                  </StyledTableCell>
+                  <StyledTableCell
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                    align="center"
+                  >
+                    Crianças
+                  </StyledTableCell>
+                  <StyledTableCell
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                    align="center"
+                  >
+                    Visitantes
+                  </StyledTableCell>
+
+                  <StyledTableCell
+                    align="center"
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                  >
+                    Conversões
+                  </StyledTableCell>
+
+                  <StyledTableCell
+                    align="center"
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                  >
+                    Dizimos
+                  </StyledTableCell>
+                  <StyledTableCell
+                    align="center"
+                    className={classes.tableCell}
+                    style={{ width: larg }}
+                  >
+                    Ofertas
+                  </StyledTableCell>
                 </TableRow>
               </TableHead>
-
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.descricao}>
-                    <TableCell component="th" scope="row">
-                      {row.descricao}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.sem1}
-                    </TableCell>
-                    <TableCell align="right">{row.sem2}</TableCell>
-                    <TableCell align="right">{row.sem3}</TableCell>
-                    <TableCell align="right">{row.sem4}</TableCell>
-                    {qtSemana === 5 && (
-                      <TableCell align="right">{row.sem5}</TableCell>
-                    )}
-                    <TableCell align="right">{row.total}</TableCell>
-                  </TableRow>
+                {data.map((row, index) => (
+                  <StyledTableRow
+                    key={row.codigoIgreja}
+                    style={{ width: larg, cursor: 'pointer' }}
+                    height={30}
+                    onClick={() => {
+                      handleIgreja(row.codigoIgreja);
+                    }}
+                    type="button"
+                  >
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {taxaCrescimento(row.codigoIgreja, index)}
+                      <Box mt={1}>
+                        {!(Number(pc[index] >= 0) || Number(pc[index] < 0)) && (
+                          <CancelRoundedIcon
+                            style={{ fontSize: 40, color: '#3f51b5' }}
+                          />
+                        )}
+                        {Number(pc[index]) > 0 && (
+                          <SentimentSatisfiedTwoToneIcon
+                            style={{ fontSize: 40, color: '#8bc34a' }}
+                          />
+                        )}
+                        {Number(pc[index]) < 0 && (
+                          <SentimentDissatisfiedTwoToneIcon
+                            style={{ fontSize: 40, color: 'red' }}
+                          />
+                        )}
+                        {Number(pc[index]) === 0 && (
+                          <SentimentSatisfiedIcon
+                            style={{ fontSize: 40, color: '#e65100' }}
+                          />
+                        )}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell style={{ width: larg }} align="center">
+                      <Box
+                        style={{
+                          width: largRotulo,
+                          fontSize: '12px',
+                          height: '100%',
+                        }}
+                      >
+                        {row.igreja}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {adultos[index] >= 0 || adultos[index] < 0
+                          ? `${adolecentes[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {adolecentes[index] >= 0 || adolecentes[index] < 0
+                          ? `${adolecentes[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {criancas[index] >= 0 || criancas[index] < 0
+                          ? `${criancas[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {visitantes[index] >= 0 || visitantes[index] < 0
+                          ? `${visitantes[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {conversoes[index] >= 0 || conversoes[index] < 0
+                          ? `${conversoes[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {ofertas[index] >= 0 || ofertas[index] < 0
+                          ? `${ofertas[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {dizimos[index] >= 0 || dizimos[index] < 0
+                          ? `${dizimos[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
+                  </StyledTableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-        </div>,
+        </Box>,
+        <Box>
+          <Grid container className={classes.root} spacing={2}>
+            <Grid item xs={3}>
+              <Grid container justifyContent="center">
+                <CancelRoundedIcon style={{ fontSize: 40, color: '#3f51b5' }} />
+              </Grid>
+              <Grid container justifyContent="center">
+                <Box align="center">
+                  <strong>Sem Relatório</strong>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid item xs={3}>
+              <Grid container justifyContent="center">
+                <SentimentSatisfiedTwoToneIcon
+                  style={{ fontSize: 40, color: '#8bc34a' }}
+                />
+              </Grid>
+              <Grid container justifyContent="center">
+                <Box align="center">
+                  <strong>Creceu</strong>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid item xs={3}>
+              <Grid container justifyContent="center">
+                <SentimentSatisfiedIcon
+                  style={{ fontSize: 40, color: '#e65100' }}
+                />
+                <Grid container justifyContent="center">
+                  <Box align="center">
+                    <strong>Semelhante</strong>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={3}>
+              <Grid container justifyContent="center">
+                <SentimentDissatisfiedTwoToneIcon
+                  style={{ fontSize: 40, color: 'red' }}
+                />
+              </Grid>
+              <Grid container justifyContent="center">
+                <Box align="center">
+                  <strong>Diminuiu</strong>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>,
       );
-    } */
+    }
   }
 
   // const tc = CabeçalhoTabela[4].media && CabeçalhoTabela[4].media,
-  const defaultProps = {
-    bgcolor: 'background.paper',
-    m: 1,
-    border: 1,
-  };
 
   if (data) {
     showIgrejas.push(
@@ -646,6 +1033,24 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
             justifyContent="flex-start"
           >
             {taxaCrescimento(items.codigoIgreja, index)}
+            <Box display="flex">
+              <Box mr={-2} ml={2} mt={1}>
+                Status
+              </Box>
+
+              <Box m={1} ml={3}>
+                <Typography
+                  variant="body1"
+                  display="block"
+                  gutterBottom
+                  align="left"
+                  className={classes.caption}
+                >
+                  Igreja
+                </Typography>
+              </Box>
+            </Box>
+
             <Box display="flex">
               <Box mr={-2} ml={2} mt={1}>
                 {!(Number(pc[index] >= 0) || Number(pc[index] < 0)) && (
@@ -919,8 +1324,8 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
     </Box>
   );
   return (
-    <Box borderRadius={16} {...defaultProps} ml={-3} mr={-3}>
-      {showIgrejas}
+    <Box borderRadius={16} {...defaultProps} ml={-3} mr={-3} mt={-3}>
+      {ListaIgrejas}
       <Modal
         open={open}
         onClose={handleClose}

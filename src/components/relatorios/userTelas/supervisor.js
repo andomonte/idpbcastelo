@@ -2,11 +2,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { signOut } from 'next-auth/client';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Avatar } from '@material-ui/core';
 import React from 'react';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import Formulario from './formularioSupervisao';
 
 const useStyles = makeStyles((theme) => ({
@@ -193,35 +196,152 @@ function TelaSupervisor({ item, secao }) {
   return (
     <Box className={classes.box2} translate="no">
       <Hidden smDown>
-        <Grid item xs={12} md={12} lg={12} xl={12} />
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
+        <Box>
+          <Box borderRadius={16} {...defaultProps}>
+            <Box>
+              <Grid container className={classes.root} spacing={2}>
+                <Grid item xs={2}>
+                  <Grid container justifyContent="flex-end">
+                    <Box style={{ fontSize: '20px' }} mt={5} mb={1}>
+                      <Avatar
+                        style={{ width: 100 }}
+                        alt="Travis Howard"
+                        src="/images/Missoes_2.png"
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid item xs={3}>
+                  <Grid container justifyContent="flex-start">
+                    <Box style={{ fontSize: '20px' }} mt={6}>
+                      Supervisão:<strong> {item[0].RegiaoIDPB}</strong>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid item xs={7}>
+                  <Grid container justifyContent="center">
+                    <Box mr={5} mt={0} display="flex" justifyContent="flex-end">
+                      <Box>
+                        <Box mt={2} textAlign="center">
+                          <h3> Data do Relatório </h3>
+                        </Box>
 
-          //    style={{ minHeight: '100vh' }}
-        >
-          <Grid>
-            <Box
-              className={classes.box}
-              mt={3}
-              ml={2}
-              mr={2}
-              //  alignContent="center"
-              // justifyContent="center"
-              //              width="100%"
-              width="auto"
-              //            maxWidth={1200}
-              height="auto"
-              borderRadius={16}
-              {...defaultProps}
-            >
-              <Formulario item={dadosUser} secao={secao} Data={enviarData} />
+                        <Box
+                          align="center"
+                          display="flex"
+                          justifyContent="center"
+                        >
+                          <Box mr={1} mb={2} mt={-1}>
+                            <ButtonGroup
+                              size="small"
+                              color="secondary"
+                              aria-label="large outlined primary button group"
+                              variant="contained"
+                            >
+                              <Button
+                                style={{
+                                  backgroundColor: '#afb42b',
+                                  height: 30,
+                                }}
+                              >
+                                <ArrowLeftIcon
+                                  style={{ fontSize: 35, color: '#000' }}
+                                  color="primary"
+                                  onClick={handleSubMes}
+                                  type="button"
+                                />
+                              </Button>
+                              <Button
+                                style={{
+                                  width: 120,
+                                  backgroundColor: '#afb42b',
+                                  fontSize: '12px',
+                                  height: 30,
+                                }}
+                              >
+                                <Box align="center" position="fixed">
+                                  <strong>{showMes}</strong>
+                                </Box>
+                              </Button>
+                              <Button
+                                style={{
+                                  backgroundColor: '#afb42b',
+                                  height: 30,
+                                }}
+                              >
+                                <ArrowRightIcon
+                                  style={{ fontSize: 35, color: '#000' }}
+                                  color="primary"
+                                  onClick={handleAddMes}
+                                />
+                              </Button>
+                            </ButtonGroup>
+                          </Box>
+                          <Box mt={-1}>
+                            <ButtonGroup
+                              size="small"
+                              color="secondary"
+                              aria-label="large outlined primary button group"
+                              variant="contained"
+                            >
+                              <Button
+                                style={{
+                                  backgroundColor: '#afb42b',
+                                  height: 30,
+                                }}
+                              >
+                                <ArrowLeftIcon
+                                  style={{ fontSize: 35, color: '#000' }}
+                                  onClick={handleSubAno}
+                                  type="button"
+                                />
+                              </Button>
+                              <Button
+                                style={{
+                                  width: 120,
+                                  height: 30,
+                                  backgroundColor: '#afb42b',
+                                  fontSize: '16px',
+                                }}
+                              >
+                                <Box align="center" position="fixed">
+                                  <strong>{showAno}</strong>
+                                </Box>
+                              </Button>
+                              <Button
+                                style={{
+                                  backgroundColor: '#afb42b',
+                                  height: 30,
+                                }}
+                              >
+                                <ArrowRightIcon
+                                  style={{ fontSize: 35, color: '#000' }}
+                                  onClick={handleAddAno}
+                                />
+                              </Button>
+                            </ButtonGroup>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+          <Box
+            className={classes.box}
+            mt={3}
+            ml={1}
+            mr={1}
+            width="auto"
+            //  width="100%"
+            //          maxWidth={1200}
+            height="auto"
+          >
+            <Formulario item={dadosUser} secao={secao} Data={dates} />
+          </Box>
+        </Box>
       </Hidden>
       <Hidden mdUp>
         <Box alignItems="center">
@@ -249,7 +369,7 @@ function TelaSupervisor({ item, secao }) {
                   <Grid item xs={2}>
                     <Box mt={0.5} justifyContent="flex-start">
                       <ArrowLeftIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
+                        style={{ fontSize: 40, color: '#ef6c00' }}
                         color="primary"
                         onClick={handleSubMes}
                       />
@@ -263,7 +383,7 @@ function TelaSupervisor({ item, secao }) {
                   <Grid item xs={2}>
                     <Box display="flex" flexGrow={1} justifyContent="flex-end">
                       <ArrowRightIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
+                        style={{ fontSize: 40, color: '#ef6c00' }}
                         color="primary"
                         onClick={handleAddMes}
                       />
@@ -283,7 +403,7 @@ function TelaSupervisor({ item, secao }) {
                   <Grid item xs={2}>
                     <Box mt={0.5} justifyContent="flex-start">
                       <ArrowLeftIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
+                        style={{ fontSize: 40, color: '#ef6c00' }}
                         onClick={handleSubAno}
                       />
                     </Box>
@@ -296,7 +416,7 @@ function TelaSupervisor({ item, secao }) {
                   <Grid item xs={2}>
                     <Box display="flex" flexGrow={1} justifyContent="flex-end">
                       <ArrowRightIcon
-                        style={{ fontSize: 30, color: '#ef6c00' }}
+                        style={{ fontSize: 40, color: '#ef6c00' }}
                         color="primary"
                         onClick={handleAddAno}
                       />
