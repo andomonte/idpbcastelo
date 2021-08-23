@@ -9,11 +9,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { Box, Button, Divider, Grid } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import SentimentSatisfiedTwoToneIcon from '@material-ui/icons/SentimentSatisfiedTwoTone';
@@ -126,27 +121,14 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
     { item: 'visitantes', total: '', media: '' },
     { item: 'conversoes', total: '', media: '' },
   ];
-  const Panel2 = [];
+
   const Tabelas = [];
-  const showIgrejas = [];
-  const [age, setAge] = React.useState('');
   const [igrejaSelecionada, setIgrejaSelecionada] = React.useState([]);
   const [mesAnterior, setMesAnterior] = React.useState([]);
 
   const [open, setOpen] = React.useState(false);
   //------------------------------------------------------------------------
-  const handleSelect = (event) => {
-    // const codigoIgreja = event.target.value;
-    const { codigoIgreja } = event.codigoIgreja;
-
-    setAge(event.target.value);
-    setIgrejaSelecionada(
-      dadosRel.filter((val) => val.codigoIgreja === codigoIgreja),
-    );
-  };
   const handleIgreja = (eventos) => {
-    // const codigoIgreja = event.target.value;
-    //  const { codigoIgreja } = data[event];
     const dadosIgreja = dadosRel.filter((val) => {
       if (val.codigoIgreja === eventos && val.mes === mes) {
         return val;
@@ -174,35 +156,37 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
 
   //-----------------------------------------------------------------------------
   let rows = [];
-  const adultos = [];
-  const adulMAnt = [];
-  const adolecentes = [];
-  const adolMAnt = [];
-  const criancas = [];
-  const criMAnt = [];
-  const visitantes = [];
-  const visMAnt = [];
-  const conversoes = [];
-  const convMAnt = [];
+
   const ofertas = [];
-  const oferMAnt = [];
   const dizimos = [];
-  const dizMAnt = [];
-  let totalMesAtual = 0;
-  let divisorMesAtual = 1;
   let dizimoMes = 0;
   let ofertaMes = 0;
   let dizimoMesAnterior = 0;
   let ofertaMesAnterior = 0;
-  const mtMesAtual = [];
-  let totalMesAnterior = 0;
-  let divisorMesAnteiror = 1;
-  const mtMesAnterior = [];
   const ListaIgrejas = [];
-  const pc = [];
+  const dadosMes = [
+    { adultos: '', indAdul: '', mediaAdul: '' },
+    { adolecentes: '', indAdol: '', mediaAdol: '' },
+    { criancas: '', indCri: '', mediaCri: '' },
+    { visitantes: '', indVis: '', mediaVis: '' },
+    { conversoes: '', indConv: '', mediaConv: '' },
+    { ofertas: '', indOfer: '', mediaOfer: '' },
+    { dizimos: '', indDiz: '', mediaDiz: '' },
+    { somatorio: 0, indSoma: 0, mediaSoma: 0 },
+  ];
+
+  // dados dos mes anterior
+  const dadosMAnt = [
+    { adultos: '', indAdul: '', mediaAdul: '' },
+    { adolecentes: '', indAdol: '', mediaAdol: '' },
+    { criancas: '', indCri: '', mediaCri: '' },
+    { visitantes: '', indVis: '', mediaVis: '' },
+    { conversoes: '', indConv: '', mediaConv: '' },
+    { ofertas: '', indOfer: '', mediaOfer: '' },
+    { dizimos: '', indDiz: '', mediaDiz: '' },
+    { somatorio: 0, indSoma: 0, mediaSoma: 0 },
+  ];
   if (igrejaSelecionada.length > 0) {
-    totalMesAtual = 0;
-    divisorMesAtual = 5 * igrejaSelecionada.length;
     for (let i = 0; i < CabeçalhoTabela.length; i += 1) {
       const reducer = igrejaSelecionada.reduce(
         (accumulator, currentValue) =>
@@ -225,13 +209,9 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
       CabeçalhoTabela[i].media = Number(
         reducer / igrejaSelecionada.length,
       ).toFixed(1);
-      totalMesAtual += CabeçalhoTabela[i].total;
     }
   }
   if (mesAnterior.length > 0) {
-    totalMesAnterior = 0;
-    divisorMesAnteiror = 5 * mesAnterior.length;
-
     for (let i = 0; i < dadosMesAnterior.length; i += 1) {
       const reducer = mesAnterior.reduce(
         (accumulator, currentValue) =>
@@ -255,63 +235,65 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
       dadosMesAnterior[i].media = Number(reducer / mesAnterior.length).toFixed(
         1,
       );
-      totalMesAnterior += dadosMesAnterior[i].total;
     }
   }
 
   const taxaCrescimento = (igrejaAnalizada, index) => {
+    let div = 1;
     const mesAnalizado = dadosRel.filter((val) => {
       if (val.codigoIgreja === igrejaAnalizada && val.mes === mes) {
         return val;
       }
       return null;
     });
+
     if (mesAnalizado.length > 0) {
-      totalMesAtual = 0;
-      divisorMesAtual = 5 * mesAnalizado.length;
       for (let i = 0; i < CabeçalhoTabela.length; i += 1) {
         const reducer = mesAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue[CabeçalhoTabela[i].item]),
           0,
         );
-        adultos[i] = mesAnalizado.reduce(
+
+        dadosMes[index].adultos = mesAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.adultos),
           0,
         );
-        adolecentes[i] = mesAnalizado.reduce(
+
+        dadosMes[index].adolecentes = mesAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.adolecentes),
           0,
         );
-        criancas[i] = mesAnalizado.reduce(
+
+        dadosMes[index].criancas = mesAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.criancas),
           0,
         );
-        visitantes[i] = mesAnalizado.reduce(
+        dadosMes[index].visitantes = mesAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.visitantes),
           0,
         );
-        conversoes[i] = mesAnalizado.reduce(
+        dadosMes[index].conversoes = mesAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.conversoes),
           0,
         );
 
-        dizimos[i] = mesAnalizado.reduce(
+        dadosMes[index].dizimos = mesAnalizado.reduce(
           (accumulator, currentValue) =>
-            Number(accumulator) +
-            Number(currentValue.dizimos.replace(',', '.')),
+            parseFloat(accumulator) +
+            parseFloat(currentValue.dizimos.replace(',', '.')),
           0,
         );
 
-        ofertas[i] = mesAnalizado.reduce(
+        dadosMes[index].ofertas = mesAnalizado.reduce(
           (accumulator, currentValue) =>
-            Number(accumulator) +
-            Number(currentValue.ofertas.replace(',', '.')),
+            parseFloat(accumulator) +
+            parseFloat(currentValue.ofertas.replace(',', '.')),
           0,
         );
         dizimoMes = igrejaSelecionada.reduce(
@@ -331,7 +313,6 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
         CabeçalhoTabela[i].media = Number(
           reducer / mesAnalizado.length,
         ).toFixed(1);
-        totalMesAtual += CabeçalhoTabela[i].total;
       }
     }
     const mesPassado = String(mes - 1);
@@ -344,135 +325,217 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
     });
 
     if (mesAnteriorAnalizado.length > 0) {
-      totalMesAnterior = 0;
-      divisorMesAnteiror = 5 * mesAnteriorAnalizado.length;
-
       for (let i = 0; i < dadosMesAnterior.length; i += 1) {
-        const reducer = mesAnteriorAnalizado.reduce(
-          (accumulator, currentValue) =>
-            Number(accumulator) +
-            Number(currentValue[dadosMesAnterior[i].item]),
-          0,
-        );
-
-        adulMAnt[i] = mesAnteriorAnalizado.reduce(
+        dadosMAnt[index].adultos = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.adultos),
           0,
         );
-        adolMAnt[i] = mesAnteriorAnalizado.reduce(
+        // if (!mesAnteriorAnalizado[i]) adulMAnt[i] = 0;
+        dadosMAnt[index].adolecentes = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.adolecentes),
           0,
         );
-        criMAnt[i] = mesAnteriorAnalizado.reduce(
+        dadosMAnt[index].criancas = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.criancas),
           0,
         );
-        visMAnt[i] = mesAnteriorAnalizado.reduce(
+        dadosMAnt[index].visitantes = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.visitantes),
           0,
         );
-        convMAnt[i] = mesAnteriorAnalizado.reduce(
+        dadosMAnt[index].conversoes = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) + Number(currentValue.conversoes),
           0,
         );
 
-        oferMAnt[i] = mesAnteriorAnalizado.reduce(
+        dadosMAnt[index].ofertas = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) +
             Number(currentValue.ofertas.replace(',', '.')),
           0,
         );
 
-        dizMAnt[i] = mesAnteriorAnalizado.reduce(
+        dadosMAnt[index].dizimos = mesAnteriorAnalizado.reduce(
           (accumulator, currentValue) =>
             Number(accumulator) +
             Number(currentValue.dizimos.replace(',', '.')),
           0,
         );
-
         //= =========================================================================
 
-        adultos[i] = Number(adultos[i] / mesAnalizado.length).toFixed(2);
-        adulMAnt[i] = Number(adulMAnt[i] / mesAnteriorAnalizado.length).toFixed(
-          2,
-        );
-        let div = 1;
-        if (adulMAnt[i] > 0) div = adulMAnt[i];
-        adultos[i] = (((adultos[i] - adulMAnt[i]) * 100) / div).toFixed(2);
-
-        adolecentes[i] = Number(adolecentes[i] / mesAnalizado.length).toFixed(
-          2,
-        );
-        adolMAnt[i] = Number(adolMAnt[i] / mesAnteriorAnalizado.length).toFixed(
-          2,
-        );
-
-        div = 1;
-        if (adolMAnt[i] > 0) div = adolMAnt[i];
-        adolecentes[i] = (((adolecentes[i] - adolMAnt[i]) * 100) / div).toFixed(
-          2,
-        );
-
-        criancas[i] = Number(criancas[i] / mesAnalizado.length).toFixed(2);
-        criMAnt[i] = Number(criMAnt[i] / mesAnteriorAnalizado.length).toFixed(
-          2,
-        );
-        div = 1;
-        if (criMAnt[i] > 0) div = criMAnt[i];
-        criancas[i] = (((criancas[i] - criMAnt[i]) * 100) / div).toFixed(2);
-
-        visitantes[i] = Number(visitantes[i] / mesAnalizado.length).toFixed(2);
-        visMAnt[i] = Number(visMAnt[i] / mesAnteriorAnalizado.length).toFixed(
-          2,
-        );
-        div = 1;
-        if (visMAnt[i] > 0) div = visMAnt[i];
-        visitantes[i] = (((visitantes[i] - visMAnt[i]) * 100) / div).toFixed(2);
-
-        conversoes[i] = Number(conversoes[i] / mesAnalizado.length).toFixed(2);
-        convMAnt[i] = Number(convMAnt[i] / mesAnteriorAnalizado.length).toFixed(
-          2,
-        );
-        div = 1;
-        if (convMAnt[i] > 0) div = convMAnt[i];
-        conversoes[i] = (((conversoes[i] - convMAnt[i]) * 100) / div).toFixed(
-          2,
-        );
-
-        div = 1;
-        if (oferMAnt[i] > 0) div = oferMAnt[i];
-        ofertas[i] = (((ofertas[i] - oferMAnt[i]) * 100) / div).toFixed(2);
-
-        div = 1;
-        if (dizMAnt[i] > 0) div = dizMAnt[i];
-        dizimos[i] = (((dizimos[i] - dizMAnt[i]) * 100) / div).toFixed(2);
-
         //= ===========================================================================
-
-        dadosMesAnterior[i].total = reducer;
-        dadosMesAnterior[i].media = Number(
-          reducer / mesAnteriorAnalizado.length,
-        ).toFixed(1);
-        totalMesAnterior += dadosMesAnterior[i].total;
       }
     }
 
-    mtMesAtual[index] = (totalMesAtual / divisorMesAtual).toFixed(0);
-    mtMesAnterior[index] = (totalMesAnterior / divisorMesAnteiror).toFixed(0);
+    //---------------------------------------------------------------------------
+    // Calculo dos percentuais de cada intem referente ao mês anterior
+    //---------------------------------------------------------------------------
 
-    if (mesAnalizado.length > 0 && mesAnteriorAnalizado.length > 0) {
-      pc[index] = (
-        (mtMesAtual[index] * 100) / mtMesAnterior[index] -
-        100
-      ).toFixed(2);
-    } else {
-      pc[index] = '--';
-    }
+    dadosMes[index].mediaAdul = Number(
+      dadosMes[index].adultos / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaAdul = Number(
+      dadosMAnt[index].adultos / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaAdul === 'NaN')
+      dadosMAnt[index].mediaAdul = dadosMes[index].mediaAdul;
+
+    if (dadosMAnt[index].mediaAdul > 0) div = dadosMAnt[index].mediaAdul;
+
+    dadosMes[index].indAdul = (
+      ((dadosMes[index].mediaAdul - dadosMAnt[index].mediaAdul) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // adolentes
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaAdol = Number(
+      dadosMes[index].adolecentes / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaAdol = Number(
+      dadosMAnt[index].adolecentes / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaAdol === 'NaN')
+      dadosMAnt[index].mediaAdol = dadosMes[index].mediaAdol;
+
+    if (dadosMAnt[index].mediaAdol > 0) div = dadosMAnt[index].mediaAdol;
+
+    dadosMes[index].indAdol = (
+      ((dadosMes[index].mediaAdol - dadosMAnt[index].mediaAdol) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // Crianças
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaCri = Number(
+      dadosMes[index].criancas / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaCri = Number(
+      dadosMAnt[index].criancas / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaCri === 'NaN')
+      dadosMAnt[index].mediaCri = dadosMes[index].mediaCri;
+
+    if (dadosMAnt[index].mediaCri > 0) div = dadosMAnt[index].mediaCri;
+
+    dadosMes[index].indCri = (
+      ((dadosMes[index].mediaCri - dadosMAnt[index].mediaCri) * 100) /
+      div
+    ).toFixed(2);
+    //---------------------------------------------------------------------------
+    // Visitantes
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaVis = Number(
+      dadosMes[index].visitantes / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaVis = Number(
+      dadosMAnt[index].visitantes / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaVis === 'NaN')
+      dadosMAnt[index].mediaVis = dadosMes[index].mediaVis;
+
+    if (dadosMAnt[index].mediaVis > 0) div = dadosMAnt[index].mediaVis;
+
+    dadosMes[index].indVis = (
+      ((dadosMes[index].mediaVis - dadosMAnt[index].mediaVis) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // conversão
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaConv = Number(
+      dadosMes[index].conversoes / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaConv = Number(
+      dadosMAnt[index].conversoes / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaConv === 'NaN')
+      dadosMAnt[index].mediaConv = dadosMes[index].mediaConv;
+
+    if (dadosMAnt[index].mediaConv > 0) div = dadosMAnt[index].mediaConv;
+
+    dadosMes[index].indConv = (
+      ((dadosMes[index].mediaConv - dadosMAnt[index].mediaConv) * 100) /
+      div
+    ).toFixed(2);
+    //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
+    // ofertas
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaOfer = Number(
+      dadosMes[index].ofertas / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaOfer = Number(
+      dadosMAnt[index].ofertas / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaOfer === 'NaN')
+      dadosMAnt[index].mediaOfer = dadosMes[index].mediaOfer;
+
+    if (dadosMAnt[index].mediaOfer > 0) div = dadosMAnt[index].mediaOfer;
+
+    dadosMes[index].indOfer = (
+      ((dadosMes[index].mediaOfer - dadosMAnt[index].mediaOfer) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // dízimos
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaDiz = Number(
+      dadosMes[index].dizimos / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaDiz = Number(
+      dadosMAnt[index].dizimos / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaDiz === 'NaN')
+      dadosMAnt[index].mediaDiz = dadosMes[index].mediaDiz;
+
+    if (dadosMAnt[index].mediaDiz > 0) div = dadosMAnt[index].mediaDiz;
+
+    dadosMes[index].indDiz = (
+      ((dadosMes[index].mediaDiz - dadosMAnt[index].mediaDiz) * 100) /
+      div
+    ).toFixed(2);
+
+    dadosMes[index].somatorio = parseFloat(
+      dadosMes[index].adultos +
+        dadosMes[index].adolecentes +
+        dadosMes[index].criancas +
+        dadosMes[index].visitantes +
+        dadosMes[index].conversoes,
+    );
+    const divisor = parseFloat(5 * mesAnalizado.length);
+    dadosMes[index].indSoma = parseFloat(
+      dadosMes[index].somatorio / divisor,
+    ).toFixed(2);
   };
 
   rows = [
@@ -535,37 +598,6 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
         (val) => val.codigoIgreja === data[i].codigoIgreja,
       );
     }
-    Panel2.push(
-      <FormControl
-        variant="outlined"
-        className={classes.selectEmpty}
-        key="select"
-        size="small"
-      >
-        <FormHelperText style={{ color: '#000' }}>
-          Escolha a Igreja
-        </FormHelperText>
-
-        <Select
-          labelId="demo-simple-select-placeholder-label-label"
-          id="demo-simple-select-placeholder-label"
-          value={age}
-          onChange={handleSelect}
-          displayEmpty
-          className={classes.selectEmpty}
-        >
-          <MenuItem value={age}>
-            <em>Todas</em>
-          </MenuItem>
-
-          {dataIgreja?.map((items) => (
-            <MenuItem key={items.igreja} value={items.codigoIgreja}>
-              {items.igreja ?? items.igreja}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>,
-    );
 
     if (igrejaSelecionada.length > 0) {
       const largRotulo = windowWidth / 7 + 20;
@@ -747,11 +779,11 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
       const largRotulo = windowWidth / 8 + 20;
       const larg = (windowWidth - largRotulo) / 8;
       ListaIgrejas.push(
-        <Box key="data.id" p={1}>
+        <Box p={1} key={data}>
           <TableContainer component={Paper}>
             <Table style={{ tableLayout: 'auto' }}>
               <TableHead>
-                <TableRow key={data.igreja} height={45}>
+                <TableRow height={45}>
                   <StyledTableCell
                     align="center"
                     className={classes.tableCell}
@@ -833,23 +865,27 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                   >
                     <StyledTableCell align="center" component="th" scope="row">
                       {taxaCrescimento(row.codigoIgreja, index)}
+
                       <Box mt={1}>
-                        {!(Number(pc[index] >= 0) || Number(pc[index] < 0)) && (
+                        {!(
+                          Number(dadosMes[index].indSoma >= 0) ||
+                          Number(dadosMes[index].indSoma < 0)
+                        ) && (
                           <CancelRoundedIcon
                             style={{ fontSize: 40, color: '#3f51b5' }}
                           />
                         )}
-                        {Number(pc[index]) > 0 && (
+                        {Number(dadosMes[index].indSoma) > 0 && (
                           <SentimentSatisfiedTwoToneIcon
                             style={{ fontSize: 40, color: '#8bc34a' }}
                           />
                         )}
-                        {Number(pc[index]) < 0 && (
+                        {Number(dadosMes[index].indSoma) < 0 && (
                           <SentimentDissatisfiedTwoToneIcon
                             style={{ fontSize: 40, color: 'red' }}
                           />
                         )}
-                        {Number(pc[index]) === 0 && (
+                        {Number(dadosMes[index].indSoma) === 0 && (
                           <SentimentSatisfiedIcon
                             style={{ fontSize: 40, color: '#e65100' }}
                           />
@@ -875,8 +911,16 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                           fontSize: '12px',
                         }}
                       >
-                        {adultos[index] >= 0 || adultos[index] < 0
-                          ? `${adolecentes[index]} %`
+                        {/* {console.log(
+                          'index:',
+                          index,
+
+                          dadosMes[index].adultos,
+                          dadosMAnt[index].indAdul,
+                        )} */}
+                        {dadosMes[index].adultos >= 0 ||
+                        dadosMes[index].adultos < 0
+                          ? `${dadosMes[index].adultos} %`
                           : '--'}
                       </Box>
                     </StyledTableCell>
@@ -888,8 +932,9 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                           fontSize: '12px',
                         }}
                       >
-                        {adolecentes[index] >= 0 || adolecentes[index] < 0
-                          ? `${adolecentes[index]} %`
+                        {dadosMes[index].adolecentes >= 0 ||
+                        dadosMes[index].adolecentes < 0
+                          ? `${dadosMes[index].adolecentes} %`
                           : '--'}
                       </Box>
                     </StyledTableCell>
@@ -901,8 +946,9 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                           fontSize: '12px',
                         }}
                       >
-                        {criancas[index] >= 0 || criancas[index] < 0
-                          ? `${criancas[index]} %`
+                        {dadosMes[index].criancas >= 0 ||
+                        dadosMes[index].criancas < 0
+                          ? `${dadosMes[index].criancas} %`
                           : '--'}
                       </Box>
                     </StyledTableCell>
@@ -914,8 +960,9 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                           fontSize: '12px',
                         }}
                       >
-                        {visitantes[index] >= 0 || visitantes[index] < 0
-                          ? `${visitantes[index]} %`
+                        {dadosMes[index].visitantes >= 0 ||
+                        dadosMes[index].visitantes < 0
+                          ? `${dadosMes[index].visitantes} %`
                           : '--'}
                       </Box>
                     </StyledTableCell>
@@ -927,21 +974,9 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                           fontSize: '12px',
                         }}
                       >
-                        {conversoes[index] >= 0 || conversoes[index] < 0
-                          ? `${conversoes[index]} %`
-                          : '--'}
-                      </Box>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Box
-                        variant="outlined"
-                        style={{
-                          width: larg,
-                          fontSize: '12px',
-                        }}
-                      >
-                        {ofertas[index] >= 0 || ofertas[index] < 0
-                          ? `${ofertas[index]} %`
+                        {dadosMes[index].conversoes >= 0 ||
+                        dadosMes[index].conversoes < 0
+                          ? `${dadosMes[index].conversoes} %`
                           : '--'}
                       </Box>
                     </StyledTableCell>
@@ -958,13 +993,26 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
                           : '--'}
                       </Box>
                     </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box
+                        variant="outlined"
+                        style={{
+                          width: larg,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {ofertas[index] >= 0 || ofertas[index] < 0
+                          ? `${ofertas[index]} %`
+                          : '--'}
+                      </Box>
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         </Box>,
-        <Box>
+        <Box key={data[1]}>
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={3}>
               <Grid container justifyContent="center">
@@ -1020,95 +1068,6 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
 
   // const tc = CabeçalhoTabela[4].media && CabeçalhoTabela[4].media,
 
-  if (data) {
-    showIgrejas.push(
-      <Box key={data}>
-        {data?.map((items, index) => (
-          <Box
-            key={items.igreja}
-            onClick={() => {
-              handleIgreja(items.codigoIgreja);
-            }}
-            type="button"
-            justifyContent="flex-start"
-          >
-            {taxaCrescimento(items.codigoIgreja, index)}
-            <Box display="flex">
-              <Box mr={-2} ml={2} mt={1}>
-                Status
-              </Box>
-
-              <Box m={1} ml={3}>
-                <Typography
-                  variant="body1"
-                  display="block"
-                  gutterBottom
-                  align="left"
-                  className={classes.caption}
-                >
-                  Igreja
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box display="flex">
-              <Box mr={-2} ml={2} mt={1}>
-                {!(Number(pc[index] >= 0) || Number(pc[index] < 0)) && (
-                  <CancelRoundedIcon
-                    style={{ fontSize: 40, color: '#3f51b5' }}
-                  />
-                )}
-                {Number(pc[index]) > 0 && (
-                  <SentimentSatisfiedTwoToneIcon
-                    style={{ fontSize: 40, color: '#8bc34a' }}
-                  />
-                )}
-                {Number(pc[index]) < 0 && (
-                  <SentimentDissatisfiedTwoToneIcon
-                    style={{ fontSize: 40, color: 'red' }}
-                  />
-                )}
-                {Number(pc[index]) === 0 && (
-                  <SentimentSatisfiedIcon
-                    style={{ fontSize: 40, color: '#e65100' }}
-                  />
-                )}
-              </Box>
-
-              <Box m={1} ml={3}>
-                <Typography
-                  variant="body1"
-                  display="block"
-                  gutterBottom
-                  align="left"
-                  className={classes.caption}
-                >
-                  {items.igreja ?? items.igreja}
-                </Typography>
-
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textSecondary"
-                  style={{ marginRight: 30 }}
-                >
-                  {(Number(pc[index]) >= 0 || Number(pc[index]) <= 0) &&
-                    'Crescimento de '}
-                  {(Number(pc[index]) >= 0 || Number(pc[index]) <= 0) && (
-                    <strong style={{ color: '#000' }}>{pc[index]} %</strong>
-                  )}
-                  {!(Number(pc[index]) >= 0 || Number(pc[index]) <= 0) &&
-                    'Não tem Relatório'}
-                </Typography>
-              </Box>
-            </Box>
-            <Divider />
-          </Box>
-        ))}
-      </Box>,
-    );
-  }
-
   const largRotulo = windowWidth / 7 + 20;
   const larg = (windowWidth - largRotulo) / 7;
   const meses = [
@@ -1139,7 +1098,7 @@ export default function TabelaDesk({ dadosRel, item, mes }) {
         </Box>
         <Table style={{ tableLayout: 'auto' }}>
           <TableHead>
-            <TableRow key="id">
+            <TableRow>
               <TableCell
                 align="center"
                 className={classes.tableCell}

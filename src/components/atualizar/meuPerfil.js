@@ -9,7 +9,6 @@ import Image from 'material-ui-image';
 // import { uniqueId } from 'lodash';
 // import filesize from 'filesize';
 import api from 'src/components/services/api';
-import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import Hidden from '@material-ui/core/Hidden';
 import cpfMask from 'src/components/mascaras/cpf';
@@ -17,14 +16,6 @@ import dataMask from 'src/components/mascaras/datas';
 import foneMask from 'src/components/mascaras/fone';
 import celularMask from 'src/components/mascaras/celular';
 import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import FolderIcon from '@material-ui/icons/Folder';
-import RestoreIcon from '@material-ui/icons/Restore';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -514,11 +505,8 @@ function meuPerfil({ item, secao, ministros }) {
       setBairro(response.data.bairro);
       setCidade(response.data.localidade);
     });
-
-    console.log(informacoes.logradouro);
   };
   const handleDados = () => {
-    console.log('testando', Nome);
     setNome(Nome);
   };
   return (

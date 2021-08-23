@@ -90,7 +90,7 @@ const primaryMenu = [
 ];
 
 const secondaryManu = [
-  { id: 1, label: 'Sobre', path: '/userPerfil', icon: iconesPerfil },
+  { id: 1, label: 'Meu Perfil', path: '/selectPerfil', icon: iconesPerfil },
   { id: 2, label: 'Relatórios', path: '/relatorios', icon: iconeRelatorio },
   {
     id: 3,

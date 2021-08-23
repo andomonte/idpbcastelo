@@ -22,7 +22,8 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import NavbarMinistro from '../navBar/ministos';
+import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
+import NavbarSuper from '../navBar/ministerioMissoes/supervisor';
 import Igreja from './igreja';
 import MeuPerfil from './meuPerfil';
 import Padrao from './userTelas/telaPadrao';
@@ -86,6 +87,8 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    //  backgroundColor: '#e3f2fd',
+
     marginLeft: 0,
   },
   contentShiftMain: {
@@ -96,6 +99,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: +drawerWidth,
     },
+    height: '100%',
+    // backgroundColor: '#e3f2fd',
   },
   drawerHeader: {
     display: 'flex',
@@ -143,7 +148,7 @@ function TabPanel(props) {
   );
 }
 
-function Perfil({ item, title, ministros, igrejas }) {
+function Perfil({ item, title, ministros, igrejas, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -152,12 +157,12 @@ function Perfil({ item, title, ministros, igrejas }) {
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   let LabelIgreja = 'Igreja';
-  let LabelHome = 'Pefil';
+  let LabelHome = 'Usuário';
   let LabelEquipe = 'Equipe';
 
   if (desktop) {
     LabelIgreja = 'Igreja';
-    LabelHome = 'Pefil';
+    LabelHome = 'Usuário';
     LabelEquipe = 'Equipe';
   }
 
@@ -255,7 +260,22 @@ function Perfil({ item, title, ministros, igrejas }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <NavbarMinistro />
+          {perfilUser === 'ministro' && (
+            <NavbarMinistro
+              item={item}
+              igrejas={igrejas}
+              ministros={ministros}
+              perfilUser={perfilUser}
+            />
+          )}
+          {perfilUser === 'sup-MM' && (
+            <NavbarSuper
+              items={item}
+              igrejas={igrejas}
+              ministros={ministros}
+              perfilUser={perfilUser}
+            />
+          )}
         </Drawer>
 
         <main
@@ -268,7 +288,12 @@ function Perfil({ item, title, ministros, igrejas }) {
 
           <TabPanel value={value} index={0}>
             {session && (
-              <MeuPerfil item={item} secao={session} ministros={ministros} />
+              <MeuPerfil
+                item={item}
+                secao={session}
+                ministros={ministros}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -278,9 +303,9 @@ function Perfil({ item, title, ministros, igrejas }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {item.NivelUser === 'ministro' ? <Padrao /> : null}
-            {item.NivelUser === 'adm_MM' ? <CadastroUser /> : null}
-            {item.NivelUser === 'sup-MM' ? <Padrao /> : null}
+            {perfilUser === 'ministro' ? <Padrao /> : null}
+            {perfilUser === 'adm_MM' ? <CadastroUser /> : null}
+            {perfilUser === 'sup-MM' ? <Padrao /> : null}
           </TabPanel>
         </main>
       </div>

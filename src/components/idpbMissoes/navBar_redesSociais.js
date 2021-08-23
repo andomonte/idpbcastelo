@@ -96,7 +96,7 @@ const primaryMenuLogin = [
     icon: SchoolIcon,
   },
 
-  { id: 4, label: 'Meu Perfil', path: '/userPerfil', icon: iconesPerfil },
+  { id: 4, label: 'Meu Perfil', path: '/selectPerfil', icon: iconesPerfil },
 ];
 
 const secondaryManu = [

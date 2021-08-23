@@ -77,7 +77,6 @@ export default function TelaEventos() {
   const [fileObjects, setFileObjects] = React.useState([]);
   const FileList = ({ files }) => (
     <div>
-      {console.log('filesList:', files)}
       <Container>
         {files.map((uploadedFile) => (
           <li key={uniqueId()}>
@@ -91,7 +90,7 @@ export default function TelaEventos() {
                   <button
                     type="button"
                     onClick={() => {
-                      console.log(uploadedFile.id);
+                      // console.log(uploadedFile.id);
                     }}
                   >
                     Excluir
@@ -139,7 +138,6 @@ export default function TelaEventos() {
   }; */
   function MyDropzone() {
     const onDrop = useCallback((acceptedFiles) => {
-      console.log('acceptedFiles', acceptedFiles);
       setFileObjects([].concat(fileObjects, acceptedFiles));
     });
 
@@ -204,7 +202,6 @@ export default function TelaEventos() {
           )}
         </Dropzone>
         {fileSend()}
-        {console.log('->', uploadedFiles)}
         {uploadedFiles.length > 0 && <FileList files={uploadedFiles} />}
         <Box display="flex" flexDirection="row" justifyContent="center">
           <Button

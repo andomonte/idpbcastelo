@@ -176,8 +176,8 @@ function formulario({ item, Data }) {
   // const { data2, error2 } = useSWR(url2, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  if (error) return <Box m={20}>Falha ao acessar o Banco de Dados</Box>;
+  if (!data) return <Box m={20}>Espere...</Box>;
   //---------------------------------------------------------------------------
   const defaultProps = {
     bgcolor: 'background.paper',

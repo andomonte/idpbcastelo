@@ -22,7 +22,9 @@ import EventIcon from '@material-ui/icons/Event';
 import { useSession } from 'next-auth/client';
 import PeopleIcon from '@material-ui/icons/People';
 import Evento from './eventos';
-import NavbarMinistro from '../navBar/ministos';
+import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
+import NavbarSuper from '../navBar/ministerioMissoes/supervisor';
+
 import Culto from './culto';
 import CelulasMM from './celulasMM';
 
@@ -145,7 +147,7 @@ function TabPanel(props) {
   );
 }
 
-function PageRelatorios({ item, title }) {
+function PageRelatorios({ item, title, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -255,7 +257,10 @@ function PageRelatorios({ item, title }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <NavbarMinistro />
+          {perfilUser === 'ministro' && (
+            <NavbarMinistro perfilUser={perfilUser} />
+          )}
+          {perfilUser === 'sup-MM' && <NavbarSuper perfilUser={perfilUser} />}
         </Drawer>
 
         <main
@@ -267,14 +272,20 @@ function PageRelatorios({ item, title }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            {session && <Culto item={item} secao={session} />}
+            {session && (
+              <Culto item={item} secao={session} perfilUser={perfilUser} />
+            )}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {session && <Evento item={item} secao={session} />}
+            {session && (
+              <Evento item={item} secao={session} perfilUser={perfilUser} />
+            )}
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {session && <CelulasMM item={item} secao={session} />}
+            {session && (
+              <CelulasMM item={item} secao={session} perfilUser={perfilUser} />
+            )}
 
             {/* <Analisar item={item} secao={session} /> */}
           </TabPanel>

@@ -22,7 +22,7 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import NavbarMinistro from '../navBar/ministos';
+import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
 import Igreja from './igreja';
 import MeuPerfil from './meuPerfil';
 import Padrao from './userTelas/telaPadrao';
@@ -143,7 +143,7 @@ function TabPanel(props) {
   );
 }
 
-function PageAtualizar({ item, title, ministros, igrejas }) {
+function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -152,12 +152,12 @@ function PageAtualizar({ item, title, ministros, igrejas }) {
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   let LabelIgreja = 'Igreja';
-  let LabelHome = 'Pefil';
+  let LabelHome = 'Usuário';
   let LabelEquipe = 'Equipe';
 
   if (desktop) {
     LabelIgreja = 'Igreja';
-    LabelHome = 'Pefil';
+    LabelHome = 'Usuário';
     LabelEquipe = 'Equipe';
   }
 
@@ -278,9 +278,9 @@ function PageAtualizar({ item, title, ministros, igrejas }) {
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            {item.NivelUser === 'ministro' ? <Padrao /> : null}
-            {item.NivelUser === 'sup-MM' ? <Padrao /> : null}
-            {item.NivelUser === 'adm_MM' ? <CadastroUser /> : null}
+            {perfilUser === 'ministro' ? <Padrao /> : null}
+            {perfilUser === 'sup-MM' ? <Padrao /> : null}
+            {perfilUser === 'adm_MM' ? <CadastroUser /> : null}
           </TabPanel>
         </main>
       </div>

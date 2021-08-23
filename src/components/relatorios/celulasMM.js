@@ -4,14 +4,14 @@ import React from 'react';
 import Padrao from './userTelas/telaPadrao';
 import TelaCelulas from './userTelas/telaCelulasMM';
 
-const Celulas = ({ item, secao }) => {
+const Celulas = ({ item, secao, perfilUser }) => {
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   // console.log(dadosUser.length);
   if (dadosUser.length === 0)
     signOut({
       callbackUrl: `${window.location.origin}`,
     });
-  const route = dadosUser[0].NivelUser;
+  const route = perfilUser;
 
   switch (route) {
     case 'ministro':

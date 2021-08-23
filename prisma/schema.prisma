@@ -363,14 +363,15 @@ model MinistrosIDPBs {
 }
 
 model user {
-  id           Int      @default(autoincrement())
-  nome         String   @db.VarChar(255)
-  NivelUser    String   @db.VarChar(45)
-  RegiaoIDPB   String   @db.VarChar(100)
-  email        String   @db.VarChar(45)
-  igreja       String   @db.VarChar(155)
-  codigoIgreja String?  @db.VarChar(45)
-  createdAt    DateTime @db.DateTime(0)
+  id              Int      @default(autoincrement())
+  nome            String   @db.VarChar(255)
+  NivelUser       String   @db.VarChar(45)
+  GrauMinisterial String   @db.VarChar(145)
+  RegiaoIDPB      String   @db.VarChar(100)
+  email           String   @db.VarChar(45)
+  igreja          String   @db.VarChar(155)
+  codigoIgreja    String?  @db.VarChar(45)
+  createdAt       DateTime @db.DateTime(0)
 
   @@id([id, email])
 }

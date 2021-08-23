@@ -26,11 +26,10 @@ const handler = nc().get(async (req, res) => {
 
   const arquivo = await s3.getObject(params, (error, data) => {
     if (error != null) {
-      console.log('deu erro: ', error);
-
+      // console.log('deu erro: ', error);
       //    alert(`Failed to retrieve an object: ${error}`);
     } else {
-      console.log('vai dados', data);
+      // console.log('vai dados', data);
       //      alert(`Loaded ${data.ContentLength} bytes`);
       // do something with data.Body
     }

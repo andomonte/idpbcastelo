@@ -183,7 +183,6 @@ function DropzoneComponent() {
   const iniciarEnvio = () => {
     setSend(true);
     newValue.forEach(processUpload);
-    console.log('começou o envio dos dados');
   };
   const terminarEnvio = () => {
     setSend(false);

@@ -100,6 +100,28 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
   const { data } = useSWR(url, fetcher);
   let dataIgreja;
   const newDadosRel = [];
+  const dadosMes = [
+    { adultos: '', indAdul: '', mediaAdul: '' },
+    { adolecentes: '', indAdol: '', mediaAdol: '' },
+    { criancas: '', indCri: '', mediaCri: '' },
+    { visitantes: '', indVis: '', mediaVis: '' },
+    { conversoes: '', indConv: '', mediaConv: '' },
+    { ofertas: '', indOfer: '', mediaOfer: '' },
+    { dizimos: '', indDiz: '', mediaDiz: '' },
+    { somatorio: 0, indSoma: 0, mediaSoma: 0 },
+  ];
+
+  // dados dos mes anterior
+  const dadosMAnt = [
+    { adultos: '', indAdul: '', mediaAdul: '' },
+    { adolecentes: '', indAdol: '', mediaAdol: '' },
+    { criancas: '', indCri: '', mediaCri: '' },
+    { visitantes: '', indVis: '', mediaVis: '' },
+    { conversoes: '', indConv: '', mediaConv: '' },
+    { ofertas: '', indOfer: '', mediaOfer: '' },
+    { dizimos: '', indDiz: '', mediaDiz: '' },
+    { somatorio: 0, indSoma: 0, mediaSoma: 0 },
+  ];
 
   const CabeçalhoTabela = [
     { item: 'adultos', total: '', media: '' },
@@ -234,7 +256,7 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
     }
   }
 
-  const taxaCrescimento = (igrejaAnalizada, index) => {
+  /* const taxaCrescimento = (igrejaAnalizada, index) => {
     const mesAnalizado = dadosRel.filter((val) => {
       if (val.codigoIgreja === igrejaAnalizada && val.mes === mes) {
         return val;
@@ -297,8 +319,306 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
     } else {
       pc[index] = 'Sem Relatório';
     }
-  };
+  }; */
+  const taxaCrescimento = (igrejaAnalizada, index) => {
+    let div = 1;
+    const mesAnalizado = dadosRel.filter((val) => {
+      if (val.codigoIgreja === igrejaAnalizada && val.mes === mes) {
+        return val;
+      }
+      return null;
+    });
 
+    if (mesAnalizado.length > 0) {
+      for (let i = 0; i < CabeçalhoTabela.length; i += 1) {
+        const reducer = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue[CabeçalhoTabela[i].item]),
+          0,
+        );
+
+        dadosMes[index].adultos = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adultos),
+          0,
+        );
+
+        dadosMes[index].adolecentes = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adolecentes),
+          0,
+        );
+
+        dadosMes[index].criancas = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.criancas),
+          0,
+        );
+        dadosMes[index].visitantes = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.visitantes),
+          0,
+        );
+        dadosMes[index].conversoes = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.conversoes),
+          0,
+        );
+
+        dadosMes[index].dizimos = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            parseFloat(accumulator) +
+            parseFloat(currentValue.dizimos.replace(',', '.')),
+          0,
+        );
+
+        dadosMes[index].ofertas = mesAnalizado.reduce(
+          (accumulator, currentValue) =>
+            parseFloat(accumulator) +
+            parseFloat(currentValue.ofertas.replace(',', '.')),
+          0,
+        );
+        dizimoMes = igrejaSelecionada.reduce(
+          (accumulator, currentValue) =>
+            parseFloat(accumulator) +
+            parseFloat(currentValue.dizimos.replace(',', '.')),
+          0,
+        );
+        ofertaMes = igrejaSelecionada.reduce(
+          (accumulator, currentValue) =>
+            parseFloat(accumulator) +
+            parseFloat(currentValue.ofertas.replace(',', '.')),
+          0,
+        );
+
+        CabeçalhoTabela[i].total = reducer;
+        CabeçalhoTabela[i].media = Number(
+          reducer / mesAnalizado.length,
+        ).toFixed(1);
+      }
+    }
+    const mesPassado = String(mes - 1);
+
+    const mesAnteriorAnalizado = dadosRel.filter((val) => {
+      if (val.codigoIgreja === igrejaAnalizada && val.mes === mesPassado) {
+        return val;
+      }
+      return null;
+    });
+
+    if (mesAnteriorAnalizado.length > 0) {
+      for (let i = 0; i < dadosMesAnterior.length; i += 1) {
+        dadosMAnt[index].adultos = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adultos),
+          0,
+        );
+        // if (!mesAnteriorAnalizado[i]) adulMAnt[i] = 0;
+        dadosMAnt[index].adolecentes = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.adolecentes),
+          0,
+        );
+        dadosMAnt[index].criancas = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.criancas),
+          0,
+        );
+        dadosMAnt[index].visitantes = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.visitantes),
+          0,
+        );
+        dadosMAnt[index].conversoes = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.conversoes),
+          0,
+        );
+
+        dadosMAnt[index].ofertas = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) +
+            Number(currentValue.ofertas.replace(',', '.')),
+          0,
+        );
+
+        dadosMAnt[index].dizimos = mesAnteriorAnalizado.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) +
+            Number(currentValue.dizimos.replace(',', '.')),
+          0,
+        );
+        //= =========================================================================
+
+        //= ===========================================================================
+      }
+    }
+
+    //---------------------------------------------------------------------------
+    // Calculo dos percentuais de cada intem referente ao mês anterior
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaAdul = Number(
+      dadosMes[index].adultos / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaAdul = Number(
+      dadosMAnt[index].adultos / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaAdul === 'NaN')
+      dadosMAnt[index].mediaAdul = dadosMes[index].mediaAdul;
+
+    if (dadosMAnt[index].mediaAdul > 0) div = dadosMAnt[index].mediaAdul;
+
+    dadosMes[index].indAdul = (
+      ((dadosMes[index].mediaAdul - dadosMAnt[index].mediaAdul) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // adolentes
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaAdol = Number(
+      dadosMes[index].adolecentes / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaAdol = Number(
+      dadosMAnt[index].adolecentes / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaAdol === 'NaN')
+      dadosMAnt[index].mediaAdol = dadosMes[index].mediaAdol;
+
+    if (dadosMAnt[index].mediaAdol > 0) div = dadosMAnt[index].mediaAdol;
+
+    dadosMes[index].indAdol = (
+      ((dadosMes[index].mediaAdol - dadosMAnt[index].mediaAdol) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // Crianças
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaCri = Number(
+      dadosMes[index].criancas / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaCri = Number(
+      dadosMAnt[index].criancas / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaCri === 'NaN')
+      dadosMAnt[index].mediaCri = dadosMes[index].mediaCri;
+
+    if (dadosMAnt[index].mediaCri > 0) div = dadosMAnt[index].mediaCri;
+
+    dadosMes[index].indCri = (
+      ((dadosMes[index].mediaCri - dadosMAnt[index].mediaCri) * 100) /
+      div
+    ).toFixed(2);
+    //---------------------------------------------------------------------------
+    // Visitantes
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaVis = Number(
+      dadosMes[index].visitantes / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaVis = Number(
+      dadosMAnt[index].visitantes / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaVis === 'NaN')
+      dadosMAnt[index].mediaVis = dadosMes[index].mediaVis;
+
+    if (dadosMAnt[index].mediaVis > 0) div = dadosMAnt[index].mediaVis;
+
+    dadosMes[index].indVis = (
+      ((dadosMes[index].mediaVis - dadosMAnt[index].mediaVis) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // conversão
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaConv = Number(
+      dadosMes[index].conversoes / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaConv = Number(
+      dadosMAnt[index].conversoes / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaConv === 'NaN')
+      dadosMAnt[index].mediaConv = dadosMes[index].mediaConv;
+
+    if (dadosMAnt[index].mediaConv > 0) div = dadosMAnt[index].mediaConv;
+
+    dadosMes[index].indConv = (
+      ((dadosMes[index].mediaConv - dadosMAnt[index].mediaConv) * 100) /
+      div
+    ).toFixed(2);
+    //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
+    // ofertas
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaOfer = Number(
+      dadosMes[index].ofertas / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaOfer = Number(
+      dadosMAnt[index].ofertas / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaOfer === 'NaN')
+      dadosMAnt[index].mediaOfer = dadosMes[index].mediaOfer;
+
+    if (dadosMAnt[index].mediaOfer > 0) div = dadosMAnt[index].mediaOfer;
+
+    dadosMes[index].indOfer = (
+      ((dadosMes[index].mediaOfer - dadosMAnt[index].mediaOfer) * 100) /
+      div
+    ).toFixed(2);
+
+    //---------------------------------------------------------------------------
+    // dízimos
+    //---------------------------------------------------------------------------
+
+    dadosMes[index].mediaDiz = Number(
+      dadosMes[index].dizimos / mesAnalizado.length,
+    ).toFixed(2);
+
+    dadosMAnt[index].mediaDiz = Number(
+      dadosMAnt[index].dizimos / mesAnteriorAnalizado.length,
+    ).toFixed(2);
+    div = 1;
+    if (dadosMAnt[index].mediaDiz === 'NaN')
+      dadosMAnt[index].mediaDiz = dadosMes[index].mediaDiz;
+
+    if (dadosMAnt[index].mediaDiz > 0) div = dadosMAnt[index].mediaDiz;
+
+    dadosMes[index].indDiz = (
+      ((dadosMes[index].mediaDiz - dadosMAnt[index].mediaDiz) * 100) /
+      div
+    ).toFixed(2);
+
+    dadosMes[index].somatorio = parseFloat(
+      dadosMes[index].adultos +
+        dadosMes[index].adolecentes +
+        dadosMes[index].criancas +
+        dadosMes[index].visitantes +
+        dadosMes[index].conversoes,
+    );
+    const divisor = parseFloat(5 * mesAnalizado.length);
+    dadosMes[index].indSoma = parseFloat(
+      dadosMes[index].somatorio / divisor,
+    ).toFixed(2);
+  };
   rows = [
     createData(
       'Adultos',
@@ -648,22 +968,25 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
             {taxaCrescimento(items.codigoIgreja, index)}
             <Box display="flex">
               <Box mr={-2} ml={2} mt={1}>
-                {!(Number(pc[index] >= 0) || Number(pc[index] < 0)) && (
+                {!(
+                  Number(dadosMes[index].indSoma >= 0) ||
+                  Number(dadosMes[index].indSoma < 0)
+                ) && (
                   <CancelRoundedIcon
                     style={{ fontSize: 40, color: '#3f51b5' }}
                   />
                 )}
-                {Number(pc[index]) > 0 && (
+                {Number(dadosMes[index].indSoma) > 0 && (
                   <SentimentSatisfiedTwoToneIcon
                     style={{ fontSize: 40, color: '#8bc34a' }}
                   />
                 )}
-                {Number(pc[index]) < 0 && (
+                {Number(dadosMes[index].indSoma) < 0 && (
                   <SentimentDissatisfiedTwoToneIcon
                     style={{ fontSize: 40, color: 'red' }}
                   />
                 )}
-                {Number(pc[index]) === 0 && (
+                {Number(dadosMes[index].indSoma) === 0 && (
                   <SentimentSatisfiedIcon
                     style={{ fontSize: 40, color: '#e65100' }}
                   />

@@ -26,7 +26,7 @@ export default function BotaoLogin() {
           startIcon={<AccountCircle />}
           onClick={() =>
             signIn('google', {
-              callbackUrl: `${window.location.origin}/userPerfil`,
+              callbackUrl: `${window.location.origin}/selectPerfil`,
             })
           }
         >
