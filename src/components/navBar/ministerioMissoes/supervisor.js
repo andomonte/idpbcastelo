@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const primaryMenu = [
-  { id: 1, label: 'IDPB-Nac', path: '/nacionalLogado', icon: IconBrasil },
+  { id: 1, label: 'IDPB-Nacional', path: '/nacionalLogado', icon: IconBrasil },
   {
     id: 2,
     label: 'Missões',
@@ -89,7 +89,7 @@ const primaryMenu = [
 ];
 
 const secondaryManu = [
-  { id: 1, label: 'Meu Perfil', path: '/userPerfil', icon: iconesPerfil },
+  { id: 1, label: 'Perfil', path: '/userPerfil', icon: iconesPerfil },
   {
     id: 2,
     label: 'Rel. de Supervisão',

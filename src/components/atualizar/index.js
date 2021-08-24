@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,6 +22,7 @@ import { useSession } from 'next-auth/client';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
+import NavbarSupMM from '../navBar/ministerioMissoes/supervisor';
 import Igreja from './igreja';
 import MeuPerfil from './meuPerfil';
 import Padrao from './userTelas/telaPadrao';
@@ -245,7 +245,10 @@ function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <NavbarMinistro perfilUser={perfilUser} />
+          {perfilUser === 'ministro' && (
+            <NavbarMinistro perfilUser={perfilUser} />
+          )}
+          {perfilUser === 'sup-MM' && <NavbarSupMM perfilUser={perfilUser} />}
         </Drawer>
 
         <main

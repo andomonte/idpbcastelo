@@ -20,7 +20,7 @@ export default function MyApp(props) {
   return (
     <>
       <Head>
-        <title>My page</title>
+        <title>Sistema-IDPB</title>
 
         <meta
           name="viewport"

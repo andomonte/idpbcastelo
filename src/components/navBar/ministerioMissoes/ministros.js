@@ -91,7 +91,7 @@ const primaryMenu = [
 const secondaryManu = [
   {
     id: 1,
-    label: 'Dados de Cadastro',
+    label: 'Perfil',
     path: '/userPerfil',
     icon: iconesPerfil,
   },

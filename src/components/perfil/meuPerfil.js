@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '12px',
+      fontSize: '14px',
     },
     contentMain: {
       flex: '1 1 auto',
@@ -144,15 +144,17 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
     (val) => val.Email === dadosUser[0].email,
   );
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
-
+  const altura = window.innerHeight;
   return (
-    <Box align="center" className={classes.contentMain}>
+    <Box align="center">
       <Hidden smDown>
         <Box
           textAlign="center"
           borderRadius={16}
           {...defaultProps}
           width={300}
+          height={altura}
+          maxHeight={620}
           style={{ backgroundColor: '#ffff8d' }}
         >
           <Grid item xs={12}>
@@ -255,7 +257,14 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 </Box>
               </Grid>
             </Box>
-            <Box mt={3} mb={2} />
+
+            <Box mt={3} mb={2}>
+              {dadosMinistro[0].CPF ? (
+                <QRCode size={200} value={dadosMinistro[0].CPF} />
+              ) : (
+                <QRCode value={dadosUser[0].email} />
+              )}
+            </Box>
           </Grid>
         </Box>
         {/* <Box borderRadius={16} {...defaultProps}>
@@ -626,20 +635,17 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
               </Typography>
             </Box>
             <Box mt={1} flexDirection="row" display="flex">
-              <Grid item xs={6}>
-                <Box display="flex" justifyContent="flex-end" mr={0}>
-                  <Typography
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="center" ml={1}>
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    mr={1}
+                    mt={0.2}
                     className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
                   >
-                    <small>Grau Ministerial:</small>
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" justifyContent="flex-start" ml={1}>
+                    <small>Grau Ministerial: </small>
+                  </Box>
                   <Typography gutterBottom variant="body1" color="textPrimary">
                     {dadosMinistro[0].GrauMinisterial ? (
                       <strong>{dadosMinistro[0].GrauMinisterial}</strong>
@@ -651,25 +657,17 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
               </Grid>
             </Box>
             <Box flexDirection="row" display="flex">
-              <Grid item xs={6}>
-                <Box display="flex" justifyContent="flex-end" mr={0}>
-                  <Typography
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="center" ml={1}>
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    mr={1}
+                    mt={0.2}
                     className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
                   >
                     <small>Perfil de Usuário:</small>
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box
-                  display="flex"
-                  justifyContent="flex-start"
-                  ml={1}
-                  style={{ textTransform: 'capitalize' }}
-                >
+                  </Box>
                   <Typography gutterBottom variant="body1" color="textPrimary">
                     <strong>{dadosUser[0].NivelUser}</strong>
                   </Typography>
@@ -677,34 +675,27 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
               </Grid>
             </Box>
             <Box flexDirection="row" display="flex">
-              <Grid item xs={6}>
-                <Box display="flex" justifyContent="flex-end" mr={0}>
-                  <Typography
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="center" ml={1}>
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    mr={1}
+                    mt={0.2}
                     className={classes.rotulo}
-                    gutterBottom
-                    variant="body1"
-                    color="textPrimary"
                   >
                     <small>Região-IDPB:</small>
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box
-                  display="flex"
-                  justifyContent="flex-start"
-                  ml={1}
-                  style={{ textTransform: 'capitalize' }}
-                >
+                  </Box>
                   <Typography gutterBottom variant="body1" color="textPrimary">
                     <strong>{dadosUser[0].RegiaoIDPB}</strong>
                   </Typography>
                 </Box>
               </Grid>
             </Box>
+
             <Box>
               {dadosMinistro[0].CPF ? (
-                <QRCode size={200} value={dadosMinistro[0].CPF} />
+                <QRCode size={180} value={dadosMinistro[0].CPF} />
               ) : (
                 <QRCode value={dadosUser[0].email} />
               )}
