@@ -1,14 +1,11 @@
 // import aws from 'aws-sdk';
 // import download from 'image-downloader';
 import path from 'path';
-import fs from 'fs'; /* async function baixarArquivo(valor) {
-  let nomeArq = '';
-  const dirPath = path.join(__dirname, '../../../../public/images/temp');
-  const options = {
-    url: valor,
-    dest: dirPath, // will be saved to /path/to/dest/image.jpg
-  };
- */ /* async function downloadS3(s3, params) {
+import fs from 'fs';
+
+// const result = downloadS3(valor); // import downloads from 'src/utils/download'; // import fileDownload from 'js-file-download';
+
+/* async function downloadS3(s3, params) {
   (async () => {
     try {
       const file = await s3.getObject(params).promise();
@@ -20,10 +17,14 @@ import fs from 'fs'; /* async function baixarArquivo(valor) {
       return err;
     }
   })();
-} */ // const result = downloadS3(valor);
-// import downloads from 'src/utils/download';
-// import fileDownload from 'js-file-download';
-/*  await download
+} */ /* async function baixarArquivo(valor) {
+  let nomeArq = '';
+  const dirPath = path.join(__dirname, '../../../../public/images/temp');
+  const options = {
+    url: valor,
+    dest: dirPath, // will be saved to /path/to/dest/image.jpg
+  };
+ */ /*  await download
     .image(options)
     .then(({ filename }) => {
       nomeArq = filename;

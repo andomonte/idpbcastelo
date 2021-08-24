@@ -181,17 +181,6 @@ function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
   // document.documentElement.lang = 'pt-BR';
   return (
     <div onLoad={handleDrawerClose}>
-      <html lang="pt-BR" className="ltr" />
-      <Head>
-        <title>{title}</title>
-        <meta charSet="utf-8" />
-        <meta httpEquiv="content-language" content="pt-Br" />
-        <meta name="google" content="notranslate" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
-      </Head>
-
       <div className={classes.root}>
         <AppBar className={classes.root2} color="default">
           <ClickAwayListener onClickAway={handleDrawerClose}>
@@ -256,7 +245,7 @@ function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <NavbarMinistro />
+          <NavbarMinistro perfilUser={perfilUser} />
         </Drawer>
 
         <main
@@ -269,7 +258,12 @@ function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
 
           <TabPanel value={value} index={0}>
             {session && (
-              <MeuPerfil item={item} secao={session} ministros={ministros} />
+              <MeuPerfil
+                item={item}
+                secao={session}
+                ministros={ministros}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>

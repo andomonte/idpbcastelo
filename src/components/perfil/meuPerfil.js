@@ -2,9 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { signOut } from 'next-auth/client';
-import { Box, Typography, Divider, Avatar } from '@material-ui/core';
+import { Box, Typography, Avatar } from '@material-ui/core';
 import React from 'react';
-// import QRCode from 'qrcode.react';
 import QRCode from 'react-qr-code';
 
 /* import useSWR from 'swr';
@@ -256,13 +255,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 </Box>
               </Grid>
             </Box>
-            <Box mt={3} mb={2}>
-              {dadosMinistro[0].CPF ? (
-                <QRCode size={200} value={dadosMinistro[0].CPF} />
-              ) : (
-                <QRCode value={dadosUser[0].email} />
-              )}
-            </Box>
+            <Box mt={3} mb={2} />
           </Grid>
         </Box>
         {/* <Box borderRadius={16} {...defaultProps}>
@@ -709,7 +702,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 </Box>
               </Grid>
             </Box>
-            <Box mt={1} mb={0}>
+            <Box>
               {dadosMinistro[0].CPF ? (
                 <QRCode size={200} value={dadosMinistro[0].CPF} />
               ) : (
