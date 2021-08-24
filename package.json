@@ -14,7 +14,7 @@
     "@material-ui/data-grid": "*",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.3.10",
-    "@prisma/client": "^2.20.0",
+    "@prisma/client": "^2.29.1",
     "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
     "aws-sdk": "^2.836.0",
     "axios": "^0.21.1",

@@ -125,13 +125,9 @@ export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
   const usuario = await prisma.user.findMany();
-  const ministros = await prisma.ministrosIDPBs.findMany();
-  const igrejas = await prisma.igrejas.findMany();
   return {
     props: {
       user: JSON.parse(JSON.stringify(usuario)),
-      ministros: JSON.parse(JSON.stringify(ministros)),
-      igrejas: JSON.parse(JSON.stringify(igrejas)),
     }, // will be passed to the pperfilUser component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };

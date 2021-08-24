@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function meuPerfil({ item, secao, ministros, perfilUser }) {
+function meuPerfil({ item, secao, ministros }) {
   const classes = useStyles();
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   const [nome, setNome] = React.useState('');

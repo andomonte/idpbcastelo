@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 // import connectToDatabase from 'src/utils/mongodb';
-import upload from 'src/pages/utils/upload';
+import upload from 'src/utils/upload';
 
 const handler = nc()
   .use(upload.single('file'))
