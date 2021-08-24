@@ -1,5 +1,5 @@
 {
-  "name": "Sistema IDPB",
+  "name": "SISTEMA IDPB",
   "short_name": "idpb-app",
   "description": "Nosso sistema das Igrejas IDPBs",
   "theme_color": "#304ffe",
@@ -10,22 +10,22 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "IDPB_R.png",
+      "src": "icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "IDPBNAC.png",
+      "src": "icon-256x256.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "Missoes_1.png",
+      "src": "icon-512x512.png",
       "sizes": "512x512 256x256 128x128",
       "type": "image/png"
     },
     {
-      "src": "Missoes_2.png",
+      "src": "icon-1024x1024.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }
