@@ -24,17 +24,17 @@ import { useSession } from 'next-auth/client';
 import IconIdpb from 'src/components/icones/idpb';
 import iconesPerfil from 'src/components/icones/perfil';
 import React from 'react';
+// import AssignmentIcon from '@material-ui/icons/Assignment';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import AccountBoxIcon from '@material-ui/icons/AccountBox';
 // import PollIcon from '@material-ui/icons/Poll';
-// import CakeIcon from '@material-ui/icons/Cake';
 // import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+// import CakeIcon from '@material-ui/icons/Cake';
 import iconesBirthdayCake from 'src/components/icones/birthdayCake';
 import iconesFinanças from 'src/components/icones/finanças';
-// import iconesAnalise from 'src/components/icones/analise';
+import iconesAnalise from 'src/components/icones/analise';
 import iconeAtualizarDados from 'src/components/icones/atualizarDados';
 import iconeRelatorio from 'src/components/icones/relatorio';
-import midiaPlay from 'src/components/icones/midia';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -72,11 +72,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const primaryMenu = [
-  { id: 1, label: 'IDPB-Nacional', path: '/nacionalLogado', icon: IconBrasil },
+  { id: 1, label: 'IDPB-Nacional', path: '/', icon: IconBrasil },
   {
     id: 2,
     label: 'Missões',
-    path: '/missoesLogado',
+    path: '/missoes',
     icon: IconMissoes,
   },
   {
@@ -90,12 +90,7 @@ const primaryMenu = [
 ];
 
 const secondaryManu = [
-  {
-    id: 1,
-    label: 'Perfil',
-    path: '/userPerfil',
-    icon: iconesPerfil,
-  },
+  { id: 1, label: 'Meu Perfil', path: '/selectPerfil', icon: iconesPerfil },
   { id: 2, label: 'Relatórios', path: '/relatorios', icon: iconeRelatorio },
   {
     id: 3,
@@ -103,26 +98,21 @@ const secondaryManu = [
     path: '/atualizar',
     icon: iconeAtualizarDados,
   },
+  { id: 4, label: 'Analisar Dados', path: '/analisar', icon: iconesAnalise },
   {
-    id: 4,
+    id: 5,
     label: 'Relatório Financeiro',
     path: '/financeiro',
     icon: iconesFinanças,
   },
   {
-    id: 5,
+    id: 6,
     label: 'Aniversariantes',
     path: '/aniversariantes',
     icon: iconesBirthdayCake,
   },
-  {
-    id: 6,
-    label: 'Midia IDPB',
-    path: '/midia',
-    icon: midiaPlay,
-  },
 ];
-function navBar({ perfilUser }) {
+function navBar() {
   const classes = useStyles();
   const router = useRouter();
   const isSelected = (item) => router.pathname === item.path;
@@ -140,10 +130,7 @@ function navBar({ perfilUser }) {
               classes={{ root: classes.listItem }}
               selected={isSelected(itemPrimary)}
               onClick={() => {
-                router.push({
-                  pathname: itemPrimary.path,
-                  query: { perfilUser },
-                });
+                router.push(itemPrimary.path);
               }}
             >
               <ListItemIcon>
@@ -172,11 +159,7 @@ function navBar({ perfilUser }) {
                   classes={{ root: classes.listItem }}
                   selected={isSelected(itemSecondary)}
                   onClick={() => {
-                    // router.push(itemSecondary.path);
-                    router.push({
-                      pathname: itemSecondary.path,
-                      query: { perfilUser },
-                    });
+                    router.push(itemSecondary.path);
                   }}
                 >
                   <ListItemIcon>

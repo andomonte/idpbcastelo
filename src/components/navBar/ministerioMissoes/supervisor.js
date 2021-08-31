@@ -34,6 +34,7 @@ import iconesFinanças from 'src/components/icones/finanças';
 // import iconesAnalise from 'src/components/icones/analise';
 import iconeAtualizarDados from 'src/components/icones/atualizarDados';
 import iconeRelatorio from 'src/components/icones/relatorio';
+import midiaPlay from 'src/components/icones/midia';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -113,6 +114,12 @@ const secondaryManu = [
     label: 'Aniversariantes',
     path: '/aniversariantes',
     icon: iconesBirthdayCake,
+  },
+  {
+    id: 6,
+    label: 'Midia IDPB',
+    path: '/midia',
+    icon: midiaPlay,
   },
 ];
 function navBar({ perfilUser }) {
