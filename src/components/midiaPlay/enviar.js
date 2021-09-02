@@ -21,8 +21,7 @@ import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
-// import JsFileDownloader from 'js-file-downloader';
-
+import S3 from 'react-aws-s3';
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
 // const download = require('image-downloader');
@@ -228,10 +227,18 @@ function enviar({ item }) {
   const [session] = useSession();
   const [editar, setEditar] = React.useState();
   const [progresso, setProgresso] = React.useState(0);
-  const [seconds, setSeconds] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const arraytoSend = [];
 
+  const config = {
+    bucketName: process.env.AWSBUCKET2,
+
+    region: process.env.AWSREGION,
+    accessKeyId: process.env.AWSACCESS_KEY,
+    secretAccessKey: process.env.AWSSECRET_KEY,
+  };
+
+  const ReactS3Client = new S3(config);
   //----------------------------------------------------------------------
   const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}/${dataEvento}`;
 
@@ -322,15 +329,95 @@ function enviar({ item }) {
   //= ======================================================================
   // Carregar AWS s3 com as fotos
   //= ======================================================================
-
   const updateFile = (tempo) => {
     setProgresso(tempo);
   };
+  const enviarURL = async (urlAws, file) => {
+    const dataFile = new FormData();
+    dataFile.append('file', file[0].file, file[0].name);
+    console.log('urlAws:', file[0]);
+
+    const uploadImageRequest = {
+      method: 'POST',
+      url: urlAws.data,
+      body: dataFile,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    const configAxios = {
+      onUploadProgress: (e) => {
+        const progress = Math.round((e.loaded * 100) / e.total);
+
+        updateFile(progress);
+        console.log(progress, e.total, e.loaded);
+      },
+    };
+    // await axios(uploadImageRequest, configAxios)
+    axios
+      .put(urlAws.data, file[0].file, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+
+        onUploadProgress: (e) => {
+          const progress = Math.round((e.loaded * 100) / e.total);
+
+          updateFile(progress);
+          //          console.log(progress, e.total, e.loaded);
+        },
+      })
+      .then((result) => {
+        //        console.log('Response from s3', result);
+        setTransfer(result.status);
+        setEditar(false);
+      })
+      .catch((error) => {
+        console.log('ERROR ', error);
+        setTransfer('Error');
+      });
+  };
+  const pegarURL = async (uploadedFiles) => {
+    const file = uploadedFiles;
+
+    // get secure url from our server
+    api
+      .post('api/videos', {
+        fileName: file[0].name,
+        fileType: file[0].type,
+      })
+      .then((response) => {
+        if (response) {
+          // setTransfer(response.status);
+          // setEditar(false);
+          enviarURL(response, file);
+          //          console.log('response:', response);
+        }
+        //  updateFile(uploadedFile.id, { uploaded: true });
+      })
+      .catch(() => {
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+
+    /* const { urlAws } = await fetch('/api/videos', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    }).then((res) => res.json());
+    console.log('urlAs', urlAws); */
+
+    // post the image direclty to the s3 bucket
+
+    // const imageUrl = urlAws.split('?')[0];
+    // console.log(imageUrl);
+  };
+
   const processUpload = (uploadedFile) => {
     const dataFile = new FormData();
     dataFile.append('file', uploadedFile.file, uploadedFile.name);
 
-    api
+    /*     api
       .post('api/fotos', dataFile, {
         onUploadProgress: (e) => {
           const progress = Math.round((e.loaded * 100) / e.total);
@@ -349,7 +436,7 @@ function enviar({ item }) {
       })
       .catch(() => {
         //  updateFile(uploadedFile.id, { error: true });
-      });
+      }); */
   };
 
   const iniciarEnvio = async () => {
@@ -366,8 +453,9 @@ function enviar({ item }) {
       error: false,
       url: null,
     }));
+    //    console.log(uploadedFiles[0]);
     uploadedFiles.forEach(processUpload);
-
+    pegarURL(uploadedFiles);
     // e.preventDefault();
 
     setLoading(true);
@@ -590,6 +678,26 @@ function enviar({ item }) {
             <Typography variant="caption" component="div" color="textSecondary">
               {transfer === 200 && (
                 <Alert
+                  action={
+                    <Button
+                      onClick={() => {
+                        setLoading(false);
+                        setTransfer('');
+                      }}
+                      color="inherit"
+                      size="small"
+                      severity="success"
+                    >
+                      <CancelIcon />
+                    </Button>
+                  }
+                >
+                  Vídeo enviado com Sucesso!!!
+                </Alert>
+              )}
+              {transfer === 'Error' && (
+                <Alert
+                  severity="error"
                   action={
                     <Button
                       onClick={() => {
