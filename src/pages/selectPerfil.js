@@ -117,6 +117,9 @@ function selectPerfil({ user }) {
   return (
     <Box align="center" justifyContent="center">
       <h4>IDPB - Pregando a palavra no poder do Espírito Santo </h4>
+      {router.push({
+        pathname: '/',
+      })}
     </Box>
   );
 }

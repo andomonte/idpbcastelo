@@ -21,7 +21,6 @@ import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
-import S3 from 'react-aws-s3';
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
 // const download = require('image-downloader');
@@ -230,15 +229,6 @@ function enviar({ item }) {
   const [loading, setLoading] = React.useState(false);
   const arraytoSend = [];
 
-  const config = {
-    bucketName: process.env.AWSBUCKET2,
-
-    region: process.env.AWSREGION,
-    accessKeyId: process.env.AWSACCESS_KEY,
-    secretAccessKey: process.env.AWSSECRET_KEY,
-  };
-
-  const ReactS3Client = new S3(config);
   //----------------------------------------------------------------------
   const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}/${dataEvento}`;
 
@@ -337,22 +327,6 @@ function enviar({ item }) {
     dataFile.append('file', file[0].file, file[0].name);
     console.log('urlAws:', file[0]);
 
-    const uploadImageRequest = {
-      method: 'POST',
-      url: urlAws.data,
-      body: dataFile,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    const configAxios = {
-      onUploadProgress: (e) => {
-        const progress = Math.round((e.loaded * 100) / e.total);
-
-        updateFile(progress);
-        console.log(progress, e.total, e.loaded);
-      },
-    };
     // await axios(uploadImageRequest, configAxios)
     axios
       .put(urlAws.data, file[0].file, {

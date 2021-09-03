@@ -6,8 +6,8 @@
   "background_color": "#121214",
   "display": "standalone",
   "lang": "pt-BR",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/selectPerfil",
+  "start_url": "/selectPerfil",
   "icons": [
     {
       "src": "icon-128x128.png",
