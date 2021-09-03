@@ -683,7 +683,7 @@ function enviar({ item }) {
                     </Button>
                   }
                 >
-                  Vídeo enviado com Sucesso!!!
+                  ops, algo deu errado,favor reenviar o vídeo !!!
                 </Alert>
               )}
             </Typography>
