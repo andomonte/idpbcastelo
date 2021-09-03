@@ -4,7 +4,7 @@ import axios from 'axios';
 import api from 'src/components/services/api';
 import TouchAppIcon from '@material-ui/icons/TouchApp';
 import { useSession, signOut } from 'next-auth/client';
-import useSWR from 'swr';
+// import useSWR from 'swr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import React, { useCallback, useEffect } from 'react';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -52,7 +52,7 @@ const UploadMessage = styled.p`
   padding: 15px 0;
 `;
 //----------------------------------------------------------------
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+// const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher = (url) => fetch(url).then((r) => r.json());
 
 const useStyles = makeStyles((theme) => ({
@@ -230,7 +230,7 @@ function enviar({ item }) {
   const arraytoSend = [];
 
   //----------------------------------------------------------------------
-  const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}/${dataEvento}`;
+  // const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}/${dataEvento}`;
 
   useEffect(() => {
     if (fileObjects.length > 0) setSend(true);
@@ -325,7 +325,6 @@ function enviar({ item }) {
   const enviarURL = async (urlAws, file) => {
     const dataFile = new FormData();
     dataFile.append('file', file[0].file, file[0].name);
-    console.log('urlAws:', file[0]);
 
     // await axios(uploadImageRequest, configAxios)
     axios
@@ -338,7 +337,6 @@ function enviar({ item }) {
           const progress = Math.round((e.loaded * 100) / e.total);
 
           updateFile(progress);
-          //          console.log(progress, e.total, e.loaded);
         },
       })
       .then((result) => {
@@ -530,11 +528,11 @@ function enviar({ item }) {
 
   // const [editar, setEditar] = React.useState(true);
 
-  const { data, error } = useSWR(url, fetcher);
+  //  const { data, error } = useSWR(url, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  //  if (error) return <div>Failed to load</div>;
+  //  if (!data) return <div>Loading...</div>;
   //---------------------------------------------------------------------------
   //--------------------------------------------------------------------------
   const handleModal = () => {

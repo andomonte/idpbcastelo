@@ -145,7 +145,6 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
   );
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
   const altura = window.innerHeight;
-  console.log(altura);
   return (
     <Box align="center">
       <Hidden smDown>
