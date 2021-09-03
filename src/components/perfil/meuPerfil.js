@@ -145,6 +145,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
   );
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
   const altura = window.innerHeight;
+  console.log(altura);
   return (
     <Box align="center">
       <Hidden smDown>
@@ -591,6 +592,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
         <Box
           textAlign="center"
           width="100%"
+          height={altura}
           style={{ backgroundColor: '#ffff8d' }}
         >
           <Grid item xs={12}>

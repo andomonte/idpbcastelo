@@ -443,7 +443,7 @@ function enviar({ item }) {
     const uploadedFiles = fileObjects.map((file) => ({
       file,
       id: uniqueId(),
-      name: `img${file.id}_${dataEvento}_${
+      name: `video${file.id}_${dataEvento}_${
         item[0].codigoIgreja
       }${file.name.substring(file.name.lastIndexOf('.'))}`,
       readableSize: filesize(file.size),
