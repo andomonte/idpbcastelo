@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { useRouter } from 'next/router';
+import { IdpbNacional } from 'src/components/idpbNacional';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,9 +118,7 @@ function selectPerfil({ user }) {
   return (
     <Box align="center" justifyContent="center">
       <h4>IDPB - Pregando a palavra no poder do Espírito Santo </h4>
-      {router.push({
-        pathname: '/',
-      })}
+      <IdpbNacional title="SISTEMA-IDPB" />
     </Box>
   );
 }
