@@ -469,7 +469,7 @@ function enviar({ item }) {
     } = useDropzone({
       onDrop,
 
-      accept: 'video/*,image/jpeg,',
+      accept: 'image/png,video/*',
     });
 
     const DragMessage = (a, b) => {
