@@ -155,9 +155,9 @@ function MidiaPlay({ perfilUser, item }) {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelAnalisar = 'Analisar';
-  let LabelCulto = 'Culto';
-  let LabelEvento = 'Evento';
+  let LabelAnalisar = 'Chat';
+  let LabelCulto = 'Enviar';
+  let LabelEvento = 'Assistir';
 
   if (desktop) {
     LabelAnalisar = 'Chat';
