@@ -587,6 +587,109 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
           )}
         </Box> */}
       </Hidden>
+      <Hidden xsDown>
+        <Box
+          textAlign="center"
+          borderRadius={16}
+          {...defaultProps}
+          width={300}
+          height={altura}
+          maxHeight={618}
+          style={{ backgroundColor: '#ffaa8d' }}
+          mt={1}
+        >
+          <Grid item xs={12}>
+            <Box align="center" mt={5}>
+              <Avatar
+                style={{ width: 150, height: 150 }}
+                alt="Remy Sharp"
+                src={secao.user.image}
+              />
+            </Box>
+            <Box mt={3}>
+              <Typography
+                className={classes.caption}
+                gutterBottom
+                variant="body1"
+                color="textPrimary"
+              >
+                {dadosUser[0].nome}
+              </Typography>
+            </Box>
+            <Box mt={1} style={{ textTransform: 'capitalize' }}>
+              <Typography gutterBottom variant="body1" color="textPrimary">
+                {dadosUser[0].igreja}
+              </Typography>
+            </Box>
+            <Box mt={1} flexDirection="row" display="flex">
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="center" ml={1}>
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    mr={1}
+                    mt={0.2}
+                    className={classes.rotulo}
+                  >
+                    <small>Grau Ministerial: </small>
+                  </Box>
+                  <Typography gutterBottom variant="body1" color="textPrimary">
+                    {dadosMinistro[0].GrauMinisterial ? (
+                      <strong>{dadosMinistro[0].GrauMinisterial}</strong>
+                    ) : (
+                      <strong>{dadosUser[0].GrauMinisterial}</strong>
+                    )}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Box>
+            <Box flexDirection="row" display="flex">
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="center" ml={1}>
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    mr={1}
+                    mt={0.2}
+                    className={classes.rotulo}
+                  >
+                    <small>Perfil de Usuário:</small>
+                  </Box>
+                  <Typography gutterBottom variant="body1" color="textPrimary">
+                    <strong>{dadosUser[0].NivelUser}</strong>
+                  </Typography>
+                </Box>
+              </Grid>
+            </Box>
+            <Box flexDirection="row" display="flex">
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="center" ml={1}>
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    mr={1}
+                    mt={0.2}
+                    className={classes.rotulo}
+                  >
+                    <small>Região-IDPB:</small>
+                  </Box>
+                  <Typography gutterBottom variant="body1" color="textPrimary">
+                    <strong>{dadosUser[0].RegiaoIDPB}</strong>
+                  </Typography>
+                </Box>
+              </Grid>
+            </Box>
+
+            <Box mt={2}>
+              {dadosMinistro[0].CPF ? (
+                <QRCode size={180} value={dadosMinistro[0].CPF} />
+              ) : (
+                <QRCode value={dadosUser[0].email} />
+              )}
+            </Box>
+          </Grid>
+        </Box>
+      </Hidden>
       <Hidden mdUp>
         <Box
           textAlign="center"
