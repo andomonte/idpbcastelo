@@ -15,7 +15,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { Box, Button, Modal } from '@material-ui/core';
 import Dropzone, { useDropzone } from 'react-dropzone';
 import styled, { css } from 'styled-components';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { uniqueId } from 'lodash';
 import filesize from 'filesize';
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -25,7 +25,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import VideoThumbnail from 'react-video-thumbnail'; // use npm published version
-import { Container, FileInfo, Preview } from './styles';
+import CardActions from '@material-ui/core/CardActions';
 import 'react-circular-progressbar/dist/styles.css';
 // const download = require('image-downloader');
 
@@ -225,7 +225,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function enviar({ item }) {
+function enviar({ secao, item, perfilUser }) {
   const DataAtual = new Date();
   let month = Number(DataAtual.getMonth() + 1);
   if (month < 10) month = `0${month}`;
@@ -244,9 +244,10 @@ function enviar({ item }) {
   const [progresso, setProgresso] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const arraytoSend = [];
-
+  let dadosUsuario = '';
   //----------------------------------------------------------------------
-  // const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}/${dataEvento}`;
+  const dadosUser = item.filter((val) => val.email === secao.user.email);
+  dadosUsuario = dadosUser.filter((val) => val.NivelUser === perfilUser);
 
   useEffect(() => {
     if (fileObjects.length > 0) setSend(true);
@@ -259,23 +260,97 @@ function enviar({ item }) {
     }
   }, [contagem]);
 
-  function atualizarLista(idAtual) {
-    setFileObjects(fileObjects.filter((el) => el.id !== idAtual.id));
-    setContagem(fileObjects.filter((el) => el.id !== idAtual.id));
-    //  setFileObjects(arraytoSend);
-  }
   const defaultProps = {
     bgcolor: 'background.paper',
     marginTop: 1,
     border: 'dashed',
     color: '#cfd8dc',
   };
+  const handleVoltar = (e) => {
+    setFileObjects(fileObjects.slice(fileObjects.indexOf(e.target.name, 1)));
+    setFileObjects(fileObjects.filter((x) => x % 2));
 
+    setSend(false);
+  };
+
+  //= ======================================================================
+  // Carregar AWS s3 com as fotos
+  //= ======================================================================
+  const updateFile = (tempo) => {
+    setProgresso(tempo);
+  };
+  const enviarURL = async (urlAws, file) => {
+    const dataFile = new FormData();
+    dataFile.append('file', file[0].file, file[0].name);
+
+    // await axios(uploadImageRequest, configAxios)
+    axios
+      .put(urlAws.data, file[0].file, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+
+        onUploadProgress: (e) => {
+          const progress = Math.round((e.loaded * 100) / e.total);
+
+          updateFile(progress);
+        },
+      })
+      .then((result) => {
+        setTransfer(result.status);
+      })
+      .catch((error) => {
+        console.log('ERROR ', error);
+        setTransfer('Error');
+      });
+  };
+  const pegarURL = async (uploadedFiles) => {
+    const file = uploadedFiles;
+
+    // get secure url from our server
+    api
+      .post('api/videos', {
+        fileName: file[0].name,
+        fileType: file[0].type,
+      })
+      .then((response) => {
+        if (response) {
+          // setTransfer(response.status);
+          // setEditar(false);
+          enviarURL(response, file);
+        }
+        //  updateFile(uploadedFile.id, { uploaded: true });
+      })
+      .catch(() => {
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+  };
+  const iniciarEnvio = async () => {
+    const uploadedFiles = fileObjects.map((file) => ({
+      file,
+      id: uniqueId(),
+      name: `video${file.id}_${dataEvento}_${
+        dadosUsuario[0].codigoIgreja
+      }${file.name.substring(file.name.lastIndexOf('.'))}`,
+      readableSize: filesize(file.size),
+      preview: URL.createObjectURL(file),
+      progress: 0,
+      uploaded: false,
+      error: false,
+      url: null,
+    }));
+    pegarURL(uploadedFiles);
+    // e.preventDefault();
+
+    setLoading(true);
+    setFileObjects(arrayFinal);
+  };
+  //= ======================================================================
   const FileList = ({ files }) => (
     <Box>
       {files.map((uploadedFile) => (
         <Box key={uniqueId()}>
-          <Box flexDirection="row" {...defaultProps} width="100%" height={220}>
+          <Box flexDirection="row" {...defaultProps} width="100%" height={265}>
             <VideoThumbnail
               videoUrl={uploadedFile.preview}
               thumbnailHandler={(thumbnail) => {
@@ -308,146 +383,38 @@ function enviar({ item }) {
                   </Typography>
                 </CardContent>
               </CardActionArea>
+              <CardActions
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexdDirection: 'column',
+                }}
+              >
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={handleVoltar}
+                  className={classes.buttonCancel}
+                >
+                  Voltar
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  className={classes.buttonGreen}
+                  onClick={iniciarEnvio}
+                  disabled={!send}
+                >
+                  Enviar
+                </Button>
+              </CardActions>
             </Card>
-            {console.log(miniatura)}
           </Box>
         </Box>
       ))}
     </Box>
   );
-  const handleVoltar = (e) => {
-    setFileObjects(fileObjects.slice(fileObjects.indexOf(e.target.name, 1)));
-    setFileObjects(fileObjects.filter((x) => x % 2));
-
-    setSend(false);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  //= ======================================================================
-  // Carregar AWS s3 com as fotos
-  //= ======================================================================
-  const updateFile = (tempo) => {
-    setProgresso(tempo);
-  };
-  const enviarURL = async (urlAws, file) => {
-    const dataFile = new FormData();
-    dataFile.append('file', file[0].file, file[0].name);
-
-    // await axios(uploadImageRequest, configAxios)
-    axios
-      .put(urlAws.data, file[0].file, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-
-        onUploadProgress: (e) => {
-          const progress = Math.round((e.loaded * 100) / e.total);
-
-          updateFile(progress);
-        },
-      })
-      .then((result) => {
-        //        console.log('Response from s3', result);
-        setTransfer(result.status);
-      })
-      .catch((error) => {
-        console.log('ERROR ', error);
-        setTransfer('Error');
-      });
-  };
-  const pegarURL = async (uploadedFiles) => {
-    const file = uploadedFiles;
-
-    // get secure url from our server
-    api
-      .post('api/videos', {
-        fileName: file[0].name,
-        fileType: file[0].type,
-      })
-      .then((response) => {
-        if (response) {
-          // setTransfer(response.status);
-          // setEditar(false);
-          enviarURL(response, file);
-          //          console.log('response:', response);
-        }
-        //  updateFile(uploadedFile.id, { uploaded: true });
-      })
-      .catch(() => {
-        //  updateFile(uploadedFile.id, { error: true });
-      });
-
-    /* const { urlAws } = await fetch('/api/videos', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    }).then((res) => res.json());
-    console.log('urlAs', urlAws); */
-
-    // post the image direclty to the s3 bucket
-
-    // const imageUrl = urlAws.split('?')[0];
-    // console.log(imageUrl);
-  };
-
-  const processUpload = (uploadedFile) => {
-    const dataFile = new FormData();
-    dataFile.append('file', uploadedFile.file, uploadedFile.name);
-
-    /*     api
-      .post('api/fotos', dataFile, {
-        onUploadProgress: (e) => {
-          const progress = Math.round((e.loaded * 100) / e.total);
-
-          updateFile(progress);
-          console.log(progress, e.total, e.loaded);
-        },
-      })
-      .then((response) => {
-        if (response) {
-          setTransfer(response.status);
-          setEditar(false);
-          console.log('response:', response.status);
-        }
-        //  updateFile(uploadedFile.id, { uploaded: true });
-      })
-      .catch(() => {
-        //  updateFile(uploadedFile.id, { error: true });
-      }); */
-  };
-
-  const iniciarEnvio = async () => {
-    const uploadedFiles = fileObjects.map((file) => ({
-      file,
-      id: uniqueId(),
-      name: `video${file.id}_${dataEvento}_${
-        item[0].codigoIgreja
-      }${file.name.substring(file.name.lastIndexOf('.'))}`,
-      readableSize: filesize(file.size),
-      preview: URL.createObjectURL(file),
-      progress: 0,
-      uploaded: false,
-      error: false,
-      url: null,
-    }));
-    //    console.log(uploadedFiles[0]);
-    uploadedFiles.forEach(processUpload);
-    pegarURL(uploadedFiles);
-    // e.preventDefault();
-
-    setLoading(true);
-    setFileObjects(arrayFinal);
-  };
-  //= ======================================================================
-
-  const fileSend = () => {
-    iniciarEnvio();
-  };
-
   function MyDropzone() {
     const onDrop = useCallback((acceptedFiles) => {
       setFileObjects(
@@ -464,7 +431,6 @@ function enviar({ item }) {
         ),
       );
       setFileObjects([].concat(fileObjects, acceptedFiles));
-      setContagem([].concat(contagem, acceptedFiles));
     });
 
     const {
@@ -479,8 +445,6 @@ function enviar({ item }) {
     });
 
     const DragMessage = (a, b) => {
-      console.log('send:', send, ' loading:', loading, ' transfer:', transfer);
-
       if (send && !loading && transfer === '') {
         return (
           <>
@@ -555,7 +519,7 @@ function enviar({ item }) {
         return (
           <UploadMessage>
             <Button>
-              <ImageSearchIcon fontSize="large" style={{ color: 'black' }} />
+              <CameraAltIcon fontSize="large" style={{ color: 'blue' }} />
             </Button>
             Pressione Aqui para Inserir o Vídeo
           </UploadMessage>
@@ -597,65 +561,9 @@ function enviar({ item }) {
     );
   }
 
-  // const [editar, setEditar] = React.useState(true);
-
-  //  const { data, error } = useSWR(url, fetcher);
-  // useSWR('/api/user', (id = 4) => fetcher(id));
-  // useSWR('/api/consultaDados', fetcher);
-  //  if (error) return <div>Failed to load</div>;
-  //  if (!data) return <div>Loading...</div>;
-  //---------------------------------------------------------------------------
-  //--------------------------------------------------------------------------
-  const handleModal = () => {
-    setTransfer('');
-    setOpen(true);
-    setSend(false);
-  };
-
   //--------------------------------------------------------------------------
   //--------------------------------------------------------------------------
 
-  function TelaEventos() {
-    return (
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <Box className={classes.boxUp}>
-          <Box className={classes.boxInterno}>
-            <MyDropzone />
-
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-around"
-              mt={2}
-            >
-              <Button
-                variant="contained"
-                size="small"
-                onClick={handleVoltar}
-                className={classes.buttonCancel}
-              >
-                Cancelar
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                className={classes.buttonGreen}
-                onClick={fileSend}
-                disabled={!send}
-              >
-                Enviar
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      </Modal>
-    );
-  }
   function CircularProgressWithLabel() {
     return (
       <Box position="relative" display="inline-flex">
@@ -684,47 +592,14 @@ function enviar({ item }) {
     <>
       {session ? (
         <Box align="center" width="100%">
-          <Box className={classes.boxUp}>
-            <Box className={classes.boxInterno}>
-              <MyDropzone />
-              {!loading && (
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="space-around"
-                  mt={2}
-                  {...defaultProps}
-                >
-                  <Box mt={2} mb={2}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={handleVoltar}
-                      className={classes.buttonCancel}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      className={classes.buttonGreen}
-                      onClick={fileSend}
-                      disabled={!send}
-                    >
-                      Enviar
-                    </Button>
-                  </Box>
-                </Box>
-              )}
-            </Box>
-          </Box>
+          <MyDropzone />
         </Box>
       ) : (
         signOut({
           callbackUrl: `${window.location.origin}`,
         })
       )}
-      {open && <TelaEventos />}
+      {fileObjects.length > 0 && !send && setSend(true)}
     </>
   );
 }
