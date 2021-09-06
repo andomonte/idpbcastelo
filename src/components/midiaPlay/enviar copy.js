@@ -2,10 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { lightGreen, yellow, red, blue } from '@material-ui/core/colors';
 import axios from 'axios';
 import api from 'src/components/services/api';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import TouchAppIcon from '@material-ui/icons/TouchApp';
 import { useSession, signOut } from 'next-auth/client';
 // import useSWR from 'swr';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -24,7 +21,6 @@ import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
-import VideoThumbnail from 'react-video-thumbnail'; // use npm published version
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
 // const download = require('image-downloader');
@@ -60,12 +56,6 @@ const UploadMessage = styled.p`
 // const fetcher = (url) => fetch(url).then((r) => r.json());
 
 const useStyles = makeStyles((theme) => ({
-  rootCard: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
   boxUp: {
     display: 'flex',
     alignItems: 'center',
@@ -93,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
   },
   qtyLetras: {
-    maxWidth: '250px', // Limite maximo do texto
+    maxWidth: '150px', // Limite maximo do texto
     whitespace: 'nowrap', // Removendo quebra de linha
     overflow: 'hidden', // Removendo a barra de rolagem
     textoverflow: 'ellipsis', // Adicionando "..." ao final do texto
@@ -119,7 +109,6 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: red[700],
     },
-    marginRight: 5,
   },
   buttonVoltar: {
     alignContent: 'center',
@@ -147,7 +136,6 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: lightGreen.A700,
     },
-    marginLeft: 5,
   },
   button: {
     alignContent: 'center',
@@ -234,13 +222,12 @@ function enviar({ item }) {
   const [open, setOpen] = React.useState(false);
   const [send, setSend] = React.useState(false);
   const [transfer, setTransfer] = React.useState('');
-  const [miniatura, setMiniatura] = React.useState('');
   const [fileObjects, setFileObjects] = React.useState([]);
   const [contagem, setContagem] = React.useState([]);
   const dataEvento = String(Data.split('/').join('')); // retira a / da data
   const arrayFinal = [];
   const [session] = useSession();
-
+  const [editar, setEditar] = React.useState();
   const [progresso, setProgresso] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const arraytoSend = [];
@@ -264,62 +251,68 @@ function enviar({ item }) {
     setContagem(fileObjects.filter((el) => el.id !== idAtual.id));
     //  setFileObjects(arraytoSend);
   }
-  const defaultProps = {
-    bgcolor: 'background.paper',
-    marginTop: 1,
-    border: 'dashed',
-    color: '#cfd8dc',
-  };
 
   const FileList = ({ files }) => (
-    <Box>
-      {files.map((uploadedFile) => (
-        <Box key={uniqueId()}>
-          <Box flexDirection="row" {...defaultProps} width="100%" height={220}>
-            <VideoThumbnail
-              videoUrl={uploadedFile.preview}
-              thumbnailHandler={(thumbnail) => {
-                setMiniatura(thumbnail);
-              }}
-              renderThumbnail={false}
-            />
+    <div>
+      <Container>
+        {files.map((uploadedFile) => (
+          <li key={uniqueId()}>
+            <FileInfo>
+              <Preview src={uploadedFile.preview} />
+              <Box className={classes.qtyLetras}>
+                <strong>{uploadedFile.name}</strong>
+                <span>{uploadedFile.readableSize}</span>
+              </Box>
+            </FileInfo>
+            <div>
+              {uploadedFile.progress > 0 && !uploadedFile.error ? (
+                <CircularProgressbar
+                  styles={{
+                    root: { width: 30 },
+                    path: { stroke: '#7159c1' },
+                  }}
+                  strokeWidth={10}
+                  // percentage={20on} // {uploadedFile.progress}
 
-            <Card className={classes.rootCard}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  component="img"
-                  src={miniatura}
+                  value={uploadedFile.progress}
                 />
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    <strong>{uploadedFile.name}</strong>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    <span>{uploadedFile.readableSize}</span>
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            {console.log(miniatura)}
-          </Box>
-        </Box>
-      ))}
-    </Box>
+              ) : (
+                <DeleteForeverIcon
+                  type="button"
+                  onClick={() => {
+                    atualizarLista(uploadedFile);
+                  }}
+                  style={{ color: 'red', fontSize: 30 }}
+                />
+              )}
+              {uploadedFile.url && (
+                <a
+                  href="https://sistemaidpb.s3.amazonaws.com/CAMPO%20GRANDE.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MdLink styles={{ marginRight: 8 }} size={24} color="#222" />
+                </a>
+              )}
+              {uploadedFile.uploaded && (
+                <MdCheckCircle size={24} color="#78e5d5" />
+              )}
+              {uploadedFile.error && <MdError size={24} color="#e57878" />}
+            </div>
+          </li>
+        ))}
+      </Container>
+    </div>
   );
   const handleVoltar = (e) => {
     setFileObjects(fileObjects.slice(fileObjects.indexOf(e.target.name, 1)));
     setFileObjects(fileObjects.filter((x) => x % 2));
-
-    setSend(false);
+    setOpen(false);
+    if (!editar) {
+      setEditar(true);
+    } else {
+      setEditar(false);
+    }
   };
 
   const handleClose = () => {
@@ -352,6 +345,7 @@ function enviar({ item }) {
       .then((result) => {
         //        console.log('Response from s3', result);
         setTransfer(result.status);
+        setEditar(false);
       })
       .catch((error) => {
         console.log('ERROR ', error);
@@ -440,16 +434,20 @@ function enviar({ item }) {
     // e.preventDefault();
 
     setLoading(true);
+
     setFileObjects(arrayFinal);
   };
   //= ======================================================================
 
   const fileSend = () => {
+    setOpen(false);
+
     iniciarEnvio();
   };
 
   function MyDropzone() {
     const onDrop = useCallback((acceptedFiles) => {
+      console.log('files:', acceptedFiles);
       setFileObjects(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -479,78 +477,13 @@ function enviar({ item }) {
     });
 
     const DragMessage = (a, b) => {
-      console.log('send:', send, ' loading:', loading, ' transfer:', transfer);
-
-      if (send && !loading && transfer === '') {
-        return (
-          <>
-            <UploadMessage>
-              <CheckCircleIcon style={{ color: '#76ff03', fontSize: 50 }} />
-            </UploadMessage>
-            <Box mt={-2} mb={2}>
-              Video Selecionado
-            </Box>
-          </>
-        );
-      }
-      if (send && loading && transfer === '') {
+      if (send) {
         return (
           <UploadMessage>
-            <CircularProgressWithLabel />
-            <Box mt={1} mb={-2}>
-              Enviando Vídeo
-            </Box>
+            <CheckCircleIcon style={{ color: '#76ff03', fontSize: 50 }} />
           </UploadMessage>
         );
       }
-      if (send && loading && transfer === 200) {
-        return (
-          <UploadMessage>
-            <Alert
-              action={
-                <Button
-                  onClick={() => {
-                    setLoading(false);
-                    setTransfer('');
-                    setSend(false);
-                  }}
-                  color="inherit"
-                  size="small"
-                  severity="success"
-                >
-                  <CancelIcon />
-                </Button>
-              }
-            >
-              Vídeo enviado com Sucesso!!!
-            </Alert>
-          </UploadMessage>
-        );
-      }
-      if (send && loading && transfer === 'Error') {
-        return (
-          <UploadMessage>
-            <Alert
-              severity="error"
-              action={
-                <Button
-                  onClick={() => {
-                    setLoading(false);
-                    setTransfer('');
-                  }}
-                  color="inherit"
-                  size="small"
-                >
-                  <CancelIcon />
-                </Button>
-              }
-            >
-              ops, algo deu errado,favor reenviar o vídeo !!!
-            </Alert>
-          </UploadMessage>
-        );
-      }
-
       if (!a && !send) {
         return (
           <UploadMessage>
@@ -648,7 +581,7 @@ function enviar({ item }) {
                 onClick={fileSend}
                 disabled={!send}
               >
-                Enviar
+                Adicionar
               </Button>
             </Box>
           </Box>
@@ -684,39 +617,80 @@ function enviar({ item }) {
     <>
       {session ? (
         <Box align="center" width="100%">
-          <Box className={classes.boxUp}>
-            <Box className={classes.boxInterno}>
-              <MyDropzone />
-              {!loading && (
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="space-around"
-                  mt={2}
-                  {...defaultProps}
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              className={classes.button}
+              startIcon={!loading && <TouchAppIcon style={{ fontSize: 40 }} />}
+              onClick={handleModal}
+              style={{ marginTop: 150 }}
+              disabled={loading}
+              //  startIcon={<SaveIcon />}
+            >
+              {!loading && 'Inserir Vídeo'}
+              {progresso < 100 && loading && 'Carregando Vídeo...'}
+              {progresso === 100 &&
+                transfer === '' &&
+                loading &&
+                'Enviando Vídeo...'}
+            </Button>
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            mt={10}
+          >
+            {loading && transfer === '' && <CircularProgressWithLabel />}
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            mt={10}
+          >
+            <Typography variant="caption" component="div" color="textSecondary">
+              {transfer === 200 && (
+                <Alert
+                  action={
+                    <Button
+                      onClick={() => {
+                        setLoading(false);
+                        setTransfer('');
+                      }}
+                      color="inherit"
+                      size="small"
+                      severity="success"
+                    >
+                      <CancelIcon />
+                    </Button>
+                  }
                 >
-                  <Box mt={2} mb={2}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={handleVoltar}
-                      className={classes.buttonCancel}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      className={classes.buttonGreen}
-                      onClick={fileSend}
-                      disabled={!send}
-                    >
-                      Enviar
-                    </Button>
-                  </Box>
-                </Box>
+                  Vídeo enviado com Sucesso!!!
+                </Alert>
               )}
-            </Box>
+              {transfer === 'Error' && (
+                <Alert
+                  severity="error"
+                  action={
+                    <Button
+                      onClick={() => {
+                        setLoading(false);
+                        setTransfer('');
+                      }}
+                      color="inherit"
+                      size="small"
+                    >
+                      <CancelIcon />
+                    </Button>
+                  }
+                >
+                  ops, algo deu errado,favor reenviar o vídeo !!!
+                </Alert>
+              )}
+            </Typography>
           </Box>
         </Box>
       ) : (
