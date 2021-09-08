@@ -83,8 +83,6 @@ const useStyles = makeStyles((theme) => ({
   contentMain: {
     flex: '1 1 auto',
     height: '100%',
-    overflow: 'auto',
-    flexGrow: 1,
     padding: theme.spacing(0),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,

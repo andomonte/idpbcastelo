@@ -9,18 +9,15 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { useSession, signOut } from 'next-auth/client';
 // import useSWR from 'swr';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import CancelIcon from '@material-ui/icons/Cancel';
 // import { signOut } from 'next-auth/client';
-import { Box, Button, Modal } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import Dropzone, { useDropzone } from 'react-dropzone';
 import styled, { css } from 'styled-components';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { uniqueId } from 'lodash';
 import filesize from 'filesize';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import { MdCheckCircle, MdError, MdLink } from 'react-icons/md';
-import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
@@ -231,34 +228,23 @@ function enviar({ secao, item, perfilUser }) {
   if (month < 10) month = `0${month}`;
   const Data = `${DataAtual.getDate()}/${month}/${DataAtual.getFullYear()}`;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+
   const [send, setSend] = React.useState(false);
   const [transfer, setTransfer] = React.useState('');
   const [miniatura, setMiniatura] = React.useState('');
   const [fileObjects, setFileObjects] = React.useState([]);
-  const [contagem, setContagem] = React.useState([]);
+
   const dataEvento = String(Data.split('/').join('')); // retira a / da data
   const arrayFinal = [];
   const [session] = useSession();
 
   const [progresso, setProgresso] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
-  const arraytoSend = [];
+
   let dadosUsuario = '';
   //----------------------------------------------------------------------
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   dadosUsuario = dadosUser.filter((val) => val.NivelUser === perfilUser);
-
-  useEffect(() => {
-    if (fileObjects.length > 0) setSend(true);
-    else setSend(false);
-    if (fileObjects.length > 0) {
-      for (let i = 0; i < 2; i += 1) {
-        if (fileObjects[i]) arraytoSend[i] = fileObjects[i];
-      }
-      if (arraytoSend) setFileObjects(arraytoSend);
-    }
-  }, [contagem]);
 
   const defaultProps = {
     bgcolor: 'background.paper',
@@ -459,70 +445,78 @@ function enviar({ secao, item, perfilUser }) {
       }
       if (send && loading && transfer === '') {
         return (
-          <UploadMessage>
-            <CircularProgressWithLabel />
-            <Box mt={1} mb={-2}>
-              Enviando Vídeo
-            </Box>
-          </UploadMessage>
+          <>
+            <UploadMessage>
+              <CircularProgressWithLabel />
+              <Box mt={1} mb={-2}>
+                Enviando Vídeo
+              </Box>
+            </UploadMessage>
+          </>
         );
       }
       if (send && loading && transfer === 200) {
         return (
-          <UploadMessage>
-            <Alert
-              action={
-                <Button
-                  onClick={() => {
-                    setLoading(false);
-                    setTransfer('');
-                    setSend(false);
-                  }}
-                  color="inherit"
-                  size="small"
-                  severity="success"
-                >
-                  <CancelIcon />
-                </Button>
-              }
-            >
-              Vídeo enviado com Sucesso!!!
-            </Alert>
-          </UploadMessage>
+          <>
+            <UploadMessage>
+              <Alert
+                action={
+                  <Button
+                    onClick={() => {
+                      setLoading(false);
+                      setTransfer('');
+                      setSend(false);
+                    }}
+                    color="inherit"
+                    size="small"
+                    severity="success"
+                  >
+                    <CancelIcon />
+                  </Button>
+                }
+              >
+                Vídeo enviado com Sucesso!!!
+              </Alert>
+            </UploadMessage>
+          </>
         );
       }
       if (send && loading && transfer === 'Error') {
         return (
-          <UploadMessage>
-            <Alert
-              severity="error"
-              action={
-                <Button
-                  onClick={() => {
-                    setLoading(false);
-                    setTransfer('');
-                  }}
-                  color="inherit"
-                  size="small"
-                >
-                  <CancelIcon />
-                </Button>
-              }
-            >
-              ops, algo deu errado,favor reenviar o vídeo !!!
-            </Alert>
-          </UploadMessage>
+          <>
+            <UploadMessage>
+              <Alert
+                severity="error"
+                action={
+                  <Button
+                    onClick={() => {
+                      setLoading(false);
+                      setTransfer('');
+                    }}
+                    color="inherit"
+                    size="small"
+                  >
+                    <CancelIcon />
+                  </Button>
+                }
+              >
+                ops, algo deu errado,favor reenviar o vídeo !!!
+              </Alert>
+            </UploadMessage>
+          </>
         );
       }
 
       if (!a && !send) {
         return (
-          <UploadMessage>
-            <Button>
-              <CameraAltIcon fontSize="large" style={{ color: 'blue' }} />
-            </Button>
-            Pressione Aqui para Inserir o Vídeo
-          </UploadMessage>
+          <>
+            <UploadMessage>
+              <Button>
+                <CameraAltIcon fontSize="large" style={{ color: 'blue' }} />
+              </Button>
+              Pressione Aqui para Inserir o Vídeo
+            </UploadMessage>
+          </>
         );
       }
       if (b && !send) {

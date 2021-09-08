@@ -109,20 +109,14 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '14px',
     },
-    contentMain: {
-      flex: '1 1 auto',
-      height: '100%',
-      overflow: 'auto',
-      flexGrow: 1,
-      padding: theme.spacing(0),
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      // backgroundColor: '#e3f2fd',
-
-      marginLeft: 0,
-    },
+  },
+  root: {
+    // backgroundColor: theme.palette.background.dark,
+    height: '100%',
+    display: 'flex',
+    width: 300,
+    flexDirection: 'column',
+    backgroundColor: '#ffff8d',
   },
 }));
 const defaultProps = {
@@ -146,16 +140,12 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
   const altura = window.innerHeight;
   return (
-    <Box align="center">
+    <Box align="center" height={altura - 70}>
       <Hidden smDown>
         <Box
-          textAlign="center"
           borderRadius={16}
           {...defaultProps}
-          width={300}
-          height={altura}
-          maxHeight={620}
-          style={{ backgroundColor: '#ffff8d' }}
+          className={classes.root}
           mt={1}
         >
           <Grid item xs={12}>
@@ -166,7 +156,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 src={secao.user.image}
               />
             </Box>
-            <Box mt={3}>
+            <Box mt={4}>
               <Typography
                 className={classes.caption}
                 gutterBottom
@@ -240,7 +230,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
               </Grid>
             </Box>
 
-            <Box mt={2}>
+            <Box mt={3}>
               {dadosMinistro[0].CPF ? (
                 <QRCode size={180} value={dadosMinistro[0].CPF} />
               ) : (
@@ -249,438 +239,115 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
             </Box>
           </Grid>
         </Box>
-        {/* <Box borderRadius={16} {...defaultProps}>
-          {dadosMinistro[0] && (
-            <Box>
-              <Box m={2} flexDirection="row" display="flex">
-                <Grid item xs={6}>
-                  <Box mt={2}>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Nome:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Nome}
-                    </Typography>
-                  </Box>
-                  <Box mt={2}>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Função na Igreja:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].FuncaoNaIgreja}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box mt={2}>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Grau Ministerial:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].GrauMinisterial}
-                    </Typography>
-                  </Box>
-                  <Box mt={2}>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Igreja:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Igreja}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
-              <Divider />
-
-              <Box m={2} flexDirection="row" display="flex">
-                <Grid item xs={2}>
-                  <Box mt={0}>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Perfil de Usuário:</small>
-                    </Typography>
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {perfilUser}
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={8}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Endereço:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Logradouro}-{dadosMinistro[0].Numero},{' '}
-                      {dadosMinistro[0].Bairro},{dadosMinistro[0].CEP},{' '}
-                      {dadosMinistro[0].Cidade}-{dadosMinistro[0].UF}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={2}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Matrícula:</small>
-                    </Typography>
-
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      className={classes.typography}
-                    >
-                      {dadosMinistro[0].Matricula}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
-              <Divider />
-              <Box m={2} flexDirection="row" display="flex">
-                <Grid item xs={3}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Estado Civil:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].EstadoCivil}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={3}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Data de Nascimento:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].DataNascimento}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={3}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Celular:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Celular}
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={4}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Nome do Cônjuge:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].Conjuge}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
-              <Divider />
-              <Box m={2} flexDirection="row" display="flex">
-                <Grid item xs={5}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Email:</small>
-                    </Typography>
-
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      className={classes.typography}
-                    >
-                      {dadosMinistro[0].Email}
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={4}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Natural de:</small>
-                    </Typography>
-
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      className={classes.typography}
-                    >
-                      {dadosMinistro[0].Cidade} -{dadosMinistro[0].UF}
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={7}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      <small>Formação Escolar:</small>
-                    </Typography>
-
-                    <Typography
-                      className={classes.caption}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                    >
-                      {dadosMinistro[0].FormacaoEscolar}
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={2}>
-                  <Box>
-                    <Typography
-                      className={classes.rotulo}
-                      gutterBottom
-                      variant="body1"
-                      color="textPrimary"
-                      align="center"
-                    >
-                      <small>Anuidade:</small>
-                    </Typography>
-
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      className={classes.typography}
-                      align="center"
-                    >
-                      {dadosMinistro[0].Anuidade}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Box>
-            </Box>
-          )}
-        </Box> */}
       </Hidden>
 
       <Hidden mdUp>
         <Box
           textAlign="center"
           width="100%"
-          height={altura}
+          height="100%"
           style={{ backgroundColor: '#ffff8d' }}
         >
-          <Grid item xs={12}>
-            <Box align="center">
-              <Avatar
-                style={{ width: 150, height: 150 }}
-                alt="Remy Sharp"
-                src={secao.user.image}
-              />
-            </Box>
-            <Box mt={2}>
-              <Typography gutterBottom variant="body1" color="textPrimary">
-                {dadosUser[0].nome}
-              </Typography>
-            </Box>
-            <Box
-              mt={1}
-              style={{ textTransform: 'capitalize', fontSize: '12px' }}
-            >
-              <strong> {dadosUser[0].igreja} </strong>
-            </Box>
-            <Box mt={1} flexDirection="row" display="flex">
-              <Grid item xs={12}>
-                <Box display="flex" justifyContent="center" ml={1}>
-                  <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    mr={1}
-                    mt={0.2}
-                    className={classes.rotulo}
-                  >
-                    <small>Grau Ministerial: </small>
+          <Box>
+            <Grid item xs={12}>
+              <Box align="center" mt={1}>
+                <Avatar
+                  style={{ width: 150, height: 150 }}
+                  alt="Remy Sharp"
+                  src={secao.user.image}
+                />
+              </Box>
+              <Box mt={3}>
+                <Typography gutterBottom variant="body1" color="textPrimary">
+                  {dadosUser[0].nome}
+                </Typography>
+              </Box>
+              <Box
+                mt={1}
+                style={{ textTransform: 'capitalize', fontSize: '12px' }}
+              >
+                <strong> {dadosUser[0].igreja} </strong>
+              </Box>
+              <Box mt={1} flexDirection="row" display="flex">
+                <Grid item xs={12}>
+                  <Box display="flex" justifyContent="center" ml={1}>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      mr={1}
+                      mt={0.2}
+                      className={classes.rotulo}
+                    >
+                      <small>Grau Ministerial: </small>
+                    </Box>
+                    <Typography
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      {dadosMinistro[0].GrauMinisterial ? (
+                        <strong>{dadosMinistro[0].GrauMinisterial}</strong>
+                      ) : (
+                        <strong>{dadosUser[0].GrauMinisterial}</strong>
+                      )}
+                    </Typography>
                   </Box>
-                  <Typography gutterBottom variant="body1" color="textPrimary">
-                    {dadosMinistro[0].GrauMinisterial ? (
-                      <strong>{dadosMinistro[0].GrauMinisterial}</strong>
-                    ) : (
-                      <strong>{dadosUser[0].GrauMinisterial}</strong>
-                    )}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Box>
-            <Box flexDirection="row" display="flex">
-              <Grid item xs={12}>
-                <Box display="flex" justifyContent="center" ml={1}>
-                  <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    mr={1}
-                    mt={0.2}
-                    className={classes.rotulo}
-                  >
-                    <small>Perfil de Usuário:</small>
+                </Grid>
+              </Box>
+              <Box flexDirection="row" display="flex">
+                <Grid item xs={12}>
+                  <Box display="flex" justifyContent="center" ml={1}>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      mr={1}
+                      mt={0.2}
+                      className={classes.rotulo}
+                    >
+                      <small>Perfil de Usuário:</small>
+                    </Box>
+                    <Typography
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <strong>{dadosUser[0].NivelUser}</strong>
+                    </Typography>
                   </Box>
-                  <Typography gutterBottom variant="body1" color="textPrimary">
-                    <strong>{dadosUser[0].NivelUser}</strong>
-                  </Typography>
-                </Box>
-              </Grid>
-            </Box>
-            <Box flexDirection="row" display="flex">
-              <Grid item xs={12}>
-                <Box display="flex" justifyContent="center" ml={1}>
-                  <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    mr={1}
-                    mt={0.2}
-                    className={classes.rotulo}
-                  >
-                    <small>Região-IDPB:</small>
+                </Grid>
+              </Box>
+              <Box flexDirection="row" display="flex">
+                <Grid item xs={12}>
+                  <Box display="flex" justifyContent="center" ml={1}>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      mr={1}
+                      mt={0.2}
+                      className={classes.rotulo}
+                    >
+                      <small>Região-IDPB:</small>
+                    </Box>
+                    <Typography
+                      gutterBottom
+                      variant="body1"
+                      color="textPrimary"
+                    >
+                      <strong>{dadosUser[0].RegiaoIDPB}</strong>
+                    </Typography>
                   </Box>
-                  <Typography gutterBottom variant="body1" color="textPrimary">
-                    <strong>{dadosUser[0].RegiaoIDPB}</strong>
-                  </Typography>
-                </Box>
-              </Grid>
-            </Box>
+                </Grid>
+              </Box>
 
-            <Box>
-              {dadosMinistro[0].CPF ? (
-                <QRCode size={180} value={dadosMinistro[0].CPF} />
-              ) : (
-                <QRCode value={dadosUser[0].email} />
-              )}
-            </Box>
-          </Grid>
+              <Box mt={2}>
+                {dadosMinistro[0].CPF ? (
+                  <QRCode size={180} value={dadosMinistro[0].CPF} />
+                ) : (
+                  <QRCode value={dadosUser[0].email} />
+                )}
+              </Box>
+            </Grid>
+          </Box>
           <br />
         </Box>
       </Hidden>
