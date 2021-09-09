@@ -139,8 +139,11 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
   );
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
   const altura = window.innerHeight;
+  const alturaPerc = Number((altura * 85) / 100);
+  console.log(altura, alturaPerc);
+
   return (
-    <Box align="center" height={altura - 70}>
+    <Box align="center" height={alturaPerc}>
       <Hidden smDown>
         <Box
           borderRadius={16}
@@ -184,7 +187,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                     <small>Grau Ministerial: </small>
                   </Box>
                   <Typography gutterBottom variant="body1" color="textPrimary">
-                    {dadosMinistro[0].GrauMinisterial ? (
+                    {dadosMinistro.length > 0 ? (
                       <strong>{dadosMinistro[0].GrauMinisterial}</strong>
                     ) : (
                       <strong>{dadosUser[0].GrauMinisterial}</strong>
@@ -231,7 +234,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
             </Box>
 
             <Box mt={3}>
-              {dadosMinistro[0].CPF ? (
+              {dadosMinistro.length > 0 ? (
                 <QRCode size={180} value={dadosMinistro[0].CPF} />
               ) : (
                 <QRCode value={dadosUser[0].email} />
@@ -245,7 +248,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
         <Box
           textAlign="center"
           width="100%"
-          height="100%"
+          height={alturaPerc}
           style={{ backgroundColor: '#ffff8d' }}
         >
           <Box>
@@ -257,7 +260,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                   src={secao.user.image}
                 />
               </Box>
-              <Box mt={3}>
+              <Box mt={alturaPerc > 550 ? 3 : 1}>
                 <Typography gutterBottom variant="body1" color="textPrimary">
                   {dadosUser[0].nome}
                 </Typography>
@@ -285,7 +288,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                       variant="body1"
                       color="textPrimary"
                     >
-                      {dadosMinistro[0].GrauMinisterial ? (
+                      {dadosMinistro.length > 0 ? (
                         <strong>{dadosMinistro[0].GrauMinisterial}</strong>
                       ) : (
                         <strong>{dadosUser[0].GrauMinisterial}</strong>
@@ -339,8 +342,8 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 </Grid>
               </Box>
 
-              <Box mt={2}>
-                {dadosMinistro[0].CPF ? (
+              <Box mt={alturaPerc > 550 ? 2 : 1}>
+                {dadosMinistro.length > 0 ? (
                   <QRCode size={180} value={dadosMinistro[0].CPF} />
                 ) : (
                   <QRCode value={dadosUser[0].email} />

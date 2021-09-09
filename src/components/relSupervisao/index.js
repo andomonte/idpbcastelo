@@ -11,8 +11,7 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
-import MultilineChartIcon from '@material-ui/icons/MultilineChart';
+import HomeIcon from '@material-ui/icons/HomeSharp';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -21,10 +20,9 @@ import Login from 'src/components/botaoLogin';
 import EventIcon from '@material-ui/icons/Event';
 import { useSession } from 'next-auth/client';
 import PeopleIcon from '@material-ui/icons/People';
-import Evento from './eventos';
+import Evento from './evento';
 import NavbarSupervisor from '../navBar/ministerioMissoes/supervisor';
 import Culto from './culto';
-import CelulasMM from './celulasMM';
 
 // import Analisar from './analisar';
 // import Carrossel from '../carrossel';
@@ -154,12 +152,12 @@ function PageRelSuper({ item, title, perfilUser }) {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelAnalisar = 'Analisar';
+  let LabelAnalisar = 'Mentoria';
   let LabelCulto = 'Culto';
   let LabelEvento = 'Evento';
 
   if (desktop) {
-    LabelAnalisar = 'Mentoriamento';
+    LabelAnalisar = 'Mentoria';
     LabelEvento = 'Eventos';
     LabelCulto = 'Cultos';
   }
@@ -232,7 +230,7 @@ function PageRelSuper({ item, title, perfilUser }) {
                 >
                   <BottomNavigationAction
                     label={LabelCulto}
-                    icon={<PeopleIcon />}
+                    icon={<HomeIcon />}
                   />
                   <BottomNavigationAction
                     label={LabelEvento}
@@ -240,7 +238,7 @@ function PageRelSuper({ item, title, perfilUser }) {
                   />
                   <BottomNavigationAction
                     label={LabelAnalisar}
-                    icon={<MultilineChartIcon />}
+                    icon={<PeopleIcon />}
                   />
                 </BottomNavigation>
               </Box>
@@ -279,9 +277,7 @@ function PageRelSuper({ item, title, perfilUser }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {session && (
-              <CelulasMM item={item} secao={session} statusDrawer={open} />
-            )}
+            {session && 'ola pessaol'}
 
             {/* <Analisar item={item} secao={session} /> */}
           </TabPanel>
