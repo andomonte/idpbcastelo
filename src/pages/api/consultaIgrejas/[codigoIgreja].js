@@ -7,11 +7,15 @@ export default async function handle(req, res) {
   } = req;
   // console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
-  const posts = await prisma.igrejas.findMany({
-    where: {
-      AND: [{ codigoIgreja }],
-    },
-  });
+  const posts = await prisma.igrejas
+    .findMany({
+      where: {
+        AND: [{ codigoIgreja }],
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   // console.log(posts);
   res.statuCode = 200;
   res.setHeader('Content-Type', 'aplication/json');

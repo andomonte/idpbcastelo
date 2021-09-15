@@ -614,6 +614,7 @@ function formulario({ item, Data }) {
           evento,
           igreja,
           codigoIgreja,
+          regiaoIDPB: item[0].RegiaoIDPB,
           dataEvento,
           adultos,
           adolecentes,

@@ -13,7 +13,9 @@ export const getStaticProps = async () => {
   // pega o valor do banco de dados
   const tela = await selectRoutes();
 
-  const posts = await prisma.igrejas.findMany();
+  const posts = await prisma.igrejas.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       org: JSON.parse(JSON.stringify(posts)),

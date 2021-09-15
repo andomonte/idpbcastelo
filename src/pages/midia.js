@@ -28,7 +28,9 @@ function Midia({ user }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const posts = await prisma.user.findMany();
+  const posts = await prisma.user.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       user: JSON.parse(JSON.stringify(posts)),

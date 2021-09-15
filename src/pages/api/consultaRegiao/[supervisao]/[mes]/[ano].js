@@ -7,11 +7,15 @@ export default async function handle(req, res) {
   } = req;
 
   // const action = `${rel}.findMany`
-  const posts = await prisma.relatorios.findMany({
-    where: {
-      AND: [{ supervisao }, { ano }],
-    },
-  });
+  const posts = await prisma.relatorios
+    .findMany({
+      where: {
+        AND: [{ supervisao }, { ano }],
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.statuCode = 200;
   res.setHeader('Content-Type', 'aplication/json');
   //  res.end(JSON.stringify({ posts }));

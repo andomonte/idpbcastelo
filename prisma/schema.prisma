@@ -423,6 +423,7 @@ model Eventos {
   id           Int     @id @default(autoincrement())
   igreja       String  @db.VarChar(100)
   codigoIgreja String  @db.VarChar(45)
+  regiaoIDPB   String  @db.VarChar(45)
   dataEvento   String  @db.VarChar(45)
   evento       String  @db.VarChar(500)
   adultos      String  @db.VarChar(45)

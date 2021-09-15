@@ -9,7 +9,9 @@ function getUsuarios({ org }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const posts = await prisma.Usuarios.findMany();
+  const posts = await prisma.Usuarios.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       org: JSON.parse(JSON.stringify(posts)),

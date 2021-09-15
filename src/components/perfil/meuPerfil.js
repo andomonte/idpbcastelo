@@ -139,7 +139,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
   );
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
   const altura = window.innerHeight;
-  const alturaPerc = Number((altura * 85) / 100);
+  const alturaPerc = Number((altura * 90) / 100);
   console.log(altura, alturaPerc);
 
   return (
@@ -152,12 +152,20 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
           mt={1}
         >
           <Grid item xs={12}>
-            <Box align="center" mt={5}>
-              <Avatar
-                style={{ width: 150, height: 150 }}
-                alt="Remy Sharp"
-                src={secao.user.image}
-              />
+            <Box align="center" mt={alturaPerc > 600 ? 5 : 3}>
+              {alturaPerc > 600 ? (
+                <Avatar
+                  style={{ width: 150, height: 150 }}
+                  alt="Remy Sharp"
+                  src={secao.user.image}
+                />
+              ) : (
+                <Avatar
+                  style={{ width: 120, height: 120 }}
+                  alt="Remy Sharp"
+                  src={secao.user.image}
+                />
+              )}
             </Box>
             <Box mt={4}>
               <Typography
@@ -235,9 +243,15 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
 
             <Box mt={3}>
               {dadosMinistro.length > 0 ? (
-                <QRCode size={180} value={dadosMinistro[0].CPF} />
+                <QRCode
+                  size={alturaPerc > 600 ? 180 : 150}
+                  value={dadosMinistro[0].CPF}
+                />
               ) : (
-                <QRCode value={dadosUser[0].email} />
+                <QRCode
+                  size={alturaPerc > 600 ? 180 : 150}
+                  value={dadosUser[0].email}
+                />
               )}
             </Box>
           </Grid>
@@ -248,19 +262,28 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
         <Box
           textAlign="center"
           width="100%"
-          height={alturaPerc}
+          height="100%"
           style={{ backgroundColor: '#ffff8d' }}
         >
+          <br />
           <Box>
             <Grid item xs={12}>
-              <Box align="center" mt={1}>
-                <Avatar
-                  style={{ width: 150, height: 150 }}
-                  alt="Remy Sharp"
-                  src={secao.user.image}
-                />
+              <Box align="center" mt={0}>
+                {alturaPerc > 600 ? (
+                  <Avatar
+                    style={{ width: 150, height: 150 }}
+                    alt="Remy Sharp"
+                    src={secao.user.image}
+                  />
+                ) : (
+                  <Avatar
+                    style={{ width: 120, height: 120 }}
+                    alt="Remy Sharp"
+                    src={secao.user.image}
+                  />
+                )}
               </Box>
-              <Box mt={alturaPerc > 550 ? 3 : 1}>
+              <Box mt={3}>
                 <Typography gutterBottom variant="body1" color="textPrimary">
                   {dadosUser[0].nome}
                 </Typography>
@@ -342,7 +365,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 </Grid>
               </Box>
 
-              <Box mt={alturaPerc > 550 ? 2 : 1}>
+              <Box mt={alturaPerc > 600 ? 2 : 1}>
                 {dadosMinistro.length > 0 ? (
                   <QRCode size={180} value={dadosMinistro[0].CPF} />
                 ) : (
@@ -351,7 +374,6 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
               </Box>
             </Grid>
           </Box>
-          <br />
         </Box>
       </Hidden>
     </Box>

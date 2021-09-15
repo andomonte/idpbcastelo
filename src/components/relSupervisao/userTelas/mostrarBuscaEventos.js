@@ -4,20 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { green, yellow } from '@material-ui/core/colors';
 import { Box } from '@material-ui/core';
 import axios from 'axios';
-// import Button from '@material-ui/core/Button';
-// import EditIcon from '@material-ui/icons/Edit';
-// import InputAdornment from '@material-ui/core/InputAdornment';
-// import SaveIcon from '@material-ui/icons/Save';
-// import ReplyRoundedIcon from '@material-ui/icons/ReplyRounded';
-// import ResponsiveTable from 'material-ui-next-responsive-table';
-// import ResponsiveTable from 'material-ui-next-responsive-table';
-// import AddIcon from '@material-ui/icons/Add';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { useSession, signOut } from 'next-auth/client';
 import useSWR from 'swr';
 
-import TabelaMobile from './tabelaMobile';
+import EventoMobile from './eventoMobile';
 import TabelaDesk from './tabelaDesk';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -125,11 +117,6 @@ function MostrarBuscaEventos({ item, Data, statusDrawer }) {
 
   const url = `${window.location.origin}/api/consultaRegiao/${item[0].RegiaoIDPB}/${mes}/${ano}`;
   const { data, error } = useSWR(url, fetcher);
-  // const supervisao = item[0].RegiaoIDPB;
-  // const url2 = `${window.location.origin}/api/consultaRegiao/${supervisao}`;
-  // const { data2, error2 } = useSWR(url2, fetcher);
-  // useSWR('/api/user', (id = 4) => fetcher(id));
-  // useSWR('/api/consultaDados', fetcher);
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
   //---------------------------------------------------------------------------
@@ -169,7 +156,7 @@ function MostrarBuscaEventos({ item, Data, statusDrawer }) {
               <Box display="flex" flexDirection="row">
                 <Grid item xs={12}>
                   <Box className={classes.novoBox}>
-                    <TabelaMobile
+                    <EventoMobile
                       dadosRel={data}
                       item={item}
                       mes={mes}

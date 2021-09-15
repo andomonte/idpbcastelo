@@ -11,11 +11,15 @@ export default async function handle(req, res) {
   const mes = dataEvento.slice(2, 4);
   const ano = dataEvento.slice(4, 8);
   const dvFinal = `${dia}${mes}${ano}`;
-  const posts = await prisma.eventos.findMany({
-    where: {
-      AND: [{ codigoIgreja }, { dataEvento: dvFinal }],
-    },
-  });
+  const posts = await prisma.eventos
+    .findMany({
+      where: {
+        AND: [{ codigoIgreja }, { dataEvento: dvFinal }],
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   //  console.log(posts);
   res.statuCode = 200;
   res.setHeader('Content-Type', 'aplication/json');

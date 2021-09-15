@@ -24,7 +24,6 @@ import Typography from '@material-ui/core/Typography';
 import VideoThumbnail from 'react-video-thumbnail'; // use npm published version
 import CardActions from '@material-ui/core/CardActions';
 import 'react-circular-progressbar/dist/styles.css';
-// const download = require('image-downloader');
 
 const dragActive = css`
   border-color: #76ff03;
@@ -245,7 +244,9 @@ function enviar({ secao, item, perfilUser }) {
   //----------------------------------------------------------------------
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   dadosUsuario = dadosUser.filter((val) => val.NivelUser === perfilUser);
-
+  let codigoIgreja = 'IDPB';
+  if (dadosUsuario[0].codigoIgreja) codigoIgreja = dadosUsuario[0].codigoIgreja;
+  console.log('codigoUsuario:', codigoIgreja);
   const defaultProps = {
     bgcolor: 'background.paper',
     marginTop: 1,
@@ -315,9 +316,9 @@ function enviar({ secao, item, perfilUser }) {
     const uploadedFiles = fileObjects.map((file) => ({
       file,
       id: uniqueId(),
-      name: `video${file.id}_${dataEvento}_${
-        dadosUsuario[0].codigoIgreja
-      }${file.name.substring(file.name.lastIndexOf('.'))}`,
+      name: `video${file.id}_${dataEvento}_${codigoIgreja}${file.name.substring(
+        file.name.lastIndexOf('.'),
+      )}`,
       readableSize: filesize(file.size),
       preview: URL.createObjectURL(file),
       progress: 0,

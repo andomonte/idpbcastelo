@@ -81,7 +81,9 @@ export const getStaticProps = async () => {
 
   const usuario = await prisma.user.findMany();
   const ministros = await prisma.ministrosIDPBs.findMany();
-  const igrejas = await prisma.igrejas.findMany();
+  const igrejas = await prisma.igrejas.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       user: JSON.parse(JSON.stringify(usuario)),

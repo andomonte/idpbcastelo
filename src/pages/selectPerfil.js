@@ -126,7 +126,9 @@ function selectPerfil({ user }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const usuario = await prisma.user.findMany();
+  const usuario = await prisma.user.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       user: JSON.parse(JSON.stringify(usuario)),

@@ -2,10 +2,17 @@ import prisma from 'src/lib/prisma';
 
 export default async function handle(req, res) {
   // id = req;
-  // console.log('dados do api', ...req.body);
-  const posts = await prisma.igrejas
+  const {
+    query: { supervisao },
+  } = req;
+  // console.log('dados do api', codigoIgreja, mes, ano);
+  // const action = `${rel}.findMany`
+  const regiaoIDPB = supervisao;
+  const posts = await prisma.eventos
     .findMany({
-      where: { id: 1 },
+      where: {
+        AND: [{ regiaoIDPB }],
+      },
     })
     .finally(async () => {
       await prisma.$disconnect();
