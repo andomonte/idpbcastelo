@@ -246,7 +246,7 @@ function enviar({ secao, item, perfilUser }) {
   dadosUsuario = dadosUser.filter((val) => val.NivelUser === perfilUser);
   let codigoIgreja = 'IDPB';
   if (dadosUsuario[0].codigoIgreja) codigoIgreja = dadosUsuario[0].codigoIgreja;
-  console.log('codigoUsuario:', codigoIgreja);
+
   const defaultProps = {
     bgcolor: 'background.paper',
     marginTop: 1,

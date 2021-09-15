@@ -140,7 +140,6 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
   // const dadosMinistro = getDados(item[0].email, item[0].nome);
   const altura = window.innerHeight;
   const alturaPerc = Number((altura * 90) / 100);
-  console.log(altura, alturaPerc);
 
   return (
     <Box align="center" height={alturaPerc}>
@@ -369,7 +368,7 @@ function meuPerfil({ item, secao, ministros, perfilUser }) {
                 {dadosMinistro.length > 0 ? (
                   <QRCode size={180} value={dadosMinistro[0].CPF} />
                 ) : (
-                  <QRCode value={dadosUser[0].email} />
+                  <QRCode size={180} value={dadosUser[0].email} />
                 )}
               </Box>
             </Grid>
