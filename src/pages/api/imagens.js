@@ -4,8 +4,8 @@ const handler = async (req, res) => {
   const fileName = { ...req.body };
 
   const url = await uploadImagensS3(fileName.img);
-
-  res.send(url);
+  console.log(url.Body);
+  res.send(url, url.Body);
 };
 
 export default handler;

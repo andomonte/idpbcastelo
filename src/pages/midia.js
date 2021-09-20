@@ -35,7 +35,7 @@ export const getStaticProps = async () => {
     props: {
       user: JSON.parse(JSON.stringify(posts)),
     }, // will be passed to the page component as props
-    //  revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
+    revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };
 };
 

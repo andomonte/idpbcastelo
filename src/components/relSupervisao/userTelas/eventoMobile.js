@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import { Box, Avatar, Divider, Grid, Button } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import Iframe from 'react-iframe';
+import downloadjs from 'downloadjs';
+
+import downloadImgS3 from 'src/utils/uploadImagensS3';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -56,7 +59,7 @@ export default function EventoMobile({ item }) {
   const [cont, setCont] = React.useState(0);
   const [fotos, setFotos] = React.useState([]);
   const [imagemBaixada, setImagemBaixada] = React.useState('');
-
+  const [urls, setUrls] = React.useState('');
   const url = `${window.location.origin}/api/consultaEventoIgreja/${item[0].RegiaoIDPB}`;
   const { data, error } = useSWR(url, fetcher);
   if (error) return <div>Failed to load</div>;
@@ -225,39 +228,43 @@ export default function EventoMobile({ item }) {
       </Box>,
     );
   }
-  const downloadImg = (imagem) => {
+  const downloadImg = async (imagem) => {
     const img = 'SALVADOR.png';
+    // setImagemBaixada(imagem);
+    // downloadjs(imagem);
+    console.log(imagem);
+    // const urlRecebida = await downloadImgS3(img);
+    // console.log('vai', urlRecebida);
+
     api
       .post('api/imagens', { img })
       .then((response) => {
         if (response) {
-          const urlpre = URL.createObjectURL(
-            new Blob([response.data], { type: 'image/*' }),
-          );
+          // setTransfer(response.status);
+          // setEditar(false);
+          //  const urls2 = window.URL.createObjectURL(Blob(response.data.Body));
+          // setUrls(response.data.Body);
+          downloadjs(response.data);
 
-          console.log('é isso mesmo:', response.data);
-          setImagemBaixada(urlpre);
+          console.log('é isso mesmo:', response);
+          // setImagemBaixada(response.data);
         }
+        //  updateFile(uploadedFile.id, { uploaded: true });
       })
-      .catch(() => {});
+      .catch(() => {
+        console.log('deu ruim');
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+    //    console.log(urls);
   };
+
   const altura = window.innerHeight;
   const body = (
     <Box className={classes.paper}>
       <Box height={altura - 70}>
         <img src={fotos[cont]} alt="img01" className={classes.img} />
       </Box>
-      {imagemBaixada && (
-        <Iframe
-          url="https://sistemaidpb.s3.amazonaws.com/SALVADOR.png"
-          width="150px"
-          height="150px"
-          id="myId"
-          className="myClassname"
-          display="initial"
-          position="relative"
-        />
-      )}
+      {imagemBaixada && <iframe src={imagemBaixada} title="myFrame" />}
       <Box display="flex" justifyContent="center" mt={2}>
         <Box mr={1}>
           <Button
@@ -274,7 +281,17 @@ export default function EventoMobile({ item }) {
             Proxima
           </Button>
         </Box>
-
+        <Box ml={1}>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: '#ec407a' }}
+            onClick={() => {
+              downloadImg(fotos[cont]);
+            }}
+          >
+            Baixar
+          </Button>
+        </Box>
         <Box ml={1}>
           <Button
             variant="contained"
