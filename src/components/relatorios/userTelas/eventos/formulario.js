@@ -802,6 +802,7 @@ function formulario({ item, Data }) {
           img03: img3,
           img04: img4,
           img05: img5,
+          regiaoIDPB: item[0].RegiaoIDPB,
         };
 
         let urlCreate = '';

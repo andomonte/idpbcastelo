@@ -91,7 +91,7 @@ export default function EventoMobile({ item }) {
     showIgrejas.push(
       <Box key={data}>
         {data?.map((items) => (
-          <Box key={items.igreja} type="button" justifyContent="flex-start">
+          <Box key={items.id} type="button" justifyContent="flex-start">
             <Box display="flex">
               <Box mr={-2} ml={2} mt={2.2}>
                 <Avatar
@@ -229,14 +229,19 @@ export default function EventoMobile({ item }) {
     );
   }
   const downloadImg = async (imagem) => {
-    const img = 'SALVADOR.png';
+    const img =
+      'https://sistemaidpb.s3.amazonaws.com/img74_21092021_MM201026.jpg';
+    console.log(img);
     // setImagemBaixada(imagem);
-    // downloadjs(imagem);
-    console.log(imagem);
+    //  "https://sistemaidpb.s3.amazonaws.com/225.394.682-68.jpeg"
+    //   https://sistemaidpb.s3.amazonaws.com/img1_01052021_AM-030.jpeg
+    //
+    // console.log(img);
+    downloadjs(imagem);
     // const urlRecebida = await downloadImgS3(img);
     // console.log('vai', urlRecebida);
 
-    api
+    /* api
       .post('api/imagens', { img })
       .then((response) => {
         if (response) {
@@ -244,7 +249,7 @@ export default function EventoMobile({ item }) {
           // setEditar(false);
           //  const urls2 = window.URL.createObjectURL(Blob(response.data.Body));
           // setUrls(response.data.Body);
-          downloadjs(response.data);
+          //          downloadjs(response.data);
 
           console.log('é isso mesmo:', response);
           // setImagemBaixada(response.data);
@@ -254,7 +259,7 @@ export default function EventoMobile({ item }) {
       .catch(() => {
         console.log('deu ruim');
         //  updateFile(uploadedFile.id, { error: true });
-      });
+      }); */
     //    console.log(urls);
   };
 
