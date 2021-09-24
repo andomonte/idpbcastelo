@@ -8,8 +8,17 @@ import { Box, Avatar, Divider, Grid, Button } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import Iframe from 'react-iframe';
 import downloadjs from 'downloadjs';
-
+import Image from 'material-ui-image';
 import downloadImgS3 from 'src/utils/uploadImagensS3';
+import Carousel from 'react-material-ui-carousel';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
+import ProgressBar from './progressBar';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -52,18 +61,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EventoMobile({ item }) {
+export default function EventoMobile({ item, mes }) {
   const classes = useStyles();
   const showIgrejas = [];
   const [open, setOpen] = React.useState(false);
   const [cont, setCont] = React.useState(0);
+  const [contSlide, setContSlide] = React.useState(0);
   const [fotos, setFotos] = React.useState([]);
   const [imagemBaixada, setImagemBaixada] = React.useState('');
   const [urls, setUrls] = React.useState('');
+  const [progress, setProgress] = React.useState(0);
+  const [mesSelect, setMesSelect] = React.useState('01');
   const url = `${window.location.origin}/api/consultaEventoIgreja/${item[0].RegiaoIDPB}`;
+
   const { data, error } = useSWR(url, fetcher);
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
+
+  let newMes;
+  if (mes < 10) {
+    newMes = `0${mes}`;
+  } else {
+    newMes = mes;
+  }
+  const dadosUser = data.filter((val) => val.dataEvento.slice(2, 4) === newMes);
 
   const defaultProps = {
     bgcolor: 'background.paper',
@@ -87,10 +108,10 @@ export default function EventoMobile({ item }) {
 
   //--------------------------------------------------------------------------
 
-  if (data) {
+  if (dadosUser) {
     showIgrejas.push(
-      <Box key={data}>
-        {data?.map((items) => (
+      <Box key={dadosUser}>
+        {dadosUser?.map((items) => (
           <Box key={items.id} type="button" justifyContent="flex-start">
             <Box display="flex">
               <Box mr={-2} ml={2} mt={2.2}>
@@ -231,8 +252,10 @@ export default function EventoMobile({ item }) {
   const downloadImg = async (imagem) => {
     const img =
       'https://sistemaidpb.s3.amazonaws.com/img74_21092021_MM201026.jpg';
-    console.log(img);
-    // setImagemBaixada(imagem);
+
+    //    setImagemBaixada(imagem);
+    // atos 11  https://sistemaidpb.s3.amazonaws.com/img2_21092021_MM201026.jpg
+    // atos 10  https://sistemaidpb.s3.amazonaws.com/img3_21092021_MM201026.jpg
     //  "https://sistemaidpb.s3.amazonaws.com/225.394.682-68.jpeg"
     //   https://sistemaidpb.s3.amazonaws.com/img1_01052021_AM-030.jpeg
     //
@@ -267,15 +290,19 @@ export default function EventoMobile({ item }) {
   const body = (
     <Box className={classes.paper}>
       <Box height={altura - 70}>
-        <img src={fotos[cont]} alt="img01" className={classes.img} />
-      </Box>
-      {imagemBaixada && <iframe src={imagemBaixada} title="myFrame" />}
-      <Box display="flex" justifyContent="center" mt={2}>
-        <Box mr={1}>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: '#448aff' }}
-            onClick={() => {
+        <Card sx={{ maxWidth: 345 }}>
+          <Box sx={{ width: '100%' }} p={1}>
+            <Box>
+              <ProgressBar valor={cont} />
+            </Box>
+          </Box>
+
+          <Carousel
+            className={classes.img}
+            interval={5400}
+            NextIcon=""
+            PrevIcon=""
+            onChange={() => {
               if (fotos[cont + 1]) {
                 setCont(cont + 1);
               } else {
@@ -283,20 +310,30 @@ export default function EventoMobile({ item }) {
               }
             }}
           >
-            Proxima
-          </Button>
-        </Box>
-        <Box ml={1}>
+            <CardMedia
+              component="img"
+              height="100%"
+              image={fotos[cont]}
+              alt="Paella dish"
+            />
+          </Carousel>
+        </Card>
+
+        {/* <img src={fotos[cont]} alt="img01" className={classes.img} /> */}
+      </Box>
+
+      <Box display="flex" justifyContent="center" mt={2}>
+        {/* <Box ml={1}>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#ec407a' }}
+            style={{ backgroundColor: '#448aff' }}
             onClick={() => {
               downloadImg(fotos[cont]);
             }}
           >
             Baixar
           </Button>
-        </Box>
+        </Box> */}
         <Box ml={1}>
           <Button
             variant="contained"
@@ -311,7 +348,14 @@ export default function EventoMobile({ item }) {
   );
   return (
     <Box borderRadius={16} {...defaultProps} ml={-3} mr={-3}>
-      {showIgrejas}
+      {dadosUser.length ? (
+        showIgrejas
+      ) : (
+        <Box mt={10}>
+          <ImageNotSupportedIcon style={{ color: 'red', fontSize: 50 }} />
+          <h1>Sem Eventos</h1>
+        </Box>
+      )}
       <Modal
         open={open}
         onClose={handleClose}

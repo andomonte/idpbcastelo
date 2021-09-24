@@ -277,7 +277,7 @@ function PageRelSuper({ item, title, perfilUser }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {session && 'ola pessaol'}
+            {session && 'em desenvolvimento'}
 
             {/* <Analisar item={item} secao={session} /> */}
           </TabPanel>
