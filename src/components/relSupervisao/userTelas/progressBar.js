@@ -25,43 +25,72 @@ export default function LinearDeterminate({ valor }) {
       clearInterval(timer);
     };
   }, []);
-
+  const Foto1 = () => {
+    switch (valor) {
+      case 0:
+        return <LinearProgress variant="determinate" value={progress} />;
+      case 10:
+        return <LinearProgress variant="determinate" value={100} />;
+      default:
+        return <LinearProgress variant="determinate" value={0} />;
+    }
+  };
+  const Foto2 = () => {
+    switch (valor) {
+      case 1:
+        return <LinearProgress variant="determinate" value={progress} />;
+      case 11:
+        return <LinearProgress variant="determinate" value={100} />;
+      default:
+        return <LinearProgress variant="determinate" value={0} />;
+    }
+  };
+  const Foto3 = () => {
+    switch (valor) {
+      case 2:
+        return <LinearProgress variant="determinate" value={progress} />;
+      case 12:
+        return <LinearProgress variant="determinate" value={100} />;
+      default:
+        return <LinearProgress variant="determinate" value={0} />;
+    }
+  };
+  const Foto4 = () => {
+    switch (valor) {
+      case 3:
+        return <LinearProgress variant="determinate" value={progress} />;
+      case 13:
+        return <LinearProgress variant="determinate" value={100} />;
+      default:
+        return <LinearProgress variant="determinate" value={0} />;
+    }
+  };
+  const Foto5 = () => {
+    switch (valor) {
+      case 4:
+        return <LinearProgress variant="determinate" value={progress} />;
+      case 14:
+        return <LinearProgress variant="determinate" value={100} />;
+      default:
+        return <LinearProgress variant="determinate" value={0} />;
+    }
+  };
   return (
     <Box display="flex" sx={{ width: '100%' }}>
       <Box mr={1} sx={{ width: '100%' }}>
-        {valor === 0 ? (
-          <LinearProgress variant="determinate" value={progress} />
-        ) : (
-          <LinearProgress variant="determinate" value={0} />
-        )}
+        <Foto1 />
       </Box>
       <Box mr={1} sx={{ width: '100%' }}>
-        {valor === 1 ? (
-          <LinearProgress variant="determinate" value={progress} />
-        ) : (
-          <LinearProgress variant="determinate" value={0} />
-        )}
+        <Foto2 />
       </Box>
       <Box mr={1} sx={{ width: '100%' }}>
-        {valor === 2 ? (
-          <LinearProgress variant="determinate" value={progress} />
-        ) : (
-          <LinearProgress variant="determinate" value={0} />
-        )}
+        <Foto3 />
       </Box>
       <Box mr={1} sx={{ width: '100%' }}>
-        {valor === 3 ? (
-          <LinearProgress variant="determinate" value={progress} />
-        ) : (
-          <LinearProgress variant="determinate" value={0} />
-        )}
+        <Foto4 />
       </Box>
       <Box mr={1} sx={{ width: '100%' }}>
-        {valor === 4 ? (
-          <LinearProgress variant="determinate" value={progress} />
-        ) : (
-          <LinearProgress variant="determinate" value={0} />
-        )}
+        <Foto5 />
       </Box>
     </Box>
   );

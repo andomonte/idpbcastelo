@@ -8,9 +8,9 @@ import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { useSession, signOut } from 'next-auth/client';
 import useSWR from 'swr';
-
+import Loading from 'src/utils/loading';
 import EventoMobile from './eventoMobile';
-import TabelaDesk from './tabelaDesk';
+import EventoDesk from './eventoDesk';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -118,7 +118,13 @@ function MostrarBuscaEventos({ item, Data, statusDrawer }) {
   const url = `${window.location.origin}/api/consultaRegiao/${item[0].RegiaoIDPB}/${mes}/${ano}`;
   const { data, error } = useSWR(url, fetcher);
   if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div>
+        {' '}
+        <Loading />
+      </div>
+    );
   //---------------------------------------------------------------------------
 
   return (
@@ -135,7 +141,7 @@ function MostrarBuscaEventos({ item, Data, statusDrawer }) {
             <Box>
               <Grid item xs={12} md={12} lg={12} xl={12}>
                 <Box className={classes.novoBox}>
-                  <TabelaDesk
+                  <EventoDesk
                     dadosRel={data}
                     item={item}
                     mes={mes}

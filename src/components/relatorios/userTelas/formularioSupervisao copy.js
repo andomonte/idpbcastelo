@@ -27,6 +27,7 @@ import Paper from '@material-ui/core/Paper';
 // import Accordion from '@material-ui/core/Accordion';
 // import moment from 'moment';
 // import CalcularData from 'src/utils/calcularData';
+import Loading from 'src/utils/loading';
 import TabelaMobile from './tabelaMobile';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -165,7 +166,12 @@ function formulario({ item, Data }) {
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
   if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   //---------------------------------------------------------------------------
   const defaultProps = {
     bgcolor: 'background.paper',

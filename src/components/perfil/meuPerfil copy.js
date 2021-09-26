@@ -15,7 +15,7 @@ function getDados(email, nome) {
   const { data, error } = useSWR(url, fetcher);
 
   if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  
 
   return data;
 } */

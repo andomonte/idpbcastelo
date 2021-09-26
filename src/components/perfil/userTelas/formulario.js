@@ -12,6 +12,7 @@ import ReplyRoundedIcon from '@material-ui/icons/ReplyRounded';
 import { yellow } from '@material-ui/core/colors';
 import AddIcon from '@material-ui/icons/Add';
 import Hidden from '@material-ui/core/Hidden';
+import Loading from 'src/utils/loading';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -117,7 +118,12 @@ function formulario({ item, Data, Semana }) {
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
   if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   //---------------------------------------------------------------------------
   const dadosRel = data.filter((val) => val.semana === Semana);
 

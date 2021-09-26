@@ -536,7 +536,7 @@ function enviar({ item }) {
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
   //  if (error) return <div>Failed to load</div>;
-  //  if (!data) return <div>Loading...</div>;
+
   //---------------------------------------------------------------------------
   //--------------------------------------------------------------------------
   const handleModal = () => {

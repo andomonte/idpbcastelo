@@ -2,20 +2,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import useSWR from 'swr';
 import axios from 'axios';
-import api from 'src/components/services/api';
 import Typography from '@material-ui/core/Typography';
 import { Box, Avatar, Divider, Grid } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
-import Iframe from 'react-iframe';
 import downloadjs from 'downloadjs';
-import Image from 'material-ui-image';
-import downloadImgS3 from 'src/utils/uploadImagensS3';
 import Carousel from 'react-material-ui-carousel';
-
 import Card from '@mui/material/Card';
-
 import CardMedia from '@mui/material/CardMedia';
-
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import Loading from 'src/utils/loading';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -49,8 +42,6 @@ const useStyles = makeStyles((theme) => ({
     with: '100',
   },
   img: {
-    maxWidth: '1110px',
-    maxHeight: '544px',
     width: '100%',
     height: '100%',
   },
@@ -76,10 +67,9 @@ export default function EventoMobile({ item, mes }) {
   const [fotos, setFotos] = React.useState([]);
   const [imagemBaixada, setImagemBaixada] = React.useState('');
   const [urls, setUrls] = React.useState('');
-  const [progress, setProgress] = React.useState(0);
+  const [stopFotos, setStopFotos] = React.useState(true);
   const [mesSelect, setMesSelect] = React.useState('01');
   const url = `${window.location.origin}/api/consultaEventoIgreja/${item[0].RegiaoIDPB}`;
-  const [stopFotos, setStopFotos] = React.useState(true);
 
   const { data, error } = useSWR(url, fetcher);
   if (error) return <div>Failed to load</div>;

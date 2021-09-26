@@ -27,7 +27,7 @@ import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 // import JsFileDownloader from 'js-file-downloader';
-
+import Loading from 'src/utils/loading';
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
 // const download = require('image-downloader');
@@ -465,7 +465,12 @@ function formulario({ item, Data }) {
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
   if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   //---------------------------------------------------------------------------
   const dadosRel = data.filter((val) => val.dataEvento === dataEvento);
   let Evento = '';
