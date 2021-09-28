@@ -5,6 +5,7 @@ import { green, yellow } from '@material-ui/core/colors';
 import { Box } from '@material-ui/core';
 import axios from 'axios';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 // import Button from '@material-ui/core/Button';
 // import EditIcon from '@material-ui/icons/Edit';
 // import InputAdornment from '@material-ui/core/InputAdornment';
@@ -131,7 +132,12 @@ function formulario({ item, Data, statusDrawer }) {
   // const { data2, error2 } = useSWR(url2, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>

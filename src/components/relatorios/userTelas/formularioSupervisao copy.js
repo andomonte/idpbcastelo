@@ -28,6 +28,7 @@ import Paper from '@material-ui/core/Paper';
 // import moment from 'moment';
 // import CalcularData from 'src/utils/calcularData';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 import TabelaMobile from './tabelaMobile';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -165,7 +166,12 @@ function formulario({ item, Data }) {
   // const { data2, error2 } = useSWR(url2, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>

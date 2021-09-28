@@ -2,9 +2,10 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
-export default function LinearDeterminate({ valor }) {
+export default function LinearDeterminate({ valor, qytFotos }) {
   const [progress, setProgress] = React.useState(0);
   const [val, setVal] = React.useState(valor);
+
   if (val !== valor) {
     setVal(valor);
     setProgress(0);
@@ -77,21 +78,31 @@ export default function LinearDeterminate({ valor }) {
   };
   return (
     <Box display="flex" sx={{ width: '100%' }}>
-      <Box mr={1} sx={{ width: '100%' }}>
-        <Foto1 />
-      </Box>
-      <Box mr={1} sx={{ width: '100%' }}>
-        <Foto2 />
-      </Box>
-      <Box mr={1} sx={{ width: '100%' }}>
-        <Foto3 />
-      </Box>
-      <Box mr={1} sx={{ width: '100%' }}>
-        <Foto4 />
-      </Box>
-      <Box mr={1} sx={{ width: '100%' }}>
-        <Foto5 />
-      </Box>
+      {qytFotos > 1 && (
+        <Box mr={1} sx={{ width: '100%' }}>
+          <Foto1 />
+        </Box>
+      )}
+      {qytFotos > 1 && (
+        <Box mr={1} sx={{ width: '100%' }}>
+          <Foto2 />
+        </Box>
+      )}
+      {qytFotos > 2 && (
+        <Box mr={1} sx={{ width: '100%' }}>
+          <Foto3 />
+        </Box>
+      )}
+      {qytFotos > 3 && (
+        <Box mr={1} sx={{ width: '100%' }}>
+          <Foto4 />
+        </Box>
+      )}
+      {qytFotos > 4 && (
+        <Box mr={1} sx={{ width: '100%' }}>
+          <Foto5 />
+        </Box>
+      )}
     </Box>
   );
 }

@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import { useSession, signOut } from 'next-auth/client';
 import useSWR from 'swr';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 import EventoMobile from './eventoMobile';
 import EventoDesk from './eventoDesk';
 
@@ -117,11 +118,15 @@ function MostrarBuscaEventos({ item, Data, statusDrawer }) {
 
   const url = `${window.location.origin}/api/consultaRegiao/${item[0].RegiaoIDPB}/${mes}/${ano}`;
   const { data, error } = useSWR(url, fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>
-        {' '}
         <Loading />
       </div>
     );
@@ -138,17 +143,15 @@ function MostrarBuscaEventos({ item, Data, statusDrawer }) {
           height="auto"
         >
           <Hidden smDown>
-            <Box>
-              <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Box className={classes.novoBox}>
-                  <EventoDesk
-                    dadosRel={data}
-                    item={item}
-                    mes={mes}
-                    statusDrawer={statusDrawer}
-                  />
-                </Box>
-              </Grid>
+            <Box width="100%">
+              <Box className={classes.novoBox}>
+                <EventoDesk
+                  dadosRel={data}
+                  item={item}
+                  mes={mes}
+                  statusDrawer={statusDrawer}
+                />
+              </Box>
             </Box>
           </Hidden>
           <Hidden mdUp>

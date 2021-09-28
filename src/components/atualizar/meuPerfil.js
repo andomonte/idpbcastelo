@@ -324,7 +324,6 @@ function meuPerfil({ item, secao, ministros }) {
   // const { data, erroros } = useSWR(url, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  // if (error) return <div>Failed to load</div>;
 
   //---------------------------------------------------------------------------
   // const dadosMinistro = data.filter((val) => val.dataEvento === dataEvento);

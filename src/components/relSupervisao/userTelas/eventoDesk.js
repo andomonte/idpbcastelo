@@ -2,21 +2,23 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import useSWR from 'swr';
 import axios from 'axios';
+import api from 'src/components/services/api';
 import Typography from '@material-ui/core/Typography';
 import { Box, Avatar, Divider, Grid } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import downloadjs from 'downloadjs';
 import Carousel from 'react-material-ui-carousel';
-import Card from '@mui/material/Card';
+import DownloadIcon from '@mui/icons-material/Download';
 import CardMedia from '@mui/material/CardMedia';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
-import FastForwardIcon from '@mui/icons-material/FastForward';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PauseIcon from '@mui/icons-material/Pause';
 import IconButton from '@mui/material/IconButton';
-import StopIcon from '@mui/icons-material/Stop';
+import ReplayIcon from '@mui/icons-material/Replay';
 import ProgressBar from './progressBar';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -24,7 +26,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
   caption: {
     fontWeight: 500,
-    fontSize: '14px',
+    fontSize: '24px',
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -42,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     with: '100',
   },
   img: {
-    width: '100%',
-    height: '100%',
+    width: 'auto',
+    height: 'auto',
   },
   avatar: {
     margin: -10,
@@ -64,15 +66,17 @@ export default function EventoMobile({ item, mes }) {
   const [open, setOpen] = React.useState(false);
   const [cont, setCont] = React.useState(0);
   const [contSlide, setContSlide] = React.useState(0);
-  const [fotos, setFotos] = React.useState([]);
-  const [imagemBaixada, setImagemBaixada] = React.useState('');
-  const [urls, setUrls] = React.useState('');
-  const [stopFotos, setStopFotos] = React.useState(true);
-  const [mesSelect, setMesSelect] = React.useState('01');
+  const [fotos, setFotos] = React.useState(['']);
   const url = `${window.location.origin}/api/consultaEventoIgreja/${item[0].RegiaoIDPB}`;
+  const [stopFotos, setStopFotos] = React.useState(true);
 
   const { data, error } = useSWR(url, fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>
@@ -93,12 +97,54 @@ export default function EventoMobile({ item, mes }) {
     m: 1,
     border: 1,
   };
+  const carregaImagem = async (items) => {
+    const retorno = '';
+
+    const img = items.substr(items.indexOf('img'));
+    await api
+      .post('api/imagens', { img })
+      .then((response) => {
+        if (response) {
+          // setTransfer(response.status);
+          // setEditar(false);
+          //  const urls2 = window.URL.createObjectURL(Blob(response.data.Body));
+          // setUrls(response.data.Body);
+          //          downloadjs(response.data);
+
+          if (fotos.length === 0) setFotos(response.data);
+          else setFotos((fotos2) => [...fotos2, response.data]);
+          // setFotos(() => [ [...fotos2, items.img02]...response.data]);
+          // downloadjs(response.data);
+          // setImagemBaixada(response.data);
+        }
+        //  updateFile(uploadedFile.id, { uploaded: true });
+      })
+      .catch(() => {
+        console.log('deu ruim');
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+    return retorno;
+  };
   const handleFotos = (items) => {
-    if (items.img01) setFotos(() => [items.img01]);
-    if (items.img02) setFotos((fotos2) => [...fotos2, items.img02]);
-    if (items.img03) setFotos((fotos3) => [...fotos3, items.img03]);
-    if (items.img04) setFotos((fotos4) => [...fotos4, items.img04]);
-    if (items.img05) setFotos((fotos5) => [...fotos5, items.img05]);
+    setCont(0);
+
+    const imgTemp = [
+      items.img01,
+      items.img02,
+      items.img03,
+      items.img04,
+      items.img05,
+    ];
+    setFotos([]);
+    if (items.img01) {
+      for (let i = 0; i < 5; i += 1) carregaImagem(imgTemp[i]);
+
+      //   setFotos(() => [imgTemp]);
+    }
+    //    if (items.img02) setFotos((fotos2) => [...fotos2, items.img02]);
+    //    if (items.img03) setFotos((fotos3) => [...fotos3, items.img03]);
+    //    if (items.img04) setFotos((fotos4) => [...fotos4, items.img04]);
+    //    if (items.img05) setFotos((fotos5) => [...fotos5, items.img05]);
 
     setOpen(true);
   };
@@ -116,7 +162,7 @@ export default function EventoMobile({ item, mes }) {
         {dadosUser?.map((items) => (
           <Box key={items.id} type="button" justifyContent="flex-start">
             <Box display="flex">
-              <Box mr={-2} ml={2} mt={2.2}>
+              <Box mr={-2} ml={5} mt={2.2}>
                 <Avatar
                   onClick={() => {
                     handleFotos(items);
@@ -136,7 +182,7 @@ export default function EventoMobile({ item, mes }) {
                 </Box>
               </Box>
 
-              <Box m={1} ml={5}>
+              <Box m={1} ml={8} width="100%" mt={2}>
                 <Typography
                   variant="body1"
                   display="block"
@@ -146,102 +192,88 @@ export default function EventoMobile({ item, mes }) {
                 >
                   {items.igreja ?? items.igreja}
                 </Typography>
-                <Typography
-                  display="block"
-                  variant="body2"
-                  color="textSecondary"
-                  align="left"
-                  //                  style={{ marginRight: 60 }}
-                >
-                  <strong>Evento: </strong>
-                  {items.evento ?? items.evento}
-                </Typography>
-                <Box display="flex" flexDirection="row">
-                  <Grid item xs={6}>
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      align="left"
-                      //                  style={{ marginRight: 60 }}
-                    >
-                      <strong> Data: </strong>
-                      <small>
-                        {items.dataEvento &&
-                          `${items.dataEvento.substr(
-                            0,
-                            2,
-                          )}/${items.dataEvento.substr(
-                            2,
-                            2,
-                          )}/${items.dataEvento.substr(4, 4)} `}
-                      </small>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      align="left"
-                      //                  style={{ marginRight: 60 }}
-                    >
-                      <strong>Adultos: </strong>
-                      {items.adultos ?? items.adultos}
-                    </Typography>
-                  </Grid>
+
+                <Box display="flex" flexDirection="row" mt={-1}>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="primary"
+                    align="left"
+                    style={{ fontSize: 20 }}
+                  >
+                    <small style={{ color: 'black' }}>Evento: </small>
+                    {items.evento ?? items.evento}
+                  </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="primary"
+                    align="left"
+                    style={{ fontSize: 20, marginLeft: 50 }}
+                  >
+                    <small style={{ color: 'black' }}> Data: </small>
+                    <small style={{ color: 'green' }}>
+                      {items.dataEvento &&
+                        `${items.dataEvento.substr(
+                          0,
+                          2,
+                        )}/${items.dataEvento.substr(
+                          2,
+                          2,
+                        )}/${items.dataEvento.substr(4, 4)} `}
+                    </small>
+                  </Typography>
                 </Box>
                 <Box display="flex" flexDirection="row">
-                  <Grid item xs={6}>
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      align="left"
-                      //                  style={{ marginRight: 60 }}
-                    >
-                      <strong>Adolecentes: </strong>
-                      {items.adolecentes ?? items.adolecentes}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      align="left"
-                      //                  style={{ marginRight: 60 }}
-                    >
-                      <strong>Crianças: </strong>
-                      {items.Crianças ?? items.criancas}
-                    </Typography>
-                  </Grid>
-                </Box>
-                <Box display="flex" flexDirection="row">
-                  <Grid item xs={6}>
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      align="left"
-                      //                  style={{ marginRight: 60 }}
-                    >
-                      <strong>Converções: </strong>
-                      {items.conversoes ?? items.conversoes}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      display="block"
-                      variant="body2"
-                      color="textSecondary"
-                      align="left"
-                      //                  style={{ marginRight: 60 }}
-                    >
-                      <strong>Visitantes: </strong>
-                      {items.visitantes ?? items.visitantes}
-                    </Typography>
-                  </Grid>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    align="left"
+                    style={{ fontSize: 16, color: '#ff9800' }}
+                  >
+                    <small style={{ color: 'black' }}>Adultos: </small>
+                    {items.adultos ?? items.adultos}
+                  </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="primary"
+                    align="left"
+                    style={{ fontSize: 16, marginLeft: 50, color: '#ff9800' }}
+                  >
+                    <small style={{ color: 'black' }}>Adolecentes: </small>
+                    {items.adolecentes ?? items.adolecentes}
+                  </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="primary"
+                    align="left"
+                    style={{ fontSize: 16, marginLeft: 50, color: '#ff9800' }}
+                  >
+                    <small style={{ color: 'black' }}>Crianças: </small>
+                    {items.Crianças ?? items.criancas}
+                  </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="primary"
+                    align="left"
+                    style={{ fontSize: 16, marginLeft: 50, color: '#ff9800' }}
+                  >
+                    <small style={{ color: 'black' }}>Converções: </small>
+                    {items.conversoes ?? items.conversoes}
+                  </Typography>
+                  <Typography
+                    display="block"
+                    variant="body2"
+                    color="primary"
+                    align="left"
+                    style={{ fontSize: 16, marginLeft: 50, color: '#ff9800' }}
+                  >
+                    <small style={{ color: 'black' }}>Visitantes: </small>
+                    {items.visitantes ?? items.visitantes}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -252,21 +284,10 @@ export default function EventoMobile({ item, mes }) {
     );
   }
   const downloadImg = async (imagem) => {
-    const img =
-      'https://sistemaidpb.s3.amazonaws.com/img74_21092021_MM201026.jpg';
-
-    //    setImagemBaixada(imagem);
-    // atos 11  https://sistemaidpb.s3.amazonaws.com/img2_21092021_MM201026.jpg
-    // atos 10  https://sistemaidpb.s3.amazonaws.com/img3_21092021_MM201026.jpg
-    //  "https://sistemaidpb.s3.amazonaws.com/225.394.682-68.jpeg"
-    //   https://sistemaidpb.s3.amazonaws.com/img1_01052021_AM-030.jpeg
-    //
-    // console.log(img);
-    downloadjs(imagem);
-    // const urlRecebida = await downloadImgS3(img);
-    // console.log('vai', urlRecebida);
-
-    /* api
+    const ini = Number(imagem.indexOf('img'));
+    const fim = Number(imagem.indexOf('?')) - Number(imagem.indexOf('img'));
+    const img = imagem.substr(ini, fim);
+    api
       .post('api/imagens', { img })
       .then((response) => {
         if (response) {
@@ -276,84 +297,74 @@ export default function EventoMobile({ item, mes }) {
           // setUrls(response.data.Body);
           //          downloadjs(response.data);
 
-          console.log('é isso mesmo:', response);
+          downloadjs(response.data);
           // setImagemBaixada(response.data);
         }
         //  updateFile(uploadedFile.id, { uploaded: true });
       })
       .catch(() => {
-        console.log('deu ruim');
+        // console.log('deu ruim');
         //  updateFile(uploadedFile.id, { error: true });
-      }); */
-    //    console.log(urls);
+      });
   };
 
   const altura = window.innerHeight;
+
   const body = (
     <Box className={classes.paper}>
       <Box height={altura - 70}>
-        <Card sx={{ maxWidth: '100%' }}>
-          <Box sx={{ width: '100%' }} p={1}>
-            <Box>
-              {!stopFotos ? (
-                <ProgressBar valor={cont + 10} />
-              ) : (
-                <ProgressBar valor={cont} />
-              )}
-            </Box>
+        <Box sx={{ width: '100%' }} p={1}>
+          <Box>
+            {!stopFotos ? (
+              <ProgressBar valor={cont + 10} qytFotos={fotos.length} />
+            ) : (
+              <ProgressBar valor={cont} qytFotos={fotos.length} />
+            )}
           </Box>
+        </Box>
 
-          <Carousel
-            className={classes.img}
-            interval={5400}
-            autoPlay={stopFotos}
-            NextIcon=""
-            PrevIcon=""
-            index={contSlide === 1 ? cont : null}
-            stopAutoPlayOnHover={false}
-            onChange={() => {
-              setContSlide(0);
-            }}
-            next={() => {
-              if (fotos[cont + 1]) {
-                setCont(cont + 1);
-              } else {
-                setCont(0);
-              }
-            }}
-            prev={() => {
-              if (fotos[cont - 1]) {
-                setCont(cont - 1);
-              } else {
-                setCont(4);
-              }
-            }}
-          >
-            <CardMedia
-              component="img"
-              height={altura - 100}
-              image={fotos[cont]}
-              alt="Paella dish"
-            />
-          </Carousel>
-        </Card>
+        <Carousel
+          className={classes.img}
+          interval={5400}
+          autoPlay={stopFotos}
+          NextIcon={<SkipNextIcon />}
+          PrevIcon={<SkipPreviousIcon />}
+          index={contSlide === 1 ? cont : null}
+          stopAutoPlayOnHover={false}
+          onChange={() => {
+            setContSlide(0);
+          }}
+          next={() => {
+            if (fotos[cont + 1]) {
+              setCont(cont + 1);
+            } else {
+              setCont(0);
+            }
+          }}
+          prev={() => {
+            if (fotos[cont - 1]) {
+              setCont(cont - 1);
+            } else {
+              setCont(4);
+            }
+          }}
+        >
+          <CardMedia
+            component="img"
+            height={altura - 100}
+            image={
+              fotos.length
+                ? fotos[cont]
+                : 'https://sistemaidpb.s3.amazonaws.com/loadingImg.png'
+            }
+            alt="Paella dish"
+          />
+        </Carousel>
 
         {/* <img src={fotos[cont]} alt="img01" className={classes.img} /> */}
       </Box>
-
-      <Box display="flex" justifyContent="center" mt={2}>
-        {/* <Box ml={1}>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: '#448aff' }}
-            onClick={() => {
-              downloadImg(fotos[cont]);
-            }}
-          >
-            Baixar
-          </Button>
-        </Box> */}
-        <Box ml={1}>
+      <Box display="flex" justifyContent="center">
+        <Box ml={10}>
           <IconButton
             color="primary"
             aria-label="upload picture"
@@ -367,7 +378,7 @@ export default function EventoMobile({ item, mes }) {
               }
             }}
           >
-            <FastRewindIcon />
+            <SkipPreviousIcon />
           </IconButton>
         </Box>
         <Box ml={1}>
@@ -404,22 +415,36 @@ export default function EventoMobile({ item, mes }) {
               }
             }}
           >
-            <FastForwardIcon />
+            <SkipNextIcon />
           </IconButton>
         </Box>
-        <Box ml={1}>
+        <Box ml={5}>
           <IconButton
-            color="primary"
+            style={{ color: '#f44336' }}
             aria-label="upload picture"
             component="span"
             onClick={handleClose}
           >
-            <StopIcon />
+            <ReplayIcon />
+          </IconButton>
+        </Box>
+
+        <Box ml={5}>
+          <IconButton
+            color="success"
+            aria-label="upload picture"
+            component="span"
+            onClick={() => {
+              downloadImg(fotos[cont]);
+            }}
+          >
+            <DownloadIcon />
           </IconButton>
         </Box>
       </Box>
     </Box>
   );
+
   return (
     <Box borderRadius={16} {...defaultProps} ml={-3} mr={-3}>
       {dadosUser.length ? (
@@ -430,6 +455,7 @@ export default function EventoMobile({ item, mes }) {
           <h1>Sem Eventos</h1>
         </Box>
       )}
+
       <Modal
         open={open}
         onClose={handleClose}

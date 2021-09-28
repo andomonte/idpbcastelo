@@ -13,6 +13,7 @@ import { yellow } from '@material-ui/core/colors';
 import AddIcon from '@material-ui/icons/Add';
 import Hidden from '@material-ui/core/Hidden';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -117,7 +118,12 @@ function formulario({ item, Data, Semana }) {
   const { data, error } = useSWR(url, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>

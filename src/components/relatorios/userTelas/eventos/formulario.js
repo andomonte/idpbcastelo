@@ -28,6 +28,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 // import JsFileDownloader from 'js-file-downloader';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 import { Container, FileInfo, Preview } from './styles';
 import 'react-circular-progressbar/dist/styles.css';
 // const download = require('image-downloader');
@@ -464,7 +465,12 @@ function formulario({ item, Data }) {
   const { data, error } = useSWR(url, fetcher);
   // useSWR('/api/user', (id = 4) => fetcher(id));
   // useSWR('/api/consultaDados', fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>

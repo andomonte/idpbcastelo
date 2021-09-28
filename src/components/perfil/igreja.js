@@ -11,7 +11,6 @@ function getDados(caminho) {
   const url = `${window.location.origin}/api/consultaIgrejas/${caminho}`;
 
   const { data, error } = useSWR(url, fetcher);
-  if (error) return <div>Failed to load</div>;
   
 
   return data;

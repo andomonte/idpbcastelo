@@ -6,24 +6,21 @@ import api from 'src/components/services/api';
 import Typography from '@material-ui/core/Typography';
 import { Box, Avatar, Divider, Grid } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
-import Iframe from 'react-iframe';
+import ReplayIcon from '@mui/icons-material/Replay';
 import downloadjs from 'downloadjs';
-import Image from 'material-ui-image';
-import downloadImgS3 from 'src/utils/uploadImagensS3';
+import DownloadIcon from '@mui/icons-material/Download';
 import Carousel from 'react-material-ui-carousel';
-
-import Card from '@mui/material/Card';
 
 import CardMedia from '@mui/material/CardMedia';
 
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
-import FastForwardIcon from '@mui/icons-material/FastForward';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PauseIcon from '@mui/icons-material/Pause';
 import IconButton from '@mui/material/IconButton';
-import StopIcon from '@mui/icons-material/Stop';
 import ProgressBar from './progressBar';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -49,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
     with: '100',
   },
   img: {
-    maxWidth: '1110px',
-    maxHeight: '544px',
-    width: '100%',
-    height: '100%',
+    maxWidth: '100%',
+    maxHeight: '520px',
+    width: 'auto',
+    height: 'auto',
   },
   avatar: {
     margin: -10,
@@ -73,16 +70,17 @@ export default function EventoMobile({ item, mes }) {
   const [open, setOpen] = React.useState(false);
   const [cont, setCont] = React.useState(0);
   const [contSlide, setContSlide] = React.useState(0);
-  const [fotos, setFotos] = React.useState([]);
-  const [imagemBaixada, setImagemBaixada] = React.useState('');
-  const [urls, setUrls] = React.useState('');
-  const [progress, setProgress] = React.useState(0);
-  const [mesSelect, setMesSelect] = React.useState('01');
+  const [fotos, setFotos] = React.useState(['']);
   const url = `${window.location.origin}/api/consultaEventoIgreja/${item[0].RegiaoIDPB}`;
   const [stopFotos, setStopFotos] = React.useState(true);
 
   const { data, error } = useSWR(url, fetcher);
-  if (error) return <div>Failed to load</div>;
+  if (error)
+    return (
+      <div>
+        <MesageErro />
+      </div>
+    );
   if (!data)
     return (
       <div>
@@ -103,12 +101,54 @@ export default function EventoMobile({ item, mes }) {
     m: 1,
     border: 1,
   };
+  const carregaImagem = async (items) => {
+    const retorno = '';
+
+    const img = items.substr(items.indexOf('img'));
+    await api
+      .post('api/imagens', { img })
+      .then((response) => {
+        if (response) {
+          // setTransfer(response.status);
+          // setEditar(false);
+          //  const urls2 = window.URL.createObjectURL(Blob(response.data.Body));
+          // setUrls(response.data.Body);
+          //          downloadjs(response.data);
+
+          if (fotos.length === 0) setFotos(response.data);
+          else setFotos((fotos2) => [...fotos2, response.data]);
+          // setFotos(() => [ [...fotos2, items.img02]...response.data]);
+          // downloadjs(response.data);
+          // setImagemBaixada(response.data);
+        }
+        //  updateFile(uploadedFile.id, { uploaded: true });
+      })
+      .catch(() => {
+        console.log('deu ruim');
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+    return retorno;
+  };
   const handleFotos = (items) => {
-    if (items.img01) setFotos(() => [items.img01]);
-    if (items.img02) setFotos((fotos2) => [...fotos2, items.img02]);
-    if (items.img03) setFotos((fotos3) => [...fotos3, items.img03]);
-    if (items.img04) setFotos((fotos4) => [...fotos4, items.img04]);
-    if (items.img05) setFotos((fotos5) => [...fotos5, items.img05]);
+    setCont(0);
+
+    const imgTemp = [
+      items.img01,
+      items.img02,
+      items.img03,
+      items.img04,
+      items.img05,
+    ];
+    setFotos([]);
+    if (items.img01) {
+      for (let i = 0; i < 5; i += 1) carregaImagem(imgTemp[i]);
+
+      //   setFotos(() => [imgTemp]);
+    }
+    //    if (items.img02) setFotos((fotos2) => [...fotos2, items.img02]);
+    //    if (items.img03) setFotos((fotos3) => [...fotos3, items.img03]);
+    //    if (items.img04) setFotos((fotos4) => [...fotos4, items.img04]);
+    //    if (items.img05) setFotos((fotos5) => [...fotos5, items.img05]);
 
     setOpen(true);
   };
@@ -262,21 +302,10 @@ export default function EventoMobile({ item, mes }) {
     );
   }
   const downloadImg = async (imagem) => {
-    const img =
-      'https://sistemaidpb.s3.amazonaws.com/img74_21092021_MM201026.jpg';
-
-    //    setImagemBaixada(imagem);
-    // atos 11  https://sistemaidpb.s3.amazonaws.com/img2_21092021_MM201026.jpg
-    // atos 10  https://sistemaidpb.s3.amazonaws.com/img3_21092021_MM201026.jpg
-    //  "https://sistemaidpb.s3.amazonaws.com/225.394.682-68.jpeg"
-    //   https://sistemaidpb.s3.amazonaws.com/img1_01052021_AM-030.jpeg
-    //
-    // console.log(img);
-    downloadjs(imagem);
-    // const urlRecebida = await downloadImgS3(img);
-    // console.log('vai', urlRecebida);
-
-    /* api
+    const ini = Number(imagem.indexOf('img'));
+    const fim = Number(imagem.indexOf('?')) - Number(imagem.indexOf('img'));
+    const img = imagem.substr(ini, fim);
+    api
       .post('api/imagens', { img })
       .then((response) => {
         if (response) {
@@ -286,83 +315,74 @@ export default function EventoMobile({ item, mes }) {
           // setUrls(response.data.Body);
           //          downloadjs(response.data);
 
-          console.log('é isso mesmo:', response);
+          downloadjs(response.data);
           // setImagemBaixada(response.data);
         }
         //  updateFile(uploadedFile.id, { uploaded: true });
       })
       .catch(() => {
-        console.log('deu ruim');
+        // console.log('deu ruim');
         //  updateFile(uploadedFile.id, { error: true });
-      }); */
-    //    console.log(urls);
+      });
   };
 
   const altura = window.innerHeight;
   const body = (
     <Box className={classes.paper}>
       <Box height={altura - 70}>
-        <Card sx={{ maxWidth: '100%' }}>
-          <Box sx={{ width: '100%' }} p={1}>
-            <Box>
-              {!stopFotos ? (
-                <ProgressBar valor={cont + 10} />
-              ) : (
-                <ProgressBar valor={cont} />
-              )}
-            </Box>
+        <Box sx={{ width: '100%' }} p={1}>
+          <Box>
+            {!stopFotos ? (
+              <ProgressBar valor={cont + 10} qytFotos={fotos.length} />
+            ) : (
+              <ProgressBar valor={cont} qytFotos={fotos.length} />
+            )}
           </Box>
+        </Box>
 
-          <Carousel
-            className={classes.img}
-            interval={5400}
-            autoPlay={stopFotos}
-            NextIcon=""
-            PrevIcon=""
-            index={contSlide === 1 ? cont : null}
-            stopAutoPlayOnHover={false}
-            onChange={() => {
-              setContSlide(0);
-            }}
-            next={() => {
-              if (fotos[cont + 1]) {
-                setCont(cont + 1);
-              } else {
-                setCont(0);
-              }
-            }}
-            prev={() => {
-              if (fotos[cont - 1]) {
-                setCont(cont - 1);
-              } else {
-                setCont(4);
-              }
-            }}
-          >
-            <CardMedia
-              component="img"
-              height={altura - 100}
-              image={fotos[cont]}
-              alt="Paella dish"
-            />
-          </Carousel>
-        </Card>
+        <Carousel
+          className={classes.img}
+          interval={5400}
+          autoPlay={stopFotos}
+          NextIcon={<SkipNextIcon />}
+          PrevIcon={<SkipPreviousIcon />}
+          index={contSlide === 1 ? cont : null}
+          stopAutoPlayOnHover={false}
+          onChange={() => {
+            setContSlide(0);
+          }}
+          next={() => {
+            if (fotos[cont + 1]) {
+              setCont(cont + 1);
+            } else {
+              setCont(0);
+            }
+          }}
+          prev={() => {
+            if (fotos[cont - 1]) {
+              setCont(cont - 1);
+            } else {
+              setCont(4);
+            }
+          }}
+        >
+          <CardMedia
+            component="img"
+            height="100%"
+            with="100%"
+            image={
+              fotos.length
+                ? fotos[cont]
+                : 'https://sistemaidpb.s3.amazonaws.com/loadingImg.png'
+            }
+            alt="Paella dish"
+          />
+        </Carousel>
 
         {/* <img src={fotos[cont]} alt="img01" className={classes.img} /> */}
       </Box>
 
       <Box display="flex" justifyContent="center" mt={2}>
-        {/* <Box ml={1}>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: '#448aff' }}
-            onClick={() => {
-              downloadImg(fotos[cont]);
-            }}
-          >
-            Baixar
-          </Button>
-        </Box> */}
         <Box ml={1}>
           <IconButton
             color="primary"
@@ -377,7 +397,7 @@ export default function EventoMobile({ item, mes }) {
               }
             }}
           >
-            <FastRewindIcon />
+            <SkipPreviousIcon />
           </IconButton>
         </Box>
         <Box ml={1}>
@@ -414,22 +434,35 @@ export default function EventoMobile({ item, mes }) {
               }
             }}
           >
-            <FastForwardIcon />
+            <SkipNextIcon />
           </IconButton>
         </Box>
-        <Box ml={1}>
+        <Box ml={5}>
           <IconButton
-            color="primary"
+            style={{ color: '#f44336' }}
             aria-label="upload picture"
             component="span"
             onClick={handleClose}
           >
-            <StopIcon />
+            <ReplayIcon />
+          </IconButton>
+        </Box>
+        <Box ml={5}>
+          <IconButton
+            color="success"
+            aria-label="upload picture"
+            component="span"
+            onClick={() => {
+              downloadImg(fotos[cont]);
+            }}
+          >
+            <DownloadIcon />
           </IconButton>
         </Box>
       </Box>
     </Box>
   );
+
   return (
     <Box borderRadius={16} {...defaultProps} ml={-3} mr={-3}>
       {dadosUser.length ? (
@@ -440,6 +473,7 @@ export default function EventoMobile({ item, mes }) {
           <h1>Sem Eventos</h1>
         </Box>
       )}
+
       <Modal
         open={open}
         onClose={handleClose}
