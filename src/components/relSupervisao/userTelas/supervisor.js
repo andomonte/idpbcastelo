@@ -126,7 +126,7 @@ const defaultProps = {
   border: 1,
 };
 
-function TelaSupervisor({ item, secao, statusDrawer }) {
+function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
   const mesAtual = new Date().getMonth();
   const anoAtual = new Date().getFullYear();
   const mes = [
@@ -185,7 +185,9 @@ function TelaSupervisor({ item, secao, statusDrawer }) {
     setShowAno(temCont);
   };
 
-  const dadosUser = item.filter((val) => val.email === secao.user.email);
+  const dadosUser = item.filter(
+    (val) => val.email === secao.user.email && val.NivelUser === perfilUser,
+  );
   if (dadosUser.length === 0) {
     signOut({
       callbackUrl: `${window.location.origin}`,
@@ -213,7 +215,7 @@ function TelaSupervisor({ item, secao, statusDrawer }) {
                 <Grid item xs={3}>
                   <Grid container justifyContent="flex-start">
                     <Box style={{ fontSize: '20px' }} mt={6}>
-                      Supervisão:<strong> {item[0].RegiaoIDPB}</strong>
+                      Supervisão:<strong> {dadosUser[0].RegiaoIDPB}</strong>
                     </Box>
                   </Grid>
                 </Grid>
@@ -357,7 +359,9 @@ function TelaSupervisor({ item, secao, statusDrawer }) {
                 style={{ color: '#000' }}
               >
                 Supervisão:{' '}
-                <strong style={{ color: '#000' }}>{item[0].RegiaoIDPB} </strong>
+                <strong style={{ color: '#000' }}>
+                  {dadosUser[0].RegiaoIDPB}{' '}
+                </strong>
               </Box>
             </Box>
 

@@ -267,12 +267,22 @@ function PageRelSuper({ item, title, perfilUser }) {
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
             {session && (
-              <Culto item={item} secao={session} statusDrawer={open} />
+              <Culto
+                item={item}
+                secao={session}
+                statusDrawer={open}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
             {session && (
-              <Evento item={item} secao={session} statusDrawer={open} />
+              <Evento
+                item={item}
+                secao={session}
+                statusDrawer={open}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>

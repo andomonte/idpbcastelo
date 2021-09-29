@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import axios from 'axios';
 import api from 'src/components/services/api';
 import Typography from '@material-ui/core/Typography';
-import { Box, Avatar, Divider, Grid } from '@material-ui/core';
+import { Box, Avatar, Divider } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import downloadjs from 'downloadjs';
 import Carousel from 'react-material-ui-carousel';

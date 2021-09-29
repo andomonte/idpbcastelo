@@ -126,7 +126,7 @@ const defaultProps = {
   border: 1,
 };
 
-function BuscarEventos({ item, secao, statusDrawer }) {
+function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
   const mesAtual = new Date().getMonth();
   const anoAtual = new Date().getFullYear();
   const mes = [
@@ -185,7 +185,9 @@ function BuscarEventos({ item, secao, statusDrawer }) {
     setShowAno(temCont);
   };
 
-  const dadosUser = item.filter((val) => val.email === secao.user.email);
+  const dadosUser = item.filter(
+    (val) => val.email === secao.user.email && val.NivelUser === perfilUser,
+  );
   if (dadosUser.length === 0) {
     signOut({
       callbackUrl: `${window.location.origin}`,
