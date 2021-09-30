@@ -19,7 +19,7 @@ import IconBrasil from 'src/components/icones/brasil';
 import IconMissoes from 'src/components/icones/missoes';
 // import IconEMT from 'src/components/icones/emt';
 import SchoolIcon from '@material-ui/icons/School';
-
+import change from 'src/components/icones/change';
 import { useSession } from 'next-auth/client';
 import IconIdpb from 'src/components/icones/idpb';
 import iconesPerfil from 'src/components/icones/perfil';
@@ -115,11 +115,18 @@ const secondaryManu = [
     path: '/aniversariantes',
     icon: iconesBirthdayCake,
   },
+
   {
     id: 6,
     label: 'Midia IDPB',
     path: '/midia',
     icon: midiaPlay,
+  },
+  {
+    id: 7,
+    label: 'Mudar Usuário',
+    path: '/selectPerfil',
+    icon: change,
   },
 ];
 function navBar({ perfilUser }) {
