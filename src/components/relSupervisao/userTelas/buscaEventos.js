@@ -215,7 +215,7 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                 <Grid item xs={3}>
                   <Grid container justifyContent="flex-start">
                     <Box style={{ fontSize: '20px' }} mt={6}>
-                      Supervisão:<strong> {item[0].RegiaoIDPB}</strong>
+                      Supervisão:<strong> {dadosUser[0].RegiaoIDPB}</strong>
                     </Box>
                   </Grid>
                 </Grid>
@@ -359,7 +359,9 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                 style={{ color: '#000' }}
               >
                 Supervisão:{' '}
-                <strong style={{ color: '#000' }}>{item[0].RegiaoIDPB} </strong>
+                <strong style={{ color: '#000' }}>
+                  {dadosUser[0].RegiaoIDPB}{' '}
+                </strong>
               </Box>
             </Box>
 

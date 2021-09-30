@@ -26,7 +26,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
   caption: {
     fontWeight: 500,
-    fontSize: '24px',
+    fontSize: '18px',
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#000',
     marginRight: 20,
     width: 200,
+    marginBottom: -1,
   },
 
   modal: {
