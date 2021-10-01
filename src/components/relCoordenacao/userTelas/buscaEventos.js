@@ -253,7 +253,7 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                               </Button>
                               <Button
                                 style={{
-                                  width: 120,
+                                  width: 150,
                                   backgroundColor: '#1565c0',
                                   fontSize: '12px',
                                   height: 30,
