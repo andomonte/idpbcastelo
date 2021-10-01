@@ -23,6 +23,7 @@ import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
 import NavbarSupMM from '../navBar/ministerioMissoes/supervisor';
+import NavbarCoordMM from '../navBar/ministerioMissoes/coordenador';
 import Igreja from './igreja';
 import MeuPerfil from './meuPerfil';
 import Padrao from './userTelas/telaPadrao';
@@ -143,7 +144,7 @@ function TabPanel(props) {
   );
 }
 
-function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
+function PageAtualizar({ item, ministros, igrejas, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -249,6 +250,10 @@ function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
             <NavbarMinistro perfilUser={perfilUser} />
           )}
           {perfilUser === 'sup-MM' && <NavbarSupMM perfilUser={perfilUser} />}
+          {perfilUser === 'coord-MM' && (
+            <NavbarCoordMM perfilUser={perfilUser} />
+          )}
+          {perfilUser === 'dir-MM' && <NavbarCoordMM perfilUser={perfilUser} />}
         </Drawer>
 
         <main
@@ -277,6 +282,8 @@ function PageAtualizar({ item, title, ministros, igrejas, perfilUser }) {
           <TabPanel value={value} index={2}>
             {perfilUser === 'ministro' ? <Padrao /> : null}
             {perfilUser === 'sup-MM' ? <Padrao /> : null}
+            {perfilUser === 'coord-MM' ? <Padrao /> : null}
+            {perfilUser === 'dir-MM' ? <Padrao /> : null}
             {perfilUser === 'adm_MM' ? <CadastroUser /> : null}
           </TabPanel>
         </main>
