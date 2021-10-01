@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/client';
 import prisma from 'src/lib/prisma';
 import { PageRelatorios } from 'src/components/relatorios/index';
 import { PageRelSuper } from 'src/components/relSupervisao/index';
+import { PageRelCoord } from 'src/components/relCoordenacao/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import { useRouter } from 'next/router';
@@ -65,6 +66,20 @@ function relatorio({ org }) {
             item={org}
             title="SISTEMA-IDPB"
             perfilUser={perfilUser}
+          />
+        ) : null}
+        {perfilUser === 'coord-MM' ? (
+          <PageRelCoord
+            item={org}
+            perfilUser={perfilUser}
+            title="SISTEMA-IDPB"
+          />
+        ) : null}
+        {perfilUser === 'pres-MM' ? (
+          <PageRelCoord
+            item={org}
+            perfilUser={perfilUser}
+            title="SISTEMA-IDPB"
           />
         ) : null}
       </>

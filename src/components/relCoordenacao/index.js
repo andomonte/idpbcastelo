@@ -11,25 +11,23 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
+import HomeIcon from '@material-ui/icons/HomeSharp';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
-import PersonIcon from '@material-ui/icons/Person';
+import EventIcon from '@material-ui/icons/Event';
 import { useSession } from 'next-auth/client';
-// import Eventos from './eventos';
-import GroupWorkIcon from '@material-ui/icons/GroupWork';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
-import NavbarSuper from '../navBar/ministerioMissoes/supervisor';
-import NavbarCoord from '../navBar/ministerioMissoes/coordenador';
-import Igreja from './igreja';
-import MeuPerfil from './meuPerfil';
-import Padrao from './userTelas/telaPadrao';
-import CadastroUser from './userTelas/cadastroUser';
+import PeopleIcon from '@material-ui/icons/People';
+import Evento from './evento';
+import NavbarCoordenador from '../navBar/ministerioMissoes/coordenador';
+import Culto from './culto';
 
+// import Analisar from './analisar';
+// import Carrossel from '../carrossel';
+// import GoogleMaps from './googleMap';
+// import Pesquisar from './pesquisar';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -88,7 +86,6 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-
     marginLeft: 0,
   },
   contentShiftMain: {
@@ -99,8 +96,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: +drawerWidth,
     },
-    height: '100%',
-    // backgroundColor: '#e3f2fd',
   },
   drawerHeader: {
     display: 'flex',
@@ -148,7 +143,8 @@ function TabPanel(props) {
   );
 }
 
-function Perfil({ item, title, ministros, igrejas, perfilUser }) {
+function PageRelCoord({ item, title, perfilUser }) {
+  console.log('indexRelatorio', perfilUser);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -156,14 +152,14 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelIgreja = 'Igreja';
-  let LabelHome = 'Usuário';
-  let LabelEquipe = 'Equipe';
+  let LabelAnalisar = 'Mentoria';
+  let LabelCulto = 'Culto';
+  let LabelEvento = 'Evento';
 
   if (desktop) {
-    LabelIgreja = 'Igreja';
-    LabelHome = 'Usuário';
-    LabelEquipe = 'Equipe';
+    LabelAnalisar = 'Mentoria';
+    LabelEvento = 'Eventos';
+    LabelCulto = 'Cultos';
   }
 
   const handleDrawerOpen = () => {
@@ -185,7 +181,7 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
   };
 
   return (
-    <div onLoad={handleDrawerClose} translate="no">
+    <div onLoad={handleDrawerClose}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -223,28 +219,26 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
                 </Hidden>
               </Box>
 
-              <Box display="flex" m={0}>
+              <Box display="flex">
                 <BottomNavigation
                   value={value}
                   onChange={(event, newValue) => {
                     setValue(newValue);
                   }}
-                  fontSize="large"
                   showLabels
                   className={classes.rootTopbarIcon}
                 >
                   <BottomNavigationAction
-                    label={LabelHome}
-                    icon={<PersonIcon />}
-                  />
-
-                  <BottomNavigationAction
-                    label={LabelIgreja}
-                    icon={<AccountBalanceIcon />}
+                    label={LabelCulto}
+                    icon={<HomeIcon />}
                   />
                   <BottomNavigationAction
-                    label={LabelEquipe}
-                    icon={<GroupWorkIcon />}
+                    label={LabelEvento}
+                    icon={<EventIcon />}
+                  />
+                  <BottomNavigationAction
+                    label={LabelAnalisar}
+                    icon={<PeopleIcon />}
                   />
                 </BottomNavigation>
               </Box>
@@ -260,38 +254,7 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          {perfilUser === 'ministro' && (
-            <NavbarMinistro
-              item={item}
-              igrejas={igrejas}
-              ministros={ministros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser === 'sup-MM' && (
-            <NavbarSuper
-              items={item}
-              igrejas={igrejas}
-              ministros={ministros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser === 'coord-MM' && (
-            <NavbarCoord
-              items={item}
-              igrejas={igrejas}
-              ministros={ministros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser === 'pres-MM' && (
-            <NavbarCoord
-              items={item}
-              igrejas={igrejas}
-              ministros={ministros}
-              perfilUser={perfilUser}
-            />
-          )}
+          <NavbarCoordenador perfilUser={perfilUser} />
         </Drawer>
 
         <main
@@ -302,27 +265,31 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <TabPanel value={value} index={0}>
+          <TabPanel value={value} index={0} className={classes.tabPanel}>
             {session && (
-              <MeuPerfil
+              <Culto
                 item={item}
                 secao={session}
-                ministros={ministros}
+                statusDrawer={open}
                 perfilUser={perfilUser}
               />
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
             {session && (
-              <Igreja item={item} secao={session} igrejas={igrejas} />
+              <Evento
+                item={item}
+                secao={session}
+                statusDrawer={open}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {perfilUser === 'ministro' ? <Padrao /> : null}
-            {perfilUser === 'adm_MM' ? <CadastroUser /> : null}
-            {perfilUser === 'sup-MM' ? <Padrao /> : null}
-            {perfilUser === 'coord-MM' ? <Padrao /> : null}
+            {session && 'em desenvolvimento'}
+
+            {/* <Analisar item={item} secao={session} /> */}
           </TabPanel>
         </main>
       </div>
@@ -330,4 +297,4 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
   );
 }
 
-export { Perfil, TabPanel };
+export { PageRelCoord, TabPanel };

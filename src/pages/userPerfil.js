@@ -67,6 +67,24 @@ function userPerfil({ user, ministros, igrejas }) {
             perfilUser={perfilUser}
           />
         ) : null}
+        {perfilUser === 'coord-MM' ? (
+          <Perfil
+            item={user}
+            title="SISTEMA-IDPB"
+            ministros={ministros}
+            igrejas={igrejas}
+            perfilUser={perfilUser}
+          />
+        ) : null}
+        {perfilUser === 'pres-MM' ? (
+          <Perfil
+            item={user}
+            title="SISTEMA-IDPB"
+            ministros={ministros}
+            igrejas={igrejas}
+            perfilUser={perfilUser}
+          />
+        ) : null}
       </>
     );
   }
