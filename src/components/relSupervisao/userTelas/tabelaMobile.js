@@ -681,6 +681,56 @@ export default function TabelaMobile({ dadosRel, item, mes }) {
       igrejaSelecionada[4] ? igrejaSelecionada[4].conversoes : '--',
       CabeçalhoTabela[4].media && CabeçalhoTabela[4].media,
     ),
+    createData(
+      'Total Geral',
+      igrejaSelecionada[0]
+        ? Number(igrejaSelecionada[0].adultos) +
+            Number(igrejaSelecionada[0].adolecentes) +
+            Number(igrejaSelecionada[0].criancas) +
+            Number(igrejaSelecionada[0].visitantes) +
+            Number(igrejaSelecionada[0].conversoes)
+        : '--',
+      igrejaSelecionada[1]
+        ? Number(igrejaSelecionada[1].adultos) +
+            Number(igrejaSelecionada[1].adolecentes) +
+            Number(igrejaSelecionada[1].criancas) +
+            Number(igrejaSelecionada[1].visitantes) +
+            Number(igrejaSelecionada[1].conversoes)
+        : '--',
+      igrejaSelecionada[2]
+        ? Number(igrejaSelecionada[2].adultos) +
+            Number(igrejaSelecionada[2].adolecentes) +
+            Number(igrejaSelecionada[2].criancas) +
+            Number(igrejaSelecionada[2].visitantes) +
+            Number(igrejaSelecionada[2].conversoes)
+        : '--',
+      igrejaSelecionada[3]
+        ? Number(igrejaSelecionada[3].adultos) +
+            Number(igrejaSelecionada[3].adolecentes) +
+            Number(igrejaSelecionada[3].criancas) +
+            Number(igrejaSelecionada[3].visitantes) +
+            Number(igrejaSelecionada[3].conversoes)
+        : '--',
+      igrejaSelecionada[4]
+        ? Number(igrejaSelecionada[4].adultos) +
+            Number(igrejaSelecionada[4].adolecentes) +
+            Number(igrejaSelecionada[4].criancas) +
+            Number(igrejaSelecionada[4].visitantes) +
+            Number(igrejaSelecionada[4].conversoes)
+        : '--',
+
+      CabeçalhoTabela[0].media &&
+        CabeçalhoTabela[1].media &&
+        CabeçalhoTabela[2].media &&
+        CabeçalhoTabela[3].media &&
+        CabeçalhoTabela[4].media
+        ? parseFloat(CabeçalhoTabela[0].media) +
+            parseFloat(CabeçalhoTabela[1].media) +
+            parseFloat(CabeçalhoTabela[2].media) +
+            parseFloat(CabeçalhoTabela[3].media) +
+            parseFloat(CabeçalhoTabela[4].media)
+        : '--',
+    ),
   ];
 
   const windowWidth = window.innerWidth;

@@ -210,6 +210,7 @@ export default function TabelaDesk({ dadosRel, item, mes, statusDrawer }) {
       ).toFixed(1);
     }
   }
+
   if (mesAnterior.length > 0) {
     for (let i = 0; i < dadosMesAnterior.length; i += 1) {
       const reducer = mesAnterior.reduce(
@@ -314,6 +315,7 @@ export default function TabelaDesk({ dadosRel, item, mes, statusDrawer }) {
         ).toFixed(1);
       }
     }
+
     const mesPassado = String(mes - 1);
 
     const mesAnteriorAnalizado = dadosRel.filter((val) => {
@@ -365,6 +367,7 @@ export default function TabelaDesk({ dadosRel, item, mes, statusDrawer }) {
             Number(currentValue.dizimos.replace(',', '.')),
           0,
         );
+
         //= =========================================================================
 
         //= ===========================================================================
@@ -541,6 +544,7 @@ export default function TabelaDesk({ dadosRel, item, mes, statusDrawer }) {
         dadosMAnt[index].visitantes +
         dadosMAnt[index].conversoes,
     );
+
     const divisor = parseFloat(5 * mesAnalizado.length);
     dadosMes[index].mediaSoma = parseFloat(
       dadosMes[index].somatorio / divisor,
@@ -611,6 +615,56 @@ export default function TabelaDesk({ dadosRel, item, mes, statusDrawer }) {
       igrejaSelecionada[3] ? igrejaSelecionada[3].conversoes : '--',
       igrejaSelecionada[4] ? igrejaSelecionada[4].conversoes : '--',
       CabeçalhoTabela[4].media && CabeçalhoTabela[4].media,
+    ),
+    createData(
+      'Total Geral',
+      igrejaSelecionada[0]
+        ? Number(igrejaSelecionada[0].adultos) +
+            Number(igrejaSelecionada[0].adolecentes) +
+            Number(igrejaSelecionada[0].criancas) +
+            Number(igrejaSelecionada[0].visitantes) +
+            Number(igrejaSelecionada[0].conversoes)
+        : '--',
+      igrejaSelecionada[1]
+        ? Number(igrejaSelecionada[1].adultos) +
+            Number(igrejaSelecionada[1].adolecentes) +
+            Number(igrejaSelecionada[1].criancas) +
+            Number(igrejaSelecionada[1].visitantes) +
+            Number(igrejaSelecionada[1].conversoes)
+        : '--',
+      igrejaSelecionada[2]
+        ? Number(igrejaSelecionada[2].adultos) +
+            Number(igrejaSelecionada[2].adolecentes) +
+            Number(igrejaSelecionada[2].criancas) +
+            Number(igrejaSelecionada[2].visitantes) +
+            Number(igrejaSelecionada[2].conversoes)
+        : '--',
+      igrejaSelecionada[3]
+        ? Number(igrejaSelecionada[3].adultos) +
+            Number(igrejaSelecionada[3].adolecentes) +
+            Number(igrejaSelecionada[3].criancas) +
+            Number(igrejaSelecionada[3].visitantes) +
+            Number(igrejaSelecionada[3].conversoes)
+        : '--',
+      igrejaSelecionada[4]
+        ? Number(igrejaSelecionada[4].adultos) +
+            Number(igrejaSelecionada[4].adolecentes) +
+            Number(igrejaSelecionada[4].criancas) +
+            Number(igrejaSelecionada[4].visitantes) +
+            Number(igrejaSelecionada[4].conversoes)
+        : '--',
+
+      CabeçalhoTabela[0].media &&
+        CabeçalhoTabela[1].media &&
+        CabeçalhoTabela[2].media &&
+        CabeçalhoTabela[3].media &&
+        CabeçalhoTabela[4].media
+        ? parseFloat(CabeçalhoTabela[0].media) +
+            parseFloat(CabeçalhoTabela[1].media) +
+            parseFloat(CabeçalhoTabela[2].media) +
+            parseFloat(CabeçalhoTabela[3].media) +
+            parseFloat(CabeçalhoTabela[4].media)
+        : '--',
     ),
   ];
   //--------------------------------------------------------------------------
@@ -1291,6 +1345,7 @@ export default function TabelaDesk({ dadosRel, item, mes, statusDrawer }) {
             ))}
           </TableBody>
         </Table>
+
         <Box m={2} mt={2}>
           Oferta do Mês Atual: <strong> R$ {ofertaMes} </strong>
         </Box>

@@ -99,7 +99,7 @@ export default function EventoMobile({ item, mes }) {
   };
   const carregaImagem = async (items) => {
     const retorno = '';
-    console.log(fotos);
+
     const img = items.substr(items.indexOf('img'));
     await api
       .post('api/imagens', { img })
@@ -403,7 +403,7 @@ export default function EventoMobile({ item, mes }) {
               if (fotos[cont - 1]) {
                 setCont(cont - 1);
               } else {
-                setCont(4);
+                setCont(fotos.length - 1);
               }
             }}
           >
