@@ -284,7 +284,7 @@ function Perfil({ item, title, ministros, igrejas, perfilUser }) {
               perfilUser={perfilUser}
             />
           )}
-          {perfilUser === 'pres-MM' && (
+          {perfilUser === 'dir-MM' && (
             <NavbarCoord
               items={item}
               igrejas={igrejas}

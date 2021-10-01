@@ -14,7 +14,7 @@ function RegioesMM(perfilUser) {
   if (perfilUser === 'BR-1') return BR1;
   if (perfilUser === 'BR-2') return BR2;
   if (perfilUser === 'INTER-1') return INTER1;
-  if (perfilUser === 'pres-MM') return MM;
+  if (perfilUser === 'MM-GLOBAL') return MM;
   return 0;
 }
 export default RegioesMM;

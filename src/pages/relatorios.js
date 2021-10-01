@@ -75,7 +75,7 @@ function relatorio({ org }) {
             title="SISTEMA-IDPB"
           />
         ) : null}
-        {perfilUser === 'pres-MM' ? (
+        {perfilUser === 'dir-MM' ? (
           <PageRelCoord
             item={org}
             perfilUser={perfilUser}

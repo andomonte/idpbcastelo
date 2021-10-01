@@ -24,7 +24,7 @@ const Evento = ({ item, secao, statusDrawer, perfilUser }) => {
           perfilUser={perfilUser}
         />
       );
-    case 'pres-MM':
+    case 'dir-MM':
       return (
         <BuscarEventos
           item={item}

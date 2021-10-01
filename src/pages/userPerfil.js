@@ -76,7 +76,7 @@ function userPerfil({ user, ministros, igrejas }) {
             perfilUser={perfilUser}
           />
         ) : null}
-        {perfilUser === 'pres-MM' ? (
+        {perfilUser === 'dir-MM' ? (
           <Perfil
             item={user}
             title="SISTEMA-IDPB"

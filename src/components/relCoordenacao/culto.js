@@ -24,7 +24,7 @@ const Culto = ({ item, secao, statusDrawer, perfilUser }) => {
           perfilUser={perfilUser}
         />
       );
-    case 'pres-MM':
+    case 'dir-MM':
       return (
         <TelaCoordenacao
           item={item}
