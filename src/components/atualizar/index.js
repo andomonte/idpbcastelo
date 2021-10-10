@@ -179,6 +179,7 @@ function PageAtualizar({ item, igrejas, perfilUser }) {
         <Loading statusDrawer={false} />
       </div>
     );
+
   mutate(url);
   const handleDrawerOpen = () => {
     if (!open) {
@@ -283,14 +284,40 @@ function PageAtualizar({ item, igrejas, perfilUser }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0}>
-            {session && data && (
-              <MudarDados
-                ministros={data}
-                item={item}
-                secao={session}
-                perfilUser={perfilUser}
-                statusDrawer={open}
-              />
+            {session && (
+              <Box>
+                {data.length ? (
+                  <MudarDados
+                    ministros={data}
+                    item={item}
+                    secao={session}
+                    perfilUser={perfilUser}
+                    statusDrawer={open}
+                  />
+                ) : (
+                  <Box>
+                    <Box
+                      height="90vh"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      mt={-5}
+                    >
+                      <Box>
+                        <img src="/images/idpb.ico" alt="" width="125" />
+                      </Box>
+                    </Box>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      mt={-25}
+                    >
+                      <strong> Apenas para Ministros da IDPB </strong>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>

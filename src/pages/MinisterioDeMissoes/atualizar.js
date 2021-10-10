@@ -50,7 +50,12 @@ function atualizar({ org, igrejas }) {
     );
   }
   return (
-    <Box height="100vh" alignItems="center" justifyContent="center">
+    <Box
+      display="flex"
+      height="100vh"
+      alignItems="center"
+      justifyContent="center"
+    >
       <img src="/images/idpb.ico" alt="" width="125" />
     </Box>
   );

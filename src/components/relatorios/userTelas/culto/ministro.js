@@ -120,7 +120,7 @@ const defaultProps = {
   border: 1,
 };
 
-function TelaMinistro({ item, secao }) {
+function TelaMinistro({ item, secao, statusDrawer }) {
   let enviarDia;
   let enviarData;
   const classes = useStyles();
@@ -224,6 +224,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={1}
+                  statusDrawer={statusDrawer}
                 />
               ) : null}
               {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
@@ -232,6 +233,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={2}
+                  statusDrawer={statusDrawer}
                 />
               ) : null}
               {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
@@ -240,6 +242,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={3}
+                  statusDrawer={statusDrawer}
                 />
               ) : null}
               {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
@@ -248,6 +251,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={4}
+                  statusDrawer={statusDrawer}
                 />
               ) : null}
               {enviarDia > firstSunday + 27 ? (
@@ -256,6 +260,7 @@ function TelaMinistro({ item, secao }) {
                   secao={secao}
                   Data={enviarData}
                   Semana={5}
+                  statusDrawer={statusDrawer}
                 />
               ) : null}
             </Box>
@@ -311,6 +316,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={1}
+              statusDrawer={statusDrawer}
             />
           ) : null}
           {enviarDia > firstSunday + 6 && enviarDia < firstSunday + 14 ? (
@@ -319,6 +325,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={2}
+              statusDrawer={statusDrawer}
             />
           ) : null}
           {enviarDia > firstSunday + 13 && enviarDia < firstSunday + 21 ? (
@@ -327,6 +334,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={3}
+              statusDrawer={statusDrawer}
             />
           ) : null}
           {enviarDia > firstSunday + 20 && enviarDia < firstSunday + 28 ? (
@@ -335,6 +343,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={4}
+              statusDrawer={statusDrawer}
             />
           ) : null}
           {enviarDia > firstSunday + 27 ? (
@@ -343,6 +352,7 @@ function TelaMinistro({ item, secao }) {
               secao={secao}
               Data={enviarData}
               Semana={5}
+              statusDrawer={statusDrawer}
             />
           ) : null}
         </Box>
