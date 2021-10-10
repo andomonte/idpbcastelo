@@ -589,7 +589,7 @@ function formulario({ item, Data, statusDrawer }) {
     );
  
     api
-      .post('api/baixarImagem', {
+      .post('/api/baixarImagem', {
         dados: arrayImage[contImage],
         name: arrayImage[contImage].substring(
           arrayImage[contImage].lastIndexOf('img'),
@@ -755,7 +755,7 @@ function formulario({ item, Data, statusDrawer }) {
     dataFile.append('file', uploadedFile.file, uploadedFile.name);
 
     api
-      .post('api/fotos', dataFile, {
+      .post('/api/fotos', dataFile, {
         onUploadProgress: (e) => {
           const progress = Math.round((e.loaded * 100) / e.total);
 

@@ -341,7 +341,7 @@ function DadosPessoais({ item, secao, ministros }) {
       dataFile.append('file', uploadedFile, nomeFoto);
 
       api
-        .post('api/fotos', dataFile)
+        .post('/api/fotos', dataFile)
         .then((response) => {
           if (response) {
             console.log(response);

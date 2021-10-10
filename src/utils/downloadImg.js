@@ -20,7 +20,7 @@ export default async function downloadImg(urlFile) {
   };
   // get secure url from our server
   api
-    .post('api/imagens', {
+    .post('/api/imagens', {
       fileName: urlFile,
     })
     .then((response) => {

@@ -103,7 +103,7 @@ export default function EventoMobile({ regiaoSelecionada, mes, statusDrawer }) {
 
     const img = items.substr(items.indexOf('img'));
     await api
-      .post('api/imagens', { img })
+      .post('/api/imagens', { img })
       .then((response) => {
         if (response) {
           // setTransfer(response.status);
@@ -320,7 +320,7 @@ export default function EventoMobile({ regiaoSelecionada, mes, statusDrawer }) {
     //  const fim = Number(imagem.indexOf('?')) - Number(imagem.indexOf('img'));
     const img = imagem.substr(ini);
     api
-      .post('api/imagens', { img })
+      .post('/api/imagens', { img })
       .then((response) => {
         if (response) {
           // setTransfer(response.status);

@@ -296,7 +296,7 @@ function enviar({ secao, item, perfilUser }) {
 
     // get secure url from our server
     api
-      .post('api/videos', {
+      .post('/api/videos', {
         fileName: file[0].name,
         fileType: file[0].type,
       })
