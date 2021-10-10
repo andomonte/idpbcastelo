@@ -308,7 +308,7 @@ function DadosPessoais({ item, secao, ministros }) {
     gia: '',
   });
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  //  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [value, setValue] = React.useState(0);
   const [previews, setPreview] = React.useState([]);
@@ -620,7 +620,7 @@ function DadosPessoais({ item, secao, ministros }) {
     submitData();
   };
   const altura = window.innerHeight;
-
+  const imgExtra = '/images/idpb.ico';
   return (
     <Box>
       <Box height={altura - 100}>
@@ -650,7 +650,7 @@ function DadosPessoais({ item, secao, ministros }) {
                         />
                         <label htmlFor="contained-button-file">
                           <Image
-                            src={selectedFile}
+                            src={selectedFile || imgExtra}
                             alt=""
                             width="100%"
                             height="100%"
