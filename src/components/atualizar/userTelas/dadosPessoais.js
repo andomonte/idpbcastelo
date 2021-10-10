@@ -5,7 +5,7 @@ import { signOut } from 'next-auth/client';
 import TextField from '@material-ui/core/TextField';
 import { Box, Tooltip, Button, capitalize } from '@mui/material';
 import React from 'react';
-import Image from 'material-ui-image';
+import Image from 'next/image';
 import Typography from '@mui/material/Typography';
 import api from 'src/components/services/api';
 import axios from 'axios';
@@ -30,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
   novoBox: {
     flexGrow: 1,
     padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    alignItems: 'center',
+  },
+  boxImg: {
+    flexGrow: 1,
+    padding: 0.3,
+    marginTop: 3,
+    marginBottom: -4,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     alignItems: 'center',
@@ -218,7 +227,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-function DadosPessoais({ item, secao, ministros }) {
+function DadosPessoais({ item, secao, ministros, statusDrawer }) {
   const classes = useStyles();
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   const [nome, setNome] = React.useState('');
@@ -619,7 +628,17 @@ function DadosPessoais({ item, secao, ministros }) {
     enviarFoto();
     submitData();
   };
+  //--------------------------------------------------------------------------
+  const bannerBlurHash =
+    'data:image/webp;base64,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';
+  //--------------------------------------------------------------------------
+  let largImg;
+  const largImgMobile = window.innerWidth;
+  console.log(largImgMobile);
+  if (statusDrawer) largImg = 260;
+  else largImg = 316;
   const altura = window.innerHeight;
+
   const imgExtra = '/images/idpb.ico';
   return (
     <Box>
@@ -627,7 +646,7 @@ function DadosPessoais({ item, secao, ministros }) {
         <Hidden smDown>
           {value === 0 && (
             <Box>
-              <Box display="flex" flexDirection="row" mb={1}>
+              <Box display="flex" flexDirection="row" mb={1} mt={1}>
                 <Grid item xs={12} md={3}>
                   <Box
                     mt={1}
@@ -639,7 +658,7 @@ function DadosPessoais({ item, secao, ministros }) {
                     {...defaultProps}
                   >
                     <Tooltip title="Click para Mudar" aria-label="foto">
-                      <Box className={classes.novoBox}>
+                      <Box className={classes.boxImg}>
                         <input
                           accept="image/*"
                           className={classes.input}
@@ -652,8 +671,12 @@ function DadosPessoais({ item, secao, ministros }) {
                           <Image
                             src={selectedFile || imgExtra}
                             alt=""
-                            width="100%"
-                            height="100%"
+                            width={largImg}
+                            height={260}
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={bannerBlurHash}
+                            objectFit="cover"
                           />
                         </label>
                       </Box>
@@ -661,7 +684,7 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Grid>
                 <Grid item md={9}>
-                  <Box className={classes.alignBox}>
+                  <Box className={classes.alignBox} mt={1.8}>
                     <Box className={classes.page}>
                       <Grid item xs={12} md={9}>
                         <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
@@ -1522,10 +1545,14 @@ function DadosPessoais({ item, secao, ministros }) {
                         />
                         <label htmlFor="contained-button-file">
                           <Image
-                            src={selectedFile}
+                            src={selectedFile || imgExtra}
                             alt=""
-                            width="100%"
-                            height="100%"
+                            width={largImgMobile}
+                            height={altura - 200}
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={bannerBlurHash}
+                            objectFit="cover"
                           />
                         </label>
                       </Box>
@@ -1533,7 +1560,7 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Grid>
               </Box>
-              <Box mt={2} display="flex" flexDirection="row">
+              <Box mt={-1} display="flex" flexDirection="row">
                 <Grid item xs={12} md={9}>
                   <Box mt={1} ml={2} sx={{ fontSize: 'bold' }}>
                     <Typography variant="caption" display="block" gutterBottom>
@@ -1954,6 +1981,10 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Grid>
               </Box>
+            </Box>
+          )}
+          {value === 2 && (
+            <Box>
               <Box mt={2} display="flex" flexDirection="row">
                 <Grid item xs={12} md={6}>
                   <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
@@ -1986,10 +2017,6 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Grid>
               </Box>
-            </Box>
-          )}
-          {value === 2 && (
-            <Box>
               <Box display="flex" flexDirection="row" mt={2}>
                 <Grid item xs={12} md={3}>
                   <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
@@ -2215,7 +2242,10 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Grid>
               </Box>
-
+            </Box>
+          )}
+          {value === 3 && (
+            <Box>
               {estadoCivil.value === 'CASADO (A)' && (
                 <Box>
                   <Box display="flex" flexDirection="row" mt={2}>
@@ -2326,10 +2356,6 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Box>
               )}
-            </Box>
-          )}
-          {value === 3 && (
-            <Box>
               <Box display="flex" flexDirection="row" mt={2}>
                 <Grid item xs={12} md={2}>
                   <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
@@ -2491,6 +2517,10 @@ function DadosPessoais({ item, secao, ministros }) {
                   </Box>
                 </Grid>
               </Box>
+            </Box>
+          )}
+          {value === 4 && (
+            <Box>
               <Box mt={2} display="flex" flexDirection="row">
                 <Grid item xs={9} md={3}>
                   <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
