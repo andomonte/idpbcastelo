@@ -330,7 +330,7 @@ function DadosPessoais({ item, secao, ministros }) {
   const [selectedFile, setSelectedFile] = React.useState(
     dadosMinistro[0].fotoPerfil ? dadosMinistro[0].fotoPerfil : '',
   );
-
+  console.log(selectedFile);
   const processUpload = (uploadedFile) => {
     if (uploadedFile.name) {
       const nomeFoto = `${dadosMinistro[0].CPF}${uploadedFile.name.substring(
