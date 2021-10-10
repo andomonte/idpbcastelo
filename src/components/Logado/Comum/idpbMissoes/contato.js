@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(() => ({
   img: {
@@ -16,17 +17,15 @@ const contato = () => {
     <div>
       <Hidden smDown>
         <img
-          src="images/home/contato.png"
+          src="/images/home/contato.png"
           alt="img01"
           className={classes.img}
         />
       </Hidden>
       <Hidden smUp>
-        <img
-          src="images/home/contatoMobile.png"
-          alt="img01"
-          className={classes.img}
-        />
+        <Box mt={2}>
+          <img src="/images/home/contato.png" alt="img01" width="98%" />
+        </Box>
       </Hidden>
     </div>
   );

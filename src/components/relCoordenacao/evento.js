@@ -1,6 +1,6 @@
 import { signOut } from 'next-auth/client';
 import React from 'react';
-import BuscarEventos from './userTelas/buscaEventos';
+import BuscarEventos from './userTelas/eventos/buscaEventos';
 import Padrao from './userTelas/telaPadrao';
 
 const Evento = ({ item, secao, statusDrawer, perfilUser }) => {

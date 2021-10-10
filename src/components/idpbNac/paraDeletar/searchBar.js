@@ -124,7 +124,7 @@ const SearchBar = ({ keyword, setKeyword }) => {
   return (
     <Box>
       <Image
-        src="images/IDPBNAC.png"
+        src="/images/IDPBNAC.png"
         alt="IDPB"
         className={classes.imgSearch}
       />

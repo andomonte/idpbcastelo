@@ -5,7 +5,6 @@ import { S3RequestPresigner } from '@aws-sdk/s3-request-presigner';
 import { parseUrl } from '@aws-sdk/url-parser';
 import { Sha256 } from '@aws-crypto/sha256-browser';
 // import { Hash } from '@aws-sdk/hash-node';
-import { formatUrl } from '@aws-sdk/util-format-url';
 
 // const randomBytes = promisify(crypto.randomBytes);
 
@@ -27,7 +26,6 @@ const credentials = {
 };
 
 export async function downloadImgS3(fileName) {
-  console.log('chegou aqui');
   // const rawBytes = await randomBytes(16);
   // const imageName = rawBytes.toString('hex');
 
@@ -45,8 +43,6 @@ export async function downloadImgS3(fileName) {
   });
   // Create a GET request from S3 url.
   const uploadURL = await presigner.presign(new HttpRequest(s3ObjectUrl));
-
-  console.log('PRESIGNED URL: ', formatUrl(uploadURL));
 
   // pegar a lista do bucket
   /*   const uploadURL = await s3

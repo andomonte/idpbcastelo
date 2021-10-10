@@ -9,7 +9,7 @@ export async function selectRoutes() {
     {
       id: 2,
       label: 'Missões',
-      path: '/missoes',
+      path: '/MinisterioDeMissoes/missoes',
     },
     {
       id: 3,

@@ -17,8 +17,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Login from 'src/components/botaoLogin';
-import PesquisaIgreja from './pesquisa/igreja';
 import Navbar from './navBar_redesSociais';
+import PesquisaIgreja from './pesquisa/igreja';
 import Contato from './contato';
 import Home from './home';
 // import Carrossel from '../carrossel';
@@ -182,7 +182,7 @@ function IdpbNacional({ item, title }) {
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 
-        {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
+        
       </Head>
 
       <div className={classes.root}>

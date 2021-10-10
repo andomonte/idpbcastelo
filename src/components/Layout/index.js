@@ -223,8 +223,6 @@ function Layout({ item, title }) {
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
       <div className={classes.root}>

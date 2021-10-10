@@ -1,6 +1,6 @@
 import { signOut } from 'next-auth/client';
 import React from 'react';
-import TelaCoordenacao from './userTelas/telaCoord';
+import TelaCoordenacao from './userTelas/culto/telaCoord';
 import Padrao from './userTelas/telaPadrao';
 
 const Culto = ({ item, secao, statusDrawer, perfilUser }) => {

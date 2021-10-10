@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
-// import { PrismaClient } from '@prisma/client';
 import prisma from 'src/lib/prisma';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -117,7 +116,9 @@ function selectPerfil({ user }) {
   }
   return (
     <Box align="center" justifyContent="center">
-      <h4>IDPB - Pregando a palavra no poder do Espírito Santo </h4>
+      <Box height="100vh" alignItems="center" justifyContent="center">
+        <img src="/images/idpb.ico" alt="" width="125" />
+      </Box>
       <IdpbNacional title="SISTEMA-IDPB" />
     </Box>
   );

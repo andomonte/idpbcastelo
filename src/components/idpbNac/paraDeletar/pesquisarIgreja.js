@@ -76,7 +76,7 @@ export default function pesquisar() {
 
   return (
     <Box>
-      <img className={classes.imgSearch} src="images/IDPBNAC.png" alt="IDPB" />
+      <img className={classes.imgSearch} src="/images/IDPBNAC.png" alt="IDPB" />
       <Paper component="form" className={classes.search}>
         <IconButton type="submit" aria-label="search">
           <SearchIcon />

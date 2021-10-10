@@ -31,7 +31,7 @@ export default function MyApp(props) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
         />
-        <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/images/idpb.ico" type="image/x-icon" />
       </Head>
       <Provider session={pageProps.session}>
         <ThemeProvider theme={theme}>

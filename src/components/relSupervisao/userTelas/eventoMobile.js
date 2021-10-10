@@ -121,7 +121,6 @@ export default function EventoMobile({ item, mes }) {
         //  updateFile(uploadedFile.id, { uploaded: true });
       })
       .catch(() => {
-        console.log('deu ruim');
         //  updateFile(uploadedFile.id, { error: true });
       });
     return retorno;

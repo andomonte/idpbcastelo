@@ -68,7 +68,7 @@ const primaryMenuLogout = [
   {
     id: 2,
     label: 'Missões',
-    path: '/missoes',
+    path: '/MinisterioDeMissoes/missoes',
     icon: IconMissoes,
   },
   {
@@ -81,11 +81,16 @@ const primaryMenuLogout = [
   { id: 4, label: 'Quem Somos', path: '/trendding', icon: IconIdpb },
 ];
 const primaryMenuLogin = [
-  { id: 1, label: 'IDPB-Nacional', path: '/nacionalLogado', icon: IconBrasil },
+  {
+    id: 1,
+    label: 'IDPB-Nacional',
+    path: '/idpbNacional/nacionalLogado',
+    icon: IconBrasil,
+  },
   {
     id: 2,
     label: 'Missões',
-    path: '/missoesLogado',
+    path: '/MinisterioDeMissoes/missoesLogado',
     icon: IconMissoes,
   },
   {
@@ -95,11 +100,11 @@ const primaryMenuLogin = [
     icon: SchoolIcon,
   },
 
-  { id: 4, label: 'Perfil', path: '/userPerfil', icon: iconesPerfil },
+  { id: 4, label: 'Meu Perfil', path: '/userPerfil', icon: iconesPerfil },
 ];
 
 const secondaryManu = [
-  { id: 1, label: 'IDPB-AM', icon: IconAmazonas },
+  { id: 1, label: 'IDPB-AM', path: '/idpbAM', icon: IconAmazonas },
   { id: 2, label: 'IDPB-PA', icon: History },
   { id: 3, label: 'IDPB-RR', icon: History },
   { id: 4, label: 'IDPB-RN', icon: History },

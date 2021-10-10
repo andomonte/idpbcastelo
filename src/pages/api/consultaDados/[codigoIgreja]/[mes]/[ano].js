@@ -6,11 +6,15 @@ export default async function handle(req, res) {
     query: { codigoIgreja, mes, ano },
   } = req;
   // const action = `${rel}.findMany`
-  const posts = await prisma.relatorios.findMany({
-    where: {
-      AND: [{ codigoIgreja }, { mes }, { ano }],
-    },
-  });
+  const posts = await prisma.relatorios
+    .findMany({
+      where: {
+        AND: [{ codigoIgreja }, { mes }, { ano }],
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.statuCode = 200;
   res.setHeader('Content-Type', 'aplication/json');
   //  res.end(JSON.stringify({ posts }));

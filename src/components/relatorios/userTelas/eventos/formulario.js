@@ -218,7 +218,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function formulario({ item, Data }) {
+function formulario({ item, Data, statusDrawer }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openImage, setOpenImage] = React.useState(false);
@@ -468,13 +468,13 @@ function formulario({ item, Data }) {
   if (error)
     return (
       <div>
-        <MesageErro />
+        <MesageErro statusDrawer={statusDrawer} />
       </div>
     );
   if (!data)
     return (
       <div>
-        <Loading />
+        <Loading statusDrawer={statusDrawer} />
       </div>
     );
   //---------------------------------------------------------------------------

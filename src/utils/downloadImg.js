@@ -1,12 +1,9 @@
-import axios from 'axios';
 import api from 'src/components/services/api';
-import { saveAs } from 'file-saver';
 
 const FileSaver = require('file-saver');
 
 export default async function downloadImg(urlFile) {
-  const enviarURL = async (urlAws, file) => {
-    console.log(urlAws);
+  const enviarURL = async (urlAws) => {
     FileSaver.saveAs(urlAws.data, 'image.jpg');
 
     /* axios
@@ -33,7 +30,6 @@ export default async function downloadImg(urlFile) {
       //  updateFile(uploadedFile.id, { uploaded: true });
     })
     .catch(() => {
-      console.log('deu erro aqui');
       //  updateFile(uploadedFile.id, { error: true });
     });
 }

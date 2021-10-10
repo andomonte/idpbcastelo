@@ -50,7 +50,6 @@ import fs from 'fs';
     `${dirPath}/imgTemp${valor.tipo}`,
     (err) => {
       if (err) console.log(`ERROR: ${err}`);
-      else console.log('ok');
     },
   );
   res.json('ok');

@@ -8,9 +8,9 @@ const defaultProps = {
   border: 1,
 };
 
-export default function Loading() {
-  const largura = window.innerWidth;
-
+export default function Loading(statusDrawer) {
+  let largura = window.innerWidth;
+  if (statusDrawer) largura -= 240;
   return (
     <Box display="flex" alignItems="center" mt={8}>
       <Box

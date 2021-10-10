@@ -1,9 +1,9 @@
 import { signOut } from 'next-auth/client';
 import React from 'react';
-import GraficoMinistro from './userTelas/GraficoMinistro';
+import GraficoMinistro from './userTelas/Analizar/GraficoMinistro';
 import Padrao from './userTelas/telaPadrao';
 
-const Analisar = ({ item, secao }) => {
+const AnalisarRel = ({ item, secao, statusDrawer }) => {
   const dadosUser = item.filter((val) => val.email === secao.user.email);
   // console.log(dadosUser.length);
   if (dadosUser.length === 0)
@@ -14,12 +14,17 @@ const Analisar = ({ item, secao }) => {
 
   switch (route) {
     case 'ministro':
-      return <GraficoMinistro item={item} secao={secao} />;
-    case 'sup-MM':
-      return <GraficoMinistro item={item} secao={secao} />;
+      return (
+        <GraficoMinistro
+          item={item}
+          secao={secao}
+          statusDrawer={statusDrawer}
+        />
+      );
+
     default:
       return <Padrao />;
   }
 };
 
-export default Analisar;
+export default AnalisarRel;

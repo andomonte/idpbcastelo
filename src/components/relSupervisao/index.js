@@ -144,7 +144,6 @@ function TabPanel(props) {
 }
 
 function PageRelSuper({ item, title, perfilUser }) {
-  console.log('indexRelatorio', perfilUser);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -188,8 +187,6 @@ function PageRelSuper({ item, title, perfilUser }) {
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
       <div className={classes.root}>

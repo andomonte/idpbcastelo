@@ -68,7 +68,7 @@ const primaryMenuLogout = [
   {
     id: 2,
     label: 'Missões',
-    path: '/missoes',
+    path: '/MinisterioDeMissoes/missoes',
     icon: IconMissoes,
   },
   {
@@ -85,7 +85,7 @@ const primaryMenuLogin = [
   {
     id: 2,
     label: 'Missões',
-    path: '/missoes',
+    path: '/MinisterioDeMissoes/missoes',
     icon: IconMissoes,
   },
   {
@@ -95,11 +95,16 @@ const primaryMenuLogin = [
     icon: SchoolIcon,
   },
 
-  { id: 4, label: 'Meu Perfil', path: '/selectPerfil', icon: iconesPerfil },
+  {
+    id: 4,
+    label: 'Escolher Perfil',
+    path: '/selectPerfil',
+    icon: iconesPerfil,
+  },
 ];
 
 const secondaryManu = [
-  { id: 1, label: 'IDPB-AM', icon: IconAmazonas },
+  { id: 1, label: 'IDPB-AM', path: '/idpbAM', icon: IconAmazonas },
   { id: 2, label: 'IDPB-PA', icon: History },
   { id: 3, label: 'IDPB-RR', icon: History },
   { id: 4, label: 'IDPB-RN', icon: History },
@@ -201,6 +206,9 @@ function navBar() {
               button
               classes={{ root: classes.listItem }}
               selected={isSelected(itemSecondary)}
+              onClick={() => {
+                router.push(itemSecondary.path);
+              }}
             >
               <ListItemIcon>
                 <Icon

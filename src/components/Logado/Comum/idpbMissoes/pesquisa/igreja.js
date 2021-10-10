@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Igreja(query) {
+function Igreja({ item }) {
   const classes = useStyles();
 
   const [querys, updateQuery] = React.useState(null);
@@ -95,21 +95,21 @@ function Igreja(query) {
   };
 
   //= para procurar os dados  ==========================================
-  const searcher = new FuzzySearch(query.item, ['igreja', 'logradouro'], {
+  const searcher = new FuzzySearch(item, ['igreja', 'logradouro'], {
     caseSensitive: false,
   });
   const result = searcher.search(querys);
-  if (query === 'error') return <div>Erro ao acessar o Banco.</div>;
-  if (!query) return <div>Carregando ...</div>;
+  if (item === 'error') return <div>Erro ao acessar o Banco.</div>;
+  if (!item) return <div>Carregando ...</div>;
   //= =================================================================
 
   return (
     <Box className={classes.input_box}>
       <Grid container mb={4}>
-        <Box>
+        <Box width="98%" height={60} mt={2}>
           <img
             className={classes.imgSearch}
-            src="images/IDPBNAC.png"
+            src="/images/IDPBNAC.png"
             alt="IDPB"
           />
 
@@ -142,11 +142,13 @@ function Igreja(query) {
           />
         </Box>
       </Grid>
-      {result.map((item) => (
-        <Grid key={item.id} item xl={12} className={classes.dados}>
-          <SearchList item={item} />
-        </Grid>
-      ))}
+      <Box mt={10}>
+        {result.map((items) => (
+          <Grid key={items.id} item xl={12} className={classes.dados}>
+            {items.vinculado === 'MM' && <SearchList item={items} />}
+          </Grid>
+        ))}
+      </Box>
     </Box>
   );
 }

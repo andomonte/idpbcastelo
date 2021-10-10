@@ -69,7 +69,7 @@ const primaryMenuLogout = [
   {
     id: 2,
     label: 'Missões',
-    path: '/missoes',
+    path: '/MinisterioDeMissoes/missoes',
     icon: IconMissoes,
   },
   {
@@ -86,7 +86,7 @@ const primaryMenuLogin = [
   {
     id: 2,
     label: 'Missões',
-    path: '/missoes',
+    path: '/MinisterioDeMissoes/missoes',
     icon: IconMissoes,
   },
   {
@@ -96,7 +96,12 @@ const primaryMenuLogin = [
     icon: SchoolIcon,
   },
 
-  { id: 4, label: 'Perfil', path: '/selectPerfil', icon: iconesPerfil },
+  {
+    id: 4,
+    label: 'Escolher Perfil',
+    path: '/selectPerfil',
+    icon: iconesPerfil,
+  },
 ];
 
 const secondaryManu = [

@@ -16,14 +16,14 @@ const contato = () => {
     <div>
       <Hidden smDown>
         <img
-          src="images/home/contato.png"
+          src="/images/home/contato.png"
           alt="img01"
           className={classes.img}
         />
       </Hidden>
       <Hidden smUp>
         <img
-          src="images/home/contatoMobile.png"
+          src="/images/home/contatoMobile.png"
           alt="img01"
           className={classes.img}
         />

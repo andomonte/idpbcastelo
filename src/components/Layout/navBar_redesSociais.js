@@ -67,7 +67,7 @@ const primaryMenu = [
   {
     id: 2,
     label: 'Missões',
-    path: '/missoes',
+    path: '/MinisterioDeMissoes/missoes',
     icon: IconMissoes,
   },
   {

@@ -24,6 +24,7 @@ import { useSession } from 'next-auth/client';
 import Enviar from './enviar';
 import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
 import NavbarSuper from '../navBar/ministerioMissoes/supervisor';
+import NavbarCoordenador from '../navBar/ministerioMissoes/coordenador';
 
 import Chat from './chat';
 import Assistir from './assistir';
@@ -188,8 +189,6 @@ function MidiaPlay({ perfilUser, item }) {
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
       <div className={classes.root}>
@@ -259,6 +258,9 @@ function MidiaPlay({ perfilUser, item }) {
             <NavbarMinistro perfilUser={perfilUser} />
           )}
           {perfilUser === 'sup-MM' && <NavbarSuper perfilUser={perfilUser} />}
+          {(perfilUser === 'coord-MM' || perfilUser === 'dir-MM') && (
+            <NavbarCoordenador perfilUser={perfilUser} />
+          )}
         </Drawer>
 
         <main

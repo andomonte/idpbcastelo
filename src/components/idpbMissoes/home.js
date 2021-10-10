@@ -21,11 +21,11 @@ const home = () => {
   return (
     <div>
       <Hidden smDown>
-        <img src="images/mm/home/MM_21.png" alt="img01" className={classes.img} />
+        <img src="/images/mm/home/MM_21.png" alt="img01" className={classes.img} />
       </Hidden>
       <Hidden mdUp>
         <img
-          src="images/mm/home/MM_21.png"
+          src="/images/mm/home/MM_21.png"
           alt="img01"
           className={classes.imgMobile}
         />

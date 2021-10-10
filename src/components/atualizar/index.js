@@ -6,11 +6,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-
+import axios from 'axios';
+import useSWR, { mutate } from 'swr';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
+import Loading from 'src/utils/loading';
+import MesageErro from 'src/utils/mesageErro';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -25,9 +27,8 @@ import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
 import NavbarSupMM from '../navBar/ministerioMissoes/supervisor';
 import NavbarCoordMM from '../navBar/ministerioMissoes/coordenador';
 import Igreja from './igreja';
-import MeuPerfil from './meuPerfil';
+import MudarDados from './userTelas/dadosPessoais';
 import Padrao from './userTelas/telaPadrao';
-import CadastroUser from './userTelas/cadastroUser';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -144,7 +145,7 @@ function TabPanel(props) {
   );
 }
 
-function PageAtualizar({ item, ministros, igrejas, perfilUser }) {
+function PageAtualizar({ item, igrejas, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
@@ -155,13 +156,30 @@ function PageAtualizar({ item, ministros, igrejas, perfilUser }) {
   let LabelIgreja = 'Igreja';
   let LabelHome = 'Usuário';
   let LabelEquipe = 'Equipe';
+  const dadosUser = item.filter((val) => val.email === session.user.email);
 
   if (desktop) {
     LabelIgreja = 'Igreja';
     LabelHome = 'Usuário';
     LabelEquipe = 'Equipe';
   }
+  const fetcher = (url) => axios.get(url).then((res) => res.data);
+  const url = `${window.location.origin}/api/consultaMinistros/${dadosUser[0].email}/${dadosUser[0].nome}`;
+  const { data, error } = useSWR(url, fetcher);
 
+  if (error)
+    return (
+      <div>
+        <MesageErro statusDrawer={false} />
+      </div>
+    );
+  if (!data)
+    return (
+      <div>
+        <Loading statusDrawer={false} />
+      </div>
+    );
+  mutate(url);
   const handleDrawerOpen = () => {
     if (!open) {
       setOpen(true);
@@ -265,12 +283,13 @@ function PageAtualizar({ item, ministros, igrejas, perfilUser }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0}>
-            {session && (
-              <MeuPerfil
+            {session && data && (
+              <MudarDados
+                ministros={data}
                 item={item}
                 secao={session}
-                ministros={ministros}
                 perfilUser={perfilUser}
+                statusDrawer={open}
               />
             )}
           </TabPanel>
@@ -284,7 +303,7 @@ function PageAtualizar({ item, ministros, igrejas, perfilUser }) {
             {perfilUser === 'sup-MM' ? <Padrao /> : null}
             {perfilUser === 'coord-MM' ? <Padrao /> : null}
             {perfilUser === 'dir-MM' ? <Padrao /> : null}
-            {perfilUser === 'adm_MM' ? <CadastroUser /> : null}
+            {perfilUser === 'adm_MM' ? <Padrao /> : null}
           </TabPanel>
         </main>
       </div>

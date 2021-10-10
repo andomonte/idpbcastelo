@@ -24,7 +24,7 @@ function videoCard() {
   const classes = useStyles();
   return (
     <div>
-      <img src="images/home/img01.png" alt="img01" className={classes.img} />
+      <img src="/images/home/img01.png" alt="img01" className={classes.img} />
     </div>
   );
 }

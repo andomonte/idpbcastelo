@@ -114,7 +114,7 @@ export default function App() {
         <Box>
           <img
             className={classes.imgSearch}
-            src="images/IDPBNAC.png"
+            src="/images/IDPBNAC.png"
             alt="IDPB"
           />
 

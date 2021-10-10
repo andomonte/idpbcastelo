@@ -26,7 +26,7 @@ import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
 import NavbarSuper from '../navBar/ministerioMissoes/supervisor';
 
 import Culto from './culto';
-import CelulasMM from './celulasMM';
+import AnalizarRel from './analisar';
 
 // import Analisar from './analisar';
 // import Carrossel from '../carrossel';
@@ -176,8 +176,6 @@ function PageRelatorios({ item, title, perfilUser }) {
   };
 
   const handleDrawerClose = () => {
-    // console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
@@ -191,8 +189,6 @@ function PageRelatorios({ item, title, perfilUser }) {
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        {/* <link rel="shortcut icon" href="images/idpb.ico" type="image/x-icon" /> */}
       </Head>
 
       <div className={classes.root}>
@@ -273,18 +269,33 @@ function PageRelatorios({ item, title, perfilUser }) {
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
             {session && (
-              <Culto item={item} secao={session} perfilUser={perfilUser} />
+              <Culto
+                statusDrawer={open}
+                item={item}
+                secao={session}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
             {session && (
-              <Evento item={item} secao={session} perfilUser={perfilUser} />
+              <Evento
+                statusDrawer={open}
+                item={item}
+                secao={session}
+                perfilUser={perfilUser}
+              />
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
             {session && (
-              <CelulasMM item={item} secao={session} perfilUser={perfilUser} />
+              <AnalizarRel
+                statusDrawer={open}
+                item={item}
+                secao={session}
+                perfilUser={perfilUser}
+              />
             )}
 
             {/* <Analisar item={item} secao={session} /> */}

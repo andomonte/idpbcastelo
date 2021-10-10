@@ -72,11 +72,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const primaryMenu = [
-  { id: 1, label: 'IDPB-Nacional', path: '/nacionalLogado', icon: IconBrasil },
+  { id: 1, label: 'IDPB-Nacional', path: '/idpbNacional/nacionalLogado', icon: IconBrasil },
   {
     id: 2,
     label: 'Missões',
-    path: '/missoesLogado',
+    path: '/MinisterioDeMissoes/missoesLogado',
     icon: IconMissoes,
   },
   {
@@ -92,15 +92,15 @@ const primaryMenu = [
 const secondaryManu = [
   {
     id: 1,
-    label: 'Perfil',
+    label: 'Meu Perfil',
     path: '/userPerfil',
     icon: iconesPerfil,
   },
-  { id: 2, label: 'Relatórios', path: '/relatorios', icon: iconeRelatorio },
+  { id: 2, label: 'Relatórios', path: '/MinisterioDeMissoes/relatorios', icon: iconeRelatorio },
   {
     id: 3,
     label: 'Atualizar / Inserir',
-    path: '/atualizar',
+    path: '/MinisterioDeMissoes/atualizar',
     icon: iconeAtualizarDados,
   },
   {
@@ -119,7 +119,7 @@ const secondaryManu = [
   {
     id: 6,
     label: 'Midia IDPB',
-    path: '/midia',
+    path: '/MinisterioDeMissoes/midia',
     icon: midiaPlay,
   },
   {
