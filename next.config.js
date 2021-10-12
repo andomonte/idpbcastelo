@@ -11,14 +11,23 @@
 // next.config.js
 
 const withPlugins = require('next-compose-plugins');
-
+const withImages = require('next-images');
 const withPWA = require('next-pwa');
 
+const nextConfig = {
+  images: {
+    domains: [
+      'localhost',
+      'sistemaidpb.s3.amazonaws.com',
+      'idpb-app.vercel.app',
+      'sistemaidpb.com.br',
+    ],
+  },
+};
 module.exports = withPlugins([
+  withImages,
+  nextConfig,
   {
-    images: {
-      domains: ['sistemaidpb.s3.amazonaws.com'],
-    },
     webpack: (config, { isServer }) => {
       if (!isServer) {
         // set 'fs' to an empty module on the client to prevent this error on build --> Error: Can't resolve 'fs'

@@ -72,7 +72,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const primaryMenu = [
-  { id: 1, label: 'IDPB-Nacional', path: '/idpbNacional/nacionalLogado', icon: IconBrasil },
+  {
+    id: 1,
+    label: 'IDPB-Nacional',
+    path: '/idpbNacional/nacionalLogado',
+    icon: IconBrasil,
+  },
   {
     id: 2,
     label: 'Missões',
@@ -106,13 +111,13 @@ const secondaryManu = [
   {
     id: 4,
     label: 'Relatório Financeiro',
-    path: '/financeiro',
+    path: '/MinisterioDeMissoes/financeiro',
     icon: iconesFinanças,
   },
   {
     id: 5,
     label: 'Aniversariantes',
-    path: '/aniversariantes',
+    path: '/MinisterioDeMissoes/aniversariantes',
     icon: iconesBirthdayCake,
   },
   {

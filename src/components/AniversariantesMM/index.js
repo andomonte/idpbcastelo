@@ -7,20 +7,29 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-import HomeIcon from '@material-ui/icons/Home';
+import MensagemCental from 'src/utils/mensagemCentro';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CallIcon from '@material-ui/icons/Call';
+
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Login from 'src/components/botaoLogin';
-import Navbar from './navBar_redesSociais';
-import PesquisaIgreja from './pesquisa/igreja';
-import Contato from './contato';
-import Home from './home';
+// import PerfilIcon from 'src/components/icones/perfil';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import { useSession } from 'next-auth/client';
+// import PeopleIcon from '@material-ui/icons/People';
+// import Evento from './eventos';
+import GroupsIcon from '@mui/icons-material/Groups';
+import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
+import NavbarSuper from '../navBar/ministerioMissoes/supervisor';
+import NavbarCoord from '../navBar/ministerioMissoes/coordenador';
+import AniverMM from './aniversariantesMM';
+// import AnalizarRel from './analisar';
+
+// import Analisar from './analisar';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -139,21 +148,22 @@ function TabPanel(props) {
   );
 }
 
-function IdpbMissoes({ item, title }) {
+function Aniversariantes({ item, title, perfilUser, ministros }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelIgreja = '';
-  let LabelHome = '';
-  let LabelContatos = '';
+  let LabelMinistros = 'Ministros';
+  let LabelMembros = 'Membros';
+  let LabelMM = 'MM';
 
   if (desktop) {
-    LabelIgreja = 'Igreja';
-    LabelHome = 'Home';
-    LabelContatos = 'Contatos';
+    LabelMinistros = 'Ministros';
+    LabelMM = 'MM';
+    LabelMembros = 'Membros';
   }
 
   const handleDrawerOpen = () => {
@@ -167,12 +177,11 @@ function IdpbMissoes({ item, title }) {
   };
 
   const handleDrawerClose = () => {
-    // console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
   };
+
   return (
     <div onLoad={handleDrawerClose}>
       <Head>
@@ -220,16 +229,16 @@ function IdpbMissoes({ item, title }) {
                   className={classes.rootTopbarIcon}
                 >
                   <BottomNavigationAction
-                    label={LabelHome}
-                    icon={<HomeIcon />}
+                    label={LabelMembros}
+                    icon={<PersonSearchIcon />}
                   />
                   <BottomNavigationAction
-                    label={LabelContatos}
-                    icon={<CallIcon />}
+                    label={LabelMM}
+                    icon={<PeopleAltIcon />}
                   />
                   <BottomNavigationAction
-                    label={LabelIgreja}
-                    icon={<LocationOnIcon />}
+                    label={LabelMinistros}
+                    icon={<GroupsIcon />}
                   />
                 </BottomNavigation>
               </Box>
@@ -245,7 +254,12 @@ function IdpbMissoes({ item, title }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar />
+          {perfilUser === 'ministro' && (
+            <NavbarMinistro perfilUser={perfilUser} />
+          )}
+          {perfilUser === 'sup-MM' && <NavbarSuper perfilUser={perfilUser} />}
+          {perfilUser === 'coord-MM' && <NavbarCoord perfilUser={perfilUser} />}
+          {perfilUser === 'dir-MM' && <NavbarCoord perfilUser={perfilUser} />}
         </Drawer>
 
         <main
@@ -256,14 +270,25 @@ function IdpbMissoes({ item, title }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home />
+          <TabPanel value={value} index={0}>
+            {session && <MensagemCental mensagem="Etapa em Desenvolvimento" />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Contato />
+            {session && (
+              <AniverMM
+                item={item}
+                ministros={ministros}
+                secao={session}
+                statusDrawer={open}
+                perfilUser={perfilUser}
+              />
+            )}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <PesquisaIgreja item={item} />
+            {/*  <Eventos item={item} /> */}
+            {session && <MensagemCental mensagem="Etapa em Desenvolvimento" />}
+
+            {/* <Analisar item={item} secao={session} /> */}
           </TabPanel>
         </main>
       </div>
@@ -271,4 +296,4 @@ function IdpbMissoes({ item, title }) {
   );
 }
 
-export { IdpbMissoes, TabPanel };
+export { Aniversariantes, TabPanel };

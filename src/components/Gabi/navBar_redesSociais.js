@@ -96,7 +96,12 @@ const secondaryManu = [
     path: '/selectPerfil',
     icon: iconesPerfil,
   },
-  { id: 2, label: 'Relatórios', path: '/MinisterioDeMissoes/relatorios', icon: iconeRelatorio },
+  {
+    id: 2,
+    label: 'Relatórios',
+    path: '/MinisterioDeMissoes/relatorios',
+    icon: iconeRelatorio,
+  },
   {
     id: 3,
     label: 'Atualizar / Inserir',
@@ -107,13 +112,13 @@ const secondaryManu = [
   {
     id: 5,
     label: 'Relatório Financeiro',
-    path: '/financeiro',
+    path: '/MinisterioDeMissoes/financeiro',
     icon: iconesFinanças,
   },
   {
     id: 6,
     label: 'Aniversariantes',
-    path: '/aniversariantes',
+    path: '/MinisterioDeMissoes/aniversariantes',
     icon: iconesBirthdayCake,
   },
 ];

@@ -144,10 +144,25 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
     'Novembro',
     'Dezembro',
   ];
+  const mesMobile = [
+    'Jan',
+    'Fev',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Out',
+    'Nov',
+    'Dez',
+  ];
 
   const classes = useStyles();
   const [contRegiao, setContRegiao] = React.useState(0);
   const [showMes, setShowMes] = React.useState(mes[mesAtual]);
+  const [showMesMob, setShowMesMob] = React.useState(mesMobile[mesAtual]);
   const [contMes, setContMes] = React.useState(mesAtual);
   const [showAno, setShowAno] = React.useState(anoAtual);
 
@@ -166,11 +181,13 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
     setContMes(temCont);
 
     setShowMes(mes[temCont]);
+    setShowMesMob(mesMobile[temCont]);
   };
   const handleAddMes = () => {
     let temCont = contMes + 1;
     if (temCont > 11) temCont = 0;
     setContMes(temCont);
+    setShowMesMob(mesMobile[temCont]);
 
     setShowMes(mes[temCont]);
   };
@@ -433,7 +450,7 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
               mt={1}
               bgcolor="background.paper"
             >
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Box
                   alignItems="center"
                   display="flex"
@@ -443,7 +460,6 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
                 >
                   <Grid item xs={12}>
                     <Box className={classes.novoBox} style={{ color: '#000' }}>
-                      Coord.:{' '}
                       <strong style={{ color: '#000' }}>
                         {dadosUser[0].RegiaoIDPB}{' '}
                       </strong>
@@ -451,34 +467,41 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
                   </Grid>
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Box
                   mt={1}
+                  mr={2}
                   display="flex"
                   flexDirection="row"
                   alignItems="center"
-                  style={{ height: 30 }}
+                  height={30}
+                  width={200}
                 >
                   <Grid item xs={2}>
-                    <Box mt={0.5} justifyContent="flex-start">
+                    <Button>
                       <ArrowLeftIcon
                         style={{ fontSize: 40 }}
                         onClick={handleSubRegiao}
                       />
-                    </Box>
+                    </Button>
                   </Grid>
                   <Grid item xs={8}>
-                    <Box align="center">
+                    <Box
+                      ml={2.8}
+                      display="flex"
+                      justifyContent="center"
+                      textAlign="center"
+                    >
                       <strong>{regiao[contRegiao]}</strong>
                     </Box>
                   </Grid>
                   <Grid item xs={2}>
-                    <Box display="flex" flexGrow={1} justifyContent="flex-end">
+                    <Button>
                       <ArrowRightIcon
                         style={{ fontSize: 40 }}
                         onClick={handleAddRegiao}
                       />
-                    </Box>
+                    </Button>
                   </Grid>
                 </Box>
               </Grid>
@@ -491,7 +514,7 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
               m={0}
               bgcolor="background.paper"
             >
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Box
                   alignItems="center"
                   display="flex"
@@ -500,32 +523,31 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
                   {...defaultProps}
                   style={{ backgroundColor: '#81d4fa', height: 30 }}
                 >
-                  <Grid item xs={2}>
-                    <Box mt={0.5} justifyContent="flex-start">
+                  <Box alignItems="center" display="flex">
+                    <Button mt={0}>
                       <ArrowLeftIcon
-                        style={{ fontSize: 40, color: '#ef6c00' }}
+                        style={{
+                          fontSize: 40,
+                          color: '#ef6c00',
+                        }}
                         color="primary"
                         onClick={handleSubMes}
                       />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={8}>
+                    </Button>
                     <Box align="center">
-                      <strong>{showMes}</strong>
+                      <strong>{showMesMob}</strong>
                     </Box>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Box display="flex" flexGrow={1} justifyContent="flex-end">
+                    <Button>
                       <ArrowRightIcon
                         style={{ fontSize: 40, color: '#ef6c00' }}
                         color="primary"
                         onClick={handleAddMes}
                       />
-                    </Box>
-                  </Grid>
+                    </Button>
+                  </Box>
                 </Box>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={12}>
                 <Box
                   display="flex"
                   flexDirection="row"
@@ -535,28 +557,22 @@ function TelaSupervisor({ item, secao, statusDrawer, perfilUser }) {
                   mt={1}
                   style={{ backgroundColor: '#81d4fa', height: 30 }}
                 >
-                  <Grid item xs={2}>
-                    <Box mt={0.5} justifyContent="flex-start">
-                      <ArrowLeftIcon
-                        style={{ fontSize: 40, color: '#ef6c00' }}
-                        onClick={handleSubAno}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Box align="center">
-                      <strong>{showAno}</strong>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Box display="flex" flexGrow={1} justifyContent="flex-end">
-                      <ArrowRightIcon
-                        style={{ fontSize: 40, color: '#ef6c00' }}
-                        color="primary"
-                        onClick={handleAddAno}
-                      />
-                    </Box>
-                  </Grid>
+                  <Button>
+                    <ArrowLeftIcon
+                      style={{ fontSize: 40, color: '#ef6c00' }}
+                      onClick={handleSubAno}
+                    />
+                  </Button>
+                  <Box align="center">
+                    <strong>{showAno}</strong>
+                  </Box>
+                  <Button>
+                    <ArrowRightIcon
+                      style={{ fontSize: 40, color: '#ef6c00' }}
+                      color="primary"
+                      onClick={handleAddAno}
+                    />
+                  </Button>
                 </Box>
               </Grid>
             </Box>

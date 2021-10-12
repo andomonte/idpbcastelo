@@ -10,7 +10,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
 // import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import MostrarBuscarEventos from './mostrarBuscaEventos';
+import MostrarBusca from './buscarNoBD';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -126,9 +126,10 @@ const defaultProps = {
   border: 1,
 };
 
-function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
+function TelaSupervisor({ item, secao, statusDrawer, perfilUser, ministros }) {
   const mesAtual = new Date().getMonth();
   const anoAtual = new Date().getFullYear();
+
   const mes = [
     'Janeiro',
     'Fevereiro',
@@ -144,26 +145,11 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
     'Dezembro',
   ];
 
-  const mesMobile = [
-    'Jan',
-    'Fev',
-    'Mar',
-    'Abr',
-    'Mai',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Set',
-    'Out',
-    'Nov',
-    'Dez',
-  ];
   const classes = useStyles();
 
   const [showMes, setShowMes] = React.useState(mes[mesAtual]);
-  const [showMesMob, setShowMesMob] = React.useState(mesMobile[mesAtual]);
   const [contMes, setContMes] = React.useState(mesAtual);
-  const [showAno, setShowAno] = React.useState(anoAtual);
+  const [showAno] = React.useState(anoAtual);
 
   //= ================================================================
   let newDate;
@@ -178,27 +164,17 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
     let temCont = contMes - 1;
     if (temCont < 0) temCont = 11;
     setContMes(temCont);
-    setShowMesMob(mesMobile[temCont]);
+
     setShowMes(mes[temCont]);
   };
   const handleAddMes = () => {
     let temCont = contMes + 1;
     if (temCont > 11) temCont = 0;
     setContMes(temCont);
-    setShowMesMob(mesMobile[temCont]);
+
     setShowMes(mes[temCont]);
   };
   //= ============================================================
-  const handleSubAno = () => {
-    let temCont = showAno - 1;
-    if (temCont < 2000) temCont = anoAtual;
-    setShowAno(temCont);
-  };
-  const handleAddAno = () => {
-    let temCont = showAno + 1;
-    if (temCont > anoAtual) temCont = anoAtual;
-    setShowAno(temCont);
-  };
 
   const dadosUser = item.filter(
     (val) => val.email === secao.user.email && val.NivelUser === perfilUser,
@@ -227,19 +203,13 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                     </Box>
                   </Grid>
                 </Grid>
-                <Grid item xs={3}>
-                  <Grid container justifyContent="flex-start">
-                    <Box style={{ fontSize: '20px' }} mt={6}>
-                      Supervisão:<strong> {dadosUser[0].RegiaoIDPB}</strong>
-                    </Box>
-                  </Grid>
-                </Grid>
+
                 <Grid item xs={7}>
                   <Grid container justifyContent="center">
                     <Box mr={5} mt={0} display="flex" justifyContent="flex-end">
                       <Box>
                         <Box mt={2} textAlign="center">
-                          <h3> Data do Relatório </h3>
+                          <h3> Aniversariantes do Mês de: </h3>
                         </Box>
 
                         <Box
@@ -293,50 +263,6 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                               </Button>
                             </ButtonGroup>
                           </Box>
-                          <Box mt={-1}>
-                            <ButtonGroup
-                              size="small"
-                              color="secondary"
-                              aria-label="large outlined primary button group"
-                              variant="contained"
-                            >
-                              <Button
-                                style={{
-                                  backgroundColor: '#afb42b',
-                                  height: 30,
-                                }}
-                              >
-                                <ArrowLeftIcon
-                                  style={{ fontSize: 35, color: '#000' }}
-                                  onClick={handleSubAno}
-                                  type="button"
-                                />
-                              </Button>
-                              <Button
-                                style={{
-                                  width: 120,
-                                  height: 30,
-                                  backgroundColor: '#afb42b',
-                                  fontSize: '16px',
-                                }}
-                              >
-                                <Box align="center" position="fixed">
-                                  <strong>{showAno}</strong>
-                                </Box>
-                              </Button>
-                              <Button
-                                style={{
-                                  backgroundColor: '#afb42b',
-                                  height: 30,
-                                }}
-                              >
-                                <ArrowRightIcon
-                                  style={{ fontSize: 35, color: '#000' }}
-                                  onClick={handleAddAno}
-                                />
-                              </Button>
-                            </ButtonGroup>
-                          </Box>
                         </Box>
                       </Box>
                     </Box>
@@ -355,8 +281,9 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
             //          maxWidth={1200}
             height="auto"
           >
-            <MostrarBuscarEventos
+            <MostrarBusca
               item={dadosUser}
+              ministros={ministros}
               Data={dates}
               statusDrawer={statusDrawer}
             />
@@ -365,26 +292,11 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
       </Hidden>
       <Hidden mdUp>
         <Box alignItems="center">
-          <Box borderRadius={16} {...defaultProps} alignItems="center">
-            <Box mt={2} textAlign="center">
-              <Box
-                className={classes.novoBox}
-                mt={-2}
-                mb={-1}
-                style={{ color: '#000' }}
-              >
-                Supervisão:{' '}
-                <strong style={{ color: '#000' }}>
-                  {dadosUser[0].RegiaoIDPB}{' '}
-                </strong>
-              </Box>
-            </Box>
-
+          <Box alignItems="center">
             <Box
               display="flex"
               justifyContent="center"
               align="center"
-              m={0}
               bgcolor="background.paper"
             >
               <Grid item xs={12}>
@@ -394,22 +306,23 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                   flexDirection="row"
                   borderRadius={16}
                   {...defaultProps}
-                  style={{ backgroundColor: '#81d4fa', height: 30 }}
+                  style={{ backgroundColor: '#81d4fa', height: 40 }}
                 >
-                  <Box alignItems="center" display="flex">
-                    <Button mt={0}>
+                  <Grid item xs={2}>
+                    <Button>
                       <ArrowLeftIcon
-                        style={{
-                          fontSize: 40,
-                          color: '#ef6c00',
-                        }}
+                        style={{ fontSize: 40, color: '#ef6c00' }}
                         color="primary"
                         onClick={handleSubMes}
                       />
                     </Button>
+                  </Grid>
+                  <Grid item xs={8}>
                     <Box align="center">
-                      <strong>{showMesMob}</strong>
+                      <strong>{showMes}</strong>
                     </Box>
+                  </Grid>
+                  <Grid item xs={2}>
                     <Button>
                       <ArrowRightIcon
                         style={{ fontSize: 40, color: '#ef6c00' }}
@@ -417,39 +330,10 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
                         onClick={handleAddMes}
                       />
                     </Button>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  borderRadius={16}
-                  {...defaultProps}
-                  mt={1}
-                  style={{ backgroundColor: '#81d4fa', height: 30 }}
-                >
-                  <Button>
-                    <ArrowLeftIcon
-                      style={{ fontSize: 40, color: '#ef6c00' }}
-                      onClick={handleSubAno}
-                    />
-                  </Button>
-                  <Box align="center">
-                    <strong>{showAno}</strong>
-                  </Box>
-                  <Button>
-                    <ArrowRightIcon
-                      style={{ fontSize: 40, color: '#ef6c00' }}
-                      color="primary"
-                      onClick={handleAddAno}
-                    />
-                  </Button>
+                  </Grid>
                 </Box>
               </Grid>
             </Box>
-            <Grid item xs={12} style={{ marginBottom: 10 }} />
           </Box>
           <Box
             className={classes.box}
@@ -460,10 +344,11 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
             //          maxWidth={1200}
             height="auto"
           >
-            <MostrarBuscarEventos
+            <MostrarBusca
               item={dadosUser}
               Data={dates}
               statusDrawer={statusDrawer}
+              ministros={ministros}
             />
           </Box>
         </Box>
@@ -472,4 +357,4 @@ function BuscarEventos({ item, secao, statusDrawer, perfilUser }) {
   );
 }
 
-export default BuscarEventos;
+export default TelaSupervisor;

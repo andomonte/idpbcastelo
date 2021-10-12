@@ -101,8 +101,12 @@ function userPerfil({ user, ministros, igrejas }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const usuario = await prisma.user.findMany();
-  const ministros = await prisma.ministrosIDPBs.findMany();
+  const usuario = await prisma.user.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+  const ministros = await prisma.ministrosIDPBs.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   const igrejas = await prisma.igrejas.findMany().finally(async () => {
     await prisma.$disconnect();
   });

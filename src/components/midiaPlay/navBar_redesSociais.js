@@ -107,13 +107,13 @@ const secondaryManu = [
   {
     id: 5,
     label: 'Relatório Financeiro',
-    path: '/financeiro',
+    path: '/MinisterioDeMissoes/financeiro',
     icon: iconesFinanças,
   },
   {
     id: 6,
     label: 'Aniversariantes',
-    path: '/aniversariantes',
+    path: '/MinisterioDeMissoes/aniversariantes',
     icon: iconesBirthdayCake,
   },
 ];

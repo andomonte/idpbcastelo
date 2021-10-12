@@ -337,7 +337,9 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
       callbackUrl: `${window.location.origin}`,
     });
   const [selectedFile, setSelectedFile] = React.useState(
-    dadosMinistro[0].fotoPerfil ? dadosMinistro[0].fotoPerfil : '',
+    dadosMinistro[0].fotoPerfil
+      ? `https://sistemaidpb.s3.amazonaws.com/${dadosMinistro[0].fotoPerfil}`
+      : '',
   );
 
   const processUpload = (uploadedFile) => {
@@ -367,8 +369,8 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
       const nomeFoto = `${dadosMinistro[0].CPF}${nomeF.name.substring(
         nomeF.name.lastIndexOf('.'),
       )}`;
-      const newFotoPerfil = `https://sistemaidpb.s3.amazonaws.com/${nomeFoto}`;
-      setFotoPerfil(newFotoPerfil);
+      //      const newFotoPerfil = `https://sistemaidpb.s3.amazonaws.com/${nomeFoto}`;
+      setFotoPerfil(nomeFoto);
     }
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
@@ -376,6 +378,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
     }
     setSelectedFile(URL.createObjectURL(e.target.files[0]));
   };
+  console.log(selectedFile);
   const addTela = () => {
     const contPage = value + 1;
 

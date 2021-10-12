@@ -81,7 +81,12 @@ const primaryMenuLogout = [
   { id: 4, label: 'Quem Somos', path: '/trendding', icon: IconIdpb },
 ];
 const primaryMenuLogin = [
-  { id: 1, label: 'IDPB-Nacional', path: '/idpbNacional/nacionalLogado', icon: IconBrasil },
+  {
+    id: 1,
+    label: 'IDPB-Nacional',
+    path: '/idpbNacional/nacionalLogado',
+    icon: IconBrasil,
+  },
   {
     id: 2,
     label: 'Missões',
