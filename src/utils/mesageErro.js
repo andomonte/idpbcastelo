@@ -8,9 +8,11 @@ const defaultProps = {
   border: 1,
 };
 
-export default function Loading(statusDrawer) {
+export default function MensagemErro({ statusDrawer }) {
   let largura = window.innerWidth;
+
   if (statusDrawer) largura -= 240;
+
   return (
     <Box display="flex" alignItems="center" mt={8}>
       <Box
@@ -28,7 +30,8 @@ export default function Loading(statusDrawer) {
               style={{ fontSize: 60, color: 'red' }}
             />
           </Box>
-          <h1>Ocorreu um Erro</h1>
+          <h1>OCORREU UM ERRO</h1>
+          <h1>TENTE MAIS TARDE</h1>
         </Box>
       </Box>
     </Box>

@@ -115,7 +115,7 @@ function selectPerfil({ user }) {
     );
   }
   return (
-    <Box align="center" justifyContent="center">
+    <Box display="flex" align="center" justifyContent="center">
       <Box height="100vh" alignItems="center" justifyContent="center">
         <img src="/images/idpb.ico" alt="" width="125" />
       </Box>

@@ -22,6 +22,10 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Modal from '@mui/material/Modal';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
+import ImageResize from 'src/utils/compressImg';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -197,7 +201,14 @@ const useStyles = makeStyles((theme) => ({
     // marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(1, 1, 1),
+  },
 }));
+
 const currencies = [
   {
     value: 'SOLTEIRO (A)',
@@ -306,6 +317,12 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
 
   const [nacionalidade, setNacionalidade] = React.useState('');
   const [validarNacionalidade, setValidarNacionalidade] = React.useState('sim');
+  const [igreja, setIgreja] = React.useState('');
+  const [validarIgreja, setValidarIgreja] = React.useState('sim');
+  const [funcaoNaIgreja, setFuncaoNaIgreja] = React.useState('');
+  const [validarFuncaoNaIgreja, setValidarFuncaoNaIgreja] = React.useState(
+    'sim',
+  );
   const [informacoes, setInformacoes] = React.useState({
     cep: '',
     logradouro: '',
@@ -317,12 +334,37 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
     gia: '',
   });
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   //  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [value, setValue] = React.useState(0);
   const [previews, setPreview] = React.useState([]);
+  //  -------------------------------------------------------------------
+  // usado para recortar a imagem
+  //  -------------------------------------------------------------------
+  const [upImg, setUpImg] = React.useState();
+  const imgRef = React.useRef(null);
+  const [completedCrop, setCompletedCrop] = React.useState(null);
+  const previewCanvasRef = React.useRef(null);
+  const [crop, setCrop] = React.useState({
+    unit: '%',
+    width: 100,
+    aspect: 3.5 / 3.2,
+  });
+  //  -------------------------------------------------------------------
+  //  -------------------------------------------------------------------
+  // usado para comprimir a imagem
+  //  -------------------------------------------------------------------
 
-  //  const fetcher = (url) => axios.get(url).then((res) => res.data);
+  const [imageToResize, setImageToResize] = React.useState(undefined);
+  const [resizedImage, setResizedImage] = React.useState(undefined);
+
+  const onUploadFile = (imgCortada) => {
+    if (imgCortada) {
+      setImageToResize(imgCortada);
+    }
+  };
+  //  -------------------------------------------------------------------
 
   if (dadosUser.length === 0)
     signOut({
@@ -364,21 +406,106 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
 
   const onSelectFile = (e) => {
     setPreview(e.target.files[0]);
+
     const nomeF = e.target.files[0];
-    if (nomeF.name) {
+    if (nomeF && nomeF.name) {
       const nomeFoto = `${dadosMinistro[0].CPF}${nomeF.name.substring(
         nomeF.name.lastIndexOf('.'),
       )}`;
       //      const newFotoPerfil = `https://sistemaidpb.s3.amazonaws.com/${nomeFoto}`;
       setFotoPerfil(nomeFoto);
-    }
-    if (!e.target.files || e.target.files.length === 0) {
-      setSelectedFile(undefined);
+    } else {
+      // setSelectedFile(undefined);
       return;
     }
     setSelectedFile(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0]);
+    //-----------------------------------------------------------------
+    // para recorte da imagem
+    //-----------------------------------------------------------------
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => setUpImg(reader.result));
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    setOpen2(true); // abre o modal para recorte
+
+    //-----------------------------------------------------------------
   };
-  console.log(selectedFile);
+
+  //-----------------------------------------------------------------
+  // para recorte da imagem
+  //-----------------------------------------------------------------
+  const onLoad = React.useCallback((img) => {
+    imgRef.current = img;
+  }, []);
+  React.useEffect(() => {
+    if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
+      return;
+    }
+
+    const image = imgRef.current;
+    const canvas = previewCanvasRef.current;
+    const crop2 = completedCrop;
+
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    const ctx = canvas.getContext('2d');
+    const pixelRatio = window.devicePixelRatio;
+
+    canvas.width = crop2.width * pixelRatio * scaleX;
+    canvas.height = crop2.height * pixelRatio * scaleY;
+
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(
+      image,
+      crop2.x * scaleX,
+      crop2.y * scaleY,
+      crop2.width * scaleX,
+      crop2.height * scaleY,
+      0,
+      0,
+      crop2.width * scaleX,
+      crop2.height * scaleY,
+    );
+  }, [completedCrop]);
+
+  const getImageFromUrl = (url) => {
+    console.log(url);
+    const valImg = new Promise((resolve, reject) => {
+      const image = new Image();
+      image.addEventListener('load', () => resolve(image));
+      image.addEventListener('error', reject);
+      image.src = url;
+    });
+    return valImg;
+  };
+
+  async function generateDownload(canvas, crops) {
+    if (!crops || !canvas) {
+      return;
+    }
+    let urlCanvas;
+    //    setImageToResize(reader.result)); //
+    await canvas.toBlob(
+      (blob) => {
+        const previewUrl = window.URL.createObjectURL(blob);
+        setSelectedFile(previewUrl);
+        console.log('canvas', previewUrl);
+        urlCanvas = previewUrl;
+      },
+      'image/png',
+      1,
+    );
+    if (urlCanvas) {
+      const newImg = await getImageFromUrl(urlCanvas);
+      console.log(newImg);
+    } else console.log('erro no canvas');
+  }
+  //-----------------------------------------------------------------
+
   const addTela = () => {
     const contPage = value + 1;
 
@@ -392,6 +519,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
     if (contPage < 0) setValue(5);
     else setValue(contPage);
   };
+  // const customImgLoader = ({ src }) => `${src}`;
 
   const enviarFoto = () => processUpload(previews);
   // const url = `${window.location.origin}/api/consultaEventos/${item[0].codigoIgreja}`;
@@ -424,6 +552,8 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
   let CEP = '';
   let UF = '';
   let FotoPerfil = '';
+  let Igreja = '';
+  let FuncaoNaIgreja = '';
 
   const EstadoCivil = {
     value: 'SOLTEIRO (A)',
@@ -473,6 +603,8 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
     Nacionalidade = dadosMinistro[0].Nacionalidade;
     Ids = dadosMinistro[0].id;
     FotoPerfil = dadosMinistro[0].fotoPerfil;
+    Igreja = dadosMinistro[0].Igreja;
+    FuncaoNaIgreja = dadosMinistro[0].FuncaoNaIgreja;
   }
   // const [values, setValues] = React.useState(dadosMinistro[0].EstadoCivil);
   const [values, setValues] = React.useState({
@@ -513,6 +645,8 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
       setEstadoNascimento(EstadoNascimento);
       setNacionalidade(Nacionalidade);
       setFotoPerfil(FotoPerfil);
+      setIgreja(Igreja);
+      setFuncaoNaIgreja(FuncaoNaIgreja);
     }
   }, []);
   //--------------------------------------------------------------------------
@@ -615,9 +749,9 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
   };
   const defaultProps = {
     bgcolor: 'background.paper',
-    m: 1,
+    ml: 0.9,
     border: 1,
-    width: '95%',
+    width: '96%',
   };
   const getInformacoes = () => {
     axios.get(`http://viacep.com.br/ws/${cep}/json/`).then((response) => {
@@ -637,7 +771,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
   //--------------------------------------------------------------------------
   let largImg;
   const largImgMobile = window.innerWidth;
-  console.log(largImgMobile);
+
   if (statusDrawer) largImg = 260;
   else largImg = 316;
   const altura = window.innerHeight;
@@ -645,7 +779,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
   const imgExtra = '/images/idpb.ico';
   return (
     <Box>
-      <Box height={altura - 100}>
+      <Box height={altura - 120}>
         <Hidden smDown>
           {value === 0 && (
             <Box>
@@ -676,6 +810,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
                             alt=""
                             width={largImg}
                             height={260}
+                            //                            loader={myLoader}
                             loading="lazy"
                             placeholder="blur"
                             blurDataURL={bannerBlurHash}
@@ -1525,7 +1660,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
         <Hidden smUp>
           {value === 0 && (
             <Box>
-              <Box display="flex" flexDirection="row">
+              <Box mt={2} display="flex" flexDirection="row">
                 <Grid item xs={12} md={12}>
                   <Box
                     mt={1}
@@ -1537,7 +1672,14 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
                     {...defaultProps}
                   >
                     <Tooltip title="Click para Mudar" aria-label="foto">
-                      <Box className={classes.novoBox}>
+                      <Box
+                        display="flex"
+                        width={largImgMobile - 20}
+                        height={altura - 301}
+                        alignItems="center"
+                        ml={0.2}
+                        mt={0.4}
+                      >
                         <input
                           accept="image/*"
                           className={classes.input}
@@ -1546,16 +1688,27 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
                           type="file"
                           onChange={onSelectFile}
                         />
+
                         <label htmlFor="contained-button-file">
-                          <Image
+                          <div>
+                            <ImageResize
+                              imageToResize={imageToResize}
+                              onImageResized={(croppedImage) =>
+                                setResizedImage(croppedImage)
+                              }
+                            />
+                          </div>
+                          {resizedImage && (
+                            <div>
+                              <h2>Resized Image</h2>
+                              <img alt="Resize Img" src={resizedImage} />
+                            </div>
+                          )}
+                          <img
+                            width={largImgMobile - 20}
+                            height={altura - 302}
                             src={selectedFile || imgExtra}
-                            alt=""
-                            width={largImgMobile}
-                            height={altura - 200}
-                            loading="lazy"
-                            placeholder="blur"
-                            blurDataURL={bannerBlurHash}
-                            objectFit="cover"
+                            alt="img01"
                           />
                         </label>
                       </Box>
@@ -1563,7 +1716,7 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
                   </Box>
                 </Grid>
               </Box>
-              <Box mt={-1} display="flex" flexDirection="row">
+              <Box mt={0} display="flex" flexDirection="row">
                 <Grid item xs={12} md={9}>
                   <Box mt={1} ml={2} sx={{ fontSize: 'bold' }}>
                     <Typography variant="caption" display="block" gutterBottom>
@@ -2619,6 +2772,70 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
                   </Box>
                 </Grid>
               </Box>
+              <Box display="flex" flexDirection="row" mt={2}>
+                <Grid item xs={12} md={12}>
+                  <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      Igreja
+                    </Typography>
+                  </Box>
+                  <Box className={classes.novoBox} mt={-2}>
+                    <TextField
+                      className={classes.tf_m}
+                      id="igreja"
+                      // label="FormacaoEscolar"
+                      type="text"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={igreja}
+                      variant="outlined"
+                      placeholder=""
+                      size="small"
+                      onBlur={
+                        igreja === ''
+                          ? () => setValidarIgreja('nao')
+                          : () => setValidarIgreja('sim')
+                      }
+                      onChange={(e) => setIgreja(e.target.value)}
+                      error={validarIgreja === 'nao'}
+                      onFocus={(e) => setIgreja(e.target.value)}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+              <Box display="flex" flexDirection="row" mt={2}>
+                <Grid item xs={12} md={12}>
+                  <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      Funcao Na Igreja
+                    </Typography>
+                  </Box>
+                  <Box className={classes.novoBox} mt={-2}>
+                    <TextField
+                      className={classes.tf_m}
+                      id="FuncaoNaIgreja"
+                      // label="FormacaoEscolar"
+                      type="text"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={funcaoNaIgreja}
+                      variant="outlined"
+                      placeholder=""
+                      size="small"
+                      onBlur={
+                        funcaoNaIgreja === ''
+                          ? () => setValidarFuncaoNaIgreja('nao')
+                          : () => setValidarFuncaoNaIgreja('sim')
+                      }
+                      onChange={(e) => setFuncaoNaIgreja(e.target.value)}
+                      error={validarFuncaoNaIgreja === 'nao'}
+                      onFocus={(e) => setFuncaoNaIgreja(e.target.value)}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
             </Box>
           )}
         </Hidden>
@@ -3442,15 +3659,18 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
         </Box>
       </Box>
       <Box
-        mt={-2}
+        mt={0}
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'flex-end',
         }}
       >
-        <Button onClick={atualizar}>Send</Button>
-
+        <Box mr={2} mb={0.3}>
+          <Button color="secondary" variant="contained" onClick={atualizar}>
+            Atualizar
+          </Button>
+        </Box>
         <Box
           bgcolor="#1e88e5"
           display="flex"
@@ -3469,6 +3689,59 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
             <ChevronRightIcon />
           </Button>
         </Box>
+      </Box>
+      <Box>
+        <Modal
+          open={open2}
+          //  onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            display="block"
+            flexDirection="column"
+            className={classes.paper}
+            width="auto"
+            height="100vh"
+          >
+            <Box height={altura - 100}>
+              <ReactCrop
+                src={upImg}
+                onImageLoaded={onLoad}
+                crop={crop}
+                onChange={(c) => setCrop(c)}
+                onComplete={(c) => setCompletedCrop(c)}
+              />
+            </Box>
+            <Box display="none">
+              <canvas
+                ref={previewCanvasRef}
+                // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                style={{
+                  width: Math.round(completedCrop?.width ?? 0),
+                  height: Math.round(completedCrop?.height ?? 0),
+                }}
+              />
+            </Box>
+            <Box bgcolor="#fff">
+              <Box textAlign="center" mt={-2}>
+                <Button
+                  color="warning"
+                  onClick={() => {
+                    generateDownload(previewCanvasRef.current, completedCrop);
+
+                    setOpen2(false);
+                  }}
+                  variant="contained"
+                  severity="success"
+                  endIcon={<TouchAppIcon />}
+                >
+                  Ajuste a Imagem e pressione qui para Conluir
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Modal>
       </Box>
       <Modal
         open={open}

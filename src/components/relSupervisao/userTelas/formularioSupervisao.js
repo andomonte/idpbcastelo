@@ -135,13 +135,13 @@ function formulario({ item, Data, statusDrawer }) {
   if (error)
     return (
       <div>
-        <MesageErro />
+        <MesageErro statusDrawer={statusDrawer} />
       </div>
     );
   if (!data)
     return (
       <div>
-        <Loading />
+        <Loading statusDrawer={statusDrawer} />
       </div>
     );
   //---------------------------------------------------------------------------

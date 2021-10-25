@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EventoMobile({ item, mes }) {
+export default function EventoMobile({ item, mes, statusDrawer }) {
   const classes = useStyles();
   const showIgrejas = [];
   const [open, setOpen] = React.useState(false);
@@ -74,13 +74,13 @@ export default function EventoMobile({ item, mes }) {
   if (error)
     return (
       <div>
-        <MesageErro />
+        <MesageErro statusDrawer={statusDrawer} />
       </div>
     );
   if (!data)
     return (
       <div>
-        <Loading />
+        <Loading statusDrawer={statusDrawer} />
       </div>
     );
 

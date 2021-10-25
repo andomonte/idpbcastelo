@@ -69,6 +69,8 @@
     "react-flip-move": "^3.0.4",
     "react-icons": "^4.2.0",
     "react-iframe": "^1.8.0",
+    "react-image-crop": "^9.0.4",
+    "react-image-file-resizer": "^0.4.7",
     "react-input-mask": "^2.0.4",
     "react-material-ui-carousel": "^2.3.5",
     "react-number-format": "^4.5.3",
