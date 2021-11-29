@@ -26,7 +26,7 @@ import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import NavbarMinistro from '../navBar/ministerioMissoes/ministros';
 import NavbarSupMM from '../navBar/ministerioMissoes/supervisor';
 import NavbarCoordMM from '../navBar/ministerioMissoes/coordenador';
-import Igreja from './igreja';
+import Igrejas2 from './userTelas/igrejas';
 import MudarDados from './userTelas/dadosPessoais';
 import Padrao from './userTelas/telaPadrao';
 
@@ -322,7 +322,7 @@ function PageAtualizar({ item, igrejas, perfilUser }) {
           </TabPanel>
           <TabPanel value={value} index={1}>
             {session && (
-              <Igreja item={item} secao={session} igrejas={igrejas} />
+              <Igrejas2 item={item} secao={session} igrejas={igrejas} />
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>
