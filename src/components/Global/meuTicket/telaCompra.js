@@ -13,12 +13,17 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     height: '100%',
   },
-
+  img1: {
+    width: '20px',
+    height: '20px',
+    marginLeft: 40,
+    marginRight: 8,
+  },
   letras1: {
     display: 'flex',
-    fontSize: '20px',
+    fontSize: '24px',
     fontWeight: 'bold',
-    color: '#fffd',
+    color: '#fff',
     justifyContent: 'center',
   },
   letras2: {
@@ -36,6 +41,12 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     padding: 2,
   },
+  legenda1: {
+    display: 'flex',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    color: '#fffd',
+  },
 
   fundoBranco: {
     display: 'flex',
@@ -47,7 +58,7 @@ const useStyles = makeStyles(() => ({
   button1: {
     display: 'flex',
     background: '#fff',
-    fontSize: '14px',
+    fontSize: '12px',
     fontWeight: 'bold',
     color: '#b91a30',
     justifyContent: 'center',
@@ -78,13 +89,6 @@ const Home = () => {
       pathname: '/global/comprar',
       //   query: { dadosMesa2, numeroGame },
     });
-  };
-
-  const myTicket = () => {
-    router.push({
-      pathname: '/global/meuTicket',
-      //   query: { dadosMesa2, numeroGame },
-    });
   }; // setGame('1');
 
   return (
@@ -101,8 +105,9 @@ const Home = () => {
         </Hidden>
         <Hidden mdUp>
           <Box mt={-1} className={classes.letras1}>
-            GLOBAL 2022
+            CONFERÊNCIA
           </Box>
+          <Box className={classes.letras1}>GLOBAL 2022</Box>
           <Box mt={1} className={classes.letras2}>
             2022 GLOBAL CONFERENCE
           </Box>
@@ -115,7 +120,7 @@ const Home = () => {
               style={{ justifyContent: 'center' }}
             />
           </Box>
-          <Box mt={0} className={classes.letras2}>
+          <Box mt={2} className={classes.letras2}>
             INGRESSO - 1º LOTE - R$: 50,00
           </Box>
           <Box mt={2} className={classes.letras2}>
@@ -150,7 +155,7 @@ const Home = () => {
                   justifyContent: 'center',
                 }}
               >
-                APÓS A COMPRA GERE SEU TICKET AQUI
+                CLIQUE AQUI SE VOCÊ JÁ ADQUIRIU SEU TICKET
               </Box>
               <Box
                 mt={1}
@@ -159,37 +164,30 @@ const Home = () => {
                   justifyContent: 'center',
                 }}
               >
-                <Button
-                  className={classes.button2}
-                  variant="contained"
-                  onClick={myTicket}
-                >
+                <Button className={classes.button2} variant="contained">
                   MEU TICKET
                 </Button>
               </Box>
             </Paper>
           </Box>
-          <Box mt={1}>
-            <CardMedia
-              component="img"
-              image="/images/global/sobre.png"
-              alt="green iguana"
-            />
-          </Box>
-          <Box mt={1}>
-            <CardMedia
-              component="img"
-              image="/images/global/pgLocal.png"
-              alt="green iguana"
-            />
-          </Box>
           <Box>
-            <CardMedia
-              component="img"
-              image="/images/global/site.png"
-              alt="green iguana"
-            />
+            <Box mt={2} className={classes.legenda1}>
+              <img
+                src="/images/global/sobre.png"
+                alt="img01"
+                className={classes.img1}
+              />
+              SOBRE O EVENTO
+            </Box>{' '}
           </Box>
+          <Box ml={9} mt={1} className={classes.letras3}>
+            Conferência em comemoração ao centenário da PCG, igreja mãe da IDPB.
+          </Box>
+          <CardMedia
+            component="img"
+            image="/images/global/pgIni03.png"
+            alt="green iguana"
+          />
         </Hidden>
       </Box>
     </Box>

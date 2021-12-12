@@ -19,10 +19,11 @@
     },
     "plugins": [
         "react",
-        "prettier"
+        "prettier",
+        "import"
     ],
     "rules": {
-      
+      "react/no-array-index-key":"off",
         "no-console": "off",
         "prettier/prettier": "error",
         "react/jsx-filename-extension": [1,{"extensions": [".js", ".jsx"]}],

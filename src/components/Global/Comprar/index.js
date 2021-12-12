@@ -2,34 +2,21 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
-import Box from '@material-ui/core/Box';
-import HomeIcon from '@material-ui/icons/Home';
-import Hidden from '@material-ui/core/Hidden';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Login from 'src/components/botaoLogin';
-import Navbar from './navBar_redesSociais';
-import PesquisaIgreja from './pesquisa/igreja';
-import Contato from './contato';
-import Home from './home';
-// import Carrossel from '../carrossel';
-// import GoogleMaps from './googleMap';
-// import Pesquisar from './pesquisar';
+import { Box } from '@material-ui/core';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useRouter } from 'next/router';
+import TelaCompra from './telaCompra';
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     width: 500,
     justifyContent: 'space-around',
-    backgroundColor: theme.palette.background.default,
+    background: '#b91a30',
     [theme.breakpoints.between('xl', 'lg')]: {
       width: 500,
     },
@@ -40,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: 80,
     },
+  },
+  letras1: {
+    display: 'flex',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    color: '#fffd',
+    marginBottom: 0,
   },
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -54,10 +48,15 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: {
-    minHeight: 56,
+    minHeight: 50,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: '#b91a30',
+
+    /* borderStyle: 'solid',
+    borderColor: '#b91a30 #b91a30 #fff #b91a30',
+    borderWidth: '0.5px', */
   },
   hamburger: {
     cursor: 'pointer',
@@ -123,55 +122,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={0}>{children}</Box>}
-    </div>
-  );
-}
-
-function IdpbNacional({ item, title }) {
+function Compra({ title }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  //  const [value, setValue] = React.useState(0);
 
   const theme = useTheme();
-  const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  let LabelIgreja = '';
-  let LabelHome = '';
-  let LabelContatos = '';
   const [open, setOpen] = React.useState(true);
-  if (desktop) {
-    LabelIgreja = 'Igreja';
-    LabelHome = 'Home';
-    LabelContatos = 'Contatos';
-  }
-
-  const handleDrawerOpen = () => {
-    if (!open) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-
-    //! open ? setOpen(true) : setOpen(false);
-  };
-
+  const router = useRouter();
   const handleDrawerClose = () => {
     // console.log(mobile);
 
     if (mobile && open) {
       setOpen(false);
     }
+  };
+
+  const voltar = () => {
+    router.push({
+      pathname: '/global',
+      //   query: { dadosMesa2, numeroGame },
+    });
   };
   return (
     <div onLoad={handleDrawerClose}>
@@ -187,66 +158,56 @@ function IdpbNacional({ item, title }) {
         <AppBar className={classes.root2} color="default">
           <ClickAwayListener onClickAway={handleDrawerClose}>
             <Toolbar className={classes.toolbar}>
-              <Box display="flex" alignItems="center">
-                {open ? (
-                  <MenuOpenIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-                {!open ? (
-                  <MenuIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-
-                <Hidden mdDown>
-                  <img
-                    src="/images/IDPBNAC.png"
-                    alt="logo"
-                    className={classes.logo}
-                  />
-                </Hidden>
-              </Box>
-
-              <Box display="flex">
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  showLabels
-                  className={classes.rootTopbarIcon}
+              <Box display="flex" align="center" m={0}>
+                <Box
+                  height={30}
+                  p={1}
+                  ml={0}
+                  mr={0}
+                  display="flex"
+                  alignItems="center"
+                  sx={{ backgroundColor: '#a91a30' }}
                 >
-                  <BottomNavigationAction
-                    label={LabelHome}
-                    icon={<HomeIcon />}
+                  <ArrowBackIcon
+                    sx={{
+                      fontSize: 20,
+                      color: '#fff',
+                    }}
+                    onClick={voltar}
                   />
-                  <BottomNavigationAction
-                    label={LabelContatos}
-                    icon={<CallIcon />}
-                  />
-                  <BottomNavigationAction
-                    label={LabelIgreja}
-                    icon={<LocationOnIcon />}
-                  />
-                </BottomNavigation>
+                </Box>
               </Box>
-              <Login />
+              <Box
+                height={30}
+                p={1}
+                ml={0}
+                mr={0}
+                display="flex"
+                alignItems="center"
+              >
+                <Box className={classes.letras1}>INSCRIÇÃO</Box>
+              </Box>
+
+              <Box display="flex" align="center" m={0}>
+                <Box
+                  height={30}
+                  p={1}
+                  ml={0}
+                  mr={0}
+                  display="flex"
+                  alignItems="center"
+                >
+                  <ArrowBackIcon
+                    sx={{
+                      fontSize: 20,
+                      color: '#b91a30',
+                    }}
+                  />
+                </Box>
+              </Box>
             </Toolbar>
           </ClickAwayListener>
         </AppBar>
-
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={open}
-          className={classes.drawer}
-          classes={{ paper: classes.desktopDrawer }}
-        >
-          <Navbar />
-        </Drawer>
 
         <main
           className={clsx(classes.contentMain, {
@@ -256,19 +217,11 @@ function IdpbNacional({ item, title }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Contato />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <PesquisaIgreja item={item} />
-          </TabPanel>
+          <TelaCompra />
         </main>
       </div>
     </div>
   );
 }
 
-export { IdpbNacional, TabPanel };
+export default Compra;

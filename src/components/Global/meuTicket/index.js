@@ -2,26 +2,11 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-// import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import MenuIcon from '@material-ui/icons/Menu';
-import { Box } from '@material-ui/core';
-// import HomeIcon from '@material-ui/icons/Home';
-// import Hidden from '@material-ui/core/Hidden';
-// import BottomNavigation from '@material-ui/core/BottomNavigation';
-// import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-// import LocationOnIcon from '@material-ui/icons/LocationOn';
-// import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-// import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-// import Login from 'src/components/botaoLogin';
-// import Navbar from './navBar_redesSociais';
-import { useRouter } from 'next/router';
-import Home from './home';
+import TelaCompra from './telaCompra';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -53,12 +38,11 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: {
-    minHeight: 50,
+    minHeight: 56,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     backgroundColor: '#b91a30',
-
     /* borderStyle: 'solid',
     borderColor: '#b91a30 #b91a30 #fff #b91a30',
     borderWidth: '0.5px', */
@@ -125,46 +109,16 @@ const useStyles = makeStyles((theme) => ({
     height: 'calc(100% - 64px)',
     borderRight: 'none',
   },
-  letras1: {
-    display: 'flex',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#fffd',
-    marginBottom: 0,
-  },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={0}>{children}</Box>}
-    </div>
-  );
-}
-
-function TelaInicial({ title }) {
+function MeuTicket({ title }) {
   const classes = useStyles();
   //  const [value, setValue] = React.useState(0);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = React.useState(true);
-  const router = useRouter();
 
-  const voltar = () => {
-    router.push({
-      pathname: '/',
-      //   query: { dadosMesa2, numeroGame },
-    });
-  }; // setGame('1');
   const handleDrawerClose = () => {
     // console.log(mobile);
 
@@ -185,55 +139,7 @@ function TelaInicial({ title }) {
       <div className={classes.root}>
         <AppBar className={classes.root2} color="default">
           <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" align="center" m={0}>
-                <Box
-                  height={30}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  display="flex"
-                  alignItems="center"
-                  sx={{ backgroundColor: '#a91a30' }}
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#fff',
-                    }}
-                    onClick={voltar}
-                  />
-                </Box>
-              </Box>
-              <Box
-                height={30}
-                p={1}
-                ml={0}
-                mr={0}
-                display="flex"
-                alignItems="center"
-              >
-                <Box className={classes.letras1}>CONFERÊNCIA</Box>
-              </Box>
-
-              <Box display="flex" align="center" m={0}>
-                <Box
-                  height={30}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#b91a30',
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Toolbar>
+            <Toolbar className={classes.toolbar} />
           </ClickAwayListener>
         </AppBar>
 
@@ -245,11 +151,11 @@ function TelaInicial({ title }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Home />
+          <TelaCompra />
         </main>
       </div>
     </div>
   );
 }
 
-export { TelaInicial, TabPanel };
+export default MeuTicket;
