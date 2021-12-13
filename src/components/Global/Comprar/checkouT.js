@@ -32,7 +32,7 @@ const Container = styled.div`
     transform-style: preserve-3d;
     -webkit-transition: all 0.4s linear;
     transition: all 0.4s linear;
-    width: 240px;
+    width: 270px;
   }
   .rccs__card--front,
   .rccs__card--back {
@@ -416,7 +416,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     width: '100%',
     height: '40px',
-    fontSize: '12px',
+    fontSize: '18px',
     borderWidth: '0.5px',
     borderStyle: 'solid',
   },
@@ -428,7 +428,7 @@ const useStyles = makeStyles((theme) => ({
 
     width: '200',
     height: '35px',
-    fontSize: '14px',
+    fontSize: '18px',
     borderWidth: '0.5px',
     borderStyle: 'solid',
     //    borderColor: '#9ccc65',
@@ -482,14 +482,14 @@ const useStyles = makeStyles((theme) => ({
 
     width: '100%',
     height: '40px',
-    fontSize: '14px',
+    fontSize: '18px',
     borderWidth: '0.5px',
     borderStyle: 'solid',
     //    borderColor: '#9ccc65',
     // alignItems: 'center',
     [theme.breakpoints.down('md')]: {
       //  marginLeft: -5,
-      fontSize: '14px',
+      fontSize: '18px',
       width: '100%',
     },
   },
@@ -501,13 +501,13 @@ const useStyles = makeStyles((theme) => ({
 
     width: '100%',
     height: '40px',
-    fontSize: '14px',
+    fontSize: '18px',
     borderWidth: '0.5px',
     borderStyle: 'solid',
     //    borderColor: '#9ccc65',
     // alignItems: 'center',
     [theme.breakpoints.down('md')]: {
-      fontSize: '12px',
+      fontSize: '18px',
       width: '100%',
       height: '40px',
     },
@@ -535,7 +535,7 @@ const useStyles = makeStyles((theme) => ({
   button1: {
     display: 'flex',
     background: '#2196f3',
-    fontSize: '12px',
+    fontSize: '18px',
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
@@ -543,7 +543,7 @@ const useStyles = makeStyles((theme) => ({
   button2: {
     display: 'flex',
     background: '#b91a30',
-    fontSize: '12px',
+    fontSize: '18px',
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
@@ -868,8 +868,8 @@ export default function CheckoutT({ Email }) {
         <form id="form-checkout">
           <Box>
             <Box>
-              <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={8} md={3}>
+              <Box display="flex" mt={2} ml={1}>
+                <Grid item xs={12} md={3}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -879,19 +879,9 @@ export default function CheckoutT({ Email }) {
                     Número do cartão
                   </Typography>
                 </Grid>
-                <Grid item xs={4} md={3}>
-                  <Typography
-                    className={classes.texto}
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                  >
-                    Vencimento
-                  </Typography>
-                </Grid>
               </Box>
               <Box display="flex" mt={0}>
-                <Grid item xs={7} md={3}>
+                <Grid item xs={12} md={3}>
                   <Box mt={-1}>
                     <input
                       type="number"
@@ -906,47 +896,8 @@ export default function CheckoutT({ Email }) {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={1} md={3}>
-                  <Box mt={-1} />
-                </Grid>
-
-                <Grid item xs={2} md={3}>
-                  <Box mt={-1}>
-                    <input
-                      type="number"
-                      name="cardExpirationMonth"
-                      id="form-checkout__cardExpirationMonth"
-                      className={classes.tf_input2}
-                      onChange={(event) => {
-                        setMes(event.target.value);
-                        handleMax2(event);
-                      }}
-                      maxLength="2"
-                      onKeyDown={handleEnter}
-                      onFocus={handleFocus}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={2} md={3}>
-                  <Box mt={-1}>
-                    <input
-                      type="number"
-                      name="cardExpirationYear"
-                      id="form-checkout__cardExpirationYear"
-                      className={classes.tf_input2}
-                      onChange={(event) => {
-                        setAno(event.target.value);
-                        handleMax2(event);
-                      }}
-                      maxLength="2"
-                      onKeyDown={handleEnter}
-                      onFocus={handleFocus}
-                    />
-                  </Box>
-                </Grid>
               </Box>
             </Box>
-
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
                 <Grid item xs={8} md={3}>
@@ -959,39 +910,88 @@ export default function CheckoutT({ Email }) {
                     Titular do cartão
                   </Typography>
                 </Grid>
-                <Grid item xs={4} md={3}>
+              </Box>
+              <Box display="flex" mt={0}>
+                <Grid item xs={12} md={3}>
+                  <Box mt={-1}>
+                    <input
+                      type="text"
+                      name="cardholderName"
+                      id="form-checkout__cardholderName"
+                      className={classes.tf_input}
+                      onKeyDown={handleEnter}
+                      onFocus={handleFocus}
+                      onChange={(event) => {
+                        setName(event.target.value);
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+            </Box>
+            <Box>
+              <Box display="flex" width="100%" mt={2} ml={1}>
+                <Grid item xs={7} md={3}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
                     display="block"
                     gutterBottom
                   >
-                    Security code
+                    Vencimento do Cartão
+                  </Typography>
+                </Grid>
+                <Grid item xs={5.5} md={3}>
+                  <Typography
+                    className={classes.texto}
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                  >
+                    Código segurança
                   </Typography>
                 </Grid>
               </Box>
             </Box>
             <Box display="flex" mt={0}>
-              <Grid item xs={7} md={3}>
+              <Grid item xs={3} md={3}>
                 <Box mt={-1}>
                   <input
-                    type="text"
-                    name="cardholderName"
-                    id="form-checkout__cardholderName"
-                    className={classes.tf_input}
+                    type="number"
+                    name="cardExpirationMonth"
+                    id="form-checkout__cardExpirationMonth"
+                    className={classes.tf_input2}
+                    onChange={(event) => {
+                      setMes(event.target.value);
+                      handleMax2(event);
+                    }}
+                    maxLength="2"
                     onKeyDown={handleEnter}
                     onFocus={handleFocus}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={3} md={3}>
+                <Box mt={-1}>
+                  <input
+                    type="number"
+                    name="cardExpirationYear"
+                    id="form-checkout__cardExpirationYear"
+                    className={classes.tf_input2}
                     onChange={(event) => {
-                      setName(event.target.value);
+                      setAno(event.target.value);
+                      handleMax2(event);
                     }}
+                    maxLength="2"
+                    onKeyDown={handleEnter}
+                    onFocus={handleFocus}
                   />
                 </Box>
               </Grid>
               <Grid item xs={1} md={3}>
                 <Box mt={-1} />
               </Grid>
-
-              <Grid item xs={4} md={3}>
+              <Grid item xs={5} md={3}>
                 <Box mt={-1}>
                   <input
                     className={classes.tf_input3}
@@ -1007,50 +1007,22 @@ export default function CheckoutT({ Email }) {
                 </Box>
               </Grid>
             </Box>
-
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={8} md={3}>
+                <Grid item xs={12} md={3}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
                     display="block"
                     gutterBottom
                   >
-                    Digite o {tipoDoc} do Pagante
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} md={3}>
-                  <Typography
-                    className={classes.texto}
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                  >
-                    Documento
+                    Tipo de Documento do Dono do Cartão
                   </Typography>
                 </Grid>
               </Box>
             </Box>
             <Box display="flex" mt={0}>
-              <Grid item xs={7} md={3}>
-                <Box mt={-1}>
-                  <input
-                    type="text"
-                    name="identificationNumber"
-                    id="form-checkout__identificationNumber"
-                    className={classes.tf_input}
-                    onKeyDown={handleEnter}
-                    onFocus={handleFocus}
-                    onChange={handleInputChange}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={1} md={3}>
-                <Box mt={-1} />
-              </Grid>
-
-              <Grid item xs={4} md={3}>
+              <Grid item xs={12} md={3}>
                 <Box mt={-1}>
                   <select
                     className={classes.tf_input3}
@@ -1065,6 +1037,35 @@ export default function CheckoutT({ Email }) {
                       setTipoDoc(e.target.value);
                       handleFocus;
                     }}
+                  />
+                </Box>
+              </Grid>
+            </Box>
+            <Box>
+              <Box display="flex" width="100%" mt={2} ml={1}>
+                <Grid item xs={12} md={3}>
+                  <Typography
+                    className={classes.texto}
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                  >
+                    Digite o {tipoDoc} do Dono do Cartão
+                  </Typography>
+                </Grid>
+              </Box>
+            </Box>
+            <Box display="flex" mt={0}>
+              <Grid item xs={12} md={3}>
+                <Box mt={-1}>
+                  <input
+                    type="text"
+                    name="identificationNumber"
+                    id="form-checkout__identificationNumber"
+                    className={classes.tf_input}
+                    onKeyDown={handleEnter}
+                    onFocus={handleFocus}
+                    onChange={handleInputChange}
                   />
                 </Box>
               </Grid>

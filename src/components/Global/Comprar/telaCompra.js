@@ -1,18 +1,57 @@
 import React from 'react';
 import { Box, Button, Typography, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CardMedia from '@mui/material/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
 import cpfMask from 'src/components/mascaras/cpf';
 import dataMask from 'src/components/mascaras/datas';
 import api from 'src/components/services/api';
+import InputLabel from '@material-ui/core/InputLabel';
 // import celularMask from 'src/components/mascaras/celular';
 // import { useRouter } from 'next/router';
 import TextField from '@material-ui/core/TextField';
 // import PagCC from './pagCC';
 // import CheckoutPro from './checkouPro';
+import FormControl from '@material-ui/core/FormControl';
+
+import NativeSelect from '@material-ui/core/NativeSelect';
+import InputBase from '@material-ui/core/InputBase';
 import CheckoutT from './checkouT';
 
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+}))(InputBase);
 const useStyles = makeStyles((theme) => ({
   img: {
     maxWidth: '1410px',
@@ -71,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
   button1: {
     display: 'flex',
     background: '#fff',
-    fontSize: '12px',
+    fontSize: '18px',
     fontWeight: 'bold',
     color: '#b91a30',
     justifyContent: 'center',
@@ -79,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
   button2: {
     display: 'flex',
     background: '#b91a30',
-    fontSize: '12px',
+    fontSize: '18px',
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
@@ -97,6 +136,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     alignItems: 'center',
+    marginLeft: '10px',
+    marginRight: '10px',
   },
   tf_m: {
     backgroundColor: '#f0f4c3',
@@ -120,7 +161,12 @@ const Home = () => {
     'sim',
   );
   const [open, setOpen] = React.useState(false);
+  const [fPagamento, setFPagamento] = React.useState('');
 
+  const handleChangeFP = (event) => {
+    console.log(event.target.value);
+    setFPagamento(event.target.value);
+  };
   const pagar = () => {
     if (email && cpf) {
       setOpen(true);
@@ -160,7 +206,7 @@ const Home = () => {
           <Box mt={-1} className={classes.input1}>
             <Box mt={-1} display="flex" flexDirection="row">
               <Grid item xs={12} md={12}>
-                <Box mt={1} ml={2} sx={{ fontSize: 'bold' }}>
+                <Box mt={1} ml={3} sx={{ fontSize: 'bold' }}>
                   <Typography variant="caption" display="block" gutterBottom>
                     Nome
                   </Typography>
@@ -193,7 +239,7 @@ const Home = () => {
             </Box>
             <Box mt={2} display="flex" flexDirection="row">
               <Grid item xs={12} md={3}>
-                <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
+                <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
                   <Typography variant="caption" display="block" gutterBottom>
                     CPF
                   </Typography>
@@ -225,7 +271,7 @@ const Home = () => {
               </Grid>
 
               <Grid item xs={12} md={3}>
-                <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
+                <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
                   <Typography variant="caption" display="block" gutterBottom>
                     Data de Nascimento
                   </Typography>
@@ -258,7 +304,7 @@ const Home = () => {
             </Box>
             <Box mt={2} display="flex" flexDirection="row">
               <Grid item xs={12} md={6}>
-                <Box mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
+                <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
                   <Typography variant="caption" display="block" gutterBottom>
                     Email
                   </Typography>
@@ -295,16 +341,32 @@ const Home = () => {
                 justifyContent: 'center',
               }}
             >
-              <Button
+              <FormControl className={classes.margin}>
+                <InputLabel htmlFor="demo-customized-select-native">
+                  Forma de Pagamento
+                </InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={fPagamento}
+                  onChange={handleChangeFP}
+                  input={<BootstrapInput />}
+                >
+                  <option aria-label="None" value="" />
+                  <option value={10}>Cartão de Crédito</option>
+                  <option value={20}>Pix</option>
+                  <option value={30}>Boleto</option>
+                </NativeSelect>
+              </FormControl>
+              {/* <Button
                 className={classes.button1}
                 variant="contained"
                 onClick={pagar}
               >
                 FAZER O PAGAMENTO
-              </Button>
+              </Button> */}
             </Box>
           </Box>
-          {open && <CheckoutT CPF={cpf} Email={email} />}
+          {fPagamento === '10' && <CheckoutT CPF={cpf} Email={email} />}
           {/* {open && <PagCC email={email} cpf={cpf} />} */}
         </Hidden>
       </Box>
