@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Box, Button, Typography, Grid } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,7 +16,15 @@ import FormControl from '@material-ui/core/FormControl';
 
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
+import ValidaCPF from 'src/utils/validarCPF';
+import Drawer from '@material-ui/core/Drawer';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import validator from 'validator';
+
 import CheckoutT from './checkouT';
+
+const validateDate = require('validate-date');
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -145,6 +153,17 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     fontSize: '5px',
   },
+  tf_s: {
+    backgroundColor: '#ffff',
+    textAlign: 'center',
+    width: '100%',
+    height: '40px',
+    fontSize: '14px',
+    borderWidth: '0.5px',
+    borderStyle: 'solid',
+    borderRadius: '10px',
+    border: '2px solid #b91a30',
+  },
 }));
 
 const Home = () => {
@@ -161,21 +180,33 @@ const Home = () => {
     'sim',
   );
   const [open, setOpen] = React.useState(false);
+  const [valorErro, setValorErro] = React.useState('');
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [validacaoNome, setValidacaoNome] = React.useState('testar');
+  const [validacaoCPF, setValidacaoCPF] = React.useState('testar');
+  const [validacaoEmail, setValidacaoEmail] = React.useState('testar');
+  const [validacaoData, setValidacaoData] = React.useState('testar');
+
   const [fPagamento, setFPagamento] = React.useState('');
 
+  const nomeRef = useRef();
+  const cpfRef = useRef();
+  const dataRef = useRef();
+  const emailRef = useRef();
+  const fpRef = useRef();
+
   const handleChangeFP = (event) => {
-    console.log(event.target.value);
     setFPagamento(event.target.value);
   };
-  const pagar = () => {
+  /* const pagar = () => {
     if (email && cpf) {
       setOpen(true);
     }
   };
 
-  let prefID = '';
+  const prefID = ''; */
 
-  const comprar = () => {
+  /* const comprar = () => {
     api
       .post('/api/mercadoPagoPro', {})
 
@@ -188,188 +219,372 @@ const Home = () => {
       .catch(() => {
         //  updateFile(uploadedFile.id, { error: true });
       });
+  }; */
+  React.useEffect(() => {
+    if (!validacaoNome) {
+      setOpenDrawer(true);
+      setValorErro('Digite Nome e Sobrenome');
+      nomeRef.current.focus();
+    }
+  }, [validacaoNome]);
+
+  React.useEffect(() => {
+    if (!validacaoCPF) {
+      setOpenDrawer(true);
+      setValorErro('CPF-INVÁLIDO');
+      cpfRef.current.focus();
+    }
+  }, [validacaoCPF]);
+  React.useEffect(() => {
+    if (!validacaoEmail) {
+      setOpenDrawer(true);
+      setValorErro('Não é um Email Válido');
+      emailRef.current.focus();
+    }
+  }, [validacaoEmail]);
+  React.useEffect(() => {
+    if (!validacaoData) {
+      setOpenDrawer(true);
+      setValorErro('Não é uma Data Válida');
+      dataRef.current.focus();
+    }
+  }, [validacaoData]);
+  //  setOpenDrawer(false);
+
+  const handleDrawerClose = () => {
+    if (!validacaoNome) {
+      setValidacaoNome('testar');
+      nomeRef.current.focus();
+    }
+
+    if (!validacaoCPF) {
+      setValidacaoCPF('testar');
+      cpfRef.current.focus();
+    }
+    if (!validacaoEmail) {
+      setValidacaoEmail('testar');
+      emailRef.current.focus();
+    }
+    if (!validacaoData) {
+      setValidacaoData('testar');
+      dataRef.current.focus();
+    }
+    setOpenDrawer(false);
+  };
+  const handleEnter = (event) => {
+    if (event.key.toLowerCase() === 'enter') {
+      const form = event.target.id;
+      if (form === 'Nome') cpfRef.current.focus();
+      if (form === 'CPF') dataRef.current.focus();
+      if (form === 'DataNascimento') emailRef.current.focus();
+      if (form === 'Email') {
+        const emailVal = event.target.value;
+        if (validator.isEmail(emailVal)) {
+          setValidacaoEmail(true);
+          fpRef.current.focus();
+        } else {
+          setValidacaoEmail(false);
+        }
+      }
+      // console.log('aqui no final', form);
+    }
+  };
+  //= ======================================================================
+  // validação dos dados
+  //= ======================================================================
+  // Nome
+  const handleValidarNome = (e) => {
+    const valorNome = e.target.value;
+    if (!validacaoNome) nomeRef.current.focus();
+
+    if (e.target.value !== '') {
+      const regName = /\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/gi;
+      const vaiNome = regName.test(valorNome);
+
+      if (!vaiNome) {
+        setValidacaoNome(false);
+      } else {
+        setValidacaoNome(true);
+      }
+    } else setValidacaoNome(false);
   };
 
+  // CPF
+  const handleValidarCPF = (e) => {
+    const valorCPF = e.target.value.replace(/\D/g, '');
+    if (!validacaoCPF) cpfRef.current.focus();
+
+    if (e.target.value !== '') {
+      const vCPF = ValidaCPF(valorCPF);
+      setValidacaoCPF(vCPF);
+    } else setValidacaoCPF(false);
+  };
+
+  // Email
+  const handlevalidarEmail = (e) => {
+    const emailVal = e.target.value;
+
+    if (!validacaoEmail) emailRef.current.focus();
+    if (validator.isEmail(emailVal)) {
+      setValidacaoEmail(true);
+    } else {
+      setValidacaoEmail(false);
+    }
+  };
+
+  // data
+
+  const handlevalidarData = (e) => {
+    const dataV = e.target.value;
+    if (!validacaoData) dataRef.current.focus();
+    const dia = dataV.slice(0, 2);
+    const mes = dataV.slice(3, 5);
+    const ano = dataV.slice(6, 10);
+    const dataVal = `${ano}/${mes}/${dia}`;
+    const validarData = validator.isDate(dataVal);
+
+    if (validarData) {
+      setValidacaoData(true);
+    } else {
+      setValidacaoData(false);
+    }
+  };
+  //= ====================================================================
   return (
     <Box style={{ backgroundColor: '#b91a30', height: '90vh' }}>
-      <Box>
-        <Hidden smDown>
-          <CardMedia
-            component="img"
-            height="125"
-            image="/images/global/pgIni01.png"
-            alt="green iguana"
-            style={{ borderRadius: 16 }}
-          />
-        </Hidden>
-        <Hidden mdUp>
-          <Box mt={-1} className={classes.input1}>
-            <Box mt={-1} display="flex" flexDirection="row">
-              <Grid item xs={12} md={12}>
-                <Box mt={1} ml={3} sx={{ fontSize: 'bold' }}>
-                  <Typography variant="caption" display="block" gutterBottom>
-                    Nome
-                  </Typography>
-                </Box>
+      <ClickAwayListener onClickAway={handleDrawerClose}>
+        <Box>
+          <Hidden smDown>
+            <CardMedia
+              component="img"
+              height="125"
+              image="/images/global/pgIni01.png"
+              alt="green iguana"
+              style={{ borderRadius: 16 }}
+            />
+          </Hidden>
+          <Hidden mdUp>
+            <Box mt={-1} className={classes.input1}>
+              <Box mt={-1} display="flex" flexDirection="row">
+                <Grid item xs={12} md={12}>
+                  <Box mt={1} ml={3} sx={{ fontSize: 'bold' }}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      Nome
+                    </Typography>
+                  </Box>
 
-                <Box className={classes.novoBox} mt={-1.5}>
-                  <TextField
-                    className={classes.tf_m}
-                    id="Nome"
-                    // label="Matricula"
-                    type="text"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={nome}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    onBlur={
-                      nome === ''
-                        ? () => setValidarNome('nao')
-                        : () => setValidarNome('sim')
-                    }
-                    onChange={(e) => setNome(e.target.value)}
-                    error={validarNome === 'nao'}
-                    onFocus={(e) => setNome(e.target.value)}
-                  />
-                </Box>
-              </Grid>
-            </Box>
-            <Box mt={2} display="flex" flexDirection="row">
-              <Grid item xs={12} md={3}>
-                <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
-                  <Typography variant="caption" display="block" gutterBottom>
-                    CPF
-                  </Typography>
-                </Box>
+                  <Box className={classes.novoBox} mt={-1.5}>
+                    <TextField
+                      className={classes.tf_s}
+                      id="Nome"
+                      // label="Matricula"
+                      type="text"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={nome}
+                      variant="outlined"
+                      placeholder="Digite o Nome do Inscrito"
+                      size="small"
+                      onBlur={handleValidarNome}
+                      onChange={(e) => {
+                        setNome(e.target.value);
+                        handleDrawerClose();
+                      }}
+                      error={validarNome === 'nao'}
+                      onFocus={(e) => setNome(e.target.value)}
+                      autoFocus
+                      onKeyDown={handleEnter}
+                      inputRef={nomeRef}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+              <Box mt={2} display="flex" flexDirection="row">
+                <Grid item xs={12} md={3}>
+                  <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      CPF
+                    </Typography>
+                  </Box>
 
-                <Box className={classes.novoBox} mt={-1.5}>
-                  <TextField
-                    className={classes.tf_m}
-                    id="CPF"
-                    // // // label="CPF"
-                    type="text"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={cpfMask(cpf)}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    onBlur={
-                      cpf === ''
-                        ? () => setValidarCPF('nao')
-                        : () => setValidarCPF('sim')
-                    }
-                    onChange={(e) => setCPF(e.target.value)}
-                    error={validarCPF === 'nao'}
-                    onFocus={(e) => setCPF(e.target.value)}
-                  />
-                </Box>
-              </Grid>
+                  <Box className={classes.novoBox} mt={-1.5}>
+                    <TextField
+                      className={classes.tf_s}
+                      id="CPF"
+                      inputRef={cpfRef}
+                      //                      ref={cpfRef}
+                      // // // label="CPF"
+                      type="text"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={cpfMask(cpf)}
+                      variant="outlined"
+                      placeholder="digite o CPF do inscrito"
+                      size="small"
+                      onBlur={(e) => {
+                        if (validacaoNome) handleValidarCPF(e);
+                      }}
+                      onChange={(e) => {
+                        setCPF(e.target.value);
+                        handleDrawerClose();
+                      }}
+                      error={validarCPF === 'nao'}
+                      onFocus={(e) => setCPF(e.target.value)}
+                      onKeyDown={handleEnter}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+              <Box mt={2} display="flex" flexDirection="row">
+                <Grid item xs={12} md={3}>
+                  <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      Data de Nascimento
+                    </Typography>
+                  </Box>
 
-              <Grid item xs={12} md={3}>
-                <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
-                  <Typography variant="caption" display="block" gutterBottom>
-                    Data de Nascimento
-                  </Typography>
-                </Box>
+                  <Box className={classes.novoBox} mt={-1.5}>
+                    <TextField
+                      className={classes.tf_s}
+                      id="DataNascimento"
+                      // label="Data de Nascimento"
+                      type="text"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={dataMask(dataNascimento)}
+                      variant="outlined"
+                      placeholder="dd/mm/aaaa"
+                      size="small"
+                      onBlur={(e) => {
+                        if (validacaoCPF) handlevalidarData(e);
+                      }}
+                      onChange={(e) => {
+                        setDataNascimento(e.target.value);
+                        handleDrawerClose();
+                      }}
+                      error={validarDataNascimento === 'nao'}
+                      onFocus={(e) => setDataNascimento(e.target.value)}
+                      onKeyDown={handleEnter}
+                      inputRef={dataRef}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+              <Box mt={2} display="flex" flexDirection="row">
+                <Grid item xs={12} md={6}>
+                  <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      Email
+                    </Typography>
+                  </Box>
+                  <Box className={classes.novoBox} mt={-1.5}>
+                    <TextField
+                      className={classes.tf_s}
+                      id="Email"
+                      type="text"
+                      InputLabelProps={{
+                        style: {
+                          textTransform: 'uppercase',
+                        },
+                        shrink: true,
+                      }}
+                      value={email}
+                      variant="outlined"
+                      placeholder="email para envio de comprovante"
+                      size="small"
+                      onBlur={(e) => {
+                        if (validacaoData) handlevalidarEmail(e);
+                      }}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        handleDrawerClose();
+                      }}
+                      error={validarEmail === 'nao'}
+                      onFocus={(e) => setEmail(e.target.value)}
+                      onKeyDown={handleEnter}
+                      inputRef={emailRef}
+                    />
+                  </Box>
+                </Grid>
+              </Box>
+              <Box
+                mt={1}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box mt={1}>
+                  <FormControl>
+                    <Box mt={-1} ml={0} sx={{ fontSize: 'bold' }}>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Forma de Pagamento
+                      </Typography>
+                    </Box>
+                    <Box mr={1.5}>
+                      <NativeSelect
+                        className={classes.tf_s}
+                        style={{ width: '105%' }}
+                        inputRef={fpRef}
+                        id="fPagamento"
+                        value={fPagamento}
+                        onChange={handleChangeFP}
+                        input={<BootstrapInput />}
+                        disabled={
+                          !(
+                            validacaoData === true &&
+                            validacaoEmail === true &&
+                            validacaoCPF === true &&
+                            validacaoNome === true
+                          )
+                        }
+                      >
+                        <option value={0}>Escolha a Forma de pagamento</option>
 
-                <Box className={classes.novoBox} mt={-1.5}>
-                  <TextField
-                    className={classes.tf_m}
-                    id="DataNascimento"
-                    // label="Data de Nascimento"
-                    type="text"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={dataMask(dataNascimento)}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    onBlur={
-                      dataNascimento === ''
-                        ? () => setValidarDataNascimento('nao')
-                        : () => setValidarDataNascimento('sim')
-                    }
-                    onChange={(e) => setDataNascimento(e.target.value)}
-                    error={validarDataNascimento === 'nao'}
-                    onFocus={(e) => setDataNascimento(e.target.value)}
-                  />
+                        <option value={10}>Cartão de Crédito</option>
+                        <option value={20}>Pix</option>
+                        <option value={30}>Boleto</option>
+                      </NativeSelect>
+                    </Box>
+                  </FormControl>
                 </Box>
-              </Grid>
-            </Box>
-            <Box mt={2} display="flex" flexDirection="row">
-              <Grid item xs={12} md={6}>
-                <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
-                  <Typography variant="caption" display="block" gutterBottom>
-                    Email
-                  </Typography>
-                </Box>
-                <Box className={classes.novoBox} mt={-1.5}>
-                  <TextField
-                    className={classes.tf_m}
-                    id="Email"
-                    type="text"
-                    InputLabelProps={{
-                      style: { textTransform: 'uppercase' },
-                      shrink: true,
-                    }}
-                    value={email}
-                    variant="outlined"
-                    placeholder=""
-                    size="small"
-                    onBlur={
-                      email === ''
-                        ? () => setValidarEmail('nao')
-                        : () => setValidarEmail('sim')
-                    }
-                    onChange={(e) => setEmail(e.target.value)}
-                    error={validarEmail === 'nao'}
-                    onFocus={(e) => setEmail(e.target.value)}
-                  />
-                </Box>
-              </Grid>
-            </Box>
-            <Box
-              mt={1}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <FormControl className={classes.margin}>
-                <InputLabel htmlFor="demo-customized-select-native">
-                  Forma de Pagamento
-                </InputLabel>
-                <NativeSelect
-                  id="demo-customized-select-native"
-                  value={fPagamento}
-                  onChange={handleChangeFP}
-                  input={<BootstrapInput />}
-                >
-                  <option aria-label="None" value="" />
-                  <option value={10}>Cartão de Crédito</option>
-                  <option value={20}>Pix</option>
-                  <option value={30}>Boleto</option>
-                </NativeSelect>
-              </FormControl>
-              {/* <Button
+                {/* <Button
                 className={classes.button1}
                 variant="contained"
                 onClick={pagar}
               >
                 FAZER O PAGAMENTO
               </Button> */}
+              </Box>
             </Box>
-          </Box>
-          {fPagamento === '10' && <CheckoutT CPF={cpf} Email={email} />}
-          {/* {open && <PagCC email={email} cpf={cpf} />} */}
-        </Hidden>
-      </Box>
+            {fPagamento === '10' && (
+              <CheckoutT
+                nome={nome}
+                cpf={cpf}
+                nascimento={dataNascimento}
+                email={email}
+              />
+            )}
+
+            {/* {open && <PagCC email={email} cpf={cpf} />} */}
+          </Hidden>
+          <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
+            <Box height={260} sx={{ background: '#ffebee' }}>
+              <Alert onClose={handleDrawerClose} severity="error">
+                <AlertTitle>ERRO DE PREENCHIMENTO </AlertTitle>
+                <strong>{valorErro}</strong>
+              </Alert>
+            </Box>
+          </Drawer>
+        </Box>
+      </ClickAwayListener>
     </Box>
   );
 };

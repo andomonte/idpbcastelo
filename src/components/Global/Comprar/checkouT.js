@@ -3,19 +3,20 @@ import { useMercadopago } from 'react-sdk-mercadopago';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button } from '@material-ui/core';
-
+import { useRouter } from 'next/router';
 // import cpfMask from 'src/components/mascaras/cpf';
 // import cnpjMask from 'src/components/mascaras/cnpj';
 // import onlyNumber from 'src/components/mascaras/onlyNumber';
 import Typography from '@mui/material/Typography';
 import api from 'src/components/services/api';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Cards from 'react-credit-cards';
 import Drawer from '@material-ui/core/Drawer';
-
+import { Alert, AlertTitle } from '@material-ui/lab';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styled from 'styled-components';
+import TamanhoJanela from 'src/utils/getSize';
 
 const Container = styled.div`
   .rccs {
@@ -25,7 +26,7 @@ const Container = styled.div`
     width: 290px;
   }
   .rccs__card {
-    height: 162.873px;
+    height: 142.873px;
     margin: 0 auto;
     position: relative;
     -webkit-transform-style: preserve-3d;
@@ -323,8 +324,8 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(1, 1, 1),
-    height: '95%',
-    width: '95%',
+    height: '100%',
+    width: '100%',
   },
   modal: {
     display: 'flex',
@@ -410,9 +411,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '14px',
     borderWidth: '0.5px',
     borderStyle: 'solid',
+    borderRadius: '8px',
+    border: '2px solid #b91a30',
   },
   tf_input: {
     backgroundColor: '#ffff',
+    borderRadius: '8px',
+    border: '2px solid #b91a30',
+
     textAlign: 'center',
     width: '100%',
     height: '40px',
@@ -478,6 +484,9 @@ const useStyles = makeStyles((theme) => ({
   tf_input2: {
     textAlign: 'center',
     backgroundColor: '#ffff',
+    borderRadius: '8px',
+    border: '2px solid #b91a30',
+
     // marginRight: 8,
 
     width: '100%',
@@ -497,6 +506,8 @@ const useStyles = makeStyles((theme) => ({
   tf_input3: {
     textAlign: 'center',
     backgroundColor: '#ffff',
+    borderRadius: '8px',
+    border: '2px solid #b91a30',
     // marginRight: 8,
 
     width: '100%',
@@ -535,10 +546,12 @@ const useStyles = makeStyles((theme) => ({
   button1: {
     display: 'flex',
     background: '#2196f3',
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
+    borderRadius: '12px',
+    border: '2px solid #b91a30',
   },
   button2: {
     display: 'flex',
@@ -550,10 +563,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CheckoutT({ Email }) {
+export default function CheckoutT({ email, cpf, nome, nascimento }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openDrawerOK, setOpenDrawerOK] = React.useState(false);
+  const [openDrawerFinal, setOpenDrawerFinal] = React.useState(false);
   const [carregar, setCarregar] = React.useState(false);
   const [tipoDoc, setTipoDoc] = React.useState('CPF');
   const [number, setNumber] = React.useState('');
@@ -561,7 +576,10 @@ export default function CheckoutT({ Email }) {
   const [cvc, setCVC] = React.useState('');
   const [mes, setMes] = React.useState('');
   const [ano, setAno] = React.useState('');
+  // const [numberDoc, setNumberDoc] = React.useState('');
   const [valorErro, setValorErro] = React.useState(0);
+  const [messageErro, setMessageErro] = React.useState(0);
+
   const mp = useMercadopago.v2('TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd', {
     locale: 'pt-BR',
   });
@@ -572,6 +590,28 @@ export default function CheckoutT({ Email }) {
     cardholderName: '',
     cardNumber: '',
   });
+  const [validacaoNumero, setValidacaoNumero] = React.useState('testar');
+  const [validacaoNome, setValidacaoNome] = React.useState('testar');
+  const [validacaoCPF, setValidacaoCPF] = React.useState('testar');
+  const [validacaoCVV, setValidacaoCVV] = React.useState('testar');
+  const [validacaoMes, setValidacaoMes] = React.useState('testar');
+  const [validacaoAno, setValidacaoAno] = React.useState('testar');
+
+  const numeroRef = React.useRef();
+  const nomeRef = React.useRef();
+  const cpfRef = React.useRef();
+  const mesRef = React.useRef();
+  const anoRef = React.useRef();
+  const emailRef = React.useRef();
+  const pgRef = React.useRef();
+  const router = useRouter();
+  React.useEffect(() => {
+    if (!validacaoCPF) {
+      setOpenDrawer(true);
+      setValorErro('CPF-INVÁLIDO');
+      cpfRef.current.focus();
+    }
+  }, [validacaoCPF]);
   /*  const mercadopago = useMercadopago.v1(
     'TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd',
   ); */
@@ -653,179 +693,309 @@ export default function CheckoutT({ Email }) {
       erro: 'default',
       mensagem: 'Confira seus dados',
     },
+    {
+      erro: 'cc_rejected_bad_filled_card_number',
+      mensagem: 'Revise o número do cartão',
+    },
+    {
+      erro: 'rejected	cc_rejected_bad_filled_date',
+      mensagem: 'Revise a data de vencimento',
+    },
+    { erro: 'cc_rejected_bad_filled_other', mensagem: 'Revise os dados' },
+    {
+      erro: 'cc_rejected_bad_filled_security_code',
+      mensagem: 'Revise o código de segurança do cartão',
+    },
+    {
+      erro: 'cc_rejected_blacklist',
+      mensagem: 'Não pudemos processar seu pagamento',
+    },
+
+    {
+      erro: 'cc_rejected_call_for_authorize',
+      mensagem:
+        'Você deve autorizar ao Banco o pagamento do valor ao Mercado Pago',
+    },
+    {
+      erro: 'cc_rejected_card_disabled',
+      mensagem:
+        'Ligue para o Banco para ativar seu cartão. O telefone está no verso do seu cartão',
+    },
+
+    {
+      erro: 'cc_rejected_card_error',
+      mensagem: 'Não conseguimos processar seu pagamento',
+    },
+
+    {
+      erro: 'cc_rejected_duplicated_payment',
+      mensagem:
+        'Você já efetuou um pagamento com esse valor. Caso precise pagar novamente, utilize outro cartão ou outra forma de pagamento',
+    },
+
+    {
+      erro: 'cc_rejected_high_risk',
+      mensagem:
+        'Seu pagamento foi recusado. Escolha outra forma de pagamento. Recomendamos meios de pagamento em dinheiro.',
+    },
+
+    {
+      erro: 'cc_rejected_insufficient_amount',
+      mensagem: 'O Cartão possui saldo insuficiente.',
+    },
+
+    {
+      erro: 'cc_rejected_invalid_installments',
+      mensagem:
+        'O seu Banco não processa pagamentos nessa quantidade de parcelas',
+    },
+
+    {
+      erro: 'cc_rejected_max_attempts',
+      mensagem:
+        'Você atingiu o limite de tentativas permitido. Escolha outro cartão ou outra forma de pagamento.',
+    },
+
+    {
+      erro: 'cc_rejected_other_reason',
+      mensagem: 'o Banco do seu Cartão não processa o pagamento.',
+    },
+
+    {
+      erro: 'cc_rejected_card_type_not_allowed',
+      mensagem:
+        'O pagamento foi rejeitado porque o usuário não tem a função crédito habilitada em seu cartão multiplo (débito e crédito).',
+    },
   ];
 
   const handleDrawerClose = () => {
     setOpenDrawer(false);
   };
-  console.log(erros[208]);
+
   let cardForm = '';
-  if (mp) {
-    cardForm = mp.cardForm({
-      amount: '50',
-      autoMount: true,
-      form: {
-        id: 'form-checkout',
-        cardholderName: {
-          id: 'form-checkout__cardholderName',
-          placeholder: 'Titular do cartão',
+  React.useEffect(() => {
+    if (mp) {
+      cardForm = mp.cardForm({
+        amount: '50',
+        autoMount: true,
+        form: {
+          id: 'form-checkout',
+          cardholderName: {
+            id: 'form-checkout__cardholderName',
+            placeholder: 'Titular do cartão',
+          },
+          cardholderEmail: {
+            id: 'form-checkout__cardholderEmail',
+            placeholder: 'E-mail',
+          },
+          cardNumber: {
+            id: 'form-checkout__cardNumber',
+            placeholder: 'Número do cartão',
+          },
+          cardExpirationMonth: {
+            id: 'form-checkout__cardExpirationMonth',
+            placeholder: 'MM',
+          },
+          cardExpirationYear: {
+            id: 'form-checkout__cardExpirationYear',
+            placeholder: 'AA',
+          },
+          securityCode: {
+            id: 'form-checkout__securityCode',
+            placeholder: 'CVV',
+          },
+          installments: {
+            id: 'form-checkout__installments',
+            placeholder: 'Parcelas',
+          },
+          identificationType: {
+            id: 'form-checkout__identificationType',
+            placeholder: 'Tipo',
+          },
+          identificationNumber: {
+            id: 'form-checkout__identificationNumber',
+            placeholder: 'CPF/CNPJ - somente Números',
+          },
+          issuer: {
+            id: 'form-checkout__issuer',
+            placeholder: 'Banco emissor',
+          },
         },
-        cardholderEmail: {
-          id: 'form-checkout__cardholderEmail',
-          placeholder: 'E-mail',
-        },
-        cardNumber: {
-          id: 'form-checkout__cardNumber',
-          placeholder: 'Número do cartão',
-        },
-        cardExpirationMonth: {
-          id: 'form-checkout__cardExpirationMonth',
-          placeholder: 'MM',
-        },
-        cardExpirationYear: {
-          id: 'form-checkout__cardExpirationYear',
-          placeholder: 'AA',
-        },
-        securityCode: {
-          id: 'form-checkout__securityCode',
-          placeholder: 'CVV',
-        },
-        installments: {
-          id: 'form-checkout__installments',
-          placeholder: 'Parcelas',
-        },
-        identificationType: {
-          id: 'form-checkout__identificationType',
-          placeholder: 'Tipo',
-        },
-        identificationNumber: {
-          id: 'form-checkout__identificationNumber',
-          placeholder: 'somente Números',
-        },
-        issuer: {
-          id: 'form-checkout__issuer',
-          placeholder: 'Banco emissor',
-        },
-      },
-      callbacks: {
-        onFormMounted: (error) => {
-          if (error) {
-            console.log('Form mounted', error);
-            return console.warn('Form Mounted handling error: ', error);
-          }
-          return 0;
-        },
-        onFormUnmounted: (error) => {
-          if (error) {
-            console.log('Form unmounted', error);
-            return console.warn('Form Unmounted handling error: ', error);
-          }
-          return 0;
-        },
-        onIdentificationTypesReceived: (error, identificationTypes) => {
-          if (error) {
-            console.log(
-              'Identification types available: ',
-              identificationTypes,
-            );
+        callbacks: {
+          onFormMounted: (error) => {
+            if (error) {
+              return console.warn('Form Mounted handling error: ', error);
+            }
+            return 0;
+          },
+          onFormUnmounted: (error) => {
+            if (error) {
+              return console.warn('Form Unmounted handling error: ', error);
+            }
+            return 0;
+          },
+          onIdentificationTypesReceived: (error, identificationTypes) => {
+            if (error) {
+              return console.warn(
+                'identificationTypes handling error: ',
+                error,
+                identificationTypes,
+              );
+            }
+            return 0;
+          },
+          onPaymentMethodsReceived: (error, paymentMethods) => {
+            if (error) {
+              // console.log('Payment Methods available: ', paymentMethods);
+              return console.warn(
+                'paymentMethods handling error: ',
+                error,
+                paymentMethods,
+              );
+            }
+            return 0;
+          },
+          onIssuersReceived: (error, issuers) => {
+            if (error) {
+              return console.warn('issuers handling error: ', error, issuers);
+            }
+            return 0;
+          },
+          onInstallmentsReceived: (error, installments) => {
+            if (error) {
+              return console.warn(
+                'installments handling error: ',
+                error,
+                installments,
+              );
+            }
+            return 0;
+          },
+          onCardTokenReceived: (error, token) => {
+            if (error) {
+              const dadosErro = erros.filter(
+                (val) => val.erro === error[0].code,
+              );
 
-            return console.warn('identificationTypes handling error: ', error);
-          }
-          return 0;
-        },
-        onPaymentMethodsReceived: (error, paymentMethods) => {
-          if (error) {
-            console.log('Payment Methods available: ', paymentMethods);
-            return console.warn('paymentMethods handling error: ', error);
-          }
-          return 0;
-        },
-        onIssuersReceived: (error, issuers) => {
-          if (error) {
-            console.log('Issuers available: ', issuers);
-            return console.warn('issuers handling error: ', error);
-          }
-          return 0;
-        },
-        onInstallmentsReceived: (error, installments) => {
-          if (error) {
-            console.log('Installments available: ', installments);
-            return console.warn('installments handling error: ', error);
-          }
-          return 0;
-        },
-        onCardTokenReceived: (error, token) => {
-          if (error) {
-            const dadosErro = erros.filter((val) => val.erro === error[0].code);
+              setValorErro(dadosErro[0].mensagem);
+              setOpenDrawer(true);
+              //   console.log('Token available: ', error, dadosErro[0].mensagem);
 
-            setValorErro(dadosErro[0].mensagem);
-            setOpenDrawer(true);
-            console.log('Token available: ', error, dadosErro[0].mensagem);
+              return console.warn('Token handling error: ', error);
+            }
 
-            return console.warn('Token handling error: ', error);
-          }
-
-          console.log('Token available: ', token);
-          return 0;
-        },
-        onSubmit: (event) => {
-          event.preventDefault();
-          setCarregar(true);
-          const paymentMethodId = event.target.MPHiddenInputPaymentMethod.value;
-          const emailE = event.target.cardholderEmail.value;
-          const docType = event.target.identificationType.value;
-          const docNumber = event.target.identificationNumber.value;
-          const {
-            paymentMethodId: payment_method_id,
-            issuerId: issuer_id,
-            cardholderEmail: email,
-            amount,
-            token,
-            installments,
-            identificationNumber,
-            identificationType,
-          } = cardForm.getCardFormData();
-
-          api
-            .post('/api/mercadoPago', {
+            //            console.log('Token available: ', token);
+            return 0;
+          },
+          onSubmit: (event) => {
+            event.preventDefault();
+            setCarregar(true);
+            const paymentMethodId =
+              event.target.MPHiddenInputPaymentMethod.value;
+            const emailE = event.target.cardholderEmail.value;
+            const docType = event.target.identificationType.value;
+            const docNumber = event.target.identificationNumber.value;
+            const {
+              paymentMethodId: payment_method_id,
+              issuerId: issuer_id,
+              cardholderEmail: email,
+              amount,
               token,
-              issuer: issuer_id,
-              paymentMethodId,
-              transactionAmount: Number(amount),
-              installments: Number(installments),
-              description: 'Inscrição Global',
-              email: emailE,
-              docType,
-              docNumber,
-            })
+              installments,
+              identificationNumber,
+              identificationType,
+            } = cardForm.getCardFormData();
 
-            .then((response) => {
-              console.log(response);
-              setCarregar(false);
-            })
+            api
+              .post('/api/mercadoPago', {
+                token,
+                issuer: issuer_id,
+                paymentMethodId,
+                transactionAmount: Number(amount),
+                installments: Number(installments),
+                description: 'Inscrição Global',
+                email: emailE,
+                docType,
+                docNumber,
+              })
 
-            .catch(() => {
-              //  updateFile(uploadedFile.id, { error: true });
-            });
+              .then((response) => {
+                if (
+                  response.data.status === 'approved' ||
+                  response.data.status === 'in_process'
+                ) {
+                  const status = response.data.status_detail;
+                  console.log(
+                    'enviar para o banco de dados',
+                    nome,
+                    email,
+                    cpf,
+                    nascimento,
+                    status,
+                  );
+
+                  if (response.data.status === 'in_process') {
+                    setValorErro(
+                      'Estamos processando o pagamento. Não se preocupe, em menos de 2 dias úteis informaremos por e-mail se foi creditado.',
+                    );
+                    setMessageErro(response.data.status_detail);
+                    setOpenDrawerOK(true);
+                  }
+
+                  if (response.data.status_detail === 'accredited') {
+                    setValorErro(
+                      'Pronto, seu pagamento foi aprovado! Para conferir seu Ticket é só FECHAR, clicar em MEU TICKET e digitar seu CPF.',
+                    );
+                    setMessageErro(response.data.status_detail);
+                    setOpenDrawerOK(true);
+                  }
+                }
+                if (response.data.status === 'rejected') {
+                  const dadosErro = erros.filter(
+                    (val) => val.erro === response.data.status_detail,
+                  );
+                  setValorErro(dadosErro[0].mensagem);
+                  setOpenDrawerFinal(true);
+                  setMessageErro(response.data.message);
+                }
+                if (response.data.message) {
+                  setValorErro(
+                    `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
+                  );
+                  setOpenDrawerFinal(true);
+                  setMessageErro(response.data.message);
+                }
+                setCarregar(false);
+              })
+
+              .catch(() => {
+                //  updateFile(uploadedFile.id, { error: true });
+              });
+          },
+          onFetching: (resource) => {
+            if (resource === 'identificationTypes')
+              console.log('Resourse: ', resource);
+
+            // Animate progress bar
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.removeAttribute('value');
+
+            return () => {
+              progressBar.setAttribute('value', '0');
+            };
+          },
         },
-        onFetching: (resource) => {
-          if (resource === 'identificationTypes')
-            console.log('erro de identificação');
-          console.log('Tipo de erro: ', resource);
-
-          // Animate progress bar
-          const progressBar = document.querySelector('.progress-bar');
-          progressBar.removeAttribute('value');
-
-          return () => {
-            progressBar.setAttribute('value', '0');
-          };
-        },
-      },
-    });
-  }
+      });
+    }
+  }, [mp]);
   const handleInputChange = (e) => {
-    console.log('nome:', e, e.target.value);
+    const eventName = e.target.name;
+    const eventValue = e.target.value;
+    if (eventName === 'identificationNumber') {
+      //      setNumberDoc(e.target.value);
+      if (eventValue.length > 11) setTipoDoc('CNPJ');
+      else setTipoDoc('CPF');
+    }
     setData({
       ...data,
       [e.target.dataset.name]: e.target.value,
@@ -849,8 +1019,6 @@ export default function CheckoutT({ Email }) {
       const index = [...form].indexOf(event.target);
       form.elements[index + 1].focus();
       event.preventDefault();
-      if (event.target.name)
-        console.log('aqui no final', form.elements[index + 1]);
     }
   };
   const handleMax2 = (event) => {
@@ -861,9 +1029,48 @@ export default function CheckoutT({ Email }) {
       event.preventDefault();
     }
   };
-
+  const voltar = () => {
+    setOpen(false);
+    // window.location.reload();
+  };
+  const atualizar = () => {
+    router.push({
+      pathname: '/global',
+      //   query: { dadosMesa2, numeroGame },
+    });
+    // setOpen(false);
+    // window.location.reload();
+  };
+  const janela = TamanhoJanela();
+  // console.log(janela.height);
   const body = (
     <Box className={classes.paper}>
+      <Box>
+        <Box display="flex" width="100%" mt={0} ml={1}>
+          <Grid item xs={2} md={3}>
+            <Box
+              height={10}
+              p={1}
+              ml={0}
+              mr={0}
+              display="flex"
+              alignItems="center"
+            >
+              <ArrowBackIcon
+                sx={{
+                  fontSize: 20,
+                  color: '#fff',
+                }}
+                onClick={voltar}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={1} md={3} />
+
+          <Grid item xs={9} md={3} />
+        </Box>
+      </Box>
+
       <ClickAwayListener onClickAway={handleDrawerClose}>
         <form id="form-checkout">
           <Box>
@@ -890,6 +1097,7 @@ export default function CheckoutT({ Email }) {
                       className={classes.tf_input}
                       onKeyDown={handleEnter}
                       onFocus={handleFocus}
+                      autoFocus
                       onChange={(event) => {
                         setNumber(event.target.value);
                       }}
@@ -941,7 +1149,7 @@ export default function CheckoutT({ Email }) {
                     Vencimento do Cartão
                   </Typography>
                 </Grid>
-                <Grid item xs={5.5} md={3}>
+                <Grid item xs={5} md={3}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1007,6 +1215,7 @@ export default function CheckoutT({ Email }) {
                 </Box>
               </Grid>
             </Box>
+
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
                 <Grid item xs={12} md={3}>
@@ -1016,41 +1225,7 @@ export default function CheckoutT({ Email }) {
                     display="block"
                     gutterBottom
                   >
-                    Tipo de Documento do Dono do Cartão
-                  </Typography>
-                </Grid>
-              </Box>
-            </Box>
-            <Box display="flex" mt={0}>
-              <Grid item xs={12} md={3}>
-                <Box mt={-1}>
-                  <select
-                    className={classes.tf_input3}
-                    name="identificationType"
-                    id="form-checkout__identificationType"
-                    onChange={(e) => {
-                      setTipoDoc(e.target.value);
-                    }}
-                    onKeyDown={handleEnter}
-                    onChange={handleInputChange}
-                    onFocus={(e) => {
-                      setTipoDoc(e.target.value);
-                      handleFocus;
-                    }}
-                  />
-                </Box>
-              </Grid>
-            </Box>
-            <Box>
-              <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={12} md={3}>
-                  <Typography
-                    className={classes.texto}
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                  >
-                    Digite o {tipoDoc} do Dono do Cartão
+                    Digite o CPF ou CNPJ do Dono do Cartão
                   </Typography>
                 </Grid>
               </Box>
@@ -1104,13 +1279,14 @@ export default function CheckoutT({ Email }) {
                 <Cards
                   cvc={cvc}
                   expiry={String(mes + ano)}
-                  focused={data.focus}
+                  focused={String(data.focus)}
                   //          focused={active}
                   name={name}
                   number={number}
                 />
               </Container>
             </Box>
+
             <Box
               mt={2}
               sx={{
@@ -1128,6 +1304,19 @@ export default function CheckoutT({ Email }) {
               </Button>
             </Box>
           </Box>
+          <Box display="none" mt={0}>
+            <Grid item xs={12} md={3}>
+              <Box mt={-1}>
+                <select
+                  className={classes.tf_input3}
+                  name="identificationType"
+                  value={tipoDoc}
+                  id="form-checkout__identificationType"
+                  readOnly
+                />
+              </Box>
+            </Grid>
+          </Box>
           <Box display="none">
             <Box width="100%" mt={-1} ml={2} sx={{ fontSize: 'bold' }}>
               <Typography variant="caption" display="block" gutterBottom>
@@ -1141,7 +1330,7 @@ export default function CheckoutT({ Email }) {
                 id="form-checkout__cardholderEmail"
                 className={classes.tf_m}
                 readOnly
-                value={Email}
+                value={email}
               />
             </Box>
           </Box>
@@ -1157,6 +1346,7 @@ export default function CheckoutT({ Email }) {
                 className={classes.tf_s}
                 name="issuer"
                 id="form-checkout__issuer"
+                readOnly
               />
             </Box>
           </Box>
@@ -1171,7 +1361,83 @@ export default function CheckoutT({ Email }) {
           )}
         </form>
       </ClickAwayListener>
+      <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
+        <Box height={janela.height} sx={{ background: '#c5e1a5' }}>
+          <Box mt={25}>
+            <Box display="flex" justifyContent="center">
+              <h2>Recebemos seu Pagamento</h2>
+            </Box>
+            <Box m={2} textAlign="center">
+              <strong>{valorErro}</strong>
+            </Box>
 
+            <Box
+              mt={4}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                className={classes.button2}
+                variant="contained"
+                id="reload"
+                onClick={atualizar}
+              >
+                Fechar
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Drawer>
+      <Drawer variant="persistent" anchor="bottom" open={openDrawerFinal}>
+        <Box height={janela.height} sx={{ background: '#ffebee' }}>
+          <Box mt={25}>
+            {messageErro ? (
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <h2>DADOS ERRADOS !</h2>
+                </Box>
+                <Box m={2} textAlign="center">
+                  <strong>{valorErro}</strong>
+                </Box>
+
+                <Box mt={4} textAlign="center">
+                  <strong>A operadora Informou:</strong>
+                </Box>
+                <Box m={0} textAlign="center">
+                  <strong>{messageErro}</strong>
+                </Box>
+              </Box>
+            ) : (
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <h2>ERRO NO PAGAMENTO !</h2>
+                </Box>
+                <Box m={2} textAlign="center">
+                  <strong>{valorErro}</strong>
+                </Box>
+              </Box>
+            )}
+            <Box
+              mt={4}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                className={classes.button2}
+                variant="contained"
+                id="reload"
+                onClick={atualizar}
+              >
+                Fechar
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Drawer>
       <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
         <Box height={260} sx={{ background: '#ffebee' }}>
           <Alert onClose={handleDrawerClose} severity="error">
