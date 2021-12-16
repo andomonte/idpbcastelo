@@ -8,7 +8,7 @@ function Compra({ inscritos }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const inscritos = await prisma.inscritosGlobal
+  const inscritos = await prisma.inscritosGlobals
     .findMany()
     .finally(async () => {
       await prisma.$disconnect();

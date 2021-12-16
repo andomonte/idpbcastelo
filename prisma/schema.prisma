@@ -558,7 +558,7 @@ model perguntasGame {
   id       Int     @id @default(autoincrement())
 }
 
-model inscritosGlobal {
+model inscritosGlobals {
   id          Int      @default(autoincrement())
   Nome        String   @db.VarChar(255)
   CPF         String   @db.VarChar(45)
@@ -567,8 +567,7 @@ model inscritosGlobal {
   fpagamento  String   @db.VarChar(45)
   idPagamento String   @db.VarChar(255)
   status      String   @db.VarChar(45)
-//  createdAt   DateTime @db.Timestamp(0)
-  createdAt DateTime @default(now())
+  createdAt   DateTime @db.Timestamp(0)
 
   @@id([id, CPF, idPagamento])
 }
