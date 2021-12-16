@@ -44,6 +44,7 @@ const handler = async (req, res) => {
 
   const paymentData = {
     transaction_amount: Number(req.body.transactionAmount),
+    // notification_url:"http://requestbin.fullcontact.com/1ogudgk1",
     token: req.body.token,
     description: req.body.description,
     installments: Number(req.body.installments),
@@ -57,7 +58,7 @@ const handler = async (req, res) => {
       },
     },
   };
-  const dataTime = (separator = '') => {
+  /*  const dataTime = (separator = '') => {
     const newDate = new Date();
     const date = newDate.getDate();
     const month = newDate.getMonth() + 1;
@@ -66,7 +67,7 @@ const handler = async (req, res) => {
     return `${year}${separator}${
       month < 10 ? `0${month}` : `${month}`
     }${separator}${date}`;
-  };
+  }; */
   const respPagamento = await sendMercadoPago(paymentData);
   // const respPagamento1 = JSON.stringify(respPagamento);
   console.log('v respP=', respPagamento);
@@ -82,15 +83,6 @@ const handler = async (req, res) => {
       const idPagamento = String(respPagamento.response.id);
       const createdAt = new Date();
       try {
-        const body = {
-          Email: req.body.email,
-          Nome: req.body.nome,
-          CPF: req.body.cpf,
-          Nascimento: req.body.nascimento,
-          fpagamento: req.body.fPagamento,
-          status,
-          idPagamento,
-        };
         await prisma.inscritosGlobal
           .create({
             data: {
