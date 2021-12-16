@@ -461,14 +461,25 @@ model celulas_MM {
 }
 
 model games {
-  Mesa      String? @db.VarChar(45)
-  codigo    Int     @id
-  resposta1 String? @db.VarChar(45)
-  resposta2 String? @db.VarChar(45)
-  resposta3 String? @db.VarChar(45)
-  resposta4 String? @db.VarChar(45)
-  status    String? @db.VarChar(45)
-  pontos    String? @db.VarChar(45)
+  Mesa       String? @db.VarChar(45)
+  codigo     Int     @id
+  resposta1  String? @default("0") @db.VarChar(45)
+  resposta2  String? @default("0") @db.VarChar(45)
+  resposta3  String? @default("0") @db.VarChar(45)
+  resposta4  String? @default("0") @db.VarChar(45)
+  resposta5  String? @default("0") @db.VarChar(45)
+  resposta6  String? @default("0") @db.VarChar(45)
+  resposta7  String? @default("0") @db.VarChar(45)
+  resposta8  String? @default("0") @db.VarChar(45)
+  resposta9  String? @default("0") @db.VarChar(45)
+  resposta10 String? @default("0") @db.VarChar(45)
+  resposta11 String? @default("0") @db.VarChar(45)
+  resposta12 String? @db.VarChar(45)
+  resposta13 String? @db.VarChar(45)
+  resposta14 String? @db.VarChar(45)
+  resposta15 String? @db.VarChar(45)
+  status     String? @default("OFF") @db.VarChar(45)
+  pontos     String? @default("0") @db.VarChar(45)
 }
 
 model MinistrosIDPBAMs {
@@ -535,4 +546,29 @@ model MinistrosIDPBAMs {
   updatedAt           DateTime @db.DateTime(0)
 
   @@id([id, Matricula, CPF])
+}
+
+model perguntasGame {
+  Pergunta String? @default("") @db.VarChar(255)
+  LetraA   String? @default("") @db.VarChar(45)
+  LetraB   String? @default("") @db.VarChar(45)
+  LetraC   String? @default("") @db.VarChar(45)
+  LetraD   String? @default("") @db.VarChar(45)
+  gabarito String? @default("") @db.VarChar(45)
+  id       Int     @id @default(autoincrement())
+}
+
+model inscritosGlobal {
+  id          Int      @default(autoincrement())
+  Nome        String   @db.VarChar(255)
+  CPF         String   @db.VarChar(45)
+  Nascimento  String   @db.VarChar(45)
+  Email       String   @db.VarChar(155)
+  fpagamento  String   @db.VarChar(45)
+  idPagamento String   @db.VarChar(255)
+  status      String   @db.VarChar(45)
+//  createdAt   DateTime @db.Timestamp(0)
+  createdAt DateTime @default(now())
+
+  @@id([id, CPF, idPagamento])
 }

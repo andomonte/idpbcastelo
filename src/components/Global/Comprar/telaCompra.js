@@ -166,7 +166,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = () => {
+const Home = ({ inscritos }) => {
   const classes = useStyles();
   // const router = useRouter();
   const [nome, setNome] = React.useState('');
@@ -196,6 +196,7 @@ const Home = () => {
   const fpRef = useRef();
 
   const handleChangeFP = (event) => {
+    // console.log(event.target.value);
     setFPagamento(event.target.value);
   };
   /* const pagar = () => {
@@ -206,20 +207,24 @@ const Home = () => {
 
   const prefID = ''; */
 
-  /* const comprar = () => {
+  const comprar = () => {
     api
-      .post('/api/mercadoPagoPro', {})
-
-      .then((response) => {
-        prefID = response.data;
-        console.log('pref:', prefID);
-        setOpen(true);
+      .post('/api/notification', {
+        action: 'payment',
+        data: { id: '1244662421' },
       })
 
-      .catch(() => {
+      .then((response) => {
+        const prefID = response.data;
+        console.log('pref:', prefID);
+        //   setOpen(true);
+      })
+
+      .catch((error) => {
+        console.log(error);
         //  updateFile(uploadedFile.id, { error: true });
       });
-  }; */
+  };
   React.useEffect(() => {
     if (!validacaoNome) {
       setOpenDrawer(true);
@@ -229,9 +234,9 @@ const Home = () => {
   }, [validacaoNome]);
 
   React.useEffect(() => {
-    if (!validacaoCPF) {
+    if (validacaoCPF !== 'next' && validacaoCPF !== 'testar') {
       setOpenDrawer(true);
-      setValorErro('CPF-INVÁLIDO');
+      setValorErro(validacaoCPF);
       cpfRef.current.focus();
     }
   }, [validacaoCPF]);
@@ -257,7 +262,7 @@ const Home = () => {
       nomeRef.current.focus();
     }
 
-    if (!validacaoCPF) {
+    if (validacaoCPF !== 'testar') {
       setValidacaoCPF('testar');
       cpfRef.current.focus();
     }
@@ -282,6 +287,7 @@ const Home = () => {
         if (validator.isEmail(emailVal)) {
           setValidacaoEmail(true);
           fpRef.current.focus();
+          console.log('form', form);
         } else {
           setValidacaoEmail(false);
         }
@@ -295,6 +301,7 @@ const Home = () => {
   // Nome
   const handleValidarNome = (e) => {
     const valorNome = e.target.value;
+    comprar();
     if (!validacaoNome) nomeRef.current.focus();
 
     if (e.target.value !== '') {
@@ -311,13 +318,27 @@ const Home = () => {
 
   // CPF
   const handleValidarCPF = (e) => {
+    const campoCPF = e.target.value;
     const valorCPF = e.target.value.replace(/\D/g, '');
-    if (!validacaoCPF) cpfRef.current.focus();
+    console.log('validacaoCPF=', validacaoCPF);
+    console.log('inscritos=', inscritos);
+    if (validacaoCPF !== 'next' && validacaoCPF !== 'testar')
+      cpfRef.current.focus();
 
-    if (e.target.value !== '') {
+    if (campoCPF !== '') {
       const vCPF = ValidaCPF(valorCPF);
-      setValidacaoCPF(vCPF);
-    } else setValidacaoCPF(false);
+      if (vCPF) {
+        const dadosCPF = inscritos.filter((val) => val.CPF === campoCPF);
+        console.log('dadosCPF=', dadosCPF.length);
+        if (dadosCPF.length === 0) {
+          setValidacaoCPF('next');
+        } else
+          setValidacaoCPF(
+            `CPF já inscrito, com pagamento ${dadosCPF[0].status}`,
+          );
+      } else setValidacaoCPF('número de CPF inválido');
+      // setValidacaoCPF(vCPF);
+    } else setValidacaoCPF('preencha o campo CPF');
   };
 
   // Email
@@ -336,6 +357,7 @@ const Home = () => {
 
   const handlevalidarData = (e) => {
     const dataV = e.target.value;
+
     if (!validacaoData) dataRef.current.focus();
     const dia = dataV.slice(0, 2);
     const mes = dataV.slice(3, 5);
@@ -459,7 +481,7 @@ const Home = () => {
                       placeholder="dd/mm/aaaa"
                       size="small"
                       onBlur={(e) => {
-                        if (validacaoCPF) handlevalidarData(e);
+                        if (validacaoCPF === 'next') handlevalidarData(e);
                       }}
                       onChange={(e) => {
                         setDataNascimento(e.target.value);
@@ -541,16 +563,18 @@ const Home = () => {
                           !(
                             validacaoData === true &&
                             validacaoEmail === true &&
-                            validacaoCPF === true &&
+                            validacaoCPF === 'next' &&
                             validacaoNome === true
                           )
                         }
                       >
                         <option value={0}>Escolha a Forma de pagamento</option>
 
-                        <option value={10}>Cartão de Crédito</option>
-                        <option value={20}>Pix</option>
-                        <option value={30}>Boleto</option>
+                        <option value="Cartão de Crédito">
+                          Cartão de Crédito
+                        </option>
+                        <option value="Pix">Pix</option>
+                        <option value="Boleto">Boleto</option>
                       </NativeSelect>
                     </Box>
                   </FormControl>
@@ -564,12 +588,13 @@ const Home = () => {
               </Button> */}
               </Box>
             </Box>
-            {fPagamento === '10' && (
+            {fPagamento === 'Cartão de Crédito' && (
               <CheckoutT
                 nome={nome}
                 cpf={cpf}
                 nascimento={dataNascimento}
                 email={email}
+                fPagamento={fPagamento}
               />
             )}
 

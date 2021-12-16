@@ -2,7 +2,7 @@ import React from 'react';
 import Comprar from 'src/components/Global/Comprar/index';
 import prisma from 'src/lib/prisma';
 
-function Compra({ inscritos }) {
+function Notification({ inscritos }) {
   return <Comprar title="SISTEMA-IDPB Global" inscritos={inscritos} />;
 }
 export const getStaticProps = async () => {
@@ -21,4 +21,4 @@ export const getStaticProps = async () => {
   };
 };
 
-export default Compra;
+export default Notification;

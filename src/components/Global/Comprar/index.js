@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Compra({ title }) {
+function Compra({ title, inscritos }) {
   const classes = useStyles();
   //  const [value, setValue] = React.useState(0);
 
@@ -217,7 +217,7 @@ function Compra({ title }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <TelaCompra />
+          <TelaCompra inscritos={inscritos} />
         </main>
       </div>
     </div>

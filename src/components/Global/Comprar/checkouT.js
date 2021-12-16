@@ -422,7 +422,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     width: '100%',
     height: '40px',
-    fontSize: '18px',
+    fontSize: '14px', // fonte
     borderWidth: '0.5px',
     borderStyle: 'solid',
   },
@@ -434,7 +434,7 @@ const useStyles = makeStyles((theme) => ({
 
     width: '200',
     height: '35px',
-    fontSize: '18px',
+    fontSize: '14px', // fonte
     borderWidth: '0.5px',
     borderStyle: 'solid',
     //    borderColor: '#9ccc65',
@@ -491,14 +491,14 @@ const useStyles = makeStyles((theme) => ({
 
     width: '100%',
     height: '40px',
-    fontSize: '18px',
+    fontSize: '14px', // fonte
     borderWidth: '0.5px',
     borderStyle: 'solid',
     //    borderColor: '#9ccc65',
     // alignItems: 'center',
     [theme.breakpoints.down('md')]: {
       //  marginLeft: -5,
-      fontSize: '18px',
+      fontSize: '14px', // fonte
       width: '100%',
     },
   },
@@ -512,13 +512,13 @@ const useStyles = makeStyles((theme) => ({
 
     width: '100%',
     height: '40px',
-    fontSize: '18px',
+    fontSize: '14px', // fonte
     borderWidth: '0.5px',
     borderStyle: 'solid',
     //    borderColor: '#9ccc65',
     // alignItems: 'center',
     [theme.breakpoints.down('md')]: {
-      fontSize: '18px',
+      fontSize: '14px', // fonte
       width: '100%',
       height: '40px',
     },
@@ -556,14 +556,20 @@ const useStyles = makeStyles((theme) => ({
   button2: {
     display: 'flex',
     background: '#b91a30',
-    fontSize: '18px',
+    fontSize: '14px', // fonte
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
   },
 }));
 
-export default function CheckoutT({ email, cpf, nome, nascimento }) {
+export default function CheckoutT({
+  email,
+  cpf,
+  nome,
+  nascimento,
+  fPagamento,
+}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -579,7 +585,9 @@ export default function CheckoutT({ email, cpf, nome, nascimento }) {
   // const [numberDoc, setNumberDoc] = React.useState('');
   const [valorErro, setValorErro] = React.useState(0);
   const [messageErro, setMessageErro] = React.useState(0);
-
+  // meu token de de teste andomonte assim como o do mercado pago é o meu tambem,
+  // o usuario de teste deve está logado para que seja feito os teste criei
+  // um usuario na minha conta andomonte, para outra conta tem que mudar os 3.
   const mp = useMercadopago.v2('TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd', {
     locale: 'pt-BR',
   });
@@ -917,9 +925,14 @@ export default function CheckoutT({ email, cpf, nome, nascimento }) {
                 email: emailE,
                 docType,
                 docNumber,
+                nome,
+                cpf,
+                nascimento,
+                fPagamento,
               })
 
               .then((response) => {
+                console.log('resposta geral:', response);
                 if (
                   response.data.status === 'approved' ||
                   response.data.status === 'in_process'
