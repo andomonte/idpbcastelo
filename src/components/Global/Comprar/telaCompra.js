@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
-import { Box, Button, Typography, Grid } from '@material-ui/core';
+import { Box, Typography, Grid } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CardMedia from '@mui/material/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
 import cpfMask from 'src/components/mascaras/cpf';
 import dataMask from 'src/components/mascaras/datas';
 import api from 'src/components/services/api';
-import InputLabel from '@material-ui/core/InputLabel';
+// import InputLabel from '@material-ui/core/InputLabel';
 // import celularMask from 'src/components/mascaras/celular';
 // import { useRouter } from 'next/router';
 import TextField from '@material-ui/core/TextField';
@@ -23,8 +23,9 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import validator from 'validator';
 
 import CheckoutT from './checkouT';
+import Pix from './pix';
 
-const validateDate = require('validate-date');
+// const validateDate = require('validate-date');
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -215,7 +216,7 @@ const Home = ({ inscritos }) => {
       })
 
       .then((response) => {
-        const prefID = response.data;
+        const prefID = response;
         console.log('pref:', prefID);
         //   setOpen(true);
       })
@@ -287,7 +288,7 @@ const Home = ({ inscritos }) => {
         if (validator.isEmail(emailVal)) {
           setValidacaoEmail(true);
           fpRef.current.focus();
-          console.log('form', form);
+          console.log('form', form, validacaoCPF, validacaoData);
         } else {
           setValidacaoEmail(false);
         }
@@ -541,7 +542,7 @@ const Home = ({ inscritos }) => {
               >
                 <Box mt={1}>
                   <FormControl>
-                    <Box mt={-1} ml={0} sx={{ fontSize: 'bold' }}>
+                    <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
                       <Typography
                         variant="caption"
                         display="block"
@@ -550,10 +551,20 @@ const Home = ({ inscritos }) => {
                         Forma de Pagamento
                       </Typography>
                     </Box>
-                    <Box mr={1.5}>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100vw"
+                      //                      height={300}
+                      style={{}}
+                    >
                       <NativeSelect
-                        className={classes.tf_s}
-                        style={{ width: '105%' }}
+                        //                        className={classes.tf_}
+                        style={{
+                          width: '100%',
+                          marginLeft: 20,
+                          marginRight: 20,
+                        }}
                         inputRef={fpRef}
                         id="fPagamento"
                         value={fPagamento}
@@ -595,6 +606,14 @@ const Home = ({ inscritos }) => {
                 nascimento={dataNascimento}
                 email={email}
                 fPagamento={fPagamento}
+              />
+            )}
+            {fPagamento === 'Pix' && (
+              <Pix
+                nome={nome}
+                cpf={cpf}
+                nascimento={dataNascimento}
+                email={email}
               />
             )}
 

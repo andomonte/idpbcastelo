@@ -585,9 +585,7 @@ export default function CheckoutT({
   // const [numberDoc, setNumberDoc] = React.useState('');
   const [valorErro, setValorErro] = React.useState(0);
   const [messageErro, setMessageErro] = React.useState(0);
-  // meu token de de teste andomonte assim como o do mercado pago é o meu tambem,
-  // o usuario de teste deve está logado para que seja feito os teste criei
-  // um usuario na minha conta andomonte, para outra conta tem que mudar os 3.
+
   const mp = useMercadopago.v2('TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd', {
     locale: 'pt-BR',
   });
@@ -932,20 +930,11 @@ export default function CheckoutT({
               })
 
               .then((response) => {
-                console.log('resposta geral:', response);
                 if (
                   response.data.status === 'approved' ||
                   response.data.status === 'in_process'
                 ) {
-                  const status = response.data.status_detail;
-                  console.log(
-                    'enviar para o banco de dados',
-                    nome,
-                    email,
-                    cpf,
-                    nascimento,
-                    status,
-                  );
+                  // const status = response.data.status_detail;
 
                   if (response.data.status === 'in_process') {
                     setValorErro(
