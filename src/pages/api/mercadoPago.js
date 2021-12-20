@@ -44,7 +44,8 @@ const handler = async (req, res) => {
 
   const paymentData = {
     transaction_amount: Number(req.body.transactionAmount),
-    notification_url: 'https://idpb-app.vercel.app/api/notification',
+    notification_url:
+      'https://webhook.site/c857bd9a-e01e-47ef-ac1b-eeecccf3106c', // 'https://idpb-app.vercel.app/api/notification',
     token: req.body.token,
     description: req.body.description,
     installments: Number(req.body.installments),
@@ -100,12 +101,7 @@ const handler = async (req, res) => {
             await prisma.$disconnect();
           });
 
-        res.status(respPagamento.status).json({
-          status: respPagamento.body.status,
-          status_detail: respPagamento.body.status_detail,
-          id: respPagamento.body.id,
-        });
-        res.send(JSON.stringify(respPagamento.status));
+        return res.send(respPagamento);
       } catch (errors) {
         //        const erroIDPB = JSON.stringify(ErroIDPB);
         console.log(ErroIDPB, 'aqui o erro=', errors);

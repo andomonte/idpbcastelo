@@ -189,7 +189,6 @@ const Home = ({ inscritos }) => {
   const [validacaoData, setValidacaoData] = React.useState('testar');
 
   const [fPagamento, setFPagamento] = React.useState('');
-
   const nomeRef = useRef();
   const cpfRef = useRef();
   const dataRef = useRef();
@@ -208,24 +207,7 @@ const Home = ({ inscritos }) => {
 
   const prefID = ''; */
 
-  const comprar = () => {
-    api
-      .post('/api/notification', {
-        action: 'payment',
-        data: { id: '1244662421' },
-      })
-
-      .then((response) => {
-        const prefID = response;
-        console.log('pref:', prefID);
-        //   setOpen(true);
-      })
-
-      .catch((error) => {
-        console.log(error);
-        //  updateFile(uploadedFile.id, { error: true });
-      });
-  };
+  const comprar = () => {};
   React.useEffect(() => {
     if (!validacaoNome) {
       setOpenDrawer(true);
@@ -263,7 +245,7 @@ const Home = ({ inscritos }) => {
       nomeRef.current.focus();
     }
 
-    if (validacaoCPF !== 'testar') {
+    if (validacaoCPF !== 'testar' && validacaoCPF !== 'next') {
       setValidacaoCPF('testar');
       cpfRef.current.focus();
     }
@@ -288,7 +270,6 @@ const Home = ({ inscritos }) => {
         if (validator.isEmail(emailVal)) {
           setValidacaoEmail(true);
           fpRef.current.focus();
-          console.log('form', form, validacaoCPF, validacaoData);
         } else {
           setValidacaoEmail(false);
         }
@@ -321,8 +302,7 @@ const Home = ({ inscritos }) => {
   const handleValidarCPF = (e) => {
     const campoCPF = e.target.value;
     const valorCPF = e.target.value.replace(/\D/g, '');
-    console.log('validacaoCPF=', validacaoCPF);
-    console.log('inscritos=', inscritos);
+
     if (validacaoCPF !== 'next' && validacaoCPF !== 'testar')
       cpfRef.current.focus();
 
@@ -330,7 +310,7 @@ const Home = ({ inscritos }) => {
       const vCPF = ValidaCPF(valorCPF);
       if (vCPF) {
         const dadosCPF = inscritos.filter((val) => val.CPF === campoCPF);
-        console.log('dadosCPF=', dadosCPF.length);
+
         if (dadosCPF.length === 0) {
           setValidacaoCPF('next');
         } else
@@ -489,7 +469,9 @@ const Home = ({ inscritos }) => {
                         handleDrawerClose();
                       }}
                       error={validarDataNascimento === 'nao'}
-                      onFocus={(e) => setDataNascimento(e.target.value)}
+                      onFocus={(e) => {
+                        setDataNascimento(e.target.value);
+                      }}
                       onKeyDown={handleEnter}
                       inputRef={dataRef}
                     />

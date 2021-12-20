@@ -7,18 +7,7 @@ function Compra({ inscritos }) {
   // o usuario de teste deve está logado para que seja feito os teste criei
   // um usuario na minha conta andomonte, para outra conta tem que mudar os 3.
 
-  let accessToken;
-  if (process.env.NODE_ENV !== 'production')
-    accessToken = process.env.MP_LOCAL_PUBLIC_KEY;
-  else accessToken = process.env.MP_PUBLIC_KEY; // MP_ACESS_TOKEN
-  console.log(accessToken);
-  return (
-    <Comprar
-      title="SISTEMA-IDPB Global"
-      inscritos={inscritos}
-      accessToken={accessToken}
-    />
-  );
+  return <Comprar title="SISTEMA-IDPB Global" inscritos={inscritos} />;
 }
 export const getStaticProps = async () => {
   // pega o valor do banco de dados

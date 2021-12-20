@@ -239,10 +239,9 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
 
       .then((response) => {
         //        const prefID = response.data.body.point_of_interaction.transaction_data;
-        console.log('pref:', response);
 
         if (!response.data.message) {
-          if (response.data.id) setIdCompra(response.data.body.id);
+          if (response.data.body.id) setIdCompra(response.data.body.id);
           if (
             response.data.body.point_of_interaction.transaction_data.qr_code &&
             response.data.body.point_of_interaction.transaction_data
@@ -272,11 +271,60 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
       });
   };
   const concluir = () => {
-    console.log('id', idCompra);
+    const idCompra2 = '124477891';
+    console.log('id', idCompra, idCompra2);
+    api
+      .post('/api/confirmPayment', { id: idCompra2 })
+
+      .then((response) => {
+        console.log(response);
+        /* if (
+          response.data.status === 'approved' ||
+          response.data.status === 'in_process'
+        ) {
+          // const status = response.data.status_detail;
+
+          if (response.data.status === 'in_process') {
+            setValorErro(
+              'Estamos processando o pagamento. Não se preocupe, em menos de 2 dias úteis informaremos por e-mail se foi creditado.',
+            );
+            setMessageErro(response.data.status_detail);
+            setOpenDrawerOK(true);
+          }
+
+          if (response.data.status_detail === 'accredited') {
+            setValorErro(
+              'Pronto, seu pagamento foi aprovado! Para conferir seu Ticket é só FECHAR, clicar em MEU TICKET e digitar seu CPF.',
+            );
+            setMessageErro(response.data.status_detail);
+            setOpenDrawerOK(true);
+          }
+        }
+        if (response.data.status === 'rejected') {
+          const dadosErro = erros.filter(
+            (val) => val.erro === response.data.status_detail,
+          );
+          setValorErro(dadosErro[0].mensagem);
+          setOpenDrawerFinal(true);
+          setMessageErro(response.data.message);
+        }
+        if (response.data.message) {
+          setValorErro(
+            `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
+          );
+          setOpenDrawerFinal(true);
+          setMessageErro(response.data.message);
+        }
+        setCarregar(false); */
+      })
+
+      .catch(() => {
+        //  updateFile(uploadedFile.id, { error: true });
+      });
   };
   const atualizar = () => {
     let send = false;
-    console.log(tipoDoc, docNumber);
+
     if (docNumber.length > 10) {
       if (tipoDoc === 'CPF') {
         const vCPF = ValidaCPF(docNumber);
@@ -304,15 +352,7 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
     }
     if (send) {
       setCarregar(true);
-      console.log(
-        'enviar dados:',
-        nome,
-        email,
-        cpf,
-        nascimento,
-        docNumber,
-        tipoDoc,
-      );
+
       comprar();
     }
     //    setOpenDrawerOK(true);
@@ -454,7 +494,7 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
       </ClickAwayListener>
       <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
         <Box height={janela.height} sx={{ background: '#FFFF' }}>
-          <Box mt={3} borderRadius={16} {...defaultProps}>
+          <Box mt={1} borderRadius={16} {...defaultProps}>
             <Box mt={-1} ml={0}>
               <img src="/images/global/global1.png" alt="" width="100.8%" />
             </Box>
@@ -499,8 +539,45 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
                 QR CODE DO PIX
               </Typography>
             </Box>
-
-            <Box mt={-1} textAlign="center">
+            <Box
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              mt={0}
+              sx={{ fontSize: 'bold', color: '#b91a30' }}
+            >
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{
+                  fontSize: '14px',
+                  color: '#3f51b5',
+                  fontWeight: 'bold',
+                }}
+              >
+                OU
+              </Typography>
+            </Box>
+            <Box
+              mt={1}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <ColorButton
+                variant="contained"
+                className={classes.button2}
+                id="reload"
+                onClick={copyToClipboard}
+              >
+                <small>
+                  CLICK AQUI PARA COPIAR O CÓDIGO E COLAR NO APP DO SEU BANCO
+                </small>
+              </ColorButton>
+            </Box>
+            <Box mt={1} textAlign="center">
               {qrCode && (
                 <img
                   className={classes.QrCode}
@@ -520,26 +597,9 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
               draggable
               pauseOnHover
             />
+
             <Box
-              mt={3}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <ColorButton
-                variant="contained"
-                className={classes.button2}
-                id="reload"
-                onClick={copyToClipboard}
-              >
-                <small>
-                  CLICK AQUI PARA COPIAR O CÓDIGO E COLAR NO APP DO SEU BANCO
-                </small>
-              </ColorButton>
-            </Box>
-            <Box
-              mt={4}
+              mt={2}
               mb={2}
               sx={{
                 display: 'flex',

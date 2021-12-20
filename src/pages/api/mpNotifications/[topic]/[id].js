@@ -11,22 +11,27 @@ mercadopago.configure({
 
 const handler = async (req, res) => {
   //  let respPagamento;
+  const {
+    query: { topic, id },
+  } = req;
+  res.status(200).send('OK');
+  console.log(topic);
 
   const notificationData = {
-    id: Number(req.body.data.id),
-    action: req.body.action,
+    id: Number(id),
+    action: topic,
   };
   if (notificationData.id) {
     try {
       const mercadoPago = await mercadopago.payment.findById(
         notificationData.id,
       );
-      // console.log(mercadoPago);
+      console.log(mercadoPago);
       //      res.send(mercadoPago);
-      res.send(mercadoPago);
+      res.status(200).send('OK');
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
-      //  console.log('aqui o erro=', errors);
+      console.log('aqui o erro=', errors);
       res.send(errors);
     }
   }
