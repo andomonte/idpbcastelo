@@ -11,11 +11,12 @@ mercadopago.configure({
 
 const handler = async (req, res) => {
   //  let respPagamento;
-
+  res.status(200).send('OK');
   const notificationData = {
     id: Number(req.body.data.id),
     action: req.body.action,
   };
+
   if (notificationData.id) {
     try {
       const mercadoPago = await mercadopago.payment.findById(
