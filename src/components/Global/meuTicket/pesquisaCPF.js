@@ -66,10 +66,7 @@ function PesquisaCPF({ cpf }) {
       dadosCPF = data;
     }
   }
-  //
-  React.useEffect(() => {
-    if (dadosCPF) setOpenDrawer(true);
-  }, [dadosCPF]);
+  //  if (dadosCPF.CPF) setOpenDrawer(true);
   return (
     <>
       <Box>
@@ -127,7 +124,7 @@ function PesquisaCPF({ cpf }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  NO APP DO SEU BANCO SCANEI O
+                  {dadosCPF.Nome}
                 </Typography>
               </Box>
               <Box
@@ -147,7 +144,7 @@ function PesquisaCPF({ cpf }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  QR CODE DO PIX
+                  {dadosCPF.status}
                 </Typography>
               </Box>
               <Box
