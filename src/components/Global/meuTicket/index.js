@@ -6,7 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import TelaCompra from './telaCompra';
+import TelaLogin from './telaLogin';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -137,22 +137,7 @@ function MeuTicket({ title }) {
       </Head>
 
       <div className={classes.root}>
-        <AppBar className={classes.root2} color="default">
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar} />
-          </ClickAwayListener>
-        </AppBar>
-
-        <main
-          className={clsx(classes.contentMain, {
-            [classes.contentShiftMain]: open,
-          })}
-        >
-          <div className={classes.drawerHeader} />
-          {/* {children} */}
-
-          <TelaCompra />
-        </main>
+        <TelaLogin />
       </div>
     </div>
   );

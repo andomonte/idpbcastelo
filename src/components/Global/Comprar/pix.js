@@ -180,6 +180,7 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
   const [tipoDoc, setTipoDoc] = React.useState('');
   const [valorErro, setValorErro] = React.useState('');
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openDrawerFim, setOpenDrawerFim] = React.useState(false);
   const [open, setOpen] = React.useState(true);
   const [qrCode, setQrCode] = React.useState('');
   const [qrCodeCopy, setQrCodeCopy] = React.useState('');
@@ -210,6 +211,13 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
       form.elements[index + 1].focus();
       event.preventDefault();
     }
+  };
+
+  const janela = TamanhoJanela();
+  const handlefechar = () => {
+    router.push({
+      pathname: '/global',
+    });
   };
   const voltar = () => {
     setOpen(false);
@@ -271,13 +279,16 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
       });
   };
   const concluir = () => {
-    const idCompra2 = '124477891';
+    const idCompra2 = '1244778917';
     console.log('id', idCompra, idCompra2);
     api
       .post('/api/confirmPayment', { id: idCompra2 })
 
       .then((response) => {
         console.log(response);
+        if (response.data.body) {
+          if (response.data.body.status === 'approved') setOpenDrawerFim(true);
+        }
         /* if (
           response.data.status === 'approved' ||
           response.data.status === 'in_process'
@@ -357,7 +368,7 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
     }
     //    setOpenDrawerOK(true);
   };
-  const janela = TamanhoJanela();
+
   // console.log(janela.height);
 
   const handleDrawerClose = () => {
@@ -618,7 +629,132 @@ const Pix = ({ email, cpf, nome, nascimento }) => {
           </Box>
         </Box>
       </Drawer>
+      <Drawer variant="persistent" anchor="bottom" open={openDrawerFim}>
+        <Box height={janela.height} sx={{ background: '#FFFF' }}>
+          <Box
+            height={janela.height - 10}
+            mt={1}
+            borderRadius={16}
+            {...defaultProps}
+          >
+            <Box mt={-1} ml={0}>
+              <img src="/images/global/global1.png" alt="" width="100.8%" />
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              mt={10}
+              mb={0}
+              sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
+            >
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{
+                  fontSize: '14px',
+                  color: '#b91a30',
+                  fontWeight: 'bold',
+                }}
+              >
+                Recebemos seu Pagamento, Obrigado!!!
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              mt={0}
+              mb={0}
+              sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
+            >
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{
+                  fontSize: '14px',
+                  color: '#b91a30',
+                  fontWeight: 'bold',
+                }}
+              >
+                Você pode acessar seu tickt na página inical
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              mt={5}
+              sx={{ fontSize: 'bold', color: '#b91a30' }}
+            >
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{
+                  fontSize: '14px',
+                  color: '#b91a30',
+                  fontWeight: 'bold',
+                }}
+              >
+                ANOTE SEU CÓDIGO DE PAGAMENTO
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              mt={0}
+              sx={{ fontSize: 'bold', color: '#b91a30' }}
+            >
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                style={{
+                  fontSize: '28px',
+                  color: '#3f51b5',
+                  fontWeight: 'bold',
+                }}
+              >
+                {idCompra}
+              </Typography>
+            </Box>
 
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+
+            <Box
+              mt={8}
+              mb={2}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                className={classes.button1}
+                variant="contained"
+                id="reload"
+                onClick={handlefechar}
+              >
+                CONCLUIR
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Drawer>
       <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
         <Box height={260} sx={{ background: '#ffebee' }}>
           <Alert onClose={handleDrawerClose} severity="error">
