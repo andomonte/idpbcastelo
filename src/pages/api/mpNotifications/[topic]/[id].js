@@ -14,7 +14,7 @@ const handler = async (req, res) => {
   const {
     query: { topic, id },
   } = req;
-  res.status(200).send('OK');
+  res.send(200);
   console.log(topic);
 
   const notificationData = {
