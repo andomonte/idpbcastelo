@@ -12,10 +12,11 @@ mercadopago.configure({
 const handler = async (req, res) => {
   //  let respPagamento;
   const {
-    query: { topic, id },
+    query: { id, topic },
   } = req;
-  res.send(200);
+  // res.send(200);
   console.log(topic);
+  console.log(id);
 
   const notificationData = {
     id: Number(id),

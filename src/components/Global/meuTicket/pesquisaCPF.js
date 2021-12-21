@@ -48,25 +48,16 @@ function PesquisaCPF({ cpf }) {
   if (typeof window !== 'undefined') {
     urls = `${window.location.origin}/api/consultaInscGlobal/${cpf}`;
   }
-  if (cpf) {
-    const { data, error } = useSWR(urls, fetcher);
-    if (error)
-      return (
-        <div>
-          <MesageErro />
-        </div>
-      );
-    if (!data)
-      return (
-        <div>
-          <Loading />
-        </div>
-      );
-    if (data) {
-      dadosCPF = data;
-    }
-  }
-  //  if (dadosCPF.CPF) setOpenDrawer(true);
+  let data;
+  let error;
+  React.useEffect(() => {
+    [data, error] = useSWR(urls, fetcher);
+  }, []);
+  console.log(data);
+  if (data)
+    React.useEffect(() => {
+      if (data.CPF) setOpenDrawer(true);
+    }, [data]);
   return (
     <>
       <Box>
@@ -124,7 +115,7 @@ function PesquisaCPF({ cpf }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  {dadosCPF.Nome}
+                  {data.Nome}
                 </Typography>
               </Box>
               <Box
@@ -144,7 +135,7 @@ function PesquisaCPF({ cpf }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  {dadosCPF.status}
+                  {data.status}
                 </Typography>
               </Box>
               <Box
