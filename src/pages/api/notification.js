@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 const mercadopago = require('mercadopago');
 
 let accessToken;
@@ -11,10 +13,12 @@ mercadopago.configure({
 
 const handler = async (req, res) => {
   //  let respPagamento;
+  const router = useRouter();
+  const { ...dados } = router.query;
   res.status(200).send('OK');
   const notificationData = {
-    id: Number(req.body.data.id),
-    action: req.body.action,
+    id: Number(dados.id),
+    action: dados.action,
   };
 
   if (notificationData.id) {
