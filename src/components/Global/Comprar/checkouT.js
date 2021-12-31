@@ -1,12 +1,17 @@
 import React from 'react';
 import { useMercadopago } from 'react-sdk-mercadopago';
+import { useReactToPrint } from 'react-to-print';
+
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button, TextField } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import MenuItem from '@material-ui/core/MenuItem';
 import dataMask from 'src/components/mascaras/datas';
-
+import PrintIcon from '@material-ui/icons/Print';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 // import FormHelperText from '@material-ui/core/FormHelperText';
 // import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -23,11 +28,11 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styled from 'styled-components';
 import TamanhoJanela from 'src/utils/getSize';
-import { func } from 'prop-types';
-import { Mms } from '@material-ui/icons';
-import set from 'date-fns/set';
+
 import ValidaCPF from 'src/utils/validarCPF';
 import ValidaCNPJ from 'src/utils/validarCNPJ';
+import set from 'date-fns/set';
+import GerarPdf from './pdfs/pdf';
 
 const Container = styled.div`
   .rccs {
@@ -578,10 +583,13 @@ export default function CheckoutT({
   email,
   cpf,
   nome,
-  nascimento,
   fPagamento,
+  qtyA,
+  qtyC,
+  total,
 }) {
   const classes = useStyles();
+  const componentRef = React.useRef();
   const [open, setOpen] = React.useState(true);
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openDrawerOK, setOpenDrawerOK] = React.useState(false);
@@ -597,14 +605,14 @@ export default function CheckoutT({
   const [docPagante, setDocPagante] = React.useState('');
   const [valorErro, setValorErro] = React.useState(0);
   const [messageErro, setMessageErro] = React.useState(0);
-  const [publicKey, setPublicKey] = React.useState('');
+  const [descParcelas, setDescParcelas] = React.useState('');
   const [qtParcelas, setQtParcelas] = React.useState(1);
   const [codigoPagamento, setCodigoPagamento] = React.useState('');
 
   const defaultParcela = [{ value: '0', descriction: 'Parcela' }];
   const [parcela, setParcela] = React.useState(defaultParcela);
 
-  const parcelas = [{ value: '', descriction: '' }];
+  const parcelas = [{ value: '', descriction: '', vFinal: '' }];
   const mp = useMercadopago.v2('TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd', {
     locale: 'pt-BR',
   });
@@ -618,7 +626,7 @@ export default function CheckoutT({
     cardholderName: '',
     cardNumber: '',
   });
-  const [validacaoNumero, setValidacaoNumero] = React.useState('testar');
+  const [vTotal, setVTotal] = React.useState('');
   const [validacaoNome, setValidacaoNome] = React.useState('testar');
   const [validacaoCPF, setValidacaoCPF] = React.useState('testar');
   const [validacaoCVV, setValidacaoCVV] = React.useState('testar');
@@ -829,8 +837,9 @@ export default function CheckoutT({
       else descricao[i] = 'parcelas';
 
       parcelas[i] = {
-        descriction: `${juros[i].installments} ${descricao[i]} de ${valInstallment} (${vTotal})`,
+        descriction: `${juros[i].installments} ${descricao[i]} de R$ ${valInstallment} (R$ ${vTotal})`,
         value: juros[i].installments,
+        vFinal: vTotal,
       };
     }
     setParcela(parcelas?.map((items) => items));
@@ -849,10 +858,10 @@ export default function CheckoutT({
         identificationType: tipoDoc,
         identificationNumber: docPagante,
       });
-      console.log('token =', cardToken);
+      // console.log('token =', cardToken);
       return cardToken;
     } catch (erro) {
-      console.log(erro);
+      //  console.log(erro);
       return erro;
     }
   }
@@ -899,14 +908,15 @@ export default function CheckoutT({
       event.preventDefault();
     }
   };
-  const handleMax2 = (event) => {
+  // next input
+  /* const handleMax2 = (event) => {
     if (event.target.value.length === 2) {
       const { form } = event.target;
       const index = [...form].indexOf(event.target);
       form.elements[index + 1].focus();
       event.preventDefault();
     }
-  };
+  }; */
   const voltar = () => {
     setOpen(false);
     // window.location.reload();
@@ -926,39 +936,44 @@ export default function CheckoutT({
     let validarDoc;
     let checagem = '';
     setCarregar(true);
+    //    parcela[qtParcelas].descriction
+    if (parcela) {
+      setDescParcelas(parcela[qtParcelas - 1].descriction);
+      setVTotal(parcela[qtParcelas - 1].vFinal);
+    }
     if (tipoDoc === 'CPF') validarDoc = ValidaCPF(docPagante);
     else validarDoc = ValidaCNPJ(docPagante);
-    console.log(validarDoc, docPagante);
+    // console.log(validarDoc, docPagante);
     if (validarDoc) {
       const conexao = await getToken();
       let conexao2;
       let conexao3;
 
       if (conexao.status !== 'active') {
-        console.log('inicio', conexao.status);
+        //   console.log('inicio', conexao.status);
 
         if (conexao.cause[0].code === 'E603') {
           conexao2 = await getToken();
-          console.log('cx 02', conexao2);
+          //    console.log('cx 02', conexao2);
           if (conexao2.status !== 'active') {
             if (conexao2.cause[0].code === 'E603') {
               conexao3 = await getToken();
-              console.log('cx 03', conexao3);
+              //      console.log('cx 03', conexao3);
               checagem = conexao3;
             } else checagem = conexao2;
           } else checagem = conexao2;
         } else checagem = conexao;
       } else checagem = conexao;
-      console.log('checagem', checagem.status);
+      //    console.log('checagem', checagem.status);
       if (checagem.status !== 'active') {
-        console.log('erro no Token');
+        //      console.log('erro no Token');
         const dadosErro = erros.filter(
           (val) => val.erro === checagem.cause[0].code,
         );
-        console.log(dadosErro);
+        //     console.log(dadosErro);
         setValorErro(dadosErro[0].mensagem);
         setOpenDrawer(true);
-        console.log('Token available: ', checagem, dadosErro[0].mensagem);
+        //     console.log('Token available: ', checagem, dadosErro[0].mensagem);
       } else {
         api
           .post('/api/mercadoPago', {
@@ -973,12 +988,14 @@ export default function CheckoutT({
             docNumber: docPagante,
             nome,
             cpf,
-            nascimento,
+            total,
+            Adultos: qtyA,
+            Criancas: qtyC,
             fPagamento,
           })
 
           .then((response) => {
-            console.log('resposta:', response.data);
+            //            console.log('resposta:', response.data);
             if (
               response.data.body.status === 'approved' ||
               response.data.body.status === 'in_process'
@@ -1020,6 +1037,7 @@ export default function CheckoutT({
               setOpenDrawer(true);
               setMessageErro(response.data.message);
             }
+
             setCarregar(false);
           })
 
@@ -1033,8 +1051,38 @@ export default function CheckoutT({
       setOpenDrawer(true);
     }
   };
+  /* if (parcela.length > 1)
+    console.log(
+      'nome=',
+      nome,
+      'codigo=',
+      codigoPagamento,
+      'adultos=',
+      qtyA,
+      'criancas=',
+      qtyC,
+      'valor=',
+      total,
+      'fp=',
+      'Cartão de Crédito',
+      'status=',
+      'PAGAMENTO CONFIRMADO',
+      'parcelas=',
+      parcela[qtParcelas].descriction,
+      'cpf=',
+      cpf,
+    ); */
+  //= ==============================================================
+  // imprimir
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+  //= ==================================================================
+  //  if (parcela) console.log('vparcelas', parcela[qtParcelas - 1]);
+  //= ==============================================================
+  // Baixar PDF
 
-  console.log(number, name, mesF, anoF, cvc, tipoDoc);
+  //= ==================================================================
 
   const body = (
     <Box className={classes.paper}>
@@ -1179,7 +1227,7 @@ export default function CheckoutT({
                       const Data = event.target.value;
                       const mesF2 = Data.slice(0, 2);
                       const anoF2 = Data.slice(3, 5);
-                      console.log('mes:', mesF2, anoF2);
+                      //              console.log('mes:', mesF2, anoF2);
                       setVencimento(Data);
                       setMesF(mesF2);
                       setAnoF(anoF2);
@@ -1280,7 +1328,6 @@ export default function CheckoutT({
                           </MenuItem>
                         ))}
                     </MenuItem>
-                    {console.log('pv:', parcela[0].value)}
                     {parcela[0].value !== 0 &&
                       parcela?.map((items) => (
                         <MenuItem key={items.value} value={items.value}>
@@ -1343,8 +1390,23 @@ export default function CheckoutT({
           </Box>
         </form>
       </ClickAwayListener>
+      {/* <Drawer
+        ref={componentRef}
+        variant="persistent"
+        anchor="bottom"
+        open={openDrawerPDF}
+      >
+        {openDrawerPDF && (
+          <PdfCompra cpf={cpf} Nome={nome} codigo={codigoPagamento} />
+        )}
+      </Drawer> */}
+
       <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
-        <Box height={janela.height} sx={{ background: '#c5e1a5' }}>
+        {/* <Box
+          ref={componentRef}
+          height={janela.height}
+          sx={{ background: '#c5e1a5' }}
+        >
           <Box mt={20}>
             <Box display="flex" justifyContent="center">
               <h2>Recebemos seu Pagamento</h2>
@@ -1361,6 +1423,40 @@ export default function CheckoutT({
               >
                 {codigoPagamento}
               </strong>
+            </Box>
+            <Box display="flex" mt={0}>
+              <Grid item xs={12} md={3}>
+                <Box mt={-1}>
+                  <IconButton
+                    onClick={handlePDF}
+                    color="primary"
+                    aria-label="add to shopping cart"
+                  >
+                    <PictureAsPdfIcon />
+                  </IconButton>
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Box mt={-1}>
+                  <IconButton
+                    onClick={handlePrint}
+                    color="primary"
+                    aria-label="add to shopping cart"
+                  >
+                    <PrintIcon />
+                  </IconButton>
+                </Box>
+                <Grid item xs={12} md={3}>
+                  <Box mt={-1}>
+                    <IconButton
+                      color="primary"
+                      aria-label="add to shopping cart"
+                    >
+                      <PhotoCameraIcon />
+                    </IconButton>
+                  </Box>
+                </Grid>
+              </Grid>
             </Box>
             <Box
               mt={4}
@@ -1379,7 +1475,19 @@ export default function CheckoutT({
               </Button>
             </Box>
           </Box>
-        </Box>
+        </Box> */}
+
+        <GerarPdf
+          nome={nome}
+          codigo={codigoPagamento}
+          adultos={qtyA}
+          criancas={qtyC}
+          valor={vTotal}
+          fp="Cartão de Crédito"
+          status="PAGAMENTO CONFIRMADO"
+          parcelas={descParcelas}
+          cpf={cpf}
+        />
       </Drawer>
       <Drawer variant="persistent" anchor="bottom" open={openDrawerFinal}>
         <Box height={janela.height} sx={{ background: '#ffebee' }}>

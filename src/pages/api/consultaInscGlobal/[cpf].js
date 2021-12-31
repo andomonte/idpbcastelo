@@ -5,7 +5,7 @@ export default async function handle(req, res) {
   const {
     query: { cpf },
   } = req;
-  // console.log('dados do api', codigoIgreja, mes, ano);
+  console.log('dados do api', cpf);
   // const action = `${rel}.findMany`
   const posts = await prisma.inscritosGlobals
     .findMany({

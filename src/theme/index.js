@@ -11,6 +11,9 @@ const theme = createTheme({
     secondary: {
       main: '#000000',
     },
+    danger: {
+      main: '#ff3d00',
+    },
     default: {
       main: '#1a237e',
     },

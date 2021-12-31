@@ -44,8 +44,7 @@ const handler = async (req, res) => {
 
   const paymentData = {
     transaction_amount: Number(req.body.transactionAmount),
-    notification_url:
-      'https://webhook.site/c857bd9a-e01e-47ef-ac1b-eeecccf3106c', // 'https://idpb-app.vercel.app/api/notification',
+    notification_url: 'https://idpb-app.vercel.app/api/mpNotification',
     token: req.body.token,
     description: req.body.description,
     installments: Number(req.body.installments),
@@ -94,6 +93,9 @@ const handler = async (req, res) => {
               fpagamento: req.body.fPagamento,
               status,
               idPagamento,
+              Adultos: req.body.Adultos,
+              Criancas: req.body.Criancas,
+              total: req.body.total,
               createdAt,
             },
           })
@@ -116,6 +118,7 @@ const handler = async (req, res) => {
     res.send(respPagamento);
   }
   // res.send(response);
+  return 0;
 };
 
 export default handler;

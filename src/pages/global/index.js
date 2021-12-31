@@ -1,4 +1,3 @@
-import React from 'react';
 import Inscrições from 'src/components/Global/Inscricoes/index';
 
 function Home() {

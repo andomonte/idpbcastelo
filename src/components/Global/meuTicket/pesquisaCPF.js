@@ -1,23 +1,46 @@
 import React from 'react';
-import { Box, Grid, Typography, TextField } from '@material-ui/core';
+import { Box, Button, Typography, TextField } from '@material-ui/core';
 // import CardMedia from '@mui/material/CardMedia';
 import Fab from '@mui/material/Fab';
 import Avatar from '@mui/material/Avatar';
 import useSWR from 'swr';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Loading from 'src/utils/loading';
 import MesageErro from 'src/utils/mesageErro';
 import Drawer from '@material-ui/core/Drawer';
 import QRCode from 'react-qr-code';
 import TamanhoJanela from 'src/utils/getSize';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { useRouter } from 'next/router';
+import Divider from '@mui/material/Divider';
+import GeneratePdf from './generatePdfTicket';
 
+const janela = TamanhoJanela();
+const ajusteAltura = Number(janela.height / 11).toFixed(0) - 5;
+
+// const fetcher = (urls) => axios.get(urls).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+    overflow: 'hidden',
+    width: '100vw',
+    padding: 0,
+    margin: 0,
+  },
   img: {
     maxWidth: '1410px',
     maxHeight: '600px',
     width: '100%',
     height: '100%',
+  },
+  imgBack: {
+    //    width: '100%',
+    height: janela.height,
+    backgroundImage: `url('/images/global/ticket.png')`,
+    //    backgroundImage: url(/images/global/ticket.png), //seleciona imagem
+    backgroundPosition: 'center', // centraliza imagem
+    backgroundSize: 'cover', // imagem cobre toda área do div
   },
   tf_s: {
     backgroundColor: '#ffff',
@@ -31,153 +54,621 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #b91a30',
   },
 }));
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+
 const defaultProps = {
   bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '95%',
+  m: 0,
+  // border: '2px solid #b91a30',
+  width: janela.width,
+  height: janela.height,
 };
 
-function PesquisaCPF({ cpf }) {
+function PesquisaCPF({ cpf, setOpen }) {
+  const classes = useStyles();
+  const ref1 = React.useRef();
+  const ref2 = React.useRef();
+  const ref3 = React.useRef();
+  const url = `${window.location.origin}/api/consultaInscGlobal/${cpf}`;
+  const [posts, setPosts] = React.useState('vazio');
   const [openDrawer, setOpenDrawer] = React.useState(false);
-
-  let urls;
-  let dadosCPF;
-  const janela = TamanhoJanela();
-  if (typeof window !== 'undefined') {
-    urls = `${window.location.origin}/api/consultaInscGlobal/${cpf}`;
-  }
-  let data;
-  let error;
-  React.useEffect(() => {
-    [data, error] = useSWR(urls, fetcher);
+  const [openDrawerInval, setOpenDrawerInval] = React.useState(false);
+  const [openDrawerPend, setOpenDrawerPend] = React.useState(false);
+  const [nome, setNome] = React.useState('');
+  const [adultos, setAdultos] = React.useState('');
+  const [criancas, setCriancas] = React.useState('');
+  const [idPagamento, setIdPagamento] = React.useState('');
+  const router = useRouter();
+  React.useEffect(async () => {
+    try {
+      const res = await axios.get(url);
+      if (res.data) setPosts(() => [...res.data]);
+      // setArray
+      else {
+        setPosts('nada');
+      }
+      console.log('res', res);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
-  console.log(data);
-  if (data)
-    React.useEffect(() => {
-      if (data.CPF) setOpenDrawer(true);
-    }, [data]);
+  console.log('res', posts);
+  React.useEffect(async () => {
+    if (posts !== 'vazio') {
+      if (posts.length > 0) {
+        const inscrito = posts.filter((val) => val.status !== 'cancelada');
+        console.log('inscrito', inscrito);
+        if (inscrito[0].CPF === cpf) {
+          setNome(posts[0].Nome);
+          setAdultos(posts[0].Adultos);
+          setCriancas(posts[0].Criancas);
+          setIdPagamento(posts[0].idPagamento);
+
+          if (inscrito[0].status === 'approved') setOpenDrawer(true);
+          if (
+            inscrito[0].status !== 'cancelada' &&
+            inscrito[0].status !== 'approved'
+          )
+            setOpenDrawerPend(true);
+        } else setOpenDrawerInval(true);
+      } else setOpenDrawerInval(true);
+    }
+  }, [posts]);
+  const ColorButton = withStyles((theme) => ({
+    root: {
+      color: theme.palette.getContrastText('#b91a30'),
+      backgroundColor: '#b91a30',
+      '&:hover': {
+        backgroundColor: '#b91a30',
+      },
+    },
+  }))(Button);
+
+  const handleCloseOK = () => {
+    router.push({
+      pathname: '/global',
+    });
+  };
+  const handleClose = () => {
+    setOpenDrawerInval(false);
+    setOpenDrawerPend(false);
+    setOpen(false); // fechar o open da função pai que chamou -> telaLogin
+    return null;
+  };
   return (
     <>
       <Box>
-        {!openDrawer && (
+        {posts === 'vazio' && (
           <Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              mt={0}
-              mb={0}
-              sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
-            >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '14px',
-                  color: '#b91a30',
-                  fontWeight: 'bold',
-                }}
-              >
-                Esse CPF aind não tem inscrição
-              </Typography>
+            <Box mt={-7}>
+              <LinearProgress />
+              <Box display="flex" justifyContent="center">
+                <small>Carregando...</small>
+              </Box>
             </Box>
           </Box>
         )}
-        <Drawer
-          height={janela.height}
-          variant="persistent"
-          anchor="bottom"
-          open={openDrawer}
-        >
-          <Box height={janela.height} sx={{ background: '#FFFF' }}>
-            <Box mt={1} borderRadius={16} {...defaultProps}>
-              <Box mt={-1} ml={0}>
-                <img src="/images/global/global1.png" alt="" width="100.8%" />
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                mt={0}
-                mb={0}
-                sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
-              >
-                <Typography
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                  style={{
-                    fontSize: '14px',
-                    color: '#b91a30',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {data.Nome}
-                </Typography>
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                mt={0}
-                sx={{ fontSize: 'bold', color: '#b91a30' }}
-              >
-                <Typography
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                  style={{
-                    fontSize: '14px',
-                    color: '#b91a30',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {data.status}
-                </Typography>
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                mt={0}
-                sx={{ fontSize: 'bold', color: '#b91a30' }}
-              >
-                <Typography
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                  style={{
-                    fontSize: '14px',
-                    color: '#3f51b5',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  OU
-                </Typography>
-              </Box>
-              <Box
-                mt={1}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              />
+        <Drawer variant="persistent" anchor="bottom" open={openDrawerInval}>
+          <Box className={classes.root}>
+            <div className="content" ref={ref1} id="comprovante">
+              <Box width="100%" mb={0}>
+                <Box {...defaultProps}>
+                  <Box mt={-1} ml={0}>
+                    <img
+                      src="/images/global/informe.png"
+                      alt=""
+                      width="100%"
+                      height={janela.height}
+                    />
+                  </Box>
+                  <Box
+                    //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
+                    width={janela.width}
+                    ml={-0.3}
 
-              <Box
-                mt={2}
-                mb={2}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Box mt={3}>
-                  <QRCode size={janela.height > 600 ? 180 : 150} value={cpf} />
+                    // className={classes.imgBack}
+                    // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
+                  >
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mb={0}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: '#000',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura - 3}>Não temos registro</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mb={0}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: '#000',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura}>de compra no cpf</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={1}
+                      sx={{ fontSize: 'bold', color: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: 'blue',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 3}>{cpf}</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={1}
+                      sx={{ fontSize: 'bold', color: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: 'green',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {cpf}
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      height={50}
+                      mt={1}
+                      sx={{ fontSize: 'bold', background: '#780208' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '13px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                          marginTop: 10,
+                          marginLeft: 2,
+
+                          width: janela.width - 28,
+                          height: 60,
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            border: '1px solid #780208',
+                            borderLeft: 0,
+                            borderRight: 0,
+                            borderBottom: 0,
+                          }}
+                          mt={janela.height > 630 ? -40 : -34}
+                        >
+                          <Box mt={1}> Central de atendimento: </Box>
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={0}
+                      sx={{ fontSize: 'bold', background: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '13px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={janela.height > 630 ? -40 : -34}>
+                          (92) 9134-4368
+                        </Box>
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    mt={1}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
+
+                  <Box
+                    mt={0}
+                    mb={2}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
                 </Box>
               </Box>
+              <Box
+                mt={janela.height < 600 ? -8 : -10}
+                display="flex"
+                width="100%"
+                justifyContent="center"
+              >
+                <Box>
+                  <ColorButton
+                    style={{ borderRadius: 16 }}
+                    variant="contained"
+                    value="value"
+                    onClick={handleClose}
+                  >
+                    FECHAR
+                  </ColorButton>
+                </Box>
+              </Box>
+            </div>
+          </Box>
+        </Drawer>
+        <Drawer variant="persistent" anchor="bottom" open={openDrawerPend}>
+          <Box className={classes.root}>
+            <div className="content" ref={ref2} id="comprovante">
+              <Box width="100%" mb={1}>
+                <Box {...defaultProps}>
+                  <Box mt={-1} ml={0}>
+                    <img
+                      src="/images/global/informe.png"
+                      alt=""
+                      width="100%"
+                      height={janela.height}
+                    />
+                  </Box>
+                  <Box
+                    //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
+                    width={janela.width}
+                    ml={-0.3}
+
+                    // className={classes.imgBack}
+                    // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
+                  >
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mb={0}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: '#000',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura - 3}>CPF: {cpf}</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mb={0}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '12px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 2}>
+                          STATUS DE PAGAMENTO ESTÁ
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={1}
+                      sx={{ fontSize: 'bold', color: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: 'blue',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 3}>PENDENTE</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={1}
+                      sx={{ fontSize: 'bold', color: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: 'green',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 6}>
+                          <strong style={{ color: '#000' }}>código:</strong>{' '}
+                          {idPagamento}
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      height={50}
+                      mt={1}
+                      sx={{ fontSize: 'bold', background: '#780208' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '13px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                          marginTop: 10,
+                          marginLeft: 2,
+
+                          width: janela.width - 28,
+                          height: 60,
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            border: '1px solid #780208',
+                            borderLeft: 0,
+                            borderRight: 0,
+                            borderBottom: 0,
+                          }}
+                          mt={janela.height > 630 ? -40 : -34}
+                        >
+                          <Box mt={1}> Central de atendimento: </Box>
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={0}
+                      sx={{ fontSize: 'bold', background: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '13px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={janela.height > 630 ? -40 : -34}>
+                          (92) 9134-4368
+                        </Box>
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    mt={1}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
+
+                  <Box
+                    mt={0}
+                    mb={2}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
+                </Box>
+              </Box>
+            </div>
+            <Box mt={-10} display="flex" justifyContent="center">
+              <ColorButton
+                style={{ borderRadius: 16 }}
+                variant="contained"
+                value="value"
+                onClick={handleClose}
+              >
+                FECHAR
+              </ColorButton>
+            </Box>
+          </Box>
+        </Drawer>
+        <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
+          <Box className={classes.root}>
+            <div className="content" ref={ref3} id="comprovante">
+              <Box width="100%" mb={1}>
+                <Box {...defaultProps}>
+                  <Box mt={-1} ml={0}>
+                    <img
+                      src="/images/global/ticket.png"
+                      alt=""
+                      width="100%"
+                      height={janela.height}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={-ajusteAltura - 8}
+                    mb={0}
+                    sx={{
+                      fontSize: '16px',
+                      color: '#b91a30',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '16px',
+                        color: '#000',
+                        fontFamily: 'Arial Black',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      {nome}
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={1}
+                    sx={{ fontSize: 'bold', color: '#b91a30' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '16px',
+                        color: '#000',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      ADULTOS:{' '}
+                      <strong
+                        style={{
+                          fontSize: '16px',
+                          color: 'blue',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {adultos}
+                      </strong>
+                    </Typography>
+                    <Box ml={5} />
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '16px',
+                        color: '#000',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      CRIANÇAS:{' '}
+                      <strong
+                        style={{
+                          fontSize: '16px',
+                          color: 'blue',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {criancas}
+                      </strong>
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    mt={1}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
+
+                  <Box
+                    mt={0}
+                    mb={2}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Box mt={janela.height < 610 ? 0 : 2}>
+                      <QRCode
+                        fgColor="#b91a30"
+                        size={janela.height > 610 ? 250 : 180}
+                        value={cpf}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </div>
+            <Box mt={-4}>
+              <GeneratePdf html={ref3} cpf={cpf} />
             </Box>
           </Box>
         </Drawer>

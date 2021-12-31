@@ -9,7 +9,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Box } from '@material-ui/core';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
-import TelaCompra from './telaCompra';
+import TelaInicial from './telaInicial';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -155,60 +155,6 @@ function Compra({ title, inscritos }) {
       </Head>
 
       <div className={classes.root}>
-        <AppBar className={classes.root2} color="default">
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" align="center" m={0}>
-                <Box
-                  height={30}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  display="flex"
-                  alignItems="center"
-                  sx={{ backgroundColor: '#a91a30' }}
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#fff',
-                    }}
-                    onClick={voltar}
-                  />
-                </Box>
-              </Box>
-              <Box
-                height={30}
-                p={1}
-                ml={0}
-                mr={0}
-                display="flex"
-                alignItems="center"
-              >
-                <Box className={classes.letras1}>INSCRIÇÃO</Box>
-              </Box>
-
-              <Box display="flex" align="center" m={0}>
-                <Box
-                  height={30}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#b91a30',
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Toolbar>
-          </ClickAwayListener>
-        </AppBar>
-
         <main
           className={clsx(classes.contentMain, {
             [classes.contentShiftMain]: open,
@@ -216,8 +162,8 @@ function Compra({ title, inscritos }) {
         >
           <div className={classes.drawerHeader} />
           {/* {children} */}
-
-          <TelaCompra inscritos={inscritos} />
+          <TelaInicial inscritos={inscritos} />
+          {/* <TelaCompra inscritos={inscritos} /> */}
         </main>
       </div>
     </div>

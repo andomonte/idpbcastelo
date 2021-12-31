@@ -172,7 +172,7 @@ const ColorButton = withStyles((theme) => ({
     },
   },
 }))(Button);
-const Pix = ({ email, cpf, nome, nascimento }) => {
+const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
   const classes = useStyles();
   // const router = useRouter();
   const [docNumber, setDocNumber] = React.useState('');

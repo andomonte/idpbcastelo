@@ -31,6 +31,7 @@ module.exports = withPlugins([
     webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) =>
       // Important: return the modified config
       config,
+
     /*     webpack: (config, { isServer }) => {
       if (!isServer) {
         // set 'fs' to an empty module on the client to prevent this error on build --> Error: Can't resolve 'fs'
@@ -60,11 +61,11 @@ module.exports = withPlugins([
     //    webpack5:,
 
     env: {
-      MYSQL_HOST: 'mysql669.umbler.com',
-      MYSQL_PORT: '41890',
+      MYSQL_HOST: 'database-idpb.cc5jji3rn9c0.us-east-1.rds.amazonaws.com',
+      MYSQL_PORT: '3306',
       MYSQL_DATABASE: 'db_idpb',
-      MYSQL_USER: 'idpbsystem',
-      MYSQL_PASSWORD: 'idpbMM981341',
+      MYSQL_USER: 'andomonte',
+      MYSQL_PASSWORD: 'leaLMS981341',
     },
   },
 

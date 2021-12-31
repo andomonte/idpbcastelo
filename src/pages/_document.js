@@ -16,10 +16,7 @@ export default class MyDocument extends Document {
             href="/images/idpb.ico"
             type="image/x-icon"
           />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
+
           <link rel="manifest" href="/images/manifest.json" />
           <link rel="apple-touch-icon" href="/images/apple-icon.png" />
 
