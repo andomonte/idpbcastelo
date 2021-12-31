@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 const mercadopago = require('mercadopago');
 
 let accessToken;
@@ -13,14 +11,12 @@ mercadopago.configure({
 
 const handler = async (req, res) => {
   //  let respPagamento;
-  console.log('entrou');
-  const router = useRouter();
-  const { ...dados } = router.query;
-  console.log('entrou', dados);
   res.status(200).send('OK');
-  const notificationData = {
-    id: Number(dados.id),
-    action: dados.action,
+  const dados = req.body;
+  console.log(dados);
+  /* const notificationData = {
+    id: Number(req.body.data.id),
+    action: req.body.action,
   };
 
   if (notificationData.id) {
@@ -36,7 +32,7 @@ const handler = async (req, res) => {
       console.log('aqui o erro=', errors);
       res.send(errors);
     }
-  }
+  } */
 };
 
 export default handler;
