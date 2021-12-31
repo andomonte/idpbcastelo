@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '10px',
   },
   texto: {
-    color: '#fff',
+    color: '#780208',
     fontWeight: 'bold',
     fontSize: '12px',
   },
@@ -136,12 +136,15 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #b91a30',
   },
   paper: {
-    backgroundColor: '#b91a30', // theme.palette.background.paper,
-    border: '0px solid #000',
-    boxShadow: theme.shadows[5],
+    // backgroundColor: '#b91a30', // theme.palette.background.paper,
+    backgroundImage: `url('/images/global/fundo.png')`,
+    //    border: '0px solid #000',
+    //    boxShadow: theme.shadows[5],
     //  padding: theme.spacing(1, 1, 1),
-    height: '100%',
-    width: '100%',
+    backgroundPosition: 'center', // centraliza imagem
+    backgroundSize: 'cover', // imagem cobre toda área do div
+    height: '100vh',
+    width: '100vw',
   },
   modal: {
     display: 'flex',
@@ -403,7 +406,8 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
             <Box
               height={10}
               p={1}
-              ml={0}
+              ml={1}
+              mt={1}
               mr={0}
               display="flex"
               alignItems="center"
@@ -425,73 +429,128 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
 
       <ClickAwayListener onClickAway={handleDrawerClose}>
         <form id="form-checkout">
-          <Box mt={2}>
-            <Box>
-              <Box display="flex" width="100%" mt={2} ml={0}>
+          <Box mt={20} display="flex" justifyContent="center">
+            <Box width="90%">
+              <Box>
+                <Box width="100%" mt={2} ml={0}>
+                  <Grid item xs={12} md={3}>
+                    <Box ml={3}>
+                      <Typography
+                        className={classes.texto}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Digite o CPF ou CNPJ do Pagante
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Box>
+              </Box>
+              <Box display="flex" m={2}>
                 <Grid item xs={12} md={3}>
-                  <Box ml={3}>
-                    <Typography
-                      className={classes.texto}
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                    >
-                      Digite o CPF ou CNPJ do Pagante
-                    </Typography>
+                  <Box mt={-2}>
+                    <input
+                      style={{ background: '#fafafa' }}
+                      type="text"
+                      name="identificationNumber"
+                      id="form-checkout__identificationNumber"
+                      className={classes.tf_input}
+                      onKeyDown={handleEnter}
+                      onFocus={handleFocus}
+                      onChange={handleInputChange}
+                      placeholder="Somente Números"
+                      onBlur={(e) => {
+                        setDocNumber(e.target.value);
+                      }}
+                    />
                   </Box>
                 </Grid>
               </Box>
-            </Box>
-            <Box display="flex" m={2}>
-              <Grid item xs={12} md={3}>
-                <Box mt={-2}>
-                  <input
-                    type="text"
-                    name="identificationNumber"
-                    id="form-checkout__identificationNumber"
-                    className={classes.tf_input}
-                    onKeyDown={handleEnter}
-                    onFocus={handleFocus}
-                    onChange={handleInputChange}
-                    placeholder="Somente Números"
-                    onBlur={(e) => {
-                      setDocNumber(e.target.value);
-                    }}
-                  />
-                </Box>
-              </Grid>
-            </Box>
 
-            <Box
-              mt={2}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
               <Box
-                mt={3}
+                mt={2}
                 sx={{
-                  background: '#f0f4c3',
-                  height: 70,
-                  width: '100vw',
                   display: 'flex',
                   justifyContent: 'center',
                 }}
               >
-                <Box mt={1}>
-                  <Box mt={0.8}>
-                    <Button
-                      className={classes.button2}
-                      variant="contained"
-                      id="pagPix"
-                      onClick={atualizar}
-                      style={{ width: '100%' }}
-                      // inputRef={fpRef}
-                    >
-                      Gerar chave Pix
-                    </Button>
+                <Box
+                  mt={3}
+                  sx={{
+                    height: 70,
+                    width: '100vw',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Box mt={1}>
+                    <Box mt={0.8}>
+                      <Button
+                        className={classes.button2}
+                        variant="contained"
+                        id="pagPix"
+                        onClick={atualizar}
+                        style={{ width: '100%', borderRadius: 15 }}
+                        // inputRef={fpRef}
+                      >
+                        Gerar chave Pix
+                      </Button>
+                    </Box>
                   </Box>
+                </Box>
+              </Box>
+              <Box width="100%" display="flex" justifyContent="center">
+                <Box width="100%" mt={5} ml={0} height={100} bgcolor="#eadafa">
+                  <Grid item xs={12} md={3}>
+                    <Box m={1}>
+                      <Box mt={-0.5} display="flex" justifyContent="center">
+                        <Typography
+                          style={{
+                            fontSize: '16px',
+                            color: '#000',
+                            fontFamily: 'Arial Black',
+                            fontWeight: 'bold',
+                          }}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          ATENÇÃO!!!
+                        </Typography>
+                      </Box>
+                      <Box mt={0} display="flex" justifyContent="center">
+                        <Typography
+                          className={classes.texto}
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          Sua chave Pix durará 30 minutos
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box mt={-1.5} display="flex" justifyContent="center">
+                      <Typography
+                        className={classes.texto}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Após esse tempo sua solicitação
+                      </Typography>
+                    </Box>
+                    <Box mt={-0.5} display="flex" justifyContent="center">
+                      <Typography
+                        className={classes.texto}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        será desconsiderada, obrigado
+                      </Typography>
+                    </Box>
+                  </Grid>
                 </Box>
               </Box>
             </Box>

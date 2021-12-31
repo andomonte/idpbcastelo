@@ -24,7 +24,8 @@ const handler = async (req, res) => {
   if (notificationData.topic === 'payment') {
     try {
       mercadoPago = await mercadopago.payment.findById(notificationData.id);
-      if (mercadoPago) console.log(mercadoPago);
+      console.log(mercadoPago);
+      res.status(200).send('OK');
       //      res.send(mercadoPago);
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
@@ -52,7 +53,6 @@ const handler = async (req, res) => {
       }); */
       // res.send(JSON.stringify(respPagamento.status));
       console.log('bd-idpb foi atualizado');
-      res.status(200).send('OK');
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
       console.log('erro ao acessar bd-idpb=', errors);
