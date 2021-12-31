@@ -203,7 +203,7 @@ function changeTimezone() {
 }
 
 const GeneratePDF = dynamic(
-  () => import('src/components/Global/Comprar/pdfs/GeneratePDF'),
+  () => import('src/components/Global/Comprar/pdfs/GeneratePdf'),
   {
     ssr: false,
   },
