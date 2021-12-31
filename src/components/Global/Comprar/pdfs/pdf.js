@@ -202,7 +202,7 @@ function changeTimezone() {
   return s;
 }
 
-const GeneratePDF = dynamic(
+const GeneratePdf = dynamic(
   () => import('src/components/Global/Comprar/pdfs/GeneratePdf'),
   {
     ssr: false,
@@ -713,7 +713,7 @@ const PdfCompra = ({
         </div>
       </Box>
       <Box mt={altura < 610 ? -14 : -19}>
-        <GeneratePDF html={ref} cpf={cpf} />
+        <GeneratePdf html={ref} cpf={cpf} />
       </Box>
     </Box>
   );
