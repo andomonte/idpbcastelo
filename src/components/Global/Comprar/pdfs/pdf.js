@@ -4,6 +4,7 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button, Typography } from '@material-ui/core';
 import Divider from '@mui/material/Divider';
 import TamanhoJanela from 'src/utils/getSize';
+import GeneratePdf from 'src/components/Global/Comprar/pdfs/GeneratePdf';
 
 const janela = TamanhoJanela();
 const altura = janela.height;
@@ -202,12 +203,12 @@ function changeTimezone() {
   return s;
 }
 
-const GeneratePdf = dynamic(
+/* const GeneratePdf = dynamic(
   () => import('src/components/Global/Comprar/pdfs/GeneratePdf'),
   {
     ssr: false,
   },
-);
+); */
 
 const PdfCompra = ({
   codigo,
