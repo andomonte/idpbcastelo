@@ -1,3 +1,5 @@
+import prisma from 'src/lib/prisma';
+
 const mercadopago = require('mercadopago');
 
 let accessToken;
@@ -11,31 +13,52 @@ mercadopago.configure({
 
 const handler = async (req, res) => {
   //  let respPagamento;
-  res.status(200).send('OK');
-  const dados = req.body;
-  const dados2 = req.query;
-
-  console.log('dados =', dados);
-  console.log('dados2 =', dados2);
-  /* const notificationData = {
-    id: Number(req.body.data.id),
-    action: req.body.action,
+  // res.status(200).send('OK');
+  const dados = req.query;
+  let mercadoPago;
+  const notificationData = {
+    id: Number(dados.id),
+    topic: dados.topic,
   };
 
-  if (notificationData.id) {
+  if (notificationData.topic === 'payment') {
     try {
-      const mercadoPago = await mercadopago.payment.findById(
-        notificationData.id,
-      );
-      console.log(mercadoPago);
+      mercadoPago = await mercadopago.payment.findById(notificationData.id);
+      if (mercadoPago) console.log(mercadoPago);
       //      res.send(mercadoPago);
-      res.status(200).send('OK');
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
       console.log('aqui o erro=', errors);
-      res.send(errors);
+      res.status(500).send('ERRO AO CESSAR MERCADO PAGO');
     }
-  } */
+  }
+  if (mercadoPago.response.status) {
+    try {
+      await prisma.inscritosGlobals
+        .update({
+          where: { idPagamento: Number(notificationData.id) },
+          data: {
+            status: mercadoPago.response.status,
+          },
+        })
+        .finally(async () => {
+          await prisma.$disconnect();
+        });
+
+      /*  res.status(respPagamento.status).json({
+        status: respPagamento.body.status,
+        status_detail: respPagamento.body.status_detail,
+        id: respPagamento.body.id,
+      }); */
+      // res.send(JSON.stringify(respPagamento.status));
+      console.log('bd-idpb foi atualizado');
+      res.status(200).send('OK');
+    } catch (errors) {
+      //        const erroIDPB = JSON.stringify(ErroIDPB);
+      console.log('erro ao acessar bd-idpb=', errors);
+      res.status(400).send('NG');
+    }
+  }
 };
 
 export default handler;

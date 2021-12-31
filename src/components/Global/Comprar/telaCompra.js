@@ -611,7 +611,7 @@ const Home = ({ inscritos, dados }) => {
                 email={email}
                 total={dados.total}
                 qtyA={dados.qtyA}
-                ftyC={dados.qtyC}
+                qtyC={dados.qtyC}
               />
             )}
 
