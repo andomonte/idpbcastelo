@@ -23,8 +23,7 @@ const handler = async (req, res) => {
 
   const paymentData = {
     transaction_amount: Number(req.body.transactionAmount),
-    notification_url:
-      'https://webhook.site/c857bd9a-e01e-47ef-ac1b-eeecccf3106c', // 'https://idpb-app.vercel.app/api/notification',
+    notification_url: 'https://idpb-app.vercel.app/api/notification',
     description: req.body.description,
     payment_method_id: req.body.paymentMethodId,
 

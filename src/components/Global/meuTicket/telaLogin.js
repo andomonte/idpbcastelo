@@ -20,8 +20,19 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: '100%',
   },
+  paper: {
+    // backgroundColor: '#b91a30', // theme.palette.background.paper,
+    backgroundImage: `url('/images/global/fundo.png')`,
+    //    border: '0px solid #000',
+    //    boxShadow: theme.shadows[5],
+    //  padding: theme.spacing(1, 1, 1),
+    backgroundPosition: 'center', // centraliza imagem
+    backgroundSize: 'cover', // imagem cobre toda área do div
+    height: '100vh',
+    width: '100vw',
+  },
   tf_s: {
-    backgroundColor: '#ffff',
+    backgroundColor: '#f2f2f2',
     textAlign: 'center',
     width: '100%',
     height: '40px',
@@ -35,9 +46,9 @@ const useStyles = makeStyles((theme) => ({
 const ColorButton = withStyles((theme) => ({
   root: {
     color: '#fff',
-    backgroundColor: 'blue',
+    backgroundColor: '#780208',
     '&:hover': {
-      backgroundColor: 'blue',
+      backgroundColor: '#780208',
     },
   },
 }))(Button);
@@ -115,107 +126,121 @@ function LoginGame() {
 
   //  const janela = TamanhoJanela();
   return (
-    <Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        height="100vh"
-        width="100vw"
-        bgcolor="#a7172b"
-      >
+    <Box className={classes.paper}>
+      <Box>
         <form>
-          <Box align="center" width="100%" bgcolor="#a7172b">
-            <Box mt={-30} ml={5}>
-              <img src="/images/global/global1.png" alt="" width="100%" />
-            </Box>
-            <Box>
-              <Box display="flex" width="100%" mt={0} ml={1}>
-                <Grid item xs={2} md={3}>
-                  <Box
-                    height={10}
-                    p={1}
-                    ml={0}
-                    mr={0}
-                    mt={-14}
-                    display="flex"
-                    alignItems="center"
-                  >
-                    <ArrowBackIcon
-                      sx={{
-                        fontSize: 20,
-                        color: '#fff',
-                      }}
-                      onClick={voltar}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={1} md={3} />
-
-                <Grid item xs={9} md={3} />
+          <Box display="flex" width="100%" mt={18} ml={2}>
+            <Grid item xs={2} md={3}>
+              <Box
+                height={10}
+                p={1}
+                ml={0}
+                mr={0}
+                mt={-14}
+                display="flex"
+                alignItems="center"
+              >
+                <ArrowBackIcon
+                  sx={{
+                    fontSize: 20,
+                    color: '#fff',
+                  }}
+                  onClick={voltar}
+                />
               </Box>
-            </Box>
-            <Box display="flex" flexDirection="row" mt={10}>
-              <Grid item xs={12} md={3}>
-                <Box mt={0} display="flex" flexDirection="row">
-                  <Grid item xs={12} md={9}>
-                    <Box
-                      mt={1}
-                      ml={2}
-                      sx={{ fontWeight: 'bold', fontSize: '10px' }}
-                    >
-                      <Typography
-                        style={{
-                          fontWeight: 'bold',
-                          fontSize: '15px',
-                          color: '#fff',
-                        }}
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
-                        Digite seu CPF
-                      </Typography>
-                    </Box>
-                    <Box mt={1} width="90%">
-                      <TextField
-                        id="CPF"
-                        type="tel"
-                        inputRef={cpfRef}
-                        className={classes.tf_s}
-                        value={cpf}
-                        variant="outlined"
-                        placeholder=""
-                        size="small"
-                        onKeyDown={handleEnter}
-                        onChange={(e) => {
-                          setCPF(cpfMask(e.target.value));
-                        }}
-                        onFocus={(e) => setCPF(cpfMask(e.target.value))}
-                      />
-                    </Box>
-                  </Grid>
-                </Box>
-                <Box mt={3}>
-                  <Box
-                    mt={janela.height < 600 ? 8 : 10}
-                    display="flex"
-                    width="100%"
-                    justifyContent="center"
+            </Grid>
+            <Grid item xs={1} md={3} />
+
+            <Grid item xs={9} md={3} />
+          </Box>
+          <Box
+            mt={2}
+            ml={0}
+            sx={{ fontWeight: 'bold', fontSize: '10px' }}
+            display="flex"
+            justifyContent="center"
+          >
+            <Typography
+              style={{
+                fontWeight: 'bold',
+                fontSize: '15px',
+                fontFamily: 'arial black',
+                color: '#780208',
+              }}
+              variant="caption"
+              display="block"
+              gutterBottom
+            >
+              GERE SEU TICKET
+            </Typography>
+          </Box>
+
+          <Box display="flex" justifyContent="center">
+            <Box mt={5} width="80%">
+              <Box mt={0}>
+                <Box
+                  mt={2}
+                  ml={0}
+                  sx={{ fontWeight: 'bold', fontSize: '10px' }}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <Typography
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '15px',
+                      color: '#780208',
+                    }}
+                    variant="caption"
+                    display="block"
+                    gutterBottom
                   >
-                    <Box>
-                      <ColorButton
-                        style={{ borderRadius: 16 }}
-                        variant="contained"
-                        value="value"
-                        onClick={handleValida}
-                      >
-                        Gerar Ticket
-                      </ColorButton>
-                    </Box>
+                    Digite seu CPF
+                  </Typography>
+                </Box>
+                <Box mt={0} width="100%">
+                  <TextField
+                    id="CPF"
+                    type="tel"
+                    inputRef={cpfRef}
+                    style={{ width: '100%' }}
+                    className={classes.tf_s}
+                    inputProps={{
+                      style: {
+                        textAlign: 'center',
+                      },
+                    }}
+                    value={cpf}
+                    variant="outlined"
+                    placeholder=""
+                    size="small"
+                    onKeyDown={handleEnter}
+                    onChange={(e) => {
+                      setCPF(cpfMask(e.target.value));
+                    }}
+                    onFocus={(e) => setCPF(cpfMask(e.target.value))}
+                  />
+                </Box>
+              </Box>
+              <Box mt={3}>
+                <Box
+                  mt={janela.height < 600 ? 8 : 10}
+                  display="flex"
+                  width="100%"
+                  justifyContent="center"
+                >
+                  <Box>
+                    <ColorButton
+                      style={{ borderRadius: 16 }}
+                      variant="contained"
+                      value="value"
+                      onClick={handleValida}
+                    >
+                      Gerar Ticket
+                    </ColorButton>
                   </Box>
                 </Box>
-              </Grid>
+              </Box>
             </Box>
           </Box>
         </form>

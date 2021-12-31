@@ -420,6 +420,11 @@ const Home = ({ inscritos, dados }) => {
                           <Box className={classes.novoBox} mt={-1.5}>
                             <TextField
                               className={classes.tf_s}
+                              inputProps={{
+                                style: {
+                                  textAlign: 'center',
+                                },
+                              }}
                               id="Nome"
                               // label="Matricula"
                               type="text"
@@ -459,6 +464,11 @@ const Home = ({ inscritos, dados }) => {
                           <Box className={classes.novoBox} mt={-1.5}>
                             <TextField
                               className={classes.tf_s}
+                              inputProps={{
+                                style: {
+                                  textAlign: 'center',
+                                },
+                              }}
                               id="CPF"
                               inputRef={cpfRef}
                               //                      ref={cpfRef}
@@ -500,6 +510,11 @@ const Home = ({ inscritos, dados }) => {
                           <Box className={classes.novoBox} mt={-1.5}>
                             <TextField
                               className={classes.tf_s}
+                              inputProps={{
+                                style: {
+                                  textAlign: 'center',
+                                },
+                              }}
                               id="Email"
                               type="text"
                               InputLabelProps={{

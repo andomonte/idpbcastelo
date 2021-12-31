@@ -77,6 +77,7 @@ module.exports = withPlugins([
       register: true,
       skipWaiting: true,
       sw: '/sw.js',
+      buildExcludes: [/ middleware-manifest.json $ /],
     },
   },
 

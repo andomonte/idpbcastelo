@@ -44,7 +44,7 @@ const handler = async (req, res) => {
 
   const paymentData = {
     transaction_amount: Number(req.body.transactionAmount),
-    notification_url: 'https://idpb-app.vercel.app/api/mpNotifications',
+    notification_url: 'https://idpb-app.vercel.app/api/notification',
     token: req.body.token,
     description: req.body.description,
     installments: Number(req.body.installments),

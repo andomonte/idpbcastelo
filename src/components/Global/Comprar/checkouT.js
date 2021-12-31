@@ -4,7 +4,7 @@ import { useReactToPrint } from 'react-to-print';
 
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Button, TextField } from '@material-ui/core';
+import { Box, Grid, Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import MenuItem from '@material-ui/core/MenuItem';
 import dataMask from 'src/components/mascaras/datas';

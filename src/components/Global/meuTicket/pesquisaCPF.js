@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Typography, TextField } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 // import CardMedia from '@mui/material/CardMedia';
 import Fab from '@mui/material/Fab';
 import Avatar from '@mui/material/Avatar';
@@ -73,6 +73,8 @@ function PesquisaCPF({ cpf, setOpen }) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openDrawerInval, setOpenDrawerInval] = React.useState(false);
   const [openDrawerPend, setOpenDrawerPend] = React.useState(false);
+  const [openDrawerPend2, setOpenDrawerPend2] = React.useState(false);
+  const [inscCancel, setInscCancel] = React.useState([]);
   const [nome, setNome] = React.useState('');
   const [adultos, setAdultos] = React.useState('');
   const [criancas, setCriancas] = React.useState('');
@@ -96,20 +98,27 @@ function PesquisaCPF({ cpf, setOpen }) {
     if (posts !== 'vazio') {
       if (posts.length > 0) {
         const inscrito = posts.filter((val) => val.status !== 'cancelada');
-        console.log('inscrito', inscrito);
-        if (inscrito[0].CPF === cpf) {
-          setNome(posts[0].Nome);
-          setAdultos(posts[0].Adultos);
-          setCriancas(posts[0].Criancas);
-          setIdPagamento(posts[0].idPagamento);
+        const inscCancelada = posts.filter((val) => val.status === 'cancelada');
+        console.log(inscCancelada.length);
+        if (!inscCancelada.length) {
+          if (inscrito[0].CPF === cpf) {
+            setNome(posts[0].Nome);
+            setAdultos(posts[0].Adultos);
+            setCriancas(posts[0].Criancas);
+            setIdPagamento(posts[0].idPagamento);
 
-          if (inscrito[0].status === 'approved') setOpenDrawer(true);
-          if (
-            inscrito[0].status !== 'cancelada' &&
-            inscrito[0].status !== 'approved'
-          )
-            setOpenDrawerPend(true);
-        } else setOpenDrawerInval(true);
+            if (inscrito[0].status === 'approved') setOpenDrawer(true);
+            if (
+              inscrito[0].status !== 'cancelada' &&
+              inscrito[0].status !== 'approved'
+            )
+              setOpenDrawerPend(true);
+          } else setOpenDrawerInval(true);
+        } else {
+          setOpenDrawerPend2(true);
+
+          setInscCancel(() => [...inscCancelada]);
+        }
       } else setOpenDrawerInval(true);
     }
   }, [posts]);
@@ -122,6 +131,8 @@ function PesquisaCPF({ cpf, setOpen }) {
       },
     },
   }))(Button);
+
+  console.log('insc', inscCancel);
 
   const handleCloseOK = () => {
     router.push({
@@ -452,6 +463,210 @@ function PesquisaCPF({ cpf, setOpen }) {
                         <Box mt={-ajusteAltura + 6}>
                           <strong style={{ color: '#000' }}>código:</strong>{' '}
                           {idPagamento}
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      height={50}
+                      mt={1}
+                      sx={{ fontSize: 'bold', background: '#780208' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '13px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                          marginTop: 10,
+                          marginLeft: 2,
+
+                          width: janela.width - 28,
+                          height: 60,
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            border: '1px solid #780208',
+                            borderLeft: 0,
+                            borderRight: 0,
+                            borderBottom: 0,
+                          }}
+                          mt={janela.height > 630 ? -40 : -34}
+                        >
+                          <Box mt={1}> Central de atendimento: </Box>
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={0}
+                      sx={{ fontSize: 'bold', background: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '13px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={janela.height > 630 ? -40 : -34}>
+                          (92) 9134-4368
+                        </Box>
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    mt={1}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
+
+                  <Box
+                    mt={0}
+                    mb={2}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  />
+                </Box>
+              </Box>
+            </div>
+            <Box mt={-10} display="flex" justifyContent="center">
+              <ColorButton
+                style={{ borderRadius: 16 }}
+                variant="contained"
+                value="value"
+                onClick={handleClose}
+              >
+                FECHAR
+              </ColorButton>
+            </Box>
+          </Box>
+        </Drawer>
+        <Drawer variant="persistent" anchor="bottom" open={openDrawerPend2}>
+          <Box className={classes.root}>
+            <div className="content" ref={ref2} id="comprovante">
+              <Box width="100%" mb={1}>
+                <Box {...defaultProps}>
+                  <Box mt={-1} ml={0}>
+                    <img
+                      src="/images/global/informe.png"
+                      alt=""
+                      width="100%"
+                      height={janela.height}
+                    />
+                  </Box>
+                  <Box
+                    //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
+                    width={janela.width}
+                    ml={-0.3}
+
+                    // className={classes.imgBack}
+                    // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
+                  >
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mb={0}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: '#000',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura - 3}>CPF: {cpf}</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mb={0}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '14px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 2}>
+                          Quantidade de inscrições ={' '}
+                          <strong>{inscCancel.length}</strong>
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={1}
+                      sx={{ fontSize: 'bold', color: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: 'blue',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 3}>CANCELADA</Box>
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={1}
+                      sx={{ fontSize: 'bold', color: '#b91a30' }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          color: 'green',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Box mt={-ajusteAltura + 6}>
+                          <Box display="flex" justifyContent="space-around">
+                            <strong style={{ color: '#000' }}>código</strong>
+                          </Box>
+                          <Box display="flex" justifyContent="space-around">
+                            {inscCancel.length && inscCancel[0].idPagamento}
+                          </Box>
                         </Box>
                       </Typography>
                     </Box>
