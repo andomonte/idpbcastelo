@@ -13,7 +13,10 @@ const handler = async (req, res) => {
   //  let respPagamento;
   res.status(200).send('OK');
   const dados = req.body;
-  console.log(dados);
+  const dados2 = req.query;
+
+  console.log('dados =', dados);
+  console.log('dados2 =', dados2);
   /* const notificationData = {
     id: Number(req.body.data.id),
     action: req.body.action,

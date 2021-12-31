@@ -236,7 +236,9 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
       .post('/api/mercadoPagoPix', {
         nome,
         cpf,
-        nascimento,
+        qtyA,
+        qtyC,
+        total,
         email,
         tipoDoc,
         docNumber,
