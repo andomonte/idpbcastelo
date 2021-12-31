@@ -513,7 +513,8 @@ const Home = ({ inscritos, dados }) => {
                               placeholder="email para envio de comprovante"
                               size="small"
                               onBlur={(e) => {
-                                if (validacaoCPF) handlevalidarEmail(e);
+                                if (validacaoCPF === 'next')
+                                  handlevalidarEmail(e);
                               }}
                               onChange={(e) => {
                                 setEmail(e.target.value);

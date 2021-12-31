@@ -13,8 +13,10 @@ mercadopago.configure({
 
 const handler = async (req, res) => {
   //  let respPagamento;
+  console.log('entrou');
   const router = useRouter();
   const { ...dados } = router.query;
+  console.log('entrou', dados);
   res.status(200).send('OK');
   const notificationData = {
     id: Number(dados.id),
