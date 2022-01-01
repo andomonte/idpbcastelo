@@ -39,7 +39,7 @@ const handler = async (req, res) => {
         .update({
           where: { idPagamento: Number(notificationData.id) },
           data: {
-            status: mercadoPago.response.status,
+            status: 'aprovado', // mercadoPago.response.status,
           },
         })
         .finally(async () => {

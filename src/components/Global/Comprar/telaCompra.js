@@ -184,7 +184,7 @@ const defaultProps = {
 
 const Home = ({ inscritos, dados }) => {
   const classes = useStyles();
-  console.log(dados);
+
   // const router = useRouter();
   const [nome, setNome] = React.useState('');
   const [validarNome, setValidarNome] = React.useState('sim');

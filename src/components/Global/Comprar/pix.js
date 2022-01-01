@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { RepeatOneSharp } from '@material-ui/icons';
 import { useRouter } from 'next/router';
+import GerarPdf from './pdfs/pdf';
 
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -215,11 +216,11 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
       event.preventDefault();
     }
   };
-
   const janela = TamanhoJanela();
-  const handlefechar = () => {
+  const handleRouter = () => {
     router.push({
-      pathname: '/global',
+      pathname: '/global/chavePix',
+      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const voltar = () => {
@@ -252,9 +253,13 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
 
       .then((response) => {
         //        const prefID = response.data.body.point_of_interaction.transaction_data;
-
         if (!response.data.message) {
-          if (response.data.body.id) setIdCompra(response.data.body.id);
+          const dados = { id: '', qrCode: '', qrCodeCopy: '' };
+
+          if (response.data.body.id) {
+            setIdCompra(response.data.body.id);
+            dados.id = response.data.body.id;
+          }
           if (
             response.data.body.point_of_interaction.transaction_data.qr_code &&
             response.data.body.point_of_interaction.transaction_data
@@ -267,8 +272,18 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
               response.data.body.point_of_interaction.transaction_data
                 .qr_code_base64,
             );
-
-            setOpenDrawerOK(true);
+            dados.qrCode =
+              response.data.body.point_of_interaction.transaction_data.qr_code_base64;
+            dados.qrCodeCopy =
+              response.data.body.point_of_interaction.transaction_data.qr_code;
+            const { id } = dados;
+            const { qrCode } = dados;
+            const qrCodeCopy = dados;
+            router.push({
+              pathname: '/global/chavePix',
+              query: { id, qrCodeCopy, qrCode },
+            });
+            //            setOpenDrawerOK(true);
           }
         } else {
           setValorErro(
@@ -285,14 +300,20 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
   };
   const concluir = () => {
     const idCompra2 = '1244778917';
-    console.log('id', idCompra, idCompra2);
+
     api
       .post('/api/confirmPayment', { id: idCompra2 })
 
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data.body) {
           if (response.data.body.status === 'approved') setOpenDrawerFim(true);
+          if (response.data.body.status === 'pending') setOpenDrawerErro(true);
+        }
+        if (response.data.message) {
+          setValorErro(`Ainda não Detectamos o pagamento do seu Pix.`);
+          setOpenDrawerErro(true);
+          setMessageErro(response.data.message);
         }
         /* if (
           response.data.status === 'approved' ||
@@ -691,7 +712,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
         </Box>
       </Drawer>
       <Drawer variant="persistent" anchor="bottom" open={openDrawerFim}>
-        <Box height={janela.height} sx={{ background: '#FFFF' }}>
+        {/* <Box height={janela.height} sx={{ background: '#FFFF' }}>
           <Box
             height={janela.height - 10}
             mt={1}
@@ -814,7 +835,18 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
               </Button>
             </Box>
           </Box>
-        </Box>
+        </Box> */}
+        <GerarPdf
+          nome={nome}
+          codigo={idCompra}
+          adultos={qtyA}
+          criancas={qtyC}
+          valor={total}
+          fp="Pix"
+          status="PAGAMENTO CONFIRMADO"
+          parcelas="PARCELA ÚNICA"
+          cpf={cpf}
+        />
       </Drawer>
       <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
         <Box height={260} sx={{ background: '#ffebee' }}>

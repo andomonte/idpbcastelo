@@ -68,7 +68,6 @@ function LoginGame() {
   }
 
   const handleValida = () => {
-    console.log(cpf);
     let valCPF = false;
     const valorCPF = cpf.replace(/\D/g, '');
     if (cpf.length > 0) {
@@ -99,7 +98,6 @@ function LoginGame() {
     // window.location.reload();
   };
   const handleEnter = (event) => {
-    console.log(event.target.value.length);
     if (event.key.toLowerCase() === 'enter') {
       const { form } = event.target;
       const formId = event.target.id;
@@ -107,7 +105,6 @@ function LoginGame() {
         if (cpf.length >= 13) {
           const valCPF = handleValida();
           if (valCPF) {
-            console.log(cpf.length);
             const index = [...form].indexOf(event.target);
             form.elements[index + 2].focus();
             event.preventDefault();

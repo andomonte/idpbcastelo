@@ -10,7 +10,6 @@ const janela = TamanhoJanela();
 const altura = janela.height;
 const largura = janela.width;
 const alturaImg = altura / 5;
-// console.log(altura, largura);
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -220,11 +219,11 @@ const PdfCompra = ({
   status,
   parcelas,
   cpf,
+  email,
 }) => {
   const classes = useStyles();
   const ref = React.useRef();
   const [dataTime, setDataTime] = React.useState('');
-  console.log('parc', parcelas);
   // const dataFinal = String(`${data} `);
 
   React.useEffect(() => {
@@ -237,7 +236,6 @@ const PdfCompra = ({
     return '14px';
   };
   const vfonte = fonteSize();
-  console.log(vfonte);
   return (
     <Box className={classes.root}>
       <Box width="100%" mb={1}>

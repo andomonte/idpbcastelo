@@ -8,16 +8,7 @@ import { Box, Grid, Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import MenuItem from '@material-ui/core/MenuItem';
 import dataMask from 'src/components/mascaras/datas';
-import PrintIcon from '@material-ui/icons/Print';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
-// import FormHelperText from '@material-ui/core/FormHelperText';
-// import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-// import cpfMask from 'src/components/mascaras/cpf';
-// import cnpjMask from 'src/components/mascaras/cnpj';
-// import onlyNumber from 'src/components/mascaras/onlyNumber';
 import Typography from '@mui/material/Typography';
 import api from 'src/components/services/api';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -31,7 +22,6 @@ import TamanhoJanela from 'src/utils/getSize';
 
 import ValidaCPF from 'src/utils/validarCPF';
 import ValidaCNPJ from 'src/utils/validarCNPJ';
-import set from 'date-fns/set';
 import GerarPdf from './pdfs/pdf';
 
 const Container = styled.div`

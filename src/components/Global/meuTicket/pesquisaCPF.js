@@ -88,18 +88,15 @@ function PesquisaCPF({ cpf, setOpen }) {
       else {
         setPosts('nada');
       }
-      console.log('res', res);
     } catch (err) {
       console.log(err);
     }
   }, []);
-  console.log('res', posts);
   React.useEffect(async () => {
     if (posts !== 'vazio') {
       if (posts.length > 0) {
         const inscrito = posts.filter((val) => val.status !== 'cancelada');
         const inscCancelada = posts.filter((val) => val.status === 'cancelada');
-        console.log(inscCancelada.length);
         if (!inscCancelada.length) {
           if (inscrito[0].CPF === cpf) {
             setNome(posts[0].Nome);
@@ -132,13 +129,11 @@ function PesquisaCPF({ cpf, setOpen }) {
     },
   }))(Button);
 
-  console.log('insc', inscCancel);
-
-  const handleCloseOK = () => {
+  /*   const handleCloseOK = () => {
     router.push({
       pathname: '/global',
     });
-  };
+  }; */
   const handleClose = () => {
     setOpenDrawerInval(false);
     setOpenDrawerPend(false);

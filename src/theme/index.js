@@ -21,7 +21,7 @@ const theme = createTheme({
       main: red.A400,
     },
     background: {
-      default: '#ffff8d',
+      default: '#fff',
       dark: '#ffff',
       paper: colors.common.white,
       yellow: '#ffd600',
