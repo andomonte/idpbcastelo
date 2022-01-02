@@ -21,11 +21,11 @@ const handler = async (req, res) => {
     id: '',
     topic: '',
   };
-  if (dados.id) {
+  if (dados && dados.id) {
     notification.id = dados.id;
     notification.topic = dados.topic;
   }
-  if (dados.data.id) {
+  if (dados && dados.data.id) {
     notification.id = dados.data.id;
     notification.topic = dados.type;
   }
