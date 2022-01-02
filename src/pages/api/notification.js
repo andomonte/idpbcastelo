@@ -16,6 +16,7 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
   const dados = req.query;
   let mercadoPago;
+  console.log(dados);
   const notificationData = {
     id: Number(dados.id),
     topic: dados.topic,
@@ -33,7 +34,7 @@ const handler = async (req, res) => {
       res.status(500).send('ERRO AO CESSAR MERCADO PAGO');
     }
   }
-  if (mercadoPago.response.status) {
+  if (mercadoPago && mercadoPago.response.status) {
     try {
       await prisma.inscritosGlobals
         .update({
