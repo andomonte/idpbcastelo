@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
 import Paper from '@mui/material/Paper';
 import { useRouter } from 'next/router';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const useStyles = makeStyles(() => ({
   img: {
@@ -73,6 +74,12 @@ const Home = () => {
   const classes = useStyles();
   const router = useRouter();
 
+  const voltar = () => {
+    router.push({
+      pathname: '/',
+      //   query: { dadosMesa2, numeroGame },
+    });
+  }; // setGame('1');
   const comprar = () => {
     router.push({
       pathname: '/global/comprar',
@@ -100,8 +107,40 @@ const Home = () => {
           />
         </Hidden>
         <Hidden mdUp>
-          <Box mt={-1} className={classes.letras1}>
-            GLOBAL 2022
+          <Box display="flex" align="center" m={0}>
+            <Box
+              height={30}
+              p={1}
+              ml={0}
+              mr={0}
+              display="flex"
+              alignItems="center"
+            >
+              <ArrowBackIcon
+                sx={{
+                  fontSize: 20,
+                  color: '#fff',
+                }}
+                onClick={voltar}
+              />
+            </Box>
+          </Box>
+          <Box
+            height={30}
+            p={1}
+            m={0}
+            mr={0}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Box mt={-3} className={classes.letras1}>
+              CONFERÊNCIA
+            </Box>
+          </Box>
+
+          <Box mt={2} className={classes.letras1}>
+            <Box mt={-2}> GLOBAL 2022</Box>
           </Box>
           <Box mt={1} className={classes.letras2}>
             2022 GLOBAL CONFERENCE
@@ -174,9 +213,10 @@ const Home = () => {
               component="img"
               image="/images/global/sobre.png"
               alt="green iguana"
+              style={{ height: 120 }}
             />
           </Box>
-          <Box mt={1}>
+          <Box mt={0}>
             <CardMedia
               component="img"
               image="/images/global/pgLocal.png"

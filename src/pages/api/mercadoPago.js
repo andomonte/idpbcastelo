@@ -1,5 +1,6 @@
 import { payment } from 'mercadopago';
 import prisma from 'src/lib/prisma';
+import SendEmail from 'src/utils/sendEmail';
 
 const mercadopago = require('mercadopago');
 
@@ -58,6 +59,7 @@ const handler = async (req, res) => {
       },
     },
   };
+
   /*  const dataTime = (separator = '') => {
     const newDate = new Date();
     const date = newDate.getDate();
@@ -71,7 +73,13 @@ const handler = async (req, res) => {
   const respPagamento = await sendMercadoPago(paymentData);
   // const respPagamento1 = JSON.stringify(respPagamento);
   console.log('v respP=', respPagamento);
-
+  const { total } = req.body;
+  const { Adultos } = req.body;
+  const { Criancas } = req.body;
+  const fpagamento = req.body.fPagamento;
+  const CPF = req.body.cpf;
+  const Nome = req.body.nome;
+  const Email = req.body.email;
   const ErroIDPB = { code: '5050', message: 'Erro no acesso ao BD-IDPB' };
   if (!respPagamento.cause) {
     if (
@@ -82,20 +90,27 @@ const handler = async (req, res) => {
       const { status } = respPagamento.response;
       const idPagamento = String(respPagamento.response.id);
       const createdAt = new Date();
+      const mensagem = `Compra realizada no valor de ${req.body.total}, sendo ${Adultos} e ${Criancas}. Pago no ${fpagamento} com status de ${status}. Ticket no nome de ${Nome} e codigo de comrat de ${idPagamento}`;
+      const dadosEmail = {
+        enviadoPor: 'andomonte@gmai.com',
+        mensagem,
+        para: Email,
+        assunto: 'Inscricao Global',
+      };
+      SendEmail(dadosEmail);
       try {
         await prisma.inscritosGlobals
           .create({
             data: {
-              Email: req.body.email,
-              Nome: req.body.nome,
-              CPF: req.body.cpf,
-              Nascimento: req.body.nascimento,
-              fpagamento: req.body.fPagamento,
+              Email,
+              Nome,
+              CPF,
+              fpagamento,
               status,
               idPagamento,
-              Adultos: req.body.Adultos,
-              Criancas: req.body.Criancas,
-              total: req.body.total,
+              Adultos,
+              Criancas,
+              total,
               createdAt,
             },
           })

@@ -100,9 +100,9 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(0, 3),
+    //  padding: theme.spacing(0, 3),
     // necessary for content to be below app bar
-    justifyContent: 'flex',
+    // justifyContent: 'flex',
     marginTop: 56,
   },
   tabPanel: {
@@ -157,14 +157,7 @@ function TelaInicial({ title }) {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = React.useState(true);
-  const router = useRouter();
 
-  const voltar = () => {
-    router.push({
-      pathname: '/',
-      //   query: { dadosMesa2, numeroGame },
-    });
-  }; // setGame('1');
   const handleDrawerClose = () => {
     // console.log(mobile);
 
@@ -183,66 +176,12 @@ function TelaInicial({ title }) {
       </Head>
 
       <div className={classes.root}>
-        <AppBar className={classes.root2} color="default">
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" align="center" m={0}>
-                <Box
-                  height={30}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  display="flex"
-                  alignItems="center"
-                  sx={{ backgroundColor: '#a91a30' }}
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#fff',
-                    }}
-                    onClick={voltar}
-                  />
-                </Box>
-              </Box>
-              <Box
-                height={30}
-                p={1}
-                ml={0}
-                mr={0}
-                display="flex"
-                alignItems="center"
-              >
-                <Box className={classes.letras1}>CONFERÊNCIA</Box>
-              </Box>
-
-              <Box display="flex" align="center" m={0}>
-                <Box
-                  height={30}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#b91a30',
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Toolbar>
-          </ClickAwayListener>
-        </AppBar>
-
         <main
           className={clsx(classes.contentMain, {
             [classes.contentShiftMain]: open,
           })}
         >
-          <div className={classes.drawerHeader} />
+          <div />
           {/* {children} */}
 
           <Home />

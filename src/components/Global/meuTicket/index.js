@@ -126,21 +126,7 @@ function MeuTicket({ title }) {
       setOpen(false);
     }
   };
-  return (
-    <div onLoad={handleDrawerClose}>
-      <Head>
-        <title>{title}</title>
-        <meta charSet="utf-8" />
-        <meta httpEquiv="content-language" content="pt-Br" />
-        <meta name="google" content="notranslate" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-
-      <div className={classes.root}>
-        <TelaLogin />
-      </div>
-    </div>
-  );
+  return <TelaLogin />;
 }
 
 export default MeuTicket;

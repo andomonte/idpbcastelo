@@ -23,6 +23,13 @@ import { useTimer } from 'react-timer-hook';
 import GerarPdf from './pdfs/pdf';
 
 const janela = TamanhoJanela();
+let ajAlturaMin = -(janela.height / 10) + 10;
+if (ajAlturaMin < -48) ajAlturaMin = -48;
+if (ajAlturaMin > -42) ajAlturaMin = -42;
+let ajAlturaMax = -110 + janela.height / 10;
+if (ajAlturaMax < -4) ajAlturaMax = -47;
+if (ajAlturaMax > -35) ajAlturaMax = -35;
+
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -34,10 +41,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   QrCode: {
-    //    maxWidth: '1410px',
-    //    maxHeight: '600px',
-    width: janela.height - 350,
-    height: janela.height - 350,
+    maxWidth: 230,
+    maxHeight: 230,
+    minWidth: 170,
+    minHeight: 170,
+
+    width: janela.height / 3,
+    height: janela.height / 3,
   },
   img1: {
     width: '20px',
@@ -104,6 +114,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'blue',
     fontSize: '14px',
     fontWeight: 'bold',
+    minWidth: 125,
     color: '#fff',
     justifyContent: 'center',
   },
@@ -223,8 +234,9 @@ const QrPix = ({ codigo }) => {
       const dataAtual = new Date();
       const date1 = moment(dataAtual);
       const date2 = moment(data[0].createdAt);
-      const diff = date2.diff(date1, 'seconds');
+      const diff = date2.diff(date1, 'seconds') + 1800;
       // soma 30 minutes ou seja 1800segundos
+      console.log('tempo', diff);
       const time = new Date();
       time.setSeconds(time.getSeconds() + diff);
 
@@ -232,7 +244,7 @@ const QrPix = ({ codigo }) => {
     }
   }, [data]);
 
-  console.log(data, relogio);
+  console.log('relogio', relogio);
 
   const CancelarCompra = async () => {
     try {
@@ -289,7 +301,7 @@ const QrPix = ({ codigo }) => {
 
   return (
     <>
-      {relogio > 0 && (
+      {!cancelamento ? (
         <Box>
           {(data && data[0].status) === 'approved' ? (
             <GerarPdf
@@ -326,7 +338,7 @@ const QrPix = ({ codigo }) => {
                     display="flex"
                     justifyContent="center"
                     width="100%"
-                    mt={-(janela.height * 0.082)}
+                    mt={janela.height > 570 ? ajAlturaMax : ajAlturaMin}
                     sx={{ fontSize: 'bold', color: '#b91a30' }}
                   >
                     <Typography
@@ -372,7 +384,7 @@ const QrPix = ({ codigo }) => {
                       <Box display="flex" justifyContent="center">
                         CHAVE EXPIRA EM:{' '}
                         <Box mt={-0.5} ml={1}>
-                          <MyTimer expiryTimestamp={relogio} />
+                          {relogio && <MyTimer expiryTimestamp={relogio} />}
                         </Box>
                       </Box>
                     </Typography>
@@ -421,6 +433,163 @@ const QrPix = ({ codigo }) => {
                         variant="contained"
                         id="reload"
                         onClick={FecharCompra}
+                      >
+                        SAIR
+                      </Button>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          )}
+        </Box>
+      ) : (
+        <Box>
+          {(data && data[0].status) === 'approved' ? (
+            <GerarPdf
+              nome={dadosCompra.Nome}
+              codigo={dadosCompra.idPagamento}
+              adultos={dadosCompra.Adultos}
+              criancas={dadosCompra.Criancas}
+              valor={dadosCompra.total}
+              fp="Pix"
+              status="PAGAMENTO CONFIRMADO"
+              parcelas="Parcela Única"
+              cpf={dadosCompra.CPF}
+              email={dadosCompra.Email}
+            />
+          ) : (
+            <Box className={classes.root}>
+              <Box
+                mt={0}
+                height={janela.height}
+                justifyContent="center"
+                display="flex"
+              >
+                <Box>
+                  <Box mt={0} ml={0}>
+                    <img
+                      src="/images/global/fundo2.png"
+                      alt=""
+                      width="100%"
+                      className={classes.img}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={janela.height > 570 ? ajAlturaMax + 5 : ajAlturaMin + 5}
+                    sx={{ fontSize: 'bold', color: '#b91a30' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '16px',
+                        color: '#000',
+                        fontWeight: 'bold',
+                        fontFamily: 'arial black',
+                      }}
+                    >
+                      ATENÇÃO !!!
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={3}
+                    sx={{ fontSize: 'bold', color: '#b91a30' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '15px',
+                        color: '#000',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      AINDA NÃO DETECTAMOS SEU PIX
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={0}
+                    sx={{ fontSize: 'bold', color: '#000' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '15px',
+                        color: '#000',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      CASO CONFIRME SUA SAÍDA
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={0}
+                    sx={{ fontSize: 'bold', color: '#b91a30' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '15px',
+                        color: '#000',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      SUA INSCRIÇÃO SERÁ CANCELADA
+                    </Typography>
+                  </Box>
+
+                  <Box mt={5} display="flex" justifyContent="center">
+                    <Box
+                      mr={5}
+                      mt={0}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Button
+                        className={classes.button2}
+                        variant="contained"
+                        id="reload"
+                        onClick={() => setCancelamento(false)}
+                      >
+                        <small>VOLTAR </small>{' '}
+                      </Button>
+                    </Box>
+                    <Box
+                      mt={0}
+                      mb={0}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Button
+                        className={classes.button1}
+                        variant="contained"
+                        id="reload"
+                        onClick={CancelarCompra}
                       >
                         SAIR
                       </Button>

@@ -68,7 +68,7 @@ function PesquisaCPF({ cpf, setOpen }) {
   const ref1 = React.useRef();
   const ref2 = React.useRef();
   const ref3 = React.useRef();
-  const url = `${window.location.origin}/api/consultaInscGlobal/${cpf}`;
+  const url = `${window.location.origin}/api/consultaInscGlobalCPF/${cpf}`;
   const [posts, setPosts] = React.useState('vazio');
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openDrawerInval, setOpenDrawerInval] = React.useState(false);
@@ -97,6 +97,7 @@ function PesquisaCPF({ cpf, setOpen }) {
       if (posts.length > 0) {
         const inscrito = posts.filter((val) => val.status !== 'cancelada');
         const inscCancelada = posts.filter((val) => val.status === 'cancelada');
+
         if (!inscCancelada.length) {
           if (inscrito[0].CPF === cpf) {
             setNome(posts[0].Nome);
@@ -145,10 +146,12 @@ function PesquisaCPF({ cpf, setOpen }) {
       <Box>
         {posts === 'vazio' && (
           <Box>
-            <Box mt={-7}>
-              <LinearProgress />
-              <Box display="flex" justifyContent="center">
-                <small>Carregando...</small>
+            <Box mt={-7} justifyContent="center" display="flex">
+              <Box width="90%">
+                <LinearProgress />
+                <Box display="flex" justifyContent="center">
+                  <small>Carregando...</small>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -310,7 +313,7 @@ function PesquisaCPF({ cpf, setOpen }) {
                         }}
                       >
                         <Box mt={janela.height > 630 ? -40 : -34}>
-                          (92) 9134-4368
+                          (92) 99134-4368
                         </Box>
                       </Typography>
                     </Box>
@@ -516,7 +519,7 @@ function PesquisaCPF({ cpf, setOpen }) {
                         }}
                       >
                         <Box mt={janela.height > 630 ? -40 : -34}>
-                          (92) 9134-4368
+                          (92) 99134-4368
                         </Box>
                       </Typography>
                     </Box>

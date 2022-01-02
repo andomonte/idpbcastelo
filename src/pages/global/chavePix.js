@@ -12,6 +12,7 @@ function ChavePix() {
   let mudaDados = 'sai';
   if (codigo.id) mudaDados = 'entra';
   const [codigoF, setCodigoF] = React.useState();
+
   React.useEffect(() => {
     setCodigoF(codigoF);
     if (mudaDados === 'entra') {
@@ -24,6 +25,9 @@ function ChavePix() {
     }
   }, []);
 
+  if (typeof window !== 'undefined') {
+    window.history.replaceState(null, '', '/global/chavePix');
+  }
   return (
     <>
       {codigo.id ? (

@@ -571,5 +571,5 @@ model inscritosGlobals {
   total       String   @db.VarChar(45)
   createdAt   DateTime @db.Timestamp(0)
 
-  @@id([id, CPF, idPagamento])
+  @@id([id, idPagamento])
 }

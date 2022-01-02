@@ -145,7 +145,7 @@ function Compra({ title, inscritos }) {
     });
   };
   return (
-    <div onLoad={handleDrawerClose}>
+    <div>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -154,18 +154,7 @@ function Compra({ title, inscritos }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div className={classes.root}>
-        <main
-          className={clsx(classes.contentMain, {
-            [classes.contentShiftMain]: open,
-          })}
-        >
-          <div className={classes.drawerHeader} />
-          {/* {children} */}
-          <TelaInicial inscritos={inscritos} />
-          {/* <TelaCompra inscritos={inscritos} /> */}
-        </main>
-      </div>
+      <TelaInicial inscritos={inscritos} />
     </div>
   );
 }

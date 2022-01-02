@@ -50,6 +50,7 @@
     "date-fns": "^2.19.0",
     "dayjs": "^1.10.4",
     "downloadjs": "^1.4.7",
+    "emailjs": "^3.7.0",
     "filesize": "^6.3.0",
     "fuzzy-search": "^3.2.1",
     "html-to-image": "^1.9.0",
