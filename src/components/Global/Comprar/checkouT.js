@@ -1130,6 +1130,12 @@ export default function CheckoutT({
                       onKeyDown={handleEnter}
                       onFocus={handleFocus}
                       autoFocus
+                      onBlur={(event) => {
+                        const CardNumber = event.target.value;
+                        console.log(CardNumber, parcela.length);
+                        if (CardNumber.length > 6 && parcela.length > 1)
+                          paymentMethods(CardNumber);
+                      }}
                       onChange={(event) => {
                         const CardNumber = event.target.value;
                         setNumber(CardNumber);
