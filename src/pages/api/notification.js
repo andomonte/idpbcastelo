@@ -17,14 +17,22 @@ const handler = async (req, res) => {
   const dados = req.query;
   let mercadoPago;
   console.log(dados);
-  const notificationData = {
-    id: Number(dados.id),
-    topic: dados.topic,
+  const notification = {
+    id: '',
+    topic: '',
   };
+  if (dados.id) {
+    notification.id = dados.id;
+    notification.topic = dados.topic;
+  }
+  if (dados.data.id) {
+    notification.id = dados.data.id;
+    notification.topic = dados.type;
+  }
 
-  if (notificationData.topic === 'payment') {
+  if (notification.topic === 'payment') {
     try {
-      mercadoPago = await mercadopago.payment.findById(notificationData.id);
+      mercadoPago = await mercadopago.payment.findById(notification.id);
       console.log(mercadoPago);
       res.status(200).send('OK');
       //      res.send(mercadoPago);
@@ -38,7 +46,7 @@ const handler = async (req, res) => {
     try {
       await prisma.inscritosGlobals
         .update({
-          where: { idPagamento: Number(notificationData.id) },
+          where: { idPagamento: Number(notification.id) },
           data: {
             status: 'mercadoPago.response.status',
           },
