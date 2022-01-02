@@ -95,133 +95,135 @@ const Home = () => {
   }; // setGame('1');
 
   return (
-    <Box style={{ backgroundColor: '#fff', height: '90vh' }}>
-      <Box>
+    <Box style={{ backgroundColor: '#fafafa', height: '100vh' }}>
+      <Box mt={0}>
         <Hidden smDown>
-          <Box mt={2} display="flex" justifyContent="center">
-            <Box width={400} height="90%" bgcolor="#b91a30">
-              <Box display="flex" align="center" m={0}>
+          <Box mt={0}>
+            <Box display="flex" justifyContent="center">
+              <Box mt={2} width={400} height="100%" bgcolor="#b91a30">
+                <Box mt={0} ml={0}>
+                  <Box
+                    height={30}
+                    p={1}
+                    ml={0}
+                    mr={0}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <ArrowBackIcon
+                      sx={{
+                        fontSize: 20,
+                        color: '#fff',
+                      }}
+                      onClick={voltar}
+                    />
+                  </Box>
+                </Box>
                 <Box
                   height={30}
                   p={1}
-                  ml={0}
+                  m={0}
                   mr={0}
                   display="flex"
                   alignItems="center"
+                  justifyContent="center"
                 >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#fff',
-                    }}
-                    onClick={voltar}
+                  <Box mt={-3} className={classes.letras1}>
+                    CONFERÊNCIA
+                  </Box>
+                </Box>
+
+                <Box mt={2} className={classes.letras1}>
+                  <Box mt={-2}> GLOBAL 2022</Box>
+                </Box>
+                <Box mt={1} className={classes.letras2}>
+                  2022 GLOBAL CONFERENCE
+                </Box>
+                <Box mt={-0.5}>
+                  <CardMedia
+                    component="img"
+                    height="100%"
+                    image="/images/global/pgIni01.png"
+                    alt="green iguana"
+                    style={{ justifyContent: 'center' }}
                   />
                 </Box>
-              </Box>
-              <Box
-                height={30}
-                p={1}
-                m={0}
-                mr={0}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box mt={-3} className={classes.letras1}>
-                  CONFERÊNCIA
+                <Box mt={0} className={classes.letras2}>
+                  INGRESSO - 1º LOTE - R$: 50,00
                 </Box>
-              </Box>
+                <Box mt={2} className={classes.letras2}>
+                  <Button
+                    className={classes.button1}
+                    variant="contained"
+                    onClick={comprar}
+                  >
+                    COMPRAR
+                  </Button>
+                </Box>
 
-              <Box mt={2} className={classes.letras1}>
-                <Box mt={-2}> GLOBAL 2022</Box>
-              </Box>
-              <Box mt={1} className={classes.letras2}>
-                2022 GLOBAL CONFERENCE
-              </Box>
-              <Box mt={-0.5}>
-                <CardMedia
-                  component="img"
-                  height="100%"
-                  image="/images/global/pgIni01.png"
-                  alt="green iguana"
-                  style={{ justifyContent: 'center' }}
-                />
-              </Box>
-              <Box mt={0} className={classes.letras2}>
-                INGRESSO - 1º LOTE - R$: 50,00
-              </Box>
-              <Box mt={2} className={classes.letras2}>
-                <Button
-                  className={classes.button1}
-                  variant="contained"
-                  onClick={comprar}
+                <Box
+                  mt={2}
+                  sx={{
+                    display: 'flex',
+                    '& > :not(style)': {
+                      m: 1,
+                      width: '100%',
+                      height: 80,
+                    },
+                  }}
                 >
-                  COMPRAR
-                </Button>
-              </Box>
-
-              <Box
-                mt={2}
-                sx={{
-                  display: 'flex',
-                  '& > :not(style)': {
-                    m: 1,
-                    width: '100%',
-                    height: 80,
-                  },
-                }}
-              >
-                <Paper variant="outlined">
-                  <Box
-                    mt={1}
-                    sx={{
-                      display: 'flex',
-                      fontSize: '11px',
-                      fontWeight: 'bold',
-                      color: '#b91a30',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    APÓS A COMPRA GERE SEU TICKET AQUI
-                  </Box>
-                  <Box
-                    mt={1}
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Button
-                      className={classes.button2}
-                      variant="contained"
-                      onClick={myTicket}
+                  <Paper variant="outlined">
+                    <Box
+                      mt={1}
+                      sx={{
+                        display: 'flex',
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color: '#b91a30',
+                        justifyContent: 'center',
+                      }}
                     >
-                      MEU TICKET
-                    </Button>
-                  </Box>
-                </Paper>
-              </Box>
-              <Box mt={1}>
-                <CardMedia
-                  component="img"
-                  image="/images/global/sobre.png"
-                  alt="green iguana"
-                  style={{ height: 120 }}
-                />
-              </Box>
-              <Box mt={0}>
-                <CardMedia
-                  component="img"
-                  image="/images/global/pgLocal.png"
-                  alt="green iguana"
-                />
-              </Box>
-              <Box>
-                <CardMedia
-                  component="img"
-                  image="/images/global/site.png"
-                  alt="green iguana"
-                />
+                      APÓS A COMPRA GERE SEU TICKET AQUI
+                    </Box>
+                    <Box
+                      mt={1}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Button
+                        className={classes.button2}
+                        variant="contained"
+                        onClick={myTicket}
+                      >
+                        MEU TICKET
+                      </Button>
+                    </Box>
+                  </Paper>
+                </Box>
+                <Box mt={1}>
+                  <CardMedia
+                    component="img"
+                    image="/images/global/sobre.png"
+                    alt="green iguana"
+                    style={{ height: 120 }}
+                  />
+                </Box>
+                <Box mt={0}>
+                  <CardMedia
+                    component="img"
+                    image="/images/global/pgLocal.png"
+                    alt="green iguana"
+                  />
+                </Box>
+                <Box>
+                  <CardMedia
+                    component="img"
+                    image="/images/global/site.png"
+                    alt="green iguana"
+                  />
+                </Box>
               </Box>
             </Box>
           </Box>

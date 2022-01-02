@@ -22,10 +22,13 @@ const handler = async (req, res) => {
     topic: '',
   };
   if (dados && dados.id) {
+    console.log('entrou', dados.id);
     notification.id = dados.id;
     notification.topic = dados.topic;
   }
+  console.log('novamnet', dados);
   if (dados && dados.data.id) {
+    console.log('novamnet nova', dados.data.id);
     notification.id = dados.data.id;
     notification.topic = dados.type;
   }
