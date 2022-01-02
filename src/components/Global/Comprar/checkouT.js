@@ -1133,7 +1133,7 @@ export default function CheckoutT({
                       onBlur={(event) => {
                         const CardNumber = event.target.value;
                         console.log(CardNumber, parcela.length);
-                        if (CardNumber.length > 6 && parcela.length > 1)
+                        if (CardNumber.length > 6 && parcela.length < 2)
                           paymentMethods(CardNumber);
                       }}
                       onChange={(event) => {
