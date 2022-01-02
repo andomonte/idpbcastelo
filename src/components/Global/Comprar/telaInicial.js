@@ -460,7 +460,7 @@ const TelaInicial = ({ inscritos }) => {
                                     <Box
                                       bg="#ffaa"
                                       mt={0}
-                                      ml={6}
+                                      ml={8}
                                       display="flex"
                                       justifyContent="flex-start"
                                     >
@@ -482,7 +482,7 @@ const TelaInicial = ({ inscritos }) => {
                                     <Box
                                       bg="#ffaa"
                                       mt={-1}
-                                      ml={6}
+                                      ml={9}
                                       display="flex"
                                       justifyContent="flex-start"
                                     >
@@ -491,7 +491,7 @@ const TelaInicial = ({ inscritos }) => {
                                   </Typography>
                                 </Box>
                               </Grid>
-                              <Box ml={2} />
+                              <Box ml={5} />
                               <Grid item xs={6} md={12}>
                                 <Box
                                   mr={-2}
@@ -586,7 +586,7 @@ const TelaInicial = ({ inscritos }) => {
                                   <Box
                                     bg="#ffaa"
                                     mt={0}
-                                    ml={3}
+                                    ml={7}
                                     display="flex"
                                     justifyContent="flex-start"
                                   >
@@ -608,7 +608,7 @@ const TelaInicial = ({ inscritos }) => {
                                   <Box
                                     bg="#ffaa"
                                     mt={-1}
-                                    ml={3}
+                                    ml={8}
                                     display="flex"
                                     justifyContent="flex-start"
                                   >
@@ -704,10 +704,10 @@ const TelaInicial = ({ inscritos }) => {
                             >
                               <Box display="flex" justifyContent="center">
                                 <Box
-                                  ml={5}
+                                  ml={8}
                                   borderRadius={16}
                                   style={{ border: '2px solid #000' }}
-                                  width="100%"
+                                  width={380}
                                   height={100}
                                   mt={janela.height > 632 ? 4 : 2}
                                 >
@@ -786,7 +786,7 @@ const TelaInicial = ({ inscritos }) => {
                                     <Box
                                       bg="#ffaa"
                                       mt={0}
-                                      ml={8}
+                                      ml={11}
                                       display="flex"
                                       justifyContent="flex-start"
                                     >
@@ -836,7 +836,7 @@ const TelaInicial = ({ inscritos }) => {
                                     <Box
                                       bg="#ffaa"
                                       mt={0}
-                                      ml={8}
+                                      ml={11}
                                       display="flex"
                                       justifyContent="flex-start"
                                     >
@@ -870,6 +870,7 @@ const TelaInicial = ({ inscritos }) => {
                                 </Grid>
                               </Box>
                               <Box
+                                ml={6}
                                 mt={janela.height > 632 ? 5 : 2}
                                 display="flex"
                                 justifyContent="center"
@@ -886,11 +887,13 @@ const TelaInicial = ({ inscritos }) => {
                               </Box>
                             </Box>
                             {carregar && (
-                              <Box className={classes.novoBox} mt={1}>
-                                <LinearProgress />
-                                <small style={{ color: '#fff' }}>
-                                  Carregando...
-                                </small>
+                              <Box className={classes.novoBox} mt={-8}>
+                                <Box ml={10}>
+                                  <LinearProgress />
+                                  <small style={{ color: '#fff' }}>
+                                    Carregando...
+                                  </small>
+                                </Box>
                               </Box>
                             )}
                           </Box>

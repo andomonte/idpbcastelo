@@ -27,9 +27,9 @@ const handler = async (req, res) => {
     notification.topic = dados.topic;
   }
   console.log('novamnet', dados);
-  if (dados && dados.data.id) {
-    console.log('novamnet nova', dados.data.id);
-    notification.id = dados.data.id;
+  if (dados.data && dados.data) {
+    console.log('novamnet nova', dados.data);
+    notification.id = dados.data;
     notification.topic = dados.type;
   }
 
