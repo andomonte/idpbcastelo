@@ -6,13 +6,25 @@ import Hidden from '@material-ui/core/Hidden';
 import Paper from '@mui/material/Paper';
 import { useRouter } from 'next/router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TamanhoJanela from 'src/utils/getSize';
 
+// const validateDate = require('validate-date');
+
+const janela = TamanhoJanela();
 const useStyles = makeStyles(() => ({
   img: {
     maxWidth: '1410px',
     maxHeight: '600px',
     width: '100%',
     height: '100%',
+  },
+  root: {
+    height: '100vh',
+    // overflow: 'hidden',
+    width: '100vw',
+    minHeight: 500,
+    padding: 0,
+    margin: 0,
   },
 
   letras1: {
@@ -229,143 +241,177 @@ const Home = () => {
           </Box>
         </Hidden>
         <Hidden mdUp>
-          <Box display="flex" align="center" m={0} bgcolor="#b91a30">
-            <Box
-              height={30}
-              p={1}
-              ml={0}
-              mr={0}
-              display="flex"
-              alignItems="center"
-            >
-              <ArrowBackIcon
-                sx={{
-                  fontSize: 20,
-                  color: '#fff',
-                }}
-                onClick={voltar}
-              />
-            </Box>
-          </Box>
-          <Box
-            bgcolor="#b91a30"
-            height={30}
-            p={1}
-            m={0}
-            mr={0}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box mt={-3} className={classes.letras1}>
-              CONFERÊNCIA
-            </Box>
-          </Box>
-
-          <Box mt={0} className={classes.letras1} bgcolor="#b91a30">
-            <Box mt={-2} height={50}>
-              {' '}
-              GLOBAL 2022
-            </Box>
-          </Box>
-          <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
-            2022 GLOBAL CONFERENCE
-          </Box>
-          <Box mt={-0.5} bgcolor="#b91a30">
-            <CardMedia
-              component="img"
-              height="100%"
-              image="/images/global/pgIni01.png"
-              alt="green iguana"
-              style={{ justifyContent: 'center' }}
-            />
-          </Box>
-          <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
-            INGRESSO - 1º LOTE - R$: 50,00
-          </Box>
-          <Box height={65} className={classes.letras2} bgcolor="#b91a30">
-            <Box mt={2}>
-              <Button
-                className={classes.button1}
-                variant="contained"
-                onClick={comprar}
-              >
-                COMPRAR
-              </Button>
-            </Box>
-          </Box>
-
-          <Box
-            mt={0}
-            sx={{
-              display: 'flex',
-              '& > :not(style)': {
-                m: 1,
-                width: '100%',
-                height: 80,
-              },
-            }}
-          >
-            <Paper variant="outlined">
-              <Box
-                mt={1}
-                sx={{
-                  display: 'flex',
-                  fontSize: '11px',
-                  fontWeight: 'bold',
-                  color: '#b91a30',
-                  justifyContent: 'center',
-                }}
-              >
-                APÓS A COMPRA GERE SEU TICKET AQUI
-              </Box>
-              <Box
-                mt={1}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Button
-                  className={classes.button2}
-                  variant="contained"
-                  onClick={myTicket}
-                >
-                  MEU TICKET
-                </Button>
-              </Box>
-            </Paper>
-          </Box>
-          <Box height={6} className={classes.letras2} bgcolor="#b91a30" />
-
-          <Box mt={0}>
-            <CardMedia
-              component="img"
-              image="/images/global/sobre.png"
-              alt="green iguana"
-              style={{ height: 120 }}
-            />
-          </Box>
-          <Box height={8} className={classes.letras2} bgcolor="#b91a30" />
-
-          <Box mt={0}>
-            <CardMedia
-              component="img"
-              image="/images/global/pgLocal.png"
-              alt="green iguana"
-              style={{ height: 40 }}
-            />
-          </Box>
-          <Box height={8} className={classes.letras2} bgcolor="#b91a30" />
           <Box>
-            <CardMedia
-              component="img"
-              image="/images/global/site.png"
-              alt="green iguana"
-              style={{ height: 42 }}
-            />
+            <Box className={classes.root} bgcolor="#b91a30">
+              <Box
+                height={50}
+                p={1}
+                mt={0}
+                ml={3}
+                display="flex"
+                alignItems="center"
+              >
+                {/*                 <ArrowBackIcon
+                  sx={{
+                    fontSize: 20,
+                    color: '#fff',
+                  }}
+                  onClick={voltar}
+                />
+ */}{' '}
+              </Box>
+
+              <Box display="flex" justifyContent="center" mt={10}>
+                <Box
+                  mt={
+                    janela.height > 570
+                      ? -janela.height / 60
+                      : -janela.height / 40
+                  }
+                >
+                  <Box
+                    bgcolor="#b91a30"
+                    height={30}
+                    p={1}
+                    mt={0}
+                    mr={0}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Box mt={-3} className={classes.letras1}>
+                      CONFERÊNCIA
+                    </Box>
+                  </Box>
+
+                  <Box mt={0} className={classes.letras1} bgcolor="#b91a30">
+                    <Box mt={-2} height={50}>
+                      {' '}
+                      GLOBAL 2022
+                    </Box>
+                  </Box>
+                  <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
+                    2022 GLOBAL CONFERENCE
+                  </Box>
+                  <Box mt={-0.5} bgcolor="#b91a30">
+                    <CardMedia
+                      component="img"
+                      height="100%"
+                      image="/images/global/pgIni01.png"
+                      alt="green iguana"
+                      style={{ justifyContent: 'center' }}
+                    />
+                  </Box>
+                  <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
+                    INGRESSO - 1º LOTE - R$: 50,00
+                  </Box>
+                  <Box
+                    height={65}
+                    className={classes.letras2}
+                    bgcolor="#b91a30"
+                  >
+                    <Box mt={2}>
+                      <Button
+                        className={classes.button1}
+                        variant="contained"
+                        onClick={comprar}
+                      >
+                        COMPRAR
+                      </Button>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    mt={0}
+                    sx={{
+                      display: 'flex',
+                      '& > :not(style)': {
+                        m: 1,
+                        width: '100%',
+                        height: 80,
+                      },
+                    }}
+                  >
+                    <Paper variant="outlined">
+                      <Box
+                        mt={1}
+                        sx={{
+                          display: 'flex',
+                          fontSize: '11px',
+                          fontWeight: 'bold',
+                          color: '#b91a30',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        APÓS A COMPRA GERE SEU TICKET AQUI
+                      </Box>
+                      <Box
+                        mt={1}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Button
+                          className={classes.button2}
+                          variant="contained"
+                          onClick={myTicket}
+                        >
+                          MEU TICKET
+                        </Button>
+                      </Box>
+                    </Paper>
+                  </Box>
+                  <Box
+                    height={6}
+                    className={classes.letras2}
+                    bgcolor="#b91a30"
+                  />
+
+                  <Box mt={0}>
+                    <CardMedia
+                      component="img"
+                      image="/images/global/sobre.png"
+                      alt="green iguana"
+                      style={{ height: 120 }}
+                    />
+                  </Box>
+                  <Box
+                    height={8}
+                    className={classes.letras2}
+                    bgcolor="#b91a30"
+                  />
+
+                  <Box mt={0}>
+                    <CardMedia
+                      component="img"
+                      image="/images/global/pgLocal.png"
+                      alt="green iguana"
+                      style={{ height: 40 }}
+                    />
+                  </Box>
+                  <Box
+                    height={8}
+                    className={classes.letras2}
+                    bgcolor="#b91a30"
+                  />
+                  <Box>
+                    <CardMedia
+                      component="img"
+                      image="/images/global/site.png"
+                      alt="green iguana"
+                      style={{ height: 42 }}
+                    />
+                  </Box>
+                  <Box
+                    height={8}
+                    className={classes.letras2}
+                    bgcolor="#b91a30"
+                  />
+                </Box>
+              </Box>
+            </Box>
           </Box>
-          <Box height={8} className={classes.letras2} bgcolor="#b91a30" />
         </Hidden>
       </Box>
     </Box>

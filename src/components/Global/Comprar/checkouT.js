@@ -330,6 +330,7 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(1, 1, 1),
+    overflow: 'auto',
     height: '100%',
     width: '100%',
   },
@@ -1213,7 +1214,7 @@ export default function CheckoutT({
               <Grid item xs={6} md={3}>
                 <Box mt={-1}>
                   <input
-                    type="text"
+                    type="tel"
                     value={dataMask(vencimento)}
                     name="cardExpirationMonth"
                     id="form-checkout__cardExpirationMonth"

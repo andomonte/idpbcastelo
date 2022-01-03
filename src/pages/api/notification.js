@@ -22,18 +22,18 @@ const handler = async (req, res) => {
     topic: '',
   };
   if (dados && dados.id) {
-    console.log('entrou', dados.id);
     notification.id = dados.id;
     notification.topic = dados.topic;
   }
-  console.log('novamnet', dados);
+
   if (dados.data && dados.data) {
-    console.log('novamnet nova', dados.data);
     notification.id = dados.data;
     notification.topic = dados.type;
   }
 
   if (notification.topic === 'payment') {
+    console.log('entrou', notification.id);
+
     try {
       mercadoPago = await mercadopago.payment.findById(notification.id);
       console.log(mercadoPago);
