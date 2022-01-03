@@ -19,11 +19,11 @@ const handler = async (req, res) => {
   let array;
   Object.keys(dados).forEach((key) => {
     console.log('dados', dados[key]); // 'Bob', 47
-    array[key] = dados[key];
+    array = dados[key];
   });
   console.log('array', array);
-  const [id, topic] = array;
-
+  const id = array;
+  const topic = dados.type;
   console.log('mais é burro:', id, topic);
 
   if (topic === 'payment') {
@@ -44,7 +44,7 @@ const handler = async (req, res) => {
     try {
       await prisma.inscritosGlobals
         .update({
-          where: { idPagamento: notification.id },
+          where: { idPagamento: id },
           data: {
             status: 'mercadoPago.response.status',
           },
