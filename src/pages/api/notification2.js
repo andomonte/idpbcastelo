@@ -16,23 +16,17 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
   const dados = req.query;
   let mercadoPago;
-
-  console.log('dados', dados);
-  const notification = {
-    id: '',
-    topic: '',
-  };
+  let id;
+  let topic;
   if (dados) {
-    notification.id = dados.data.id;
-    notification.topic = dados.type;
+    ({ id, topic } = { dados });
   }
-  console.log('notifi', notification.id);
 
-  if (notification.topic === 'payment') {
-    console.log('entrou', notification.id);
+  if (topic === 'payment') {
+    console.log('entrou', id);
 
     try {
-      mercadoPago = await mercadopago.payment.findById(notification.id);
+      mercadoPago = await mercadopago.payment.findById(id);
       console.log(mercadoPago);
       res.status(200).send('OK');
       //      res.send(mercadoPago);
