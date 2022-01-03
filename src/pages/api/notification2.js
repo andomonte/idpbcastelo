@@ -17,11 +17,12 @@ const handler = async (req, res) => {
   const dados = req.query;
   let mercadoPago;
 
+  console.log('dados', dados);
   const notification = {
     id: '',
     topic: '',
   };
-  if (dados && dados.data.id) {
+  if (dados) {
     notification.id = dados.data.id;
     notification.topic = dados.type;
   }

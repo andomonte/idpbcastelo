@@ -599,7 +599,7 @@ export default function CheckoutT({
   const [descParcelas, setDescParcelas] = React.useState('');
   const [qtParcelas, setQtParcelas] = React.useState(1);
   const [codigoPagamento, setCodigoPagamento] = React.useState('');
-
+  const [resposta, setResposta] = React.useState('');
   const defaultParcela = [{ value: '0', descriction: 'Parcela' }];
   const [parcela, setParcela] = React.useState(defaultParcela);
 
@@ -986,6 +986,9 @@ export default function CheckoutT({
           })
 
           .then((response) => {
+            const respostas = response;
+            setResposta(respostas);
+            console.log(respostas);
             //            console.log('resposta:', response.data);
             if (
               response.data.body.status === 'approved' ||
@@ -1011,6 +1014,7 @@ export default function CheckoutT({
                 setOpenDrawerOK(true);
               }
             }
+
             if (response.data.body.status === 'rejected') {
               const dadosErro = erros.filter(
                 (val) => val.erro === response.data.body.status_detail,
