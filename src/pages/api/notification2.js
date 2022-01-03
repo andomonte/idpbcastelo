@@ -19,7 +19,7 @@ const handler = async (req, res) => {
   let array;
   Object.keys(dados).forEach((key) => {
     console.log('dados', dados[key]); // 'Bob', 47
-    array = dados[key];
+    if (dados[key !== 'payment']) array[key] = dados[key];
   });
   console.log('array', array);
   const id = array;
