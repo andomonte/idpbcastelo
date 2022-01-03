@@ -18,13 +18,13 @@ const handler = async (req, res) => {
   let mercadoPago;
   let array;
   Object.keys(dados).forEach((key) => {
-    console.log(dados[key]); // 'Bob', 47
+    console.log('dados', dados[key]); // 'Bob', 47
     array = dados[key];
   });
 
-  const [id, topic] = array;
+  const [id, topic] = [array];
 
-  console.log(id, topic);
+  console.log('mais é burro:', id, topic);
 
   if (topic === 'payment') {
     console.log('entrou', id);
