@@ -16,7 +16,7 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
   const dados = req.query;
   let mercadoPago;
-  console.log(dados);
+
   const notification = {
     id: '',
     topic: '',
@@ -25,8 +25,8 @@ const handler = async (req, res) => {
     notification.id = dados.id;
     notification.topic = dados.topic;
   }
-
-  if (dados.data && dados.data) {
+  console.log('notifi', notification.id);
+  if (dados && dados.data) {
     notification.id = dados.data;
     notification.topic = dados.type;
   }
@@ -49,7 +49,7 @@ const handler = async (req, res) => {
     try {
       await prisma.inscritosGlobals
         .update({
-          where: { idPagamento: Number(notification.id) },
+          where: { idPagamento: notification.id },
           data: {
             status: 'mercadoPago.response.status',
           },
