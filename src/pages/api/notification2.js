@@ -19,10 +19,10 @@ const handler = async (req, res) => {
   let array;
   Object.keys(dados).forEach((key) => {
     console.log('dados', dados[key]); // 'Bob', 47
-    array = dados[key];
+    array[key] = dados[key];
   });
-
-  const [id, topic] = [array];
+  console.log('array', array);
+  const [id, topic] = array;
 
   console.log('mais é burro:', id, topic);
 
