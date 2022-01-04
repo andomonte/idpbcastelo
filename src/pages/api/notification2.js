@@ -18,7 +18,7 @@ const handler = async (req, res) => {
   if (data) console.log('data1', data);
   else console.log('erro aqui');
   let mercadoPago;
-  const { id } = req.body.data1;
+  const { id } = req.body.data;
   const topic = data.type;
   console.log('data2', data, id);
 
