@@ -14,11 +14,14 @@ mercadopago.configure({
 const handler = async (req, res) => {
   //  let respPagamento;
   // res.status(200).send('OK');
-  const data = req.query;
+  let data = req.query;
+  console.log('data1', data.lenght);
+  if (!data.lenght) data = req.body;
   let mercadoPago;
   let id;
   let topic;
   Object.keys(data).forEach((key) => {
+    console.log('datakey', data[key]);
     if (key === 'data.id') id = data[key];
     if (key === 'type') topic = data[key];
   });
