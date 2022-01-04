@@ -303,7 +303,7 @@ const TelaInicial = ({ inscritos }) => {
   // CPF
 
   // data
-  const comprar = () => {
+  /* const comprar = () => {
     api
       .post('/api/notification2', {
         type: 'payment',
@@ -320,10 +320,10 @@ const TelaInicial = ({ inscritos }) => {
         console.log(error);
         //  updateFile(uploadedFile.id, { error: true });
       });
-  };
+  }; */
 
   const handleAdd = () => {
-    comprar();
+    // comprar();
     let newQtyA = qtyA + 1;
     if (newQtyA > 99) newQtyA = 99;
     setQtyA(newQtyA);
