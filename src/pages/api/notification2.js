@@ -14,10 +14,9 @@ mercadopago.configure({
 const handler = async (req, res) => {
   //  let respPagamento;
   // res.status(200).send('OK');
-  let data = req.query;
-  console.log('data1', data.lenght);
-
-  if (!data.lenght) data = req.body;
+  const data = req.body;
+  if (data) console.log('data', data);
+  else console.log('erro aqui');
   let mercadoPago;
   const { id } = req.body.data;
   const topic = data.type;
