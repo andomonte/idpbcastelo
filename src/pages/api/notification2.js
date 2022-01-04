@@ -17,16 +17,20 @@ const handler = async (req, res) => {
   let data = req.query;
   if (!data.lenght) data = req.body;
   let mercadoPago;
-  let id;
-  let topic;
+  const { id } = data.data.id;
+  const topic = data.type;
   console.log('data1', data);
 
-  Object.keys(data).forEach((key) => {
+  /*   Object.keys(data).forEach((key) => {
     console.log('datakey', data[key]);
     if (key === 'data.id') id = data[key];
     if (key === 'type') topic = data[key];
   });
-  console.log('valores de id e topic:', id, topic);
+ */ console.log(
+    'valores de id e topic:',
+    id,
+    topic,
+  );
   if (topic === 'payment') {
     console.log('entrou', id);
     try {
