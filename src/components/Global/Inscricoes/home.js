@@ -219,7 +219,7 @@ const Home = () => {
                     component="img"
                     image="/images/global/sobre.png"
                     alt="green iguana"
-                    style={{ height: 120 }}
+                    style={{ height: 124 }}
                   />
                 </Box>
                 <Box mt={0}>
@@ -377,7 +377,7 @@ const Home = () => {
                     />
                   </Box>
                   <Box
-                    height={8}
+                    height={10}
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
