@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone';
+import api from 'src/components/services/api';
 
 import InputBase from '@material-ui/core/InputBase';
 import ValidaCPF from 'src/utils/validarCPF';
@@ -302,8 +303,27 @@ const TelaInicial = ({ inscritos }) => {
   // CPF
 
   // data
+  const comprar = () => {
+    api
+      .post('/api/notification2', {
+        type: 'payment',
+        'data.id': '1244662421',
+      })
+
+      .then((response) => {
+        const prefID = response.data;
+        console.log('pref:', prefID);
+        //   setOpen(true);
+      })
+
+      .catch((error) => {
+        console.log(error);
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+  };
 
   const handleAdd = () => {
+    comprar();
     let newQtyA = qtyA + 1;
     if (newQtyA > 99) newQtyA = 99;
     setQtyA(newQtyA);
@@ -373,6 +393,7 @@ const TelaInicial = ({ inscritos }) => {
       query: { qtyA, qtyC, total },
     });
   };
+
   //= ====================================================================
   return (
     <>
