@@ -294,13 +294,14 @@ const Home = () => {
                     2022 GLOBAL CONFERENCE
                   </Box>
                   <Box mt={-0.5} bgcolor="#b91a30">
-                    <CardMedia
-                      component="img"
-                      height="100%"
-                      image="/images/global/pgIni01.png"
-                      alt="green iguana"
-                      style={{ justifyContent: 'center' }}
-                    />
+                    <Box mt={0} ml={0}>
+                      <img
+                        src="/images/global/pgIni01.png"
+                        alt=""
+                        width="100%"
+                        height="100%"
+                      />
+                    </Box>
                   </Box>
                   <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
                     INGRESSO - 1º LOTE - R$: 50,00
@@ -367,44 +368,46 @@ const Home = () => {
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
-
-                  <Box mt={0}>
-                    <CardMedia
-                      component="img"
-                      image="/images/global/sobre.png"
-                      alt="green iguana"
-                      style={{ height: 120 }}
+                  <Box mt={0} ml={0} height={122}>
+                    <img
+                      src="/images/global/sobre.png"
+                      alt=""
+                      width="100%"
+                      height="100%"
                     />
                   </Box>
+
                   <Box
                     height={10}
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
 
-                  <Box mt={0}>
-                    <CardMedia
-                      component="img"
-                      image="/images/global/pgLocal.png"
-                      alt="green iguana"
-                      style={{ height: 40 }}
+                  <Box mt={0} ml={0}>
+                    <img
+                      src="/images/global/pgLocal.png"
+                      alt=""
+                      width="100%"
+                      height="100%"
                     />
                   </Box>
+
                   <Box
-                    height={8}
+                    height={4}
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
-                  <Box>
-                    <CardMedia
-                      component="img"
-                      image="/images/global/site.png"
-                      alt="green iguana"
-                      style={{ height: 42 }}
+                  <Box mt={0} ml={0}>
+                    <img
+                      src="/images/global/site.png"
+                      alt=""
+                      width="100%"
+                      height="100%"
                     />
                   </Box>
                   <Box
                     height={8}
+                    mt={-2}
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
