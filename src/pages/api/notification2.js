@@ -15,9 +15,9 @@ const handler = async (req, res) => {
   //  let respPagamento;
   // res.status(200).send('OK');
   const data = req.body;
-  const dados = req.query;
+//  const dados = req.query;
   console.log('data:',data)
-  console.log('dados:',dados)
+  //console.log('dados:',dados)
   if (data) console.log('data1', data);
   else { console.log('erro aqui');
   let mercadoPago;
