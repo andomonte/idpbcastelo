@@ -190,12 +190,11 @@ const Home = ({ inscritos, dados }) => {
 
   // const router = useRouter();
   const [nome, setNome] = React.useState('');
-  const [validarNome, setValidarNome] = React.useState('sim');
+
   const [cpf, setCPF] = React.useState('');
-  const [validarCPF, setValidarCPF] = React.useState('sim');
+
   const [email, setEmail] = React.useState('');
-  const [validarEmail, setValidarEmail] = React.useState('sim');
-  const [open, setOpen] = React.useState(false);
+
   const [valorErro, setValorErro] = React.useState('');
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [validacaoNome, setValidacaoNome] = React.useState('testar');
@@ -458,7 +457,6 @@ const Home = ({ inscritos, dados }) => {
                                         setNome(e.target.value);
                                         handleDrawerClose();
                                       }}
-                                      error={validarNome === 'nao'}
                                       onFocus={(e) => setNome(e.target.value)}
                                       autoFocus
                                       onKeyDown={handleEnter}
@@ -506,7 +504,6 @@ const Home = ({ inscritos, dados }) => {
                                         setCPF(e.target.value);
                                         handleDrawerClose();
                                       }}
-                                      error={validarCPF === 'nao'}
                                       onFocus={(e) => setCPF(e.target.value)}
                                       onKeyDown={handleEnter}
                                     />
@@ -553,7 +550,6 @@ const Home = ({ inscritos, dados }) => {
                                         setEmail(e.target.value);
                                         handleDrawerClose();
                                       }}
-                                      error={validarEmail === 'nao'}
                                       onFocus={(e) => setEmail(e.target.value)}
                                       onKeyDown={handleEnter}
                                       inputRef={emailRef}
@@ -714,7 +710,6 @@ const Home = ({ inscritos, dados }) => {
                                 setNome(e.target.value);
                                 handleDrawerClose();
                               }}
-                              error={validarNome === 'nao'}
                               onFocus={(e) => setNome(e.target.value)}
                               autoFocus
                               onKeyDown={handleEnter}
@@ -762,7 +757,6 @@ const Home = ({ inscritos, dados }) => {
                                 setCPF(e.target.value);
                                 handleDrawerClose();
                               }}
-                              error={validarCPF === 'nao'}
                               onFocus={(e) => setCPF(e.target.value)}
                               onKeyDown={handleEnter}
                             />
@@ -809,7 +803,6 @@ const Home = ({ inscritos, dados }) => {
                                 setEmail(e.target.value);
                                 handleDrawerClose();
                               }}
-                              error={validarEmail === 'nao'}
                               onFocus={(e) => setEmail(e.target.value)}
                               onKeyDown={handleEnter}
                               inputRef={emailRef}

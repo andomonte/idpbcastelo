@@ -16,7 +16,8 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
   const data = req.query;
   let mercadoPago;
-  const { id } = data[0];
+  console.log(data);
+  const { id } = data.data.id;
   const topic = data.type;
   console.log('mais é burro:', id, topic);
 
