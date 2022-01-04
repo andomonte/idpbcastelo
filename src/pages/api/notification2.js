@@ -15,7 +15,7 @@ const handler = async (req, res) => {
   //  let respPagamento;
   // res.status(200).send('OK');
   let data = req.query;
-  console.log('data1', data.lenght);
+  console.log('data1', data);
   if (!data.lenght) data = req.body;
   let mercadoPago;
   let id;
