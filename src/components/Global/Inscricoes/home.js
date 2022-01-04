@@ -368,7 +368,7 @@ const Home = () => {
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
-                  <Box mt={0} ml={0} height={122}>
+                  <Box mt={1} ml={0} height={122}>
                     <img
                       src="/images/global/sobre.png"
                       alt=""
@@ -377,13 +377,7 @@ const Home = () => {
                     />
                   </Box>
 
-                  <Box
-                    height={10}
-                    className={classes.letras2}
-                    bgcolor="#b91a30"
-                  />
-
-                  <Box mt={0} ml={0}>
+                  <Box mt={1} ml={0}>
                     <img
                       src="/images/global/pgLocal.png"
                       alt=""
@@ -392,11 +386,7 @@ const Home = () => {
                     />
                   </Box>
 
-                  <Box
-                    height={4}
-                    className={classes.letras2}
-                    bgcolor="#b91a30"
-                  />
+                  <Box className={classes.letras2} bgcolor="#b91a30" />
                   <Box mt={0} ml={0}>
                     <img
                       src="/images/global/site.png"
