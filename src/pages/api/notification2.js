@@ -15,12 +15,12 @@ const handler = async (req, res) => {
   //  let respPagamento;
   // res.status(200).send('OK');
   const data = req.body;
-  if (data) console.log('data', data);
+  if (data) console.log('data1', data);
   else console.log('erro aqui');
   let mercadoPago;
-  const { id } = req.body.data;
+  const { id } = req.body.data1;
   const topic = data.type;
-  console.log('data1', data, id);
+  console.log('data2', data, id);
 
   /*   Object.keys(data).forEach((key) => {
     console.log('datakey', data[key]);
