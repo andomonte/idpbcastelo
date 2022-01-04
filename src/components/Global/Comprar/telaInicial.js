@@ -277,50 +277,6 @@ const TelaInicial = ({ inscritos }) => {
     }
     setOpenDrawer(false);
   };
-  const handleEnter = (event) => {
-    if (event.key.toLowerCase() === 'enter') {
-      const form = event.target.id;
-      if (form === 'Nome') cpfRef.current.focus();
-      if (form === 'CPF') dataRef.current.focus();
-      if (form === 'DataNascimento') emailRef.current.focus();
-      if (form === 'Email') {
-        const emailVal = event.target.value;
-        if (validator.isEmail(emailVal)) {
-          setValidacaoEmail(true);
-          fpRef.current.focus();
-        } else {
-          setValidacaoEmail(false);
-        }
-      }
-      // console.log('aqui no final', form);
-    }
-  };
-  //= ======================================================================
-  // validação dos dados
-  //= ======================================================================
-  // Nome
-
-  // CPF
-
-  // data
-  /* const comprar = () => {
-    api
-      .post('/api/notification2', {
-        type: 'payment',
-        'data.id': '1244662421',
-      })
-
-      .then((response) => {
-        const prefID = response.data;
-        console.log('pref:', prefID);
-        //   setOpen(true);
-      })
-
-      .catch((error) => {
-        console.log(error);
-        //  updateFile(uploadedFile.id, { error: true });
-      });
-  }; */
 
   const handleAdd = () => {
     // comprar();
@@ -943,7 +899,6 @@ const TelaInicial = ({ inscritos }) => {
                 }
                 style={{
                   backgroundColor: '#fafafa',
-                  height: '100vh',
                 }}
               >
                 <Box ml={0} display="flex" justifyContent="center">
