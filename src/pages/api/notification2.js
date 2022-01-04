@@ -19,9 +19,9 @@ const handler = async (req, res) => {
 
   if (!data.lenght) data = req.body;
   let mercadoPago;
-  const { id } = req.body.data.id;
+  const { id } = req.body.data;
   const topic = data.type;
-  console.log('data1', data);
+  console.log('data1', data, id);
 
   /*   Object.keys(data).forEach((key) => {
     console.log('datakey', data[key]);
