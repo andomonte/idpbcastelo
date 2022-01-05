@@ -14,14 +14,15 @@ mercadopago.configure({
 const Notificacao = async (req, res) => {
   //  let respPagamento;
   const data = req.body;
+  const data1 = req.query;
   let id;
   let topic;
-  console.log('data1', data);
+  console.log('data1', data, data1);
 
   if (req.body.data) id = req.body.data.id;
-  else id = req.body.id;
+  else id = req.query.id;
   if (req.body.type) topic = req.body.type;
-  else topic = req.body.topic;
+  else topic = req.query.topic;
   let mercadoPago;
   console.log('data1', data);
   console.log('id', id);

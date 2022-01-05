@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '300px',
     minHeight: '500px',
     width: '100%',
-    height: '100%',
+    height: janela.height - 24,
     padding: 0,
     margin: 0,
   },
@@ -894,15 +894,16 @@ const TelaInicial = ({ inscritos }) => {
             </Hidden>
             <Hidden mdUp>
               <Box
-                width={
-                  janela.width > 400 ? janela.width - 25 : janela.width - 25
-                }
+                width={janela.width}
                 style={{
                   backgroundColor: '#fafafa',
+                  height: janela.height,
+                  minWidth: '300px',
+                  minHeight: '500px',
                 }}
               >
                 <Box ml={0} display="flex" justifyContent="center">
-                  <Box ml={2.5}>
+                  <Box ml={0}>
                     <Box mt={2} ml={0}>
                       <img
                         src="/images/global/telaVenda1.png"
@@ -910,16 +911,15 @@ const TelaInicial = ({ inscritos }) => {
                         className={classes.img}
                       />
                     </Box>
-                    {console.log(ajAlturaMax, janela.height)}
+                    {console.log(janela.height, janela.height / 11)}
                     <Box
                       width="100%"
-                      ml={janela.height > 632 ? 2 : 2}
                       mt={
                         janela.height > 570
                           ? janela.height < 630
-                            ? -80
-                            : -85
-                          : -80
+                            ? -janela.height / 10 - 11
+                            : -janela.height / 10 - 11
+                          : -62
                       }
                     >
                       <Grid item xs={2} md={3}>
@@ -946,9 +946,9 @@ const TelaInicial = ({ inscritos }) => {
                       mt={
                         janela.height > 570
                           ? janela.height < 630
-                            ? 16
-                            : 18
-                          : 22
+                            ? janela.height / 100 + 7
+                            : janela.height / 100 + 7
+                          : 14
                       }
                       display="flex"
                       justifyContent="center"
@@ -1212,9 +1212,9 @@ const TelaInicial = ({ inscritos }) => {
                           mt={
                             janela.height > 570
                               ? janela.height < 630
-                                ? 12
-                                : 12
-                              : 13
+                                ? 10
+                                : 11
+                              : 7
                           }
                         >
                           <Box display="flex" justifyContent="center">
