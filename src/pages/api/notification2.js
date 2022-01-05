@@ -11,7 +11,7 @@ mercadopago.configure({
   access_token: accessToken, // accessToken,
 });
 
-const handler = async (req, res) => {
+const Notificacao = async (req, res) => {
   //  let respPagamento;
   const data = req.body;
   let id;
@@ -52,7 +52,8 @@ const handler = async (req, res) => {
     }
   }
   if (mercadoPago && mercadoPago.response.status) {
-    try {
+    console.log('agora é gravar no banco');
+    /* try {
       await prisma.inscritosGlobals
         .update({
           where: { idPagamento: id },
@@ -64,19 +65,14 @@ const handler = async (req, res) => {
           await prisma.$disconnect();
         });
 
-      /*  res.status(respPagamento.status).json({
-        status: respPagamento.body.status,
-        status_detail: respPagamento.body.status_detail,
-        id: respPagamento.body.id,
-      }); */
       // res.send(JSON.stringify(respPagamento.status));
       console.log('bd-idpb foi atualizado');
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
       console.log('erro ao acessar bd-idpb=', errors);
       res.status(400).send('NG');
-    }
+    } */
   }
 };
 
-export default handler;
+export default Notificacao;
