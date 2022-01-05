@@ -37,6 +37,7 @@ const handler = async (req, res) => {
     id,
     topic,
   );
+  if (id === '123456') id = '1245195651';
   if (topic === 'payment') {
     console.log('entrou', id);
     try {
