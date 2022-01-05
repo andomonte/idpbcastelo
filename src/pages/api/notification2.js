@@ -54,26 +54,41 @@ const Notificacao = async (req, res) => {
   }
   console.log('id--', id);
   if (mercadoPago && mercadoPago.response.status) {
-    try {
-      const updateUser = await prisma.user
-        .update({
-          where: {
-            idPagamento: id,
-          },
-          data: {
-            status: 'mercadoPagostatus',
-          },
-        })
-        .finally(async () => {
-          await prisma.$disconnect();
-        });
-      // res.send(JSON.stringify(respPagamento.status));
-      console.log('bd-idpb foi atualizado', updateUser);
-      res.status(200).send('OK');
-    } catch (errors) {
-      //        const erroIDPB = JSON.stringify(ErroIDPB);
-      console.log('erro ao acessar bd-idpb=', errors);
-      res.status(400).send('vou criar o banco');
+    const posts = await prisma.inscritosGlobals
+
+      .findMany({
+        where: {
+          AND: [{ idPagamento: id }],
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    console.log(posts.CPF);
+    console.log('id--', id);
+
+    if (posts.length) {
+      const { CPF } = posts.CPF;
+      try {
+        await prisma.inscritosGlobals
+          .update({
+            where: { CPF },
+            data: {
+              status: 'mercadoPagostatus',
+            },
+          })
+          .finally(async () => {
+            await prisma.$disconnect();
+          });
+
+        // res.send(JSON.stringify(respPagamento.status));
+        console.log('bd-idpb foi atualizado');
+        res.status(200).send('OK');
+      } catch (errors) {
+        //        const erroIDPB = JSON.stringify(ErroIDPB);
+        console.log('erro ao acessar bd-idpb=', errors);
+        res.status(400).send('vou criar o banco');
+      }
     }
   }
 };
