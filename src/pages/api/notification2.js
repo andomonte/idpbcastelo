@@ -65,11 +65,13 @@ const Notificacao = async (req, res) => {
         await prisma.$disconnect();
       });
     console.log(posts);
+    console.log('id--', id);
+
     if (posts.length) {
       try {
         await prisma.inscritosGlobals
           .update({
-            where: { idPagamento: id },
+            where: { idPagamento: posts[0].idPagamento },
             data: {
               status: 'mercadoPago.response.status',
             },
