@@ -64,11 +64,11 @@ const Notificacao = async (req, res) => {
       .finally(async () => {
         await prisma.$disconnect();
       });
-    console.log(posts.CPF);
+    console.log(posts.length);
     console.log('id--', id);
 
     if (posts.length) {
-      const { CPF } = posts.CPF;
+      const { CPF } = posts[0].CPF;
       try {
         await prisma.inscritosGlobals
           .update({
