@@ -64,16 +64,19 @@ const Notificacao = async (req, res) => {
       .finally(async () => {
         await prisma.$disconnect();
       });
-    console.log(posts.length);
+
     console.log('id--', id);
 
     if (posts.length) {
-      const { CPF } = posts[0].CPF;
-      console.log('CPF', CPF);
+      const dadosNovo = posts.filter((val) => val.idPagamento === id);
+      console.log(posts.length, dadosNovo);
+
+      const { Nome } = dadosNovo[0].Nome;
+      console.log('Nome', Nome);
       try {
         await prisma.inscritosGlobals
           .update({
-            where: { CPF: Number(CPF) },
+            where: { Nome },
             data: {
               status: 'mercadoPagostatus',
             },
