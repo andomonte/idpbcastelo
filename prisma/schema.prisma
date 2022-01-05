@@ -573,3 +573,12 @@ model inscritosGlobals {
 
   @@id([id, idPagamento])
 }
+
+model mercadoPago {
+  id            Int    @id
+  status        String @db.VarChar(45)
+  dataCriacao   String @db.VarChar(255)
+  dataPagamento String @db.VarChar(45)
+  docNumber     String @db.VarChar(45)
+  typeDoc       String @db.VarChar(45)
+}

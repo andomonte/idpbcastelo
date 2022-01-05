@@ -44,7 +44,7 @@ const Notificacao = async (req, res) => {
     try {
       mercadoPago = await mercadopago.payment.findById(id);
       console.log(mercadoPago);
-      res.status(200).send('OK');
+
       //      res.send(mercadoPago);
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
@@ -53,26 +53,38 @@ const Notificacao = async (req, res) => {
     }
   }
   if (mercadoPago && mercadoPago.response.status) {
-    console.log('agora é gravar no banco');
-    /* try {
-      await prisma.inscritosGlobals
-        .update({
-          where: { idPagamento: id },
-          data: {
-            status: 'mercadoPago.response.status',
-          },
-        })
-        .finally(async () => {
-          await prisma.$disconnect();
-        });
+    const posts = await prisma.inscritosGlobals
+      .findMany({
+        where: {
+          AND: [{ idPagamento: id }],
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    if (posts.length) {
+      try {
+        await prisma.inscritosGlobals
+          .update({
+            where: { idPagamento: id },
+            data: {
+              status: 'mercadoPago.response.status',
+            },
+          })
+          .finally(async () => {
+            await prisma.$disconnect();
+          });
 
-      // res.send(JSON.stringify(respPagamento.status));
-      console.log('bd-idpb foi atualizado');
-    } catch (errors) {
-      //        const erroIDPB = JSON.stringify(ErroIDPB);
-      console.log('erro ao acessar bd-idpb=', errors);
-      res.status(400).send('NG');
-    } */
+        // res.send(JSON.stringify(respPagamento.status));
+        console.log('bd-idpb foi atualizado');
+        res.status(200).send('OK');
+      } catch (errors) {
+        //        const erroIDPB = JSON.stringify(ErroIDPB);
+        console.log('erro ao acessar bd-idpb=', errors);
+        res.status(400).send('vou criar o banco');
+      }
+    }
+    console.log('agora é gravar no banco');
   }
 };
 

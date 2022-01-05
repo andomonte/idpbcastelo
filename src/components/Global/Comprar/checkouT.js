@@ -1025,12 +1025,13 @@ export default function CheckoutT({
 
               setMessageErro(response.data.message);
             }
-            if (response.data.message) {
+            if (response.data.cause) {
               setValorErro(
                 `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
               );
               setOpenDrawer(true);
-              setMessageErro(response.data.message);
+              setMessageErro(response.data.cause.message);
+              //             console.log(response.data.message);
             }
 
             setCarregar(false);
