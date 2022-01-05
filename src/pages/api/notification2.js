@@ -69,10 +69,11 @@ const Notificacao = async (req, res) => {
 
     if (posts.length) {
       const { CPF } = posts[0].CPF;
+      console.log('CPF', CPF);
       try {
         await prisma.inscritosGlobals
           .update({
-            where: { CPF },
+            where: { CPF: Number(CPF) },
             data: {
               status: 'mercadoPagostatus',
             },
