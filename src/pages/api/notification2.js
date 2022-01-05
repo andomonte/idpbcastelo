@@ -52,8 +52,10 @@ const Notificacao = async (req, res) => {
       res.status(500).send('ERRO AO CESSAR MERCADO PAGO');
     }
   }
+  console.log('id--', id);
   if (mercadoPago && mercadoPago.response.status) {
     const posts = await prisma.inscritosGlobals
+
       .findMany({
         where: {
           AND: [{ idPagamento: id }],
@@ -62,6 +64,7 @@ const Notificacao = async (req, res) => {
       .finally(async () => {
         await prisma.$disconnect();
       });
+    console.log(posts);
     if (posts.length) {
       try {
         await prisma.inscritosGlobals
@@ -84,7 +87,6 @@ const Notificacao = async (req, res) => {
         res.status(400).send('vou criar o banco');
       }
     }
-    console.log('agora é gravar no banco');
   }
 };
 
