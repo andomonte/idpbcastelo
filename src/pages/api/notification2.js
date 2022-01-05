@@ -71,9 +71,9 @@ const Notificacao = async (req, res) => {
       try {
         await prisma.inscritosGlobals
           .update({
-            where: { idPagamento: posts[0].idPagamento },
+            where: { idPagamento: Number(id) },
             data: {
-              status: 'mercadoPago.response.status',
+              status: 'mercadoPagostatus',
             },
           })
           .finally(async () => {
