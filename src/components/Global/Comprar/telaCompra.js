@@ -571,7 +571,7 @@ const Home = ({ inscritos, dados }) => {
                                   </Box>
                                 </Grid>
                               </Box>
-                              {console.log(fPagamento)}
+
                               <Box
                                 mt={1}
                                 sx={{
@@ -691,7 +691,7 @@ const Home = ({ inscritos, dados }) => {
 
                       <Grid item xs={9} md={3} />
                     </Box>
-                    {console.log(janela.height)}
+
                     <Box
                       mt={
                         janela.height > 570 ? (janela.height < 630 ? 0 : 3) : 1

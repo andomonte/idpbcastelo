@@ -277,6 +277,25 @@ const TelaInicial = ({ inscritos }) => {
     }
     setOpenDrawer(false);
   };
+  const comprar = () => {
+    console.log('oi');
+    api
+      .post('/api/notification2', {
+        action: 'payment',
+        data: { id: '1245207030' },
+      })
+
+      .then((response) => {
+        const prefID = response.data;
+        console.log('pref:', prefID);
+        //   setOpen(true);
+      })
+
+      .catch((error) => {
+        console.log(error);
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+  };
 
   const handleAdd = () => {
     // comprar();
@@ -911,7 +930,7 @@ const TelaInicial = ({ inscritos }) => {
                         className={classes.img}
                       />
                     </Box>
-                    {console.log(janela.height, janela.height / 11)}
+
                     <Box
                       width="100%"
                       mt={

@@ -22,9 +22,9 @@ const Notificacao = async (req, res) => {
   if (req.body.data) id = req.body.data.id;
   else id = req.query.id;
   if (req.body.type) topic = req.body.type;
-  else topic = req.query.topic;
+  else topic = req.body.action;
   let mercadoPago;
-  console.log('data1', data);
+  console.log('data2', data.action, data1.action);
   console.log('id', id);
   console.log('topic', topic);
 
@@ -54,45 +54,25 @@ const Notificacao = async (req, res) => {
   }
   console.log('id--', id);
   if (mercadoPago && mercadoPago.response.status) {
-    const posts = await prisma.inscritosGlobals
+    try {
+      await prisma.inscritosGlobals
+        .update({
+          where: { idPagamento: id },
+          data: {
+            status: mercadoPago.response.status,
+          },
+        })
+        .finally(async () => {
+          await prisma.$disconnect();
+        });
 
-      .findMany({
-        where: {
-          AND: [{ idPagamento: id }],
-        },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-
-    console.log('id--', id);
-
-    if (posts.length) {
-      const dadosNovo = posts.filter((val) => val.idPagamento === id);
-      console.log(posts.length, dadosNovo);
-
-      const { Nome } = dadosNovo[0].Nome;
-      console.log('Nome', Nome);
-      try {
-        await prisma.inscritosGlobals
-          .update({
-            where: { Nome },
-            data: {
-              status: 'mercadoPagostatus',
-            },
-          })
-          .finally(async () => {
-            await prisma.$disconnect();
-          });
-
-        // res.send(JSON.stringify(respPagamento.status));
-        console.log('bd-idpb foi atualizado');
-        res.status(200).send('OK');
-      } catch (errors) {
-        //        const erroIDPB = JSON.stringify(ErroIDPB);
-        console.log('erro ao acessar bd-idpb=', errors);
-        res.status(400).send('vou criar o banco');
-      }
+      // res.send(JSON.stringify(respPagamento.status));
+      console.log('bd-idpb foi atualizado');
+      res.status(200).send('OK');
+    } catch (errors) {
+      //        const erroIDPB = JSON.stringify(ErroIDPB);
+      console.log('erro ao acessar bd-idpb=', errors);
+      res.status(400).send('vou criar o banco');
     }
   }
 };
