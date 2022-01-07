@@ -95,10 +95,10 @@ const GeneratePdf = ({ html, cpf }) => {
   //= ==================================================================
 
   return (
-    <div className="button-container">
+    <Box width={200}>
       <Box display="flex" justifyContent="center">
         <Box
-          mt={janela.height > 600 ? 0 : 6}
+          mt={janela.height > 600 ? 0 : 0}
           display="flex"
           width="100%"
           justifyContent="center"
@@ -135,8 +135,8 @@ const GeneratePdf = ({ html, cpf }) => {
         </Box>
       </Box>
       <Box
-        mt={janela.height > 600 ? 1 : -21}
-        ml={janela.height > 600 ? 0 : 12}
+        mt={janela.height > 600 ? 2 : 0}
+        ml={janela.height > 600 ? 0 : 0}
         width="100%"
       >
         <Box display="flex" justifyContent="center">
@@ -151,7 +151,7 @@ const GeneratePdf = ({ html, cpf }) => {
         </Box>
       </Box>
       {openTicket && <PesquisaCPF cpf={cpf} />}
-    </div>
+    </Box>
   );
 };
 

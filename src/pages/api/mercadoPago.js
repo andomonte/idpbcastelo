@@ -80,7 +80,13 @@ const handler = async (req, res) => {
   const CPF = req.body.cpf;
   const Nome = req.body.nome;
   const Email = req.body.email;
-  const ErroIDPB = { code: '5050', message: 'Erro no acesso ao BD-IDPB' };
+  const ErroIDPB = {
+    cause: {
+      code: '5050',
+      message: 'Erro no acesso ao BD-IDPB',
+      idPagamento: respPagamento.body.id,
+    },
+  };
   if (!respPagamento.cause) {
     if (
       respPagamento.response.status === 'approved' ||

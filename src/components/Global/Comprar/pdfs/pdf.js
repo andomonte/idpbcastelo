@@ -4,6 +4,7 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button, Typography } from '@material-ui/core';
 import Divider from '@mui/material/Divider';
 import TamanhoJanela from 'src/utils/getSize';
+import Hidden from '@material-ui/core/Hidden';
 import GeneratePdf from './generatePdf';
 
 const janela = TamanhoJanela();
@@ -13,14 +14,14 @@ const alturaImg = altura / 5;
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    overflow: 'hidden',
+    // overflow: 'hidden',
     width: '100vw',
     padding: 0,
     margin: 0,
   },
   img: {
     maxWidth: '1410px',
-    maxHeight: '600px',
+    maxHeight: '500px',
     width: '100%',
     height: alturaImg,
   },
@@ -100,7 +101,8 @@ const useStyles = makeStyles((theme) => ({
 
   imgMobile: {
     maxWidth: '1110px',
-    maxHeight: '500px',
+    maxHeight: '700px',
+    minHeight: '500px',
     width: '100%',
     height: 'auto',
   },
@@ -237,484 +239,1094 @@ const PdfCompra = ({
   };
   const vfonte = fonteSize();
   return (
-    <Box className={classes.root}>
-      <Box width="100%" mb={1}>
-        <div className="content" ref={ref} id="comprovante">
-          <Box m={0} {...defaultProps}>
-            <Box mt={-2} ml={-0.3}>
-              <img
-                src="/images/global/global1.png"
-                alt=""
-                width="100%"
-                className={classes.img}
-              />
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              mt={altura < 610 ? 0 : 4}
-              mb={0}
-              sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
+    <>
+      <Hidden mdUp>
+        <Box className={classes.root}>
+          <Box width="100%" mb={1}>
+            <div
+              style={{ display: 'flex', justifyContent: 'center' }}
+              className="content"
+              ref={ref}
+              id="comprovante"
             >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '16px',
-                  fontFamily: 'Arial Black',
-                  color: '#000',
-                  fontWeight: 'bold',
-                }}
-              >
-                COMPROVANTE DE PAGAMENTO
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              width="100%"
-              mt={0}
-              mb={2}
-              justifyContent="center"
-              sx={{ fontSize: '15px', color: '#b91a30', fontWeight: 'bold' }}
-            >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '18px',
-                  color: '#b91a30',
-                  fontFamily: 'Arial Black',
-                  fontWeight: 'bold',
-                }}
-              >
-                {nome}
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              width="100%"
-              mt={-3}
-              justifyContent="center"
-              sx={{ fontSize: '15px', color: '#b91a30', fontWeight: 'bold' }}
-            >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '14px',
-                  color: '#000',
-                  fontWeight: 'bold',
-                }}
-              >
-                CPF: {cpf}
-              </Typography>
-            </Box>
-            <Box {...divisor}>
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                mt={altura < 610 ? 2 : 4}
-                sx={{
-                  fontSize: '16px',
-                  color: '#b91a30',
-                  fontWeight: 'bold',
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                  style={{
-                    fontSize: '12px',
-                    fontFamily: 'Arial Black',
-                    color: '#000',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  QUANTIDADE DE INGRESSOS:
-                </Typography>
-              </Box>
-
-              <Box mt={-1} mb={1}>
-                <Box display="flex" width="100%" mt={1} justifyContent="center">
-                  <Box
-                    sx={{
-                      fontSize: '16px',
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '14px',
-                        color: '#000',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Adultos:{' '}
-                      <strong
-                        style={{
-                          fontSize: '14px',
-                          color: '#b91a30',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {adultos}
-                      </strong>
-                    </Typography>
-                  </Box>
-                  <Box width={30} />
-                  <Box
-                    sx={{
-                      fontSize: '16px',
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '14px',
-                        color: '#000',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Crianças:{' '}
-                      <strong
-                        style={{
-                          fontSize: '14px',
-                          color: '#b91a30',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {criancas}
-                      </strong>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-            <Box bgcolor="#81c784">
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                mt={0}
-                mb={2}
-                sx={{
-                  fontSize: '16px',
-                  color: '#fff',
-                  fontWeight: 'bold',
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                  style={{
-                    fontSize: '18px',
-                    marginTop: 10,
-                    color: '#000',
-                    fontFamily: 'Arial Black',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {status}
-                </Typography>
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                width="100%"
-                mt={altura < 610 ? -3 : -2}
-                mb={0}
-                sx={{ fontSize: '20px', color: '#b91a30', fontWeight: 'bold' }}
-              >
-                <Typography
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                  style={{
-                    fontSize: '20px',
-                    color: '#b91a30',
-                    fontFamily: 'Arial Black',
-                    fontWeight: 'bold',
-                    marginTop: -3,
-                    marginLeft: 10,
-                  }}
-                >
-                  {codigo}
-                </Typography>
-              </Box>
-            </Box>
-            <Box {...divisor}>
-              {fp === 'Pix' && (
-                <Box>
-                  <Box display="flex" width="100%" mt={1} ml={2}>
-                    <Grid item xs={12} md={6}>
-                      <Box
-                        sx={{
-                          fontSize: '16px',
-                          color: '#b91a30',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '14px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          PAGO COM PIX
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Box>
-                  <Box
-                    display="flex"
+              <Box m={0} sx={{ maxWidth: 400 }} width="100%" minHeight={600}>
+                <Box mt={0} ml={-0.3}>
+                  <img
+                    src="/images/global/fundo.png"
+                    alt=""
                     width="100%"
-                    mt={0}
-                    mb={-1}
-                    ml={2}
-                    sx={{
-                      fontSize: '16px',
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Grid item xs={8} md={6}>
-                      <Box>
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '12px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          Valor avista
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Box>
+                    height="140%"
+                  />
                 </Box>
-              )}
-              {fp === 'Boleto' && (
-                <Box>
-                  <Box display="flex" width="100%" mt={1} ml={2}>
-                    <Grid item xs={12} md={6}>
-                      <Box
-                        sx={{
-                          fontSize: '16px',
-                          color: '#b91a30',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '14px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          BOLETO BANCÁRIO
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Box>
-                  <Box
-                    display="flex"
-                    width="100%"
-                    mt={0}
-                    mb={-1}
-                    ml={2}
-                    sx={{
-                      fontSize: '16px',
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Grid item xs={8} md={6}>
-                      <Box>
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '12px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          Valor a vista
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Box>
-                </Box>
-              )}
-              {fp === 'Cartão de Crédito' && (
-                <Box>
-                  <Box display="flex" width="100%" mt={1} ml={2}>
-                    <Grid item xs={3} md={6}>
-                      <Box
-                        sx={{
-                          fontSize: '16px',
-                          color: '#b91a30',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '14px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          CRÉDITO
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Box>
-                  <Box
-                    display="flex"
-                    width="100%"
-                    mt={0}
-                    mb={-1}
-                    ml={2}
-                    sx={{
-                      fontSize: '16px',
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Grid item xs={8} md={6}>
-                      <Box>
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '12px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {parcelas}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Box>
-                </Box>
-              )}
-
-              <Box
-                display="flex"
-                width="100%"
-                mt={2}
-                ml={2}
-                sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
-              >
-                <Grid item xs={6} md={1}>
-                  <Box mb={0} display="flex" justifyContent="flex-start">
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '12px',
-                        color: '#000',
-                        fontFamily: 'Arial Black',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      <Box mt={1}>VALOR TOTAL</Box>
-                    </Typography>
-                  </Box>
-                </Grid>
-
-                <Grid item xs={6} md={6}>
-                  <Box
-                    display="flex"
-                    mr={4}
-                    mb={-1}
-                    justifyContent="flex-end"
-                    sx={{
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
+                <Box display="flex" justifyContent="center">
+                  <Box width="91%">
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={
+                        janela.height > 570
+                          ? janela.height < 630
+                            ? -56
+                            : -65
+                          : -55
+                      }
+                      mb={0}
+                      sx={{
                         fontSize: '16px',
                         color: '#b91a30',
                         fontWeight: 'bold',
-                        marginLeft: 10,
-                        marginTop: 2,
                       }}
                     >
-                      {`R$ ${valor}`}
-                    </Typography>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          fontFamily: 'Arial Black',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        COMPROVANTE DE PAGAMENTO
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      width="100%"
+                      mt={0}
+                      mb={2}
+                      justifyContent="center"
+                      sx={{
+                        fontSize: '15px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '14px',
+                          color: '#b91a30',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {nome}
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      width="100%"
+                      mt={-3}
+                      justifyContent="center"
+                      sx={{
+                        fontSize: '15px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '14px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        CPF: {cpf}
+                      </Typography>
+                    </Box>
+                    <Box display="flex" justifyContent="center">
+                      <Box width="90%">
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mt={altura < 610 ? 2 : 4}
+                          sx={{
+                            fontSize: '16px',
+                            color: '#b91a30',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '12px',
+                              fontFamily: 'Arial Black',
+                              color: '#000',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            QUANTIDADE DE INGRESSOS:
+                          </Typography>
+                        </Box>
+
+                        <Box mt={-1} mb={1}>
+                          <Box
+                            display="flex"
+                            width="100%"
+                            mt={1}
+                            justifyContent="center"
+                          >
+                            <Box
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '14px',
+                                  color: '#000',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                Adultos:{' '}
+                                <strong
+                                  style={{
+                                    fontSize: '14px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  {adultos}
+                                </strong>
+                              </Typography>
+                            </Box>
+                            <Box width={30} />
+                            <Box
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '14px',
+                                  color: '#000',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                Crianças:{' '}
+                                <strong
+                                  style={{
+                                    fontSize: '14px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  {criancas}
+                                </strong>
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box bgcolor="#81c784">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                        mt={0}
+                        mb={2}
+                        sx={{
+                          fontSize: '16px',
+                          color: '#fff',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          style={{
+                            fontSize: '18px',
+                            marginTop: 10,
+                            color: '#000',
+                            fontFamily: 'Arial Black',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {status}
+                        </Typography>
+                      </Box>
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                        mt={altura < 610 ? -3 : -2}
+                        mb={0}
+                        sx={{
+                          fontSize: '20px',
+                          color: '#b91a30',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          style={{
+                            fontSize: '20px',
+                            color: '#b91a30',
+                            fontFamily: 'Arial Black',
+                            fontWeight: 'bold',
+                            marginTop: -3,
+                            marginLeft: 10,
+                          }}
+                        >
+                          {codigo}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="center">
+                      <Box width="90%">
+                        {fp === 'Pix' && (
+                          <Box>
+                            <Box display="flex" width="100%" mt={1} ml={2}>
+                              <Grid item xs={12} md={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: '16px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    PAGO COM PIX
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                            <Box
+                              display="flex"
+                              width="100%"
+                              mt={0}
+                              mb={-1}
+                              ml={2}
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Grid item xs={8} md={6}>
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    Valor avista
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                          </Box>
+                        )}
+                        {fp === 'Boleto' && (
+                          <Box>
+                            <Box display="flex" width="100%" mt={1} ml={2}>
+                              <Grid item xs={12} md={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: '16px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    BOLETO BANCÁRIO
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                            <Box
+                              display="flex"
+                              width="100%"
+                              mt={0}
+                              mb={-1}
+                              ml={2}
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Grid item xs={8} md={6}>
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    Valor a vista
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                          </Box>
+                        )}
+                        {fp === 'Cartão de Crédito' && (
+                          <Box>
+                            <Box display="flex" width="100%" mt={1} ml={2}>
+                              <Grid item xs={3} md={3}>
+                                <Box
+                                  sx={{
+                                    fontSize: '16px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    CRÉDITO
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                            <Box
+                              display="flex"
+                              width="100%"
+                              mt={0}
+                              mb={-1}
+                              ml={2}
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Grid item xs={9} md={9}>
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    {parcelas}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                          </Box>
+                        )}
+
+                        <Box
+                          display="flex"
+                          width="100%"
+                          mt={2}
+                          ml={2}
+                          sx={{
+                            fontSize: '16px',
+                            color: '#b91a30',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          <Grid item xs={6} md={6}>
+                            <Box
+                              mb={0}
+                              display="flex"
+                              justifyContent="flex-start"
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '12px',
+                                  color: '#000',
+                                  fontFamily: 'Arial Black',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                <Box mt={1}>VALOR TOTAL</Box>
+                              </Typography>
+                            </Box>
+                          </Grid>
+
+                          <Grid item xs={6} md={6}>
+                            <Box
+                              display="flex"
+                              mr={4}
+                              mb={-1}
+                              justifyContent="flex-end"
+                              sx={{
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '16px',
+                                  color: '#b91a30',
+                                  fontWeight: 'bold',
+                                  marginLeft: 10,
+                                  marginTop: 2,
+                                }}
+                              >
+                                {`R$ ${valor}`}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                        </Box>
+                      </Box>
+                    </Box>
                   </Box>
-                </Grid>
+                </Box>
+                {console.log(janela.height)}
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  width="100%"
+                  mt={
+                    janela.height > 570
+                      ? janela.height < 630
+                        ? -19
+                        : -25
+                      : -17
+                  }
+                  //    ml={2}
+                  sx={{
+                    fontSize: '16px',
+                    color: '#b91a30',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                    style={{
+                      fontSize: '14px',
+                      color: '#000',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {dataTime}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
+            </div>
+          </Box>
+          <Box display="flex" justifyContent="center">
             <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              mt={1}
-              //    ml={2}
-              sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
+              mt={janela.height > 570 ? (janela.height < 630 ? -19 : -10) : -18}
             >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '14px',
-                  color: '#000',
-                  fontWeight: 'bold',
-                }}
-              >
-                {dataTime}
-              </Typography>
+              <GeneratePdf html={ref} cpf={cpf} />
             </Box>
           </Box>
-        </div>
-      </Box>
-      <Box mt={altura < 610 ? -14 : -19}>
-        <GeneratePdf html={ref} cpf={cpf} />
-      </Box>
-    </Box>
+        </Box>
+      </Hidden>
+      <Hidden smDown>
+        <Box className={classes.root}>
+          <Box width="100%" mb={1}>
+            <div
+              style={{ display: 'flex', justifyContent: 'center' }}
+              className="content"
+              ref={ref}
+              id="comprovante"
+            >
+              <Box m={0} sx={{ maxWidth: 400 }} width="100%" minHeight={600}>
+                <Box mt={0} ml={-0.3}>
+                  <img
+                    src="/images/global/fundo.png"
+                    alt=""
+                    width="100%"
+                    height="140%"
+                  />
+                </Box>
+                <Box display="flex" justifyContent="center">
+                  <Box width="91%">
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      width="100%"
+                      mt={
+                        janela.height > 570
+                          ? janela.height < 630
+                            ? -65
+                            : -65
+                          : -65
+                      }
+                      mb={0}
+                      sx={{
+                        fontSize: '16px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '16px',
+                          fontFamily: 'Arial Black',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        COMPROVANTE DE PAGAMENTO
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      width="100%"
+                      mt={0}
+                      mb={2}
+                      justifyContent="center"
+                      sx={{
+                        fontSize: '15px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '14px',
+                          color: '#b91a30',
+                          fontFamily: 'Arial Black',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {nome}
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      width="100%"
+                      mt={-3}
+                      justifyContent="center"
+                      sx={{
+                        fontSize: '15px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{
+                          fontSize: '14px',
+                          color: '#000',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        CPF: {cpf}
+                      </Typography>
+                    </Box>
+                    <Box display="flex" justifyContent="center">
+                      <Box width="90%">
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mt={altura < 610 ? 2 : 4}
+                          sx={{
+                            fontSize: '16px',
+                            color: '#b91a30',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '12px',
+                              fontFamily: 'Arial Black',
+                              color: '#000',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            QUANTIDADE DE INGRESSOS:
+                          </Typography>
+                        </Box>
+
+                        <Box mt={-1} mb={1}>
+                          <Box
+                            display="flex"
+                            width="100%"
+                            mt={1}
+                            justifyContent="center"
+                          >
+                            <Box
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '14px',
+                                  color: '#000',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                Adultos:{' '}
+                                <strong
+                                  style={{
+                                    fontSize: '14px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  {adultos}
+                                </strong>
+                              </Typography>
+                            </Box>
+                            <Box width={30} />
+                            <Box
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '14px',
+                                  color: '#000',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                Crianças:{' '}
+                                <strong
+                                  style={{
+                                    fontSize: '14px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  {criancas}
+                                </strong>
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box bgcolor="#81c784">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                        mt={0}
+                        mb={2}
+                        sx={{
+                          fontSize: '16px',
+                          color: '#fff',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          style={{
+                            fontSize: '18px',
+                            marginTop: 10,
+                            color: '#000',
+                            fontFamily: 'Arial Black',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {status}
+                        </Typography>
+                      </Box>
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                        mt={altura < 610 ? -3 : -2}
+                        mb={0}
+                        sx={{
+                          fontSize: '20px',
+                          color: '#b91a30',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          style={{
+                            fontSize: '20px',
+                            color: '#b91a30',
+                            fontFamily: 'Arial Black',
+                            fontWeight: 'bold',
+                            marginTop: -3,
+                            marginLeft: 10,
+                          }}
+                        >
+                          {codigo}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="center">
+                      <Box width="90%">
+                        {fp === 'Pix' && (
+                          <Box>
+                            <Box display="flex" width="100%" mt={1} ml={2}>
+                              <Grid item xs={12} md={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: '16px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    PAGO COM PIX
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                            <Box
+                              display="flex"
+                              width="100%"
+                              mt={0}
+                              mb={-1}
+                              ml={2}
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Grid item xs={8} md={6}>
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    Valor avista
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                          </Box>
+                        )}
+                        {fp === 'Boleto' && (
+                          <Box>
+                            <Box display="flex" width="100%" mt={1} ml={2}>
+                              <Grid item xs={12} md={6}>
+                                <Box
+                                  sx={{
+                                    fontSize: '16px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    BOLETO BANCÁRIO
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                            <Box
+                              display="flex"
+                              width="100%"
+                              mt={0}
+                              mb={-1}
+                              ml={2}
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Grid item xs={8} md={6}>
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    Valor a vista
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                          </Box>
+                        )}
+                        {fp === 'Cartão de Crédito' && (
+                          <Box>
+                            <Box display="flex" width="100%" mt={1} ml={2}>
+                              <Grid item xs={3} md={3}>
+                                <Box
+                                  sx={{
+                                    fontSize: '16px',
+                                    color: '#b91a30',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    CRÉDITO
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                            <Box
+                              display="flex"
+                              width="100%"
+                              mt={0}
+                              mb={-1}
+                              ml={2}
+                              sx={{
+                                fontSize: '16px',
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Grid item xs={9} md={9}>
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '12px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    {parcelas}
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Box>
+                          </Box>
+                        )}
+
+                        <Box
+                          display="flex"
+                          width="100%"
+                          mt={2}
+                          ml={2}
+                          sx={{
+                            fontSize: '16px',
+                            color: '#b91a30',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          <Grid item xs={6} md={6}>
+                            <Box
+                              mb={0}
+                              display="flex"
+                              justifyContent="flex-start"
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '12px',
+                                  color: '#000',
+                                  fontFamily: 'Arial Black',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                <Box mt={1}>VALOR TOTAL</Box>
+                              </Typography>
+                            </Box>
+                          </Grid>
+
+                          <Grid item xs={6} md={6}>
+                            <Box
+                              display="flex"
+                              mr={4}
+                              mb={-1}
+                              justifyContent="flex-end"
+                              sx={{
+                                color: '#b91a30',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                                style={{
+                                  fontSize: '16px',
+                                  color: '#b91a30',
+                                  fontWeight: 'bold',
+                                  marginLeft: 10,
+                                  marginTop: 2,
+                                }}
+                              >
+                                {`R$ ${valor}`}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                {console.log(janela.height)}
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  width="100%"
+                  mt={
+                    janela.height > 570
+                      ? janela.height < 630
+                        ? -25
+                        : -25
+                      : -25
+                  }
+                  //    ml={2}
+                  sx={{
+                    fontSize: '16px',
+                    color: '#b91a30',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                    style={{
+                      fontSize: '14px',
+                      color: '#000',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {dataTime}
+                  </Typography>
+                </Box>
+              </Box>
+            </div>
+          </Box>
+          <Box display="flex" justifyContent="center">
+            <Box
+              mt={janela.height > 570 ? (janela.height < 630 ? -10 : -10) : -10}
+            >
+              <GeneratePdf html={ref} cpf={cpf} />
+            </Box>
+          </Box>
+        </Box>
+      </Hidden>
+    </>
   );
 };
 

@@ -244,21 +244,22 @@ const Home = () => {
           <Box>
             <Box className={classes.root} bgcolor="#b91a30">
               <Box
-                height={50}
+                height={20}
                 p={1}
                 mt={0}
                 ml={3}
                 display="flex"
                 alignItems="center"
               >
-                {/*                 <ArrowBackIcon
-                  sx={{
-                    fontSize: 20,
-                    color: '#fff',
-                  }}
-                  onClick={voltar}
-                />
- */}{' '}
+                <Box mt={2}>
+                  <ArrowBackIcon
+                    sx={{
+                      fontSize: 20,
+                      color: '#fff',
+                    }}
+                    onClick={voltar}
+                  />
+                </Box>
               </Box>
 
               <Box display="flex" justifyContent="center" mt={10}>

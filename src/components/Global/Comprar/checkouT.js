@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMercadopago } from 'react-sdk-mercadopago';
 import { useReactToPrint } from 'react-to-print';
-
+import Hidden from '@material-ui/core/Hidden';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button } from '@material-ui/core';
@@ -24,6 +24,7 @@ import ValidaCPF from 'src/utils/validarCPF';
 import ValidaCNPJ from 'src/utils/validarCNPJ';
 import GerarPdf from './pdfs/pdf';
 
+const janela = TamanhoJanela();
 const Container = styled.div`
   .rccs {
     margin: 0 auto;
@@ -310,8 +311,13 @@ const Container = styled.div`
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    alignContent: 'center',
+    backgroundColor: '#fafafa', // theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(1, 1, 1),
+    overflow: 'auto',
+    height: '100%',
+    width: '100%',
   },
   novoBox: {
     flexGrow: 1,
@@ -806,6 +812,23 @@ export default function CheckoutT({
     setCarregar(false);
   };
 
+  const gerarComprovante = () => {
+    router.push({
+      pathname: '/global/comprovante',
+      query: {
+        nome,
+        codigoPagamento,
+        qtyA,
+        qtyC,
+        vTotal,
+        fp: 'Cartão de Crédito',
+        status: 'PAGAMENTO CONFIRMADO',
+        descParcelas,
+        cpf,
+      },
+    });
+  };
+
   //= ===================================================================
   // Pegar os valores no mercado pago
   //= ===================================================================
@@ -838,6 +861,7 @@ export default function CheckoutT({
     setIssuer(paymentMethods2.results[0].issuer.id);
     setPaymentMethodId(paymentMethods2.results[0].id);
   }
+
   async function getToken() {
     try {
       const cardToken = await mp.createCardToken({
@@ -920,7 +944,7 @@ export default function CheckoutT({
     // setOpen(false);
     // window.location.reload();
   };
-  const janela = TamanhoJanela();
+
   // console.log(janela.height);
 
   const handleSubmit = async () => {
@@ -939,6 +963,8 @@ export default function CheckoutT({
       const conexao = await getToken();
       let conexao2;
       let conexao3;
+      let conexao4;
+      let conexao5;
 
       if (conexao.status !== 'active') {
         //   console.log('inicio', conexao.status);
@@ -950,7 +976,21 @@ export default function CheckoutT({
             if (conexao2.cause[0].code === 'E603') {
               conexao3 = await getToken();
               //      console.log('cx 03', conexao3);
-              checagem = conexao3;
+              if (conexao3.status !== 'active') {
+                //   console.log('inicio', conexao.status);
+
+                if (conexao3.cause[0].code === 'E603') {
+                  conexao4 = await getToken();
+                  //    console.log('cx 04', conexao4);
+                  if (conexao4.status !== 'active') {
+                    if (conexao4.cause[0].code === 'E603') {
+                      conexao5 = await getToken();
+                      //      console.log('cx 03', conexao3);
+                      checagem = conexao5;
+                    } else checagem = conexao4;
+                  } else checagem = conexao4;
+                } else checagem = conexao3;
+              } else checagem = conexao3;
             } else checagem = conexao2;
           } else checagem = conexao2;
         } else checagem = conexao;
@@ -982,13 +1022,13 @@ export default function CheckoutT({
             total,
             Adultos: qtyA,
             Criancas: qtyC,
-            fPagamento,
+            fPagamento, // 'Cartão de Crédito',
           })
 
           .then((response) => {
             const respostas = response;
             setResposta(respostas);
-            console.log(respostas);
+
             //            console.log('resposta:', response.data);
             if (
               response.data.body.status === 'approved' ||
@@ -1011,7 +1051,7 @@ export default function CheckoutT({
                 );
                 setMessageErro(response.data.status_detail);
                 setCodigoPagamento(response.data.body.id);
-                setOpenDrawerOK(true);
+                gerarComprovante();
               }
             }
 
@@ -1021,23 +1061,16 @@ export default function CheckoutT({
               );
 
               setValorErro(dadosErro[0].mensagem);
-              setOpenDrawer(true);
+              setOpenDrawerFinal(true);
 
               setMessageErro(response.data.message);
-            }
-            if (response.data.cause) {
-              setValorErro(
-                `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
-              );
-              setOpenDrawer(true);
-              setMessageErro(response.data.cause.message);
-              //             console.log(response.data.message);
             }
 
             setCarregar(false);
           })
 
-          .catch(() => {
+          .catch((error) => {
+            console.log(error);
             //  updateFile(uploadedFile.id, { error: true });
           });
       }
@@ -1078,13 +1111,31 @@ export default function CheckoutT({
   //= ==============================================================
   // Baixar PDF
 
-  //= ==================================================================
-
+  //= =================================bod=================================
+  React.useEffect(() => {
+    if (resposta) {
+      if (resposta.data.cause) {
+        if (resposta.data.cause.code === '5050') {
+          setCodigoPagamento(resposta.data.cause.idPagamento);
+          gerarComprovante();
+        } else {
+          setValorErro(
+            `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
+          );
+          setOpenDrawerFinal(true);
+          if (resposta.data.cause.message)
+            setMessageErro(resposta.data.cause.message);
+          //             console.log(resposta.data.message);
+          else setMessageErro(resposta.data.message);
+        }
+      }
+    }
+  }, [resposta]);
   const body = (
     <Box className={classes.paper}>
       <Box>
         <Box display="flex" width="100%" mt={0} ml={1}>
-          <Grid item xs={2} md={3}>
+          <Grid item xs={2} md={12}>
             <Box
               height={10}
               p={1}
@@ -1102,9 +1153,9 @@ export default function CheckoutT({
               />
             </Box>
           </Grid>
-          <Grid item xs={1} md={3} />
+          <Grid item xs={1} md={12} />
 
-          <Grid item xs={9} md={3} />
+          <Grid item xs={9} md={12} />
         </Box>
       </Box>
 
@@ -1113,7 +1164,7 @@ export default function CheckoutT({
           <Box>
             <Box>
               <Box display="flex" mt={2} ml={1}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={12}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1125,7 +1176,7 @@ export default function CheckoutT({
                 </Grid>
               </Box>
               <Box display="flex" mt={0}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={12}>
                   <Box mt={-1}>
                     <input
                       type="number"
@@ -1161,7 +1212,7 @@ export default function CheckoutT({
             </Box>
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={8} md={3}>
+                <Grid item xs={8} md={12}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1173,7 +1224,7 @@ export default function CheckoutT({
                 </Grid>
               </Box>
               <Box display="flex" mt={0}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={12}>
                   <Box mt={-1}>
                     <input
                       type="text"
@@ -1193,7 +1244,7 @@ export default function CheckoutT({
             </Box>
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={7} md={3}>
+                <Grid item xs={7} md={12}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1203,7 +1254,7 @@ export default function CheckoutT({
                     Vencimento do Cartão
                   </Typography>
                 </Grid>
-                <Grid item xs={5} md={3}>
+                <Grid item xs={5} md={12}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1216,7 +1267,7 @@ export default function CheckoutT({
               </Box>
             </Box>
             <Box display="flex" mt={0}>
-              <Grid item xs={6} md={3}>
+              <Grid item xs={6} md={12}>
                 <Box mt={-1}>
                   <input
                     type="tel"
@@ -1242,10 +1293,10 @@ export default function CheckoutT({
                 </Box>
               </Grid>
 
-              <Grid item xs={1} md={3}>
+              <Grid item xs={1} md={12}>
                 <Box mt={-1} />
               </Grid>
-              <Grid item xs={5} md={3}>
+              <Grid item xs={5} md={12}>
                 <Box mt={-1}>
                   <input
                     className={classes.tf_input3}
@@ -1265,7 +1316,7 @@ export default function CheckoutT({
 
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={12}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1278,7 +1329,7 @@ export default function CheckoutT({
               </Box>
             </Box>
             <Box display="flex" mt={0}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={12}>
                 <Box mt={-1}>
                   <input
                     type="number"
@@ -1296,7 +1347,7 @@ export default function CheckoutT({
 
             <Box>
               <Box display="flex" width="100%" mt={2} ml={1}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={12}>
                   <Typography
                     className={classes.texto}
                     variant="caption"
@@ -1309,7 +1360,7 @@ export default function CheckoutT({
               </Box>
             </Box>
             <Box display="flex" mt={0}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={12}>
                 <Box mt={-1}>
                   <Select
                     labelId="demo-simple-select-placeholder-label-label"
@@ -1427,7 +1478,7 @@ export default function CheckoutT({
               </strong>
             </Box>
             <Box display="flex" mt={0}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={12}>
                 <Box mt={-1}>
                   <IconButton
                     onClick={handlePDF}
@@ -1438,7 +1489,7 @@ export default function CheckoutT({
                   </IconButton>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={12}>
                 <Box mt={-1}>
                   <IconButton
                     onClick={handlePrint}
@@ -1448,7 +1499,7 @@ export default function CheckoutT({
                     <PrintIcon />
                   </IconButton>
                 </Box>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={12}>
                   <Box mt={-1}>
                     <IconButton
                       color="primary"
@@ -1486,7 +1537,500 @@ export default function CheckoutT({
           criancas={qtyC}
           valor={vTotal}
           fp="Cartão de Crédito"
-          status="PAGAMENTO CONFIRMADO"
+          status="Em Analise"
+          parcelas={descParcelas}
+          cpf={cpf}
+        />
+      </Drawer>
+      <Drawer variant="persistent" anchor="bottom" open={openDrawerFinal}>
+        <Box height={janela.height} sx={{ background: '#ffebee' }}>
+          <Box mt={25}>
+            {messageErro ? (
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <h2>DADOS ERRADOS !</h2>
+                </Box>
+                <Box m={2} textAlign="center">
+                  <strong>{valorErro}</strong>
+                </Box>
+
+                <Box mt={4} textAlign="center">
+                  <strong>A operadora Informou:</strong>
+                </Box>
+                <Box m={0} textAlign="center">
+                  <strong>{messageErro}</strong>
+                </Box>
+              </Box>
+            ) : (
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <h2>ERRO NO PAGAMENTO !</h2>
+                </Box>
+                <Box m={2} textAlign="center">
+                  <strong>{valorErro}</strong>
+                </Box>
+              </Box>
+            )}
+            <Box
+              mt={4}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                className={classes.button2}
+                variant="contained"
+                id="reload"
+                onClick={atualizar}
+              >
+                Fechar
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Drawer>
+      <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
+        <Box height={260} sx={{ background: '#ffebee' }}>
+          <Alert onClose={handleDrawerClose} severity="error">
+            <AlertTitle>ERRO DE PREENCHIMENTO </AlertTitle>
+            <strong>{valorErro}</strong>
+          </Alert>
+        </Box>
+      </Drawer>
+    </Box>
+  );
+  const deskTop = (
+    <Box className={classes.root}>
+      {console.log(janela.height)}
+
+      <Box display="flex" justifyContent="center">
+        <Box
+          style={{
+            backgroundColor: '#b91a30',
+            height: '100%',
+            width: 400,
+          }}
+        >
+          <Box height="97vh" minHeight={600}>
+            <Grid item xs={2} md={12}>
+              <Box
+                height={10}
+                p={1}
+                mt={2}
+                mr={0}
+                display="flex"
+                alignItems="center"
+              >
+                <ArrowBackIcon
+                  sx={{
+                    fontSize: 20,
+                    color: '#fff',
+                  }}
+                  onClick={voltar}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={1} md={12} />
+
+            <Grid item xs={9} md={12} />
+
+            <ClickAwayListener onClickAway={handleDrawerClose}>
+              <form id="form-checkout">
+                <Box display="flex" justifyContent="center">
+                  <Box>
+                    <Box>
+                      <Box display="flex" mt={2} ml={0}>
+                        <Grid item xs={12} md={12}>
+                          <Typography
+                            className={classes.texto}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Número do cartão
+                          </Typography>
+                        </Grid>
+                      </Box>
+                      <Box display="flex" mt={0}>
+                        <Grid item xs={12} md={12}>
+                          <Box mt={-1}>
+                            <input
+                              type="number"
+                              name="cardNumber"
+                              id="form-checkout__cardNumber"
+                              className={classes.tf_input}
+                              placeholder="Número do cartão"
+                              onKeyDown={handleEnter}
+                              onFocus={handleFocus}
+                              autoFocus
+                              onBlur={(event) => {
+                                const CardNumber = event.target.value;
+                                console.log(CardNumber, parcela.length);
+                                if (CardNumber.length > 6 && parcela.length < 2)
+                                  paymentMethods(CardNumber);
+                              }}
+                              onChange={(event) => {
+                                const CardNumber = event.target.value;
+                                setNumber(CardNumber);
+                                if (CardNumber.length === 6)
+                                  paymentMethods(CardNumber);
+                                if (CardNumber.length === 5) {
+                                  if (parcela[0].value)
+                                    setParcela(
+                                      defaultParcela.map((items) => items),
+                                    );
+                                  setIssuer('');
+                                  setPaymentMethodId('');
+                                  setQtParcelas(1);
+                                }
+                              }}
+                            />
+                          </Box>
+                        </Grid>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <Box display="flex" width="100%" mt={2} ml={1}>
+                        <Grid item xs={8} md={12}>
+                          <Typography
+                            className={classes.texto}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Titular do cartão
+                          </Typography>
+                        </Grid>
+                      </Box>
+                      <Box display="flex" mt={0}>
+                        <Grid item xs={12} md={12}>
+                          <Box mt={-1}>
+                            <input
+                              type="text"
+                              name="cardholderName"
+                              id="form-checkout__cardholderName"
+                              className={classes.tf_input}
+                              onKeyDown={handleEnter}
+                              placeholder="Nome igual ao do Cartão"
+                              onFocus={handleFocus}
+                              onChange={(event) => {
+                                setName(event.target.value);
+                              }}
+                            />
+                          </Box>
+                        </Grid>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <Box display="flex" width="100%" mt={2} ml={1}>
+                        <Grid item xs={7} md={12}>
+                          <Typography
+                            className={classes.texto}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Vencimento do Cartão
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={5} md={12}>
+                          <Typography
+                            className={classes.texto}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Código segurança
+                          </Typography>
+                        </Grid>
+                      </Box>
+                    </Box>
+                    <Box display="flex" mt={0}>
+                      <Grid item xs={6} md={12}>
+                        <Box mt={-1}>
+                          <input
+                            type="tel"
+                            value={dataMask(vencimento)}
+                            name="cardExpirationMonth"
+                            id="form-checkout__cardExpirationMonth"
+                            className={classes.tf_input3}
+                            placeholder="dd/mm"
+                            onChange={(event) => {
+                              const Data = event.target.value;
+                              const mesF2 = Data.slice(0, 2);
+                              const anoF2 = Data.slice(3, 5);
+                              //              console.log('mes:', mesF2, anoF2);
+                              setVencimento(Data);
+                              setMesF(mesF2);
+                              setAnoF(anoF2);
+                              //                      handleMax2(event);
+                            }}
+                            maxLength="5"
+                            onKeyDown={handleEnter}
+                            onFocus={handleFocus}
+                          />
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={1} md={12}>
+                        <Box mt={-1} />
+                      </Grid>
+                      <Grid item xs={5} md={12}>
+                        <Box mt={-1}>
+                          <input
+                            className={classes.tf_input3}
+                            type="number"
+                            name="securityCode"
+                            id="form-checkout__securityCode"
+                            onKeyDown={handleEnter}
+                            onFocus={handleFocus}
+                            placeholder="cvc"
+                            onChange={(event) => {
+                              setCVC(event.target.value);
+                            }}
+                          />
+                        </Box>
+                      </Grid>
+                    </Box>
+
+                    <Box>
+                      <Box display="flex" width="100%" mt={2} ml={1}>
+                        <Grid item xs={12} md={12}>
+                          <Typography
+                            className={classes.texto}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Digite o CPF ou CNPJ do Dono do Cartão
+                          </Typography>
+                        </Grid>
+                      </Box>
+                    </Box>
+                    <Box display="flex" mt={0}>
+                      <Grid item xs={12} md={12}>
+                        <Box mt={-1}>
+                          <input
+                            type="number"
+                            name="identificationNumber"
+                            id="form-checkout__identificationNumber"
+                            className={classes.tf_input}
+                            placeholder="Somente Números"
+                            onKeyDown={handleEnter}
+                            onFocus={handleFocus}
+                            onChange={handleInputChange}
+                          />
+                        </Box>
+                      </Grid>
+                    </Box>
+
+                    <Box>
+                      <Box display="flex" width="100%" mt={2} ml={1}>
+                        <Grid item xs={12} md={12}>
+                          <Typography
+                            className={classes.texto}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Escolha o Número de Parcelas
+                          </Typography>
+                        </Grid>
+                      </Box>
+                    </Box>
+                    <Box display="flex" mt={0}>
+                      <Grid item xs={12} md={12}>
+                        <Box mt={-1}>
+                          <Select
+                            labelId="demo-simple-select-placeholder-label-label"
+                            id="demo-simple-select-placeholder-label"
+                            value={parcela[qtParcelas - 1].value}
+                            onChange={(e) => {
+                              //                       console.log(e.target);
+                              setQtParcelas(e.target.value);
+                            }}
+                            displayEmpty
+                            className={classes.tf_s}
+                          >
+                            <MenuItem disabled value={parcela[0].value}>
+                              {parcela[0].value === 0 &&
+                                parcela?.map((items) => (
+                                  <MenuItem
+                                    key={items.value}
+                                    value={items.value}
+                                  >
+                                    {items.descriction ?? items.descriction}
+                                  </MenuItem>
+                                ))}
+                            </MenuItem>
+                            {parcela[0].value !== 0 &&
+                              parcela?.map((items) => (
+                                <MenuItem key={items.value} value={items.value}>
+                                  {items.descriction ?? items.descriction}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                        </Box>
+                      </Grid>
+                    </Box>
+                    <Box
+                      width="100%"
+                      display="flex"
+                      justifyContent="center"
+                      mt={2}
+                    >
+                      <Container>
+                        <Cards
+                          cvc={cvc}
+                          expiry={String(mesF + anoF)}
+                          focused={String(data.focus)}
+                          //          focused={active}
+                          name={name}
+                          number={number}
+                        />
+                      </Container>
+                    </Box>
+                    {carregar && (
+                      <Box className={classes.novoBox} mt={1}>
+                        <LinearProgress />
+                        <small style={{ color: '#fff' }}>
+                          Conectanto com Mercado Pago...
+                        </small>
+                      </Box>
+                    )}
+                    {!carregar && (
+                      <Box
+                        mt={2}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Button
+                          className={classes.button1}
+                          variant="contained"
+                          id="form-checkout__submit"
+                          // type="submit"
+                          disabled={
+                            !(
+                              docPagante.length > 10 &&
+                              number.length > 10 &&
+                              mesF.length > 1 &&
+                              anoF.length > 1 &&
+                              name.length > 2 &&
+                              cvc.length > 2
+                            )
+                          }
+                          onClick={handleSubmit}
+                        >
+                          FAZER O PAGAMENTO
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </form>
+            </ClickAwayListener>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* <Drawer
+        ref={componentRef}
+        variant="persistent"
+        anchor="bottom"
+        open={openDrawerPDF}
+      >
+        {openDrawerPDF && (
+          <PdfCompra cpf={cpf} Nome={nome} codigo={codigoPagamento} />
+        )}
+      </Drawer> */}
+
+      <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
+        {/* <Box
+          ref={componentRef}
+          height={janela.height}
+          sx={{ background: '#c5e1a5' }}
+        >
+          <Box mt={20}>
+            <Box display="flex" justifyContent="center">
+              <h2>Recebemos seu Pagamento</h2>
+            </Box>
+            <Box m={2} textAlign="center">
+              <strong>{valorErro}</strong>
+            </Box>
+            <Box m={2} mt={4} textAlign="center">
+              <strong>Anote seu Código de Pagamento.</strong>
+            </Box>
+            <Box m={2} mt={-2} textAlign="center">
+              <strong
+                style={{ color: '#3f51b5', fontSize: '25px', marginTop: '5px' }}
+              >
+                {codigoPagamento}
+              </strong>
+            </Box>
+            <Box display="flex" mt={0}>
+              <Grid item xs={12} md={12}>
+                <Box mt={-1}>
+                  <IconButton
+                    onClick={handlePDF}
+                    color="primary"
+                    aria-label="add to shopping cart"
+                  >
+                    <PictureAsPdfIcon />
+                  </IconButton>
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Box mt={-1}>
+                  <IconButton
+                    onClick={handlePrint}
+                    color="primary"
+                    aria-label="add to shopping cart"
+                  >
+                    <PrintIcon />
+                  </IconButton>
+                </Box>
+                <Grid item xs={12} md={12}>
+                  <Box mt={-1}>
+                    <IconButton
+                      color="primary"
+                      aria-label="add to shopping cart"
+                    >
+                      <PhotoCameraIcon />
+                    </IconButton>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box
+              mt={4}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                className={classes.button2}
+                variant="contained"
+                id="reload"
+                onClick={atualizar}
+              >
+                Fechar
+              </Button>
+            </Box>
+          </Box>
+        </Box> */}
+
+        <GerarPdf
+          nome={nome}
+          codigo={codigoPagamento}
+          adultos={qtyA}
+          criancas={qtyC}
+          valor={vTotal}
+          fp="Cartão de Crédito"
+          status="Em Analise"
           parcelas={descParcelas}
           cpf={cpf}
         />
@@ -1552,15 +2096,28 @@ export default function CheckoutT({
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+      <Hidden smDown>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {deskTop}
+        </Modal>
+      </Hidden>
+
+      <Hidden mdUp>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          className={classes.modal}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {body}
+        </Modal>
+      </Hidden>
     </>
   );
 }
