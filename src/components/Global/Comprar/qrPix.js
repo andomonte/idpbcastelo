@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     height: '20px',
     marginLeft: 40,
     marginRight: 8,
+    minHeight: 700,
   },
   input1: {
     fontSize: '24px',
@@ -321,11 +322,12 @@ const QrPix = ({ codigo }) => {
               <Box
                 mt={0}
                 height={janela.height}
+                minHeight={600}
                 justifyContent="center"
                 display="flex"
               >
-                <Box>
-                  <Box mt={0} ml={0}>
+                <Box maxWidth={400}>
+                  <Box mt={0} ml={0} minHeight={600}>
                     <img
                       src="/images/global/fundo2.png"
                       alt=""
@@ -333,109 +335,122 @@ const QrPix = ({ codigo }) => {
                       className={classes.img}
                     />
                   </Box>
+                  <Box display="flex" justifyContent="center">
+                    <Box ml={0}>
+                      <Box
+                        width="100%"
+                        mt={
+                          janela.height > 570
+                            ? janela.height < 630
+                              ? -40
+                              : -68
+                            : -48
+                        }
+                        sx={{ fontSize: 'bold', color: '#b91a30' }}
+                      >
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          style={{
+                            fontSize: '16px',
+                            color: '#b91a30',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          CHAVE PIX PARA PAGAMENTO
+                        </Typography>
+                      </Box>
 
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    width="100%"
-                    mt={janela.height > 570 ? ajAlturaMax - 5 : ajAlturaMin}
-                    sx={{ fontSize: 'bold', color: '#b91a30' }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '16px',
-                        color: '#b91a30',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      CHAVE PIX PARA PAGAMENTO
-                    </Typography>
-                  </Box>
+                      <Box height={janela.height / 2} mt={0} textAlign="center">
+                        {codigo && (
+                          <img
+                            className={classes.QrCode}
+                            src={`data:image/jpeg;base64,${codigo.qrCode}`}
+                            alt="qrCode"
+                          />
+                        )}
+                      </Box>
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                        mt={
+                          janela.height > 570
+                            ? janela.height < 630
+                              ? -5
+                              : -6
+                            : -1
+                        }
+                        sx={{ fontSize: 'bold', color: '#b91a30' }}
+                      >
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          style={{
+                            fontSize: '12px',
+                            color: '#000',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          <Box display="flex" justifyContent="center">
+                            CHAVE EXPIRA EM:{' '}
+                            <Box mt={-0.5} ml={1}>
+                              {relogio && <MyTimer expiryTimestamp={relogio} />}
+                            </Box>
+                          </Box>
+                        </Typography>
+                      </Box>
 
-                  <Box height={janela.height / 2} mt={0} textAlign="center">
-                    {codigo && (
-                      <img
-                        className={classes.QrCode}
-                        src={`data:image/jpeg;base64,${codigo.qrCode}`}
-                        alt="qrCode"
+                      <ToastContainer
+                        position="top-center"
+                        autoClose={2000}
+                        hideProgressBar
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
                       />
-                    )}
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    width="100%"
-                    mt={-9}
-                    sx={{ fontSize: 'bold', color: '#b91a30' }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '12px',
-                        color: '#000',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      <Box display="flex" justifyContent="center">
-                        CHAVE EXPIRA EM:{' '}
-                        <Box mt={-0.5} ml={1}>
-                          {relogio && <MyTimer expiryTimestamp={relogio} />}
+
+                      <Box mt={2} display="flex" justifyContent="center">
+                        <Box
+                          mr={2}
+                          mt={0}
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Button
+                            className={classes.button2}
+                            variant="contained"
+                            id="reload"
+                            onClick={copyToClipboard}
+                          >
+                            <small>COPIAR CHAVE </small>{' '}
+                          </Button>
+                        </Box>
+                        <Box
+                          mt={0}
+                          mb={0}
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Button
+                            className={classes.button1}
+                            variant="contained"
+                            id="reload"
+                            onClick={FecharCompra}
+                          >
+                            SAIR
+                          </Button>
                         </Box>
                       </Box>
-                    </Typography>
-                  </Box>
-
-                  <ToastContainer
-                    position="top-center"
-                    autoClose={2000}
-                    hideProgressBar
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                  />
-
-                  <Box mt={2} display="flex" justifyContent="center">
-                    <Box
-                      mr={5}
-                      mt={0}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Button
-                        className={classes.button2}
-                        variant="contained"
-                        id="reload"
-                        onClick={copyToClipboard}
-                      >
-                        <small>COPIAR CHAVE </small>{' '}
-                      </Button>
-                    </Box>
-                    <Box
-                      mt={0}
-                      mb={0}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Button
-                        className={classes.button1}
-                        variant="contained"
-                        id="reload"
-                        onClick={FecharCompra}
-                      >
-                        SAIR
-                      </Button>
                     </Box>
                   </Box>
                 </Box>
