@@ -265,9 +265,7 @@ const Home = () => {
               <Box display="flex" justifyContent="center" mt={10}>
                 <Box
                   mt={
-                    janela.height > 570
-                      ? -janela.height / 60
-                      : -janela.height / 40
+                    janela.height > 570 ? (janela.height < 630 ? -8 : -5) : -8
                   }
                 >
                   <Box
@@ -378,7 +376,7 @@ const Home = () => {
                     />
                   </Box>
 
-                  <Box mt={1} ml={0}>
+                  <Box mt={0} ml={0}>
                     <img
                       src="/images/global/pgLocal.png"
                       alt=""
@@ -388,7 +386,7 @@ const Home = () => {
                   </Box>
 
                   <Box className={classes.letras2} bgcolor="#b91a30" />
-                  <Box mt={0} ml={0}>
+                  <Box mt={-1} ml={0}>
                     <img
                       src="/images/global/site.png"
                       alt=""
@@ -398,7 +396,7 @@ const Home = () => {
                   </Box>
                   <Box
                     height={8}
-                    mt={-2}
+                    mt={-1}
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
