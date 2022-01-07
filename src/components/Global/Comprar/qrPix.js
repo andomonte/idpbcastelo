@@ -338,7 +338,7 @@ const QrPix = ({ codigo }) => {
                     display="flex"
                     justifyContent="center"
                     width="100%"
-                    mt={janela.height > 570 ? ajAlturaMax : ajAlturaMin}
+                    mt={janela.height > 570 ? ajAlturaMax - 5 : ajAlturaMin}
                     sx={{ fontSize: 'bold', color: '#b91a30' }}
                   >
                     <Typography

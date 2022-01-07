@@ -98,7 +98,12 @@ const Home = () => {
       //   query: { dadosMesa2, numeroGame },
     });
   };
-
+  const sendSite = () => {
+    router.push({
+      pathname: 'https://conferenciaglobal.org/',
+      //   query: { dadosMesa2, numeroGame },
+    });
+  };
   const myTicket = () => {
     router.push({
       pathname: '/global/meuTicket',
@@ -386,7 +391,7 @@ const Home = () => {
                   </Box>
 
                   <Box className={classes.letras2} bgcolor="#b91a30" />
-                  <Box mt={-1} ml={0}>
+                  <Box mt={-1} ml={0} onClick={sendSite}>
                     <img
                       src="/images/global/site.png"
                       alt=""
