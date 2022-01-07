@@ -200,7 +200,7 @@ const QrPix = ({ codigo }) => {
   const classes = useStyles();
   //  const valCodigo = codigo;
   const [dadosCompra, setDadosCompra] = React.useState('');
-  const [cancelamento, setCancelamento] = React.useState(true);
+  const [cancelamento, setCancelamento] = React.useState(false);
   const [url, setUrl] = React.useState();
   const [urlCreate, setUrlCreate] = React.useState();
   const [relogio, setRelogio] = React.useState();
