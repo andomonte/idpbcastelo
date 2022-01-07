@@ -937,7 +937,7 @@ const TelaInicial = ({ inscritos }) => {
                         janela.height > 570
                           ? janela.height < 630
                             ? -janela.height / 10 - 11
-                            : -janela.height / 10 - 15
+                            : -janela.height / 10 - 5
                           : -62
                       }
                     >

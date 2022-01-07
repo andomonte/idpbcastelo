@@ -663,7 +663,7 @@ const Home = ({ inscritos, dados }) => {
                         janela.height > 570
                           ? janela.height < 630
                             ? -58
-                            : -58
+                            : -54
                           : -58
                       }
                       ml={janela.height > 632 ? 4 : 3}
