@@ -663,7 +663,7 @@ const Home = ({ inscritos, dados }) => {
                         janela.height > 570
                           ? janela.height < 630
                             ? -58
-                            : -68
+                            : -72
                           : -58
                       }
                       ml={janela.height > 632 ? 4 : 3}
@@ -694,7 +694,7 @@ const Home = ({ inscritos, dados }) => {
 
                     <Box
                       mt={
-                        janela.height > 570 ? (janela.height < 630 ? 0 : 3) : 1
+                        janela.height > 570 ? (janela.height < 630 ? 0 : 2) : 1
                       }
                       display="flex"
                       justifyContent="center"
