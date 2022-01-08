@@ -28,7 +28,9 @@ import Pix from './pix';
 
 const janela = TamanhoJanela();
 const ajustAltura = janela.height / 10;
-
+let altura;
+if (janela.height < 500) altura = 500;
+else altura = janela.height;
 // const validateDate = require('validate-date');
 
 const BootstrapInput = withStyles((theme) => ({
@@ -657,14 +659,15 @@ const Home = ({ inscritos, dados }) => {
                       width: '100%',
                     }}
                   >
+                    {console.log(janela.height, altura)}
                     <Box
                       display="flex"
                       mt={
-                        janela.height > 570
-                          ? janela.height < 630
-                            ? -58
-                            : -72
-                          : -58
+                        altura > 570
+                          ? altura < 630
+                            ? (-12 * altura) / 100
+                            : (-12 * altura) / 100
+                          : (-12 * altura) / 100
                       }
                       ml={janela.height > 632 ? 4 : 3}
                     >
@@ -674,7 +677,7 @@ const Home = ({ inscritos, dados }) => {
                           p={1}
                           ml={0}
                           mr={0}
-                          mt={-14}
+                          mt={0}
                           display="flex"
                           alignItems="center"
                         >
@@ -693,9 +696,7 @@ const Home = ({ inscritos, dados }) => {
                     </Box>
 
                     <Box
-                      mt={
-                        janela.height > 570 ? (janela.height < 630 ? 0 : 2) : 1
-                      }
+                      mt={altura > 570 ? (altura < 630 ? 10 : 12) : 6}
                       display="flex"
                       justifyContent="center"
                     >
@@ -859,7 +860,7 @@ const Home = ({ inscritos, dados }) => {
                               <Box
                                 display="flex"
                                 justifyContent="center"
-                                width="90vw"
+                                width="100%"
                                 //                      height={300}
                                 style={{}}
                               >
