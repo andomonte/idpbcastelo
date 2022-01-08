@@ -11,6 +11,9 @@ import TamanhoJanela from 'src/utils/getSize';
 // const validateDate = require('validate-date');
 
 const janela = TamanhoJanela();
+let altura;
+if (janela.height > 600) altura = 500;
+else altura = janela.height;
 const useStyles = makeStyles(() => ({
   img: {
     maxWidth: '1410px',
@@ -115,10 +118,10 @@ const Home = () => {
     <Box style={{ backgroundColor: '#fafafa', height: '100vh' }}>
       <Box mt={0}>
         <Hidden smDown>
-          <Box mt={0}>
+          <Box mt={0} height={altura}>
             <Box display="flex" justifyContent="center">
-              <Box mt={2} width={400} height="100%" bgcolor="#b91a30">
-                <Box mt={0} ml={0}>
+              <Box mt={2} width={400} height="97vh" bgcolor="#b91a30">
+                <Box mt={1} ml={0}>
                   <Box
                     height={30}
                     p={1}
@@ -153,9 +156,7 @@ const Home = () => {
                 <Box mt={2} className={classes.letras1}>
                   <Box mt={-2}> GLOBAL 2022</Box>
                 </Box>
-                <Box mt={1} className={classes.letras2}>
-                  2022 GLOBAL CONFERENCE
-                </Box>
+                <Box mt={2} className={classes.letras2} />
                 <Box mt={-0.5}>
                   <CardMedia
                     component="img"
@@ -165,7 +166,7 @@ const Home = () => {
                     style={{ justifyContent: 'center' }}
                   />
                 </Box>
-                <Box mt={0} className={classes.letras2}>
+                <Box mt={2} className={classes.letras2}>
                   INGRESSO - 1º LOTE - R$: 50,00
                 </Box>
                 <Box mt={2} className={classes.letras2}>
@@ -179,7 +180,7 @@ const Home = () => {
                 </Box>
 
                 <Box
-                  mt={2}
+                  mt={4}
                   sx={{
                     display: 'flex',
                     '& > :not(style)': {
@@ -219,22 +220,22 @@ const Home = () => {
                     </Box>
                   </Paper>
                 </Box>
-                <Box mt={1}>
+                <Box mt={2}>
                   <CardMedia
                     component="img"
                     image="/images/global/sobre.png"
                     alt="green iguana"
-                    style={{ height: 124 }}
+                    style={{ height: 124, width: '98%' }}
                   />
                 </Box>
-                <Box mt={0}>
+                <Box mt={2}>
                   <CardMedia
                     component="img"
                     image="/images/global/pgLocal.png"
                     alt="green iguana"
                   />
                 </Box>
-                <Box>
+                <Box mt={0}>
                   <CardMedia
                     component="img"
                     image="/images/global/site.png"
@@ -256,7 +257,7 @@ const Home = () => {
                 display="flex"
                 alignItems="center"
               >
-                <Box mt={2}>
+                <Box mt={5}>
                   <ArrowBackIcon
                     sx={{
                       fontSize: 20,
@@ -294,9 +295,7 @@ const Home = () => {
                       GLOBAL 2022
                     </Box>
                   </Box>
-                  <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
-                    2022 GLOBAL CONFERENCE
-                  </Box>
+                  <Box mt={-1} className={classes.letras2} bgcolor="#b91a30" />
                   <Box mt={-0.5} bgcolor="#b91a30">
                     <Box mt={0} ml={0}>
                       <img
@@ -307,7 +306,7 @@ const Home = () => {
                       />
                     </Box>
                   </Box>
-                  <Box mt={0} className={classes.letras2} bgcolor="#b91a30">
+                  <Box mt={1} className={classes.letras2} bgcolor="#b91a30">
                     INGRESSO - 1º LOTE - R$: 50,00
                   </Box>
                   <Box
@@ -315,7 +314,7 @@ const Home = () => {
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   >
-                    <Box mt={2}>
+                    <Box mt={altura > 570 ? (altura < 630 ? 4 : 6) : 2}>
                       <Button
                         className={classes.button1}
                         variant="contained"
@@ -325,9 +324,9 @@ const Home = () => {
                       </Button>
                     </Box>
                   </Box>
-
+                  {console.log(altura)}
                   <Box
-                    mt={0}
+                    mt={altura > 570 ? (altura < 630 ? 4 : 6) : 2}
                     sx={{
                       display: 'flex',
                       '& > :not(style)': {

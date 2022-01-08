@@ -23,13 +23,15 @@ import { useTimer } from 'react-timer-hook';
 import GerarPdf from './pdfs/pdf';
 
 const janela = TamanhoJanela();
+let altura;
 let ajAlturaMin = -(janela.height / 10) + 10;
 if (ajAlturaMin < -48) ajAlturaMin = -48;
 if (ajAlturaMin > -42) ajAlturaMin = -42;
 let ajAlturaMax = -110 + janela.height / 10;
 if (ajAlturaMax < -4) ajAlturaMax = -47;
 if (ajAlturaMax > -35) ajAlturaMax = -35;
-
+if (janela.height < 600) altura = 600;
+else altura = janela.height;
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -47,14 +49,13 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 170,
 
     width: janela.height / 3,
-    height: janela.height / 3,
+    height: altura / 3,
   },
   img1: {
     width: '20px',
     height: '20px',
     marginLeft: 40,
     marginRight: 8,
-    minHeight: 700,
   },
   input1: {
     fontSize: '24px',
@@ -237,15 +238,13 @@ const QrPix = ({ codigo }) => {
       const date2 = moment(data[0].createdAt);
       const diff = date2.diff(date1, 'seconds') + 1800;
       // soma 30 minutes ou seja 1800segundos
-      console.log('tempo', diff);
+
       const time = new Date();
       time.setSeconds(time.getSeconds() + diff);
 
       setRelogio(time);
     }
   }, [data]);
-
-  console.log('relogio', relogio);
 
   const CancelarCompra = async () => {
     try {
@@ -319,33 +318,29 @@ const QrPix = ({ codigo }) => {
             />
           ) : (
             <Box className={classes.root}>
+              {console.log(altura)}
               <Box
                 mt={0}
-                height={janela.height}
-                minHeight={600}
+                height={altura}
                 justifyContent="center"
                 display="flex"
               >
-                <Box maxWidth={400}>
-                  <Box mt={0} ml={0} minHeight={600}>
+                <Box maxWidth={400} minHeight={600} height={altura}>
+                  <Box mt={0} ml={0} height={altura}>
                     <img
                       src="/images/global/fundo2.png"
                       alt=""
                       width="100%"
-                      className={classes.img}
+                      //  className={classes.img}
+                      height={altura}
                     />
                   </Box>
+
                   <Box display="flex" justifyContent="center">
                     <Box ml={0}>
                       <Box
                         width="100%"
-                        mt={
-                          janela.height > 570
-                            ? janela.height < 630
-                              ? -40
-                              : -68
-                            : -48
-                        }
+                        mt={altura > 570 ? (altura < 630 ? -54 : -68) : -48}
                         sx={{ fontSize: 'bold', color: '#b91a30' }}
                       >
                         <Typography
@@ -362,7 +357,7 @@ const QrPix = ({ codigo }) => {
                         </Typography>
                       </Box>
 
-                      <Box height={janela.height / 2} mt={0} textAlign="center">
+                      <Box height={(altura - 50) / 2} mt={0} textAlign="center">
                         {codigo && (
                           <img
                             className={classes.QrCode}
@@ -375,13 +370,7 @@ const QrPix = ({ codigo }) => {
                         display="flex"
                         justifyContent="center"
                         width="100%"
-                        mt={
-                          janela.height > 570
-                            ? janela.height < 630
-                              ? -5
-                              : -6
-                            : -1
-                        }
+                        mt={altura > 570 ? (altura < 630 ? -10 : -6) : -1}
                         sx={{ fontSize: 'bold', color: '#b91a30' }}
                       >
                         <Typography
@@ -477,7 +466,7 @@ const QrPix = ({ codigo }) => {
             <Box className={classes.root}>
               <Box
                 mt={0}
-                height={janela.height}
+                height={altura}
                 justifyContent="center"
                 display="flex"
               >
@@ -494,7 +483,7 @@ const QrPix = ({ codigo }) => {
                     display="flex"
                     justifyContent="center"
                     width="100%"
-                    mt={janela.height > 570 ? ajAlturaMax + 5 : ajAlturaMin + 5}
+                    mt={altura > 570 ? ajAlturaMax + 5 : ajAlturaMin + 5}
                     sx={{ fontSize: 'bold', color: '#b91a30' }}
                   >
                     <Typography
