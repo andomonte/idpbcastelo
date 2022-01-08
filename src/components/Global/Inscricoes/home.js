@@ -314,7 +314,7 @@ const Home = () => {
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   >
-                    <Box mt={altura > 570 ? (altura < 630 ? 4 : 6) : 2}>
+                    <Box mt={altura > 570 ? (altura < 630 ? 4 : 8) : 2}>
                       <Button
                         className={classes.button1}
                         variant="contained"
@@ -326,7 +326,7 @@ const Home = () => {
                   </Box>
                   {console.log(altura)}
                   <Box
-                    mt={altura > 570 ? (altura < 630 ? 4 : 6) : 2}
+                    mt={altura > 570 ? (altura < 630 ? 4 : 8) : 2}
                     sx={{
                       display: 'flex',
                       '& > :not(style)': {
@@ -371,7 +371,11 @@ const Home = () => {
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
-                  <Box mt={1} ml={0} height={122}>
+                  <Box
+                    mt={altura > 570 ? (altura < 630 ? 2 : 3) : 1}
+                    ml={0}
+                    height={122}
+                  >
                     <img
                       src="/images/global/sobre.png"
                       alt=""
@@ -380,7 +384,7 @@ const Home = () => {
                     />
                   </Box>
 
-                  <Box mt={0} ml={0}>
+                  <Box mt={altura > 570 ? (altura < 630 ? 1 : 2) : 0} ml={0}>
                     <img
                       src="/images/global/pgLocal.png"
                       alt=""
@@ -390,7 +394,11 @@ const Home = () => {
                   </Box>
 
                   <Box className={classes.letras2} bgcolor="#b91a30" />
-                  <Box mt={-1} ml={0} onClick={sendSite}>
+                  <Box
+                    mt={altura > 570 ? (altura < 630 ? 0 : 1) : -1}
+                    ml={0}
+                    onClick={sendSite}
+                  >
                     <img
                       src="/images/global/site.png"
                       alt=""
@@ -400,7 +408,7 @@ const Home = () => {
                   </Box>
                   <Box
                     height={8}
-                    mt={-1}
+                    mt={altura > 570 ? (altura < 630 ? 0 : 1) : -1}
                     className={classes.letras2}
                     bgcolor="#b91a30"
                   />
