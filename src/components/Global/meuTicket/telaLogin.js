@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     // overflow: 'hidden',
     width: '100vw',
     minHeight: 500,
+    maxHeight: 700,
     padding: 0,
     margin: 0,
   },
@@ -167,7 +168,13 @@ function LoginGame() {
                   <Box
                     display="flex"
                     width="100%"
-                    mt={altura > 570 ? (altura < 630 ? -57 : -68) : -46}
+                    mt={
+                      altura > 570
+                        ? altura < 630
+                          ? (-42 * altura) / 450
+                          : (-44 * altura) / 450
+                        : (-41 * altura) / 450
+                    }
                     ml={2}
                   >
                     <Grid item xs={2} md={3}>
