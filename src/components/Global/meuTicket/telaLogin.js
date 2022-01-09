@@ -19,15 +19,17 @@ if (ajAlturaMin > -42) ajAlturaMin = -42;
 let ajAlturaMax = -110 + janela.height / 10;
 if (ajAlturaMax < -4) ajAlturaMax = -47;
 if (ajAlturaMax > -35) ajAlturaMax = -35;
-
+let altura;
+if (janela.height < 500) altura = 500;
+else altura = janela.height;
 const useStyles = makeStyles((theme) => ({
   img: {
-    maxWidth: '500px',
+    maxWidth: '400px',
     maxHeight: '700px',
     minWidth: '300px',
     minHeight: '500px',
     width: '100vw',
-    height: '100vh',
+    height: '99vh',
   },
   paper: {
     // backgroundColor: '#b91a30', // theme.palette.background.paper,
@@ -140,74 +142,59 @@ function LoginGame() {
 
   //  const janela = TamanhoJanela();
   return (
-    <Box className={classes.root}>
-      <Box mt={0} height={janela.height} justifyContent="center" display="flex">
-        <Box>
-          <Box mt={0} ml={0}>
-            <img
-              src="/images/global/fundo2.png"
-              alt=""
-              // width="100%"
-              className={classes.img}
-            />
-          </Box>
-          <form>
+    <>
+      {open ? (
+        <PesquisaCPF cpf={cpf} setOpen={setOpen} />
+      ) : (
+        <Box className={classes.root}>
+          <Box>
             <Box
+              mt={0}
+              height={janela.height}
+              justifyContent="center"
               display="flex"
-              width="100%"
-              mt={janela.height > 570 ? ajAlturaMax - 10 : ajAlturaMin - 5}
-              ml={2}
             >
-              <Grid item xs={2} md={3}>
-                <Box
-                  height={10}
-                  p={1}
-                  ml={0}
-                  mr={0}
-                  mt={-14}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <ArrowBackIcon
-                    sx={{
-                      fontSize: 20,
-                      color: '#fff',
-                    }}
-                    onClick={voltar}
+              <Box>
+                <Box mt={0} ml={0}>
+                  <img
+                    src="/images/global/fundo2.png"
+                    alt=""
+                    // width="100%"
+                    className={classes.img}
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={1} md={3} />
-
-              <Grid item xs={9} md={3} />
-            </Box>
-            <Box
-              mt={janela.height > 600 ? 15 : 8} // não mexer
-              ml={0}
-              sx={{ fontWeight: 'bold', fontSize: '10px' }}
-              display="flex"
-              justifyContent="center"
-            >
-              <Typography
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: '15px',
-                  fontFamily: 'arial black',
-                  color: '#000',
-                }}
-                variant="caption"
-                display="block"
-                gutterBottom
-              >
-                GERE SEU TICKET
-              </Typography>
-            </Box>
-
-            <Box display="flex" justifyContent="center">
-              <Box mt={3} width="80%">
-                <Box mt={0}>
+                <form>
                   <Box
-                    mt={2}
+                    display="flex"
+                    width="100%"
+                    mt={altura > 570 ? (altura < 630 ? -57 : -68) : -46}
+                    ml={2}
+                  >
+                    <Grid item xs={2} md={3}>
+                      <Box
+                        height={10}
+                        p={1}
+                        ml={0}
+                        mr={0}
+                        mt={-14}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <ArrowBackIcon
+                          sx={{
+                            fontSize: 20,
+                            color: '#fff',
+                          }}
+                          onClick={voltar}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={1} md={3} />
+
+                    <Grid item xs={9} md={3} />
+                  </Box>
+                  <Box
+                    mt={altura > 570 ? (altura < 630 ? 15 : 18) : 10} // não mexer
                     ml={0}
                     sx={{ fontWeight: 'bold', fontSize: '10px' }}
                     display="flex"
@@ -217,76 +204,103 @@ function LoginGame() {
                       style={{
                         fontWeight: 'bold',
                         fontSize: '15px',
-                        color: '#780208',
+                        fontFamily: 'arial black',
+                        color: '#000',
                       }}
                       variant="caption"
                       display="block"
                       gutterBottom
                     >
-                      Digite seu CPF
+                      GERE SEU TICKET
                     </Typography>
                   </Box>
-                  <Box mt={0} width="100%">
-                    <TextField
-                      id="CPF"
-                      type="tel"
-                      inputRef={cpfRef}
-                      style={{ width: '100%' }}
-                      className={classes.tf_s}
-                      inputProps={{
-                        style: {
-                          textAlign: 'center',
-                        },
-                      }}
-                      value={cpf}
-                      variant="outlined"
-                      placeholder=""
-                      size="small"
-                      onKeyDown={handleEnter}
-                      onChange={(e) => {
-                        setCPF(cpfMask(e.target.value));
-                      }}
-                      onFocus={(e) => setCPF(cpfMask(e.target.value))}
-                    />
-                  </Box>
-                </Box>
-                <Box mt={0}>
-                  <Box
-                    mt={janela.height < 600 ? 6 : 8}
-                    display="flex"
-                    width="100%"
-                    justifyContent="center"
-                  >
-                    <Box>
-                      <ColorButton
-                        style={{ borderRadius: 16 }}
-                        variant="contained"
-                        value="value"
-                        onClick={handleValida}
-                      >
-                        Gerar Ticket
-                      </ColorButton>
+
+                  <Box display="flex" justifyContent="center">
+                    <Box mt={3} width="80%">
+                      <Box mt={0}>
+                        <Box
+                          mt={2}
+                          ml={0}
+                          sx={{ fontWeight: 'bold', fontSize: '10px' }}
+                          display="flex"
+                          justifyContent="center"
+                        >
+                          <Typography
+                            style={{
+                              fontWeight: 'bold',
+                              fontSize: '15px',
+                              color: '#780208',
+                            }}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Digite seu CPF
+                          </Typography>
+                        </Box>
+                        <Box mt={0} width="100%">
+                          <TextField
+                            id="CPF"
+                            type="tel"
+                            inputRef={cpfRef}
+                            style={{ width: '100%' }}
+                            className={classes.tf_s}
+                            inputProps={{
+                              style: {
+                                textAlign: 'center',
+                              },
+                            }}
+                            value={cpf}
+                            variant="outlined"
+                            placeholder=""
+                            size="small"
+                            onKeyDown={handleEnter}
+                            onChange={(e) => {
+                              setCPF(cpfMask(e.target.value));
+                            }}
+                            onFocus={(e) => setCPF(cpfMask(e.target.value))}
+                          />
+                        </Box>
+                      </Box>
+                      <Box mt={0}>
+                        <Box
+                          mt={janela.height < 600 ? 6 : 8}
+                          display="flex"
+                          width="100%"
+                          justifyContent="center"
+                        >
+                          <Box>
+                            <ColorButton
+                              style={{ borderRadius: 16 }}
+                              variant="contained"
+                              value="value"
+                              onClick={handleValida}
+                            >
+                              Gerar Ticket
+                            </ColorButton>
+                          </Box>
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
+                </form>
+                <ToastContainer
+                  position="top-center"
+                  autoClose={2000}
+                  hideProgressBar
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
               </Box>
             </Box>
-          </form>
-          <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
+          </Box>
         </Box>
-      </Box>
-      {open && <PesquisaCPF cpf={cpf} setOpen={setOpen} />}
-    </Box>
+      )}
+    </>
   );
 }
 

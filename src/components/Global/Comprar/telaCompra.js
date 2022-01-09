@@ -333,7 +333,7 @@ const Home = ({ inscritos, dados }) => {
       const vCPF = ValidaCPF(valorCPF);
       if (vCPF) {
         const dadosCPF = inscritos.filter(
-          (val) => val.CPF === campoCPF && val.status !== 'cancelada',
+          (val) => val.CPF === campoCPF && val.status !== 'cancelled',
         );
 
         if (dadosCPF.length === 0) {

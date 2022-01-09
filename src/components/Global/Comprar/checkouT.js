@@ -623,7 +623,7 @@ export default function CheckoutT({
     cardholderName: '',
     cardNumber: '',
   });
-  const [vTotal, setVTotal] = React.useState('');
+  const [vTotals, setVTotal] = React.useState('');
 
   const router = useRouter();
 
@@ -801,7 +801,7 @@ export default function CheckoutT({
         codigoPagamento,
         qtyA,
         qtyC,
-        vTotal,
+        vTotals,
         fp: 'Cartão de Crédito',
         status: 'PAGAMENTO CONFIRMADO',
         descParcelas,
@@ -1971,7 +1971,7 @@ export default function CheckoutT({
           codigo={codigoPagamento}
           adultos={qtyA}
           criancas={qtyC}
-          valor={vTotal}
+          valor={vTotals}
           fp="Cartão de Crédito"
           status="Em Analise"
           parcelas={descParcelas}

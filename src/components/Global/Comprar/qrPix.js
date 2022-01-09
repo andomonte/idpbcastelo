@@ -249,7 +249,7 @@ const QrPix = ({ codigo }) => {
   const CancelarCompra = async () => {
     try {
       const body = {
-        status: 'cancelada',
+        status: 'cancelled',
       };
 
       await fetch(urlCreate, {

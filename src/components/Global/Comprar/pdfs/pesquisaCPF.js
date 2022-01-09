@@ -28,7 +28,7 @@ else altura = janela.height;
 if (janela.height < 500) altura = 500;
 else altura = janela.height;
 // const fetcher = (urls) => axios.get(urls).then((res) => res.data);
-console.log(janela, largura);
+
 const ajusteAltura = Number(altura / 11).toFixed(0) - 5;
 
 const useStyles = makeStyles((theme) => ({
@@ -111,8 +111,8 @@ function PesquisaCPF({ cpf, setOpen }) {
       if (posts.length > 0) {
         const inscrito = posts.filter((val) => val.status !== 'cancelled');
         const inscCancelada = posts.filter((val) => val.status === 'cancelled');
-        console.log('insc', inscrito, inscCancelada.length);
-        if (inscrito.length) {
+
+        if (!inscCancelada.length) {
           if (inscrito[0].CPF === cpf) {
             setNome(posts[0].Nome);
             setAdultos(posts[0].Adultos);
@@ -155,36 +155,15 @@ function PesquisaCPF({ cpf, setOpen }) {
     setOpen(false); // fechar o open da função pai que chamou -> telaLogin
     return null;
   };
-
-  console.log(posts);
-
+  console.log('olha ai', posts);
   return (
     <>
-      <Box>
-        {posts === 'vazio' && (
-          <Box>
-            <Box justifyContent="center" display="flex">
-              <Box>
-                <Box {...defaultProps}>
-                  <Box mt={-1} ml={0}>
-                    <img
-                      src="/images/global/informe.png"
-                      alt=""
-                      width="100%"
-                      height={altura}
-                    />
-                    <Box width="90%" mt={-15}>
-                      <LinearProgress />
-                      <Box display="flex" justifyContent="center">
-                        <small>Carregando...</small>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        )}
+      <Box
+        maxwidth={400}
+        minHeight={500}
+        display="flex"
+        justifyContent="center"
+      >
         <Drawer variant="persistent" anchor="bottom" open={openDrawerInval}>
           <Box className={classes.root}>
             <Box>
@@ -391,8 +370,6 @@ function PesquisaCPF({ cpf, setOpen }) {
                         height={altura}
                       />
                     </Box>
-                  </Box>
-                  <Box mt={altura > 570 ? (altura < 630 ? -48 : -56) : -40}>
                     <Box
                       //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
                       width={largura}
@@ -418,7 +395,7 @@ function PesquisaCPF({ cpf, setOpen }) {
                             fontWeight: 'bold',
                           }}
                         >
-                          <Box mt={-3}>CPF: {cpf}</Box>
+                          <Box mt={-ajusteAltura - 3}>CPF: {cpf}</Box>
                         </Typography>
                       </Box>
                       <Box
@@ -432,12 +409,14 @@ function PesquisaCPF({ cpf, setOpen }) {
                           display="block"
                           gutterBottom
                           style={{
-                            fontSize: '14px',
+                            fontSize: '12px',
                             color: '#000',
                             fontWeight: 'bold',
                           }}
                         >
-                          <Box mt={2}>STATUS DE PAGAMENTO ESTÁ</Box>
+                          <Box mt={-ajusteAltura + 2}>
+                            STATUS DE PAGAMENTO ESTÁ
+                          </Box>
                         </Typography>
                       </Box>
                       <Box
@@ -458,7 +437,7 @@ function PesquisaCPF({ cpf, setOpen }) {
                             fontWeight: 'bold',
                           }}
                         >
-                          <Box mt={-1}>PENDENTE</Box>
+                          <Box mt={-ajusteAltura + 3}>PENDENTE</Box>
                         </Typography>
                       </Box>
                       <Box
@@ -479,23 +458,19 @@ function PesquisaCPF({ cpf, setOpen }) {
                             fontWeight: 'bold',
                           }}
                         >
-                          <Box mt={0}>
-                            <Box display="flex" justifyContent="space-around">
-                              <strong style={{ color: '#000' }}>código</strong>
-                            </Box>
-                            <Box display="flex" justifyContent="space-around">
-                              {idPagamento}
-                            </Box>
+                          <Box mt={-ajusteAltura + 6}>
+                            <strong style={{ color: '#000' }}>código:</strong>{' '}
+                            {idPagamento}
                           </Box>
                         </Typography>
                       </Box>
                       <Box
                         display="flex"
                         justifyContent="center"
-                        width="92%"
-                        height={0}
+                        width="100%"
+                        height={50}
                         mt={1}
-                        ml={2}
+                        sx={{ fontSize: 'bold', background: '#780208' }}
                       >
                         <Typography
                           variant="caption"
@@ -515,11 +490,12 @@ function PesquisaCPF({ cpf, setOpen }) {
                         >
                           <Box
                             sx={{
+                              border: '1px solid #780208',
                               borderLeft: 0,
                               borderRight: 0,
                               borderBottom: 0,
                             }}
-                            mt={altura > 570 ? (altura < 630 ? 3 : 5) : 0}
+                            mt={altura > 630 ? -40 : -34}
                           >
                             <Box mt={1}> Central de atendimento: </Box>
                           </Box>
@@ -530,6 +506,7 @@ function PesquisaCPF({ cpf, setOpen }) {
                         justifyContent="center"
                         width="100%"
                         mt={0}
+                        sx={{ fontSize: 'bold', background: '#b91a30' }}
                       >
                         <Typography
                           variant="caption"
@@ -541,8 +518,8 @@ function PesquisaCPF({ cpf, setOpen }) {
                             fontWeight: 'bold',
                           }}
                         >
-                          <Box mt={altura > 570 ? (altura < 630 ? 0 : 0) : -4}>
-                            (92) 9134-4368
+                          <Box mt={altura > 630 ? -40 : -34}>
+                            (92) 99134-4368
                           </Box>
                         </Typography>
                       </Box>
@@ -567,11 +544,7 @@ function PesquisaCPF({ cpf, setOpen }) {
                   </Box>
                 </Box>
               </div>
-              <Box
-                mt={altura > 570 ? (altura < 630 ? 8 : 12) : 0}
-                display="flex"
-                justifyContent="center"
-              >
+              <Box mt={-10} display="flex" justifyContent="center">
                 <ColorButton
                   style={{ borderRadius: 16 }}
                   variant="contained"
@@ -584,8 +557,29 @@ function PesquisaCPF({ cpf, setOpen }) {
             </Box>
           </Box>
         </Drawer>
-        <Drawer variant="persistent" anchor="bottom" open={openDrawerPend2}>
-          <Box className={classes.root}>
+
+        <Box className={classes.root}>
+          {posts === 'vazio' && (
+            <Box>
+              <Box mt={-1} ml={0}>
+                <img
+                  src="/images/global/informe.png"
+                  alt=""
+                  width="100%"
+                  height={altura}
+                />
+              </Box>
+              <Box mt={-27} justifyContent="center" display="flex">
+                <Box width="90%">
+                  <LinearProgress />
+                  <Box display="flex" justifyContent="center">
+                    <small>Carregando...</small>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          )}
+          {openDrawerPend2 && (
             <Box>
               <div className="content" ref={ref2} id="comprovante">
                 <Box width="100%" mb={1}>
@@ -599,181 +593,187 @@ function PesquisaCPF({ cpf, setOpen }) {
                       />
                     </Box>
                   </Box>
-                  <Box mt={altura > 570 ? (altura < 630 ? -48 : -56) : -40}>
-                    <Box
-                      //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
-                      width={largura}
-                      ml={-0.3}
+                  <Box>
+                    <Box mt={altura > 570 ? (altura < 630 ? -50 : -56) : -40}>
+                      <Box
+                        //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
+                        width={largura}
+                        ml={-0.3}
 
-                      // className={classes.imgBack}
-                      // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
-                    >
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mb={0}
+                        // className={classes.imgBack}
+                        // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
                       >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mb={0}
                         >
-                          <Box mt={-3}>CPF: {cpf}</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mb={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '14px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>
-                            Quantidade de inscrições ={' '}
-                            <strong>{inscCancel.length}</strong>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={1}
-                        sx={{ fontSize: 'bold', color: '#b91a30' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: 'blue',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>CANCELADA</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={1}
-                        sx={{ fontSize: 'bold', color: '#b91a30' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: 'green',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>
-                            <Box display="flex" justifyContent="space-around">
-                              <strong style={{ color: '#000' }}>código</strong>
-                            </Box>
-                            <Box display="flex" justifyContent="space-around">
-                              {inscCancel.length && inscCancel[0].idPagamento}
-                            </Box>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="92%"
-                        height={0}
-                        mt={1}
-                        ml={2}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '13px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                            marginTop: 10,
-                            marginLeft: 2,
-
-                            width: largura - 28,
-                            height: 60,
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              borderLeft: 0,
-                              borderRight: 0,
-                              borderBottom: 0,
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '16px',
+                              color: '#000',
+                              fontFamily: 'Arial Black',
+                              fontWeight: 'bold',
                             }}
-                            mt={altura > 570 ? (altura < 630 ? 3 : 5) : 0}
                           >
-                            <Box mt={1}> Central de atendimento: </Box>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '13px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
+                            <Box mt={-3}>CPF: {cpf}</Box>
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mb={0}
                         >
-                          <Box mt={altura > 570 ? (altura < 630 ? 0 : 0) : -4}>
-                            (92) 9134-4368
-                          </Box>
-                        </Typography>
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '14px',
+                              color: '#000',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            <Box mt={0}>
+                              Quantidade de inscrições ={' '}
+                              <strong>{inscCancel.length}</strong>
+                            </Box>
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mt={1}
+                          sx={{ fontSize: 'bold', color: '#b91a30' }}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '16px',
+                              color: 'blue',
+                              fontFamily: 'Arial Black',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            <Box mt={0}>CANCELADA</Box>
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mt={1}
+                          sx={{ fontSize: 'bold', color: '#b91a30' }}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '16px',
+                              color: 'green',
+                              fontFamily: 'Arial Black',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            <Box mt={0}>
+                              <Box display="flex" justifyContent="space-around">
+                                <strong style={{ color: '#000' }}>
+                                  código
+                                </strong>
+                              </Box>
+                              <Box display="flex" justifyContent="space-around">
+                                {inscCancel.length && inscCancel[0].idPagamento}
+                              </Box>
+                            </Box>
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="92%"
+                          height={0}
+                          mt={1}
+                          ml={2}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '13px',
+                              color: '#000',
+                              fontWeight: 'bold',
+                              marginTop: 10,
+                              marginLeft: 2,
+
+                              width: largura - 28,
+                              height: 60,
+                              textAlign: 'center',
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                borderLeft: 0,
+                                borderRight: 0,
+                                borderBottom: 0,
+                              }}
+                              mt={altura > 570 ? (altura < 630 ? 3 : 5) : 0}
+                            >
+                              <Box mt={1}> Central de atendimento: </Box>
+                            </Box>
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          width="100%"
+                          mt={0}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{
+                              fontSize: '13px',
+                              color: '#000',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            <Box
+                              mt={altura > 570 ? (altura < 630 ? 0 : 0) : -4}
+                            >
+                              (92) 9134-4368
+                            </Box>
+                          </Typography>
+                        </Box>
                       </Box>
+
+                      <Box
+                        mt={1}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      />
+
+                      <Box
+                        mt={0}
+                        mb={2}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      />
                     </Box>
-
-                    <Box
-                      mt={1}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    />
-
-                    <Box
-                      mt={0}
-                      mb={2}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    />
                   </Box>
                 </Box>
               </div>
@@ -792,8 +792,9 @@ function PesquisaCPF({ cpf, setOpen }) {
                 </ColorButton>
               </Box>
             </Box>
-          </Box>
-        </Drawer>
+          )}
+        </Box>
+
         <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
           <Box className={classes.root}>
             <Box>
