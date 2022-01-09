@@ -31,7 +31,7 @@ function Comprovante() {
   console.log(comprovanteF);
   return (
     <>
-      {comprovante.id ? (
+      {comprovante.nome ? (
         <Comprove title="SISTEMA-IDPB Global" comprovante={comprovante} />
       ) : (
         <Comprove title="SISTEMA-IDPB Global" comprovante={comprovanteF} />

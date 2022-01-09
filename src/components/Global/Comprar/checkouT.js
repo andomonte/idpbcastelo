@@ -586,7 +586,7 @@ export default function CheckoutT({
   total,
 }) {
   const classes = useStyles();
-  const componentRef = React.useRef();
+
   const [open, setOpen] = React.useState(true);
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openDrawerOK, setOpenDrawerOK] = React.useState(false);
@@ -624,30 +624,11 @@ export default function CheckoutT({
     cardNumber: '',
   });
   const [vTotal, setVTotal] = React.useState('');
-  const [validacaoNome, setValidacaoNome] = React.useState('testar');
-  const [validacaoCPF, setValidacaoCPF] = React.useState('testar');
-  const [validacaoCVV, setValidacaoCVV] = React.useState('testar');
-  const [validacaoMes, setValidacaoMes] = React.useState('testar');
-  const [validacaoAno, setValidacaoAno] = React.useState('testar');
 
-  const numeroRef = React.useRef();
-  const nomeRef = React.useRef();
-  const cpfRef = React.useRef();
-  const mesRef = React.useRef();
-  const anoRef = React.useRef();
-  const emailRef = React.useRef();
-  const pgRef = React.useRef();
   const router = useRouter();
 
   const amount = 50;
 
-  React.useEffect(() => {
-    if (!validacaoCPF) {
-      setOpenDrawer(true);
-      setValorErro('CPF-INVÁLIDO');
-      cpfRef.current.focus();
-    }
-  }, [validacaoCPF]);
   /*  const mercadopago = useMercadopago.v1(
     'TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd',
   ); */
@@ -873,10 +854,9 @@ export default function CheckoutT({
         identificationType: tipoDoc,
         identificationNumber: docPagante,
       });
-      // console.log('token =', cardToken);
+
       return cardToken;
     } catch (erro) {
-      //  console.log(erro);
       return erro;
     }
   }
@@ -886,7 +866,6 @@ export default function CheckoutT({
     }
   }, [mp]); */
   // const cardToken = getToken();
-  // console.log('token =', cardToken);
 
   const handleInputChange = (e) => {
     const eventName = e.target.name;
@@ -945,8 +924,6 @@ export default function CheckoutT({
     // window.location.reload();
   };
 
-  // console.log(janela.height);
-
   const handleSubmit = async () => {
     let validarDoc;
     let checagem = '';
@@ -958,7 +935,7 @@ export default function CheckoutT({
     }
     if (tipoDoc === 'CPF') validarDoc = ValidaCPF(docPagante);
     else validarDoc = ValidaCNPJ(docPagante);
-    // console.log(validarDoc, docPagante);
+
     if (validarDoc) {
       const conexao = await getToken();
       let conexao2;
@@ -967,25 +944,21 @@ export default function CheckoutT({
       let conexao5;
 
       if (conexao.status !== 'active') {
-        //   console.log('inicio', conexao.status);
-
         if (conexao.cause[0].code === 'E603') {
           conexao2 = await getToken();
-          //    console.log('cx 02', conexao2);
+
           if (conexao2.status !== 'active') {
             if (conexao2.cause[0].code === 'E603') {
               conexao3 = await getToken();
-              //      console.log('cx 03', conexao3);
-              if (conexao3.status !== 'active') {
-                //   console.log('inicio', conexao.status);
 
+              if (conexao3.status !== 'active') {
                 if (conexao3.cause[0].code === 'E603') {
                   conexao4 = await getToken();
-                  //    console.log('cx 04', conexao4);
+
                   if (conexao4.status !== 'active') {
                     if (conexao4.cause[0].code === 'E603') {
                       conexao5 = await getToken();
-                      //      console.log('cx 03', conexao3);
+
                       checagem = conexao5;
                     } else checagem = conexao4;
                   } else checagem = conexao4;
@@ -995,16 +968,14 @@ export default function CheckoutT({
           } else checagem = conexao2;
         } else checagem = conexao;
       } else checagem = conexao;
-      //    console.log('checagem', checagem.status);
+
       if (checagem.status !== 'active') {
-        //      console.log('erro no Token');
         const dadosErro = erros.filter(
           (val) => val.erro === checagem.cause[0].code,
         );
-        //     console.log(dadosErro);
+
         setValorErro(dadosErro[0].mensagem);
         setOpenDrawer(true);
-        //     console.log('Token available: ', checagem, dadosErro[0].mensagem);
       } else {
         api
           .post('/api/mercadoPago', {
@@ -1022,14 +993,13 @@ export default function CheckoutT({
             total,
             Adultos: qtyA,
             Criancas: qtyC,
-            fPagamento, // 'Cartão de Crédito',
+            fPagamento: 'Cartão de Crédito',
           })
 
           .then((response) => {
             const respostas = response;
             setResposta(respostas);
 
-            //            console.log('resposta:', response.data);
             if (
               response.data.body.status === 'approved' ||
               response.data.body.status === 'in_process'
@@ -1080,34 +1050,12 @@ export default function CheckoutT({
       setOpenDrawer(true);
     }
   };
-  /* if (parcela.length > 1)
-    console.log(
-      'nome=',
-      nome,
-      'codigo=',
-      codigoPagamento,
-      'adultos=',
-      qtyA,
-      'criancas=',
-      qtyC,
-      'valor=',
-      total,
-      'fp=',
-      'Cartão de Crédito',
-      'status=',
-      'PAGAMENTO CONFIRMADO',
-      'parcelas=',
-      parcela[qtParcelas].descriction,
-      'cpf=',
-      cpf,
-    ); */
+
   //= ==============================================================
   // imprimir
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+
   //= ==================================================================
-  //  if (parcela) console.log('vparcelas', parcela[qtParcelas - 1]);
+
   //= ==============================================================
   // Baixar PDF
 
@@ -1125,7 +1073,6 @@ export default function CheckoutT({
           setOpenDrawerFinal(true);
           if (resposta.data.cause.message)
             setMessageErro(resposta.data.cause.message);
-          //             console.log(resposta.data.message);
           else setMessageErro(resposta.data.message);
         }
       }
@@ -1189,7 +1136,7 @@ export default function CheckoutT({
                       autoFocus
                       onBlur={(event) => {
                         const CardNumber = event.target.value;
-                        console.log(CardNumber, parcela.length);
+
                         if (CardNumber.length > 6 && parcela.length < 2)
                           paymentMethods(CardNumber);
                       }}
@@ -1280,7 +1227,7 @@ export default function CheckoutT({
                       const Data = event.target.value;
                       const mesF2 = Data.slice(0, 2);
                       const anoF2 = Data.slice(3, 5);
-                      //              console.log('mes:', mesF2, anoF2);
+
                       setVencimento(Data);
                       setMesF(mesF2);
                       setAnoF(anoF2);
@@ -1367,7 +1314,6 @@ export default function CheckoutT({
                     id="demo-simple-select-placeholder-label"
                     value={parcela[qtParcelas - 1].value}
                     onChange={(e) => {
-                      //                       console.log(e.target);
                       setQtParcelas(e.target.value);
                     }}
                     displayEmpty
@@ -1602,8 +1548,6 @@ export default function CheckoutT({
   );
   const deskTop = (
     <Box className={classes.root}>
-      {console.log(janela.height)}
-
       <Box display="flex" justifyContent="center">
         <Box
           style={{
@@ -1666,7 +1610,7 @@ export default function CheckoutT({
                               autoFocus
                               onBlur={(event) => {
                                 const CardNumber = event.target.value;
-                                console.log(CardNumber, parcela.length);
+
                                 if (CardNumber.length > 6 && parcela.length < 2)
                                   paymentMethods(CardNumber);
                               }}
@@ -1760,7 +1704,7 @@ export default function CheckoutT({
                               const Data = event.target.value;
                               const mesF2 = Data.slice(0, 2);
                               const anoF2 = Data.slice(3, 5);
-                              //              console.log('mes:', mesF2, anoF2);
+
                               setVencimento(Data);
                               setMesF(mesF2);
                               setAnoF(anoF2);
@@ -1847,7 +1791,6 @@ export default function CheckoutT({
                             id="demo-simple-select-placeholder-label"
                             value={parcela[qtParcelas - 1].value}
                             onChange={(e) => {
-                              //                       console.log(e.target);
                               setQtParcelas(e.target.value);
                             }}
                             displayEmpty
