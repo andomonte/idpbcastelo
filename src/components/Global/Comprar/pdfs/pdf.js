@@ -264,13 +264,7 @@ const PdfCompra = ({
                       display="flex"
                       justifyContent="center"
                       width="100%"
-                      mt={
-                        janela.height > 570
-                          ? janela.height < 630
-                            ? -56
-                            : -65
-                          : -55
-                      }
+                      mt={altura > 570 ? (altura < 630 ? -56 : -65) : -55}
                       mb={0}
                       sx={{
                         fontSize: '16px',
@@ -743,9 +737,7 @@ const PdfCompra = ({
             </div>
           </Box>
           <Box display="flex" justifyContent="center">
-            <Box
-              mt={janela.height > 570 ? (janela.height < 630 ? -21 : -20) : -18}
-            >
+            <Box mt={janela.height > 570 ? (altura < 630 ? -21 : -20) : -18}>
               <GeneratePdf html={ref} cpf={cpf} />
             </Box>
           </Box>
@@ -760,7 +752,7 @@ const PdfCompra = ({
               ref={ref}
               id="comprovante"
             >
-              <Box m={0} sx={{ maxWidth: 400 }} width="100%" minHeight={600}>
+              <Box m={0} sx={{ maxWidth: 400 }} width="100%" minHeight={500}>
                 <Box mt={0} ml={-0.3}>
                   <img
                     src="/images/global/fundo.png"
@@ -775,13 +767,7 @@ const PdfCompra = ({
                       display="flex"
                       justifyContent="center"
                       width="100%"
-                      mt={
-                        janela.height > 570
-                          ? janela.height < 630
-                            ? -65
-                            : -65
-                          : -65
-                      }
+                      mt={altura > 570 ? (altura < 630 ? -65 : -65) : -65}
                       mb={0}
                       sx={{
                         fontSize: '16px',
@@ -1254,9 +1240,7 @@ const PdfCompra = ({
             </div>
           </Box>
           <Box display="flex" justifyContent="center">
-            <Box
-              mt={janela.height > 570 ? (janela.height < 630 ? -21 : -20) : -18}
-            >
+            <Box mt={altura > 570 ? (altura < 630 ? -21 : -20) : -18}>
               <GeneratePdf html={ref} cpf={cpf} />
             </Box>
           </Box>

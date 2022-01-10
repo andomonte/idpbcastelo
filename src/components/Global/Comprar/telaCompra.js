@@ -644,7 +644,7 @@ const Home = ({ inscritos, dados }) => {
             </Drawer>
           </Hidden>
           <Hidden mdUp>
-            <Box width={janela.width > 400 ? janela.width : janela.width}>
+            <Box width={janela.width > 400 ? 400 : janela.width}>
               <Box width="100%" ml={0} display="flex" justifyContent="center">
                 <Box ml={0}>
                   <Box mt={0} ml={0}>
