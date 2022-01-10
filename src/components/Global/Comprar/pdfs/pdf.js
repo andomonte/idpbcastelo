@@ -265,7 +265,7 @@ const PdfCompra = ({
                       display="flex"
                       justifyContent="center"
                       width="100%"
-                      mt={altura > 570 ? (altura < 630 ? -56 : -65) : -55}
+                      mt={altura > 570 ? (altura < 630 ? -56 : -65) : -57}
                       mb={0}
                       sx={{
                         fontSize: '16px',
