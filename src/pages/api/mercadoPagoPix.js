@@ -10,7 +10,6 @@ mercadopago.configure({
 
 //= =========================================================================
 async function sendMercadoPago(paymentData) {
-  console.log(paymentData);
   const mercadoPago = mercadopago.payment
     .save(paymentData)
     .then((response) => response)
@@ -38,7 +37,6 @@ const handler = async (req, res) => {
 
   const respPagamento = await sendMercadoPago(paymentData);
   // const respPagamento1 = JSON.stringify(respPagamento);
-  console.log('v respP=', respPagamento);
 
   const ErroIDPB = { code: '5050', message: 'Erro no acesso ao BD-IDPB' };
   if (!respPagamento.cause) {

@@ -372,7 +372,7 @@ const Home = ({ inscritos, dados }) => {
       <ClickAwayListener onClickAway={handleDrawerClose}>
         <Box>
           <Hidden smDown>
-            <Box mt={-1} ml={0}>
+            <Box mt={-1} ml={0} maxHeight={700} minHeight={500}>
               <Box display="flex" justifyContent="center">
                 <Box ml={0}>
                   <Box
@@ -390,16 +390,18 @@ const Home = ({ inscritos, dados }) => {
                               src="/images/global/fundo.png"
                               alt=""
                               width="100%"
-                              height={janela.height}
+                              height={altura}
                             />
                           </Box>
                           <Box
                             display="flex"
                             width="100%"
                             mt={
-                              janela.height > 630
-                                ? -ajustAltura
-                                : -ajustAltura + 3
+                              altura > 570
+                                ? altura < 630
+                                  ? (-9.5 * altura) / 100
+                                  : (-10 * altura) / 100
+                                : (-9.5 * altura) / 100
                             }
                             ml={janela.height > 632 ? 4 : 3}
                           >
@@ -696,7 +698,7 @@ const Home = ({ inscritos, dados }) => {
                     </Box>
 
                     <Box
-                      mt={altura > 570 ? (altura < 630 ? 10 : 12) : 6}
+                      mt={altura > 570 ? (altura < 630 ? 11 : 13) : 6}
                       display="flex"
                       justifyContent="center"
                     >

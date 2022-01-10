@@ -387,7 +387,6 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
   );
 
   const processUpload = (uploadedFile) => {
-    console.log('up', uploadedFile[0].name);
     if (uploadedFile[0].name) {
       const nomeFoto = `${dadosMinistro[0].CPF}${uploadedFile[0].name.substring(
         uploadedFile[0].name.lastIndexOf('.'),
@@ -396,12 +395,10 @@ function DadosPessoais({ item, secao, ministros, statusDrawer }) {
       const dataFile = new FormData();
       //      dataFile.append('file', uploadedFile[0], nomeFoto);
       dataFile.append('file', uploadedFile[0], nomeFoto);
-      console.log(dataFile, uploadedFile[0], nomeFoto);
       api
         .post('/api/fotos', dataFile)
         .then((response) => {
           if (response) {
-            console.log(response);
           }
         })
         .catch((error) => {

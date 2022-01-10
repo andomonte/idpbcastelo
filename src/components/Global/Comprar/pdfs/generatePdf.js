@@ -54,7 +54,6 @@ const GeneratePdf = ({ html, cpf }) => {
     return data;
   }; */
   const gerarTicket = () => {
-    console.log('vai para o ticket');
     setOpenTicket(true);
   };
   const generateImage = async () => {
@@ -95,10 +94,11 @@ const GeneratePdf = ({ html, cpf }) => {
   //= ==================================================================
 
   return (
-    <Box width={200}>
+    <Box>
       <Box display="flex" justifyContent="center">
         <Box
           mt={janela.height > 600 ? 0 : 0}
+          height="100%"
           display="flex"
           width="100%"
           justifyContent="center"

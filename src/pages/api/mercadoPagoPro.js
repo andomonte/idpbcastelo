@@ -30,7 +30,7 @@ const handler = async (req, res) => {
       // Este valor substituirá a string "<%= global.id %>" no seu HTML
 
       global.id = response.body.id;
-      console.log(response.body);
+
       res.send(global.id);
     })
     .catch((error) => {

@@ -852,22 +852,18 @@ export default function CheckoutT({
         callbacks: {
           onFormMounted: (error) => {
             if (error) {
-              console.log('erro on FormMonted');
               return console.warn('Form Mounted handling error: ', error);
             }
             return 0;
           },
           onFormUnmounted: (error) => {
             if (error) {
-              console.log('erro on FormUnMonted');
               return console.warn('Form Unmounted handling error: ', error);
             }
             return 0;
           },
           onIdentificationTypesReceived: (error, identificationTypes) => {
             if (error) {
-              console.log('erro on Identification Type');
-
               return console.warn(
                 'identificationTypes handling error: ',
                 error,
@@ -878,7 +874,6 @@ export default function CheckoutT({
           },
           onPaymentMethodsReceived: (error, paymentMethods) => {
             if (error) {
-              console.log('Payment Methods available: ', paymentMethods);
               return console.warn(
                 'paymentMethods handling error: ',
                 error,
@@ -889,16 +884,12 @@ export default function CheckoutT({
           },
           onIssuersReceived: (error, issuers) => {
             if (error) {
-              console.log('erro no issuers');
-
               return console.warn('issuers handling error: ', error, issuers);
             }
             return 0;
           },
           onInstallmentsReceived: (error, installments) => {
             if (error) {
-              console.log('erro em installmentes');
-
               return console.warn(
                 'installments handling error: ',
                 error,
@@ -909,14 +900,12 @@ export default function CheckoutT({
           },
           onCardTokenReceived: (error, token) => {
             if (error) {
-              console.log('erro no Token');
               const dadosErro = erros.filter(
                 (val) => val.erro === error[0].code,
               );
 
               setValorErro(dadosErro[0].mensagem);
               setOpenDrawer(true);
-              console.log('Token available: ', error, dadosErro[0].mensagem);
 
               return console.warn('Token handling error: ', error);
             }
@@ -961,7 +950,6 @@ export default function CheckoutT({
               })
 
               .then((response) => {
-                console.log('resposta:', response);
                 if (
                   response.data.body.status === 'approved' ||
                   response.data.body.status === 'in_process'

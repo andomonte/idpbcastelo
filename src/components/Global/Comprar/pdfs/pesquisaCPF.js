@@ -155,7 +155,6 @@ function PesquisaCPF({ cpf, setOpen }) {
     setOpen(false); // fechar o open da função pai que chamou -> telaLogin
     return null;
   };
-  console.log('olha ai', posts);
   return (
     <>
       <Box

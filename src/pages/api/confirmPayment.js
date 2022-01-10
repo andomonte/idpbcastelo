@@ -21,11 +21,11 @@ const handler = async (req, res) => {
       const mercadoPago = await mercadopago.payment.findById(
         notificationData.id,
       );
-      console.log('MERCADO PAGO:', mercadoPago);
+
       res.send(mercadoPago);
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
-      console.log('aqui o erro=', errors);
+
       res.send(errors);
     }
   } else {

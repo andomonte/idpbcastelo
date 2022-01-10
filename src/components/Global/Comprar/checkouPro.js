@@ -8,7 +8,6 @@ export default function CheckoutPro({ prefID }) {
       locale: 'pt-BR',
     },
   );
-  console.log('vai:', prefID);
   useEffect(() => {
     if (mercadopago) {
       mercadopago.checkout({

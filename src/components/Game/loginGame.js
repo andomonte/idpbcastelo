@@ -33,7 +33,6 @@ function LoginGame() {
       const dadosUser = data.filter(
         (val) => String(val.codigo) === String(mesa),
       );
-      console.log('ola testeando', dadosUser[0]);
       if (dadosUser.length) {
         setNumeroMesa(dadosUser);
         try {

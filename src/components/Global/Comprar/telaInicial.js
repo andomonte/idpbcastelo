@@ -278,7 +278,6 @@ const TelaInicial = ({ inscritos }) => {
     setOpenDrawer(false);
   };
   const comprar = () => {
-    console.log('oi');
     api
       .post('/api/notification2', {
         action: 'payment',
@@ -287,7 +286,6 @@ const TelaInicial = ({ inscritos }) => {
 
       .then((response) => {
         const prefID = response.data;
-        console.log('pref:', prefID);
         //   setOpen(true);
       })
 

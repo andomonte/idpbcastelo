@@ -793,18 +793,18 @@ export default function CheckoutT({
     setCarregar(false);
   };
 
-  const gerarComprovante = () => {
+  const gerarComprovante = (vCodigo, vParcelas, vTotal) => {
     router.push({
       pathname: '/global/comprovante',
       query: {
         nome,
-        codigoPagamento,
+        codigoPagamento: vCodigo,
         qtyA,
         qtyC,
-        vTotals,
+        vTotal,
         fp: 'Cartão de Crédito',
         status: 'PAGAMENTO CONFIRMADO',
-        descParcelas,
+        descParcelas: vParcelas,
         cpf,
       },
     });
@@ -928,6 +928,7 @@ export default function CheckoutT({
     let validarDoc;
     let checagem = '';
     setCarregar(true);
+    // console.log(parcela[qtParcelas - 1].vFinal);
     //    parcela[qtParcelas].descriction
     if (parcela) {
       setDescParcelas(parcela[qtParcelas - 1].descriction);
@@ -1021,7 +1022,11 @@ export default function CheckoutT({
                 );
                 setMessageErro(response.data.status_detail);
                 setCodigoPagamento(response.data.body.id);
-                gerarComprovante();
+                gerarComprovante(
+                  response.data.body.id,
+                  parcela[qtParcelas - 1].descriction,
+                  parcela[qtParcelas - 1].vFinal,
+                );
               }
             }
 
@@ -1481,7 +1486,7 @@ export default function CheckoutT({
           codigo={codigoPagamento}
           adultos={qtyA}
           criancas={qtyC}
-          valor={vTotal}
+          valor={vTotals}
           fp="Cartão de Crédito"
           status="Em Analise"
           parcelas={descParcelas}

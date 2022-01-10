@@ -389,18 +389,15 @@ function Igrejas2({ item, secao, igrejas, statusDrawer }) {
   );
 
   /*   const processUpload = (uploadedFile) => {
-    console.log('up', uploadedFile[0].name);
     if (uploadedFile[0].name) {
       setFotoPerfil('nomeFoto');
       const dataFile = new FormData();
       //      dataFile.append('file', uploadedFile[0], nomeFoto);
       dataFile.append('file', uploadedFile[0], nomeFoto);
-      console.log(dataFile, uploadedFile[0], nomeFoto);
       api
         .post('/api/fotos', dataFile)
         .then((response) => {
           if (response) {
-            console.log(response);
           }
         })
         .catch((error) => {
@@ -680,7 +677,6 @@ function Igrejas2({ item, secao, igrejas, statusDrawer }) {
       setCidade(response.data.localidade);
       setLongitude(response.data.longitude);
       setLatitude(response.data.latitude);
-      console.log(response);
     });
   };
   const defaultProps = {

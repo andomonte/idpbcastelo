@@ -2,7 +2,6 @@ import GerarPdf from 'src/components/Global/Comprar/pdfs/pdf';
 // import React from 'react';
 
 function Comprove({ comprovante }) {
-  console.log(comprovante);
   return (
     <>
       {comprovante && (

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   img: {
     maxWidth: '1410px',
-    maxHeight: '500px',
+    maxHeight: '700px',
     width: '100%',
     height: alturaImg,
   },
@@ -739,44 +739,12 @@ const PdfCompra = ({
                     </Box>
                   </Box>
                 </Box>
-                {console.log(janela.height)}
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  width="100%"
-                  mt={
-                    janela.height > 570
-                      ? janela.height < 630
-                        ? -19
-                        : -25
-                      : -17
-                  }
-                  //    ml={2}
-                  sx={{
-                    fontSize: '16px',
-                    color: '#b91a30',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                    style={{
-                      fontSize: '14px',
-                      color: '#000',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {dataTime}
-                  </Typography>
-                </Box>
               </Box>
             </div>
           </Box>
           <Box display="flex" justifyContent="center">
             <Box
-              mt={janela.height > 570 ? (janela.height < 630 ? -19 : -10) : -18}
+              mt={janela.height > 570 ? (janela.height < 630 ? -21 : -20) : -18}
             >
               <GeneratePdf html={ref} cpf={cpf} />
             </Box>
@@ -1282,44 +1250,12 @@ const PdfCompra = ({
                     </Box>
                   </Box>
                 </Box>
-                {console.log(janela.height)}
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  width="100%"
-                  mt={
-                    janela.height > 570
-                      ? janela.height < 630
-                        ? -25
-                        : -25
-                      : -25
-                  }
-                  //    ml={2}
-                  sx={{
-                    fontSize: '16px',
-                    color: '#b91a30',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                    style={{
-                      fontSize: '14px',
-                      color: '#000',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {dataTime}
-                  </Typography>
-                </Box>
               </Box>
             </div>
           </Box>
           <Box display="flex" justifyContent="center">
             <Box
-              mt={janela.height > 570 ? (janela.height < 630 ? -10 : -10) : -10}
+              mt={janela.height > 570 ? (janela.height < 630 ? -21 : -20) : -18}
             >
               <GeneratePdf html={ref} cpf={cpf} />
             </Box>

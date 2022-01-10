@@ -23,31 +23,16 @@ const Notificacao = async (req, res) => {
   if (req.body.type) topic = req.body.type;
   else topic = req.query.topic;
   let mercadoPago;
-  console.log('data2', data.action);
-  console.log('id', id);
-  console.log('topic', topic);
 
-  /*   Object.keys(data).forEach((key) => {
-    console.log('datakey', data[key]);
-    if (key === 'data.id') id = data[key];
-    if (key === 'type') topic = data[key];
-  });
- */ console.log(
-    'valores de id e topic:',
-    id,
-    topic,
-  );
   if (id === '123456') id = '1245195651';
   if (topic === 'payment') {
-    console.log('entrou', id);
     try {
       mercadoPago = await mercadopago.payment.findById(id);
-      console.log(mercadoPago);
 
       //      res.send(mercadoPago);
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
-      console.log('aqui o erro=', errors);
+
       res.status(500).send('ERRO AO CESSAR MERCADO PAGO');
     }
   }
@@ -66,11 +51,11 @@ const Notificacao = async (req, res) => {
         });
 
       // res.send(JSON.stringify(respPagamento.status));
-      console.log('bd-idpb foi atualizado');
+
       res.status(200).send('OK');
     } catch (errors) {
       //        const erroIDPB = JSON.stringify(ErroIDPB);
-      console.log('erro ao acessar bd-idpb=', errors);
+
       res.status(400).send('vou criar o banco');
     }
   }

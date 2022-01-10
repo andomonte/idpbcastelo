@@ -57,7 +57,6 @@ async function PesquisaCPF({ cpf }) {
   const [data, setData] = React.useState('');
   const janela = TamanhoJanela();
 
-  console.log('valor', valorInsc, data);
   let urls;
   if (typeof window !== 'undefined') {
     // urls = `${window.location.origin}/api/consultaRegiao/centroOeste/09/2021`;
