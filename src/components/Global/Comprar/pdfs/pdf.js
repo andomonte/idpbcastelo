@@ -8,7 +8,8 @@ import Hidden from '@material-ui/core/Hidden';
 import GeneratePdf from './generatePdf';
 
 const janela = TamanhoJanela();
-const altura = janela.height;
+let altura = janela.height;
+if (altura < 500) altura = 500;
 const largura = janela.width;
 const alturaImg = altura / 5;
 const useStyles = makeStyles((theme) => ({
@@ -737,7 +738,7 @@ const PdfCompra = ({
             </div>
           </Box>
           <Box display="flex" justifyContent="center">
-            <Box mt={janela.height > 570 ? (altura < 630 ? -21 : -20) : -18}>
+            <Box mt={altura > 570 ? (altura < 630 ? -21 : -20) : -18}>
               <GeneratePdf html={ref} cpf={cpf} />
             </Box>
           </Box>
