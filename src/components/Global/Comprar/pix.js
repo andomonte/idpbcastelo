@@ -18,6 +18,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import GerarPdf from './pdfs/pdf';
 
+const janela = TamanhoJanela();
+let largura = janela.width;
+if (largura > 400) largura = 400;
+let altura;
+if (janela.height < 500) altura = 500;
+else altura = janela.height;
 const useStyles = makeStyles((theme) => ({
   img: {
     maxWidth: '1410px',
@@ -165,6 +171,16 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '16px', // fonte
     borderWidth: '0.5px',
     borderStyle: 'solid',
+  },
+  root: {
+    height: altura,
+
+    //  overflow: 'hidden',
+    width: largura,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 0,
+    margin: 0,
   },
 }));
 const ColorButton = withStyles((theme) => ({
@@ -419,300 +435,381 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
     });
   };
 
-  const body = (
-    <Box className={classes.paper}>
-      <Box>
-        <Box display="flex" width="100%" mt={2} ml={1}>
-          <Grid item xs={2} md={3}>
-            <Box
-              height={10}
-              p={1}
-              ml={1}
-              mt={1}
-              mr={0}
-              display="flex"
-              alignItems="center"
-            >
-              <ArrowBackIcon
-                sx={{
-                  fontSize: 20,
-                  color: '#fff',
-                }}
-                onClick={voltar}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={1} md={3} />
+  return (
+    <>
+      <Box display="flex" justifyContent="center">
+        <Box height={altura} mt={0}>
+          <Box className={classes.root}>
+            <form id="form-checkout">
+              <Box height={altura}>
+                <Box display="flex" justifyContent="center">
+                  <Box>
+                    <Box>
+                      <Box>
+                        <Box display="flex" justifyContent="center">
+                          <Box height={altura} width={largura} ml={0}>
+                            <img
+                              src="/images/global/fundo.png"
+                              alt=""
+                              width="100%"
+                              height={altura}
+                            />
+                          </Box>
+                        </Box>
+                        {console.log(altura)}
+                        <Box
+                          mt={
+                            altura > 570
+                              ? altura < 630
+                                ? (-12.4 * altura) / 100
+                                : (-12.3 * altura) / 100
+                              : (-12.5 * altura) / 100
+                          }
+                          ml={3}
+                        >
+                          <Grid item xs={2} md={12}>
+                            <Box height={100} p={1} mt={1} ml={0}>
+                              <ArrowBackIcon
+                                sx={{
+                                  fontSize: 20,
+                                  color: '#fff',
+                                }}
+                                onClick={voltar}
+                              />
+                            </Box>
+                          </Grid>
+                          <Grid item xs={1} md={12} />
 
-          <Grid item xs={9} md={3} />
-        </Box>
-      </Box>
-
-      <ClickAwayListener onClickAway={handleDrawerClose}>
-        <form id="form-checkout">
-          <Box mt={20} display="flex" justifyContent="center">
-            <Box width="90%">
-              <Box>
-                <Box width="100%" mt={2} ml={0}>
-                  <Grid item xs={12} md={3}>
-                    <Box ml={3}>
-                      <Typography
-                        className={classes.texto}
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
-                        Digite o CPF ou CNPJ do Pagante
-                      </Typography>
+                          <Grid item xs={9} md={12} />
+                        </Box>
+                      </Box>
+                      <Box mt={20} display="flex" justifyContent="center">
+                        <Box>
+                          <Box width="100%">
+                            <Box display="flex" justifyContent="center">
+                              <Box>
+                                <Box>
+                                  <Box
+                                    width="100%"
+                                    mt={
+                                      altura > 570
+                                        ? altura < 630
+                                          ? (-2 * altura) / 100
+                                          : (-1.2 * altura) / 100
+                                        : (-2.5 * altura) / 100
+                                    }
+                                    ml={0}
+                                  >
+                                    <Grid item xs={12} md={12}>
+                                      <Box ml={0}>
+                                        <Typography
+                                          className={classes.texto}
+                                          variant="caption"
+                                          display="block"
+                                          gutterBottom
+                                        >
+                                          Digite o CPF ou CNPJ do Pagante
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+                                  </Box>
+                                </Box>
+                                <Box display="flex" m={0}>
+                                  <Grid item xs={12} md={12}>
+                                    <Box mt={0.4}>
+                                      <input
+                                        style={{ background: '#fafafa' }}
+                                        type="text"
+                                        name="identificationNumber"
+                                        id="form-checkout__identificationNumber"
+                                        className={classes.tf_input}
+                                        onKeyDown={handleEnter}
+                                        onFocus={handleFocus}
+                                        onChange={handleInputChange}
+                                        placeholder="Somente Números"
+                                        onBlur={(e) => {
+                                          setDocNumber(e.target.value);
+                                        }}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
+                              mt={2}
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <Box
+                                mt={3}
+                                sx={{
+                                  height: 70,
+                                  width: '100vw',
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <Box mt={1}>
+                                  <Box
+                                    mt={
+                                      altura > 570
+                                        ? altura < 630
+                                          ? (-1.0 * altura) / 100
+                                          : (-1.7 * altura) / 100
+                                        : (-0.5 * altura) / 100
+                                    }
+                                  >
+                                    <Button
+                                      className={classes.button2}
+                                      variant="contained"
+                                      id="pagPix"
+                                      onClick={atualizar}
+                                      style={{
+                                        width: '100%',
+                                        borderRadius: 15,
+                                      }}
+                                      // inputRef={fpRef}
+                                    >
+                                      Gerar chave Pix
+                                    </Button>
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
+                              minWidth={350}
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              <Box
+                                minWidth={300}
+                                mt={0}
+                                ml={0}
+                                height={100}
+                                bgcolor="#eadafa"
+                              >
+                                <Grid item xs={12} md={12}>
+                                  <Box m={1}>
+                                    <Box
+                                      mt={-0.5}
+                                      display="flex"
+                                      justifyContent="center"
+                                    >
+                                      <Typography
+                                        style={{
+                                          fontSize: '16px',
+                                          color: '#000',
+                                          fontFamily: 'Arial Black',
+                                          fontWeight: 'bold',
+                                        }}
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        ATENÇÃO!!!
+                                      </Typography>
+                                    </Box>
+                                    <Box
+                                      mt={0}
+                                      display="flex"
+                                      justifyContent="center"
+                                    >
+                                      <Typography
+                                        className={classes.texto}
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        Sua chave Pix durará 30 minutos
+                                      </Typography>
+                                    </Box>
+                                  </Box>
+                                  <Box
+                                    mt={-1.5}
+                                    display="flex"
+                                    justifyContent="center"
+                                  >
+                                    <Typography
+                                      className={classes.texto}
+                                      variant="caption"
+                                      display="block"
+                                      gutterBottom
+                                    >
+                                      Após esse tempo sua solicitação
+                                    </Typography>
+                                  </Box>
+                                  <Box
+                                    mt={-0.5}
+                                    display="flex"
+                                    justifyContent="center"
+                                  >
+                                    <Typography
+                                      className={classes.texto}
+                                      variant="caption"
+                                      display="block"
+                                      gutterBottom
+                                    >
+                                      será desconsiderada, obrigado
+                                    </Typography>
+                                  </Box>
+                                </Grid>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                      {carregar && (
+                        <Box className={classes.novoBox} mt={1}>
+                          <LinearProgress />
+                          <small>Carregando...</small>
+                        </Box>
+                      )}
                     </Box>
-                  </Grid>
+                  </Box>
                 </Box>
               </Box>
-              <Box display="flex" m={2}>
-                <Grid item xs={12} md={3}>
-                  <Box mt={-2}>
-                    <input
-                      style={{ background: '#fafafa' }}
-                      type="text"
-                      name="identificationNumber"
-                      id="form-checkout__identificationNumber"
-                      className={classes.tf_input}
-                      onKeyDown={handleEnter}
-                      onFocus={handleFocus}
-                      onChange={handleInputChange}
-                      placeholder="Somente Números"
-                      onBlur={(e) => {
-                        setDocNumber(e.target.value);
-                      }}
+            </form>
+
+            <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
+              <Box height={janela.height} sx={{ background: '#FFFF' }}>
+                <Box mt={1} borderRadius={16} {...defaultProps}>
+                  <Box mt={-1} ml={0}>
+                    <img
+                      src="/images/global/global1.png"
+                      alt=""
+                      width="100.8%"
                     />
                   </Box>
-                </Grid>
-              </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={0}
+                    mb={0}
+                    sx={{
+                      fontSize: '16px',
+                      color: '#b91a30',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '14px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      NO APP DO SEU BANCO SCANEI O
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={0}
+                    sx={{ fontSize: 'bold', color: '#b91a30' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '14px',
+                        color: '#b91a30',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      QR CODE DO PIX
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={0}
+                    sx={{ fontSize: 'bold', color: '#b91a30' }}
+                  >
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{
+                        fontSize: '14px',
+                        color: '#3f51b5',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      OU
+                    </Typography>
+                  </Box>
+                  <Box
+                    mt={1}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <ColorButton
+                      variant="contained"
+                      className={classes.button2}
+                      id="reload"
+                      onClick={copyToClipboard}
+                    >
+                      <small>
+                        CLICK AQUI PARA COPIAR O CÓDIGO E COLAR NO APP DO SEU
+                        BANCO
+                      </small>
+                    </ColorButton>
+                  </Box>
+                  <Box mt={1} textAlign="center">
+                    {qrCode && (
+                      <img
+                        className={classes.QrCode}
+                        src={`data:image/jpeg;base64,${qrCode}`}
+                        alt="qrCode"
+                      />
+                    )}
+                  </Box>
+                  <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                  />
 
-              <Box
-                mt={2}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Box
-                  mt={3}
-                  sx={{
-                    height: 70,
-                    width: '100vw',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Box mt={1}>
-                    <Box mt={0.8}>
-                      <Button
-                        className={classes.button2}
-                        variant="contained"
-                        id="pagPix"
-                        onClick={atualizar}
-                        style={{ width: '100%', borderRadius: 15 }}
-                        // inputRef={fpRef}
-                      >
-                        Gerar chave Pix
-                      </Button>
-                    </Box>
+                  <Box
+                    mt={2}
+                    mb={2}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Button
+                      className={classes.button1}
+                      variant="contained"
+                      id="reload"
+                      onClick={concluir}
+                    >
+                      CONCLUIR
+                    </Button>
                   </Box>
                 </Box>
               </Box>
-              <Box width="100%" display="flex" justifyContent="center">
-                <Box width="100%" mt={5} ml={0} height={100} bgcolor="#eadafa">
-                  <Grid item xs={12} md={3}>
-                    <Box m={1}>
-                      <Box mt={-0.5} display="flex" justifyContent="center">
-                        <Typography
-                          style={{
-                            fontSize: '16px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                        >
-                          ATENÇÃO!!!
-                        </Typography>
-                      </Box>
-                      <Box mt={0} display="flex" justifyContent="center">
-                        <Typography
-                          className={classes.texto}
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                        >
-                          Sua chave Pix durará 30 minutos
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box mt={-1.5} display="flex" justifyContent="center">
-                      <Typography
-                        className={classes.texto}
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
-                        Após esse tempo sua solicitação
-                      </Typography>
-                    </Box>
-                    <Box mt={-0.5} display="flex" justifyContent="center">
-                      <Typography
-                        className={classes.texto}
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
-                        será desconsiderada, obrigado
-                      </Typography>
-                    </Box>
-                  </Grid>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-
-          {carregar && (
-            <Box className={classes.novoBox} mt={1}>
-              <LinearProgress />
-              <small>Carregando...</small>
-            </Box>
-          )}
-        </form>
-      </ClickAwayListener>
-      <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
-        <Box height={janela.height} sx={{ background: '#FFFF' }}>
-          <Box mt={1} borderRadius={16} {...defaultProps}>
-            <Box mt={-1} ml={0}>
-              <img src="/images/global/global1.png" alt="" width="100.8%" />
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              mt={0}
-              mb={0}
-              sx={{ fontSize: '16px', color: '#b91a30', fontWeight: 'bold' }}
-            >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '14px',
-                  color: '#b91a30',
-                  fontWeight: 'bold',
-                }}
-              >
-                NO APP DO SEU BANCO SCANEI O
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              mt={0}
-              sx={{ fontSize: 'bold', color: '#b91a30' }}
-            >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '14px',
-                  color: '#b91a30',
-                  fontWeight: 'bold',
-                }}
-              >
-                QR CODE DO PIX
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              mt={0}
-              sx={{ fontSize: 'bold', color: '#b91a30' }}
-            >
-              <Typography
-                variant="caption"
-                display="block"
-                gutterBottom
-                style={{
-                  fontSize: '14px',
-                  color: '#3f51b5',
-                  fontWeight: 'bold',
-                }}
-              >
-                OU
-              </Typography>
-            </Box>
-            <Box
-              mt={1}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <ColorButton
-                variant="contained"
-                className={classes.button2}
-                id="reload"
-                onClick={copyToClipboard}
-              >
-                <small>
-                  CLICK AQUI PARA COPIAR O CÓDIGO E COLAR NO APP DO SEU BANCO
-                </small>
-              </ColorButton>
-            </Box>
-            <Box mt={1} textAlign="center">
-              {qrCode && (
-                <img
-                  className={classes.QrCode}
-                  src={`data:image/jpeg;base64,${qrCode}`}
-                  alt="qrCode"
-                />
-              )}
-            </Box>
-            <ToastContainer
-              position="top-center"
-              autoClose={2000}
-              hideProgressBar
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-
-            <Box
-              mt={2}
-              mb={2}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Button
-                className={classes.button1}
-                variant="contained"
-                id="reload"
-                onClick={concluir}
-              >
-                CONCLUIR
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      </Drawer>
-      <Drawer variant="persistent" anchor="bottom" open={openDrawerFim}>
-        {/* <Box height={janela.height} sx={{ background: '#FFFF' }}>
+            </Drawer>
+            <Drawer variant="persistent" anchor="bottom" open={openDrawerFim}>
+              {/* <Box height={janela.height} sx={{ background: '#FFFF' }}>
           <Box
             height={janela.height - 10}
             mt={1}
@@ -836,87 +933,77 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
             </Box>
           </Box>
         </Box> */}
-        <GerarPdf
-          nome={nome}
-          codigo={idCompra}
-          adultos={qtyA}
-          criancas={qtyC}
-          valor={total}
-          fp="Pix"
-          status="PAGAMENTO CONFIRMADO"
-          parcelas="PARCELA ÚNICA"
-          cpf={cpf}
-        />
-      </Drawer>
-      <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
-        <Box height={260} sx={{ background: '#ffebee' }}>
-          <Alert onClose={handleDrawerClose} severity="error">
-            <AlertTitle>ERRO DE PREENCHIMENTO </AlertTitle>
-            <strong>{valorErro}</strong>
-          </Alert>
-        </Box>
-      </Drawer>
-      <Drawer variant="persistent" anchor="bottom" open={openDrawerErro}>
-        <Box height={janela.height} sx={{ background: '#ffebee' }}>
-          <Box mt={25}>
-            {messageErro ? (
-              <Box>
-                <Box display="flex" justifyContent="center">
-                  <h2>DADOS ERRADOS !</h2>
-                </Box>
-                <Box m={2} textAlign="center">
+              <GerarPdf
+                nome={nome}
+                codigo={idCompra}
+                adultos={qtyA}
+                criancas={qtyC}
+                valor={total}
+                fp="Pix"
+                status="PAGAMENTO CONFIRMADO"
+                parcelas="PARCELA ÚNICA"
+                cpf={cpf}
+              />
+            </Drawer>
+            <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
+              <Box height={260} sx={{ background: '#ffebee' }}>
+                <Alert onClose={handleDrawerClose} severity="error">
+                  <AlertTitle>ERRO DE PREENCHIMENTO </AlertTitle>
                   <strong>{valorErro}</strong>
-                </Box>
+                </Alert>
+              </Box>
+            </Drawer>
+            <Drawer variant="persistent" anchor="bottom" open={openDrawerErro}>
+              <Box height={janela.height} sx={{ background: '#ffebee' }}>
+                <Box mt={25}>
+                  {messageErro ? (
+                    <Box>
+                      <Box display="flex" justifyContent="center">
+                        <h2>DADOS ERRADOS !</h2>
+                      </Box>
+                      <Box m={2} textAlign="center">
+                        <strong>{valorErro}</strong>
+                      </Box>
 
-                <Box mt={4} textAlign="center">
-                  <strong>A operadora Informou:</strong>
-                </Box>
-                <Box m={0} textAlign="center">
-                  <strong>{messageErro}</strong>
+                      <Box mt={4} textAlign="center">
+                        <strong>A operadora Informou:</strong>
+                      </Box>
+                      <Box m={0} textAlign="center">
+                        <strong>{messageErro}</strong>
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Box display="flex" justifyContent="center">
+                        <h2>ERRO NO PAGAMENTO !</h2>
+                      </Box>
+                      <Box m={2} textAlign="center">
+                        <strong>{valorErro}</strong>
+                      </Box>
+                    </Box>
+                  )}
+                  <Box
+                    mt={4}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Button
+                      className={classes.button2}
+                      variant="contained"
+                      id="reload"
+                      onClick={FecharCompra}
+                    >
+                      Fechar
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
-            ) : (
-              <Box>
-                <Box display="flex" justifyContent="center">
-                  <h2>ERRO NO PAGAMENTO !</h2>
-                </Box>
-                <Box m={2} textAlign="center">
-                  <strong>{valorErro}</strong>
-                </Box>
-              </Box>
-            )}
-            <Box
-              mt={4}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Button
-                className={classes.button2}
-                variant="contained"
-                id="reload"
-                onClick={FecharCompra}
-              >
-                Fechar
-              </Button>
-            </Box>
+            </Drawer>
           </Box>
         </Box>
-      </Drawer>
-    </Box>
-  );
-  return (
-    <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+      </Box>
     </>
   );
 };

@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 170,
     minHeight: 170,
 
-    width: janela.height / 3,
+    width: altura / 3,
     height: altura / 3,
   },
   img1: {
@@ -324,14 +324,14 @@ const QrPix = ({ codigo }) => {
                 justifyContent="center"
                 display="flex"
               >
-                <Box maxWidth={400} minHeight={600} height={altura}>
-                  <Box mt={0} ml={0} height={altura}>
+                <Box maxWidth={400}>
+                  <Box mt={0} ml={0}>
                     <img
                       src="/images/global/fundo2.png"
                       alt=""
                       width="100%"
+                      height="100%"
                       //  className={classes.img}
-                      height={altura}
                     />
                   </Box>
 
@@ -339,7 +339,7 @@ const QrPix = ({ codigo }) => {
                     <Box ml={0}>
                       <Box
                         width="100%"
-                        mt={altura > 570 ? (altura < 630 ? -54 : -68) : -48}
+                        mt={altura > 570 ? (altura < 630 ? -46 : -50) : -48}
                         sx={{ fontSize: 'bold', color: '#b91a30' }}
                       >
                         <Typography
@@ -369,7 +369,7 @@ const QrPix = ({ codigo }) => {
                         display="flex"
                         justifyContent="center"
                         width="100%"
-                        mt={altura > 570 ? (altura < 630 ? -10 : -6) : -1}
+                        mt={altura > 570 ? (altura < 630 ? -10 : -10) : -1}
                         sx={{ fontSize: 'bold', color: '#b91a30' }}
                       >
                         <Typography
