@@ -318,7 +318,6 @@ const QrPix = ({ codigo }) => {
             />
           ) : (
             <Box className={classes.root}>
-              {console.log(altura)}
               <Box
                 mt={0}
                 height={altura}
@@ -383,6 +382,7 @@ const QrPix = ({ codigo }) => {
                             fontWeight: 'bold',
                           }}
                         >
+                          {console.log(relogio)}
                           <Box display="flex" justifyContent="center">
                             CHAVE EXPIRA EM:{' '}
                             <Box mt={-0.5} ml={1}>

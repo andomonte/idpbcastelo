@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '700px',
     minWidth: '300px',
     minHeight: '500px',
-    width: '100%',
+    width: '100vw',
     height: '99vh',
     padding: 0,
     margin: 0,
@@ -368,7 +368,7 @@ const Home = ({ inscritos, dados }) => {
   };
   //= ====================================================================
   return (
-    <Box height={janela.height} style={{ backgroundColor: '#fafafa' }}>
+    <Box height={altura} style={{ backgroundColor: '#fafafa' }}>
       <ClickAwayListener onClickAway={handleDrawerClose}>
         <Box>
           <Hidden smDown>
