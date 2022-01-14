@@ -240,7 +240,11 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
     });
   };
   const voltar = () => {
-    setOpen(false);
+    router.push({
+      pathname: '/global/comprar',
+      //   query: { dadosMesa2, numeroGame },
+    });
+    //  setOpen(false);
     // window.location.reload();
   };
   const FecharCompra = () => {
@@ -416,9 +420,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
   const handleDrawerClose = () => {
     setOpenDrawer(false);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   const defaultProps = {
     bgcolor: 'background.paper',
     m: 1,
@@ -558,7 +560,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
                                       altura > 570
                                         ? altura < 630
                                           ? (-1.0 * altura) / 100
-                                          : (-1.7 * altura) / 100
+                                          : (-1.2 * altura) / 100
                                         : (-0.5 * altura) / 100
                                     }
                                   >

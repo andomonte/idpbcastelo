@@ -430,6 +430,7 @@ const Home = ({ inscritos, dados }) => {
                               <Grid item xs={9} md={3} />
                             </Box>
                             <Box
+                              bgcolor="#fff"
                               mt={ajustAltura > 52 ? -3 : -3}
                               display="flex"
                               justifyContent="center"
