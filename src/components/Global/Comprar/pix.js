@@ -559,8 +559,8 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
                                     mt={
                                       altura > 570
                                         ? altura < 630
-                                          ? (-1.0 * altura) / 100
-                                          : (-1.2 * altura) / 100
+                                          ? (-0.5 * altura) / 100
+                                          : (0 * altura) / 100
                                         : (-0.5 * altura) / 100
                                     }
                                   >
@@ -588,7 +588,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
                             >
                               <Box
                                 minWidth={300}
-                                mt={0}
+                                mt={altura > 570 ? (altura < 630 ? 3 : 6) : 1}
                                 ml={0}
                                 height={100}
                                 bgcolor="#eadafa"

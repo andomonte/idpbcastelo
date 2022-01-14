@@ -366,7 +366,9 @@ const TelaInicial = ({ inscritos }) => {
       query: { qtyA, qtyC, total },
     });
   };
-
+  //  const createdAt = new Date();
+  //  const newDateObj = new Date(createdAt.getTime() + 30 * 60000);
+  //  console.log(createdAt, 'new:', newDateObj);
   //= ====================================================================
   return (
     <>

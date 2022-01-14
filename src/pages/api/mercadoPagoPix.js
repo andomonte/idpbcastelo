@@ -3,6 +3,7 @@ import prisma from 'src/lib/prisma';
 const mercadopago = require('mercadopago');
 
 const createdAt = new Date();
+const expirationDate = new Date(createdAt.getTime() + 30 * 60000);
 const accessToken = process.env.MP_ACCESS_TOKEN; // MP_ACESS_TOKEN
 
 mercadopago.configure({
@@ -26,7 +27,7 @@ const handler = async (req, res) => {
     notification_url: 'https://idpb-app.vercel.app/api/notification2',
     description: req.body.description,
     payment_method_id: req.body.paymentMethodId,
-    date_of_expiration: createdAt,
+    date_of_expiration: expirationDate,
     payer: {
       email: req.body.email,
       identification: {
