@@ -29,9 +29,12 @@ import Pix from './pix';
 const janela = TamanhoJanela();
 const ajustAltura = janela.height / 10;
 let altura;
+let largura;
 if (janela.height < 500) altura = 500;
 else altura = janela.height;
 // const validateDate = require('validate-date');
+if (janela.width < 300) largura = 300;
+else largura = janela.width;
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -39,6 +42,7 @@ const BootstrapInput = withStyles((theme) => ({
       marginTop: theme.spacing(3),
     },
   },
+
   input: {
     borderRadius: 4,
     position: 'relative',
@@ -74,6 +78,14 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw',
     padding: 0,
     margin: 0,
+  },
+  imgBack: {
+    //    width: '100%',
+    height: altura,
+    backgroundImage: `url('/images/global/fundo.png')`,
+    //    backgroundImage: url(/images/global/ticket.png), //seleciona imagem
+    backgroundPosition: 'center', // centraliza imagem
+    backgroundSize: 'cover', // imagem cobre toda área do div
   },
   img: {
     maxWidth: '400px',
@@ -185,7 +197,7 @@ const useStyles = makeStyles((theme) => ({
   tf_s: {
     backgroundColor: '#fafafa',
     textAlign: 'center',
-    width: '100%',
+    width: largura - 50,
     height: '40px',
     fontSize: '14px',
 
@@ -666,35 +678,23 @@ const Home = ({ inscritos, dados }) => {
             </Drawer>
           </Hidden>
           <Hidden mdUp>
-            <Box width={janela.width > 400 ? 400 : janela.width}>
+            <Box
+              width={janela.width > 500 ? 500 : largura}
+              bgcolor="#780208"
+              height={altura}
+            >
               {fPagamento === 'inicio' && (
                 <Box width="100%" ml={0} display="flex" justifyContent="center">
                   <Box ml={0}>
                     <Box mt={0} ml={0}>
-                      <img
-                        src="/images/global/fundo.png"
-                        alt=""
-                        className={classes.img}
-                      />
-
-                      <Box
-                        display="flex"
-                        mt={
-                          altura > 570
-                            ? altura < 630
-                              ? (-12 * altura) / 100
-                              : (-13 * altura) / 100
-                            : (-12 * altura) / 100
-                        }
-                        ml={janela.height > 632 ? 4 : 3}
-                      >
+                      <Box>
                         <Grid item xs={2} md={3}>
                           <Box
                             height={10}
                             p={1}
                             ml={0}
                             mr={0}
-                            mt={0}
+                            mt={2}
                             display="flex"
                             alignItems="center"
                           >
@@ -712,17 +712,9 @@ const Home = ({ inscritos, dados }) => {
                         <Grid item xs={9} md={3} />
                       </Box>
 
-                      <Box
-                        mt={altura > 570 ? (altura < 630 ? 11 : 13) : 6}
-                        display="flex"
-                        justifyContent="center"
-                      >
-                        <Box
-                          style={{
-                            backgroundColor: '#fff',
-                          }}
-                        >
-                          <Box textAlign="center" sx={{ corlor: '#780208' }}>
+                      <Box display="flex" justifyContent="center">
+                        <Box sx={{ color: '#fff' }} mt={5}>
+                          <Box textAlign="center" sx={{ corlor: '#fff' }}>
                             <h4>DADOS DO COMPRADOR</h4>
                           </Box>
                           <Box mt={0} display="flex" flexDirection="row">
@@ -889,8 +881,8 @@ const Home = ({ inscritos, dados }) => {
                                     //                        className={classes.tf_}
                                     style={{
                                       width: '100%',
-                                      marginLeft: 20,
-                                      marginRight: 20,
+                                      marginLeft: 0,
+                                      marginRight: 0,
                                     }}
                                     inputRef={fpRef}
                                     id="fPagamento"
