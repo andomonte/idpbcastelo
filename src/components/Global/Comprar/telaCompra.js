@@ -676,14 +676,7 @@ const Home = ({ inscritos, dados }) => {
                         alt=""
                         className={classes.img}
                       />
-                    </Box>
-                    <Box
-                      style={{
-                        maxWidth: '400px',
-                        minWidth: '300px',
-                        width: '100%',
-                      }}
-                    >
+
                       <Box
                         display="flex"
                         mt={
