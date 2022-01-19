@@ -713,7 +713,7 @@ const Home = ({ inscritos, dados }) => {
                       </Box>
 
                       <Box
-                        mt={altura > 570 ? (altura < 630 ? 11 : 12) : 6}
+                        mt={altura > 570 ? (altura < 630 ? 11 : 13) : 6}
                         display="flex"
                         justifyContent="center"
                       >
