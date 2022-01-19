@@ -324,7 +324,7 @@ const Home = () => {
                       </Button>
                     </Box>
                   </Box>
-                  {console.log(altura)}
+
                   <Box
                     mt={altura > 570 ? (altura < 630 ? 4 : 8) : 2}
                     sx={{

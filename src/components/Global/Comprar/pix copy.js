@@ -223,7 +223,7 @@ const Pix = ({
 
       .then((response) => {
         const prefID = response.data;
-        console.log('pref:', prefID);
+        
         //   setOpen(true);
       })
 
@@ -303,7 +303,7 @@ const Pix = ({
   // Email
   const handlevalidarEmail = (e) => {
     const emailVal = e.target.value;
-    console.log(validacaoCPF, validacaoEmail);
+  
     if (!validacaoEmail) emailRef.current.focus();
     if (validator.isEmail(emailVal)) {
       setValidacaoEmail(true);
@@ -427,7 +427,7 @@ const Pix = ({
                         placeholder="email para envio de comprovante"
                         size="small"
                         onBlur={(e) => {
-                          console.log('sai do email');
+                         
                           if (validacaoCPF === 'next') handlevalidarEmail(e);
                         }}
                         onChange={(e) => {

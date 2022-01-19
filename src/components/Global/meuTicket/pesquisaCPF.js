@@ -28,7 +28,7 @@ else altura = janela.height;
 if (janela.height < 500) altura = 500;
 else altura = janela.height;
 // const fetcher = (urls) => axios.get(urls).then((res) => res.data);
-console.log(janela, largura);
+
 const ajusteAltura = Number(altura / 11).toFixed(0) - 5;
 
 const useStyles = makeStyles((theme) => ({
@@ -111,7 +111,7 @@ function PesquisaCPF({ cpf, setOpen }) {
       if (posts.length > 0) {
         const inscrito = posts.filter((val) => val.status !== 'cancelled');
         const inscCancelada = posts.filter((val) => val.status === 'cancelled');
-        console.log('insc', inscrito, inscCancelada.length);
+
         if (inscrito.length) {
           if (inscrito[0].CPF === cpf) {
             setNome(posts[0].Nome);
@@ -155,8 +155,6 @@ function PesquisaCPF({ cpf, setOpen }) {
     setOpen(false); // fechar o open da função pai que chamou -> telaLogin
     return null;
   };
-
-  console.log(posts);
 
   return (
     <>

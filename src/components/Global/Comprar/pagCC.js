@@ -228,7 +228,7 @@ function PagCC({ email, cpf }) {
   const classes = useStyles();
   //  const response = fetch(process.env.REACT_APP_LINK_API);
   let publicKey = 'TEST-e965cf2f-8b17-4a13-871e-947e26f87ebd';
-  console.log(publicKey);
+
   //  const script = document.createElement('script');
   const [open, setOpen] = React.useState(true);
   const [enviarDados, setEnviarDados] = React.useState(true);
@@ -248,7 +248,7 @@ function PagCC({ email, cpf }) {
     publicKey = process.env.MP_LOCAL_PUBLIC_KEY;
   else publicKey = process.env.MP_PUBLIC_KEY; // MP_ACESS_TOKEN
   publicKey = 'TEST-0f1a9876-5969-461f-801e-97c878006485';
-  console.log(publicKey);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -263,7 +263,6 @@ function PagCC({ email, cpf }) {
 
   //= ======================================================================
   const enviarForm = () => {
-    console.log('doctypeE=', docTypeE);
     api
       .post('/api/mercadoPago', {
         transactionAmountE,
@@ -277,9 +276,7 @@ function PagCC({ email, cpf }) {
         docNumberE,
       })
 
-      .then((response) => {
-        console.log(response);
-      })
+      .then((response) => {})
 
       .catch(() => {
         //  updateFile(uploadedFile.id, { error: true });
@@ -383,11 +380,10 @@ function PagCC({ email, cpf }) {
   }
 
   function setPaymentMethod(status, response) {
-    console.log(status, response[0]);
     if (status === 200) {
       const paymentMethod = response[0];
       document.getElementById('paymentMethodId').value = paymentMethod.id;
-      console.log('pay->', paymentMethod);
+
       paymentMethodIdE = paymentMethod.id;
 
       getIssuers(paymentMethod.id);

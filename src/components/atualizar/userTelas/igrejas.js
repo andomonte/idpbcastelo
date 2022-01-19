@@ -1316,7 +1316,7 @@ function Igrejas2({ item, secao, igrejas, statusDrawer }) {
                       Latitude
                     </Typography>
                   </Box>
-                  {console.log(latitude, Latitude)}
+
                   <Box className={classes.novoBox} mt={-2}>
                     <TextField
                       className={classes.tf_m}

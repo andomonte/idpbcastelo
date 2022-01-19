@@ -193,13 +193,13 @@ const useStyles = makeStyles((theme) => ({
     //   border: '0px solid #b91a30',
   },
 }));
-const defaultProps = {
+/* const defaultProps = {
   bgcolor: 'background.paper',
   m: 0,
   // border: '2px solid #b91a30',
   width: janela.width,
   height: janela.height,
-};
+}; */
 
 const Home = ({ inscritos, dados }) => {
   const classes = useStyles();
@@ -684,14 +684,13 @@ const Home = ({ inscritos, dados }) => {
                         width: '100%',
                       }}
                     >
-                      {console.log(janela.height, altura)}
                       <Box
                         display="flex"
                         mt={
                           altura > 570
                             ? altura < 630
                               ? (-12 * altura) / 100
-                              : (-12 * altura) / 100
+                              : (-14 * altura) / 100
                             : (-12 * altura) / 100
                         }
                         ml={janela.height > 632 ? 4 : 3}
@@ -725,11 +724,15 @@ const Home = ({ inscritos, dados }) => {
                         display="flex"
                         justifyContent="center"
                       >
-                        <Box className={classes.input1}>
+                        <Box
+                          style={{
+                            backgroundColor: '#fff',
+                          }}
+                        >
                           <Box textAlign="center" sx={{ corlor: '#780208' }}>
-                            <h6>DADOS DO COMPRADOR</h6>
+                            <h4>DADOS DO COMPRADOR</h4>
                           </Box>
-                          <Box mt={-5} display="flex" flexDirection="row">
+                          <Box mt={0} display="flex" flexDirection="row">
                             <Grid item xs={12} md={12}>
                               <Box mt={1} ml={3} sx={{ fontSize: 'bold' }}>
                                 <Typography
@@ -930,7 +933,7 @@ const Home = ({ inscritos, dados }) => {
                 </Box>
               )}
             </Box>
-            {console.log(fPagamento)}
+
             {fPagamento === 'CC' && (
               <CheckoutT
                 nome={nome}

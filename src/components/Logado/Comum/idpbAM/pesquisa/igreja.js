@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Igreja({ item }) {
   const classes = useStyles();
-  console.log('ola', item);
+
   const [querys, updateQuery] = React.useState(null);
   const [valor, setValor] = React.useState('');
 

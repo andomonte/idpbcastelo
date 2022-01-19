@@ -42,7 +42,7 @@ function LoginGame() {
       const dadosUser = data.filter(
         (val) => String(val.codigo) === String(cpf),
       );
-      console.log('ola testeando', dadosUser[0]);
+
       if (dadosUser.length) {
         setNumeroCPF(dadosUser);
         try {

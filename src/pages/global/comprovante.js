@@ -28,7 +28,7 @@ function Comprovante() {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/global/comprovante');
   }
-  console.log(comprovanteF);
+
   return (
     <>
       {comprovante.nome ? (

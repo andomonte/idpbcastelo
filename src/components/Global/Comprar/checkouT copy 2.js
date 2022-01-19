@@ -997,7 +997,7 @@ export default function CheckoutT({
           onFetching: (resource) => {
             if (resource === 'identificationTypes')
               console.log('erro no Resourse: ', resource);
-            console.log(number, name, mesF, anoF, cvc, tipoDoc);
+
             // Animate progress bar
             const progressBar = document.querySelector('.progress-bar');
             progressBar.removeAttribute('value');
@@ -1051,8 +1051,6 @@ export default function CheckoutT({
       identificationType: tipoDoc,
       identificationNumber: docPagante,
     });
-
-    console.log('token =', cardToken);
   }
   React.useEffect(() => {
     if (mp) {

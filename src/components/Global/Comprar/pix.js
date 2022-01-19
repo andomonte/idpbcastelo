@@ -458,7 +458,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total }) => {
                             />
                           </Box>
                         </Box>
-                        {console.log(altura)}
+
                         <Box
                           mt={
                             altura > 570
