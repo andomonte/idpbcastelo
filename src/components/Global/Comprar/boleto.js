@@ -1,22 +1,26 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Box, Button, Typography, Grid } from '@material-ui/core';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import { makeStyles } from '@material-ui/core/styles';
+import { saveAs } from 'file-saver';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import TamanhoJanela from 'src/utils/getSize';
 import ValidaCPF from 'src/utils/validarCPF';
 import ValidaCNPJ from 'src/utils/validarCNPJ';
 import Drawer from '@material-ui/core/Drawer';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import api from 'src/components/services/api';
 import copy from 'copy-to-clipboard';
-import { ToastContainer, toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 // import { RepeatOneSharp } from '@material-ui/icons';
 import { useRouter } from 'next/router';
+import stream from 'stream';
+import { promisify } from 'util';
+
+import { Oval } from 'react-loading-icons';
 import GerarPdf from './pdfs/pdf';
+
+const pipeline = promisify(stream.pipeline);
 
 const janela = TamanhoJanela();
 let largura = janela.width;
@@ -183,7 +187,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
 }));
-const ColorButton = withStyles((theme) => ({
+/* const ColorButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText('#b91a30'),
     backgroundColor: '#b91a30',
@@ -191,8 +195,8 @@ const ColorButton = withStyles((theme) => ({
       backgroundColor: '#b91a30',
     },
   },
-}))(Button);
-const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
+}))(Button); */
+const Boleto = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
   const classes = useStyles();
   // console.log('params:', setFPagamento);
   // const router = useRouter();
@@ -200,15 +204,14 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
   // const [email, setEmail] = React.useState('');
   const [tipoDoc, setTipoDoc] = React.useState('');
   const [valorErro, setValorErro] = React.useState('');
+  const [linkBoleto, setLinkBoleto] = React.useState('');
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openDrawerBoleto, setOpenDrawerBoleto] = React.useState(false);
   const [openDrawerFim, setOpenDrawerFim] = React.useState(false);
   // const [open, setOpen] = React.useState(true);
-  const [qrCode1, setQrCode] = React.useState('');
-  const [qrCodeCopy1, setQrCodeCopy] = React.useState('');
   const [messageErro, setMessageErro] = React.useState(0);
   const [idCompra, setIdCompra] = React.useState('');
   // const [fPagamento, setFPagamento] = React.useState('');
-  const [openDrawerOK, setOpenDrawerOK] = React.useState(false);
   const [openDrawerErro, setOpenDrawerErro] = React.useState(false);
 
   const [carregar, setCarregar] = React.useState(false);
@@ -240,6 +243,18 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
       query: { idCompra, qrCode, qrCodeCopy },
     });
   }; */
+
+  const handlerBoleto = async () => {
+    console.log(linkBoleto);
+    saveAs(linkBoleto, 'boletoGlobal.pdf');
+    /*  if (!response.ok)
+      throw new Error(`unexpected response ${response.statusText}`);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=dummy.pdf');
+    await pipeline(response.body, res); */
+  };
+
   const voltar = () => {
     setFPagamento('inicio');
     //    setOpen(false);
@@ -260,7 +275,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
   };
   const comprar = () => {
     api
-      .post('/api/mercadoPagoPix', {
+      .post('/api/mercadoPagoBoleto', {
         nome,
         cpf,
         qtyA,
@@ -275,6 +290,22 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
       })
 
       .then((response) => {
+        console.log('resp:', response.data.body);
+
+        if (response.data.body) {
+          const { id } = response.data.body;
+
+          const codigo = response.data.body.barcode.content;
+          const urlBoleto =
+            response.data.body.transaction_details.external_resource_url;
+
+          router.push({
+            pathname: '/global/telaBoleto',
+            query: { id, codigo, urlBoleto },
+          });
+          setOpenDrawerBoleto(true);
+          setCarregar(false);
+        }
         //        const prefID = response.data.body.point_of_interaction.transaction_data;
         if (!response.data.message) {
           const dados = { id: '', qrCode: '', qrCodeCopy: '' };
@@ -288,13 +319,6 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
             response.data.body.point_of_interaction.transaction_data
               .qr_code_base64
           ) {
-            setQrCodeCopy(
-              response.data.body.point_of_interaction.transaction_data.qr_code,
-            );
-            setQrCode(
-              response.data.body.point_of_interaction.transaction_data
-                .qr_code_base64,
-            );
             dados.qrCode =
               response.data.body.point_of_interaction.transaction_data.qr_code_base64;
             dados.qrCodeCopy =
@@ -317,71 +341,11 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log('error:', error);
         //  updateFile(uploadedFile.id, { error: true });
       });
   };
-  const concluir = () => {
-    const idCompra2 = '1244778917';
 
-    api
-      .post('/api/confirmPayment', { id: idCompra2 })
-
-      .then((response) => {
-        // console.log(response);
-        if (response.data.body) {
-          if (response.data.body.status === 'approved') setOpenDrawerFim(true);
-          if (response.data.body.status === 'pending') setOpenDrawerErro(true);
-        }
-        if (response.data.message) {
-          setValorErro(`Ainda não Detectamos o pagamento do seu Pix.`);
-          setOpenDrawerErro(true);
-          setMessageErro(response.data.message);
-        }
-        /* if (
-          response.data.status === 'approved' ||
-          response.data.status === 'in_process'
-        ) {
-          // const status = response.data.status_detail;
-
-          if (response.data.status === 'in_process') {
-            setValorErro(
-              'Estamos processando o pagamento. Não se preocupe, em menos de 2 dias úteis informaremos por e-mail se foi creditado.',
-            );
-            setMessageErro(response.data.status_detail);
-            setOpenDrawerOK(true);
-          }
-
-          if (response.data.status_detail === 'accredited') {
-            setValorErro(
-              'Pronto, seu pagamento foi aprovado! Para conferir seu Ticket é só FECHAR, clicar em MEU TICKET e digitar seu CPF.',
-            );
-            setMessageErro(response.data.status_detail);
-            setOpenDrawerOK(true);
-          }
-        }
-        if (response.data.status === 'rejected') {
-          const dadosErro = erros.filter(
-            (val) => val.erro === response.data.status_detail,
-          );
-          setValorErro(dadosErro[0].mensagem);
-          setOpenDrawerFinal(true);
-          setMessageErro(response.data.message);
-        }
-        if (response.data.message) {
-          setValorErro(
-            `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
-          );
-          setOpenDrawerFinal(true);
-          setMessageErro(response.data.message);
-        }
-        setCarregar(false); */
-      })
-
-      .catch(() => {
-        //  updateFile(uploadedFile.id, { error: true });
-      });
-  };
   const atualizar = () => {
     let send = false;
 
@@ -434,7 +398,7 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
 
   const copyToClipboard = () => {
     // toast('copiado!');
-    copy(qrCodeCopy1);
+    copy(qrCodeCopy);
     toast.info('copiado !', {
       position: toast.POSITION.TOP_CENTER,
     });
@@ -495,137 +459,189 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
                           <Grid item xs={9} md={12} />
                         </Box>
                       </Box>
-                      <Box mt={20} display="flex" justifyContent="center">
-                        <Box>
-                          <Box width="100%">
-                            <Box display="flex" justifyContent="center">
+                      {openDrawerBoleto ? (
+                        <Box mt={10} display="flex" justifyContent="center">
+                          <Box height={200}>
+                            <Box>BOLETO PARA PAGAMENTO</Box>
+                            <Box mt={1}>
                               <Box>
+                                <Button
+                                  className={classes.button2}
+                                  variant="contained"
+                                  id="pagPix"
+                                  onClick={handlerBoleto}
+                                  style={{
+                                    width: '100%',
+                                    borderRadius: 15,
+                                  }}
+                                  // inputRef={fpRef}
+                                >
+                                  {!carregar ? (
+                                    <Box>Baixar Arquivo</Box>
+                                  ) : (
+                                    <Box display="flex">
+                                      <Oval width={120} height={25} />{' '}
+                                    </Box>
+                                  )}
+                                </Button>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box mt={20} display="flex" justifyContent="center">
+                          <Box>
+                            <Box width="100%">
+                              <Box display="flex" justifyContent="center">
                                 <Box>
-                                  <Box
-                                    width="100%"
-                                    mt={
-                                      altura > 570
-                                        ? altura < 630
-                                          ? (-2 * altura) / 100
-                                          : (-1.2 * altura) / 100
-                                        : (-2.5 * altura) / 100
-                                    }
-                                    ml={0}
-                                  >
+                                  <Box>
+                                    <Box
+                                      width="100%"
+                                      mt={
+                                        altura > 570
+                                          ? altura < 630
+                                            ? (-2 * altura) / 100
+                                            : (-1.2 * altura) / 100
+                                          : (-2.5 * altura) / 100
+                                      }
+                                      ml={0}
+                                    >
+                                      <Grid item xs={12} md={12}>
+                                        <Box ml={0}>
+                                          <Typography
+                                            className={classes.texto}
+                                            variant="caption"
+                                            display="block"
+                                            gutterBottom
+                                          >
+                                            Digite o CPF ou CNPJ do Pagante
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                    </Box>
+                                  </Box>
+                                  <Box display="flex" m={0}>
                                     <Grid item xs={12} md={12}>
-                                      <Box ml={0}>
+                                      <Box mt={0.4}>
+                                        <input
+                                          style={{ background: '#fafafa' }}
+                                          type="text"
+                                          name="identificationNumber"
+                                          id="form-checkout__identificationNumber"
+                                          className={classes.tf_input}
+                                          onKeyDown={handleEnter}
+                                          onFocus={handleFocus}
+                                          onChange={handleInputChange}
+                                          placeholder="Somente Números"
+                                          onBlur={(e) => {
+                                            setDocNumber(e.target.value);
+                                          }}
+                                        />
+                                      </Box>
+                                    </Grid>
+                                  </Box>
+                                </Box>
+                              </Box>
+                              <Box
+                                mt={2}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <Box
+                                  mt={3}
+                                  sx={{
+                                    height: 70,
+                                    width: '100vw',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                  }}
+                                >
+                                  <Box mt={1}>
+                                    <Box
+                                      mt={
+                                        altura > 570
+                                          ? altura < 630
+                                            ? (-0.5 * altura) / 100
+                                            : (0 * altura) / 100
+                                          : (-0.5 * altura) / 100
+                                      }
+                                    >
+                                      <Button
+                                        className={classes.button2}
+                                        variant="contained"
+                                        id="pagPix"
+                                        onClick={atualizar}
+                                        style={{
+                                          width: '100%',
+                                          borderRadius: 15,
+                                        }}
+                                        // inputRef={fpRef}
+                                      >
+                                        {!carregar ? (
+                                          <Box>Baixar Boleto</Box>
+                                        ) : (
+                                          <Box display="flex">
+                                            <Oval width={120} height={25} />{' '}
+                                          </Box>
+                                        )}
+                                      </Button>
+                                    </Box>
+                                  </Box>
+                                </Box>
+                              </Box>
+                              <Box
+                                minWidth={350}
+                                display="flex"
+                                justifyContent="center"
+                              >
+                                <Box
+                                  minWidth={300}
+                                  mt={altura > 570 ? (altura < 630 ? 3 : 6) : 1}
+                                  ml={0}
+                                  height={100}
+                                  bgcolor="#eadafa"
+                                >
+                                  <Grid item xs={12} md={12}>
+                                    <Box m={1}>
+                                      <Box
+                                        mt={-0.5}
+                                        display="flex"
+                                        justifyContent="center"
+                                      >
+                                        <Typography
+                                          style={{
+                                            fontSize: '16px',
+                                            color: '#000',
+                                            fontFamily: 'Arial Black',
+                                            fontWeight: 'bold',
+                                          }}
+                                          variant="caption"
+                                          display="block"
+                                          gutterBottom
+                                        >
+                                          ATENÇÃO!!!
+                                        </Typography>
+                                      </Box>
+                                      <Box
+                                        mt={0}
+                                        display="flex"
+                                        justifyContent="center"
+                                      >
                                         <Typography
                                           className={classes.texto}
                                           variant="caption"
                                           display="block"
                                           gutterBottom
                                         >
-                                          Digite o CPF ou CNPJ do Pagante
+                                          Será Gerado um link para baixar o
+                                          boleto
                                         </Typography>
                                       </Box>
-                                    </Grid>
-                                  </Box>
-                                </Box>
-                                <Box display="flex" m={0}>
-                                  <Grid item xs={12} md={12}>
-                                    <Box mt={0.4}>
-                                      <input
-                                        style={{ background: '#fafafa' }}
-                                        type="text"
-                                        name="identificationNumber"
-                                        id="form-checkout__identificationNumber"
-                                        className={classes.tf_input}
-                                        onKeyDown={handleEnter}
-                                        onFocus={handleFocus}
-                                        onChange={handleInputChange}
-                                        placeholder="Somente Números"
-                                        onBlur={(e) => {
-                                          setDocNumber(e.target.value);
-                                        }}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                </Box>
-                              </Box>
-                            </Box>
-                            <Box
-                              mt={2}
-                              sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                              }}
-                            >
-                              <Box
-                                mt={3}
-                                sx={{
-                                  height: 70,
-                                  width: '100vw',
-                                  display: 'flex',
-                                  justifyContent: 'center',
-                                }}
-                              >
-                                <Box mt={1}>
-                                  <Box
-                                    mt={
-                                      altura > 570
-                                        ? altura < 630
-                                          ? (-0.5 * altura) / 100
-                                          : (0 * altura) / 100
-                                        : (-0.5 * altura) / 100
-                                    }
-                                  >
-                                    <Button
-                                      className={classes.button2}
-                                      variant="contained"
-                                      id="pagPix"
-                                      onClick={atualizar}
-                                      style={{
-                                        width: '100%',
-                                        borderRadius: 15,
-                                      }}
-                                      // inputRef={fpRef}
-                                    >
-                                      Gerar chave Pix
-                                    </Button>
-                                  </Box>
-                                </Box>
-                              </Box>
-                            </Box>
-                            <Box
-                              minWidth={350}
-                              display="flex"
-                              justifyContent="center"
-                            >
-                              <Box
-                                minWidth={300}
-                                mt={altura > 570 ? (altura < 630 ? 3 : 6) : 1}
-                                ml={0}
-                                height={100}
-                                bgcolor="#eadafa"
-                              >
-                                <Grid item xs={12} md={12}>
-                                  <Box m={1}>
-                                    <Box
-                                      mt={-0.5}
-                                      display="flex"
-                                      justifyContent="center"
-                                    >
-                                      <Typography
-                                        style={{
-                                          fontSize: '16px',
-                                          color: '#000',
-                                          fontFamily: 'Arial Black',
-                                          fontWeight: 'bold',
-                                        }}
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        ATENÇÃO!!!
-                                      </Typography>
                                     </Box>
                                     <Box
-                                      mt={0}
+                                      mt={-1.5}
                                       display="flex"
                                       justifyContent="center"
                                     >
@@ -635,48 +651,28 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
                                         display="block"
                                         gutterBottom
                                       >
-                                        Sua chave Pix durará 30 minutos
+                                        Quer poderá ser pago
                                       </Typography>
                                     </Box>
-                                  </Box>
-                                  <Box
-                                    mt={-1.5}
-                                    display="flex"
-                                    justifyContent="center"
-                                  >
-                                    <Typography
-                                      className={classes.texto}
-                                      variant="caption"
-                                      display="block"
-                                      gutterBottom
+                                    <Box
+                                      mt={-0.5}
+                                      display="flex"
+                                      justifyContent="center"
                                     >
-                                      Após esse tempo sua solicitação
-                                    </Typography>
-                                  </Box>
-                                  <Box
-                                    mt={-0.5}
-                                    display="flex"
-                                    justifyContent="center"
-                                  >
-                                    <Typography
-                                      className={classes.texto}
-                                      variant="caption"
-                                      display="block"
-                                      gutterBottom
-                                    >
-                                      será desconsiderada, obrigado
-                                    </Typography>
-                                  </Box>
-                                </Grid>
+                                      <Typography
+                                        className={classes.texto}
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        em qualquer agência Bancária
+                                      </Typography>
+                                    </Box>
+                                  </Grid>
+                                </Box>
                               </Box>
                             </Box>
                           </Box>
-                        </Box>
-                      </Box>
-                      {carregar && (
-                        <Box className={classes.novoBox} mt={1}>
-                          <LinearProgress />
-                          <small>Carregando...</small>
                         </Box>
                       )}
                     </Box>
@@ -685,141 +681,6 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
               </Box>
             </form>
 
-            <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
-              <Box height={janela.height} sx={{ background: '#FFFF' }}>
-                <Box mt={1} borderRadius={16} {...defaultProps}>
-                  <Box mt={-1} ml={0}>
-                    <img
-                      src="/images/global/global1.png"
-                      alt=""
-                      width="100.8%"
-                    />
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    width="100%"
-                    mt={0}
-                    mb={0}
-                    sx={{
-                      fontSize: '16px',
-                      color: '#b91a30',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '14px',
-                        color: '#b91a30',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      NO APP DO SEU BANCO SCANEI O
-                    </Typography>
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    width="100%"
-                    mt={0}
-                    sx={{ fontSize: 'bold', color: '#b91a30' }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '14px',
-                        color: '#b91a30',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      QR CODE DO PIX
-                    </Typography>
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    width="100%"
-                    mt={0}
-                    sx={{ fontSize: 'bold', color: '#b91a30' }}
-                  >
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{
-                        fontSize: '14px',
-                        color: '#3f51b5',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      OU
-                    </Typography>
-                  </Box>
-                  <Box
-                    mt={1}
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <ColorButton
-                      variant="contained"
-                      className={classes.button2}
-                      id="reload"
-                      onClick={copyToClipboard}
-                    >
-                      <small>
-                        CLICK AQUI PARA COPIAR O CÓDIGO E COLAR NO APP DO SEU
-                        BANCO
-                      </small>
-                    </ColorButton>
-                  </Box>
-                  <Box mt={1} textAlign="center">
-                    {qrCode1 && (
-                      <img
-                        className={classes.QrCode}
-                        src={`data:image/jpeg;base64,${qrCode1}`}
-                        alt="qrCode"
-                      />
-                    )}
-                  </Box>
-                  <ToastContainer
-                    position="top-center"
-                    autoClose={2000}
-                    hideProgressBar
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                  />
-
-                  <Box
-                    mt={2}
-                    mb={2}
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Button
-                      className={classes.button1}
-                      variant="contained"
-                      id="reload"
-                      onClick={concluir}
-                    >
-                      CONCLUIR
-                    </Button>
-                  </Box>
-                </Box>
-              </Box>
-            </Drawer>
             <Drawer variant="persistent" anchor="bottom" open={openDrawerFim}>
               {/* <Box height={janela.height} sx={{ background: '#FFFF' }}>
           <Box
@@ -1019,4 +880,4 @@ const Pix = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
     </>
   );
 };
-export default Pix;
+export default Boleto;

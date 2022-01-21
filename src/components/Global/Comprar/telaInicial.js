@@ -10,7 +10,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone';
 import api from 'src/components/services/api';
-
+import { Oval } from 'react-loading-icons';
 import InputBase from '@material-ui/core/InputBase';
 import ValidaCPF from 'src/utils/validarCPF';
 import Drawer from '@material-ui/core/Drawer';
@@ -411,7 +411,7 @@ const TelaInicial = ({ inscritos }) => {
                           <Box
                             height={10}
                             p={1}
-                            ml={0}
+                            ml={-2}
                             mr={0}
                             mt={-14}
                             display="flex"
@@ -889,20 +889,16 @@ const TelaInicial = ({ inscritos }) => {
                                   disabled={!(qtyA > 0 || qtyC > 0)}
                                   onClick={handleContinua}
                                 >
-                                  CONTINUAR
+                                  {!carregar ? (
+                                    'CONTINUAR'
+                                  ) : (
+                                    <Box display="flex">
+                                      <Oval width={90} height={25} />{' '}
+                                    </Box>
+                                  )}
                                 </ColorButton>
                               </Box>
                             </Box>
-                            {carregar && (
-                              <Box className={classes.novoBox} mt={-8}>
-                                <Box ml={10}>
-                                  <LinearProgress />
-                                  <small style={{ color: '#fff' }}>
-                                    Carregando...
-                                  </small>
-                                </Box>
-                              </Box>
-                            )}
                           </Box>
                         </Box>
                       </Box>
@@ -1406,7 +1402,13 @@ const TelaInicial = ({ inscritos }) => {
                               disabled={!(qtyA > 0 || qtyC > 0)}
                               onClick={handleContinua}
                             >
-                              CONTINUAR
+                              {!carregar ? (
+                                'CONTINUAR'
+                              ) : (
+                                <Box display="flex">
+                                  <Oval width={90} height={25} />{' '}
+                                </Box>
+                              )}
                             </ColorButton>
                           </Box>
                         </Box>

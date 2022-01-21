@@ -356,7 +356,7 @@ const QrPix = ({ codigo }) => {
                         </Typography>
                       </Box>
 
-                      <Box height={(altura - 50) / 2} mt={0} textAlign="center">
+                      <Box height={(altura - 20) / 2} mt={0} textAlign="center">
                         {codigo && (
                           <img
                             className={classes.QrCode}
@@ -369,7 +369,7 @@ const QrPix = ({ codigo }) => {
                         display="flex"
                         justifyContent="center"
                         width="100%"
-                        mt={altura > 570 ? (altura < 630 ? -10 : -10) : -1}
+                        mt={altura > 570 ? (altura < 630 ? -10 : -15) : -1}
                         sx={{ fontSize: 'bold', color: '#b91a30' }}
                       >
                         <Typography

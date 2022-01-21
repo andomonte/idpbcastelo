@@ -17,14 +17,11 @@ import Drawer from '@material-ui/core/Drawer';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import validator from 'validator';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 
 import TamanhoJanela from 'src/utils/getSize';
-import { fontSize } from '@mui/system';
 import CheckoutT from './checkouT';
 import Pix from './pix';
+import Boleto from './boleto';
 
 const janela = TamanhoJanela();
 const ajustAltura = janela.height / 10;
@@ -34,6 +31,8 @@ if (janela.height < 500) altura = 500;
 else altura = janela.height;
 // const validateDate = require('validate-date');
 if (janela.width < 300) largura = 300;
+else largura = janela.width;
+if (janela.width > 410) largura = 410;
 else largura = janela.width;
 
 const BootstrapInput = withStyles((theme) => ({
@@ -384,244 +383,202 @@ const Home = ({ inscritos, dados }) => {
       <ClickAwayListener onClickAway={handleDrawerClose}>
         <Box>
           <Hidden smDown>
-            <Box mt={-1} ml={0} maxHeight={700} minHeight={500}>
+            <Box display="flex" justifyContent="center">
               {fPagamento === 'inicio' && (
-                <Box display="flex" justifyContent="center">
+                <Box bgcolor="#780208" height={altura} width={largura} ml={0}>
                   <Box ml={0}>
-                    <Box
-                      style={{
-                        backgroundColor: '#b3b3b3',
-                        height: '100vh',
-                        width: 400,
-                      }}
-                    >
+                    <Box mt={0} ml={0}>
                       <Box>
-                        <Box>
-                          <Box>
-                            <Box mt={0} ml={0}>
-                              <img
-                                src="/images/global/fundo.png"
-                                alt=""
-                                width="100%"
-                                height={altura}
-                              />
-                            </Box>
-                            <Box
-                              display="flex"
-                              width="100%"
-                              mt={
-                                altura > 570
-                                  ? altura < 630
-                                    ? (-9.5 * altura) / 100
-                                    : (-10 * altura) / 100
-                                  : (-9.5 * altura) / 100
-                              }
-                              ml={janela.height > 632 ? 4 : 3}
-                            >
-                              <Grid item xs={2} md={3}>
-                                <Box
-                                  height={10}
-                                  p={1}
-                                  ml={0}
-                                  mr={0}
-                                  mt={-14}
-                                  display="flex"
-                                  alignItems="center"
+                        <Grid item xs={2} md={3}>
+                          <Box
+                            height={10}
+                            p={1}
+                            ml={1}
+                            mr={0}
+                            mt={2}
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <ArrowBackIcon
+                              sx={{
+                                fontSize: 20,
+                                color: '#fff',
+                              }}
+                              onClick={voltar}
+                            />
+                          </Box>
+                        </Grid>
+                        <Grid item xs={1} md={3} />
+
+                        <Grid item xs={9} md={3} />
+                      </Box>
+
+                      <Box display="flex" justifyContent="center">
+                        <Box sx={{ color: '#fff' }} mt={5}>
+                          <Box textAlign="center" sx={{ corlor: '#fff' }}>
+                            <h4>DADOS DO COMPRADOR</h4>
+                          </Box>
+                          <Box mt={0} display="flex" flexDirection="row">
+                            <Grid item xs={12} md={12}>
+                              <Box mt={1} ml={3} sx={{ fontSize: 'bold' }}>
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
                                 >
-                                  <ArrowBackIcon
-                                    sx={{
-                                      fontSize: 20,
-                                      color: '#fff',
-                                    }}
-                                    onClick={voltar}
-                                  />
-                                </Box>
-                              </Grid>
-                              <Grid item xs={1} md={3} />
+                                  Nome
+                                </Typography>
+                              </Box>
 
-                              <Grid item xs={9} md={3} />
-                            </Box>
-                            <Box
-                              bgcolor="#fff"
-                              mt={ajustAltura > 52 ? -3 : -3}
-                              display="flex"
-                              justifyContent="center"
-                            >
-                              <Box className={classes.input1}>
-                                <Box
-                                  textAlign="center"
-                                  sx={{ corlor: '#780208' }}
-                                >
-                                  <h6>DADOS DO COMPRADOR</h6>
-                                </Box>
-                                <Box mt={-5} display="flex" flexDirection="row">
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={1}
-                                      ml={3}
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </Box>
-
-                                    <Box className={classes.novoBox} mt={-1.5}>
-                                      <TextField
-                                        className={classes.tf_s}
-                                        inputProps={{
-                                          style: {
-                                            textAlign: 'center',
-                                          },
-                                        }}
-                                        id="Nome"
-                                        // label="Matricula"
-                                        type="text"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        value={nome}
-                                        variant="outlined"
-                                        placeholder="Digite o Nome do Inscrito"
-                                        size="small"
-                                        onBlur={handleValidarNome}
-                                        onChange={(e) => {
-                                          setNome(e.target.value);
-                                          handleDrawerClose();
-                                        }}
-                                        onFocus={(e) => setNome(e.target.value)}
-                                        autoFocus
-                                        onKeyDown={handleEnter}
-                                        inputRef={nomeRef}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                </Box>
-                                <Box mt={2} display="flex" flexDirection="row">
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={-1}
-                                      ml={3}
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        CPF
-                                      </Typography>
-                                    </Box>
-
-                                    <Box className={classes.novoBox} mt={-1.5}>
-                                      <TextField
-                                        className={classes.tf_s}
-                                        inputProps={{
-                                          style: {
-                                            textAlign: 'center',
-                                          },
-                                        }}
-                                        id="CPF"
-                                        inputRef={cpfRef}
-                                        //                      ref={cpfRef}
-                                        // // // label="CPF"
-                                        type="text"
-                                        InputLabelProps={{
-                                          shrink: true,
-                                        }}
-                                        value={cpfMask(cpf)}
-                                        variant="outlined"
-                                        placeholder="digite o CPF do inscrito"
-                                        size="small"
-                                        onBlur={(e) => {
-                                          if (validacaoNome)
-                                            handleValidarCPF(e);
-                                        }}
-                                        onChange={(e) => {
-                                          setCPF(e.target.value);
-                                          handleDrawerClose();
-                                        }}
-                                        onFocus={(e) => setCPF(e.target.value)}
-                                        onKeyDown={handleEnter}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                </Box>
-
-                                <Box mt={2} display="flex" flexDirection="row">
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={-1}
-                                      ml={3}
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        Email
-                                      </Typography>
-                                    </Box>
-                                    <Box className={classes.novoBox} mt={-1.5}>
-                                      <TextField
-                                        className={classes.tf_s}
-                                        inputProps={{
-                                          style: {
-                                            textAlign: 'center',
-                                          },
-                                        }}
-                                        id="Email"
-                                        type="text"
-                                        InputLabelProps={{
-                                          style: {
-                                            textTransform: 'uppercase',
-                                          },
-                                          shrink: true,
-                                        }}
-                                        value={email}
-                                        variant="outlined"
-                                        placeholder="email para envio de comprovante"
-                                        size="small"
-                                        onBlur={(e) => {
-                                          if (validacaoCPF === 'next')
-                                            handlevalidarEmail(e);
-                                        }}
-                                        onChange={(e) => {
-                                          setEmail(e.target.value);
-                                          handleDrawerClose();
-                                        }}
-                                        onFocus={(e) =>
-                                          setEmail(e.target.value)
-                                        }
-                                        onKeyDown={handleEnter}
-                                        inputRef={emailRef}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                </Box>
-
-                                <Box
-                                  mt={1}
-                                  sx={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
+                              <Box className={classes.novoBox} mt={-1.5}>
+                                <TextField
+                                  className={classes.tf_s}
+                                  inputProps={{
+                                    style: {
+                                      textAlign: 'center',
+                                    },
                                   }}
+                                  id="Nome"
+                                  // label="Matricula"
+                                  type="text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  value={nome}
+                                  variant="outlined"
+                                  placeholder="Digite o Nome do Inscrito"
+                                  size="small"
+                                  onBlur={handleValidarNome}
+                                  onChange={(e) => {
+                                    setNome(e.target.value);
+                                    handleDrawerClose();
+                                  }}
+                                  onFocus={(e) => setNome(e.target.value)}
+                                  autoFocus
+                                  onKeyDown={handleEnter}
+                                  inputRef={nomeRef}
+                                />
+                              </Box>
+                            </Grid>
+                          </Box>
+                          <Box mt={2} display="flex" flexDirection="row">
+                            <Grid item xs={12} md={3}>
+                              <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
                                 >
-                                  <Box mt={3}>
-                                    <Select
-                                      defaultValue={fPagamento}
-                                      onChange={setFPagamento}
-                                      options={options}
-                                      placeholder="Forma de Pagamento"
-                                      styles={{ fontSize: '12px' }}
-                                    />
-                                  </Box>
-                                </Box>
+                                  CPF
+                                </Typography>
+                              </Box>
+
+                              <Box className={classes.novoBox} mt={-1.5}>
+                                <TextField
+                                  className={classes.tf_s}
+                                  inputProps={{
+                                    style: {
+                                      textAlign: 'center',
+                                    },
+                                  }}
+                                  id="CPF"
+                                  inputRef={cpfRef}
+                                  //                      ref={cpfRef}
+                                  // // // label="CPF"
+                                  type="text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  value={cpfMask(cpf)}
+                                  variant="outlined"
+                                  placeholder="digite o CPF do inscrito"
+                                  size="small"
+                                  onBlur={(e) => {
+                                    if (validacaoNome) handleValidarCPF(e);
+                                  }}
+                                  onChange={(e) => {
+                                    setCPF(e.target.value);
+                                    handleDrawerClose();
+                                  }}
+                                  onFocus={(e) => setCPF(e.target.value)}
+                                  onKeyDown={handleEnter}
+                                />
+                              </Box>
+                            </Grid>
+                          </Box>
+
+                          <Box mt={2} display="flex" flexDirection="row">
+                            <Grid item xs={12} md={6}>
+                              <Box mt={-1} ml={3} sx={{ fontSize: 'bold' }}>
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                >
+                                  Email
+                                </Typography>
+                              </Box>
+                              <Box className={classes.novoBox} mt={-1.5}>
+                                <TextField
+                                  className={classes.tf_s}
+                                  inputProps={{
+                                    style: {
+                                      textAlign: 'center',
+                                    },
+                                  }}
+                                  id="Email"
+                                  type="text"
+                                  InputLabelProps={{
+                                    style: {
+                                      textTransform: 'uppercase',
+                                    },
+                                    shrink: true,
+                                  }}
+                                  value={email}
+                                  variant="outlined"
+                                  placeholder="email para envio de comprovante"
+                                  size="small"
+                                  onBlur={(e) => {
+                                    if (validacaoCPF === 'next')
+                                      handlevalidarEmail(e);
+                                  }}
+                                  onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    handleDrawerClose();
+                                  }}
+                                  onFocus={(e) => setEmail(e.target.value)}
+                                  onKeyDown={handleEnter}
+                                  inputRef={emailRef}
+                                />
+                              </Box>
+                            </Grid>
+                          </Box>
+                          <Box
+                            mt={1}
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <Box
+                              mt={1}
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <Box mt={3} color="#000">
+                                <Select
+                                  defaultValue={fPagamento}
+                                  onChange={setFPagamento}
+                                  options={options}
+                                  placeholder="Forma de Pagamento"
+                                  styles={{
+                                    fontSize: '12px',
+
+                                    color: '#000',
+                                  }}
+                                />
                               </Box>
                             </Box>
                           </Box>
@@ -632,6 +589,7 @@ const Home = ({ inscritos, dados }) => {
                 </Box>
               )}
             </Box>
+
             {fPagamento.value === 'CC' && (
               <CheckoutT
                 nome={nome}
@@ -641,11 +599,12 @@ const Home = ({ inscritos, dados }) => {
                 total={dados.total}
                 qtyA={dados.qtyA}
                 qtyC={dados.qtyC}
+                setFPagamento={setFPagamento}
               />
             )}
 
             {fPagamento.value === 'Pix' && (
-              <Box mt={-63}>
+              <Box mt={altura > 570 ? (altura < 630 ? 75 : 86.6) : 66}>
                 <Pix
                   nome={nome}
                   cpf={cpf}
@@ -653,10 +612,25 @@ const Home = ({ inscritos, dados }) => {
                   total={dados.total}
                   qtyA={dados.qtyA}
                   qtyC={dados.qtyC}
+                  setFPagamento={setFPagamento}
                 />
               </Box>
             )}
 
+            {fPagamento.value === 'Boleto' && (
+              <Box mt={altura > 570 ? (altura < 630 ? 75 : 86.6) : 66}>
+                <Boleto
+                  nome={nome}
+                  cpf={cpf}
+                  email={email}
+                  total={dados.total}
+                  qtyA={dados.qtyA}
+                  qtyC={dados.qtyC}
+                  setFPagamento={setFPagamento}
+                />
+              </Box>
+            )}
+            {console.log(fPagamento)}
             <Drawer
               variant="persistent"
               anchor="bottom"
@@ -930,6 +904,7 @@ const Home = ({ inscritos, dados }) => {
                 qtyC={dados.qtyC}
               />
             )}
+            {console.log(fPagamento)}
             {fPagamento === 'Pix' && (
               <Pix
                 nome={nome}
@@ -938,6 +913,7 @@ const Home = ({ inscritos, dados }) => {
                 total={dados.total}
                 qtyA={dados.qtyA}
                 qtyC={dados.qtyC}
+                setFPagamento={setFPagamento}
               />
             )}
             {fPagamento === 'CC' && (
@@ -945,13 +921,23 @@ const Home = ({ inscritos, dados }) => {
                 nome={nome}
                 cpf={cpf}
                 email={email}
-                fPagamento={fPagamento}
+                setFPagamento={setFPagamento}
                 total={dados.total}
                 qtyA={dados.qtyA}
                 qtyC={dados.qtyC}
               />
             )}
-            {fPagamento === 'Boleto' && <h1 />}
+            {fPagamento === 'Boleto' && (
+              <Boleto
+                nome={nome}
+                cpf={cpf}
+                email={email}
+                total={dados.total}
+                qtyA={dados.qtyA}
+                qtyC={dados.qtyC}
+                setFPagamento={setFPagamento}
+              />
+            )}
             {/* {open && <PagCC email={email} cpf={cpf} />} */}
             <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
               <Box height={100} sx={{ background: '#ffebee' }}>

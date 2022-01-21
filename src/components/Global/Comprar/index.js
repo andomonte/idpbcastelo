@@ -123,27 +123,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Compra({ title, inscritos }) {
-  const classes = useStyles();
-  //  const [value, setValue] = React.useState(0);
-
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [open, setOpen] = React.useState(true);
-  const router = useRouter();
-  const handleDrawerClose = () => {
-    // console.log(mobile);
-
-    if (mobile && open) {
-      setOpen(false);
-    }
-  };
-
-  const voltar = () => {
-    router.push({
-      pathname: '/global',
-      //   query: { dadosMesa2, numeroGame },
-    });
-  };
   return (
     <div>
       <Head>

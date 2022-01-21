@@ -580,7 +580,7 @@ export default function CheckoutT({
   email,
   cpf,
   nome,
-  fPagamento,
+  setFPagamento,
   qtyA,
   qtyC,
   total,
@@ -912,6 +912,7 @@ export default function CheckoutT({
     }
   }; */
   const voltar = () => {
+    setFPagamento('inicio');
     setOpen(false);
     // window.location.reload();
   };

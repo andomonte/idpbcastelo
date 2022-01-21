@@ -7,6 +7,7 @@ import Paper from '@mui/material/Paper';
 import { useRouter } from 'next/router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TamanhoJanela from 'src/utils/getSize';
+import { Oval } from 'react-loading-icons';
 
 // const validateDate = require('validate-date');
 
@@ -75,6 +76,9 @@ const useStyles = makeStyles(() => ({
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
+    '&:hover': {
+      backgroundColor: '#780208',
+    },
   },
 
   imgMobile: {
@@ -88,7 +92,8 @@ const useStyles = makeStyles(() => ({
 const Home = () => {
   const classes = useStyles();
   const router = useRouter();
-
+  const [carregar, setCarregar] = React.useState(false);
+  const [carregarT, setCarregarT] = React.useState(false);
   const voltar = () => {
     router.push({
       pathname: '/',
@@ -96,6 +101,7 @@ const Home = () => {
     });
   }; // setGame('1');
   const comprar = () => {
+    setCarregar(true);
     router.push({
       pathname: '/global/comprar',
       //   query: { dadosMesa2, numeroGame },
@@ -108,6 +114,7 @@ const Home = () => {
     });
   };
   const myTicket = () => {
+    setCarregarT(true);
     router.push({
       pathname: '/global/meuTicket',
       //   query: { dadosMesa2, numeroGame },
@@ -175,7 +182,13 @@ const Home = () => {
                     variant="contained"
                     onClick={comprar}
                   >
-                    COMPRAR
+                    {!carregar ? (
+                      <Box>COMPRAR </Box>
+                    ) : (
+                      <Box display="flex">
+                        <Oval stroke="blue" width={80} height={25} />{' '}
+                      </Box>
+                    )}
                   </Button>
                 </Box>
 
@@ -215,7 +228,13 @@ const Home = () => {
                         variant="contained"
                         onClick={myTicket}
                       >
-                        MEU TICKET
+                        {!carregarT ? (
+                          <Box> MEU TICKET</Box>
+                        ) : (
+                          <Box display="flex">
+                            <Oval width={80} height={25} />{' '}
+                          </Box>
+                        )}
                       </Button>
                     </Box>
                   </Paper>
@@ -320,7 +339,13 @@ const Home = () => {
                         variant="contained"
                         onClick={comprar}
                       >
-                        COMPRAR
+                        {!carregar ? (
+                          <Box>COMPRAR </Box>
+                        ) : (
+                          <Box display="flex">
+                            <Oval stroke="blue" width={80} height={25} />{' '}
+                          </Box>
+                        )}
                       </Button>
                     </Box>
                   </Box>
@@ -361,7 +386,13 @@ const Home = () => {
                           variant="contained"
                           onClick={myTicket}
                         >
-                          MEU TICKET
+                          {!carregarT ? (
+                            <Box> MEU TICKET</Box>
+                          ) : (
+                            <Box display="flex">
+                              <Oval width={80} height={25} />{' '}
+                            </Box>
+                          )}
                         </Button>
                       </Box>
                     </Paper>
