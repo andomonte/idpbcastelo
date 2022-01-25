@@ -257,13 +257,6 @@ const Boleto = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
 
   const voltar = () => {
     setFPagamento('inicio');
-    //    setOpen(false);
-    //    router.push({
-    //      pathname: '/global/comprar',
-    //   query: { dadosMesa2, numeroGame },
-    //    });
-    //  setOpen(false);
-    // window.location.reload();
   };
   const FecharCompra = () => {
     router.push({
@@ -290,8 +283,6 @@ const Boleto = ({ email, cpf, nome, qtyA, qtyC, total, setFPagamento }) => {
       })
 
       .then((response) => {
-        console.log('resp:', response.data.body);
-
         if (response.data.body) {
           const { id } = response.data.body;
 

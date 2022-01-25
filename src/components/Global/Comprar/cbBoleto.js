@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { RepeatOneSharp } from '@material-ui/icons';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import api from 'src/components/services/api';
 import { Oval } from 'react-loading-icons';
 import { saveAs } from 'file-saver';
 import GerarPdf from './pdfs/pdf';
@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '500px',
     width: '100vw',
     height: '100vh',
+  },
+  iframe: {
+    width: '100%',
+    height: altura - 10,
   },
   QrCode: {
     maxWidth: 230,
@@ -91,13 +95,13 @@ const useStyles = makeStyles((theme) => ({
   },
   button1: {
     display: 'flex',
-    background: '#790208',
+    background: '#780208',
     '&:hover': {
-      backgroundColor: '#990208',
+      backgroundColor: '#b91a30',
     },
     fontSize: '14px',
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#fff',
     width: 125,
     justifyContent: 'center',
   },
@@ -106,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'blue',
     fontSize: '14px',
     fontWeight: 'bold',
-    minWidth: 125,
+    minWidth: 80,
     color: '#fff',
     justifyContent: 'center',
   },
@@ -200,20 +204,17 @@ const CbBoleto = ({ boleto }) => {
   const copyToClipboard = () => {
     // toast('copiado!');
     copy(boleto.codigo);
-    toast.info('copiado !', {
+    toast.info('código copiado !', {
       position: toast.POSITION.TOP_CENTER,
     });
   };
-  const handlerBoleto = async () => {
-    setCarregar(true);
-    console.log(boleto.urlBoleto);
-    saveAs(boleto.urlBoleto, 'boletoGlobal.pdf');
-    /*  if (!response.ok)
-      throw new Error(`unexpected response ${response.statusText}`);
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename=dummy.pdf');
-    await pipeline(response.body, res); */
+  const FecharCompra = () => {
+    router.push({
+      pathname: '/global',
+      //   query: { dadosMesa2, numeroGame },
+    });
+    // setOpen(false);
+    // window.location.reload();
   };
   return (
     <>
@@ -234,76 +235,60 @@ const CbBoleto = ({ boleto }) => {
             <Box>
               <Box>
                 <Box display="flex" justifyContent="center">
-                  <Box height={altura} width={largura} ml={0}>
-                    <img src="/images/global/fundo.png" alt="" width="100%" />
+                  <Box>
+                    <iframe
+                      className={classes.iframe}
+                      src="https://www.mercadopago.com/mlb/payments/ticket/helper?payment_id=19717333660&payment_method_reference_id=9912011627&caller_id=1035144605&hash=cf4abf3c-cf62-4083-bf27-01574f502dc9"
+                      title="title"
+                    />{' '}
                   </Box>
-                </Box>
-
-                <Box
-                  mt={
-                    altura > 570
-                      ? altura < 630
-                        ? (-12.4 * altura) / 100
-                        : (-12.3 * altura) / 100
-                      : (-12.5 * altura) / 100
-                  }
-                  ml={largura === 400 ? -40 : 3}
-                >
-                  <Grid item xs={1} md={12} />
-
-                  <Grid item xs={9} md={12} />
                 </Box>
               </Box>
-              <Box mt={0} display="flex" justifyContent="center">
-                <Box height={200}>
-                  <Box
-                    mt={20}
-                    style={{ fontSize: '16px', fontWeight: 'bold' }}
-                    textAlign="center"
-                  >
-                    BOLETO PARA PAGAMENTO
-                  </Box>
-                  <Box mt={10} className={classes.letras1} textAlign="center">
-                    {boleto.codigo}
-                    <Box display="flex" justifyContent="center" mt={2}>
+              <Box
+                mt={
+                  altura > 570
+                    ? altura < 630
+                      ? (-1.8 * altura) / 100
+                      : (-2.5 * altura) / 100
+                    : (-1.8 * altura) / 100
+                }
+                display="flex"
+                justifyContent="center"
+              >
+                <Box display="flex" justifyContent="center" height={100}>
+                  <Box className={classes.letras1} textAlign="center">
+                    <Box display="flex" justifyContent="center">
                       <Button
                         className={classes.button1}
                         variant="contained"
                         id="pagPix"
                         onClick={copyToClipboard}
                         style={{
-                          width: 160,
+                          width: 80,
                           borderRadius: 15,
                         }}
                         // inputRef={fpRef}
                       >
-                        <Box>Copiar Código</Box>
+                        <Box>Copiar</Box>
                       </Button>
                     </Box>
                   </Box>
-                  <Box display="flex" justifyContent="center" mt={1}>
-                    <Box
-                      mt={
-                        altura > 570
-                          ? altura < 630
-                            ? (3 * altura) / 100
-                            : (3 * altura) / 100
-                          : (3 * altura) / 100
-                      }
-                    >
+                  <Box width="20" ml={2} />
+                  <Box display="flex" justifyContent="center">
+                    <Box>
                       <Button
                         className={classes.button2}
                         variant="contained"
                         id="pagPix"
-                        onClick={handlerBoleto}
+                        onClick={FecharCompra}
                         style={{
-                          width: '100%',
+                          width: 80,
                           borderRadius: 15,
                         }}
                         // inputRef={fpRef}
                       >
                         {!carregar ? (
-                          <Box>Baixar PDF</Box>
+                          <Box>Fechar</Box>
                         ) : (
                           <Box display="flex">
                             <Oval width={120} height={25} />{' '}

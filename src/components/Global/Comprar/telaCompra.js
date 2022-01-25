@@ -630,7 +630,7 @@ const Home = ({ inscritos, dados }) => {
                 />
               </Box>
             )}
-            {console.log(fPagamento)}
+
             <Drawer
               variant="persistent"
               anchor="bottom"
@@ -904,7 +904,7 @@ const Home = ({ inscritos, dados }) => {
                 qtyC={dados.qtyC}
               />
             )}
-            {console.log(fPagamento)}
+
             {fPagamento === 'Pix' && (
               <Pix
                 nome={nome}

@@ -6,7 +6,7 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
-import LinearProgress from '@material-ui/core/LinearProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone';
 import api from 'src/components/services/api';
@@ -215,17 +215,17 @@ const TelaInicial = ({ inscritos }) => {
   const [total, setTotal] = React.useState(0);
   const [openDados, setOpenDados] = React.useState(false);
 
-  const [fPagamento, setFPagamento] = React.useState('');
+  // const [fPagamento, setFPagamento] = React.useState('');
   const nomeRef = useRef();
   const cpfRef = useRef();
   const dataRef = useRef();
   const emailRef = useRef();
-  const fpRef = useRef();
+  // const fpRef = useRef();
   const router = useRouter();
-  const handleChangeFP = (event) => {
+  /* const handleChangeFP = (event) => {
     // console.log(event.target.value);
     setFPagamento(event.target.value);
-  };
+  }; */
   /* const pagar = () => {
     if (email && cpf) {
       setOpen(true);
@@ -277,7 +277,7 @@ const TelaInicial = ({ inscritos }) => {
     }
     setOpenDrawer(false);
   };
-  const comprar = () => {
+  /* const comprar = () => {
     api
       .post('/api/notification2', {
         action: 'payment',
@@ -293,7 +293,7 @@ const TelaInicial = ({ inscritos }) => {
         console.log(error);
         //  updateFile(uploadedFile.id, { error: true });
       });
-  };
+  }; */
 
   const handleAdd = () => {
     // comprar();
@@ -1412,14 +1412,6 @@ const TelaInicial = ({ inscritos }) => {
                             </ColorButton>
                           </Box>
                         </Box>
-                        {carregar && (
-                          <Box className={classes.novoBox} mt={1}>
-                            <LinearProgress />
-                            <small style={{ color: '#fff' }}>
-                              Carregando...
-                            </small>
-                          </Box>
-                        )}
                       </Box>
                     </Box>
                   </Box>
