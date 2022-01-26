@@ -95,9 +95,9 @@ const useStyles = makeStyles((theme) => ({
   },
   button1: {
     display: 'flex',
-    background: '#780208',
+    background: '#b91a30',
     '&:hover': {
-      backgroundColor: '#b91a30',
+      backgroundColor: '#b81a30',
     },
     fontSize: '14px',
     fontWeight: 'bold',

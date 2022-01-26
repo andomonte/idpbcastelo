@@ -183,7 +183,7 @@ function LoginGame() {
                         p={1}
                         ml={0}
                         mr={0}
-                        mt={-14}
+                        mt={altura > 570 ? (altura < 630 ? -14 : -12) : -14}
                         display="flex"
                         alignItems="center"
                       >

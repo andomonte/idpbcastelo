@@ -72,7 +72,7 @@ const handler = async (req, res) => {
   }; */
   const respPagamento = await sendMercadoPago(paymentData);
   // const respPagamento1 = JSON.stringify(respPagamento);
-  console.log('v respP=', respPagamento);
+  console.log('v respP=', respPagamento.cause);
   const { total } = req.body;
   const { Adultos } = req.body;
   const { Criancas } = req.body;

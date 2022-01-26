@@ -14,6 +14,7 @@ import TamanhoJanela from 'src/utils/getSize';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useRouter } from 'next/router';
 import Divider from '@mui/material/Divider';
+import { Oval } from 'react-loading-icons';
 import GeneratePdf from './generatePdfTicket';
 
 const janela = TamanhoJanela();
@@ -159,223 +160,605 @@ function PesquisaCPF({ cpf, setOpen }) {
   return (
     <>
       <Box>
-        {posts === 'vazio' && (
-          <Box>
-            <Box justifyContent="center" display="flex">
-              <Box>
-                <Box {...defaultProps}>
-                  <Box mt={-1} ml={0}>
-                    <img
-                      src="/images/global/informe.png"
-                      alt=""
-                      width="100%"
-                      height={altura}
-                    />
-                    <Box width="90%" mt={-15}>
-                      <LinearProgress />
-                      <Box display="flex" justifyContent="center">
-                        <small>Carregando...</small>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        )}
-        <Drawer variant="persistent" anchor="bottom" open={openDrawerInval}>
-          <Box className={classes.root}>
+        <Box>
+          <Box justifyContent="center" display="flex">
             <Box>
-              <div className="content" ref={ref1} id="comprovante">
-                <Box display="flex" justifyContent="center">
-                  <Box
+              <Box {...defaultProps}>
+                <Box mt={-1} ml={0}>
+                  <img
+                    src="/images/global/informe.png"
+                    alt=""
                     width="100%"
                     height={altura}
-                    maxWidth={400}
-                    maxHeight={700}
-                    minHeight={500}
-                  >
-                    <Box>
-                      <Box mt={-1} ml={0}>
-                        <img
-                          src="/images/global/informe.png"
-                          alt=""
-                          width="100%"
-                          height="100%"
-                        />
-                      </Box>
-
-                      <Box
-                        //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
-                        width="100%"
-                        ml={-0.3}
-
-                        // className={classes.imgBack}
-                        // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
-                      >
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          width="100%"
-                          mb={0}
-                        >
-                          <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                            style={{
-                              fontSize: '16px',
-                              color: '#000',
-                              fontFamily: 'Arial Black',
-                              fontWeight: 'bold',
-                            }}
-                          >
-                            <Box mt={-ajusteAltura - 3}>Não temos registro</Box>
-                          </Typography>
-                        </Box>
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          width="100%"
-                          mb={0}
-                        >
-                          <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                            style={{
-                              fontSize: '16px',
-                              color: '#000',
-                              fontFamily: 'Arial Black',
-                              fontWeight: 'bold',
-                            }}
-                          >
-                            <Box mt={-ajusteAltura}>de compra no cpf</Box>
-                          </Typography>
-                        </Box>
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          width="100%"
-                          mt={1}
-                          sx={{ fontSize: 'bold', color: '#b91a30' }}
-                        >
-                          <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                            style={{
-                              fontSize: '16px',
-                              color: 'blue',
-                              fontWeight: 'bold',
-                            }}
-                          >
-                            <Box mt={-ajusteAltura + 3}>{cpf}</Box>
-                          </Typography>
-                        </Box>
-
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          width="100%"
-                          height={50}
-                          mt={1}
-                          sx={{ fontSize: 'bold', background: '#780208' }}
-                        >
-                          <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                            style={{
-                              fontSize: '13px',
-                              color: '#000',
-                              fontWeight: 'bold',
-                              marginTop: 10,
-                              marginLeft: 2,
-
-                              width: largura - 28,
-                              height: 60,
-                              textAlign: 'center',
-                            }}
-                          >
-                            <Box
-                              sx={{
-                                border: '1px solid #780208',
-                                borderLeft: 0,
-                                borderRight: 0,
-                                borderBottom: 0,
-                              }}
-                              mt={altura > 630 ? -40 : -34}
-                            >
-                              <Box mt={1}> Central de atendimento: </Box>
-                            </Box>
-                          </Typography>
-                        </Box>
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          width="100%"
-                          mt={0}
-                          sx={{ fontSize: 'bold', background: '#b91a30' }}
-                        >
-                          <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                            style={{
-                              fontSize: '13px',
-                              color: '#000',
-                              fontWeight: 'bold',
-                            }}
-                          >
-                            <Box mt={altura > 630 ? -40 : -34}>
-                              (92) 99134-4368
-                            </Box>
-                          </Typography>
-                        </Box>
-                      </Box>
-
-                      <Box
-                        mt={1}
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                        }}
-                      />
-
-                      <Box
-                        mt={0}
-                        mb={2}
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-                <Box
-                  mt={altura < 600 ? -15 : -20}
-                  display="flex"
-                  width="100%"
-                  justifyContent="center"
-                >
+                  />
                   <Box>
-                    <ColorButton
-                      style={{ borderRadius: 16 }}
-                      variant="contained"
-                      value="value"
-                      onClick={handleClose}
-                    >
-                      FECHAR
-                    </ColorButton>
+                    {posts === 'vazio' ? (
+                      <Box ml={2} width="90%" mt={-45}>
+                        <Box display="flex" justifyContent="center">
+                          <Oval stroke="blue" width={80} height={25} />
+                        </Box>
+                        <Box display="flex" justifyContent="center">
+                          <small>Carregando</small>
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box>
+                        {openDrawerInval && (
+                          <Box>
+                            <Box>
+                              <div
+                                className="content"
+                                ref={ref1}
+                                id="comprovante"
+                              >
+                                <Box
+                                  display="flex"
+                                  flexDirection="column"
+                                  justifyContent="center"
+                                  mt={
+                                    altura > 570
+                                      ? altura < 630
+                                        ? -ajusteAltura + 2
+                                        : -ajusteAltura + 5
+                                      : -ajusteAltura
+                                  }
+                                >
+                                  <Box textAlign="center">
+                                    <Typography
+                                      variant="caption"
+                                      display="block"
+                                      gutterBottom
+                                      style={{
+                                        fontSize: '16px',
+                                        color: '#000',
+                                        fontFamily: 'Arial Black',
+                                        fontWeight: 'bold',
+                                      }}
+                                    >
+                                      <Box>Não temos registro</Box>
+                                    </Typography>
+                                  </Box>
+                                  <Box textAlign="center" mt={0}>
+                                    <Typography
+                                      variant="caption"
+                                      display="block"
+                                      gutterBottom
+                                      style={{
+                                        fontSize: '16px',
+                                        color: '#000',
+                                        fontFamily: 'Arial Black',
+                                        fontWeight: 'bold',
+                                      }}
+                                    >
+                                      <Box>
+                                        <Typography
+                                          variant="caption"
+                                          display="block"
+                                          gutterBottom
+                                          style={{
+                                            fontSize: '16px',
+                                            color: '#000',
+                                            fontFamily: 'Arial Black',
+                                            fontWeight: 'bold',
+                                          }}
+                                        >
+                                          <Box>de compra no cpf</Box>
+                                        </Typography>
+                                      </Box>
+                                    </Typography>
+                                  </Box>
+                                  <Box textAlign="center">
+                                    <Typography
+                                      variant="caption"
+                                      display="block"
+                                      gutterBottom
+                                      style={{
+                                        fontSize: '16px',
+                                        color: '#000',
+                                        fontFamily: 'Arial Black',
+                                        fontWeight: 'bold',
+                                      }}
+                                    >
+                                      <Box>
+                                        <Typography
+                                          variant="caption"
+                                          display="block"
+                                          gutterBottom
+                                          style={{
+                                            fontSize: '16px',
+                                            color: 'blue',
+                                            fontFamily: 'Arial Black',
+                                            fontWeight: 'bold',
+                                          }}
+                                        >
+                                          <Box>{cpf}</Box>
+                                        </Typography>
+                                      </Box>
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                                <Box
+                                  mt={
+                                    altura > 570 ? (altura < 630 ? 25 : 32) : 20
+                                  }
+                                  display="flex"
+                                  width="100%"
+                                  justifyContent="center"
+                                >
+                                  <Box>
+                                    <ColorButton
+                                      style={{ borderRadius: 16 }}
+                                      variant="contained"
+                                      value="value"
+                                      onClick={handleClose}
+                                    >
+                                      FECHAR
+                                    </ColorButton>
+                                  </Box>
+                                </Box>
+                              </div>
+                            </Box>
+                          </Box>
+                        )}
+                        {openDrawerPend && (
+                          <Box>
+                            <Box
+                              mt={
+                                altura > 570 ? (altura < 630 ? -48 : -54) : -43
+                              }
+                            >
+                              <Box
+                                //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
+                                width={largura}
+                                ml={-0.3}
+
+                                // className={classes.imgBack}
+                                // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
+                              >
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mb={0}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '16px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={-3}>CPF: {cpf}</Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mb={0}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={2}>STATUS DE PAGAMENTO ESTÁ</Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mt={1}
+                                  sx={{ fontSize: 'bold', color: '#b91a30' }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '16px',
+                                      color: 'blue',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={-1}>PENDENTE</Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mt={1}
+                                  sx={{ fontSize: 'bold', color: '#b91a30' }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '16px',
+                                      color: 'green',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={0}>
+                                      <Box
+                                        display="flex"
+                                        justifyContent="space-around"
+                                      >
+                                        <strong style={{ color: '#000' }}>
+                                          código
+                                        </strong>
+                                      </Box>
+                                      <Box
+                                        display="flex"
+                                        justifyContent="space-around"
+                                      >
+                                        {idPagamento}
+                                      </Box>
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="92%"
+                                  height={0}
+                                  mt={1}
+                                  ml={2}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '13px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                      marginTop: 10,
+                                      marginLeft: 2,
+
+                                      width: largura - 28,
+                                      height: 60,
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        borderLeft: 0,
+                                        borderRight: 0,
+                                        borderBottom: 0,
+                                      }}
+                                      mt={
+                                        altura > 570
+                                          ? altura < 630
+                                            ? 3
+                                            : 5
+                                          : 0
+                                      }
+                                    >
+                                      <Box mt={1}>
+                                        {' '}
+                                        Central de atendimento:{' '}
+                                      </Box>
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mt={0}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '13px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box
+                                      mt={
+                                        altura > 570
+                                          ? altura < 630
+                                            ? 0
+                                            : 0
+                                          : -4
+                                      }
+                                    >
+                                      (92) 9134-4368
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                              </Box>
+
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              />
+
+                              <Box
+                                mt={0}
+                                mb={2}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              />
+                            </Box>
+                            <Box
+                              mt={altura > 570 ? (altura < 630 ? 6 : 10) : 5}
+                              display="flex"
+                              width="100%"
+                              justifyContent="center"
+                            >
+                              <Box>
+                                <ColorButton
+                                  style={{ borderRadius: 16 }}
+                                  variant="contained"
+                                  value="value"
+                                  onClick={handleClose}
+                                >
+                                  FECHAR
+                                </ColorButton>
+                              </Box>
+                            </Box>
+                          </Box>
+                        )}
+                        {openDrawerPend2 && (
+                          <Box>
+                            <Box
+                              mt={
+                                altura > 570 ? (altura < 630 ? -48 : -56) : -40
+                              }
+                            >
+                              <Box
+                                //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
+                                width={largura}
+                                ml={-0.3}
+
+                                // className={classes.imgBack}
+                                // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
+                              >
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mb={0}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '16px',
+                                      color: '#000',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={-3}>CPF: {cpf}</Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mb={0}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={0}>
+                                      Quantidade de inscrições ={' '}
+                                      <strong>{inscCancel.length}</strong>
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mt={1}
+                                  sx={{ fontSize: 'bold', color: '#b91a30' }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '16px',
+                                      color: 'blue',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={0}>CANCELADA</Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mt={1}
+                                  sx={{ fontSize: 'bold', color: '#b91a30' }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '16px',
+                                      color: 'green',
+                                      fontFamily: 'Arial Black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box mt={0}>
+                                      <Box
+                                        display="flex"
+                                        justifyContent="space-around"
+                                      >
+                                        <strong style={{ color: '#000' }}>
+                                          código
+                                        </strong>
+                                      </Box>
+                                      <Box
+                                        display="flex"
+                                        justifyContent="space-around"
+                                      >
+                                        {inscCancel.length &&
+                                          inscCancel[0].idPagamento}
+                                      </Box>
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="92%"
+                                  height={0}
+                                  mt={1}
+                                  ml={2}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '13px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                      marginTop: 10,
+                                      marginLeft: 2,
+
+                                      width: largura - 28,
+                                      height: 60,
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        borderLeft: 0,
+                                        borderRight: 0,
+                                        borderBottom: 0,
+                                      }}
+                                      mt={
+                                        altura > 570
+                                          ? altura < 630
+                                            ? 3
+                                            : 5
+                                          : 0
+                                      }
+                                    >
+                                      <Box mt={1}>
+                                        {' '}
+                                        Central de atendimento:{' '}
+                                      </Box>
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="center"
+                                  width="100%"
+                                  mt={0}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    display="block"
+                                    gutterBottom
+                                    style={{
+                                      fontSize: '13px',
+                                      color: '#000',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    <Box
+                                      mt={
+                                        altura > 570
+                                          ? altura < 630
+                                            ? 0
+                                            : 0
+                                          : -4
+                                      }
+                                    >
+                                      (92) 9134-4368
+                                    </Box>
+                                  </Typography>
+                                </Box>
+                              </Box>
+
+                              <Box
+                                mt={1}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              />
+
+                              <Box
+                                mt={0}
+                                mb={2}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              />
+                            </Box>
+                            <Box
+                              mt={altura > 570 ? (altura < 630 ? 6 : 10) : 5}
+                              display="flex"
+                              width="100%"
+                              justifyContent="center"
+                            >
+                              <Box>
+                                <ColorButton
+                                  style={{ borderRadius: 16 }}
+                                  variant="contained"
+                                  value="value"
+                                  onClick={handleClose}
+                                >
+                                  FECHAR
+                                </ColorButton>
+                              </Box>
+                            </Box>
+                          </Box>
+                        )}
+                      </Box>
+                    )}
                   </Box>
                 </Box>
-              </div>
+              </Box>
             </Box>
           </Box>
-        </Drawer>
-        <Drawer variant="persistent" anchor="bottom" open={openDrawerPend}>
+        </Box>
+
+        {/* <Drawer variant="persistent" anchor="bottom" open={openDrawerPend2}>
           <Box className={classes.root}>
             <Box>
               <div className="content" ref={ref2} id="comprovante">
@@ -389,179 +772,6 @@ function PesquisaCPF({ cpf, setOpen }) {
                         height={altura}
                       />
                     </Box>
-                  </Box>
-                  <Box mt={altura > 570 ? (altura < 630 ? -48 : -56) : -40}>
-                    <Box
-                      //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
-                      width={largura}
-                      ml={-0.3}
-
-                      // className={classes.imgBack}
-                      // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
-                    >
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mb={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={-3}>CPF: {cpf}</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mb={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '14px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={2}>STATUS DE PAGAMENTO ESTÁ</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={1}
-                        sx={{ fontSize: 'bold', color: '#b91a30' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: 'blue',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={-1}>PENDENTE</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={1}
-                        sx={{ fontSize: 'bold', color: '#b91a30' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: 'green',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>
-                            <Box display="flex" justifyContent="space-around">
-                              <strong style={{ color: '#000' }}>código</strong>
-                            </Box>
-                            <Box display="flex" justifyContent="space-around">
-                              {idPagamento}
-                            </Box>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="92%"
-                        height={0}
-                        mt={1}
-                        ml={2}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '13px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                            marginTop: 10,
-                            marginLeft: 2,
-
-                            width: largura - 28,
-                            height: 60,
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              borderLeft: 0,
-                              borderRight: 0,
-                              borderBottom: 0,
-                            }}
-                            mt={altura > 570 ? (altura < 630 ? 3 : 5) : 0}
-                          >
-                            <Box mt={1}> Central de atendimento: </Box>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '13px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={altura > 570 ? (altura < 630 ? 0 : 0) : -4}>
-                            (92) 9134-4368
-                          </Box>
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      mt={1}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    />
-
-                    <Box
-                      mt={0}
-                      mb={2}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    />
                   </Box>
                 </Box>
               </div>
@@ -581,217 +791,7 @@ function PesquisaCPF({ cpf, setOpen }) {
               </Box>
             </Box>
           </Box>
-        </Drawer>
-        <Drawer variant="persistent" anchor="bottom" open={openDrawerPend2}>
-          <Box className={classes.root}>
-            <Box>
-              <div className="content" ref={ref2} id="comprovante">
-                <Box width="100%" mb={1}>
-                  <Box {...defaultProps}>
-                    <Box mt={-1} ml={0}>
-                      <img
-                        src="/images/global/informe.png"
-                        alt=""
-                        width="100%"
-                        height={altura}
-                      />
-                    </Box>
-                  </Box>
-                  <Box mt={altura > 570 ? (altura < 630 ? -48 : -56) : -40}>
-                    <Box
-                      //              height={10} // defome tamanho do fundo para sobrepor a imagem de fundo
-                      width={largura}
-                      ml={-0.3}
-
-                      // className={classes.imgBack}
-                      // sx={{ backgroundImage: `url('/images/global/ticket.png')` }}
-                    >
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mb={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: '#000',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={-3}>CPF: {cpf}</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mb={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '14px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>
-                            Quantidade de inscrições ={' '}
-                            <strong>{inscCancel.length}</strong>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={1}
-                        sx={{ fontSize: 'bold', color: '#b91a30' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: 'blue',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>CANCELADA</Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={1}
-                        sx={{ fontSize: 'bold', color: '#b91a30' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '16px',
-                            color: 'green',
-                            fontFamily: 'Arial Black',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={0}>
-                            <Box display="flex" justifyContent="space-around">
-                              <strong style={{ color: '#000' }}>código</strong>
-                            </Box>
-                            <Box display="flex" justifyContent="space-around">
-                              {inscCancel.length && inscCancel[0].idPagamento}
-                            </Box>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="92%"
-                        height={0}
-                        mt={1}
-                        ml={2}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '13px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                            marginTop: 10,
-                            marginLeft: 2,
-
-                            width: largura - 28,
-                            height: 60,
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              borderLeft: 0,
-                              borderRight: 0,
-                              borderBottom: 0,
-                            }}
-                            mt={altura > 570 ? (altura < 630 ? 3 : 5) : 0}
-                          >
-                            <Box mt={1}> Central de atendimento: </Box>
-                          </Box>
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        width="100%"
-                        mt={0}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          style={{
-                            fontSize: '13px',
-                            color: '#000',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <Box mt={altura > 570 ? (altura < 630 ? 0 : 0) : -4}>
-                            (92) 9134-4368
-                          </Box>
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      mt={1}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    />
-
-                    <Box
-                      mt={0}
-                      mb={2}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </div>
-              <Box
-                mt={altura > 570 ? (altura < 630 ? 8 : 12) : 0}
-                display="flex"
-                justifyContent="center"
-              >
-                <ColorButton
-                  style={{ borderRadius: 16 }}
-                  variant="contained"
-                  value="value"
-                  onClick={handleClose}
-                >
-                  FECHAR
-                </ColorButton>
-              </Box>
-            </Box>
-          </Box>
-        </Drawer>
+        </Drawer> */}
         <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
           <Box className={classes.root}>
             <Box>

@@ -591,6 +591,7 @@ export default function CheckoutT({
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openDrawerOK, setOpenDrawerOK] = React.useState(false);
   const [openDrawerFinal, setOpenDrawerFinal] = React.useState(false);
+  const [openDrawerFinal2, setOpenDrawerFinal2] = React.useState(false);
   const [carregar, setCarregar] = React.useState(false);
   const [tipoDoc, setTipoDoc] = React.useState('CPF');
   const [number, setNumber] = React.useState('');
@@ -924,6 +925,10 @@ export default function CheckoutT({
     // setOpen(false);
     // window.location.reload();
   };
+  const atualizar2 = () => {
+    setOpenDrawerFinal2(false);
+    // window.location.reload();
+  };
 
   const handleSubmit = async () => {
     let validarDoc;
@@ -1000,6 +1005,7 @@ export default function CheckoutT({
 
           .then((response) => {
             const respostas = response;
+            // console.log(response);
             setResposta(respostas);
 
             if (
@@ -1046,7 +1052,12 @@ export default function CheckoutT({
           })
 
           .catch((error) => {
-            console.log(error);
+            console.log('errado:', error);
+            setValorErro(
+              `Não conseguimos fazer seu pagamento, devido erro no preenchimento de dados. Será necessário refazer sua compra.`,
+            );
+            setOpenDrawerFinal2(true);
+            //            setMessageErro(response.data.message);
             //  updateFile(uploadedFile.id, { error: true });
           });
       }
@@ -1535,6 +1546,54 @@ export default function CheckoutT({
                 variant="contained"
                 id="reload"
                 onClick={atualizar}
+              >
+                Fechar
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Drawer>
+      <Drawer variant="persistent" anchor="bottom" open={openDrawerFinal2}>
+        <Box height={janela.height} sx={{ background: '#ffebee' }}>
+          <Box mt={25}>
+            {messageErro ? (
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <h2>DADOS ERRADOS !</h2>
+                </Box>
+                <Box m={2} textAlign="center">
+                  <strong>{valorErro}</strong>
+                </Box>
+
+                <Box mt={4} textAlign="center">
+                  <strong>A operadora Informou:</strong>
+                </Box>
+                <Box m={0} textAlign="center">
+                  <strong>{messageErro}</strong>
+                </Box>
+              </Box>
+            ) : (
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <h2>ERRO NO PAGAMENTO !</h2>
+                </Box>
+                <Box m={2} textAlign="center">
+                  <strong>{valorErro}</strong>
+                </Box>
+              </Box>
+            )}
+            <Box
+              mt={4}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                className={classes.button2}
+                variant="contained"
+                id="reload"
+                onClick={atualizar2}
               >
                 Fechar
               </Button>
