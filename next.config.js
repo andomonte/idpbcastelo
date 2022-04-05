@@ -16,21 +16,14 @@ const withPWA = require('next-pwa');
 
 const nextConfig = {
   images: {
-    domains: [
-      'localhost',
-      'sistemaidpb.s3.amazonaws.com',
-      'idpb-app.vercel.app',
-      'sistemaidpb.com.br',
-    ],
+    domains: ['localhost', 'idpbfiladelfia.com.br'],
   },
 };
 module.exports = withPlugins([
   withImages,
   nextConfig,
   {
-    webpack: (config, {
-      buildId, dev, isServer, defaultLoaders, webpack,
-    }) =>
+    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) =>
       // Important: return the modified config
       config,
 
