@@ -9,13 +9,10 @@ export default class MyDocument extends Document {
       <Html lang="pr-BR" content="notranslate" translate="no">
         <Head>
           {/* PWA primary color */}
+
           <meta name="google" content="notranslate" />
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link
-            rel="shortcut icon"
-            href="/images/idpb.ico"
-            type="image/x-icon"
-          />
+          <link rel="icon" href="/images/idpb.ico" type="image/x-icon" />
 
           <link rel="manifest" href="/images/manifest.json" />
           <link rel="apple-touch-icon" href="/images/apple-icon.png" />
