@@ -24,6 +24,7 @@ import { useSession } from 'next-auth/client';
 import IconIdpb from 'src/components/icones/idpb';
 import iconesPerfil from 'src/components/icones/perfil';
 import React from 'react';
+import IconeInstalar from 'src/components/icones/instalar';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import AccountBoxIcon from '@material-ui/icons/AccountBox';
 // import PollIcon from '@material-ui/icons/Poll';
@@ -70,7 +71,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#ffff8d',
   },
 }));
-
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
+}
 const primaryMenu = [
   {
     id: 1,
@@ -131,6 +134,12 @@ const secondaryManu = [
     label: 'Mudar Usuário',
     path: '/selectPerfil',
     icon: change,
+  },
+  {
+    id: 8,
+    label: 'Instalar App',
+    icon: iconeInstall,
+    path: '/installApp',
   },
 ];
 function navBar({ perfilUser }) {

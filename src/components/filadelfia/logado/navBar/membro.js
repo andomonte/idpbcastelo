@@ -31,6 +31,7 @@ import IconeRelatorio from 'src/components/icones/relatorio';
 import midiaPlay from 'src/components/icones/midia';
 import SvgIcon from '@mui/material/SvgIcon';
 import CakeSharpIcon from '@mui/icons-material/CakeSharp';
+import IconeInstalar from 'src/components/icones/instalar';
 
 // import HomeIcon from '@material-ui/icons/Home';
 import { IoMdPerson } from 'react-icons/io';
@@ -123,6 +124,9 @@ function ContribuicoesIcones() {
 function ParticipacoesIcones() {
   return <IconeRelatorio cor="#ffe0b2" />;
 }
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
+}
 const primaryMenu = [
   {
     id: 1,
@@ -187,6 +191,12 @@ const secondaryManu = [
     label: 'Mudar Usuário',
     path: '/selectPerfil',
     icon: change,
+  },
+  {
+    id: 9,
+    label: 'Instalar App',
+    icon: iconeInstall,
+    path: '/installApp',
   },
 ];
 function navBar({ perfilUser }) {

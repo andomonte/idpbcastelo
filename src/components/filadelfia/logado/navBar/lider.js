@@ -25,6 +25,7 @@ import { FcCalendar } from 'react-icons/fc';
 import { FaHome } from 'react-icons/fa';
 // import IconesPerfil from 'src/components/icones/perfil';
 import React from 'react';
+import IconeInstalar from 'src/components/icones/instalar';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import AccountBoxIcon from '@material-ui/icons/AccountBox';
 // import PollIcon from '@material-ui/icons/Poll';
@@ -123,6 +124,9 @@ function Upload() {
 function RelatorioIcones() {
   return <IconeRelatorio cor="#ffe0b2" />;
 }
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
+}
 const primaryMenu = [
   {
     id: 1,
@@ -188,6 +192,12 @@ const secondaryManu = [
     label: 'Mudar Usuário',
     path: '/selectPerfil',
     icon: change,
+  },
+  {
+    id: 7,
+    label: 'Instalar App',
+    icon: iconeInstall,
+    path: '/installApp',
   },
 ];
 function navBar({ perfilUser }) {

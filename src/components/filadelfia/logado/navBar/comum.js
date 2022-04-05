@@ -27,6 +27,7 @@ import YouTubeIcon from 'src/components/icones/youtube';
 import InstagramIcon from 'src/components/icones/instagram';
 import iconesPerfil from 'src/components/icones/perfil';
 import { useSession } from 'next-auth/client';
+import IconeInstalar from 'src/components/icones/instalar';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -62,7 +63,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#ffff8d',
   },
 }));
-
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
+}
 const primaryMenuLogout = [
   { id: 1, label: 'IDPB-Nacional', path: '/', icon: IconBrasil },
   {
@@ -129,6 +132,12 @@ const redeSociais = [
     label: 'Instagran',
     icon: InstagramIcon,
     path: 'https://www.instagram.com/idpbnacional/',
+  },
+  {
+    id: 4,
+    label: 'Instalar App',
+    icon: iconeInstall,
+    path: '/installApp',
   },
 ];
 function navBar({ perfilUser }) {

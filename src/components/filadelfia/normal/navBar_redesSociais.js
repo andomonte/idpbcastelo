@@ -11,7 +11,7 @@ import {
   // Typography,
   //  Button,
 } from '@material-ui/core';
-
+import IconeInstalar from 'src/components/icones/instalar';
 // import { useState } from 'react';
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
@@ -83,6 +83,9 @@ function LogoPerfil() {
       <IconesPerfil />
     </SvgIcon>
   );
+}
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
 }
 const primaryMenuLogout = [
   { id: 1, label: 'Home', path: '/', icon: HomeIcon },
@@ -164,6 +167,12 @@ function navBar({ userIgrejas }) {
       label: 'Instagran',
       icon: InstagramIcon,
       path: userIgrejas[0].instagram,
+    },
+    {
+      id: 4,
+      label: 'Instalar App',
+      icon: iconeInstall,
+      path: '/installApp',
     },
   ];
 

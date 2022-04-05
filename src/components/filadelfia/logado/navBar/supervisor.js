@@ -35,6 +35,7 @@ import iconesFinanças from 'src/components/icones/finanças';
 import iconeAtualizarDados from 'src/components/icones/atualizarDados';
 import iconeRelatorio from 'src/components/icones/relatorio';
 import midiaPlay from 'src/components/icones/midia';
+import IconeInstalar from 'src/components/icones/instalar';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -70,7 +71,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#ffff8d',
   },
 }));
-
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
+}
 const primaryMenu = [
   {
     id: 1,
@@ -131,6 +134,12 @@ const secondaryManu = [
     label: 'Mudar Usuário',
     path: '/selectPerfil',
     icon: change,
+  },
+  {
+    id: 8,
+    label: 'Instalar App',
+    icon: iconeInstall,
+    path: '/installApp',
   },
 ];
 function navBar({ perfilUser }) {
