@@ -16,7 +16,7 @@ export async function selectRoutes() {
       label: 'DET',
       path: '/DET',
     },
-    { id: 2, label: 'Quem Somos', path: '/trendding' },
+    { id: 2, label: 'Quem Somos', path: '/quemSomos' },
   ];
   return data;
 }

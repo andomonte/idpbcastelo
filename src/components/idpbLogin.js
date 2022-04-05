@@ -144,7 +144,6 @@ function IdpbLogin({ title }) {
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        
       </Head>
 
       <div className={classes.root}>
@@ -167,7 +166,7 @@ function IdpbLogin({ title }) {
 
                 <Hidden mdDown>
                   <img
-                    src="/images/IDPBNAC.png"
+                    src="/images/filadelfia.png"
                     alt="logo"
                     className={classes.logo}
                   />
