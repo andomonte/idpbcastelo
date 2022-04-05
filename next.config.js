@@ -16,7 +16,12 @@ const withPWA = require('next-pwa');
 
 const nextConfig = {
   images: {
-    domains: ['localhost', 'idpbfiladelfia.com.br'],
+    domains: [
+      'localhost',
+      'sistemaidpb.s3.amazonaws.com',
+      'idpb-app.vercel.app',
+      'sistemaidpb.com.br',
+    ],
   },
 };
 module.exports = withPlugins([
