@@ -4,11 +4,11 @@ import prisma from 'src/lib/prisma';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, TextField } from '@material-ui/core';
-import Cadastro from 'src/components/filadelfia/cadastro';
+import Cadastro from 'src/components/castelo/cadastro';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import { useRouter } from 'next/router';
-import { IdpbFiladelfia } from 'src/components/filadelfia/normal';
+import { IdpbCastelo } from 'src/components/castelo/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
 
@@ -216,7 +216,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
         >
           <Box width="100%">
             <Box textAlign="center" mt={-3} mb={2}>
-              <img src="/images/filadelfia.png" alt="Filadelfia" width={80} />
+              <img src="/images/castelo.png" alt="Castelo" width={80} />
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
               <Box
@@ -325,7 +325,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
 
   return (
     <Box display="flex" align="center" justifyContent="center">
-      <IdpbFiladelfia
+      <IdpbCastelo
         lideranca={lideranca}
         rolMembros={rolMembros}
         userIgrejas={dadosUser}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Perfil } from 'src/components/filadelfia/logado/perfil';
+import { Perfil } from 'src/components/castelo/logado/perfil';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

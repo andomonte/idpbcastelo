@@ -1,5 +1,5 @@
 import React from 'react';
-import Secretaria from 'src/components/filadelfia/normal/secretaria';
+import Secretaria from 'src/components/castelo/normal/secretaria';
 import prisma from 'src/lib/prisma';
 
 function Sec({ userIgrejas, celulas, LiderancaCelulas }) {

@@ -1,12 +1,12 @@
 import React from 'react';
-import { IdpbFiladelfia } from 'src/components/filadelfia/normal';
+import { IdpbCastelo } from 'src/components/castelo/normal';
 import prisma from 'src/lib/prisma';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
 
   return (
-    <IdpbFiladelfia
+    <IdpbCastelo
       celulas={celulas}
       lideranca={LiderancaCelulas}
       userIgrejas={dadosUser}

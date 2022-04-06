@@ -230,15 +230,17 @@ model pontuacao {
 
 model relatorioCelebracao {
   id              Int      @id @default(autoincrement())
+  Semana          Int
+  Data            String   @db.VarChar(25)
+  Celula          Int
+  Distrito        Int
+  NomesMembros    Json
   NomesVisitantes Json
   Adultos         Int
   Criancas        Int
   Visitantes      Int
-  Celula          Int
-  Distrito        Int
-  Semana          Int
-  Data            String   @db.VarChar(25)
-  NomesMembros    Json
+  Conversoes      Int
+  Observacoes     String   @db.Text
   CriadoPor       String   @db.VarChar(255)
   CriadoEm        DateTime @db.DateTime(0)
 }
