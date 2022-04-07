@@ -486,14 +486,14 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     let pontosNovoMembro = 0;
     let pontosVisitas = 0;
     let pontosRelCelula = 0;
-    const pontosRelCelebracao = 0;
-    const pontosCelebracaoIgreja = 0;
-    const pontosCelebracaoLive = 0;
-    const pontosVisitantesCelebracao = 0;
+    let pontosRelCelebracao = 0;
+    let pontosCelebracaoIgreja = 0;
+    let pontosCelebracaoLive = 0;
+    let pontosVisitantesCelebracao = 0;
 
-    let pontosRelDiscipulado = 1;
-    let pontosDiscipulado = presentes;
-    let pontosLeituraBiblia = contBiblia;
+    const pontosRelDiscipulado = 1;
+    const pontosDiscipulado = presentes;
+    const pontosLeituraBiblia = contBiblia;
 
     let pontosTotalAtual = 0;
 
@@ -506,13 +506,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         if (
           semanaPontuacao === semana &&
           pontuacaoAtual.RelCelulaFeito === 1 &&
-          pontuacaoAtual.RelDiscipulado === 1
+          pontuacaoAtual.RelCelebracao === 1
         )
           pontosPontualidade = 1;
       }
       if (
         pontuacaoAtual.RelCelulaFeito === 1 &&
-        pontuacaoAtual.RelDiscipulado === 1
+        pontuacaoAtual.RelCelebracao === 1
       )
         pontosRelatorio = 1;
       if (pontuacaoAtual.RelCelulaFeito === 1) {
@@ -525,10 +525,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         //        pontosCelebracaoIgreja = pontuacaoAtual.CelebracaoIgreja;
         //        pontosCelebracaoLive = pontuacaoAtual.CelebracaoLive;
       }
-      if (pontuacaoAtual.RelDiscipulado === 1) {
-        pontosRelDiscipulado = pontuacaoAtual.RelDiscipulado;
-        pontosDiscipulado = pontuacaoAtual.Discipulados;
-        pontosLeituraBiblia = pontuacaoAtual.Discipulados;
+      if (pontuacaoAtual.RelCelebracaoFeito === 1) {
+        pontosRelCelebracao = pontuacaoAtual.RelCelebracao;
+        pontosCelebracaoIgreja = pontuacaoAtual.PresentesCelebracaoIgreja;
+        pontosCelebracaoLive = pontuacaoAtual.pontosCelebracaoLive;
+        pontosVisitantesCelebracao = pontuacaoAtual.VisitantesCelebracao;
       }
     }
 
