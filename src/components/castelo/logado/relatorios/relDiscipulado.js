@@ -598,7 +598,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       Number(pontosVisitantesCelebracao),
     );
     console.log(
-      'pontos:',
+      'pontos final:',
       PontuacaoFinal,
       TotalPercentual,
       pontosTotalAtualRank,
