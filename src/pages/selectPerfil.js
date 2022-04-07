@@ -184,7 +184,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
 
     valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
     console.log(
-      'selectPerfil valorPerfil',
+      'selectPerf valorPerfil',
       valorPerfil,
       Object.keys(userMembro).length,
     );
