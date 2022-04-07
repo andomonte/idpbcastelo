@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const classes = useStyles();
+
   const [session] = useSession();
   const [open, setOpen] = React.useState(false);
   const [openEspera, setOpenEspera] = React.useState(false);
@@ -180,8 +181,13 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
         numero: membro[0].Celula,
       };
     }
-    valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
 
+    valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
+    console.log(
+      'selectPerfil valorPerfil',
+      valorPerfil,
+      Object.keys(userMembro).length,
+    );
     // expected output: Object { a: 1, b: 4, c: 5 }
 
     // expected output: Object { a: 1, b: 4, c: 5 }
@@ -192,7 +198,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
       setOpenEspera(true);
     };
 
-    if (Object.keys(valorPerfil).length === 0) {
+    if (Object.keys(userMembro).length === 0) {
       return (
         <Cadastro
           title="IDPB-CELULAS"

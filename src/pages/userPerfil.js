@@ -13,7 +13,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
   //  const [open, setOpen] = React.useState(false);
   // const [perfilUser, setPerfilUser] = React.useState('');
   let secao = [{ email: '' }];
-
+  console.log('valorPerfil', secao);
   const router = useRouter();
   const perfilUser = router.query;
 

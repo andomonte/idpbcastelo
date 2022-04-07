@@ -4,6 +4,7 @@ import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
 function meuPerfil({ celulas, rolMembros, lideranca }) {
+  console.log('meuPerfil valorPerfil');
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';

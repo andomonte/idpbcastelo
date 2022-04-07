@@ -165,6 +165,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
   );
+  const [loading, setLoading] = React.useState(true);
   const [pFinal, setPFinal] = React.useState({});
   const [pTotalAtualRank, setPTotalAtualRank] = React.useState(0);
   const [pTotalAtual, setPTotalAtual] = React.useState(0);
@@ -217,7 +218,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   //= =================================================================
 
   const [semana, setSemana] = React.useState(0);
-  const [existeRelatorio, setExisteRelatorio] = React.useState(false);
+  const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
 
   React.useEffect(() => {
@@ -315,7 +316,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     setObservacoes('');
     setCheckRelatorio(false);
     setPodeEditar(true);
-    setExisteRelatorio(false);
+    //  setExisteRelatorio(false);
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -356,6 +357,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
+        setExisteRelatorio(false);
       }
     } else {
       const nomesVisitantesParcial = visitantesCelula.map((row) =>
@@ -366,6 +368,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         (val) => val.Presenca === true,
       );
       setQtyVisitante(qtyVisitanteNovo.length);
+      setExisteRelatorio(false);
     }
     if (errorMembers) return <div>An error occured.</div>;
     if (!members) return <div>Loading ...</div>;
@@ -505,7 +508,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       setPontosAnterior(pontosSemanaAnterior);
       //  console.log(pontosSemanaAtual, pontosSemanaAnterior);
     }
-
+    console.log('carregnaod');
+    setLoading(false);
     return 0;
   };
 
@@ -1822,7 +1826,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                 justifyContent="center"
                                 width="100%"
                               >
-                                <Box mt={0}>
+                                <Box
+                                  width="100%"
+                                  mt={0}
+                                  display="flex"
+                                  justifyContent="center"
+                                >
                                   <TextareaAutosize
                                     maxRows={4}
                                     value={observacoes}
@@ -1835,7 +1844,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                       display: 'flex',
                                       marginTop: 20,
                                       textAlign: 'center',
-                                      width: '82vw',
+                                      width: '90%',
                                       height: 80,
                                       borderRadius: 15,
                                       border: '1px solid #000',
@@ -2237,9 +2246,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                     </Box>
                   </Box>
                   {!existeRelatorio ? (
-                    <Box>
+                    <Box height="67%">
                       <Box
-                        height="63.9%"
+                        height="100%"
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
@@ -2253,23 +2262,46 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         borderTop="2px solid #fff"
                         borderBottom="2px solid #fff"
                       >
-                        <Box>ATENÇÃO!!!</Box>
-
+                        <Box>RELATÓRIO DA CÉLULA</Box>
                         <Box
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          width="100%"
-                          color="#fff"
-                          fontFamily="arial"
-                          fontSize="16px"
-                          bgcolor={corIgreja.principal}
+                          color={corIgreja.texto1}
+                          fontFamily="arial black"
+                          fontSize="20px"
+                          mt={1}
                         >
-                          <Box mt={2}>Ainda não foi registrado</Box>
-                          <Box>nenhum relatório nessa semana</Box>
+                          SEMANA - {semana}
                         </Box>
-
+                        {!loading ? (
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            width="100%"
+                            color="#fff"
+                            fontFamily="arial"
+                            fontSize="16px"
+                            bgcolor={corIgreja.principal}
+                          >
+                            <Box mt={2}>Ainda não foi registrado</Box>
+                            <Box>nenhum relatório nessa semana</Box>
+                          </Box>
+                        ) : (
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            width="100%"
+                            color="#fff"
+                            fontFamily="arial"
+                            fontSize="16px"
+                            bgcolor={corIgreja.principal}
+                          >
+                            <Box mt={2}>Buscando Relatório</Box>
+                            <Box>aguarde...</Box>
+                          </Box>
+                        )}
                         <Box
                           mt={5}
                           display="flex"
