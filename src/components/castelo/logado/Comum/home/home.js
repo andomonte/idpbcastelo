@@ -36,7 +36,7 @@ const home = () => {
           className={classes.img}
         />
         <img
-          src="/images/castelo/infoDesk02.jpg"
+          src="/images/castelo/infoDes02.jpg"
           alt="img02"
           className={classes.img}
         />

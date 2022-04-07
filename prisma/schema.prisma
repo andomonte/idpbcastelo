@@ -155,21 +155,6 @@ model membros {
   @@index([Supervisao], name: "Supervisao_index")
 }
 
-model plancelua {
-  id          Int    @id @default(autoincrement())
-  Encontro    String @db.VarChar(255)
-  Exaltacao   String @db.VarChar(255)
-  Edificacao  String @db.VarChar(255)
-  Evangelismo String @db.VarChar(255)
-  Lanche      String @db.VarChar(255)
-  Semana      Int
-  Data        String @db.VarChar(25)
-  Celula      Int
-  Supervisao  Int
-  Coordenacao Int
-  Distrito    Int
-}
-
 model supervisao {
   id             Int    @id @default(autoincrement())
   Nome           String @db.Text
@@ -243,4 +228,32 @@ model relatorioCelebracao {
   Observacoes     String   @db.Text
   CriadoPor       String   @db.VarChar(255)
   CriadoEm        DateTime @db.DateTime(0)
+}
+
+model plancelula {
+  id          Int    @id @default(autoincrement())
+  Encontro    String @db.VarChar(255)
+  Exaltacao   String @db.VarChar(255)
+  Edificacao  String @db.VarChar(255)
+  Evangelismo String @db.VarChar(255)
+  Lanche      String @db.VarChar(255)
+  Semana      Int
+  Data        String @db.VarChar(25)
+  Celula      Int
+  Supervisao  Int
+  Coordenacao Int
+  Distrito    Int
+}
+
+model relatoriolDiscipulado {
+  id             Int      @id @default(autoincrement())
+  Celula         Int
+  Distrito       Int
+  Semana         Int
+  Data           String   @db.Text
+  NomesMembros   String   @db.Text
+  LeituraBiblica Int
+  Observacoes    String   @db.Text
+  CriadoPor      String   @db.Text
+  CriadoEm       DateTime @db.DateTime(0)
 }
