@@ -57,12 +57,7 @@ function createEstatistico(
   Semana,
   Data,
   NomesMembros,
-  NomesVisitantes,
-  Adultos,
-  Criancas,
-  Visitantes,
-
-  Conversoes,
+  LeituraBiblica,
   Observacoes,
   CriadoPor,
   CriadoEm,
@@ -73,11 +68,7 @@ function createEstatistico(
     Semana,
     Data,
     NomesMembros,
-    NomesVisitantes,
-    Adultos,
-    Criancas,
-    Visitantes,
-    Conversoes,
+    LeituraBiblica,
     Observacoes,
     CriadoPor,
     CriadoEm,
@@ -260,7 +251,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setContBiblia(contAtual);
   };
 
-  const url = `/api/consultaRelatorioCelebracao/${semana}`;
+  const url = `/api/consultaRelatorioDiscipulado/${semana}`;
   const { data: members, error: errorMembers } = useSWR(url, fetcher);
   const url2 = `/api/consultaPontuacao/${perfilUser.Distrito}/${perfilUser.Celula}`;
   const { data: pontos, error: errorPontos } = useSWR(url2, fetcher);
@@ -616,7 +607,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setPTotalAtualRank(pontosTotalAtualRank);
     //  setPTotalAnterior(pontosTotalAnterior);
 
-    // const nomesMembros = JSON.parse(RelCelebracaoFinal.NomesMembros);
+    // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
     /*
      */
   };
@@ -679,27 +670,23 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
 
-    const RelCelebracaoFinal = createEstatistico(
+    const RelDiscipuladoFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
       Number(semana),
       inputValue,
       nomesCelulaFinal,
-      nomesVisitantes,
-      Number(adultos),
-      Number(criancas),
-      Number(qtyVisitante),
       Number(contBiblia),
       String(observacoes),
       perfilUser.Nome,
       criadoEm,
     );
 
-    // const nomesMembros = JSON.parse(RelCelebracaoFinal.NomesMembros);
+    // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
 
     api
-      .post('/api/criarRelCelebracao', {
-        relatorio: RelCelebracaoFinal,
+      .post('/api/criarRelDiscipulado', {
+        relatorio: RelDiscipuladoFinal,
       })
       .then((response) => {
         if (response) {
