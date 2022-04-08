@@ -16,14 +16,14 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
 
   const router = useRouter();
   const perfilUser = router.query;
-
+  console.log('onde veio');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
 
     if (secao.length === 0) {
       return (
         <Cadastro
-          title="IDPB-CELULAS"
+          title="IDPB-CASTELO"
           rolMembros={rolMembros}
           lideranca={lideranca}
         />
@@ -32,7 +32,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
     return (
       <Perfil
         celulas={celulas}
-        title="IDPB-CELULAS"
+        title="IDPB-CASTELO"
         rolMembros={rolMembros}
         lideranca={lideranca}
         perfilUser={perfilUser}
