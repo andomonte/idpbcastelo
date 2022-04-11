@@ -147,7 +147,7 @@ function IdpbCastelo({ userIgrejas, title, celulas }) {
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     if (!open) {

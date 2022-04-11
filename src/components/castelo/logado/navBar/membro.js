@@ -138,7 +138,7 @@ const primaryMenu = [
   {
     id: 2,
     label: 'Meu Perfil',
-    path: '/selectPerfil',
+    path: '/meuPerfil',
     icon: LogoPerfil,
   },
 ];

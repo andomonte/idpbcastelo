@@ -22,7 +22,6 @@ export default function TabCelula({
     let contStatus = 0;
 
     if (podeEditar) {
-      console.log('aquei', dados[index].Presenca);
       if (dados[index].Presenca === false && contStatus === 0) {
         dados[index].Presenca = 'igreja';
         contStatus += 1;

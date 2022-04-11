@@ -3,8 +3,6 @@ import prisma from 'src/lib/prisma';
 // POST /api/user
 // Required fields in body: name, email
 export default async function handle(req, res) {
-  const valor = req.body;
-  console.log(valor);
   const result = await prisma.inscritosCursos
 
     .create({

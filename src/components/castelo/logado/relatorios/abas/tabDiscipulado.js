@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 
-export default function TabCelula({
+export default function TabDiscipuado({
   nomesCelulas,
   setPresentes,
   setRelCelula,
@@ -57,23 +57,6 @@ export default function TabCelula({
       }));
     }
   }, []);
-  React.useEffect(() => {
-    for (let index = 0; index < dados.length; index += 1) {
-      let cor;
-      if (dados[index].Presenca) {
-        cor = '#F0FFF0';
-      } else {
-        cor = '#feff';
-      }
-      console.log('veio aqui sim');
-      setRelCelula(dados);
-      const updatedValue = { [index]: cor };
-      setRespostas((shopCart) => ({
-        ...shopCart,
-        ...updatedValue,
-      }));
-    }
-  }, [nomesCelulas.length]);
   return (
     <Paper
       sx={{

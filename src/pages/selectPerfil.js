@@ -183,11 +183,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     }
 
     valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
-    console.log(
-      'selectPerf valorPerfil',
-      valorPerfil,
-      Object.keys(userMembro).length,
-    );
+
     // expected output: Object { a: 1, b: 4, c: 5 }
 
     // expected output: Object { a: 1, b: 4, c: 5 }
@@ -352,9 +348,17 @@ export const getStaticProps = async () => {
   const userIgrejas = await prisma.igreja.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  const rolMembros = await prisma.membros.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const rolMembros = await prisma.membros
+    .findMany({
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });

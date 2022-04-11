@@ -155,7 +155,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   const [rankCelula, setRankCelula] = React.useState([]);
   const [rankGeral, setRankGeral] = React.useState(0);
   const [pontosAtual, setPontosAtual] = React.useState([]);
-
+  const [loading, setLoading] = React.useState(true);
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
   const [tela, setTela] = React.useState(1);
   const [carregando, setCarregando] = React.useState(false);
@@ -212,9 +212,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     return result;
   };
   //= =================================================================
-
+  const [startShow, setStartShow] = React.useState(false);
   const [semana, setSemana] = React.useState(0);
-  const [existeRelatorio, setExisteRelatorio] = React.useState(false);
+  const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
 
   React.useEffect(() => {
@@ -234,7 +234,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
   React.useEffect(() => {
     //  contEffect += 1;
-
+    setLoading(true);
     if (selectedDate) {
       const checkAno = selectedDate.getFullYear();
 
@@ -244,7 +244,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       }
     }
   }, [selectedDate]);
+  React.useEffect(() => {
+    if (existeRelatorio !== 'inicio') {
+      setLoading(false);
+    }
 
+    return 0;
+  }, [existeRelatorio, startShow]);
   const handleIncConversoes = () => {
     let contAtual = contConversoes;
     if (podeEditar) contAtual += 1;
@@ -284,7 +290,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setObservacoes('');
     setCheckRelatorio(false);
     setPodeEditar(true);
-    setExisteRelatorio(false);
+    // setExisteRelatorio(false);
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -318,6 +324,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         setNomesVisitantes(nVisitantes);
         setObservacoes(relatorio[0].Observacoes);
         // setRelCelula(relatorio);
+        setStartShow(!startShow);
       } else {
         const nomesVisitantesParcial = visitantesCelula.map((row) =>
           createRelVisitantes(row.id, row.Nome, false),
@@ -327,6 +334,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
+        setExisteRelatorio(false); // avisa que não tem relatório
+        setStartShow(!startShow);
       }
     } else {
       const nomesVisitantesParcial = visitantesCelula.map((row) =>
@@ -337,6 +346,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         (val) => val.Presenca === true,
       );
       setQtyVisitante(qtyVisitanteNovo.length);
+      setExisteRelatorio(false);
+      setStartShow(!startShow);
     }
     if (errorMembers) return <div>An error occured.</div>;
     if (!members) return <div>Loading ...</div>;
@@ -354,7 +365,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   }, [members]);
-  React.useEffect(() => {
+  /* React.useEffect(() => {
     setRelPresentes(
       relPresentes.sort((a, b) => {
         if (a.Nome > b.Nome) return 1;
@@ -362,8 +373,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         return 0;
       }),
     );
-  }, [relPresentes]);
-  React.useEffect(() => {
+  }, [relPresentes]); */
+  /* React.useEffect(() => {
     setNomesVisitantes(
       nomesVisitantes.sort((a, b) => {
         if (a.Nome > b.Nome) return 1;
@@ -371,7 +382,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         return 0;
       }),
     );
-  }, [nomesVisitantes]);
+  }, [nomesVisitantes]); */
 
   //= ========================calcular adulto e crianca========================
 
@@ -475,13 +486,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       );
 
       setPontosAtual(pontosSemanaAtual);
-
-      //  console.log(pontosSemanaAtual, pontosSemanaAnterior);
     }
 
     return 0;
   };
-
+  console.log('fora de tudo:', existeRelatorio);
   const criarPontuacao = () => {
     const criadoEm = new Date();
     // const dataRel = getDataPontos(selectedDate);
@@ -503,9 +512,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     let pontosRelDiscipulado = 0;
     let pontosDiscipulado = 0;
     let pontosLeituraBiblia = 0;
-
     let pontosTotalAtual = 0;
-
     let pontosTotalAtualRank = 0;
 
     if (pontosAtual.length) {
@@ -537,7 +544,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       if (pontuacaoAtual.RelDiscipulado === 1) {
         pontosRelDiscipulado = pontuacaoAtual.RelDiscipulado;
         pontosDiscipulado = pontuacaoAtual.Discipulados;
-        pontosLeituraBiblia = pontuacaoAtual.Discipulados;
+        pontosLeituraBiblia = pontuacaoAtual.LeituraBiblica;
       }
     }
 
@@ -605,15 +612,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       Number(pontosLeituraBiblia),
       Number(pontosVisitantesCelebracao),
     );
-    console.log(
-      'pontos:',
-      PontuacaoFinal,
-      TotalPercentual,
-      pontosTotalAtualRank,
-    );
+
     setPFinal(PontuacaoFinal);
     setPTotalAtual(TotalPercentual);
     setPTotalAtualRank(pontosTotalAtualRank);
+
     //  setPTotalAnterior(pontosTotalAnterior);
 
     // const nomesMembros = JSON.parse(RelCelebracaoFinal.NomesMembros);
@@ -634,6 +637,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   }, [existeRelatorio]);
+
+  React.useEffect(() => {
+    criarPontuacao();
+
+    return 0;
+  }, [pontosAtual]);
 
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
@@ -797,12 +806,21 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   }, [PontosSemana]);
 
   return (
-    <Box height="90vh" minWidth={370} minHeight={500}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      bgcolor={corIgreja.principal}
+      height="90vh"
+      width="100vw"
+      minWidth={370}
+      minHeight={500}
+    >
       {openVisitantes ? (
         <Box
           minWidth={370}
           height="100%"
-          width="100vw"
+          width="100%"
           maxWidth={600}
           border="4px solid #fff"
         >
@@ -1159,7 +1177,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                       borderTopRightRadius: '16px',
                     }}
                   >
-                    <Box width="90%" ml={1}>
+                    <Box width="100%" ml={1}>
                       <Box mb={1}>
                         <Grid container spacing={0}>
                           <Grid container item xs={12} spacing={1}>
@@ -1350,7 +1368,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                     width="100%"
                     bgcolor={corIgreja.principal}
                     borderTop="2px solid #fff"
-                    borderBottom="2px solid #fff"
                   >
                     <Box
                       display="flex"
@@ -1373,7 +1390,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                           minHeight={330}
                           bgcolor="#fafafa"
                           width="100%"
-                          borderRadius={16}
                         >
                           {tela === 1 && (
                             <TabCelebracao
@@ -1392,26 +1408,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                               width="100%"
                               flexDirection="column"
                               height="100%"
-                              mt={0}
+                              mt={1}
                             >
-                              <Box
-                                sx={{ fontSize: '16px' }}
-                                display="flex"
-                                flexDirection="column"
-                                alignItems="center"
-                                justifyContent="center"
-                                mb={2}
-                              >
-                                <Box
-                                  display="flex"
-                                  alignItems="center"
-                                  justifyContent="center"
-                                  fontFamily="arial black"
-                                  width="100%"
-                                >
-                                  CELEBRAÇÃO
-                                </Box>
-                              </Box>
                               <Box
                                 display="flex"
                                 justifyContent="center"
@@ -1503,6 +1501,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                 justifyContent="center"
                                 width="100%"
                                 mt={2}
+                                mb={2}
                               >
                                 <Paper
                                   style={{
@@ -1604,12 +1603,16 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                               </Box>
 
                               <Box
-                                mt={2}
                                 display="flex"
                                 justifyContent="center"
                                 width="100%"
                               >
-                                <Box>
+                                <Box
+                                  width="100%"
+                                  mt={0}
+                                  display="flex"
+                                  justifyContent="center"
+                                >
                                   <TextareaAutosize
                                     maxRows={4}
                                     value={observacoes}
@@ -1622,7 +1625,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                       display: 'flex',
                                       marginTop: 20,
                                       textAlign: 'center',
-                                      width: '82vw',
+                                      width: '90%',
                                       height: 80,
                                       borderRadius: 15,
                                       border: '1px solid #000',
@@ -1643,10 +1646,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                     justifyContent="center"
                     alignItems="center"
                     bgcolor={corIgreja.principal}
-                    style={{
-                      borderBottomLeftRadius: '16px',
-                      borderBottomRightRadius: '16px',
-                    }}
                   >
                     <Box
                       height="10%"
@@ -2024,9 +2023,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                     </Box>
                   </Box>
                   {!existeRelatorio ? (
-                    <Box>
+                    <Box height="60%">
                       <Box
-                        height="63.9%"
+                        height="100%"
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
@@ -2038,25 +2037,47 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         fontSize="20px"
                         bgcolor={corIgreja.principal}
                         borderTop="2px solid #fff"
-                        borderBottom="2px solid #fff"
                       >
-                        <Box>ATENÇÃO!!!</Box>
-
+                        <Box>RELATÓRIO DA CELEBRAÇÃO</Box>
                         <Box
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          width="100%"
-                          color="#fff"
-                          fontFamily="arial"
-                          fontSize="16px"
-                          bgcolor={corIgreja.principal}
+                          color={corIgreja.texto1}
+                          fontFamily="arial black"
+                          fontSize="20px"
+                          mt={1}
                         >
-                          <Box mt={2}>Ainda não foi registrado</Box>
-                          <Box>nenhum relatório nessa semana</Box>
+                          SEMANA - {semana}
                         </Box>
-
+                        {!loading ? (
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            width="100%"
+                            color="#fff"
+                            fontFamily="arial"
+                            fontSize="16px"
+                            bgcolor={corIgreja.principal}
+                          >
+                            <Box mt={2}>Ainda não foi registrado</Box>
+                            <Box>nenhum relatório nessa semana</Box>
+                          </Box>
+                        ) : (
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            width="100%"
+                            color="#fff"
+                            fontFamily="arial"
+                            fontSize="16px"
+                            bgcolor={corIgreja.principal}
+                          >
+                            <Box mt={2}>Buscando Relatório</Box>
+                            <Box>aguarde...</Box>
+                          </Box>
+                        )}
                         <Box
                           mt={5}
                           display="flex"
@@ -2088,10 +2109,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         justifyContent="center"
                         alignItems="center"
                         bgcolor={corIgreja.principal}
-                        style={{
-                          borderBottomLeftRadius: '16px',
-                          borderBottomRightRadius: '16px',
-                        }}
                       >
                         <Box
                           height="10%"
@@ -2101,10 +2118,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                           justifyContent="center"
                           alignItems="center"
                           bgcolor={corIgreja.principal}
-                          style={{
-                            borderTopLeftRadius: '16px',
-                            borderTopRightRadius: '16px',
-                          }}
                         >
                           <Box width="100%" ml={1}>
                             <Box mb={1}>
@@ -2157,7 +2170,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         fontSize="16px"
                         bgcolor={corIgreja.principal}
                         borderTop="2px solid #fff"
-                        borderBottom="2px solid #fff"
                       >
                         <Box mt={2} fontFamily="arial" color="#fff">
                           SEMANA: {semana}
@@ -2183,7 +2195,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                             alignItems="center"
                             justifyContent="center"
                             width="90%"
-                            bgcolor="#b8faff"
+                            bgcolor="#e5e6b8"
                             height="100%"
                             border="2px solid orange"
                           >
@@ -2277,7 +2289,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                             alignItems="center"
                             justifyContent="center"
                             width="90%"
-                            bgcolor="#b8faff"
+                            bgcolor="#e5e6b8"
                             height="100%"
                             border="2px solid orange"
                           >
@@ -2379,10 +2391,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         justifyContent="center"
                         alignItems="center"
                         bgcolor={corIgreja.principal}
-                        style={{
-                          borderBottomLeftRadius: '16px',
-                          borderBottomRightRadius: '16px',
-                        }}
                       >
                         <Box
                           height="10%"
@@ -2392,10 +2400,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                           justifyContent="center"
                           alignItems="center"
                           bgcolor={corIgreja.principal}
-                          style={{
-                            borderTopLeftRadius: '16px',
-                            borderTopRightRadius: '16px',
-                          }}
                         >
                           <Box width="100%" ml={1}>
                             <Box mb={1}>

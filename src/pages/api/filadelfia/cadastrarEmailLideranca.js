@@ -5,7 +5,7 @@ import prisma from 'src/lib/prisma';
 export default async function handle(req, res) {
   const { id } = req.body;
   const { Email } = req.body;
-  console.log('id', id, Email);
+
   const result = await prisma.lideranca
     .update({
       where: {

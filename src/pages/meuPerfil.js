@@ -4,7 +4,6 @@ import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
 function meuPerfil({ celulas, rolMembros, lideranca }) {
-  console.log('meuPerfil valorPerfil');
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';
@@ -27,6 +26,14 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
     window.history.replaceState(null, '', '/meuPerfil');
   }
 
+  if (perfilUserF === null) {
+    router.push(
+      {
+        pathname: '/selectPerfil',
+      },
+      '/selectPerfil',
+    );
+  }
   return (
     <div>
       {perfilUser.id ? (
@@ -62,9 +69,17 @@ export const getStaticProps = async () => {
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  const rolMembros = await prisma.membros.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const rolMembros = await prisma.membros
+    .findMany({
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   return {
     props: {
       celulas: JSON.parse(JSON.stringify(celulas)),

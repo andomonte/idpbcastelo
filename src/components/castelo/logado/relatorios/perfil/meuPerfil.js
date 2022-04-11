@@ -6,7 +6,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import TamanhoJanela from 'src/utils/getSize';
 
 const janela = TamanhoJanela();
-console.log(janela);
+
 /* import useSWR from 'swr';
 
 function getDados(email, nome) {
@@ -31,7 +31,7 @@ function meuPerfil({ secao, perfilUser }) {
         justifyContent="center"
         alignItems="center"
         height={janela.height - 56}
-        width="96vw"
+        width="95vw"
         minHeight={500}
       >
         <Box

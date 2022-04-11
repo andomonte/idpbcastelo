@@ -245,7 +245,7 @@ model plancelula {
   Distrito    Int
 }
 
-model relatoriolDiscipulado {
+model relatorioDiscipulado {
   id             Int      @id @default(autoincrement())
   Celula         Int
   Distrito       Int

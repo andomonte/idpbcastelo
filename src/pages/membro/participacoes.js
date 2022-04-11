@@ -54,9 +54,17 @@ function relatorios({ celulas, rolMembros, lideranca }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const rolMembros = await prisma.membros.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const rolMembros = await prisma.membros
+    .findMany({
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   return {
     props: {
       rolMembros: JSON.parse(JSON.stringify(rolMembros)),

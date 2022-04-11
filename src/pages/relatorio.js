@@ -65,12 +65,28 @@ export const getStaticProps = async () => {
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  const rolMembros = await prisma.membros.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
-  const visitantes = await prisma.visitantes.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const rolMembros = await prisma.membros
+    .findMany({
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+  const visitantes = await prisma.visitantes
+    .findMany({
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
 
   return {
     props: {

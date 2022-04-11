@@ -16,7 +16,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
 
   const router = useRouter();
   const perfilUser = router.query;
-  console.log('onde veio');
+
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
 
@@ -59,9 +59,17 @@ export const getStaticProps = async () => {
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  const rolMembros = await prisma.membros.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const rolMembros = await prisma.membros
+    .findMany({
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   return {
     props: {
       celulas: JSON.parse(JSON.stringify(celulas)),

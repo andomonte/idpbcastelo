@@ -5,7 +5,7 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
 
   const dados = req.body;
-  console.log(dados);
+
   if (dados) {
     try {
       const result = await prisma.visitantes

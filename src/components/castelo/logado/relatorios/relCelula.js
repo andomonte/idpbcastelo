@@ -9,6 +9,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Erros from 'src/utils/erros';
 import dataMask from 'src/components/mascaras/datas';
 import celularMask from 'src/components/mascaras/celular';
 import moment from 'moment';
@@ -27,6 +28,7 @@ import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
 
 import Emojis from 'src/components/icones/emojis';
+
 import TabCelula from './abas/tabCelula';
 import TabVisitantes from './abas/tabVisitantes';
 
@@ -144,7 +146,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   );
   const dadosCelula = nomesCelulas.map((row) => createData(row.Nome, false));
   const [checkRelatorio, setCheckRelatorio] = React.useState(false);
-
+  const [openErro, setOpenErro] = React.useState(false);
   // let enviarDia;
   // let enviarData;
   const [nomeVistante, setNomeVisitante] = React.useState('');
@@ -216,7 +218,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     return result;
   };
   //= =================================================================
-
+  const [startShow, setStartShow] = React.useState(false);
   const [semana, setSemana] = React.useState(0);
   const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
@@ -238,7 +240,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
   React.useEffect(() => {
     //  contEffect += 1;
-
+    setLoading(true);
     if (selectedDate) {
       const checkAno = selectedDate.getFullYear();
 
@@ -317,6 +319,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     setCheckRelatorio(false);
     setPodeEditar(true);
     //  setExisteRelatorio(false);
+
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -328,7 +331,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         const dataAgora = new Date();
         const semanaAgora = semanaExata(dataAgora);
 
-        if (semanaAgora - semana < 1) setPodeEditar(true);
+        if (semanaAgora - semana < 2) setPodeEditar(true);
         else setPodeEditar(false);
         setExisteRelatorio(true); // avisa que tem relatório
         // setCheckRelatorio(true); // avisa que tem relatório nessa data
@@ -347,6 +350,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         setRelPresentes(nomesMembros);
         setObservacoes(relatorio[0].Observacoes);
         setNomesVisitantes(nVisitantes);
+        setStartShow(!startShow);
+
         // setRelCelula(relatorio);
       } else {
         const nomesVisitantesParcial = visitantesCelula.map((row) =>
@@ -358,6 +363,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         );
         setQtyVisitante(qtyVisitanteNovo.length);
         setExisteRelatorio(false);
+        setStartShow(!startShow);
       }
     } else {
       const nomesVisitantesParcial = visitantesCelula.map((row) =>
@@ -369,9 +375,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       );
       setQtyVisitante(qtyVisitanteNovo.length);
       setExisteRelatorio(false);
+      setStartShow(!startShow);
     }
+
     if (errorMembers) return <div>An error occured.</div>;
     if (!members) return <div>Loading ...</div>;
+
     return 0;
   };
 
@@ -478,6 +487,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           }
         })
         .catch((erro) => {
+          setOpenErro(true);
           console.log(erro); //  updateFile(uploadedFile.id, { error: true });
         });
     } else {
@@ -508,8 +518,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       setPontosAnterior(pontosSemanaAnterior);
       //  console.log(pontosSemanaAtual, pontosSemanaAnterior);
     }
-    console.log('carregnaod');
-    setLoading(false);
+
     return 0;
   };
 
@@ -542,7 +551,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       pontuacaoAtual = pontosAtual[0].Pontuacao;
 
       if (pontuacaoAtual !== '') {
-        console.log('aqui', pontuacaoAtual);
         if (
           semanaPontuacao === semana &&
           pontuacaoAtual.RelCelebracao === 1 &&
@@ -559,7 +567,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       if (pontuacaoAtual.RelDiscipulado === 1) {
         pontosRelDiscipulado = pontuacaoAtual.RelDiscipulado;
         pontosDiscipulado = pontuacaoAtual.Discipulados;
-        pontosLeituraBiblia = pontuacaoAtual.Discipulados;
+        pontosLeituraBiblia = pontuacaoAtual.LeituraBiblica;
       }
       if (
         pontuacaoAtual.RelCelebracao === 1 &&
@@ -649,6 +657,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     /*
      */
   };
+  React.useEffect(() => {
+    if (existeRelatorio !== 'inicio') {
+      setLoading(false);
+    }
+    return 0;
+  }, [existeRelatorio, startShow]);
 
   React.useEffect(() => {
     pegarPontuacao();
@@ -742,6 +756,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         }
       })
       .catch((erro) => {
+        setOpenErro(true);
         console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
@@ -792,12 +807,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           semanasTotal[index] = semanas[index][0].Total;
           somaTotal += Number(semanasTotal[index]);
           divisor += 1;
-          console.log('somaTotal', semanas[index][0].Total);
         }
       }
+
       if (divisor === 0) divisor = 1;
       somaTotal /= divisor;
-      console.log('somaTotal', somaTotal);
+
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
@@ -808,6 +823,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           if (pTotalAtual === somaTotal) {
             mediaCrescimento = 0;
           }
+
           setRankCelula(mediaCrescimento);
         }
       } else setRankCelula(0);
@@ -831,12 +847,21 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   }, [PontosSemana]);
 
   return (
-    <Box height="90vh" minWidth={370} minHeight={500}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      bgcolor={corIgreja.principal}
+      height="90vh"
+      width="100vw"
+      minWidth={370}
+      minHeight={500}
+    >
       {openVisitantes ? (
         <Box
           minWidth={370}
           height="100%"
-          width="100vw"
+          width="100%"
           maxWidth={600}
           border="4px solid #fff"
         >
@@ -1193,7 +1218,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                       borderTopRightRadius: '16px',
                     }}
                   >
-                    <Box width="90%" ml={1}>
+                    <Box width="100%" ml={1}>
                       <Box mb={1}>
                         <Grid container spacing={0}>
                           <Grid container item xs={12} spacing={1}>
@@ -1384,7 +1409,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                     width="100%"
                     bgcolor={corIgreja.principal}
                     borderTop="2px solid #fff"
-                    borderBottom="2px solid #fff"
                   >
                     <Box
                       display="flex"
@@ -1407,7 +1431,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                           minHeight={330}
                           bgcolor="#fafafa"
                           width="100%"
-                          borderRadius={16}
                         >
                           {tela === 1 && (
                             <TabCelula
@@ -1425,7 +1448,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               width="100%"
                               flexDirection="column"
                               height="100%"
-                              mt={2}
+                              mt={1}
                             >
                               <Box
                                 display="flex"
@@ -1865,10 +1888,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                     justifyContent="center"
                     alignItems="center"
                     bgcolor={corIgreja.principal}
-                    style={{
-                      borderBottomLeftRadius: '16px',
-                      borderBottomRightRadius: '16px',
-                    }}
                   >
                     <Box
                       height="10%"
@@ -2246,7 +2265,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                     </Box>
                   </Box>
                   {!existeRelatorio ? (
-                    <Box height="67%">
+                    <Box height="60%">
                       <Box
                         height="100%"
                         display="flex"
@@ -2260,7 +2279,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         fontSize="20px"
                         bgcolor={corIgreja.principal}
                         borderTop="2px solid #fff"
-                        borderBottom="2px solid #fff"
                       >
                         <Box>RELATÓRIO DA CÉLULA</Box>
                         <Box
@@ -2333,10 +2351,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         justifyContent="center"
                         alignItems="center"
                         bgcolor={corIgreja.principal}
-                        style={{
-                          borderBottomLeftRadius: '16px',
-                          borderBottomRightRadius: '16px',
-                        }}
                       >
                         <Box
                           height="10%"
@@ -2346,10 +2360,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                           justifyContent="center"
                           alignItems="center"
                           bgcolor={corIgreja.principal}
-                          style={{
-                            borderTopLeftRadius: '16px',
-                            borderTopRightRadius: '16px',
-                          }}
                         >
                           <Box width="100%" ml={1}>
                             <Box mb={1}>
@@ -2402,7 +2412,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         fontSize="16px"
                         bgcolor={corIgreja.principal}
                         borderTop="2px solid #fff"
-                        borderBottom="2px solid #fff"
                       >
                         <Box mt={2} fontFamily="arial" color="#fff">
                           SEMANA: {semana}
@@ -2624,10 +2633,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         justifyContent="center"
                         alignItems="center"
                         bgcolor={corIgreja.principal}
-                        style={{
-                          borderBottomLeftRadius: '16px',
-                          borderBottomRightRadius: '16px',
-                        }}
                       >
                         <Box
                           height="10%"
@@ -2637,10 +2642,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                           justifyContent="center"
                           alignItems="center"
                           bgcolor={corIgreja.principal}
-                          style={{
-                            borderTopLeftRadius: '16px',
-                            borderTopRightRadius: '16px',
-                          }}
                         >
                           <Box width="100%" ml={1}>
                             <Box mb={1}>
@@ -2712,6 +2713,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
             </Box>
           )}
         </Box>
+      )}
+      {openErro && (
+        <Erros
+          descricao="banco"
+          setOpenErro={(openErros) => setOpenErro(openErros)}
+        />
       )}
     </Box>
   );
