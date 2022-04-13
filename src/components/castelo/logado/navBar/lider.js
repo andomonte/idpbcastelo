@@ -173,7 +173,7 @@ const secondaryManu = [
   },
   {
     id: 2,
-    label: 'Atualizar / Inserir',
+    label: 'Atualizar',
     path: '/atualizar',
     icon: Upload, // iconeAtualizarDados,
   },

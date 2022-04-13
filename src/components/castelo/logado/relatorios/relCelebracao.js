@@ -232,25 +232,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
   }, []);
 
-  React.useEffect(() => {
-    //  contEffect += 1;
-    setLoading(true);
-    if (selectedDate) {
-      const checkAno = selectedDate.getFullYear();
-
-      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
-      if (checkAno > 2020) {
-        setSemana(semanaExata(selectedDate));
-      }
-    }
-  }, [selectedDate]);
-  React.useEffect(() => {
-    if (existeRelatorio !== 'inicio') {
-      setLoading(false);
-    }
-
-    return 0;
-  }, [existeRelatorio, startShow]);
   const handleIncConversoes = () => {
     let contAtual = contConversoes;
     if (podeEditar) contAtual += 1;
@@ -290,7 +271,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setObservacoes('');
     setCheckRelatorio(false);
     setPodeEditar(true);
-    // setExisteRelatorio(false);
+    if (members) setExisteRelatorio('sem');
+    else setExisteRelatorio('inicio');
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -302,7 +284,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         const dataAgora = new Date();
         const semanaAgora = semanaExata(dataAgora);
 
-        if (semanaAgora - semana < 1) setPodeEditar(true);
+        if (semanaAgora - semana < 2) setPodeEditar(true);
         else setPodeEditar(false);
         setExisteRelatorio(true); // avisa que tem relatório
         // setCheckRelatorio(true); // avisa que tem relatório nessa data
@@ -334,7 +316,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
-        setExisteRelatorio(false); // avisa que não tem relatório
+        setExisteRelatorio('sem'); // avisa que não tem relatório
         setStartShow(!startShow);
       }
     } else {
@@ -346,7 +328,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         (val) => val.Presenca === true,
       );
       setQtyVisitante(qtyVisitanteNovo.length);
-      setExisteRelatorio(false);
+
       setStartShow(!startShow);
     }
     if (errorMembers) return <div>An error occured.</div>;
@@ -490,7 +472,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   };
-  console.log('fora de tudo:', existeRelatorio);
+
   const criarPontuacao = () => {
     const criadoEm = new Date();
     // const dataRel = getDataPontos(selectedDate);
@@ -630,9 +612,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     criarPontuacao();
 
     return 0;
-  }, [semana, presentes, qtyVisitante, contConversoes]);
+  }, [semana, presentes, qtyVisitante, contConversoes, pontos]);
 
   React.useEffect(() => {
+    if (existeRelatorio !== 'inicio') {
+      setLoading(false);
+    }
     pegarPontuacao();
 
     return 0;
@@ -789,7 +774,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
   };
 
-  React.useEffect(() => 0, [pontos]);
   React.useEffect(() => {
     pegaRankSemana();
     posicao();
@@ -797,6 +781,24 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   }, [members, pTotalAtual]);
+
+  React.useEffect(() => {
+    //  contEffect += 1;
+    setLoading(true);
+    setExisteRelatorio('inicio');
+    if (existeRelatorio === 'sem') setLoading(false);
+    if (selectedDate) {
+      const checkAno = selectedDate.getFullYear();
+
+      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
+      if (checkAno > 2020) {
+        setSemana(semanaExata(selectedDate));
+      }
+
+      ajusteRelatorio();
+    }
+  }, [selectedDate]);
+
   React.useEffect(() => {
     ajusteRelatorio();
     pegaRankSemana();
@@ -2022,7 +2024,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                       </Box>
                     </Box>
                   </Box>
-                  {!existeRelatorio ? (
+                  {existeRelatorio !== true ? (
                     <Box height="60%">
                       <Box
                         height="100%"

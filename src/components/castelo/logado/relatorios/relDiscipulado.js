@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Button, TextField } from '@material-ui/core';
+import { Box, Grid, Paper, Button } from '@material-ui/core';
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
@@ -9,17 +9,12 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import dataMask from 'src/components/mascaras/datas';
-import celularMask from 'src/components/mascaras/celular';
+
 import moment from 'moment';
 
 import { IoIosSave, IoIosAddCircle, IoMdRemoveCircle } from 'react-icons/io';
 import { FaLongArrowAltRight } from 'react-icons/fa';
-import {
-  IoArrowUndoSharp,
-  IoReturnDownBack,
-  IoArrowRedoSharp,
-} from 'react-icons/io5';
+import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
 import api from 'src/components/services/api';
 import axios from 'axios';
 import PegaIdade from 'src/utils/getIdade';
@@ -28,7 +23,6 @@ import Espera from 'src/utils/espera';
 import Erros from 'src/utils/erros';
 import Emojis from 'src/components/icones/emojis';
 import TabDiscipulado from './abas/tabDiscipulado';
-import TabVisitantes from './abas/tabVisitantes';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
@@ -37,13 +31,6 @@ function createData(Nome, Presenca) {
   return { Nome, Presenca };
 }
 function createRelCelula(Rol, Nome, Presenca) {
-  return {
-    Rol,
-    Nome,
-    Presenca,
-  };
-}
-function createRelVisitantes(Rol, Nome, Presenca) {
   return {
     Rol,
     Nome,
@@ -111,15 +98,11 @@ function createPontuacao(
   };
 }
 
-function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
+function RelatorioCelebracao({ rolMembros, perfilUser }) {
   //  const classes = useStyles();
   // const router = useRouter();
   const [openErro, setOpenErro] = React.useState(false);
-  const visitantesCelula = visitantes.filter(
-    (val) =>
-      val.Celula === Number(perfilUser.Celula) &&
-      val.Distrito === Number(perfilUser.Distrito),
-  );
+
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2);
   const [contBiblia, setContBiblia] = React.useState(0);
@@ -134,9 +117,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
   // let enviarDia;
   // let enviarData;
-  const [nomeVistante, setNomeVisitante] = React.useState('');
-  const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
-  const [foneVisitante, setFoneVisitante] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const [open, setIsPickerOpen] = React.useState(false);
 
@@ -157,7 +137,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
   const [adultos, setAdultos] = React.useState(0);
   const [criancas, setCriancas] = React.useState(0);
-  const [openVisitantes, setOpenVisitantes] = React.useState(false);
+
   const [rank, setRank] = React.useState(0);
   //= ==============================================================
   const handleDateChange = (date, value) => {
@@ -215,27 +195,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
   }, []);
 
-  React.useEffect(() => {
-    //  contEffect += 1;
-    setLoading(true);
-    if (selectedDate) {
-      const checkAno = selectedDate.getFullYear();
-
-      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
-      if (checkAno > 2020) {
-        setSemana(semanaExata(selectedDate));
-      }
-    }
-  }, [selectedDate]);
-
-  React.useEffect(() => {
-    if (existeRelatorio !== 'inicio') {
-      setLoading(false);
-    }
-
-    return 0;
-  }, [existeRelatorio, startShow]);
-
   const handleIncConversoes = () => {
     let contAtual = contBiblia;
     if (podeEditar) contAtual += 1;
@@ -273,7 +232,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setObservacoes('');
     setCheckRelatorio(false);
     setPodeEditar(true);
-    // setExisteRelatorio(false);
+    let relExiste = 'inicio';
+    if (members) relExiste = 'sem'; // setExisteRelatorio('sem');
+
+    setExisteRelatorio(relExiste);
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -285,13 +247,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         const dataAgora = new Date();
         const semanaAgora = semanaExata(dataAgora);
 
-        if (semanaAgora - semana < 1) setPodeEditar(true);
+        if (semanaAgora - semana < 2) setPodeEditar(true);
         else setPodeEditar(false);
         setExisteRelatorio(true); // avisa que tem relatório
         // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
         const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-        console.log('nomesMembros', nomesMembros);
 
         const qtyPresentes = nomesMembros.filter(
           (val) => val.Presenca === true,
@@ -307,11 +268,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         setStartShow(!startShow);
         // setRelCelula(relatorio);
       } else {
-        setExisteRelatorio(false); // avisa que tem relatório
+        setExisteRelatorio('sem'); // avisa que tem relatório
         setStartShow(!startShow);
       }
     } else {
-      setExisteRelatorio(false);
+      //
       setStartShow(!startShow);
     }
     if (errorMembers) return <div>An error occured.</div>;
@@ -330,6 +291,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   }, [members]);
+
   /* React.useEffect(() => {
     setRelPresentes(
       relPresentes.sort((a, b) => {
@@ -365,63 +327,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     setTela(2);
   };
-
-  const handleVisitantes = () => {
-    setOpenVisitantes(true);
-    // setVisBackUp(nomesVisitantes);
-    // setQtyVisitanteBackUp(qtyVisitante);
-  };
-  //= =========================================
-  const handleSalvarVisitante = () => {
-    //    const { dataVisitante, errorVisitante } = useSWR(url2, fetcher);
-    // if(dataVisitante,)
-
-    const CriadoEm = new Date();
-
-    if (nomeVistante.length > 3) {
-      setCarregando(true);
-
-      api
-        .post('/api/inserirVisitante', {
-          Nome: nomeVistante,
-          Celula: Number(perfilUser.Celula),
-          Distrito: Number(perfilUser.Distrito),
-          Contato: foneVisitante,
-          Nascimento: nascimentoVisitante,
-          CriadoPor: perfilUser.Nome,
-          CriadoEm,
-        })
-        .then((response) => {
-          if (response) {
-            setCarregando(false);
-            setNomeVisitante('');
-            setNascimentoVisitante('');
-            setFoneVisitante('');
-            let dadosNovos = [];
-            dadosNovos = response.data;
-
-            const nomesVisitantesParcial = createRelVisitantes(
-              dadosNovos.id,
-              dadosNovos.Nome,
-              true,
-            );
-
-            const nomesNovos = [];
-            nomesNovos.push(nomesVisitantesParcial);
-          }
-        })
-        .catch((erro) => {
-          setOpenErro(true);
-          setCarregando(false);
-
-          console.log(erro); //  updateFile(uploadedFile.id, { error: true });
-        });
-    } else {
-      handleVisitantes();
-      setOpenVisitantes(false);
-    }
-  };
-  //= ============================================================
 
   const pegarPontuacao = () => {
     if (errorPontos) return <div>An error occured.</div>;
@@ -464,7 +369,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     let pontosTotalAtual = 0;
 
     let pontosTotalAtualRank = 0;
-    console.log('de pontuacao pontosAtual', pontosAtual);
+
     if (pontosAtual.length) {
       pontuacaoAtual = pontosAtual[0].Pontuacao;
 
@@ -563,19 +468,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       Number(pontosLeituraBiblia),
       Number(pontosVisitantesCelebracao),
     );
-    console.log(
-      'dentro criarPontuacao',
-      TotalPercentual,
-      pontosRelatorio,
-      Number(percPresentes),
-      Number(pontosPontualidade),
-      pontosVisitantesCelula,
-      pontosVisitas,
-      Number(percCelebracaoIgreja),
-      Number(percCelebracaoLive),
-      Number(percDiscipulado),
-      Number(percLeituraBiblica),
-    );
+
     setPFinal(PontuacaoFinal);
     setPTotalAtual(TotalPercentual);
     setPTotalAtualRank(pontosTotalAtualRank);
@@ -587,11 +480,28 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     criarPontuacao();
 
     return 0;
-  }, [semana, presentes, contBiblia]);
+  }, [semana, presentes, contBiblia, pontos]);
 
   React.useEffect(() => {
-    pegarPontuacao();
+    //  contEffect += 1;
+    setLoading(true);
+    if (existeRelatorio === 'sem') setLoading(false);
+    setExisteRelatorio('inicio');
+    if (selectedDate) {
+      const checkAno = selectedDate.getFullYear();
 
+      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
+      if (checkAno > 2020) {
+        setSemana(semanaExata(selectedDate));
+      }
+      ajusteRelatorio();
+    }
+  }, [selectedDate]);
+
+  React.useEffect(() => {
+    setLoading(true);
+    if (existeRelatorio !== 'inicio') setLoading(false);
+    pegarPontuacao();
     return 0;
   }, [existeRelatorio]);
   React.useEffect(() => {
@@ -1568,7 +1478,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                     </Box>
                   </Box>
                 </Box>
-                {!existeRelatorio ? (
+                {existeRelatorio !== true ? (
                   <Box height="60%">
                     <Box
                       height="100%"
@@ -1593,6 +1503,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                       >
                         SEMANA - {semana}
                       </Box>
+
                       {!loading ? (
                         <Box
                           display="flex"

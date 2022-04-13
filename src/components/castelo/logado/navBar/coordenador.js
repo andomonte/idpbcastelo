@@ -108,8 +108,8 @@ const secondaryManu = [
   },
   {
     id: 3,
-    label: 'Atualizar / Inserir',
-    path: '/MinisterioDeMissoes/atualizar',
+    label: 'Atualizar Dados',
+    path: '/atualizar',
     icon: iconeAtualizarDados,
   },
   {

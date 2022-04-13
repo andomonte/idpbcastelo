@@ -238,19 +238,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     }
   }, []);
 
-  React.useEffect(() => {
-    //  contEffect += 1;
-    setLoading(true);
-    if (selectedDate) {
-      const checkAno = selectedDate.getFullYear();
-
-      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
-      if (checkAno > 2020) {
-        setSemana(semanaExata(selectedDate));
-      }
-    }
-  }, [selectedDate]);
-
   const handleIncConversoes = () => {
     let contAtual = contConversoes;
     if (podeEditar) contAtual += 1;
@@ -318,8 +305,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     setObservacoes('');
     setCheckRelatorio(false);
     setPodeEditar(true);
-    //  setExisteRelatorio(false);
 
+    if (members) setExisteRelatorio('sem');
+    else setExisteRelatorio('inicio');
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -330,7 +318,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       if (relatorio && relatorio.length) {
         const dataAgora = new Date();
         const semanaAgora = semanaExata(dataAgora);
-
         if (semanaAgora - semana < 2) setPodeEditar(true);
         else setPodeEditar(false);
         setExisteRelatorio(true); // avisa que tem relatório
@@ -362,7 +349,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
-        setExisteRelatorio(false);
+        setExisteRelatorio('sem');
         setStartShow(!startShow);
       }
     } else {
@@ -374,7 +361,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         (val) => val.Presenca === true,
       );
       setQtyVisitante(qtyVisitanteNovo.length);
-      setExisteRelatorio(false);
+
       setStartShow(!startShow);
     }
 
@@ -395,6 +382,23 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   }, [members]);
+  React.useEffect(() => {
+    //  contEffect += 1;
+    setLoading(true);
+    setExisteRelatorio('inicio');
+    if (existeRelatorio === 'sem') setLoading(false);
+    if (selectedDate) {
+      const checkAno = selectedDate.getFullYear();
+
+      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
+      if (checkAno > 2020) {
+        setSemana(semanaExata(selectedDate));
+      }
+
+      ajusteRelatorio();
+    }
+  }, [selectedDate]);
+
   React.useEffect(() => {
     setRelPresentes(
       relPresentes.sort((a, b) => {
@@ -658,11 +662,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
      */
   };
   React.useEffect(() => {
-    if (existeRelatorio !== 'inicio') {
-      setLoading(false);
-    }
+    setLoading(true);
+    if (existeRelatorio !== 'inicio') setLoading(false);
+    pegarPontuacao();
+
     return 0;
-  }, [existeRelatorio, startShow]);
+  }, [existeRelatorio]);
 
   React.useEffect(() => {
     pegarPontuacao();
@@ -677,13 +682,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     contConversoes,
     contEventos,
     contVisitas,
+    pontos,
   ]);
-
-  React.useEffect(() => {
-    pegarPontuacao();
-
-    return 0;
-  }, [existeRelatorio]);
 
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
@@ -791,7 +791,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     }
   };
   const mediaCelula = () => {
-    if (pontos) {
+    if (pontos && pontos.length > 0) {
       const semanas = [];
       const semanasTotal = [];
       for (let index = 0; index < 4; index += 1) {
@@ -830,7 +830,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     }
   };
 
-  React.useEffect(() => 0, [pontos]);
   React.useEffect(() => {
     pegaRankSemana();
     posicao();
@@ -843,6 +842,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     pegaRankSemana();
     posicao();
     mediaCelula();
+
     return 0;
   }, [PontosSemana]);
 
@@ -2264,7 +2264,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                       </Box>
                     </Box>
                   </Box>
-                  {!existeRelatorio ? (
+                  {existeRelatorio !== true ? (
                     <Box height="60%">
                       <Box
                         height="100%"
@@ -2289,6 +2289,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         >
                           SEMANA - {semana}
                         </Box>
+
                         {!loading ? (
                           <Box
                             display="flex"
