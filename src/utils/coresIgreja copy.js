@@ -18,7 +18,7 @@ const Cores = createTheme({
       main: '#000000',
     },
     danger: {
-      main: '#ff3d00',
+      main: '#ff3d0A',
     },
     default: {
       main: '#1a237e',
