@@ -166,7 +166,7 @@ function IdpbLogin({ title }) {
 
                 <Hidden mdDown>
                   <img
-                    src="/images/castelo.png"
+                    src="/images/filadelfia.png"
                     alt="logo"
                     className={classes.logo}
                   />

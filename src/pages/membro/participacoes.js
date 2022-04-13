@@ -1,5 +1,5 @@
 import React from 'react';
-import Participacoes from 'src/components/castelo/logado/participacoes';
+import Participacoes from 'src/components/filadelfia/logado/participacoes';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

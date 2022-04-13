@@ -1,5 +1,5 @@
 import React from 'react';
-import QuemSomos from 'src/components/castelo/normal/quemSomos';
+import QuemSomos from 'src/components/filadelfia/normal/quemSomos';
 import prisma from 'src/lib/prisma';
 
 function Sec({ userIgrejas }) {
