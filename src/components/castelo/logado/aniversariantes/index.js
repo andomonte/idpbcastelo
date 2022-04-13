@@ -136,7 +136,7 @@ function TabPanel(props) {
   );
 }
 
-function Secretaria({ rolMembros, title, perfilUser }) {
+function Aniversariantes({ rolMembros, title, perfilUser }) {
   const classes = useStyles();
 
   const [value, setValue] = React.useState(0);
@@ -286,4 +286,4 @@ function Secretaria({ rolMembros, title, perfilUser }) {
   );
 }
 
-export default Secretaria;
+export default Aniversariantes;
