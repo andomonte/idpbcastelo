@@ -1,11 +1,27 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import TableContainer from '@mui/material/TableContainer';
-import Box from '@material-ui/core/Box';
 import Meses from 'src/utils/meses';
-import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { Box, Grid, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import corIgreja from 'src/utils/coresIgreja';
+import IconButton from '@mui/material/IconButton';
+import SvgIcon from '@mui/material/SvgIcon';
+import { BiCaretUp, BiCaretDown } from 'react-icons/bi';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  paper: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
 
 export default function TabDiscipuado({ rolMembros, perfilUser }) {
+  const classes = useStyles();
+
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
   const mes = Meses();
   const d = new Date();
@@ -41,6 +57,115 @@ export default function TabDiscipuado({ rolMembros, perfilUser }) {
         overflow: 'hidden',
       }}
     >
+      <Box width="100%" ml={1} minWidth={370}>
+        <Grid container spacing={0}>
+          <Grid container item xs={12} spacing={1}>
+            <Label lab1="Selecine o Mês" />
+            <Grid item xs={6}>
+              <Paper width="100%" className={classes.paper}>
+                <Box width="100%" display="flex">
+                  <Box
+                    width="20%"
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={() => {
+                        handleIncMes();
+                      }}
+                    >
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
+                      <BiCaretUp />
+                    </IconButton>
+                  </Box>
+                  <Box
+                    width="60%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ fontFamily: 'arial black' }}
+                  >
+                    {mes[contMes].descricao}
+                  </Box>
+                  <Box
+                    width="20%"
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={() => {
+                        handleDecMes();
+                      }}
+                    >
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }} />
+                      <BiCaretDown />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper width="100%" className={classes.paper}>
+                <Box width="100%" display="flex">
+                  <Box
+                    width="20%"
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={() => {
+                        handleIncAno();
+                      }}
+                    >
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
+                      <BiCaretUp />
+                    </IconButton>
+                  </Box>
+                  <Box
+                    width="60%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ fontFamily: 'arial black' }}
+                  >
+                    {contAno}
+                  </Box>
+                  <Box
+                    width="20%"
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={() => {
+                        handleDecAno();
+                      }}
+                    >
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }} />
+                      <BiCaretDown />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
       {dados.map((row, index) => (
         <Box
           mt={0}

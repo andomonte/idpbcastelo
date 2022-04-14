@@ -76,7 +76,6 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
-    console.log('oi dentro', session, secao.length, open, perfilUser);
     const valorPerfil = secao.map((items, index) => {
       if (items.Funcao === 'Presidente')
         return {
@@ -323,11 +322,8 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
         '/meuPerfil',
       );
     }
-    console.log('oi3', valorPerfil, secao.length, open, perfilUser);
-
     return <Box>{open && <Box minHeight={500}>{body}</Box>} </Box>;
   }
-  console.log('oi2', session, secao, open, perfilUser);
   return (
     <Box display="flex" align="center" justifyContent="center">
       <Box>

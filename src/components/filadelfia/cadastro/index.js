@@ -116,9 +116,9 @@ function Cadastro({ lideranca, rolMembros }) {
             Email: session.user.email,
             id: usuarioLider[contId - 1].id,
           })
-
           .then((response) => {
             if (response) {
+              console.log('contId', contId);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
                 router.push({
@@ -137,7 +137,7 @@ function Cadastro({ lideranca, rolMembros }) {
             //  updateFile(uploadedFile.id, { error: true });
           });
       }
-
+      console.log('contId fora:', contId);
       return true;
     }
     return true;
