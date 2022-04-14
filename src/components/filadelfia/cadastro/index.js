@@ -13,6 +13,7 @@ import Erros from 'src/utils/erros';
 import corIgreja from 'src/utils/coresIgreja';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
+import { EqualizerTwoTone } from '@material-ui/icons';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -113,6 +114,60 @@ function Cadastro({ lideranca, rolMembros }) {
     }
   };
   console.log('session:', session);
+  const [novoMembro, setNovoMembro] = React.useState('');
+  const [novoLider, setNovoLider] = React.useState('');
+
+  const url = `/api/consultaMembros`;
+  const url2 = `/api/consultaLideranca`;
+
+  const { data: members, error: errorMembers } = useSWR(url, fetcher);
+  const { data: lideres, error: errorLideres } = useSWR(url2, fetcher);
+  React.useEffect(() => {
+    if (members) {
+      const dadosMembros = members.filter(
+        (val) =>
+          val.Email === session.user.email && val.Nascimento === nascimento,
+      );
+      console.log('membros', members);
+      setNovoMembro(dadosMembros);
+    }
+    if (errorMembers) return <div>An error occured.</div>;
+    if (!members) return <div>Loading ...</div>;
+
+    return 0;
+  }, [members]);
+
+  React.useEffect(() => {
+    console.log('lideres', lideres);
+    if (lideres) {
+      const dadosLider = lideres.filter(
+        (val) =>
+          val.Email === session.user.email && val.Nascimento === nascimento,
+      );
+      setNovoLider(dadosLider);
+      console.log('Dados Lider', session.user.email, dadosLider, nascimento);
+    }
+    if (errorLideres) return <div>An error occured.</div>;
+    if (!lideres) return <div>Loading ...</div>;
+
+    return 0;
+  }, [lideres]);
+
+  React.useEffect(() => {
+    if (
+      novoMembro.length >= usuarioMembro.length &&
+      novoLider.length >= usuarioLider.length
+    )
+      router.reload(window.location.pathname);
+    return 0;
+  }, [novoLider, novoMembro]);
+  console.log(
+    'valors a comparar',
+    novoMembro.length,
+    usuarioMembro.length,
+    novoLider.length,
+    usuarioLider.length,
+  );
   const cadastrarEmailLider = () => {
     if (usuarioLider.length > 0) {
       if (contId - 1 < usuarioLider.length) {
@@ -124,6 +179,7 @@ function Cadastro({ lideranca, rolMembros }) {
           .then((response) => {
             if (response) {
               console.log('contId', contId, usuarioLider.length);
+              mutate(url2);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
                 setContId(0);
@@ -164,7 +220,7 @@ function Cadastro({ lideranca, rolMembros }) {
 
         if (prevProgress < 0) {
           prevProgress = 0;
-          router.reload(window.location.pathname);
+          //   router.reload(window.location.pathname);
           /*  router.push({
             pathname: '/Perfil',
             //      query: { idCompra, qrCode, qrCodeCopy },
@@ -212,6 +268,7 @@ function Cadastro({ lideranca, rolMembros }) {
         .then((response) => {
           if (response) {
             console.log('Cadastro de Membro OK');
+            mutate(url);
             handleCheckDadosLideranca();
           }
         })
@@ -451,7 +508,7 @@ function Cadastro({ lideranca, rolMembros }) {
                             {!openEspera ? (
                               'Cadastrando...'
                             ) : (
-                              <Box>Finalizando em {progress} segundos </Box>
+                              <Box>Finalizando, espere... </Box>
                             )}
                           </Box>
                         </Box>
