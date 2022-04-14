@@ -76,6 +76,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
+    console.log('entrou aqui na session do selectPerfil', secao);
     const valorPerfil = secao.map((items, index) => {
       if (items.Funcao === 'Presidente')
         return {
@@ -324,6 +325,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     }
     return <Box>{open && <Box minHeight={500}>{body}</Box>} </Box>;
   }
+  console.log('sem secao agora no select perfil');
   return (
     <Box display="flex" align="center" justifyContent="center">
       <Box>
