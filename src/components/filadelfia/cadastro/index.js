@@ -121,7 +121,7 @@ function Cadastro({ lideranca, rolMembros }) {
               console.log('contId', contId, usuarioLider.length);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
-                console.log('ja era para ter ido');
+                console.log('ja era para ter ido agora');
                 router.push({
                   pathname: '/selectPerfil',
                   //      query: { idCompra, qrCode, qrCodeCopy },
