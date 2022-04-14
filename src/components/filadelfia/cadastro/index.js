@@ -123,7 +123,7 @@ function Cadastro({ lideranca, rolMembros }) {
               else {
                 console.log('ja era para ter ido agora');
                 router.push({
-                  pathname: '/selectPerfil',
+                  pathname: '/meuPerfil',
                   //      query: { idCompra, qrCode, qrCodeCopy },
                 });
                 setContId(0);
