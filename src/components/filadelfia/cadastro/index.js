@@ -107,7 +107,7 @@ function Cadastro({ lideranca, rolMembros }) {
       nomeRef.current.focus();
     }
   };
-
+  console.log('session:', session);
   const cadastrarEmailLider = () => {
     if (usuarioLider.length > 0) {
       if (contId - 1 < usuarioLider.length) {
@@ -118,14 +118,9 @@ function Cadastro({ lideranca, rolMembros }) {
           })
           .then((response) => {
             if (response) {
-              console.log('contId', contId, usuarioLider.length);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
-                console.log('ja era para ter ido agora');
-                router.push({
-                  pathname: '/meuPerfil',
-                  //      query: { idCompra, qrCode, qrCodeCopy },
-                });
+                router.reload(window.location.pathname);
                 setContId(0);
                 setOpenEspera(true);
               }
@@ -164,17 +159,11 @@ function Cadastro({ lideranca, rolMembros }) {
         setContId(1);
       } else {
         setCarregar(true);
-        router.push({
-          pathname: '/selectPerfil',
-          //      query: { idCompra, qrCode, qrCodeCopy },
-        });
+        router.reload(window.location.pathname);
       }
     } else {
       setCarregar(true);
-      router.push({
-        pathname: '/selectPerfil',
-        //      query: { idCompra, qrCode, qrCodeCopy },
-      });
+      router.reload(window.location.pathname);
     }
   };
 
