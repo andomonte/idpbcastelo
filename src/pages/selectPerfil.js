@@ -76,6 +76,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
+
     const valorPerfil = secao.map((items, index) => {
       if (items.Funcao === 'Presidente')
         return {
@@ -270,7 +271,6 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
                         </Box>
                       </Grid>
                     </Box>
-
                     <Box mt={5} mb={3} width="100%" textAlign="center">
                       <Grid item xs={12} md={12}>
                         <Box>
@@ -299,6 +299,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
                         </Box>
                       </Grid>
                     </Box>
+
                     {openEspera && <Espera descricao="Buscando Seu Perfil" />}
                   </Box>
                 </Box>
@@ -310,7 +311,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     );
     if (valorPerfil.length === 1 && perfilUser === '')
       setPerfilUser(valorPerfil);
-    if (secao.length > 1 && !open && perfilUser === '') setOpen(true);
+    if (valorPerfil.length > 1 && !open && perfilUser === '') setOpen(true);
 
     if (perfilUser !== '') {
       router.push(
@@ -322,6 +323,8 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
         '/meuPerfil',
       );
     }
+    console.log('oi', valorPerfil, secao.length, open, perfilUser);
+
     return <Box>{open && <Box minHeight={500}>{body}</Box>} </Box>;
   }
 

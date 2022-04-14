@@ -189,6 +189,7 @@ function Cadastro({ lideranca, rolMembros }) {
 
         .then((response) => {
           if (response) {
+            console.log('Cadastro de Membro OK');
             handleCheckDadosLideranca();
           }
         })
@@ -424,6 +425,7 @@ function Cadastro({ lideranca, rolMembros }) {
                             color="blue"
                             style={{ fontSize: '12px' }}
                           >
+                            {console.log('penEspera', openEspera)}
                             {!openEspera ? 'Cadastrando...' : 'Finalizando...'}
                           </Box>
                         </Box>
