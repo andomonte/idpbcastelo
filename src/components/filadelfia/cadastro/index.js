@@ -165,7 +165,7 @@ function Cadastro({ lideranca, rolMembros }) {
         if (prevProgress < 0) {
           prevProgress = 0;
           router.push({
-            pathname: '/selectPerfil',
+            pathname: '/meuPerfil',
             //      query: { idCompra, qrCode, qrCodeCopy },
           });
         }
