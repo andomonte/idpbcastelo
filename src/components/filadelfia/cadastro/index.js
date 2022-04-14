@@ -164,10 +164,11 @@ function Cadastro({ lideranca, rolMembros }) {
 
         if (prevProgress < 0) {
           prevProgress = 0;
-          router.push({
-            pathname: '/meuPerfil',
+          router.reload(window.location.pathname);
+          /*  router.push({
+            pathname: '/Perfil',
             //      query: { idCompra, qrCode, qrCodeCopy },
-          });
+          }); */
         }
         setProgress(prevProgress);
       }, 800);
