@@ -153,19 +153,19 @@ function Cadastro({ lideranca, rolMembros }) {
       }
     }
   }, [contId]);
-  const [progress, setProgress] = React.useState(10);
+  const [progress, setProgress] = React.useState(30);
 
   React.useEffect(() => {
     let timer;
     if (openEspera) {
-      let prevProgress = 10;
+      let prevProgress = 30;
       timer = setInterval(() => {
         prevProgress -= 1;
 
         if (prevProgress < 0) {
           prevProgress = 0;
           router.push({
-            pathname: '/selectPerfil',
+            pathname: '/meuPerfil',
             //      query: { idCompra, qrCode, qrCodeCopy },
           });
         }
