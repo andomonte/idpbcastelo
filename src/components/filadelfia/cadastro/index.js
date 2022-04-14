@@ -11,6 +11,10 @@ import api from 'src/components/services/api';
 import { Oval } from 'react-loading-icons';
 import Erros from 'src/utils/erros';
 import corIgreja from 'src/utils/coresIgreja';
+import useSWR, { mutate } from 'swr';
+import axios from 'axios';
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const useStyles = makeStyles((theme) => ({
   button1: {
@@ -100,6 +104,8 @@ function Cadastro({ lideranca, rolMembros }) {
   const [usuarioLider, setUsuarioLider] = React.useState(false);
   const [openErro, setOpenErro] = React.useState(false);
   const [openEspera, setOpenEspera] = React.useState(false);
+  const [novoPerfil, setNovoPerfil] = React.useState('');
+
   //= =========================================================================
   const handleValidacaoClose = () => {
     if (validacaoNome !== 'testar' && validacaoNome) {
@@ -118,9 +124,14 @@ function Cadastro({ lideranca, rolMembros }) {
           })
           .then((response) => {
             if (response) {
+              console.log('contId', contId, usuarioLider.length);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
-                router.reload(window.location.pathname);
+                console.log('ja era para ter ido agora');
+                router.push({
+                  pathname: '/selectPerfil',
+                  //      query: { idCompra, qrCode, qrCodeCopy },
+                });
                 setContId(0);
                 setOpenEspera(true);
               }
@@ -148,6 +159,24 @@ function Cadastro({ lideranca, rolMembros }) {
       }
     }
   }, [contId]);
+
+  //= ========================================================================
+  /* const url = `/api/consultaRolMembros/${dadosUser[0].id}`;
+  const { data, error } = useSWR(url, fetcher);
+  React.useEffect(() => {
+    if (data) {
+      const checarAtualizacao = lideranca.filter(
+        (val) => val.Email === session.user.email,
+      );
+      setNovoPerfil(checarAtualizacao);
+    }
+
+    if (error) return <div>An error occured.</div>;
+    if (!data) return <div>Loading ...</div>;
+    return 0;
+  }, [data]); */
+  //= ========================================================================
+
   const handleCheckDadosLideranca = () => {
     if (usuarioMembro.length > 0) {
       const checarLideranca = lideranca.filter(
@@ -156,14 +185,20 @@ function Cadastro({ lideranca, rolMembros }) {
 
       if (checarLideranca.length > 0) {
         setUsuarioLider(checarLideranca);
-        setContId(1);
+        setContId(Number(checarLideranca.length));
       } else {
         setCarregar(true);
-        router.reload(window.location.pathname);
+        router.push({
+          pathname: '/selectPerfil',
+          //      query: { idCompra, qrCode, qrCodeCopy },
+        });
       }
     } else {
       setCarregar(true);
-      router.reload(window.location.pathname);
+      router.push({
+        pathname: '/selectPerfil',
+        //      query: { idCompra, qrCode, qrCodeCopy },
+      });
     }
   };
 
