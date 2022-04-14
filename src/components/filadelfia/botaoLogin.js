@@ -30,6 +30,7 @@ export default function BotaoLogin() {
 
   return (
     <Box>
+      {console.log('fora da seção', session)}
       {!session ? (
         <IconButton
           onClick={() =>
