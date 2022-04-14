@@ -72,13 +72,11 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const [perfilSelect] = React.useState('0');
   const router = useRouter();
   let secao = [{ email: '' }];
-  let contador = 0;
 
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
-    contador += 1;
-    console.log('entrou aqui na session do selectPerfil', contador);
+
     const valorPerfil = secao.map((items, index) => {
       if (items.Funcao === 'Presidente')
         return {

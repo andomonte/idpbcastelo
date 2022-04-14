@@ -65,7 +65,7 @@ export default function TabCelula({
       } else {
         cor = '#feff';
       }
-      console.log('veio aqui sim');
+
       setRelCelula(dados);
       const updatedValue = { [index]: cor };
       setRespostas((shopCart) => ({

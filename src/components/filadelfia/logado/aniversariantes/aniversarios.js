@@ -45,7 +45,6 @@ export default function TabDiscipuado({ rolMembros, perfilUser }) {
     setContMes(contMesAtual);
   };
 
-  console.log(dados, perfilUser.Celula);
   return (
     <Paper
       sx={{

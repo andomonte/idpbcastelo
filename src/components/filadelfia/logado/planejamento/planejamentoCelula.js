@@ -470,7 +470,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       .then((response) => {
         if (response) {
           // enviarPontuacao();
-          console.log('resposta');
+
           setLoading(false);
           setCarregando(false);
           mutate(url);

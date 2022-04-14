@@ -301,7 +301,8 @@ function DadosEndereco({ rolMembros, perfilUser }) {
         setCidade(response.data.localidade);
         setUF(response.data.uf);
       })
-      .catch(() => {
+      .catch((errors) => {
+        console.log(errors);
         toast.error('CEP INVÁLIDO !', {
           position: toast.POSITION.TOP_CENTER,
         });

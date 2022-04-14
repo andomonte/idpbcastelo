@@ -113,7 +113,6 @@ function Cadastro({ lideranca, rolMembros }) {
       nomeRef.current.focus();
     }
   };
-  console.log('session:', session);
   const [novoMembro, setNovoMembro] = React.useState('');
   const [novoLider, setNovoLider] = React.useState('');
 
@@ -128,7 +127,7 @@ function Cadastro({ lideranca, rolMembros }) {
         (val) =>
           val.Email === session.user.email && val.Nascimento === nascimento,
       );
-      console.log('membros', members);
+
       setNovoMembro(dadosMembros);
     }
     if (errorMembers) return <div>An error occured.</div>;
@@ -138,14 +137,12 @@ function Cadastro({ lideranca, rolMembros }) {
   }, [members]);
 
   React.useEffect(() => {
-    console.log('lideres', lideres);
     if (lideres) {
       const dadosLider = lideres.filter(
         (val) =>
           val.Email === session.user.email && val.Nascimento === nascimento,
       );
       setNovoLider(dadosLider);
-      console.log('Dados Lider', session.user.email, dadosLider, nascimento);
     }
     if (errorLideres) return <div>An error occured.</div>;
     if (!lideres) return <div>Loading ...</div>;
@@ -161,13 +158,7 @@ function Cadastro({ lideranca, rolMembros }) {
       router.reload(window.location.pathname);
     return 0;
   }, [novoLider, novoMembro]);
-  console.log(
-    'valors a comparar',
-    novoMembro.length,
-    usuarioMembro.length,
-    novoLider.length,
-    usuarioLider.length,
-  );
+
   const cadastrarEmailLider = () => {
     if (usuarioLider.length > 0) {
       if (contId - 1 < usuarioLider.length) {
@@ -178,7 +169,6 @@ function Cadastro({ lideranca, rolMembros }) {
           })
           .then((response) => {
             if (response) {
-              console.log('contId', contId, usuarioLider.length);
               mutate(url2);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
@@ -267,7 +257,6 @@ function Cadastro({ lideranca, rolMembros }) {
 
         .then((response) => {
           if (response) {
-            console.log('Cadastro de Membro OK');
             mutate(url);
             handleCheckDadosLideranca();
           }
@@ -504,7 +493,6 @@ function Cadastro({ lideranca, rolMembros }) {
                             color="blue"
                             style={{ fontSize: '12px' }}
                           >
-                            {console.log('penEspera', openEspera)}
                             {!openEspera ? (
                               'Cadastrando...'
                             ) : (
