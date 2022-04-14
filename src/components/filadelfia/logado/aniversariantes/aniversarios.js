@@ -2,16 +2,33 @@ import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Box from '@material-ui/core/Box';
-
+import Meses from 'src/utils/meses';
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 
 export default function TabDiscipuado({ rolMembros, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
+  const mes = Meses();
+  const d = new Date();
+  const mesAtual = Number(d.getMonth());
+  const [contMes, setContMes] = React.useState(mesAtual);
   const [respostas, setRespostas] = React.useState({});
   const dados = rolMembros.filter(
     (val) => Number(val.Celula) === Number(perfilUser.Celula),
   );
+
+  const handleIncMes = () => {
+    let contMesAtual = contMes + 1;
+
+    if (contMesAtual > 11) contMesAtual = 0;
+    setContMes(contMesAtual);
+  };
+  const handleDecMes = () => {
+    let contMesAtual = contMes - 1;
+
+    if (contMesAtual < 0) contMesAtual = 11;
+    setContMes(contMesAtual);
+  };
+
   console.log(dados, perfilUser.Celula);
   return (
     <Paper
