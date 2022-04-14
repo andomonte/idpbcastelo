@@ -104,7 +104,6 @@ function Cadastro({ lideranca, rolMembros }) {
   const [usuarioLider, setUsuarioLider] = React.useState(false);
   const [openErro, setOpenErro] = React.useState(false);
   const [openEspera, setOpenEspera] = React.useState(false);
-  const [novoPerfil, setNovoPerfil] = React.useState('');
 
   //= =========================================================================
   const handleValidacaoClose = () => {
@@ -127,11 +126,6 @@ function Cadastro({ lideranca, rolMembros }) {
               console.log('contId', contId, usuarioLider.length);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
-                console.log('ja era para ter ido agora');
-                router.push({
-                  pathname: '/selectPerfil',
-                  //      query: { idCompra, qrCode, qrCodeCopy },
-                });
                 setContId(0);
                 setOpenEspera(true);
               }
@@ -159,22 +153,30 @@ function Cadastro({ lideranca, rolMembros }) {
       }
     }
   }, [contId]);
+  const [progress, setProgress] = React.useState(10);
 
-  //= ========================================================================
-  /* const url = `/api/consultaRolMembros/${dadosUser[0].id}`;
-  const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
-    if (data) {
-      const checarAtualizacao = lideranca.filter(
-        (val) => val.Email === session.user.email,
-      );
-      setNovoPerfil(checarAtualizacao);
-    }
+    let timer;
+    if (openEspera) {
+      let prevProgress = 10;
+      timer = setInterval(() => {
+        prevProgress -= 1;
 
-    if (error) return <div>An error occured.</div>;
-    if (!data) return <div>Loading ...</div>;
-    return 0;
-  }, [data]); */
+        if (prevProgress < 0) {
+          prevProgress = 0;
+          router.push({
+            pathname: '/selectPerfil',
+            //      query: { idCompra, qrCode, qrCodeCopy },
+          });
+        }
+        setProgress(prevProgress);
+      }, 800);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [openEspera]);
+
   //= ========================================================================
 
   const handleCheckDadosLideranca = () => {
@@ -188,17 +190,11 @@ function Cadastro({ lideranca, rolMembros }) {
         setContId(Number(checarLideranca.length));
       } else {
         setCarregar(true);
-        router.push({
-          pathname: '/selectPerfil',
-          //      query: { idCompra, qrCode, qrCodeCopy },
-        });
+        setOpenEspera(true);
       }
     } else {
       setCarregar(true);
-      router.push({
-        pathname: '/selectPerfil',
-        //      query: { idCompra, qrCode, qrCodeCopy },
-      });
+      setOpenEspera(true);
     }
   };
 
@@ -451,7 +447,11 @@ function Cadastro({ lideranca, rolMembros }) {
                             style={{ fontSize: '12px' }}
                           >
                             {console.log('penEspera', openEspera)}
-                            {!openEspera ? 'Cadastrando...' : 'Finalizando...'}
+                            {!openEspera ? (
+                              'Cadastrando...'
+                            ) : (
+                              <Box>Finalizando em {progress} segundos </Box>
+                            )}
                           </Box>
                         </Box>
                       )}
