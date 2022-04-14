@@ -30,7 +30,6 @@ export default function BotaoLogin() {
 
   return (
     <Box>
-      {console.log('fora da session')}
       {!session ? (
         <IconButton
           onClick={() =>
@@ -39,8 +38,6 @@ export default function BotaoLogin() {
             })
           }
         >
-          {console.log('dentro da session, mas sem login')}
-
           <Box
             display="flex"
             justifyContent="center"
@@ -55,8 +52,6 @@ export default function BotaoLogin() {
         </IconButton>
       ) : (
         <Box display="flex" alignItems="center">
-          {console.log('dentro da session')}
-
           <Avatar
             onClick={() =>
               signOut({

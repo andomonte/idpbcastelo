@@ -72,11 +72,13 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const [perfilSelect] = React.useState('0');
   const router = useRouter();
   let secao = [{ email: '' }];
+  let contador = 0;
 
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
-    console.log('entrou aqui na session do selectPerfil', secao);
+    contador += 1;
+    console.log('entrou aqui na session do selectPerfil', contador);
     const valorPerfil = secao.map((items, index) => {
       if (items.Funcao === 'Presidente')
         return {
@@ -184,7 +186,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     }
 
     valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
-
+    console.log('valor do pefil selectPefil-->', valorPerfil);
     // expected output: Object { a: 1, b: 4, c: 5 }
 
     // expected output: Object { a: 1, b: 4, c: 5 }
@@ -192,6 +194,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     const handleChange = (event) => {
       const indexPerfil = Number(event.target.value - 1);
       setPerfilUser(() => [valorPerfil[indexPerfil]]);
+
       setOpenEspera(true);
     };
 
@@ -312,12 +315,11 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     if (valorPerfil.length === 1 && perfilUser === '')
       setPerfilUser(valorPerfil);
     if (valorPerfil.length > 1 && !open && perfilUser === '') setOpen(true);
-
+    console.log('antes de ir', perfilUser);
     if (perfilUser !== '') {
       router.push(
         {
           pathname: '/meuPerfil',
-
           query: perfilUser[0],
         },
         '/meuPerfil',

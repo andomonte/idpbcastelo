@@ -9,14 +9,25 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
-
+  console.log('valor mudaDados', mudaDados);
   React.useEffect(() => {
     setPerfilUserF(perfilUserF);
     if (mudaDados === 'entra') {
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-
+      console.log('entrou no perfil2', result);
+      // resultado = result.id;
+      setPerfilUserF(result);
+    }
+  }, [mudaDados]);
+  React.useEffect(() => {
+    setPerfilUserF(perfilUserF);
+    if (mudaDados === 'entra') {
+      sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
+    } else {
+      const result = JSON.parse(sessionStorage.getItem('perfilUser'));
+      console.log('entrou no perfil2', result);
       // resultado = result.id;
       setPerfilUserF(result);
     }
@@ -25,7 +36,7 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/meuPerfil');
   }
-
+  console.log('AQUI', perfilUserF, perfilUser);
   if (perfilUserF === null) {
     router.push(
       {
