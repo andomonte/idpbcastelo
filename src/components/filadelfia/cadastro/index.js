@@ -122,7 +122,7 @@ function Cadastro({ lideranca, rolMembros }) {
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
                 router.push({
-                  pathname: '/selectPerfil',
+                  pathname: '/meuPerfil',
                   //      query: { idCompra, qrCode, qrCodeCopy },
                 });
                 setContId(0);
@@ -137,7 +137,7 @@ function Cadastro({ lideranca, rolMembros }) {
             //  updateFile(uploadedFile.id, { error: true });
           });
       }
-      console.log('contId fora:', contId);
+
       return true;
     }
     return true;
