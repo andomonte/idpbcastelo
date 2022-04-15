@@ -13,7 +13,6 @@ import Erros from 'src/utils/erros';
 import corIgreja from 'src/utils/coresIgreja';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
-import { EqualizerTwoTone } from '@material-ui/icons';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -199,7 +198,7 @@ function Cadastro({ lideranca, rolMembros }) {
       }
     }
   }, [contId]);
-  const [progress, setProgress] = React.useState(60);
+  // const [progress, setProgress] = React.useState(60);
 
   React.useEffect(() => {
     let timer;
@@ -216,7 +215,7 @@ function Cadastro({ lideranca, rolMembros }) {
             //      query: { idCompra, qrCode, qrCodeCopy },
           }); */
         }
-        setProgress(prevProgress);
+        //   setProgress(prevProgress);
       }, 800);
     }
     return () => {

@@ -293,16 +293,20 @@ function DadosEndereco({ rolMembros, perfilUser }) {
   //--------------------------------------------------------------------------
 
   const getInformacoes = () => {
-    axios
-      .get(`http://viacep.com.br/ws/${cep}/json/`)
-      .then((response) => {
-        setLogradouro(response.data.logradouro);
-        setBairro(response.data.bairro);
-        setCidade(response.data.localidade);
-        setUF(response.data.uf);
+    api
+      .post('/api/pegaCep', {
+        cep,
       })
-      .catch((errors) => {
-        console.log(errors);
+      .then((response) => {
+        if (response) {
+          console.log(response);
+          setLogradouro(response.data.logradouro);
+          setBairro(response.data.bairro);
+          setCidade(response.data.localidade);
+          setUF(response.data.uf);
+        }
+      })
+      .catch(() => {
         toast.error('CEP INVÁLIDO !', {
           position: toast.POSITION.TOP_CENTER,
         });
