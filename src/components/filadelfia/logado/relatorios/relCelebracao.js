@@ -124,6 +124,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   //  const classes = useStyles();
   // const router = useRouter();
   const [openErro, setOpenErro] = React.useState(false);
+  const [progress, setProgress] = React.useState(5);
+
   const visitantesCelula = visitantes.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
@@ -615,9 +617,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   }, [semana, presentes, qtyVisitante, contConversoes, pontos]);
 
   React.useEffect(() => {
-    if (existeRelatorio !== 'inicio') {
-      setLoading(false);
-    }
     pegarPontuacao();
 
     return 0;
@@ -784,9 +783,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
   React.useEffect(() => {
     //  contEffect += 1;
-    setLoading(true);
-    setExisteRelatorio('inicio');
-    if (existeRelatorio === 'sem') setLoading(false);
+
     if (selectedDate) {
       const checkAno = selectedDate.getFullYear();
 
@@ -806,7 +803,32 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     mediaCelula();
     return 0;
   }, [PontosSemana]);
+  React.useEffect(() => {
+    let timer;
+    console.log(progress, loading);
+    if (progress === 4) setLoading(false);
+    if (loading) {
+      let prevProgress = 5;
+      timer = setInterval(() => {
+        prevProgress -= 1;
 
+        if (prevProgress < 0) {
+          prevProgress = 0;
+          //   router.reload(window.location.pathname);
+          /*  router.push({
+          pathname: '/Perfil',
+          //      query: { idCompra, qrCode, qrCodeCopy },
+        }); */
+        }
+
+        if (prevProgress === 0) setLoading(false);
+        setProgress(prevProgress);
+      }, 800);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [selectedDate]);
   return (
     <Box
       display="flex"
@@ -2077,7 +2099,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                             bgcolor={corIgreja.principal}
                           >
                             <Box mt={2}>Buscando Relatório</Box>
-                            <Box>aguarde...</Box>
+                            <Box>aguarde {progress} segundos... </Box>
                           </Box>
                         )}
                         <Box

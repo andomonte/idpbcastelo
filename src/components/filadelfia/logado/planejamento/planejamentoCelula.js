@@ -18,7 +18,8 @@ import axios from 'axios';
 import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
 import Erros from 'src/utils/erros';
-import { IoReturnDownBack } from 'react-icons/io5';
+import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
+
 import Typography from '@mui/material/Typography';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -256,6 +257,16 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
   );
+
+  // zera as opções dos 5 Es
+  const zerarValues = () => {
+    setValues(valorInicial);
+    setValues2(valorInicial);
+    setValues3(valorInicial);
+    setValues4(valorInicial);
+    setValues5(valorInicial);
+  };
+
   //= ==============================================================
   const handleDateChange = (date, value) => {
     setInputValue(value);
@@ -377,7 +388,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
         carregaResponsaveis(relatorio);
       } else {
         setExisteRelatorio('sem'); // avisa que tem relatório
-        setCheckRelatorio(false);
+        // setCheckRelatorio(false);
       }
     }
 
@@ -407,8 +418,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
 
   React.useEffect(() => {
     //  contEffect += 1;
+    zerarValues();
     setCheckRelatorio(false);
-
     setLoading(true);
     if (existeRelatorio === 'sem') setLoading(false);
     setExisteRelatorio('inicio');
@@ -494,6 +505,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       minWidth={370}
       minHeight={500}
     >
+      {console.log('valores:', existeRelatorio, podeEditar)}
       <Box height="100%">
         {checkRelatorio ? (
           <Box
@@ -752,6 +764,164 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             </Box>
                           </Box>
                         )}
+
+                        {tela === 2 && (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            flexDirection="column"
+                            width="100%"
+                            height="100%"
+                          >
+                            <Box
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              mt={0}
+                              ml={0}
+                              width="96%"
+                              height="100%"
+                              bgcolor={corIgreja.principal}
+                            >
+                              <Box width="96%">
+                                <Grid container spacing={2}>
+                                  <Grid item xs={12} md={12}>
+                                    <Box
+                                      mt={1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        E1 (ENCONTRO)
+                                      </Typography>
+                                    </Box>
+
+                                    <Box className={classes.novoBox} mt={-2}>
+                                      <Select
+                                        defaultValue={values}
+                                        onChange={(e) => {
+                                          setValues(e);
+                                          setEncontro(e.label);
+                                        }}
+                                        options={nomesCelulaParcial}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={12}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        E2 (EXALTAÇÃO)
+                                      </Typography>
+                                    </Box>
+                                    <Box className={classes.novoBox} mt={-2}>
+                                      <Select
+                                        defaultValue={values2}
+                                        onChange={(e) => {
+                                          setValues2(e);
+                                          setExaltacao(e.label);
+                                        }}
+                                        options={nomesCelulaParcial}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={12}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        E3 (EDIFICAÇÃO)
+                                      </Typography>
+                                    </Box>
+                                    <Box className={classes.novoBox} mt={-2}>
+                                      <Select
+                                        defaultValue={values3}
+                                        onChange={(e) => {
+                                          setValues3(e);
+                                          setEdificacao(e.label);
+                                        }}
+                                        options={nomesCelulaParcial}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={12}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        E4 (EVANGELISMO)
+                                      </Typography>
+                                    </Box>
+                                    <Box className={classes.novoBox} mt={-2}>
+                                      <Select
+                                        defaultValue={values4}
+                                        onChange={(e) => {
+                                          setValues4(e);
+                                          setEvangelismo(e.label);
+                                        }}
+                                        options={nomesCelulaParcial}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={12}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        E5 (LANCHE)
+                                      </Typography>
+                                    </Box>
+                                    <Box className={classes.novoBox} mt={-2}>
+                                      <Select
+                                        defaultValue={values5}
+                                        onChange={(e) => {
+                                          setValues5(e);
+                                          setLanche(e.label);
+                                        }}
+                                        options={nomesCelulaParcial}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                </Grid>
+                              </Box>
+                            </Box>
+                          </Box>
+                        )}
                       </Box>
                     </Box>
                   </Box>
@@ -777,190 +947,203 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                       borderTopRightRadius: '16px',
                     }}
                   >
-                    <Box width="80%" ml={0}>
-                      <Box mb={1}>
-                        <Grid container spacing={2}>
-                          {tela === 1 && existeRelatorio === true && (
+                    <Box
+                      height="10%"
+                      minHeight={75}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      bgcolor={corIgreja.principal}
+                      width="100vw"
+                    >
+                      <Box
+                        height="10%"
+                        minHeight={75}
+                        width="90%"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        bgcolor={corIgreja.principal}
+                        style={{
+                          borderTopLeftRadius: '16px',
+                          borderTopRightRadius: '16px',
+                        }}
+                      >
+                        <Box width="100%" ml={1}>
+                          <Box mb={1}>
                             <Grid container spacing={2}>
-                              <Grid item xs={12} md={12}>
-                                <Paper
-                                  style={{
-                                    textAlign: 'center',
-                                    background: podeEditar ? '#ffffaa' : 'gray',
-                                    height: 40,
-                                  }}
-                                >
-                                  {existeRelatorio === true ? (
-                                    <Box display="flex" justifyContent="center">
-                                      {podeEditar ? (
-                                        <Box>
-                                          {carregando && (
-                                            <Box>
-                                              <Espera descricao="Gerando o Relatório" />
-                                            </Box>
-                                          )}
-                                          {!carregando ? (
-                                            <Button
-                                              onClick={handleSalvar}
-                                              startIcon={
-                                                <IoIosSave color="blue" />
-                                              }
-                                            >
-                                              <Box
-                                                mt={0.3}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
-                                                <Box>Atualizar</Box>
-                                              </Box>
-                                            </Button>
-                                          ) : (
-                                            <Button>
-                                              <Box
-                                                display="flex"
-                                                mt={0.5}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
-                                                <Oval
-                                                  stroke="red"
-                                                  width={20}
-                                                  height={20}
-                                                />
-                                                <Box mt={-0.1} ml={0.8} mr={0}>
-                                                  Atualizando...
-                                                </Box>
-                                              </Box>
-                                            </Button>
-                                          )}
-                                        </Box>
-                                      ) : (
-                                        <Button>
+                              {tela === 1 && (
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                                    {existeRelatorio === true ? (
+                                      <Paper
+                                        style={{
+                                          borderRadius: 16,
+                                          textAlign: 'center',
+                                          background: '#ffffaa',
+                                          height: 40,
+                                        }}
+                                      >
+                                        <Button
+                                          onClick={() => {
+                                            setCheckRelatorio(false);
+                                            ajusteRelatorio();
+                                          }}
+                                          startIcon={
+                                            <IoArrowUndoSharp color="blue" />
+                                          }
+                                        >
                                           <Box
-                                            color="#fff"
+                                            mr={2}
+                                            ml={2}
                                             mt={0.3}
-                                            sx={{
-                                              fontFamily: 'arial black',
-                                            }}
+                                            sx={{ fontFamily: 'arial black' }}
                                           >
-                                            Consolidado
+                                            VOLTAR
                                           </Box>
                                         </Button>
-                                      )}
-                                    </Box>
-                                  ) : (
-                                    <Box>
-                                      {!carregando ? (
-                                        <Box>
-                                          {etapas === 'completo' ? (
-                                            <Button
-                                              onClick={handleSalvar}
-                                              startIcon={
-                                                <IoIosSave color="blue" />
-                                              }
-                                            >
-                                              <Box
-                                                mt={0.3}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
-                                                <Box>Salvar</Box>
-                                              </Box>
-                                            </Button>
-                                          ) : (
-                                            <Button
-                                              style={{
-                                                background: 'gray',
-                                                width: '100%',
-                                              }}
-                                              startIcon={
-                                                <IoIosSave color="blue" />
-                                              }
-                                            >
-                                              <Box
-                                                mt={0.3}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
-                                                <Box>Salvar</Box>
-                                              </Box>
-                                            </Button>
-                                          )}
-                                        </Box>
-                                      ) : (
-                                        <Button>
+                                      </Paper>
+                                    ) : (
+                                      <Paper
+                                        style={{
+                                          borderRadius: 16,
+                                          textAlign: 'center',
+                                          background: 'gray',
+                                          height: 40,
+                                        }}
+                                      >
+                                        <Button
+                                          startIcon={
+                                            <IoArrowUndoSharp color="blue" />
+                                          }
+                                        >
                                           <Box
-                                            display="flex"
-                                            mt={0.5}
-                                            sx={{
-                                              fontFamily: 'arial black',
-                                            }}
+                                            mr={2}
+                                            ml={2}
+                                            mt={0.3}
+                                            sx={{ fontFamily: 'arial black' }}
                                           >
-                                            <Oval
-                                              stroke="red"
-                                              width={20}
-                                              height={20}
-                                            />
-                                            <Box mt={-0.1} ml={0.8} mr={0}>
-                                              Salvando
-                                            </Box>
+                                            VOLTAR
                                           </Box>
                                         </Button>
-                                      )}
-                                    </Box>
-                                  )}
-                                </Paper>
-                              </Grid>
-                            </Grid>
-                          )}
-                          {tela === 1 && existeRelatorio !== true && (
-                            <Grid container spacing={2}>
-                              <Grid item xs={6} md={6} lg={6} xl={9}>
-                                <Paper
-                                  style={{
-                                    textAlign: 'center',
-                                    background: '#feeffa',
-                                    height: 40,
-                                  }}
-                                >
-                                  <Button
-                                    startIcon={
-                                      <IoReturnDownBack color="blue" />
-                                    }
-                                    onClick={() => {
-                                      setCheckRelatorio(false);
-                                    }}
-                                  >
-                                    <Box
-                                      mt={0.3}
-                                      sx={{ fontFamily: 'arial black' }}
+                                      </Paper>
+                                    )}
+                                  </Grid>
+                                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                                    <Paper
+                                      style={{
+                                        borderRadius: 16,
+                                        textAlign: 'center',
+                                        background: '#feeffa',
+                                        height: 40,
+                                      }}
                                     >
-                                      Voltar
-                                    </Box>
-                                  </Button>
-                                </Paper>
-                              </Grid>
-                              <Grid item xs={6} md={6}>
-                                <Paper
-                                  style={{
-                                    textAlign: 'center',
-                                    background: podeEditar ? '#ffffaa' : 'gray',
-                                    height: 40,
-                                  }}
-                                >
-                                  {existeRelatorio === true ? (
-                                    <Box display="flex" justifyContent="center">
-                                      {podeEditar ? (
+                                      <Button
+                                        onClick={() => {
+                                          setTela(2);
+                                        }}
+                                        endIcon={
+                                          <IoArrowRedoSharp color="blue" />
+                                        }
+                                      >
+                                        <Box
+                                          mr={2}
+                                          ml={2}
+                                          mt={0.3}
+                                          sx={{ fontFamily: 'arial black' }}
+                                        >
+                                          Próxima
+                                        </Box>
+                                      </Button>
+                                    </Paper>
+                                  </Grid>
+                                </Grid>
+                              )}
+                              {tela === 2 && (
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                                    <Paper
+                                      style={{
+                                        borderRadius: 16,
+                                        textAlign: 'center',
+                                        background: '#ffeeee',
+                                        height: 40,
+                                      }}
+                                    >
+                                      <Button
+                                        onClick={() => {
+                                          setTela(1);
+                                        }}
+                                        startIcon={
+                                          <IoArrowUndoSharp color="blue" />
+                                        }
+                                      >
+                                        <Box
+                                          mt={0.3}
+                                          sx={{ fontFamily: 'arial black' }}
+                                        >
+                                          ANTERIOR
+                                        </Box>
+                                      </Button>
+                                    </Paper>
+                                  </Grid>
+
+                                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                                    <Paper
+                                      style={{
+                                        borderRadius: 16,
+                                        textAlign: 'center',
+                                        background: podeEditar
+                                          ? '#ffffaa'
+                                          : 'gray',
+                                        height: 40,
+                                      }}
+                                    >
+                                      {existeRelatorio === true ? (
                                         <Box>
-                                          {carregando && (
+                                          {podeEditar ? (
                                             <Box>
-                                              <Espera descricao="Gerando o Relatório" />
+                                              <Box>
+                                                {!carregando ? (
+                                                  <Button
+                                                    onClick={handleSalvar}
+                                                    startIcon={
+                                                      <IoIosSave color="blue" />
+                                                    }
+                                                  >
+                                                    <Box
+                                                      mt={0.3}
+                                                      sx={{
+                                                        fontFamily:
+                                                          'arial black',
+                                                      }}
+                                                    >
+                                                      <Box>Atualizar</Box>
+                                                    </Box>
+                                                  </Button>
+                                                ) : (
+                                                  <Box>
+                                                    <Espera descricao="Gerando o Relatório" />
+                                                  </Box>
+                                                )}
+                                              </Box>
                                             </Box>
+                                          ) : (
+                                            <Button>
+                                              <Box
+                                                color="#fff"
+                                                mt={0.3}
+                                                sx={{
+                                                  fontFamily: 'arial black',
+                                                }}
+                                              >
+                                                Consolidado
+                                              </Box>
+                                            </Button>
                                           )}
+                                        </Box>
+                                      ) : (
+                                        <Box>
                                           {!carregando ? (
                                             <Button
                                               onClick={handleSalvar}
@@ -974,113 +1157,23 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                                   fontFamily: 'arial black',
                                                 }}
                                               >
-                                                <Box>Atualizar</Box>
-                                              </Box>
-                                            </Button>
-                                          ) : (
-                                            <Button>
-                                              <Box
-                                                display="flex"
-                                                mt={0.5}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
-                                                <Oval
-                                                  stroke="red"
-                                                  width={20}
-                                                  height={20}
-                                                />
-                                                <Box mt={-0.1} ml={0.8} mr={0}>
-                                                  Atualizando...
-                                                </Box>
-                                              </Box>
-                                            </Button>
-                                          )}
-                                        </Box>
-                                      ) : (
-                                        <Button>
-                                          <Box
-                                            color="#fff"
-                                            mt={0.3}
-                                            sx={{
-                                              fontFamily: 'arial black',
-                                            }}
-                                          >
-                                            Consolidado
-                                          </Box>
-                                        </Button>
-                                      )}
-                                    </Box>
-                                  ) : (
-                                    <Box>
-                                      {!carregando ? (
-                                        <Box>
-                                          {etapas === 'completo' ? (
-                                            <Button
-                                              onClick={handleSalvar}
-                                              startIcon={
-                                                <IoIosSave color="blue" />
-                                              }
-                                            >
-                                              <Box
-                                                mt={0.3}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
                                                 <Box>Salvar</Box>
                                               </Box>
                                             </Button>
                                           ) : (
-                                            <Button
-                                              style={{
-                                                background: 'gray',
-                                                width: '100%',
-                                              }}
-                                              startIcon={
-                                                <IoIosSave color="blue" />
-                                              }
-                                            >
-                                              <Box
-                                                mt={0.3}
-                                                sx={{
-                                                  fontFamily: 'arial black',
-                                                }}
-                                              >
-                                                <Box>Salvar</Box>
-                                              </Box>
-                                            </Button>
-                                          )}
-                                        </Box>
-                                      ) : (
-                                        <Button>
-                                          <Box
-                                            display="flex"
-                                            mt={0.5}
-                                            sx={{
-                                              fontFamily: 'arial black',
-                                            }}
-                                          >
-                                            <Oval
-                                              stroke="red"
-                                              width={20}
-                                              height={20}
-                                            />
-                                            <Espera descricao="Gerando o Relatório" />
-                                            <Box mt={-0.1} ml={0.8} mr={0}>
-                                              Salvando
+                                            <Box>
+                                              <Espera descricao="Criando o Planejamento" />
                                             </Box>
-                                          </Box>
-                                        </Button>
+                                          )}
+                                        </Box>
                                       )}
-                                    </Box>
-                                  )}
-                                </Paper>
-                              </Grid>
+                                    </Paper>
+                                  </Grid>
+                                </Grid>
+                              )}
                             </Grid>
-                          )}
-                        </Grid>
+                          </Box>
+                        </Box>
                       </Box>
                     </Box>
                   </Box>
