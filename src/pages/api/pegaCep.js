@@ -1,14 +1,16 @@
-import axios from 'axios';
+import cep from 'cep-promise';
 
 const PegaCEP = async (req, res) => {
-  const cep = req.body;
-  await axios
-    .get(`http://viacep.com.br/ws/${cep}/json/`)
-    .then((response) => {
-      res.status(200).send(response);
+  const cepPesquisado = req.body.cep;
+  console.log(cepPesquisado);
+  cep(cepPesquisado)
+    .then((result) => {
+      console.log(result);
+      res.status(200).send(result);
     })
-    .catch((errors) => {
-      res.status(500).send(errors);
+    .catch((error) => {
+      res.status(500).send(error);
+      console.log(error);
     });
 };
 //= =========================================================================

@@ -300,10 +300,10 @@ function DadosEndereco({ rolMembros, perfilUser }) {
       .then((response) => {
         if (response) {
           console.log(response);
-          setLogradouro(response.data.logradouro);
-          setBairro(response.data.bairro);
-          setCidade(response.data.localidade);
-          setUF(response.data.uf);
+          setLogradouro(response.data.street);
+          setBairro(response.data.neighborhood);
+          setCidade(response.data.city);
+          setUF(response.data.state);
         }
       })
       .catch(() => {
@@ -382,7 +382,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
             </Grid>
 
             <Grid item xs={12} md={8}>
-              <Box mt={-1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                 <Typography variant="caption" display="block" gutterBottom>
                   Logradouro
                 </Typography>

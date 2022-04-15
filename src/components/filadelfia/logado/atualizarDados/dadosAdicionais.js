@@ -354,10 +354,10 @@ function DadosGerais({ rolMembros, perfilUser }) {
               </Box>
             </Grid>
 
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={12}>
               <Box mt={-1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                 <Typography variant="caption" display="block" gutterBottom>
-                  Nome Da Mãe
+                  Nome da Mãe
                 </Typography>
               </Box>
               <Box className={classes.novoBox} mt={-2}>
