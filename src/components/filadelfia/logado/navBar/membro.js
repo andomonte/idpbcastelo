@@ -255,7 +255,10 @@ function navBar({ perfilUser }) {
                   selected={isSelected(itemSecondary)}
                   onClick={() => {
                     if (itemSecondary.path !== '/installApp') {
-                      router.push(itemSecondary.path);
+                      router.push({
+                        pathname: itemSecondary.path,
+                        query: { perfilUser },
+                      });
                     } else {
                       checkInstall();
                     }

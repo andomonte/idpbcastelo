@@ -231,18 +231,22 @@ model relatorioCelebracao {
 }
 
 model plancelula {
-  id          Int    @id @default(autoincrement())
-  Encontro    String @db.VarChar(255)
-  Exaltacao   String @db.VarChar(255)
-  Edificacao  String @db.VarChar(255)
-  Evangelismo String @db.VarChar(255)
-  Lanche      String @db.VarChar(255)
-  Semana      Int
-  Data        String @db.VarChar(25)
-  Celula      Int
-  Supervisao  Int
-  Coordenacao Int
-  Distrito    Int
+  id            Int    @id @default(autoincrement())
+  Anfitriao     String @db.VarChar(255)
+  Multiplicacao String @db.VarChar(45)
+  Horario       String @db.VarChar(45)
+  Fase          String @db.VarChar(155)
+  Semana        Int
+  Data          String @db.VarChar(25)
+  Celula        Int
+  Supervisao    Int
+  Coordenacao   Int
+  Distrito      Int
+  Encontro      String @db.VarChar(255)
+  Exaltacao     String @db.VarChar(255)
+  Edificacao    String @db.VarChar(255)
+  Evangelismo   String @db.VarChar(255)
+  Lanche        String @db.VarChar(255)
 }
 
 model relatorioDiscipulado {

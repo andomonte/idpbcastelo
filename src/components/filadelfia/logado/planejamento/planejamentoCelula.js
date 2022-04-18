@@ -1,7 +1,9 @@
-import { Box, Grid, Paper, Button } from '@material-ui/core';
+import { Box, Grid, Paper, TextField, Button } from '@material-ui/core';
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
+import dataMask from 'src/components/mascaras/datas';
+import horarioMask from 'src/components/mascaras/horario';
 import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
 import Select from 'react-select';
@@ -11,21 +13,23 @@ import {
 } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { IoIosSave } from 'react-icons/io';
 import api from 'src/components/services/api';
 import axios from 'axios';
-import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
 import Erros from 'src/utils/erros';
 import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Typography from '@mui/material/Typography';
 import 'react-image-crop/dist/ReactCrop.css';
+import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
-
+const filter = createFilterOptions();
 const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
@@ -36,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     alignItems: 'center',
+  },
+  novoBox2: {
+    flexGrow: 1,
+    padding: theme.spacing(1),
+
+    color: theme.palette.text.secondary,
   },
   boxImg: {
     flexGrow: 1,
@@ -154,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
   tf_m: {
     backgroundColor: '#f5f5f5',
 
-    width: '100%',
+    width: '96%',
     fontSize: '5px',
   },
 
@@ -193,6 +203,14 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 10,
       width: '110px',
     },
+  },
+  tf_s2: {
+    textAlign: 'center',
+    display: 'flex',
+    marginLeft: 28,
+    width: '100%',
+    justifyContent: 'center',
+    // alignItems: 'center',
   },
   root: {
     // position: 'absolute',
@@ -238,12 +256,35 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [Edificacao, setEdificacao] = React.useState(dadosUser[0].Edificacao);
 
   //--------------------------------------------------------------------------
+
+  const fases = [
+    { label: 'Integrar na Visão', value: 1 },
+    { label: 'Comunhão', value: 2 },
+    { label: 'Edificao', value: 3 },
+    { label: 'Evangelismo', value: 4 },
+    { label: 'multiplicacao', value: 5 },
+  ];
   const valorInicial = { label: 'Escolha um Responsável', value: 0 };
+  const valorAnfitriao = { label: 'na casa de quem será a Reunião?', value: 0 };
+  const valorInicialOjetivo = {
+    label: 'Qual a fase atual da Célula?',
+    value: 0,
+  };
+
   const [values, setValues] = React.useState(valorInicial);
   const [values2, setValues2] = React.useState(valorInicial);
   const [values3, setValues3] = React.useState(valorInicial);
   const [values4, setValues4] = React.useState(valorInicial);
   const [values5, setValues5] = React.useState(valorInicial);
+  const [valueAnfitriao, setValueAnfitriao] = React.useState(valorAnfitriao);
+  const [progress, setProgress] = React.useState(5);
+  const [multiplicacao, setMultiplicacao] = React.useState('');
+
+  const [objetivo, setObjetivo] = React.useState(valorInicialOjetivo);
+  const [horario, setHorario] = React.useState('');
+  const multiplicacaoRef = React.useRef();
+  const anfitriaoRef = React.useRef();
+  const horarioRef = React.useRef();
 
   const [openErro, setOpenErro] = React.useState(false);
   const timeElapsed2 = Date.now();
@@ -265,6 +306,15 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     setValues3(valorInicial);
     setValues4(valorInicial);
     setValues5(valorInicial);
+    setEncontro('');
+    setExaltacao('');
+    setEdificacao('');
+    setEvangelismo('');
+    setLanche('');
+    setObjetivo(valorInicialOjetivo);
+    setMultiplicacao('');
+    setHorario('');
+    setValueAnfitriao(valorAnfitriao);
   };
 
   //= ==============================================================
@@ -284,7 +334,17 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     //   setSelectedDate();
     setIsPickerOpen(true);
   };
-
+  const handleEnter = (event) => {
+    if (event.key.toLowerCase() === 'enter') {
+      const formId = event.target.id;
+      if (formId === 'Multiplicacao') horarioRef.current.focus();
+      if (formId === 'Horario') anfitriaoRef.current.focus();
+      //  if (formId === 'Conversao') batismoRef.current.focus();
+      //   if (formId === 'Batismo') formacaoAcademicaRef.current.focus();
+      ///    if (formId === 'FormacaoAcademica') profissaoRef.current.focus();
+      //   if (formId === 'Profissao') discipuladorRef.current.focus();
+    }
+  };
   //= ==========pegar semana apartir da data==============
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
@@ -340,6 +400,17 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
 
     setExaltacao(relatorio[0].Exaltacao);
     setValues2(newValues2[0]);
+    setMultiplicacao(relatorio[0].Multiplicacao);
+    setHorario(relatorio[0].Horario);
+    const newAnfitriao = nomesCelulaParcial.filter(
+      (val) => val.label === relatorio[0].Anfitriao,
+    );
+    console.log('newAnfi', newAnfitriao, valueAnfitriao);
+
+    if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0]);
+
+    const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
+    if (newFase.length) setObjetivo(newFase[0]);
 
     const newValues3 = nomesCelulaParcial.filter(
       (val) => val.label === relatorio[0].Edificacao,
@@ -420,8 +491,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     //  contEffect += 1;
     zerarValues();
     setCheckRelatorio(false);
-    setLoading(true);
-    if (existeRelatorio === 'sem') setLoading(false);
+
     setExisteRelatorio('inicio');
     if (selectedDate) {
       const checkAno = selectedDate.getFullYear();
@@ -434,16 +504,33 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   }, [selectedDate]);
 
   React.useEffect(() => {
-    setLoading(true);
-    if (existeRelatorio !== 'inicio') setLoading(false);
-    return 0;
-  }, [existeRelatorio]);
-
-  React.useEffect(() => {
     if (Encontro && Exaltacao && Evangelismo && Edificacao && Lanche) {
       setEtapas('completo');
     }
-  }, [Exaltacao, Encontro, Evangelismo, Edificacao, Lanche]);
+    console.log('encontro', Encontro);
+    console.log('Exaltacao', Exaltacao);
+    console.log('Edificacao', Edificacao);
+    console.log('Evangelismo', Evangelismo);
+    console.log('Lanche', Lanche);
+    console.log('encontro', Encontro);
+    console.log('etapas', etapas);
+    console.log('multiplicacao', multiplicacao);
+    console.log('encontro', horario);
+    console.log('objetivos', objetivo);
+    console.log('valorAnfitrião', valueAnfitriao.label);
+    console.log('horario', horario);
+  }, [
+    Exaltacao,
+    Encontro,
+    Evangelismo,
+    Edificacao,
+    Lanche,
+    objetivo,
+    valueAnfitriao,
+    multiplicacao,
+    horario,
+  ]);
+
   //  const handleVoltar = () => {};
   /*   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
@@ -459,40 +546,79 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       if (formId === 'Naturalidade') EncontroRef.current.focus();
     }
   };
- */ const handleSalvar = () => {
-    setCarregando(true);
+  
+ */
 
-    // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
+  const handleSalvar = () => {
+    if (etapas === 'completo') {
+      setCarregando(true);
 
-    api
-      .post('/api/criarPlanejamentoCelula', {
-        Encontro: String(Encontro),
-        Exaltacao,
-        Edificacao,
-        Evangelismo,
-        Lanche,
-        Semana: semana,
-        Data: inputValue,
-        Celula: Number(perfilUser.Celula),
-        Supervisao: Number(perfilUser.supervisao),
-        Coordenacao: Number(perfilUser.Coordenacao),
-        Distrito: Number(perfilUser.Distrito),
-      })
-      .then((response) => {
-        if (response) {
-          // enviarPontuacao();
+      // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
 
-          setLoading(false);
+      api
+        .post('/api/criarPlanejamentoCelula', {
+          Encontro: String(Encontro),
+          Exaltacao,
+          Edificacao,
+          Evangelismo,
+          Lanche,
+          Semana: semana,
+          Data: inputValue,
+          Celula: Number(perfilUser.Celula),
+          Supervisao: Number(perfilUser.supervisao),
+          Coordenacao: Number(perfilUser.Coordenacao),
+          Distrito: Number(perfilUser.Distrito),
+          Fase: objetivo.label,
+          Anfitriao: valueAnfitriao.label,
+          Multiplicacao: multiplicacao,
+          Horario: horario,
+        })
+        .then((response) => {
+          if (response) {
+            // enviarPontuacao();
+
+            setCarregando(false);
+            mutate(url);
+          }
+        })
+        .catch(() => {
+          setOpenErro(true);
+
           setCarregando(false);
-          mutate(url);
-        }
-      })
-      .catch(() => {
-        setOpenErro(true);
-
-        setCarregando(false);
+        });
+    } else {
+      toast.error('PREENCHA TODOS OS DADOS !', {
+        position: toast.POSITION.TOP_CENTER,
       });
+    }
   };
+
+  React.useEffect(() => {
+    let timer;
+
+    if (progress === 4) setLoading(false);
+    if (loading) {
+      let prevProgress = 5;
+      timer = setInterval(() => {
+        prevProgress -= 1;
+
+        if (prevProgress < 0) {
+          prevProgress = 0;
+          //   router.reload(window.location.pathname);
+          /*  router.push({
+          pathname: '/Perfil',
+          //      query: { idCompra, qrCode, qrCodeCopy },
+        }); */
+        }
+
+        if (prevProgress === 0) setLoading(false);
+        setProgress(prevProgress);
+      }, 800);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [selectedDate]);
 
   return (
     <Box
@@ -505,7 +631,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       minWidth={370}
       minHeight={500}
     >
-      {console.log('valores:', existeRelatorio, podeEditar)}
       <Box height="100%">
         {checkRelatorio ? (
           <Box
@@ -583,7 +708,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                   minHeight={343}
                   width="100%"
                   bgcolor={corIgreja.principal}
-                  borderTop="2px solid #fff"
                 >
                   <Box
                     display="flex"
@@ -598,7 +722,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                       justifyContent="center"
                       alignItems="center"
                       flexDirection="column"
-                      width="95%"
+                      width="100%"
                       height="100%"
                     >
                       <Box
@@ -617,6 +741,87 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             height="100%"
                           >
                             <Box
+                              height="10%"
+                              width="100%"
+                              minHeight={70}
+                              mb={5}
+                              mt={-2}
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              borderBottom="2px solid #fff"
+                              borderTop="2px solid #fff"
+                              bgcolor={corIgreja.principal}
+                              sx={{
+                                color: '#fff',
+                                fontFamily: 'Geneva',
+                                fontWeight: 'bold',
+                                fontSize: '20px',
+                              }}
+                            >
+                              <Box
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                width="100%"
+                                height="100%"
+                              >
+                                <Box
+                                  sx={{ fontSize: '16px' }}
+                                  display="flex"
+                                  flexDirection="column"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                  height="100%"
+                                  borderRight="2px solid #fff"
+                                  width="50%"
+                                >
+                                  <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
+                                    CÉLULA
+                                  </Box>
+                                  <Box
+                                    fontFamily="arial black"
+                                    color="yellow"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
+                                    {perfilUser.Celula}
+                                  </Box>
+                                </Box>
+                                <Box
+                                  sx={{ fontSize: '16px' }}
+                                  display="flex"
+                                  flexDirection="column"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                  height="100%"
+                                  width="50%"
+                                >
+                                  <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
+                                    SEMANA
+                                  </Box>
+                                  <Box
+                                    fontFamily="arial black"
+                                    color="yellow"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
+                                    {semana}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
                               display="flex"
                               alignItems="center"
                               justifyContent="center"
@@ -627,7 +832,144 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                               bgcolor={corIgreja.principal}
                             >
                               <Box width="96%">
+                                <Box
+                                  color={corIgreja.iconeOn}
+                                  fontFamily="arial black"
+                                  fontSize="20px"
+                                  mb={5}
+                                  mt={-2}
+                                  textAlign="center"
+                                >
+                                  PLANEJAMENTO DA CÉLULA
+                                </Box>
                                 <Grid container spacing={2}>
+                                  <Grid item xs={12} md={12}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        OBJETIVO CENTRAL DA REUNIÃO
+                                      </Typography>
+                                    </Box>
+                                    <Box className={classes.novoBox2} mt={-2}>
+                                      <Select
+                                        id="Objetivo"
+                                        defaultValue={objetivo}
+                                        onChange={(e) => {
+                                          // setValues2(e);
+                                          setObjetivo(e);
+                                          multiplicacaoRef.current.focus();
+                                        }}
+                                        options={fases}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={6} md={6}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        MULTIPLICAÇÃO
+                                      </Typography>
+                                    </Box>
+                                    <Box ml={1.4} mt={0}>
+                                      <Box>
+                                        <TextField
+                                          className={classes.tf_m}
+                                          inputProps={{
+                                            style: {
+                                              width: '100%',
+                                              textAlign: 'center',
+
+                                              WebkitBoxShadow:
+                                                '0 0 0 1000px #fafafa  inset',
+                                            },
+                                          }}
+                                          id="Multiplicacao"
+                                          // label="Matricula"
+                                          type="text"
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                          value={dataMask(multiplicacao)}
+                                          variant="standard"
+                                          placeholder="dd/mm/aaaa"
+                                          onChange={(e) => {
+                                            setMultiplicacao(e.target.value);
+                                          }}
+                                          onFocus={(e) => {
+                                            setMultiplicacao(e.target.value);
+                                          }}
+                                          onKeyDown={handleEnter}
+                                          inputRef={multiplicacaoRef}
+                                        />
+                                      </Box>
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={6} md={6}>
+                                    <Box
+                                      mt={-1}
+                                      ml={2}
+                                      color="white"
+                                      sx={{ fontSize: 'bold' }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                      >
+                                        HORÁRIO DA CÉLULA
+                                      </Typography>
+                                    </Box>
+                                    <Box width="100%" ml={1.4} mt={0}>
+                                      <Box width="99%">
+                                        <TextField
+                                          className={classes.tf_m}
+                                          inputProps={{
+                                            style: {
+                                              textAlign: 'center',
+
+                                              WebkitBoxShadow:
+                                                '0 0 0 1000px #fafafa  inset',
+                                            },
+                                          }}
+                                          id="Horario"
+                                          // label="Matricula"
+                                          type="text"
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                          value={horarioMask(
+                                            horario.replace(/(?<=^.{2})/, ':'),
+                                          )}
+                                          variant="standard"
+                                          placeholder="hh:mm"
+                                          onChange={(e) => {
+                                            setHorario(e.target.value);
+                                          }}
+                                          onFocus={(e) => {
+                                            setHorario(e.target.value);
+                                          }}
+                                          onKeyDown={handleEnter}
+                                          inputRef={horarioRef}
+                                        />
+                                      </Box>
+                                    </Box>
+                                  </Grid>
                                   <Grid item xs={12} md={12}>
                                     <Box
                                       mt={1}
@@ -640,123 +982,87 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        E1 (ENCONTRO)
+                                        ANFITRIÃO DA CÉLULA
                                       </Typography>
                                     </Box>
 
                                     <Box className={classes.novoBox} mt={-2}>
-                                      <Select
-                                        defaultValue={values}
-                                        onChange={(e) => {
-                                          setValues(e);
-                                          setEncontro(e.label);
+                                      <Paper
+                                        style={{
+                                          marginBottom: 15,
+                                          textAlign: 'center',
                                         }}
-                                        options={nomesCelulaParcial}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={-1}
-                                      ml={2}
-                                      color="white"
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
                                       >
-                                        E2 (EXALTAÇÃO)
-                                      </Typography>
-                                    </Box>
-                                    <Box className={classes.novoBox} mt={-2}>
-                                      <Select
-                                        defaultValue={values2}
-                                        onChange={(e) => {
-                                          setValues2(e);
-                                          setExaltacao(e.label);
-                                        }}
-                                        options={nomesCelulaParcial}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={-1}
-                                      ml={2}
-                                      color="white"
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        E3 (EDIFICAÇÃO)
-                                      </Typography>
-                                    </Box>
-                                    <Box className={classes.novoBox} mt={-2}>
-                                      <Select
-                                        defaultValue={values3}
-                                        onChange={(e) => {
-                                          setValues3(e);
-                                          setEdificacao(e.label);
-                                        }}
-                                        options={nomesCelulaParcial}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={-1}
-                                      ml={2}
-                                      color="white"
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        E4 (EVANGELISMO)
-                                      </Typography>
-                                    </Box>
-                                    <Box className={classes.novoBox} mt={-2}>
-                                      <Select
-                                        defaultValue={values4}
-                                        onChange={(e) => {
-                                          setValues4(e);
-                                          setEvangelismo(e.label);
-                                        }}
-                                        options={nomesCelulaParcial}
-                                      />
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={12}>
-                                    <Box
-                                      mt={-1}
-                                      ml={2}
-                                      color="white"
-                                      sx={{ fontSize: 'bold' }}
-                                    >
-                                      <Typography
-                                        variant="caption"
-                                        display="block"
-                                        gutterBottom
-                                      >
-                                        E5 (LANCHE)
-                                      </Typography>
-                                    </Box>
-                                    <Box className={classes.novoBox} mt={-2}>
-                                      <Select
-                                        defaultValue={values5}
-                                        onChange={(e) => {
-                                          setValues5(e);
-                                          setLanche(e.label);
-                                        }}
-                                        options={nomesCelulaParcial}
-                                      />
+                                        <Box
+                                          display="flex"
+                                          justifyContent="center"
+                                        >
+                                          <Autocomplete
+                                            style={{
+                                              width: '92%',
+
+                                              marginBottom: 0,
+                                              textAlign: 'center',
+                                            }}
+                                            value={valueAnfitriao.label}
+                                            onChange={(event, newValue) => {
+                                              if (newValue !== '') {
+                                                setValueAnfitriao(newValue);
+                                              } else if (
+                                                newValue &&
+                                                newValue.inputValue2
+                                              ) {
+                                                // Create a new value from the user input
+                                                setValueAnfitriao({
+                                                  label: 'Na casa de quem...',
+                                                });
+                                              } else {
+                                                setValueAnfitriao(newValue);
+                                              }
+                                            }}
+                                            filterOptions={(
+                                              options,
+                                              params,
+                                            ) => {
+                                              const filtered = filter(
+                                                options,
+                                                params,
+                                              );
+
+                                              return filtered;
+                                            }}
+                                            selectOnFocus
+                                            clearOnBlur
+                                            handleHomeEndKeys
+                                            id="Anfitriao"
+                                            options={nomesCelulaParcial}
+                                            getOptionLabel={(option) => {
+                                              // Value selected with enter, right from the input
+                                              if (typeof option === 'string') {
+                                                return option;
+                                              }
+                                              // Add "xxx" option created dynamically
+                                              if (option.inputValue2) {
+                                                return option.inputValue2;
+                                              }
+                                              // Regular option
+                                              return option.label;
+                                            }}
+                                            renderOption={(props, option) => (
+                                              <li {...props}>{option.label}</li>
+                                            )}
+                                            freeSolo
+                                            renderInput={(params) => (
+                                              <TextField
+                                                inputRef={anfitriaoRef}
+                                                placeholder="Na casa de quem será a Célula"
+                                                {...params}
+                                                label=" "
+                                              />
+                                            )}
+                                          />
+                                        </Box>
+                                      </Paper>
                                     </Box>
                                   </Grid>
                                 </Grid>
@@ -975,7 +1281,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                               {tela === 1 && (
                                 <Grid container spacing={2}>
                                   <Grid item xs={6} md={6} lg={6} xl={6}>
-                                    {existeRelatorio === true ? (
+                                    {existeRelatorio !== true ? (
                                       <Paper
                                         style={{
                                           borderRadius: 16,
@@ -1038,23 +1344,56 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         height: 40,
                                       }}
                                     >
-                                      <Button
-                                        onClick={() => {
-                                          setTela(2);
-                                        }}
-                                        endIcon={
-                                          <IoArrowRedoSharp color="blue" />
-                                        }
-                                      >
-                                        <Box
-                                          mr={2}
-                                          ml={2}
-                                          mt={0.3}
-                                          sx={{ fontFamily: 'arial black' }}
+                                      {multiplicacao &&
+                                      horario &&
+                                      valorAnfitriao !==
+                                        'na casa de quem será a Reunião?' &&
+                                      valorAnfitriao &&
+                                      objetivo !==
+                                        'Qual a fase atual da Célula?' &&
+                                      objetivo ? (
+                                        <Button
+                                          onClick={() => {
+                                            setTela(2);
+                                          }}
+                                          endIcon={
+                                            <IoArrowRedoSharp color="blue" />
+                                          }
                                         >
-                                          Próxima
-                                        </Box>
-                                      </Button>
+                                          <Box
+                                            mr={2}
+                                            ml={2}
+                                            mt={0.3}
+                                            sx={{ fontFamily: 'arial black' }}
+                                          >
+                                            Próxima
+                                          </Box>
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          onClick={() => {
+                                            toast.error(
+                                              'ANTES DE IR PARA A PRÓXIMA TELA PREENCHA TODOS OS DADOS !',
+                                              {
+                                                position:
+                                                  toast.POSITION.TOP_CENTER,
+                                              },
+                                            );
+                                          }}
+                                          endIcon={
+                                            <IoArrowRedoSharp color="gray" />
+                                          }
+                                        >
+                                          <Box
+                                            mr={2}
+                                            ml={2}
+                                            mt={0.3}
+                                            sx={{ fontFamily: 'arial black' }}
+                                          >
+                                            Next
+                                          </Box>
+                                        </Button>
+                                      )}
                                     </Paper>
                                   </Grid>
                                 </Grid>
@@ -1383,7 +1722,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                         bgcolor={corIgreja.principal}
                       >
                         <Box mt={2}>Buscando Planejamento</Box>
-                        <Box>aguarde...</Box>
+                        <Box>aguarde {progress} segundos... </Box>
                       </Box>
                     )}
                     <Box
@@ -1474,6 +1813,17 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           setOpenErro={(openErros) => setOpenErro(openErros)}
         />
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Box>
   );
 }

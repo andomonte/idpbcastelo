@@ -665,7 +665,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
 
   React.useEffect(() => {
     let timer;
-    console.log(progress, loading);
+
     if (progress === 4) setLoading(false);
     if (loading) {
       let prevProgress = 5;

@@ -144,9 +144,10 @@ const redeSociais = [
 function navBar({ perfilUser }) {
   const classes = useStyles();
   const router = useRouter();
-  const install = usePWAInstall();
+
   const isSelected = (item) => router.pathname === item.path;
   const [session] = useSession();
+  const install = usePWAInstall();
   const checkInstall = () => {
     if (install) install();
   };
@@ -224,7 +225,10 @@ function navBar({ perfilUser }) {
               selected={isSelected(itemSecondary)}
               onClick={() => {
                 if (itemSecondary.path !== '/installApp') {
-                  router.push(itemSecondary.path);
+                  router.push({
+                    pathname: itemSecondary.path,
+                    query: { perfilUser },
+                  });
                 } else {
                   checkInstall();
                 }
