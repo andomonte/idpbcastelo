@@ -91,7 +91,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const [observacoes, setObservacoes] = React.useState(0);
   const [nomesVisitantes, setNomesVisitantes] = React.useState(visitantes);
   const nomesCelulas = rolMembros.filter(
-    (val) => val.Celula === Number(perfilUser.Celula),
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
   );
   const dadosCelula = nomesCelulas.map((row) => createData(row.Nome, true));
   const [checkRelatorio, setCheckRelatorio] = React.useState(false);
@@ -253,6 +255,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       const relatorio = members.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 

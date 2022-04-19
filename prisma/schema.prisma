@@ -28,7 +28,7 @@ model celulas {
 }
 
 model cursos {
-  id     BigInt @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   Nome   String @db.Text
   Inicio String @db.VarChar(25)
   valor  String @db.VarChar(25)

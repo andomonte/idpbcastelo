@@ -7,7 +7,9 @@ import corIgreja from 'src/utils/coresIgreja';
 
 function Celula({ perfilUser, Celulas, rolMembros }) {
   const dadosCelula = Celulas.filter(
-    (val) => val.Celula === Number(perfilUser.Celula),
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
   );
   const dadosAnfitriao = rolMembros.filter(
     (val) => val.RolMembro === Number(dadosCelula[0].Anfitriao),

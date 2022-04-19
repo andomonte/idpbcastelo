@@ -110,7 +110,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [observacoes, setObservacoes] = React.useState(0);
 
   const nomesCelulas = rolMembros.filter(
-    (val) => val.Celula === Number(perfilUser.Celula),
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
   );
   const dadosCelula = nomesCelulas.map((row) => createData(row.Nome, false));
   const [checkRelatorio, setCheckRelatorio] = React.useState(false);
@@ -240,6 +242,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       const relatorio = members.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 
@@ -600,6 +603,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       const CelulaAtual = rankGeral.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (CelulaAtual.length) {

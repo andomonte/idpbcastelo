@@ -237,7 +237,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const classes = useStyles();
 
   const nomesCel = rolMembros.filter(
-    (val) => val.Celula === Number(perfilUser.Celula),
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
   );
   const nomesCelulaParcial = nomesCel.map((rol) =>
     createListaMembros(rol.id, rol.Nome),
@@ -431,6 +433,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       const relatorio = members.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 

@@ -5,7 +5,9 @@ import TabCelula from './abas/tabCelula';
 
 function Discipulado({ rolMembros, perfilUser }) {
   const nomesCelulas = rolMembros.filter(
-    (val) => val.Celula === Number(perfilUser.Celula),
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
   );
 
   return (

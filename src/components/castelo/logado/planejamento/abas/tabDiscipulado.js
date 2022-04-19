@@ -212,7 +212,9 @@ export default function TabDiscipuado({
     (val) => val.RolMembro === Number(perfilUser.RolMembro),
   );
   const nomesCelulas = rolMembros.filter(
-    (val) => val.Celula === Number(perfilUser.Celula),
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
   );
   const nomesCelulaParcial = nomesCelulas.map((rol) =>
     createListaMembros(rol.id, rol.Nome),
