@@ -4,11 +4,11 @@ import prisma from 'src/lib/prisma';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, TextField } from '@material-ui/core';
-import Cadastro from 'src/components/filadelfia/cadastro';
+import Cadastro from 'src/components/castelo/cadastro';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import { useRouter } from 'next/router';
-import { IdpbCastelo } from 'src/components/filadelfia/normal';
+import { IdpbCastelo } from 'src/components/castelo/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
 
@@ -73,7 +73,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const router = useRouter();
   let secao = [{ email: '' }];
 
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
 
@@ -220,7 +220,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
         >
           <Box width="100%">
             <Box textAlign="center" mt={-3} mb={2}>
-              <img src="/images/filadelfia.png" alt="Castelo" width={80} />
+              <img src="/images/castelo.png" alt="Castelo" width={80} />
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
               <Box

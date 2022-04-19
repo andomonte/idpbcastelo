@@ -4,9 +4,11 @@ import { colors } from '@material-ui/core';
 
 // Create a theme instance.
 const Cores = createTheme({
-  principal: '#3f50b5',
+  principal: '#a11008',
   secundaria: '#fafafa',
-  iconeOn: '#ffff00',
+  texto1: '#90a4ae',
+  texto2: '#ffff8d',
+  iconeOn: '#ffff8d',
   iconeOff: '#eeee',
   palette: {
     primary: {
@@ -16,7 +18,7 @@ const Cores = createTheme({
       main: '#000000',
     },
     danger: {
-      main: '#ff3d00',
+      main: '#ff3d0A',
     },
     default: {
       main: '#1a237e',

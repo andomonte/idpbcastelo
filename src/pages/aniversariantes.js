@@ -1,5 +1,5 @@
 import React from 'react';
-import Aniversariantes from 'src/components/filadelfia/logado/aniversariantes';
+import Aniversariantes from 'src/components/castelo/logado/aniversariantes';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
@@ -31,7 +31,7 @@ function Planejar({ rolMembros }) {
     <div>
       {perfilUserF && (
         <Aniversariantes
-          title="IDPB-FILADELFIA"
+          title="IDPB-CASTELO"
           rolMembros={rolMembros}
           perfilUser={perfilUserF}
         />

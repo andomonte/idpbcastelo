@@ -1,5 +1,5 @@
 import React from 'react';
-import Planejamento from 'src/components/filadelfia/logado/planejamento';
+import Planejamento from 'src/components/castelo/logado/planejamento';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

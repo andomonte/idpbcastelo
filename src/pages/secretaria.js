@@ -1,9 +1,9 @@
 import React from 'react';
-import Secretaria from 'src/components/filadelfia/normal/secretaria';
+import Secretaria from 'src/components/castelo/normal/secretaria';
 import prisma from 'src/lib/prisma';
 
 function Sec({ userIgrejas, celulas, LiderancaCelulas }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
 
   return (
     <Secretaria

@@ -1,5 +1,5 @@
 import React from 'react';
-import AtualizarDados from 'src/components/filadelfia/logado/atualizarDados';
+import AtualizarDados from 'src/components/castelo/logado/atualizarDados';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
@@ -33,7 +33,7 @@ function Atualizar({ rolMembros }) {
         <AtualizarDados
           perfilUser={perfilUserF}
           rolMembros={rolMembros}
-          title="IDPB-FILADELFIA"
+          title="IDPB-CASTELO"
         />
       )}
     </div>

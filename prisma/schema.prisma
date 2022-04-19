@@ -8,18 +8,18 @@ datasource db {
 }
 
 model celulas {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   Celula        Int
-  Nome          String   @db.VarChar(255)
-  Lider         String   @db.VarChar(145)
+  Nome          String?   @db.VarChar(125)
+  Lider         String?   @db.VarChar(145)
   Supervisao    Int
   Coordenacao   Int
   Distrito      Int
-  Anfitriao     String   @db.VarChar(255)
-  CriadoEm      DateTime @db.DateTime(0)
-  CriandoPor    String   @db.VarChar(125)
-  AtualizadoEm  DateTime @db.DateTime(0)
-  AtualizadoPor String   @db.VarChar(125)
+  Anfitriao     String?   @db.VarChar(255)
+  CriadoEm      DateTime? @default(now()) @db.DateTime(0)
+  CriandoPor    String?   @db.VarChar(145)
+  AtualizadoEm  DateTime? @default(now()) @db.DateTime(0)
+  AtualizadoPor String?   @db.VarChar(145)
 
   @@index([Celula], name: "Celula_index")
   @@index([Coordenacao], name: "Coordenacao_index")
@@ -28,35 +28,33 @@ model celulas {
 }
 
 model cursos {
-  id     Int    @id @default(autoincrement())
-  Nome   String @db.VarChar(255)
-  Inicio String @db.VarChar(255)
-  valor  String @db.VarChar(255)
-  Fim    String @db.VarChar(255)
+  id     BigInt @id @default(autoincrement())
+  Nome   String @db.Text
+  Inicio String @db.VarChar(25)
+  valor  String @db.VarChar(25)
+  Fim    String @db.VarChar(25)
 }
 
 model cursosinscritos {
-  id         Int      @default(autoincrement())
-  CPF        String   @db.VarChar(15)
-  RG         String   @db.VarChar(25)
-  idCurso    Int
-  Nome       String   @db.VarChar(255)
-  Nascimento String   @db.VarChar(15)
-  Contato    String   @db.VarChar(20)
-  Email      String   @db.VarChar(255)
-  Igreja     String   @db.VarChar(255)
-  Status     String   @db.VarChar(25)
-  Rol        Int
-  Nota       String   @db.VarChar(5)
-  CreatedAt  DateTime @db.DateTime(0)
-
-  @@id([id, idCurso])
+  id         Int    @id @default(autoincrement())
+  CPF        String @db.Text
+  RG         String @db.Text
+  idCurso    String @db.Text
+  Nome       String @db.Text
+  Nascimento String @db.Text
+  Contato    String @db.Text
+  Email      String @db.Text
+  Igreja     String @db.Text
+  Status     String @db.Text
+  Rol        String @db.Text
+  Nota       String @db.Text
+  CreatedAt  String @db.Text
 }
 
 model eventosCelulas {
   id          Int      @id @default(autoincrement())
-  Evento      String   @db.VarChar(255)
-  Responsavel String   @db.VarChar(255)
+  Evento      String   @db.Text
+  Responsavel String   @db.Text
   Semana      Int
   Data        String   @db.VarChar(25)
   Celula      Int
@@ -67,25 +65,15 @@ model eventosCelulas {
   CriadoEm    DateTime @db.DateTime(0)
 }
 
-model eventosIgreja {
-  id          Int      @id @default(autoincrement())
-  Evento      String   @db.VarChar(255)
-  Responsavel String   @db.VarChar(255)
-  Semana      Int
-  Data        String   @db.VarChar(25)
-  Descricao   String   @db.Text
-  CriadoEm    DateTime @db.DateTime(0)
-}
-
 model igreja {
   id              Int    @id @default(autoincrement())
-  codigo          String @db.VarChar(45)
+  codigo          String @db.VarChar(20)
   nome            String @db.Text
-  foneSecretaria  String @db.VarChar(25)
-  contatoWhatsApp String @db.VarChar(25)
-  foneFinanceiro  String @db.VarChar(25)
-  corPrimaria     String @db.VarChar(25)
-  corSecundaria   String @db.VarChar(25)
+  foneSecretaria  String @db.Text
+  contatoWhatsApp String @db.Text
+  foneFinanceiro  String @db.Text
+  corPrimaria     String @db.Text
+  corSecundaria   String @db.Text
   img01           String @db.Text
   img02           String @db.Text
   img03           String @db.Text
@@ -96,79 +84,66 @@ model igreja {
 }
 
 model lideranca {
-  id          Int    @id @default(autoincrement())
-  Funcao      String @db.Char(50)
-  Nome        String @db.Text
-  Nascimento  String @db.Char(25)
+  id          Int     @id @default(autoincrement())
+  Funcao      String? @db.VarChar(12)
+  Nome        String? @db.VarChar(145)
+  Nascimento  String? @db.VarChar(10)
   RolMembro   Int
-  Email       String @db.Text
+  Email       String? @db.VarChar(255)
   Celula      Int
   supervisao  Int
   Coordenacao Int
   Distrito    Int
-  Igreja      String @db.Text
+  Igreja      String? @db.VarChar(5)
+
+  @@index([Celula], name: "Celula_index")
+  @@index([Coordenacao], name: "Coordenacao_index")
+  @@index([Distrito], name: "Distrito_index")
+  @@index([RolMembro], name: "RolMembro_index")
+  @@index([supervisao], name: "supervisao_index")
 }
 
 model membros {
   id                Int      @id @default(autoincrement())
   Igreja            String   @db.VarChar(12)
-  Distrito          Int
-  Coordenacao       Int
-  Supervisao        Int
+  Nome              String   @db.VarChar(145)
   Celula            Int
-  Discipulador      String   @db.Text
-  Nome              String   @db.Text
+  Distrito          Int
+  Coordencacao      Int
+  Supervisao        Int
+  Discipulador      String   @db.VarChar(145)
   RolMembro         Int
   TelCelular        String   @db.VarChar(25)
   TelFixo           String   @db.VarChar(25)
-  Email             String   @db.Text
-  Sexo              String   @db.VarChar(12)
-  Nascimento        String   @db.VarChar(12)
-  Naturalidade      String   @db.Text
-  EstadoCivil       String   @db.VarChar(12)
-  Situacao          String   @db.VarChar(15)
-  Motivo            String   @db.Text
-  Conversao         String   @db.VarChar(12)
-  Batismo           String   @db.VarChar(12)
-  CEP               String   @db.VarChar(12)
-  Logradouro        String   @db.Text
-  Bairro            String   @db.Text
-  Numero            String   @db.VarChar(25)
-  Complemento       String   @db.Text
-  Localidade        String   @db.Text
-  UF                String   @db.VarChar(5)
-  Localizador       String   @db.Text
+  Email             String   @db.VarChar(255)
+  Sexo              String   @db.VarChar(15)
+  Nascimento        String   @db.VarChar(10)
+  Situacao          String   @db.VarChar(12)
+  MOTIVO            String   @db.VarChar(245)
+  Conversao         String   @db.VarChar(25)
+  Batismo           String   @db.VarChar(25)
+  CEP               String   @db.VarChar(25)
+  Logradouro        String   @db.VarChar(255)
+  Bairro            String   @db.VarChar(255)
+  Numero            String   @db.VarChar(255)
+  Complemento       String   @db.VarChar(255)
+  Localidade        String   @db.VarChar(255)
+  UF                String   @db.VarChar(25)
   CPF               String   @db.VarChar(25)
   RG                String   @db.VarChar(25)
-  FormacaoAcademica String   @db.Text
-  Profissao         String   @db.Text
-  Pai               String   @db.Text
-  Mae               String   @db.Text
+  FormacaoAcademica String   @db.VarChar(255)
+  Profissao         String   @db.VarChar(255)
+  Pai               String   @db.VarChar(255)
+  Mae               String   @db.VarChar(255)
   CriadoEm          DateTime @db.DateTime(0)
   AtualizadoEm      DateTime @db.DateTime(0)
-  AtualizadoPor     String   @db.Text
+  AtualizadoPor     String   @db.VarChar(255)
 
   @@index([Celula], name: "Celula_index")
-  @@index([Coordenacao], name: "Coordencacao_index")
+  @@index([Coordencacao], name: "Coordencacao_index")
   @@index([Distrito], name: "Distrito_index")
   @@index([RolMembro], name: "RolMembro_index")
   @@index([Supervisao], name: "Supervisao_index")
-}
-
-model supervisao {
-  id             Int    @id @default(autoincrement())
-  Nome           String @db.Text
-  Funcao         String @db.VarChar(255)
-  CelulaVisitada Int
-  Supervisao     Int
-  Coordenacao    Int
-  Distrito       Int
-  Semana         Int
-  Data           String @db.VarChar(25)
-  Ambiente       String @db.VarChar(25)
-  EtapasCelula   String @db.VarChar(25)
-  Local          String @db.VarChar(25)
-  Observacoes    String @db.Text
 }
 
 model visitantes {
@@ -176,9 +151,9 @@ model visitantes {
   Celula     Int
   Distrito   Int
   Nome       String   @db.Text
-  Contato    String   @db.VarChar(255)
+  Contato    String   @db.VarChar(25)
   Nascimento String   @db.VarChar(25)
-  CriadoPor  String   @db.VarChar(255)
+  CriadoPor  String   @db.Text
   CriadoEm   DateTime @db.DateTime(0)
 }
 
@@ -197,7 +172,7 @@ model relatorioCelulas {
   Visitas          Int
   Conversoes       Int
   Observacoes      String   @db.Text
-  CriadoPor        String   @db.VarChar(255)
+  CriadoPor        String   @db.Text
   CriadoEm         DateTime @db.DateTime(0)
 }
 
@@ -207,14 +182,14 @@ model pontuacao {
   Celula    Int
   Distrito  Int
   Pontuacao Json
-  TotalRank String   @db.VarChar(100)
-  Total     String   @db.VarChar(100)
+  TotalRank String   @db.VarChar(25)
+  Total     String   @db.VarChar(25)
   CriadoPor String   @db.Text
   CriadoEm  DateTime @db.DateTime(0)
 }
 
 model relatorioCelebracao {
-  id              Int      @id @default(autoincrement())
+  id              Int      @id @default(autoincrement()) @db.UnsignedInt
   Semana          Int
   Data            String   @db.VarChar(25)
   Celula          Int
@@ -226,27 +201,27 @@ model relatorioCelebracao {
   Visitantes      Int
   Conversoes      Int
   Observacoes     String   @db.Text
-  CriadoPor       String   @db.VarChar(255)
+  CriadoPor       String   @db.Text
   CriadoEm        DateTime @db.DateTime(0)
 }
 
 model plancelula {
   id            Int    @id @default(autoincrement())
-  Anfitriao     String @db.VarChar(255)
-  Multiplicacao String @db.VarChar(45)
-  Horario       String @db.VarChar(45)
-  Fase          String @db.VarChar(155)
+  Anfitriao     String @db.Text
+  Multiplicacao String @db.VarChar(25)
+  Horario       String @db.VarChar(25)
+  Fase          String @db.Text
   Semana        Int
   Data          String @db.VarChar(25)
   Celula        Int
   Supervisao    Int
   Coordenacao   Int
   Distrito      Int
-  Encontro      String @db.VarChar(255)
-  Exaltacao     String @db.VarChar(255)
-  Edificacao    String @db.VarChar(255)
-  Evangelismo   String @db.VarChar(255)
-  Lanche        String @db.VarChar(255)
+  Encontro      String @db.Text
+  Exaltacao     String @db.Text
+  Edificacao    String @db.Text
+  Evangelismo   String @db.Text
+  Lanche        String @db.Text
 }
 
 model relatorioDiscipulado {
@@ -254,10 +229,74 @@ model relatorioDiscipulado {
   Celula         Int
   Distrito       Int
   Semana         Int
-  Data           String   @db.Text
-  NomesMembros   String   @db.Text
+  Data           String   @db.VarChar(25)
+  NomesMembros   String   @db.VarChar(255)
   LeituraBiblica Int
-  Observacoes    String   @db.Text
-  CriadoPor      String   @db.Text
-  CriadoEm       DateTime @db.DateTime(0)
+  Observacoes    String   @db.VarChar(255)
+  CriadoPor      String   @db.VarChar(255)
+  CriadoEm       DateTime @default(now()) @db.DateTime(0)
+
+  @@index([Celula], name: "Celula_index")
+  @@index([Distrito], name: "Distrito_index")
+  @@index([LeituraBiblica], name: "LeituraBiblica_index")
+  @@index([Semana], name: "Semana_index")
+}
+
+model relatorioSupervisao {
+  id             Int    @id @default(autoincrement())
+  Nome           String @db.Text
+  Funcao         String @db.Text
+  CelulaVisitada Int
+  Supervisao     Int
+  Coordenacao    Int
+  Distrito       Int
+  Semana         Int
+  Data           String @db.Char(25)
+  Ambiente       String @db.Text
+  EtapasCelula   String @db.Text
+  Local          String @db.Text
+  Observacoes    String @db.Text
+}
+
+model membros2 {
+  id                Int      @id @default(autoincrement())
+  Igreja            String   @db.VarChar(12)
+  Celula            Int
+  Distrito          Int
+  Coordencacao      Int
+  Supervisao        Int
+  Discipulador      String   @db.VarChar(255)
+  Nome              String   @db.VarChar(255)
+  RolMembro         Int
+  TelCelular        String   @db.VarChar(25)
+  TelFixo           String   @db.VarChar(25)
+  Email             String   @db.VarChar(25)
+  Sexo              String   @db.VarChar(25)
+  Nascimento        String   @db.VarChar(10)
+  Situacao          String   @db.VarChar(12)
+  MOTIVO            String   @db.VarChar(255)
+  Conversao         String   @db.VarChar(25)
+  Batismo           String   @db.VarChar(25)
+  CEP               String   @db.VarChar(25)
+  Logradouro        String   @db.VarChar(255)
+  Bairro            String   @db.VarChar(255)
+  Numero            String   @db.VarChar(255)
+  Complemento       String   @db.VarChar(255)
+  Localidade        String   @db.VarChar(255)
+  UF                String   @db.VarChar(25)
+  CPF               String   @db.VarChar(25)
+  RG                String   @db.VarChar(25)
+  FormacaoAcademica String   @db.VarChar(255)
+  Profissao         String   @db.VarChar(255)
+  Pai               String   @db.VarChar(255)
+  Mae               String   @db.VarChar(255)
+  CriadoEm          DateTime @default(now()) @db.DateTime(0)
+  AtualizadoEm      DateTime @default(now()) @db.DateTime(0)
+  AtualizadoPor     String   @db.VarChar(255)
+
+  @@index([Celula], name: "Celula_index")
+  @@index([Coordencacao], name: "Coordencacao_index")
+  @@index([Distrito], name: "Distrito_index")
+  @@index([RolMembro], name: "RolMembro_index")
+  @@index([Supervisao], name: "Supervisao_index")
 }
