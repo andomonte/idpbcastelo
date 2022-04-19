@@ -1,6 +1,5 @@
 import { Box, Grid, Paper, TextField, Button } from '@material-ui/core';
 import React from 'react';
-import Stack from '@mui/material/Stack';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
 import dataMask from 'src/components/mascaras/datas';
@@ -26,7 +25,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Typography from '@mui/material/Typography';
 import 'react-image-crop/dist/ReactCrop.css';
-import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
@@ -56,10 +54,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     alignItems: 'center',
-  },
-  textField: {
-    textAlign: 'center',
-    fontSize: '12px',
   },
   alignBox: {
     padding: theme.spacing(0),
@@ -270,7 +264,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     { label: 'multiplicacao', value: 5 },
   ];
   const valorInicial = { label: 'Escolha um Responsável', value: 0 };
-  const valorAnfitriao = { label: '', value: 0 };
+  const valorAnfitriao = { label: 'na casa de quem será a Reunião?', value: 0 };
   const valorInicialOjetivo = {
     label: 'Qual a fase atual da Célula?',
     value: 0,
@@ -290,7 +284,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const multiplicacaoRef = React.useRef();
   const anfitriaoRef = React.useRef();
   const horarioRef = React.useRef();
-  const bProximoRef = React.useRef();
 
   const [openErro, setOpenErro] = React.useState(false);
   const timeElapsed2 = Date.now();
@@ -343,10 +336,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
-      console.log('vendo formId', formId);
+      console.log('esse é o valor,', formId);
       if (formId === 'Multiplicacao') horarioRef.current.focus();
-      if (formId === 'Horario') anfitriaoRef.current.focus();
-      // if (formId === 'Anfitriao') bProximoRef.current.focus();
+      if (formId === 'horario') anfitriaoRef.current.focus();
+      //  if (formId === 'Conversao') batismoRef.current.focus();
+      //   if (formId === 'Batismo') formacaoAcademicaRef.current.focus();
+      ///    if (formId === 'FormacaoAcademica') profissaoRef.current.focus();
+      //   if (formId === 'Profissao') discipuladorRef.current.focus();
     }
   };
   //= ==========pegar semana apartir da data==============
@@ -378,7 +374,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
   const [etapas, setEtapas] = React.useState('incompleto');
-  const [inputValor, setInputValor] = React.useState('');
 
   React.useEffect(() => {
     const timeElapsed = Date.now();
@@ -405,16 +400,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
 
     setExaltacao(relatorio[0].Exaltacao);
     setValues2(newValues2[0]);
-    setMultiplicacao(relatorio[0].Multiplicacao);
-    setHorario(relatorio[0].Horario);
-    const newAnfitriao = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Anfitriao,
-    );
-
-    if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0]);
-
-    const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
-    if (newFase.length) setObjetivo(newFase[0]);
 
     const newValues3 = nomesCelulaParcial.filter(
       (val) => val.label === relatorio[0].Edificacao,
@@ -511,6 +496,18 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     if (Encontro && Exaltacao && Evangelismo && Edificacao && Lanche) {
       setEtapas('completo');
     }
+    console.log('encontro', Encontro);
+    console.log('Exaltacao', Exaltacao);
+    console.log('Edificacao', Edificacao);
+    console.log('Evangelismo', Evangelismo);
+    console.log('Lanche', Lanche);
+    console.log('encontro', Encontro);
+    console.log('etapas', etapas);
+    console.log('multiplicacao', multiplicacao);
+    console.log('encontro', horario);
+    console.log('objetivos', objetivo);
+    console.log('valorAnfitrião', valueAnfitriao.label);
+    console.log('horario', horario);
   }, [
     Exaltacao,
     Encontro,
@@ -518,10 +515,28 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     Edificacao,
     Lanche,
     objetivo,
-    valueAnfitriao,
+    valueAnfitriao.label,
     multiplicacao,
     horario,
   ]);
+
+  //  const handleVoltar = () => {};
+  /*   const handleEnter = (event) => {
+    if (event.key.toLowerCase() === 'enter') {
+      const formId = event.target.id;
+
+      if (formId === 'Nome') celularRef.current.focus();
+      if (formId === 'TelefoneCelular') foneRef.current.focus();
+      if (formId === 'TelefoneResidencial') cpfRef.current.focus();
+      if (formId === 'CPF') rgRef.current.focus();
+      if (formId === 'RG') sexoRef.current.focus();
+      if (formId === 'Sexo') nascimentoRef.current.focus();
+      if (formId === 'DataNascimento') naturalidadeRef.current.focus();
+      if (formId === 'Naturalidade') EncontroRef.current.focus();
+    }
+  };
+  
+ */
 
   const handleSalvar = () => {
     if (etapas === 'completo') {
@@ -838,7 +853,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         defaultValue={objetivo}
                                         onChange={(e) => {
                                           // setValues2(e);
-                                          setObjetivo(e);
+                                          setObjetivo(e.label);
                                           multiplicacaoRef.current.focus();
                                         }}
                                         options={fases}
@@ -971,48 +986,70 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                           display="flex"
                                           justifyContent="center"
                                         >
-                                          <Stack
-                                            spacing={2}
-                                            sx={{ width: 300 }}
-                                          >
-                                            <Autocomplete
-                                              style={{
-                                                width: '99%',
-                                                marginTop: 10,
-                                                textAlign: 'center',
-                                              }}
-                                              id="Anfitriao"
-                                              freeSolo
-                                              value={valueAnfitriao}
-                                              onChange={(_, newValue) => {
+                                          <Autocomplete
+                                            style={{
+                                              width: '92%',
+
+                                              marginBottom: 0,
+                                              textAlign: 'center',
+                                            }}
+                                            value={valueAnfitriao.label}
+                                            onChange={(event, newValue) => {
+                                              if (newValue !== '') {
                                                 setValueAnfitriao(newValue);
-                                              }}
-                                              selectOnFocus
-                                              inputValue={inputValor}
-                                              onInputChange={(
-                                                _,
-                                                newInputValue,
-                                              ) => {
-                                                if (newInputValue !== '')
-                                                  setInputValor(
-                                                    newInputValue.toUpperCase(),
-                                                  );
-                                                else
-                                                  setInputValor(newInputValue);
-                                              }}
-                                              options={nomesCelulaParcial.map(
-                                                (option) => option.label,
-                                              )}
-                                              renderInput={(params) => (
-                                                <TextField
-                                                  className={classes.textField}
-                                                  {...params}
-                                                  onKeyDown={handleEnter}
-                                                  placeholder="Na casa de quem será a Célula"
-                                                />
-                                              )}
-                                            />
-                                          </Stack>
+                                              } else if (
+                                                newValue &&
+                                                newValue.inputValue2
+                                              ) {
+                                                // Create a new value from the user input
+                                                setValueAnfitriao({
+                                                  label: 'Na casa de quem...',
+                                                });
+                                              } else {
+                                                setValueAnfitriao(newValue);
+                                              }
+                                            }}
+                                            filterOptions={(
+                                              options,
+                                              params,
+                                            ) => {
+                                              const filtered = filter(
+                                                options,
+                                                params,
+                                              );
+
+                                              return filtered;
+                                            }}
+                                            selectOnFocus
+                                            clearOnBlur
+                                            handleHomeEndKeys
+                                            id="anfitricao"
+                                            options={nomesCelulaParcial}
+                                            getOptionLabel={(option) => {
+                                              // Value selected with enter, right from the input
+                                              if (typeof option === 'string') {
+                                                return option;
+                                              }
+                                              // Add "xxx" option created dynamically
+                                              if (option.inputValue2) {
+                                                return option.inputValue2;
+                                              }
+                                              // Regular option
+                                              return option.label;
+                                            }}
+                                            renderOption={(props, option) => (
+                                              <li {...props}>{option.label}</li>
+                                            )}
+                                            freeSolo
+                                            renderInput={(params) => (
+                                              <TextField
+                                                inputRef={horarioRef}
+                                                placeholder="Na casa de quem será a Célula"
+                                                {...params}
+                                                label="freeSolo"
+                                              />
+                                            )}
+                                          />
                                         </Box>
                                       </Paper>
                                     </Box>
@@ -1298,7 +1335,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                     >
                                       {multiplicacao &&
                                       horario &&
-                                      valorAnfitriao !== '' &&
+                                      valorAnfitriao !==
+                                        'na casa de quem será a Reunião?' &&
                                       valorAnfitriao &&
                                       objetivo !==
                                         'Qual a fase atual da Célula?' &&
@@ -1341,7 +1379,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                             mt={0.3}
                                             sx={{ fontFamily: 'arial black' }}
                                           >
-                                            PRÓXIMA
+                                            Next
                                           </Box>
                                         </Button>
                                       )}

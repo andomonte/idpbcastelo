@@ -57,10 +57,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     alignItems: 'center',
   },
-  textField: {
-    textAlign: 'center',
-    fontSize: '12px',
-  },
   alignBox: {
     padding: theme.spacing(0),
     // display: 'flex',
@@ -270,7 +266,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     { label: 'multiplicacao', value: 5 },
   ];
   const valorInicial = { label: 'Escolha um Responsável', value: 0 };
-  const valorAnfitriao = { label: '', value: 0 };
+  const valorAnfitriao = { label: 'na casa de quem será a Reunião?', value: 0 };
   const valorInicialOjetivo = {
     label: 'Qual a fase atual da Célula?',
     value: 0,
@@ -290,7 +286,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const multiplicacaoRef = React.useRef();
   const anfitriaoRef = React.useRef();
   const horarioRef = React.useRef();
-  const bProximoRef = React.useRef();
 
   const [openErro, setOpenErro] = React.useState(false);
   const timeElapsed2 = Date.now();
@@ -343,10 +338,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
-      console.log('vendo formId', formId);
       if (formId === 'Multiplicacao') horarioRef.current.focus();
       if (formId === 'Horario') anfitriaoRef.current.focus();
-      // if (formId === 'Anfitriao') bProximoRef.current.focus();
+      //  if (formId === 'Conversao') batismoRef.current.focus();
+      //   if (formId === 'Batismo') formacaoAcademicaRef.current.focus();
+      ///    if (formId === 'FormacaoAcademica') profissaoRef.current.focus();
+      //   if (formId === 'Profissao') discipuladorRef.current.focus();
     }
   };
   //= ==========pegar semana apartir da data==============
@@ -522,6 +519,24 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     multiplicacao,
     horario,
   ]);
+
+  //  const handleVoltar = () => {};
+  /*   const handleEnter = (event) => {
+    if (event.key.toLowerCase() === 'enter') {
+      const formId = event.target.id;
+
+      if (formId === 'Nome') celularRef.current.focus();
+      if (formId === 'TelefoneCelular') foneRef.current.focus();
+      if (formId === 'TelefoneResidencial') cpfRef.current.focus();
+      if (formId === 'CPF') rgRef.current.focus();
+      if (formId === 'RG') sexoRef.current.focus();
+      if (formId === 'Sexo') nascimentoRef.current.focus();
+      if (formId === 'DataNascimento') naturalidadeRef.current.focus();
+      if (formId === 'Naturalidade') EncontroRef.current.focus();
+    }
+  };
+  
+ */
 
   const handleSalvar = () => {
     if (etapas === 'completo') {
@@ -976,39 +991,26 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                             sx={{ width: 300 }}
                                           >
                                             <Autocomplete
-                                              style={{
-                                                width: '99%',
-                                                marginTop: 10,
-                                                textAlign: 'center',
-                                              }}
-                                              id="Anfitriao"
+                                              id="free-solo-demo"
                                               freeSolo
                                               value={valueAnfitriao}
                                               onChange={(_, newValue) => {
                                                 setValueAnfitriao(newValue);
                                               }}
-                                              selectOnFocus
                                               inputValue={inputValor}
                                               onInputChange={(
                                                 _,
                                                 newInputValue,
                                               ) => {
-                                                if (newInputValue !== '')
-                                                  setInputValor(
-                                                    newInputValue.toUpperCase(),
-                                                  );
-                                                else
-                                                  setInputValor(newInputValue);
+                                                setInputValor(newInputValue);
                                               }}
                                               options={nomesCelulaParcial.map(
                                                 (option) => option.label,
                                               )}
                                               renderInput={(params) => (
                                                 <TextField
-                                                  className={classes.textField}
                                                   {...params}
                                                   onKeyDown={handleEnter}
-                                                  placeholder="Na casa de quem será a Célula"
                                                 />
                                               )}
                                             />
@@ -1298,7 +1300,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                     >
                                       {multiplicacao &&
                                       horario &&
-                                      valorAnfitriao !== '' &&
+                                      valorAnfitriao !==
+                                        'na casa de quem será a Reunião?' &&
                                       valorAnfitriao &&
                                       objetivo !==
                                         'Qual a fase atual da Célula?' &&
@@ -1341,7 +1344,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                             mt={0.3}
                                             sx={{ fontFamily: 'arial black' }}
                                           >
-                                            PRÓXIMA
+                                            Next
                                           </Box>
                                         </Button>
                                       )}
