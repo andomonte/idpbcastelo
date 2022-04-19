@@ -423,7 +423,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       (val) => val.label === relatorio[0].Anfitriao,
     );
 
-    if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0].label);
+    if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0]);
 
     const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
     if (newFase.length) setObjetivo(newFase[0]);
@@ -1004,9 +1004,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                               freeSolo
                                               value={valueAnfitriao}
                                               onChange={(_, newValue) => {
-                                                if (inputValor && newValue)
-                                                  setValueAnfitriao(newValue);
-                                                else setValueAnfitriao('');
+                                                setValueAnfitriao(newValue);
                                               }}
                                               onBlur={() => {
                                                 if (inputValor.length > 0)
@@ -1022,7 +1020,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                                   setInputValor(
                                                     newInputValue.toUpperCase(),
                                                   );
-                                                else setInputValor('');
+                                                else
+                                                  setInputValor(newInputValue);
                                               }}
                                               options={nomesCelulaParcial.map(
                                                 (option) => option.label,
@@ -1321,7 +1320,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         height: 40,
                                       }}
                                     >
-                                      {console.log(valueAnfitriao)}
                                       {objetivo.label !==
                                         'Qual a fase atual da Célula?' &&
                                         console.log('objetivo -OK')}
@@ -1334,7 +1332,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
 
                                       {multiplicacao.length > 9 &&
                                       horario.length >= 5 &&
-                                      valueAnfitriao.length > 2 &&
+                                      valueAnfitriao &&
                                       objetivo.label !==
                                         'Qual a fase atual da Célula?' ? (
                                         <Button
