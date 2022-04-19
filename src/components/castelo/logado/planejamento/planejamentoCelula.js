@@ -14,7 +14,7 @@ import {
 } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 import { IoIosSave } from 'react-icons/io';
 import api from 'src/components/services/api';
 import axios from 'axios';
@@ -26,11 +26,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Typography from '@mui/material/Typography';
 import 'react-image-crop/dist/ReactCrop.css';
-import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
-const filter = createFilterOptions();
 const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
