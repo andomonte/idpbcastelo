@@ -841,6 +841,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   }, [members, pTotalAtual]);
+
+  React.useEffect(() => {
+    posicao();
+
+    return 0;
+  }, [rankGeral]);
   React.useEffect(() => {
     ajusteRelatorio();
     pegaRankSemana();
