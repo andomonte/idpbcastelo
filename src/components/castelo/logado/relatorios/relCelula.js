@@ -777,6 +777,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   };
+  console.log(rankGeral);
   const posicao = () => {
     if (rankGeral.length > 0) {
       const CelulaAtual = rankGeral.filter(
@@ -851,7 +852,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
   React.useEffect(() => {
     let timer;
-    console.log(progress, loading);
     if (progress === 4) setLoading(false);
     if (loading) {
       let prevProgress = 5;

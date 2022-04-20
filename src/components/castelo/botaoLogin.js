@@ -26,12 +26,12 @@ const useStyles = makeStyles(() => ({
 }));
 export default function BotaoLogin() {
   const [session] = useSession();
-  const router = useRouter();
+  //  const router = useRouter();
   const classes = useStyles();
-  if (session)
+  /*  if (session)
     router.push({
       pathname: '/selectPerfil',
-    });
+    }); */
   return (
     <Box>
       {!session ? (
