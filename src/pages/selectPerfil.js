@@ -165,6 +165,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     });
     const membro = rolMembros.filter((val) => val.Email === session.user.email);
     let userMembro = {};
+    console.log('val membro e rolMembros', membro, rolMembros);
     if (membro.length > 0) {
       userMembro = {
         Celula: membro[0].Celula,
