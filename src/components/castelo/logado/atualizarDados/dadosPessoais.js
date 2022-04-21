@@ -666,28 +666,44 @@ function DadosPessoais({ rolMembros, perfilUser }) {
               </Box>
             </Grid>
             <Grid item xs={12} md={12}>
-              <Box className={classes.novoBox} mt={2}>
-                {!loading ? (
-                  <Button
-                    style={{ background: 'green' }}
-                    onClick={handleSalvar}
-                    variant="contained"
-                    severity="success"
-                    endIcon={<TouchAppIcon />}
-                  >
-                    SALVAR DADOS
-                  </Button>
-                ) : (
-                  <Button
-                    style={{ background: 'green' }}
-                    onClick={handleSalvar}
-                    variant="contained"
-                    severity="success"
-                    endIcon={<Oval stroke="red" width={20} height={20} />}
-                  >
-                    SALVANDO...
-                  </Button>
-                )}
+              <Box mt={2} display="flex" justifyContent="center">
+                <Box width="90%" height={30} bgcolor="green">
+                  {!loading ? (
+                    <Box
+                      width="90%"
+                      height={30}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      ml={3}
+                      bgcolor="green"
+                      style={{ background: 'green', color: 'white' }}
+                      onClick={handleSalvar}
+                    >
+                      SALVAR DADOS{' '}
+                      <Box ml={4}>
+                        <TouchAppIcon />
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box
+                      width="90%"
+                      height={30}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      ml={3}
+                      bgcolor="green"
+                      style={{ background: 'green', color: 'white' }}
+                      onClick={handleSalvar}
+                    >
+                      SALVANDO...
+                      <Box ml={4} mt={0.4}>
+                        <Oval stroke="blue" width={20} height={20} />
+                      </Box>
+                    </Box>
+                  )}
+                </Box>
               </Box>
             </Grid>
           </Grid>
