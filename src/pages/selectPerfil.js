@@ -313,7 +313,7 @@ function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
     if (valorPerfil.length === 1 && perfilUser === '')
       setPerfilUser(valorPerfil);
     if (valorPerfil.length > 1 && !open && perfilUser === '') setOpen(true);
-    console.log('antes de ir', perfilUser);
+
     if (perfilUser !== '') {
       router.push(
         {

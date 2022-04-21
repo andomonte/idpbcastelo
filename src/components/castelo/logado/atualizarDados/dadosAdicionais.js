@@ -553,7 +553,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
               <Box className={classes.novoBox} mt={-1}>
                 {!loading ? (
                   <Button
-                    color="success"
+                    style={{ background: 'green' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"
@@ -563,7 +563,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                   </Button>
                 ) : (
                   <Button
-                    color="success"
+                    style={{ background: 'green' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"

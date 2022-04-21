@@ -227,7 +227,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const dadosUser = rolMembros.filter(
     (val) => val.RolMembro === Number(perfilUser.RolMembro),
   );
-
   const [nome, setNome] = React.useState(dadosUser[0].Nome);
   const [validarNome, setValidarNome] = React.useState('sim');
   const [cpf, setCPF] = React.useState(dadosUser[0].CPF);
@@ -240,9 +239,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const [validarFone, setValidarFone] = React.useState('sim');
   const [celular, setCelular] = React.useState(dadosUser[0].TelCelular);
   const [validarCelular, setValidarCelular] = React.useState('sim');
-  const [estadoCivil, setEstadoCivil] = React.useState(
-    dadosUser[0].EstadoCivil,
-  );
+  const [estadoCivil, setEstadoCivil] = React.useState('');
   const [dataNascimento, setDataNascimento] = React.useState(
     dadosUser[0].Nascimento,
   );
@@ -264,6 +261,15 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const naturalidadeRef = React.useRef();
   const estadoCivilRef = React.useRef();
 
+  const eCivilInical = {
+    value: 'indefinido',
+    label: '',
+  };
+
+  const [values, setValues] = React.useState({
+    currency: eCivilInical,
+  });
+
   const url = `/api/consultaRolMembros/${dadosUser[0].id}`;
   const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
@@ -276,14 +282,20 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       setSexo(data[0].Sexo);
       setDataNascimento(data[0].Nascimento);
       setNaturalidade(data[0].Naturalidade);
-      setEstadoCivil(data[0].EstadoCivil);
+      setValues({
+        currency: {
+          value: data[0].EstadoCivil,
+          label: data[0].EstadoCivil,
+        },
+      });
     }
+
     if (error) return <div>An error occured.</div>;
     if (!data) return <div>Loading ...</div>;
 
     return 0;
   }, [data]);
-
+  console.log('qual o valor', values);
   //--------------------------------------------------------------------------
   // salvar dados pessoais
   //--------------------------------------------------------------------------
@@ -301,7 +313,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
         Sexo: sexo,
         Nascimento: dataNascimento,
         Naturalidade: naturalidade,
-        EstadoCivil: estadoCivil,
+        EstadoCivil: estadoCivil.label,
       })
       .then((response) => {
         if (response) {
@@ -320,9 +332,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       });
   };
   //--------------------------------------------------------------------------
-  const [values, setValues] = React.useState({
-    currency: currencies[1],
-  });
+
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
 
@@ -636,7 +646,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={values.currency ? values.currency : 'SOLTEIRO (A)'}
+                  value={values.currency}
                   onChange={handleChange('currency')}
                   variant="outlined"
                   placeholder=""
@@ -660,7 +670,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
               <Box className={classes.novoBox} mt={2}>
                 {!loading ? (
                   <Button
-                    color="success"
+                    style={{ background: 'green' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"
@@ -670,7 +680,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   </Button>
                 ) : (
                   <Button
-                    color="success"
+                    style={{ background: 'green' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"

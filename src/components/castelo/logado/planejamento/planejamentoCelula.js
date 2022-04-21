@@ -270,7 +270,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     { label: 'multiplicacao', value: 5 },
   ];
   const valorInicial = { label: 'Escolha um Responsável', value: 0 };
-  const valorAnfitriao = { label: '', value: 0 };
+
   const valorInicialOjetivo = {
     label: 'Qual a fase atual da Célula?',
     value: 0,
@@ -290,7 +290,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const multiplicacaoRef = React.useRef();
   const anfitriaoRef = React.useRef();
   const horarioRef = React.useRef();
-  const bProximoRef = React.useRef();
 
   const [openErro, setOpenErro] = React.useState(false);
   const timeElapsed2 = Date.now();
@@ -535,13 +534,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     multiplicacao,
     horario,
   ]);
-
-  const validarTela1 = () => {
-    if (horario.length > 0 && horario.length < 5)
-      toast.error('Horário incompleto !', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-  };
 
   const handleSalvar = () => {
     if (etapas === 'completo') {

@@ -610,7 +610,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
               <Box className={classes.novoBox} mt={-1}>
                 {!loading ? (
                   <Button
-                    color="success"
+                    style={{ background: 'green' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"
@@ -620,7 +620,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   </Button>
                 ) : (
                   <Button
-                    color="success"
+                    style={{ background: 'green' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"
