@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { Oval } from 'react-loading-icons';
 import { Box, Button, capitalize } from '@mui/material';
 import React from 'react';
+import Select from 'react-select';
 // import Image from 'next/image';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@mui/material/Typography';
@@ -222,18 +223,32 @@ const currencies = [
     label: 'DIVORCIADO (A)',
   },
 ];
+const sexos = [
+  {
+    value: 'MASCULINO',
+    label: 'MASCULINO',
+  },
+  {
+    value: 'FEMININO',
+    label: 'FEMININO',
+  },
+];
 function DadosPessoais({ rolMembros, perfilUser }) {
   const classes = useStyles();
   const dadosUser = rolMembros.filter(
     (val) => val.RolMembro === Number(perfilUser.RolMembro),
   );
+  const valorInicialSexo = {
+    label: dadosUser[0].Sexo,
+    value: dadosUser[0].Sexo,
+  };
   const [nome, setNome] = React.useState(dadosUser[0].Nome);
   const [validarNome, setValidarNome] = React.useState('sim');
   const [cpf, setCPF] = React.useState(dadosUser[0].CPF);
   const [validarCPF, setValidarCPF] = React.useState('sim');
   const [rg, setRG] = React.useState(dadosUser[0].RG);
   const [validarRG, setValidarRG] = React.useState('sim');
-  const [sexo, setSexo] = React.useState(dadosUser[0].Sexo);
+  const [sexo, setSexo] = React.useState(valorInicialSexo);
   const [validarSexo, setValidarSexo] = React.useState('sim');
   const [fone, setFone] = React.useState(dadosUser[0].TelFixo);
   const [validarFone, setValidarFone] = React.useState('sim');
@@ -310,7 +325,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
         TelFixo: fone,
         CPF: cpf,
         RG: rg,
-        Sexo: sexo,
+        Sexo: sexo.label,
         Nascimento: dataNascimento,
         Naturalidade: naturalidade,
         EstadoCivil: estadoCivil.label,
@@ -541,28 +556,12 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                 </Typography>
               </Box>
               <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="Sexo"
-                  inputRef={sexoRef}
-                  // label="Sexo"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
+                <Select
+                  defaultValue={sexo}
+                  onChange={(e) => {
+                    setSexo(e);
                   }}
-                  value={sexo}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    sexo === ''
-                      ? () => setValidarSexo('nao')
-                      : () => setValidarSexo('sim')
-                  }
-                  onChange={(e) => setSexo(e.target.value)}
-                  error={validarSexo === 'nao'}
-                  onFocus={(e) => setSexo(e.target.value)}
-                  onKeyDown={handleEnter}
+                  options={sexos}
                 />
               </Box>
             </Grid>
