@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
-import useSWR from 'swr';
-import axios from 'axios';
+import prisma from 'src/lib/prisma';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, TextField } from '@material-ui/core';
 import Cadastro from 'src/components/castelo/cadastro';
@@ -12,7 +12,6 @@ import { IdpbCastelo } from 'src/components/castelo/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -63,88 +62,18 @@ const useStyles = makeStyles((theme) => ({
     //   border: '0px solid #b91a30',
   },
 }));
-function SelectPerfil() {
+function selectPerfil({ userIgrejas, lideranca, rolMembros, celulas }) {
   const classes = useStyles();
 
   const [session] = useSession();
   const [open, setOpen] = React.useState(false);
-  const [openEspera, setOpenEspera] = React.useState(true);
-  const [contagem, setContagem] = React.useState(false);
+  const [openEspera, setOpenEspera] = React.useState(false);
   const [perfilUser, setPerfilUser] = React.useState('');
   const [perfilSelect] = React.useState('0');
   const router = useRouter();
-  const [lideranca, setLideranca] = React.useState('');
-  const [rolMembros, setRolMembros] = React.useState('');
-  const [celulas, setCelulas] = React.useState('');
-  const [userIgrejas, setUserIgrejas] = React.useState('');
-
-  const url = `/api/consultaMembros`;
-  const { data: members, error: errorMembers } = useSWR(url, fetcher);
-  const url2 = `/api/consultaLideranca`;
-  const { data: lideres, error: errorLideres } = useSWR(url2, fetcher);
-  const url3 = `/api/consultaCelulas`;
-  const { data: cells, error: errorCells } = useSWR(url3, fetcher);
-  const url4 = `/api/consultaIgreja`;
-  const { data: igrejas, error: errorIgrejas } = useSWR(url4, fetcher);
-
-  React.useEffect(() => {
-    if (errorMembers) return <div>An error occured.</div>;
-    if (!members) return <div>Loading ...</div>;
-    if (members) {
-      setRolMembros(members);
-    }
-
-    return 0;
-  }, [members]);
-
-  React.useEffect(() => {
-    if (errorLideres) return <div>An error occured.</div>;
-    if (!lideres) return <div>Loading ...</div>;
-    if (lideres) {
-      setLideranca(lideres);
-    }
-
-    return 0;
-  }, [lideres]);
-
-  React.useEffect(() => {
-    if (errorCells) return <div>An error occured.</div>;
-    if (!cells) return <div>Loading ...</div>;
-    if (cells) {
-      setCelulas(cells);
-    }
-
-    return 0;
-  }, [cells]);
-
-  React.useEffect(() => {
-    if (errorIgrejas) return <div>An error occured.</div>;
-    if (!igrejas) return <div>Loading ...</div>;
-    if (igrejas) {
-      setUserIgrejas(igrejas);
-    }
-
-    return 0;
-  }, [igrejas]);
-
   let secao = [{ email: '' }];
 
-  React.useEffect(() => {
-    if (
-      userIgrejas.length &&
-      lideranca.length &&
-      rolMembros.length &&
-      celulas.length
-    ) {
-      setOpenEspera(false);
-    }
-    return 0;
-  }, [userIgrejas, lideranca, rolMembros, celulas]);
-
-  if (openEspera) return <Espera descricao="Buscando Seu Perfil" />;
-
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
-
   if (session) {
     secao = lideranca.filter((val) => val.Email === session.user.email);
 
@@ -256,14 +185,16 @@ function SelectPerfil() {
     }
 
     valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
+    console.log('valor do pefil selectPefil-->', valorPerfil);
     // expected output: Object { a: 1, b: 4, c: 5 }
 
     // expected output: Object { a: 1, b: 4, c: 5 }
 
     const handleChange = (event) => {
-      setContagem(true);
       const indexPerfil = Number(event.target.value - 1);
       setPerfilUser(() => [valorPerfil[indexPerfil]]);
+
+      setOpenEspera(true);
     };
 
     if (Object.keys(userMembro).length === 0) {
@@ -371,7 +302,7 @@ function SelectPerfil() {
                       </Grid>
                     </Box>
 
-                    {contagem && <Espera descricao="Atualizando Seu Perfil" />}
+                    {openEspera && <Espera descricao="Buscando Seu Perfil" />}
                   </Box>
                 </Box>
               </Box>
@@ -395,7 +326,7 @@ function SelectPerfil() {
     }
     return <Box>{open && <Box minHeight={500}>{body}</Box>} </Box>;
   }
-
+  console.log('sem secao agora no select perfil');
   return (
     <Box display="flex" align="center" justifyContent="center">
       <Box>
@@ -412,4 +343,41 @@ function SelectPerfil() {
   );
 }
 
-export default SelectPerfil;
+export const getStaticProps = async () => {
+  // pega o valor do banco de dados
+
+  const celulas = await prisma.celulas.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+  const userIgrejas = await prisma.igreja.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+  const rolMembros = await prisma.membros
+    .findMany({
+      where: {
+        Situacao: 'ATIVO',
+      },
+      orderBy: [
+        {
+          Nome: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+  const lideranca = await prisma.lideranca.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+  return {
+    props: {
+      userIgrejas: JSON.parse(JSON.stringify(userIgrejas)),
+      lideranca: JSON.parse(JSON.stringify(lideranca)),
+      rolMembros: JSON.parse(JSON.stringify(rolMembros)),
+      celulas: JSON.parse(JSON.stringify(celulas)),
+    }, // will be passed to the pperfilUser component as props
+    revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
+  };
+};
+
+export default selectPerfil;

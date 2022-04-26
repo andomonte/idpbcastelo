@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
-
+import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -19,10 +19,11 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import Login from './botaoLogin';
-import Navbar from './navBarNormal';
+import Navbar from './navBar_redesSociais';
 import PesquisaCelulas from './pesquisa/celulas';
 import Contato from './contato';
 import Home from './home';
+
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -138,7 +139,7 @@ function TabPanel(props) {
   );
 }
 
-function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
+function IdpbCastelo({ userIgrejas, title, celulas }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -157,7 +158,10 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
 
     //! open ? setOpen(true) : setOpen(false);
   };
+
   const handleDrawerClose = () => {
+    // console.log(mobile);
+
     if (mobile && open) {
       setOpen(false);
     }
@@ -189,6 +193,14 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
                     onClick={handleDrawerOpen}
                   />
                 ) : null}
+
+                <Hidden mdDown>
+                  <img
+                    src="/images/castelo.png"
+                    alt="logo"
+                    className={classes.logo}
+                  />
+                </Hidden>
               </Box>
 
               <Box display="flex">
@@ -203,9 +215,9 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
                   <BottomNavigationAction
                     icon={
                       value === 0 ? (
-                        <HomeIcon sx={{ color: '#ff9100' }} />
+                        <HomeIcon sx={{ color: corIgreja.iconeOn }} />
                       ) : (
-                        <HomeIcon sx={{ color: '#ffa' }} />
+                        <HomeIcon sx={{ color: corIgreja.iconeOff }} />
                       )
                     }
                   />
@@ -213,11 +225,11 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
                   <BottomNavigationAction
                     icon={
                       value === 1 ? (
-                        <SvgIcon sx={{ color: '#ff9100' }}>
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                           <CallIcon />
                         </SvgIcon>
                       ) : (
-                        <SvgIcon sx={{ color: '#ffa' }}>
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
                           <CallIcon />
                         </SvgIcon>
                       )
@@ -226,11 +238,11 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
                   <BottomNavigationAction
                     icon={
                       value === 2 ? (
-                        <SvgIcon sx={{ color: '#ff9100' }}>
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                           <LocationOnIcon />
                         </SvgIcon>
                       ) : (
-                        <SvgIcon sx={{ color: '#ffa' }}>
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
                           <LocationOnIcon />
                         </SvgIcon>
                       )
@@ -250,7 +262,7 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar perfilUser={perfilUser} userIgrejas={userIgrejas} />
+          <Navbar userIgrejas={userIgrejas} />
         </Drawer>
 
         <main
@@ -262,7 +274,7 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home />
+            <Home userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Contato userIgrejas={userIgrejas} />
@@ -276,4 +288,4 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
   );
 }
 
-export default HomeLogado;
+export { IdpbCastelo, TabPanel };

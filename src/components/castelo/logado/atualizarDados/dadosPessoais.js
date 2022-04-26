@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import { Oval } from 'react-loading-icons';
-import { Box, Button, capitalize } from '@mui/material';
+import { Box, capitalize } from '@mui/material';
 import React from 'react';
 import Select from 'react-select';
 // import Image from 'next/image';
@@ -249,7 +249,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const [rg, setRG] = React.useState(dadosUser[0].RG);
   const [validarRG, setValidarRG] = React.useState('sim');
   const [sexo, setSexo] = React.useState(valorInicialSexo);
-  const [validarSexo, setValidarSexo] = React.useState('sim');
   const [fone, setFone] = React.useState(dadosUser[0].TelFixo);
   const [validarFone, setValidarFone] = React.useState('sim');
   const [celular, setCelular] = React.useState(dadosUser[0].TelCelular);

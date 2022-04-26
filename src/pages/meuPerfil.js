@@ -2,7 +2,7 @@ import React from 'react';
 import { Perfil } from 'src/components/castelo/logado/relatorios/perfil';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
+// import { useSession } from 'next-auth/client';
 
 function meuPerfil({ celulas, rolMembros, lideranca }) {
   const router = useRouter();
@@ -46,8 +46,7 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
       '/selectPerfil',
     );
   }
-
-  console.log('valor dentro do meu perfil', perfilUserF);
+  // console.log('valor dentro do meu perfil', perfilUserF, rolMembros);
   return (
     <div>
       {perfilUser.id ? (
@@ -85,6 +84,9 @@ export const getStaticProps = async () => {
   });
   const rolMembros = await prisma.membros
     .findMany({
+      where: {
+        Situacao: 'ATIVO',
+      },
       orderBy: [
         {
           Nome: 'asc',
