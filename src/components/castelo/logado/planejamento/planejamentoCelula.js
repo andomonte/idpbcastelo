@@ -342,7 +342,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
-      console.log('vendo formId', horario.length);
+
       if (formId === 'Multiplicacao') horarioRef.current.focus();
       if (formId === 'Horario') {
         if (horario.length < 5)
@@ -887,7 +887,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                           }}
                                           id="Multiplicacao"
                                           // label="Matricula"
-                                          type="text"
+                                          type="tel"
                                           InputLabelProps={{
                                             shrink: true,
                                           }}
@@ -935,7 +935,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                           }}
                                           id="Horario"
                                           // label="Matricula"
-                                          type="text"
+                                          type="tel"
                                           InputLabelProps={{
                                             shrink: true,
                                           }}
@@ -1314,17 +1314,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         height: 40,
                                       }}
                                     >
-                                      {console.log(valueAnfitriao)}
-                                      {objetivo.label !==
-                                        'Qual a fase atual da Célula?' &&
-                                        console.log('objetivo -OK')}
-                                      {multiplicacao.length > 9 &&
-                                        console.log('mult -OK')}
-                                      {horario.length >= 5 &&
-                                        console.log('horario -OK')}
-                                      {valueAnfitriao.length >= 2 &&
-                                        console.log('valueAnfi. -OK')}
-
                                       {multiplicacao.length > 9 &&
                                       horario.length >= 5 &&
                                       valueAnfitriao.length > 2 &&

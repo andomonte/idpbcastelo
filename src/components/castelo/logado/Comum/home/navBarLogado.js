@@ -11,7 +11,6 @@ import {
   // Typography,
   //  Button,
 } from '@material-ui/core';
-
 // import { useState } from 'react';
 import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
@@ -82,7 +81,7 @@ function NiverIcon() {
 }
 function iconeCursos() {
   return (
-    <SvgIcon style={{ color: 'blue' }}>
+    <SvgIcon style={{ color: 'black' }}>
       <SchoolIcon />
     </SvgIcon>
   );
@@ -173,7 +172,11 @@ function navBar({ userIgrejas }) {
                   classes={{ root: classes.listItem }}
                   selected={isSelected(itemPrimary)}
                   onClick={() => {
-                    router.push(itemPrimary.path);
+                    <BrowserRouter>
+                      <Routes>
+                        <Route path={itemPrimary.path} />
+                      </Routes>
+                    </BrowserRouter>;
                   }}
                 >
                   <ListItemIcon>
@@ -200,7 +203,11 @@ function navBar({ userIgrejas }) {
                   classes={{ root: classes.listItem }}
                   selected={isSelected(itemPrimary)}
                   onClick={() => {
-                    router.push(itemPrimary.path);
+                    <BrowserRouter>
+                      <Routes>
+                        <Route path={itemPrimary.path} />
+                      </Routes>
+                    </BrowserRouter>;
                   }}
                 >
                   <ListItemIcon>
@@ -230,7 +237,11 @@ function navBar({ userIgrejas }) {
               classes={{ root: classes.listItem }}
               selected={isSelected(itemSecondary)}
               onClick={() => {
-                router.push(itemSecondary.path);
+                <BrowserRouter>
+                  <Routes>
+                    <Route path={itemSecondary.path} />
+                  </Routes>
+                </BrowserRouter>;
               }}
             >
               <ListItemIcon>

@@ -473,7 +473,7 @@ function Matricula() {
                                   inputRef={cpfRef}
                                   //                      ref={cpfRef}
                                   // // // label="CPF"
-                                  type="text"
+                                  type="tel"
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
@@ -641,7 +641,7 @@ function Matricula() {
                                   inputRef={cpfRef}
                                   //                      ref={cpfRef}
                                   // // // label="CPF"
-                                  type="text"
+                                  type="tel"
                                   InputLabelProps={{
                                     shrink: true,
                                   }}

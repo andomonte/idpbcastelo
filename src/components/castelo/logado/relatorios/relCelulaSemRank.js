@@ -639,7 +639,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                             }}
                             id="Fone"
                             // label="Matricula"
-                            type="phone"
+                            type="tel"
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -674,7 +674,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                             }}
                             id="Nascimento"
                             // label="Matricula"
-                            type="text"
+                            type="tel"
                             InputLabelProps={{
                               shrink: true,
                             }}

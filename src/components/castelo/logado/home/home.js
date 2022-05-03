@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
 
 const home = ({ userIgrejas }) => {
   const classes = useStyles();
-  console.log('o que é isso');
+
   return (
     <div>
       <Hidden smDown>

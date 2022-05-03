@@ -12,6 +12,8 @@ export default class MyDocument extends Document {
 
           <meta name="google" content="notranslate" />
           <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta content="yes" name="apple-mobile-web-app-capable" />
+          <meta content="yes" name="mobile-web-app-capable" />
           <link rel="icon" href="/images/idpb.ico" type="image/x-icon" />
 
           <link rel="manifest" href="/images/manifest.json" />

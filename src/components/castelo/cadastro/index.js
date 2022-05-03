@@ -13,6 +13,8 @@ import Erros from 'src/utils/erros';
 import corIgreja from 'src/utils/coresIgreja';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
+import MenuItem from '@material-ui/core/MenuItem';
+import Espera from 'src/utils/espera';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -104,7 +106,11 @@ function Cadastro({ lideranca, rolMembros }) {
   const [usuarioLider, setUsuarioLider] = React.useState(false);
   const [openErro, setOpenErro] = React.useState(false);
   const [openEspera, setOpenEspera] = React.useState(false);
-
+  const [openSelect, setOpenSelect] = React.useState(false);
+  const [contagem, setContagem] = React.useState(false);
+  const [perfilSelect] = React.useState('0');
+  const [perfilUserFinal, setPerfilUserFinal] = React.useState('');
+  const [perfilUser, setPerfilUser] = React.useState('');
   //= =========================================================================
   const handleValidacaoClose = () => {
     if (validacaoNome !== 'testar' && validacaoNome) {
@@ -148,16 +154,169 @@ function Cadastro({ lideranca, rolMembros }) {
 
     return 0;
   }, [lideres]);
+  let valorPerfil = {};
+  let userMembro = {};
+  let secao = '';
 
+  const handleChange = (event) => {
+    setContagem(true);
+    const indexPerfil = Number(event.target.value - 1);
+    setPerfilUser(() => [perfilUserFinal[indexPerfil]]);
+    router.push(
+      {
+        pathname: '/meuPerfil',
+        query: perfilUser[0],
+      },
+      '/meuPerfil',
+    );
+  };
   React.useEffect(() => {
     if (
       novoMembro.length >= usuarioMembro.length &&
       novoLider.length >= usuarioLider.length
-    )
-      router.reload(window.location.pathname);
+    ) {
+      if (lideranca.length && members.length) {
+        secao = lideres.filter((val) => val.Email === session.user.email);
+
+        valorPerfil = secao.map((items, index) => {
+          if (items.Funcao === 'Secretaria')
+            return {
+              Funcao: items.Funcao,
+              Descricao: `Secretaria da Igreja`,
+              id: index + 1,
+              numero: items.Distrito,
+              Celula: items.Celula,
+              Coordenacao: items.Coordenacao,
+              Distrito: items.Distrito,
+              Email: items.Email,
+              Igreja: items.Igreja,
+              Nascimento: items.Nascimento,
+              Nome: items.Nome,
+              RolMembro: items.RolMembro,
+              supervisao: items.supervisao,
+            };
+          if (items.Funcao === 'Presidente')
+            return {
+              Funcao: items.Funcao,
+              Descricao: `Pastor Presidente`,
+              id: index + 1,
+              numero: items.Igreja,
+              Celula: items.Celula,
+              Coordenacao: items.Coordenacao,
+              Distrito: items.Distrito,
+              Email: items.Email,
+              Igreja: items.Igreja,
+              Nascimento: items.Nascimento,
+              Nome: items.Nome,
+              RolMembro: items.RolMembro,
+              supervisao: items.supervisao,
+            };
+          if (items.Funcao === 'PastorDistrito')
+            return {
+              Funcao: items.Funcao,
+              Descricao: `Pastor (Distrito ${items.Distrito})`,
+              id: index + 1,
+              numero: items.Distrito,
+              Celula: items.Celula,
+              Coordenacao: items.Coordenacao,
+              Distrito: items.Distrito,
+              Email: items.Email,
+              Igreja: items.Igreja,
+              Nascimento: items.Nascimento,
+              Nome: items.Nome,
+              RolMembro: items.RolMembro,
+              supervisao: items.supervisao,
+            };
+
+          if (items.Funcao === 'Coordenador')
+            return {
+              Funcao: items.Funcao,
+              Descricao: `Coordenador (Coordenação ${items.Coordenacao})`,
+              id: index + 1,
+              numero: items.Coordenacao,
+              Celula: items.Celula,
+              Coordenacao: items.Coordenacao,
+              Distrito: items.Distrito,
+              Email: items.Email,
+              Igreja: items.Igreja,
+              Nascimento: items.Nascimento,
+              Nome: items.Nome,
+              RolMembro: items.RolMembro,
+              supervisao: items.supervisao,
+            };
+          if (items.Funcao === 'Supervisor')
+            return {
+              Funcao: items.Funcao,
+              Descricao: `Supervisor (Supervisao ${items.supervisao})`,
+              id: index + 1,
+              numero: items.supervisao,
+              Celula: items.Celula,
+              Coordenacao: items.Coordenacao,
+              Distrito: items.Distrito,
+              Email: items.Email,
+              Igreja: items.Igreja,
+              Nascimento: items.Nascimento,
+              Nome: items.Nome,
+              RolMembro: items.RolMembro,
+              supervisao: items.supervisao,
+            };
+
+          if (items.Funcao === 'Lider')
+            return {
+              Funcao: items.Funcao,
+              Descricao: `Líder (Celula ${items.Celula})`,
+              id: index + 1,
+              numero: items.Celula,
+              Celula: items.Celula,
+              Coordenacao: items.Coordenacao,
+              Distrito: items.Distrito,
+              Email: items.Email,
+              Igreja: items.Igreja,
+              Nascimento: items.Nascimento,
+              Nome: items.Nome,
+              RolMembro: items.RolMembro,
+              supervisao: items.supervisao,
+            };
+
+          return 0;
+        });
+      }
+      const membro = members.filter((val) => val.Email === session.user.email);
+
+      if (membro.length > 0) {
+        userMembro = {
+          Celula: membro[0].Celula,
+          Coordenacao: membro[0].Coordenacao,
+          Descricao: `Membro (Célula ${membro[0].Celula})`,
+          Distrito: membro[0].Distrito,
+          Email: membro[0].Email,
+          Funcao: `Membro`,
+          Igreja: membro[0].Igreja,
+          Nascimento: membro[0].Nascimento,
+          Nome: membro[0].Nome,
+          RolMembro: membro[0].RolMembro,
+          id: secao.length + 1,
+          supervisao: membro[0].Supervisao,
+          numero: membro[0].Celula,
+        };
+      }
+
+      valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
+      // expected output: Object { a: 1, b: 4, c: 5 }
+
+      // expected output: Object { a: 1, b: 4, c: 5 }
+
+      console.log('ola estou aqui', valorPerfil);
+      setPerfilUserFinal(valorPerfil);
+      setOpenSelect(true);
+    }
     return 0;
   }, [novoLider, novoMembro]);
-
+  console.log(
+    'fora novoLider.length e o novoMmembro.length',
+    novoLider.length,
+    novoMembro.length,
+  );
   const cadastrarEmailLider = () => {
     if (usuarioLider.length > 0) {
       if (contId - 1 < usuarioLider.length) {
@@ -168,11 +327,12 @@ function Cadastro({ lideranca, rolMembros }) {
           })
           .then((response) => {
             if (response) {
-              mutate(url2);
+              console.log('contId', contId, usuarioLider.length);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
                 setContId(0);
                 setOpenEspera(true);
+                mutate(url2);
               }
             }
           })
@@ -188,6 +348,7 @@ function Cadastro({ lideranca, rolMembros }) {
     }
     return true;
   };
+
   React.useEffect(() => {
     if (contId !== 0) {
       if (contId - 1 < usuarioLider.length) {
@@ -233,7 +394,7 @@ function Cadastro({ lideranca, rolMembros }) {
 
       if (checarLideranca.length > 0) {
         setUsuarioLider(checarLideranca);
-        setContId(Number(checarLideranca.length));
+        setContId(1);
       } else {
         setCarregar(true);
         setOpenEspera(true);
@@ -243,7 +404,6 @@ function Cadastro({ lideranca, rolMembros }) {
       setOpenEspera(true);
     }
   };
-
   const cadastrarEmailMembro = () => {
     if (usuarioMembro.length > 0) {
       setCarregar(true);
@@ -331,368 +491,484 @@ function Cadastro({ lideranca, rolMembros }) {
       alignItems="center"
       bgcolor="corIgreja.principal"
     >
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="90%"
-        minWidth={280}
-        maxWidth={500}
-        borderRadius={16}
-        height="auto"
-        bgcolor="#fafafa"
-      >
-        <Box
-          mt={3}
-          mb={3}
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
-          width="100%"
-          minWidth={300}
-        >
-          <Box
-            color="#000"
-            style={{ fontSize: '22px', fontFamily: 'arial black' }}
-          >
-            <Grid item container direction="column" xs={12}>
-              <Box
-                textAlign="center"
-                color="#000"
-                style={{ fontSize: '18px', fontFamily: 'arial black' }}
-              >
-                ATENÇÃO!!!
-              </Box>
-            </Grid>
-            <Grid item container direction="column" xs={12}>
-              <Box
-                textAlign="center"
-                mt={1}
-                color="#000"
-                style={{ fontSize: '16px', fontFamily: 'arial' }}
-              >
-                o email:
-                <strong style={{ color: '' }}>
-                  {' '}
-                  {session.user.email}
-                </strong>{' '}
-              </Box>
-            </Grid>
-            <Grid item container direction="column" xs={12}>
-              <Box
-                textAlign="center"
-                color="red"
-                style={{ fontSize: '16px', fontFamily: 'arial black' }}
-              >
-                Não foi cadastrado
-              </Box>
-            </Grid>
-
-            <Grid container direction="column">
-              <Grid item container direction="column" xs={12}>
-                <Box
-                  mt={3}
-                  textAlign="center"
-                  color="#000"
-                  style={{ fontSize: '16px', fontFamily: 'arial black' }}
-                  width="100%"
-                  minWidth={300}
-                >
-                  FAZER CADASTRO
-                </Box>
-                <Box
-                  mt={-2}
-                  width="100%"
-                  minWidth={250}
-                  display="flex"
-                  justifyContent="center"
-                >
-                  <Box
-                    border={1}
-                    borderColor={
-                      validacaoNome === 'true' || validacaoNome === 'testar'
-                        ? 'green'
-                        : 'red'
-                    }
-                    mt={2}
-                    mr={0}
-                    display="flex"
-                    flexDirection="row"
-                    bgcolor="#fafafa"
-                    borderRadius="16px"
-                    height={120}
-                    width="90%"
-                  >
-                    <Grid item xs={12} md={12}>
-                      <Box
-                        mt={2}
-                        mb={1}
-                        ml={3}
-                        sx={{ fontSize: 'bold', color: '#000' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                        >
-                          Nome
-                        </Typography>
-                      </Box>
-                      <Box mt={0} textAlign="center">
-                        <Box>
-                          <TextField
-                            className={classes.tf_s}
-                            inputProps={{
-                              style: {
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Nome"
-                            // label="Matricula"
-                            type="text"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={nome}
-                            variant="standard"
-                            placeholder="Nome completo"
-                            onChange={(e) => {
-                              setNome(e.target.value);
-                              handleValidacaoClose();
-                            }}
-                            onFocus={(e) => {
-                              setNome(e.target.value);
-                            }}
-                            onKeyDown={handleEnter}
-                            inputRef={nomeRef}
-                          />
-                        </Box>
-                      </Box>
-                      {validacaoNome !== true && validacaoNome !== 'testar' && (
-                        <Box display="flex" ml={2} mt={0} color="#000">
-                          <SvgIcon sx={{ color: 'red' }}>
-                            <ErrorOutlineIcon />{' '}
-                          </SvgIcon>
-                          <Box
-                            mt={0.5}
-                            ml={2}
-                            color="red"
-                            style={{ fontSize: '12px' }}
-                          >
-                            {validacaoNome}
-                          </Box>
-                        </Box>
-                      )}
-                      {carregar && (
-                        <Box display="flex" ml={2} mt={0} color="#000">
-                          <Box
-                            mt={0.5}
-                            ml={0}
-                            color="blue"
-                            style={{ fontSize: '12px' }}
-                          >
-                            {!openEspera ? (
-                              'Cadastrando...'
-                            ) : (
-                              <Box>Finalizando, espere... </Box>
-                            )}
-                          </Box>
-                        </Box>
-                      )}
-                    </Grid>
-                  </Box>
-                </Box>
-                <Box
-                  mt={-1}
-                  width="100%"
-                  minWidth={300}
-                  display="flex"
-                  justifyContent="center"
-                >
-                  <Box
-                    border={1}
-                    borderColor={validacaoNascimento ? 'green' : 'red'}
-                    mt={2}
-                    mr={0}
-                    display="flex"
-                    flexDirection="row"
-                    bgcolor="#fafafa"
-                    borderRadius="16px"
-                    height={120}
-                    width="90%"
-                  >
-                    <Grid item xs={12} md={12}>
-                      <Box
-                        mt={2}
-                        mb={1}
-                        ml={3}
-                        sx={{ fontSize: 'bold', color: '#000' }}
-                      >
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                        >
-                          Data de Nascimento
-                        </Typography>
-                      </Box>
-                      <Box mt={0} textAlign="center">
-                        <Box>
-                          <TextField
-                            className={classes.tf_s}
-                            inputProps={{
-                              style: {
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Nascimento"
-                            // label="Matricula"
-                            type="text"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={dataMask(nascimento)}
-                            variant="standard"
-                            placeholder="dd/mm/aaaa"
-                            onChange={(e) => {
-                              setNascimento(e.target.value);
-                              handleValidacaoClose();
-                            }}
-                            onFocus={(e) => {
-                              setNascimento(e.target.value);
-                            }}
-                            onBlur={handleCheckDadosMembro}
-                            onKeyDown={handleEnter}
-                            inputRef={nascimentoRef}
-                          />
-                        </Box>
-                      </Box>
-                      {!validacaoNascimento && (
-                        <Box display="flex" ml={5} mt={0} color="#000">
-                          <SvgIcon sx={{ color: 'red' }}>
-                            <ErrorOutlineIcon />{' '}
-                          </SvgIcon>
-                          <Box
-                            mt={0.3}
-                            ml={2}
-                            color="red"
-                            style={{ fontSize: '12px' }}
-                          >
-                            Data não Confere com o Nome
-                          </Box>
-                        </Box>
-                      )}
-                      {carregar && (
-                        <Box display="flex" ml={2} mt={0} color="#000">
-                          <Box
-                            mt={0.3}
-                            ml={0}
-                            color="blue"
-                            style={{ fontSize: '12px' }}
-                          >
-                            {usuarioMembro.length > 0 &&
-                              !openEspera &&
-                              contId === 0 && (
-                                <Box>Cadastrando Email - Rol de Membro </Box>
-                              )}
-                            {contId !== 0 &&
-                              usuarioLider.length &&
-                              usuarioLider[contId - 1].Funcao === 'Lider' && (
-                                <Box>
-                                  {usuarioLider[contId - 1].Funcao} da Célula{' '}
-                                  {usuarioLider[contId - 1].Celula}{' '}
-                                </Box>
-                              )}
-                            {contId !== 0 &&
-                              usuarioLider.length &&
-                              usuarioLider[contId - 1].Funcao ===
-                                'Supervisor' && (
-                                <Box>
-                                  {usuarioLider[contId - 1].Funcao} da
-                                  Supervisão{' '}
-                                  {usuarioLider[contId - 1].supervisao &&
-                                    usuarioLider[contId - 1].supervisao}
-                                </Box>
-                              )}
-                            {contId !== 0 &&
-                              usuarioLider.length &&
-                              usuarioLider[contId - 1].Funcao ===
-                                'Coordenador' && (
-                                <Box>
-                                  {usuarioLider[contId - 1].Funcao} da
-                                  Coordenação{' '}
-                                  {usuarioLider[contId - 1].Coordenacao}
-                                </Box>
-                              )}
-                            {contId !== 0 &&
-                              usuarioLider.length &&
-                              usuarioLider[contId - 1].Funcao ===
-                                'PastorArea' && (
-                                <Box>
-                                  {usuarioLider[contId - 1].Funcao} do Distrito{' '}
-                                  {usuarioLider[contId - 1].Distrito}
-                                </Box>
-                              )}
-                            {contId !== 0 &&
-                              usuarioLider.length &&
-                              usuarioLider[contId - 1].Funcao ===
-                                'Presidente' && (
-                                <Box>
-                                  {usuarioLider[contId - 1].Funcao} da IDPB{' '}
-                                  {usuarioLider[contId - 1].Igreja}
-                                </Box>
-                              )}
-                          </Box>
-                        </Box>
-                      )}
-                    </Grid>
-                  </Box>
-                </Box>
-                <Box
-                  mt={4}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Button
-                    className={classes.button2}
-                    variant="contained"
-                    id="reload"
-                    onClick={handleCheckDadosMembro}
-                  >
-                    <Box>
-                      {!carregar ? (
-                        <Box>CADASTRAR</Box>
-                      ) : (
-                        <Box display="flex">
-                          <Oval width={120} height={25} />{' '}
-                        </Box>
-                      )}
-                    </Box>
-                  </Button>
-                  <Box ml={2} />
-                  <Button
-                    className={classes.button1}
-                    variant="contained"
-                    id="reload"
-                    onClick={handleCancelar}
-                  >
-                    CANCELAR
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Box>
       {openErro && (
         <Erros
           descricao="banco"
           setOpenErro={(openErros) => setOpenErro(openErros)}
         />
+      )}
+      {openSelect && perfilUserFinal.length ? (
+        <Box width="100vw">
+          <Box
+            height="100vh"
+            width="100%"
+            minWidth={300}
+            minHeight={500}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor={corIgreja.principal}
+          >
+            <Box width="100%">
+              <Box textAlign="center" mt={-3} mb={2}>
+                <img src="/images/castelo.png" alt="Castelo" width={80} />
+              </Box>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Box
+                  width="90%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  minWidth={280}
+                  borderRadius={16}
+                  height="auto"
+                  bgcolor="#fafafa"
+                >
+                  <Box>
+                    <Box
+                      mt={3}
+                      mb={3}
+                      display="flex"
+                      justifyContent="center"
+                      flexDirection="column"
+                      width="100%"
+                      minWidth={300}
+                    >
+                      <Box
+                        color="#000"
+                        style={{ fontSize: '22px', fontFamily: 'arial black' }}
+                      >
+                        <Grid item container direction="column" xs={12}>
+                          <Box
+                            textAlign="center"
+                            color="#000"
+                            style={{
+                              fontSize: '18px',
+                              fontFamily: 'arial black',
+                            }}
+                          >
+                            VOCÊ TEM {perfilUserFinal.length} Pefis
+                          </Box>
+                        </Grid>
+                        <Grid item container direction="column" xs={12}>
+                          <Box
+                            textAlign="center"
+                            mt={1}
+                            color="#000"
+                            style={{ fontSize: '16px', fontFamily: 'arial' }}
+                          >
+                            <strong style={{ color: '' }}>
+                              Escolha qual deseja acessar{' '}
+                            </strong>{' '}
+                          </Box>
+                        </Grid>
+                      </Box>
+                      <Box mt={5} mb={3} width="100%" textAlign="center">
+                        <Grid item xs={12} md={12}>
+                          <Box>
+                            <TextField
+                              value={perfilSelect}
+                              select
+                              onChange={handleChange}
+                              variant="outlined"
+                              placeholder="Escolha seu Perfil"
+                              className={classes.tf_s}
+                              style={{
+                                textAlign: 'start',
+                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                              }}
+                            >
+                              <MenuItem value={perfilSelect}>
+                                <em>Escolha seu Perfil</em>
+                              </MenuItem>
+                              {perfilUserFinal?.map((items) => (
+                                <MenuItem key={items.id} value={items.id}>
+                                  {items.Descricao ?? items.Descricao}
+                                </MenuItem>
+                              ))}
+                            </TextField>
+                          </Box>
+                        </Grid>
+                      </Box>
+
+                      {contagem && (
+                        <Espera descricao="Atualizando Seu Perfil" />
+                      )}
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      ) : (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="90%"
+          minWidth={280}
+          maxWidth={500}
+          borderRadius={16}
+          height="auto"
+          bgcolor="#fafafa"
+        >
+          <Box
+            mt={3}
+            mb={3}
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            width="100%"
+            minWidth={300}
+          >
+            <Box
+              color="#000"
+              style={{ fontSize: '22px', fontFamily: 'arial black' }}
+            >
+              <Grid item container direction="column" xs={12}>
+                <Box
+                  textAlign="center"
+                  color="#000"
+                  style={{ fontSize: '18px', fontFamily: 'arial black' }}
+                >
+                  ATENÇÃO!!!
+                </Box>
+              </Grid>
+              <Grid item container direction="column" xs={12}>
+                <Box
+                  textAlign="center"
+                  mt={1}
+                  color="#000"
+                  style={{ fontSize: '16px', fontFamily: 'arial' }}
+                >
+                  o email:
+                  <strong style={{ color: '' }}>
+                    {' '}
+                    {session.user.email}
+                  </strong>{' '}
+                </Box>
+              </Grid>
+              <Grid item container direction="column" xs={12}>
+                <Box
+                  textAlign="center"
+                  color="red"
+                  style={{ fontSize: '16px', fontFamily: 'arial black' }}
+                >
+                  Não foi cadastrado
+                </Box>
+              </Grid>
+
+              <Grid container direction="column">
+                <Grid item container direction="column" xs={12}>
+                  <Box
+                    mt={3}
+                    textAlign="center"
+                    color="#000"
+                    style={{ fontSize: '16px', fontFamily: 'arial black' }}
+                    width="100%"
+                    minWidth={300}
+                  >
+                    FAZER CADASTRO
+                  </Box>
+                  <Box
+                    mt={-2}
+                    width="100%"
+                    minWidth={250}
+                    display="flex"
+                    justifyContent="center"
+                  >
+                    <Box
+                      border={1}
+                      borderColor={
+                        validacaoNome === 'true' || validacaoNome === 'testar'
+                          ? 'green'
+                          : 'red'
+                      }
+                      mt={2}
+                      mr={0}
+                      display="flex"
+                      flexDirection="row"
+                      bgcolor="#fafafa"
+                      borderRadius="16px"
+                      height={120}
+                      width="90%"
+                    >
+                      <Grid item xs={12} md={12}>
+                        <Box
+                          mt={2}
+                          mb={1}
+                          ml={3}
+                          sx={{ fontSize: 'bold', color: '#000' }}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Nome
+                          </Typography>
+                        </Box>
+                        <Box mt={0} textAlign="center">
+                          <Box>
+                            <TextField
+                              className={classes.tf_s}
+                              inputProps={{
+                                style: {
+                                  textAlign: 'center',
+                                  WebkitBoxShadow:
+                                    '0 0 0 1000px #fafafa  inset',
+                                },
+                              }}
+                              id="Nome"
+                              // label="Matricula"
+                              type="text"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={nome}
+                              variant="standard"
+                              placeholder="Nome completo"
+                              onChange={(e) => {
+                                setNome(e.target.value);
+                                handleValidacaoClose();
+                              }}
+                              onFocus={(e) => {
+                                setNome(e.target.value);
+                              }}
+                              onKeyDown={handleEnter}
+                              inputRef={nomeRef}
+                            />
+                          </Box>
+                        </Box>
+                        {validacaoNome !== true && validacaoNome !== 'testar' && (
+                          <Box display="flex" ml={2} mt={0} color="#000">
+                            <SvgIcon sx={{ color: 'red' }}>
+                              <ErrorOutlineIcon />{' '}
+                            </SvgIcon>
+                            <Box
+                              mt={0.5}
+                              ml={2}
+                              color="red"
+                              style={{ fontSize: '12px' }}
+                            >
+                              {validacaoNome}
+                            </Box>
+                          </Box>
+                        )}
+                        {carregar && (
+                          <Box display="flex" ml={2} mt={0} color="#000">
+                            <Box
+                              mt={0.5}
+                              ml={0}
+                              color="blue"
+                              style={{ fontSize: '12px' }}
+                            >
+                              {!openEspera ? (
+                                'Cadastrando...'
+                              ) : (
+                                <Box>Finalizando, espere... </Box>
+                              )}
+                            </Box>
+                          </Box>
+                        )}
+                      </Grid>
+                    </Box>
+                  </Box>
+                  <Box
+                    mt={-1}
+                    width="100%"
+                    minWidth={300}
+                    display="flex"
+                    justifyContent="center"
+                  >
+                    <Box
+                      border={1}
+                      borderColor={validacaoNascimento ? 'green' : 'red'}
+                      mt={2}
+                      mr={0}
+                      display="flex"
+                      flexDirection="row"
+                      bgcolor="#fafafa"
+                      borderRadius="16px"
+                      height={120}
+                      width="90%"
+                    >
+                      <Grid item xs={12} md={12}>
+                        <Box
+                          mt={2}
+                          mb={1}
+                          ml={3}
+                          sx={{ fontSize: 'bold', color: '#000' }}
+                        >
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            Data de Nascimento
+                          </Typography>
+                        </Box>
+                        <Box mt={0} textAlign="center">
+                          <Box>
+                            <TextField
+                              className={classes.tf_s}
+                              inputProps={{
+                                style: {
+                                  textAlign: 'center',
+                                  WebkitBoxShadow:
+                                    '0 0 0 1000px #fafafa  inset',
+                                },
+                              }}
+                              id="Nascimento"
+                              // label="Matricula"
+                              type="tel"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={dataMask(nascimento)}
+                              variant="standard"
+                              placeholder="dd/mm/aaaa"
+                              onChange={(e) => {
+                                setNascimento(e.target.value);
+                                handleValidacaoClose();
+                              }}
+                              onFocus={(e) => {
+                                setNascimento(e.target.value);
+                              }}
+                              onBlur={handleCheckDadosMembro}
+                              onKeyDown={handleEnter}
+                              inputRef={nascimentoRef}
+                            />
+                          </Box>
+                        </Box>
+                        {!validacaoNascimento && (
+                          <Box display="flex" ml={5} mt={0} color="#000">
+                            <SvgIcon sx={{ color: 'red' }}>
+                              <ErrorOutlineIcon />{' '}
+                            </SvgIcon>
+                            <Box
+                              mt={0.3}
+                              ml={2}
+                              color="red"
+                              style={{ fontSize: '12px' }}
+                            >
+                              Data não Confere com o Nome
+                            </Box>
+                          </Box>
+                        )}
+                        {carregar && (
+                          <Box display="flex" ml={2} mt={0} color="#000">
+                            <Box
+                              mt={0.3}
+                              ml={0}
+                              color="blue"
+                              style={{ fontSize: '12px' }}
+                            >
+                              {usuarioMembro.length > 0 &&
+                                !openEspera &&
+                                contId === 0 && (
+                                  <Box>Cadastrando Email - Rol de Membro </Box>
+                                )}
+                              {contId !== 0 &&
+                                usuarioLider.length &&
+                                usuarioLider[contId - 1].Funcao ===
+                                  'Secretaria' && (
+                                  <Box>
+                                    {usuarioLider[contId - 1].Funcao} da Igreja{' '}
+                                  </Box>
+                                )}
+                              {contId !== 0 &&
+                                usuarioLider.length &&
+                                usuarioLider[contId - 1].Funcao === 'Lider' && (
+                                  <Box>
+                                    {usuarioLider[contId - 1].Funcao} da Célula{' '}
+                                    {usuarioLider[contId - 1].Celula}{' '}
+                                  </Box>
+                                )}
+                              {contId !== 0 &&
+                                usuarioLider.length &&
+                                usuarioLider[contId - 1].Funcao ===
+                                  'Supervisor' && (
+                                  <Box>
+                                    {usuarioLider[contId - 1].Funcao} da
+                                    Supervisão{' '}
+                                    {usuarioLider[contId - 1].supervisao &&
+                                      usuarioLider[contId - 1].supervisao}
+                                  </Box>
+                                )}
+                              {contId !== 0 &&
+                                usuarioLider.length &&
+                                usuarioLider[contId - 1].Funcao ===
+                                  'Coordenador' && (
+                                  <Box>
+                                    {usuarioLider[contId - 1].Funcao} da
+                                    Coordenação{' '}
+                                    {usuarioLider[contId - 1].Coordenacao}
+                                  </Box>
+                                )}
+                              {contId !== 0 &&
+                                usuarioLider.length &&
+                                usuarioLider[contId - 1].Funcao ===
+                                  'PastorArea' && (
+                                  <Box>
+                                    {usuarioLider[contId - 1].Funcao} do
+                                    Distrito {usuarioLider[contId - 1].Distrito}
+                                  </Box>
+                                )}
+                              {contId !== 0 &&
+                                usuarioLider.length &&
+                                usuarioLider[contId - 1].Funcao ===
+                                  'Presidente' && (
+                                  <Box>
+                                    {usuarioLider[contId - 1].Funcao} da IDPB{' '}
+                                    {usuarioLider[contId - 1].Igreja}
+                                  </Box>
+                                )}
+                            </Box>
+                          </Box>
+                        )}
+                      </Grid>
+                    </Box>
+                  </Box>
+                  <Box
+                    mt={4}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Button
+                      className={classes.button2}
+                      variant="contained"
+                      id="reload"
+                      onClick={handleCheckDadosMembro}
+                    >
+                      <Box>
+                        {!carregar ? (
+                          <Box>CADASTRAR</Box>
+                        ) : (
+                          <Box display="flex">
+                            <Oval width={120} height={25} />{' '}
+                          </Box>
+                        )}
+                      </Box>
+                    </Button>
+                    <Box ml={2} />
+                    <Button
+                      className={classes.button1}
+                      variant="contained"
+                      id="reload"
+                      onClick={handleCancelar}
+                    >
+                      CANCELAR
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
       )}
     </Box>
   );

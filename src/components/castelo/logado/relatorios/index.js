@@ -23,6 +23,8 @@ import { useSession } from 'next-auth/client';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 import NabarLider from '../navBar/lider';
+import NabarSecretaria from '../navBar/secretaria';
+
 import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
 
@@ -164,8 +166,6 @@ function Relatorios({
   };
 
   const handleDrawerClose = () => {
-    // console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
@@ -284,6 +284,10 @@ function Relatorios({
           {perfilUser.Funcao === 'Lider' && (
             <NabarLider perfilUser={perfilUser} />
           )}
+          {perfilUser.Funcao === 'Secretaria' && (
+            <NabarSecretaria perfilUser={perfilUser} />
+          )}
+
           {perfilUser.Funcao === 'Supervisor' && (
             <NavbarSuper
               items={lideranca}

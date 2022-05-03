@@ -109,7 +109,7 @@ model membros {
   Nome              String   @db.VarChar(145)
   Celula            Int
   Distrito          Int
-  Coordencacao      Int
+  Coordenacao       Int
   Supervisao        Int
   Discipulador      String   @db.VarChar(145)
   RolMembro         Int
@@ -139,9 +139,10 @@ model membros {
   CriadoEm          DateTime @db.DateTime(0)
   AtualizadoEm      DateTime @db.DateTime(0)
   AtualizadoPor     String   @db.VarChar(255)
+  Naturalidade      String   @db.VarChar(255)
 
   @@index([Celula], name: "Celula_index")
-  @@index([Coordencacao], name: "Coordencacao_index")
+  @@index([Coordenacao], name: "Coordencacao_index")
   @@index([Distrito], name: "Distrito_index")
   @@index([RolMembro], name: "RolMembro_index")
   @@index([Supervisao], name: "Supervisao_index")
@@ -257,136 +258,4 @@ model relatorioSupervisao {
   EtapasCelula   String @db.Text
   Local          String @db.Text
   Observacoes    String @db.Text
-}
-
-model membros2 {
-  id                Int      @id @default(autoincrement())
-  Igreja            String   @db.VarChar(12)
-  Celula            Int
-  Distrito          Int
-  Coordencacao      Int
-  Supervisao        Int
-  Discipulador      String   @db.VarChar(255)
-  Nome              String   @db.VarChar(255)
-  RolMembro         Int
-  TelCelular        String   @db.VarChar(25)
-  TelFixo           String   @db.VarChar(25)
-  Email             String   @db.VarChar(25)
-  Sexo              String   @db.VarChar(25)
-  Nascimento        String   @db.VarChar(10)
-  Situacao          String   @db.VarChar(12)
-  MOTIVO            String   @db.VarChar(255)
-  Conversao         String   @db.VarChar(25)
-  Batismo           String   @db.VarChar(25)
-  CEP               String   @db.VarChar(25)
-  Logradouro        String   @db.VarChar(255)
-  Bairro            String   @db.VarChar(255)
-  Numero            String   @db.VarChar(255)
-  Complemento       String   @db.VarChar(255)
-  Localidade        String   @db.VarChar(255)
-  UF                String   @db.VarChar(25)
-  CPF               String   @db.VarChar(25)
-  RG                String   @db.VarChar(25)
-  FormacaoAcademica String   @db.VarChar(255)
-  Profissao         String   @db.VarChar(255)
-  Pai               String   @db.VarChar(255)
-  Mae               String   @db.VarChar(255)
-  CriadoEm          DateTime @default(now()) @db.DateTime(0)
-  AtualizadoEm      DateTime @default(now()) @db.DateTime(0)
-  AtualizadoPor     String   @db.VarChar(255)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordencacao], name: "Coordencacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([RolMembro], name: "RolMembro_index")
-  @@index([Supervisao], name: "Supervisao_index")
-}
-
-model lideranca3 {
-  id          Int     @id
-  Funcao      String? @db.VarChar(12)
-  Nome        String? @db.VarChar(45)
-  Nascimento  String? @db.VarChar(12)
-  RolMembro   Int
-  Email       String? @db.VarChar(45)
-  Celula      Int
-  supervisao  Int
-  Coordenacao Int
-  Distrito    Int
-  Igreja      String? @db.VarChar(5)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordenacao], name: "Coordenacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([RolMembro], name: "RolMembro_index")
-  @@index([supervisao], name: "supervisao_index")
-}
-
-model membros4 {
-  id           Int     @id @default(autoincrement())
-  Igreja       String? @db.VarChar(12)
-  Nome         String? @db.VarChar(45)
-  Celula       Int
-  Distrito     Int
-  Coordencacao Int
-  Supervisao   Int
-  Discipulador String  @db.VarChar(45)
-  RolMembro    Int
-  TelCelular   String  @db.VarChar(255)
-  TelFixo      String  @db.VarChar(255)
-  Email        String  @db.VarChar(45)
-  Sexo         String  @db.VarChar(255)
-  Nascimento   String  @db.VarChar(12)
-  Situacao     String  @db.VarChar(12)
-  MOTIVO       String  @db.VarChar(12)
-  membros4col  String  @db.VarChar(45)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordencacao], name: "Coordencacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([RolMembro], name: "RolMembro_index")
-  @@index([Supervisao], name: "Supervisao_index")
-}
-
-model membros5 {
-  id                Int      @id
-  Igreja            String   @db.VarChar(12)
-  Nome              String   @db.VarChar(45)
-  Celula            Int
-  Distrito          Int
-  Coordencacao      Int
-  Supervisao        Int
-  Discipulador      String   @db.VarChar(45)
-  RolMembro         Int
-  TelCelular        String   @db.VarChar(255)
-  TelFixo           String   @db.VarChar(255)
-  Email             String   @db.VarChar(45)
-  Sexo              String   @db.VarChar(255)
-  Nascimento        String   @db.VarChar(12)
-  Situacao          String   @db.VarChar(12)
-  MOTIVO            String   @db.VarChar(12)
-  Conversao         String   @db.VarChar(255)
-  Batismo           String   @db.VarChar(255)
-  CEP               String   @db.VarChar(255)
-  Logradouro        String   @db.VarChar(255)
-  Bairro            String   @db.VarChar(255)
-  Numero            String   @db.VarChar(255)
-  Complemento       String   @db.VarChar(255)
-  Localidade        String   @db.VarChar(255)
-  UF                String   @db.VarChar(255)
-  CPF               String   @db.VarChar(255)
-  RG                String   @db.VarChar(255)
-  FormacaoAcademica String   @db.VarChar(255)
-  Profissao         String   @db.VarChar(255)
-  Pai               String   @db.VarChar(255)
-  Mae               String   @db.VarChar(255)
-  CriadoEm          DateTime @db.DateTime(0)
-  AtualizadoEm      DateTime @db.DateTime(0)
-  AtualizadoPor     String   @db.VarChar(255)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordencacao], name: "Coordencacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([RolMembro], name: "RolMembro_index")
-  @@index([Supervisao], name: "Supervisao_index")
 }

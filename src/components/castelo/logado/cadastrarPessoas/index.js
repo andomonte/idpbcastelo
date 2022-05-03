@@ -22,14 +22,14 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 import corIgreja from 'src/utils/coresIgreja';
-import NabarMembro from '../navBar/membro';
+import NabarSecretaria from '../navBar/secretaria';
 import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
-import DadosPessoais from './dadosPessoais';
+import DadosMembros from './dadosMembros';
 import DadosAdicionais from './dadosAdicionais';
 import DadosEndereco from './dadosEndereco';
-
+import Padrao from './telaPadrao';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -260,10 +260,9 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          {perfilUser.Funcao === 'Membro' && (
-            <NabarMembro perfilUser={perfilUser} />
+          {perfilUser.Funcao === 'Secretaria' && (
+            <NabarSecretaria perfilUser={perfilUser} />
           )}
-
           {perfilUser.Funcao === 'Lider' && (
             <NabarLider perfilUser={perfilUser} />
           )}
@@ -289,16 +288,8 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           <TabPanel value={value} index={0}>
             {session && (
               <Box>
-                {perfilUser.Funcao === 'Membro' ? (
-                  <DadosPessoais
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-
                 {perfilUser.Funcao === 'Lider' ? (
-                  <DadosPessoais
+                  <DadosMembros
                     perfilUser={perfilUser}
                     secao={session}
                     rolMembros={rolMembros}
@@ -306,53 +297,22 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
                 ) : null}
 
                 {perfilUser.Funcao === 'Secretaria' ? (
-                  <DadosPessoais
+                  <DadosMembros
                     perfilUser={perfilUser}
                     secao={session}
                     rolMembros={rolMembros}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Supervisor' ? (
-                  <DadosPessoais
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-                {perfilUser.Funcao === 'Coordenador' ? (
-                  <DadosPessoais
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-                {perfilUser.Funcao === 'PastorDistrito' ? (
-                  <DadosPessoais
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-                {perfilUser.Funcao === 'Presidente' ? (
-                  <DadosPessoais
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
+                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
               </Box>
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
             {session && (
               <Box>
-                {perfilUser.Funcao === 'Membro' ? (
-                  <DadosEndereco
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
                 {perfilUser.Funcao === 'Lider' ? (
                   <DadosEndereco
                     perfilUser={perfilUser}
@@ -367,46 +327,15 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
                     rolMembros={rolMembros}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Supervisor' ? (
-                  <DadosEndereco
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-                {perfilUser.Funcao === 'Coordenador' ? (
-                  <DadosEndereco
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-                {perfilUser.Funcao === 'PastorDistrito' ? (
-                  <DadosEndereco
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
-                {perfilUser.Funcao === 'Presidente' ? (
-                  <DadosEndereco
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
+                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
               </Box>
             )}
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {perfilUser.Funcao === 'Membro' ? (
-              <DadosAdicionais
-                perfilUser={perfilUser}
-                secao={session}
-                rolMembros={rolMembros}
-              />
-            ) : null}
             {perfilUser.Funcao === 'Lider' ? (
               <DadosAdicionais
                 perfilUser={perfilUser}
@@ -421,34 +350,10 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
                 rolMembros={rolMembros}
               />
             ) : null}
-            {perfilUser.Funcao === 'Supervisor' ? (
-              <DadosAdicionais
-                perfilUser={perfilUser}
-                secao={session}
-                rolMembros={rolMembros}
-              />
-            ) : null}
-            {perfilUser.Funcao === 'Coordenador' ? (
-              <DadosAdicionais
-                perfilUser={perfilUser}
-                secao={session}
-                rolMembros={rolMembros}
-              />
-            ) : null}
-            {perfilUser.Funcao === 'PastorDistrito' ? (
-              <DadosAdicionais
-                perfilUser={perfilUser}
-                secao={session}
-                rolMembros={rolMembros}
-              />
-            ) : null}
-            {perfilUser.Funcao === 'Presidente' ? (
-              <DadosAdicionais
-                perfilUser={perfilUser}
-                secao={session}
-                rolMembros={rolMembros}
-              />
-            ) : null}
+            {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
           </TabPanel>
         </main>
       </div>

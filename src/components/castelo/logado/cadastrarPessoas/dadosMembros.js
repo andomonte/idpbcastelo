@@ -242,21 +242,19 @@ function DadosPessoais({ rolMembros, perfilUser }) {
     label: dadosUser[0].Sexo,
     value: dadosUser[0].Sexo,
   };
-  const [nome, setNome] = React.useState(dadosUser[0].Nome);
+  const [nome, setNome] = React.useState('');
   const [validarNome, setValidarNome] = React.useState('sim');
-  const [cpf, setCPF] = React.useState(dadosUser[0].CPF);
-  const [validarCPF, setValidarCPF] = React.useState('sim');
-  const [rg, setRG] = React.useState(dadosUser[0].RG);
+  const [cpf, setCPF] = React.useState('');
+  const [numeroCelula, setNumeroCelula] = React.useState('');
+  const [rg, setRG] = React.useState('');
   const [validarRG, setValidarRG] = React.useState('sim');
-  const [sexo, setSexo] = React.useState(valorInicialSexo);
-  const [fone, setFone] = React.useState(dadosUser[0].TelFixo);
+  const [sexo, setSexo] = React.useState('');
+  const [fone, setFone] = React.useState('');
   const [validarFone, setValidarFone] = React.useState('sim');
-  const [celular, setCelular] = React.useState(dadosUser[0].TelCelular);
+  const [celular, setCelular] = React.useState('');
   const [validarCelular, setValidarCelular] = React.useState('sim');
   const [estadoCivil, setEstadoCivil] = React.useState('');
-  const [dataNascimento, setDataNascimento] = React.useState(
-    dadosUser[0].Nascimento,
-  );
+  const [dataNascimento, setDataNascimento] = React.useState('');
   const [validarDataNascimento, setValidarDataNascimento] =
     React.useState('sim');
   const [naturalidade, setNaturalidade] = React.useState(
@@ -269,6 +267,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const celularRef = React.useRef();
   const foneRef = React.useRef();
   const cpfRef = React.useRef();
+  const nCelulaRef = React.useRef();
   const rgRef = React.useRef();
   const sexoRef = React.useRef();
   const nascimentoRef = React.useRef();
@@ -283,32 +282,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const [values, setValues] = React.useState({
     currency: eCivilInical,
   });
-
-  const url = `/api/consultaRolMembros/${dadosUser[0].id}`;
-  const { data, error } = useSWR(url, fetcher);
-  React.useEffect(() => {
-    if (data) {
-      setNome(data[0].Nome);
-      setCelular(data[0].TelCelular);
-      setFone(data[0].TelFixo);
-      setCPF(data[0].CPF);
-      setRG(data[0].RG);
-      setSexo(data[0].Sexo);
-      setDataNascimento(data[0].Nascimento);
-      setNaturalidade(data[0].Naturalidade);
-      setValues({
-        currency: {
-          value: data[0].EstadoCivil,
-          label: data[0].EstadoCivil,
-        },
-      });
-    }
-
-    if (error) return <div>An error occured.</div>;
-    if (!data) return <div>Loading ...</div>;
-
-    return 0;
-  }, [data]);
 
   //--------------------------------------------------------------------------
   // salvar dados pessoais
@@ -422,148 +395,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                 />
               </Box>
             </Grid>
-            <Grid item xs={6} md={3}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Celular
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="TelefoneCelular"
-                  type="tel"
-                  inputRef={celularRef}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={celularMask(celular).replace(/[\][)]/g, ') ')}
-                  variant="outlined"
-                  placeholder="(99) 9999-9999"
-                  size="small"
-                  onBlur={
-                    celular === ''
-                      ? () => setValidarCelular('nao')
-                      : () => setValidarCelular('sim')
-                  }
-                  onChange={(e) => setCelular(e.target.value)}
-                  error={validarCelular === 'nao'}
-                  onFocus={(e) => setCelular(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={6} md={3}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Residencial
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="TelefoneResidencial"
-                  type="tel"
-                  inputRef={foneRef}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={foneMask(fone).replace(/[\][)]/g, ') ')}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    fone === ''
-                      ? () => setValidarFone('nao')
-                      : () => setValidarFone('sim')
-                  }
-                  onChange={(e) => setFone(e.target.value)}
-                  error={validarFone === 'nao'}
-                  onFocus={(e) => setFone(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={6} md={3}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  CPF
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="CPF"
-                  // // // label="CPF"
-                  type="tel"
-                  inputRef={cpfRef}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={cpfMask(cpf)}
-                  variant="outlined"
-                  placeholder="999.999.999-99"
-                  size="small"
-                  onBlur={
-                    cpf === ''
-                      ? () => setValidarCPF('nao')
-                      : () => setValidarCPF('sim')
-                  }
-                  onChange={(e) => setCPF(e.target.value)}
-                  error={validarCPF === 'nao'}
-                  onFocus={(e) => setCPF(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={6} md={3}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  IDENTIDADE (RG)
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="RG"
-                  inputRef={rgRef}
-                  // label="RG"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={rg}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    rg === ''
-                      ? () => setValidarRG('nao')
-                      : () => setValidarRG('sim')
-                  }
-                  onChange={(e) => setRG(e.target.value)}
-                  error={validarRG === 'nao'}
-                  onFocus={(e) => setRG(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={6} md={3}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  SEXO
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <Select
-                  defaultValue={sexo}
-                  onChange={(e) => {
-                    setSexo(e);
-                  }}
-                  options={sexos}
-                />
-              </Box>
-            </Grid>
+
             <Grid item xs={6} md={3}>
               <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                 <Typography variant="caption" display="block" gutterBottom>
@@ -596,74 +428,33 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                 />
               </Box>
             </Grid>
-            <Grid item xs={6} md={6}>
+            <Grid item xs={6} md={3}>
               <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                 <Typography variant="caption" display="block" gutterBottom>
-                  NATURAL DE
+                  Número da Celula
                 </Typography>
               </Box>
               <Box className={classes.novoBox} mt={-2}>
                 <TextField
                   className={classes.tf_m}
-                  id="Naturalidade"
-                  inputRef={naturalidadeRef}
-                  // label="Naturalidade"
-                  type="text"
+                  id="NumeroCelula"
+                  // label="Data de Nascimento"
+                  type="Number"
+                  inputRef={nCelulaRef}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={naturalidade}
+                  value={numeroCelula}
                   variant="outlined"
                   placeholder=""
                   size="small"
-                  onBlur={
-                    naturalidade === ''
-                      ? () => setValidarNaturalidade('nao')
-                      : () => setValidarNaturalidade('sim')
-                  }
-                  onChange={(e) => setNaturalidade(e.target.value)}
-                  error={validarNaturalidade === 'nao'}
-                  onFocus={(e) => setNaturalidade(e.target.value)}
+                  onChange={(e) => setNumeroCelula(e.target.value)}
+                  onFocus={(e) => setNumeroCelula(e.target.value)}
                   onKeyDown={handleEnter}
                 />
               </Box>
             </Grid>
-            <Grid item xs={6} md={6}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  ESTADO CIVIL
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="EstadoCivil"
-                  inputRef={estadoCivilRef}
-                  select
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={values.currency}
-                  onChange={handleChange('currency')}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  SelectProps={{
-                    MenuProps: {
-                      className: classes.menu,
-                    },
-                    renderValue: (option) => option.label,
-                  }}
-                >
-                  {currencies.map((option) => (
-                    <MenuItem key={option.value} value={option}>
-                      ({option.value})
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
-            </Grid>
+
             <Grid item xs={12} md={12}>
               <Box mt={2} display="flex" justifyContent="center">
                 <Box width="90%" height={30} bgcolor="green">

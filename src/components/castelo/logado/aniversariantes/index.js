@@ -11,17 +11,24 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CallIcon from '@material-ui/icons/Call';
+import { FaChurch } from 'react-icons/fa';
+import { GiMeepleGroup } from 'react-icons/gi';
+
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
+import { MdGroups } from 'react-icons/md';
 import Login from '../../botaoLogin';
+import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
-import TelaPadrao from './telaPadrao';
+import NavbarSuper from '../navBar/supervisor';
+import NavbarCoord from '../navBar/coordenador';
+
 import Aniversarios from './aniversarios';
+import Aniversarios2 from './aniversarios2';
+import Aniversarios3 from './aniversarios3';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
 const drawerWidth = 240;
@@ -113,13 +120,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: 'none',
   },
 }));
-function HomeIcon(props) {
-  return (
-    <SvgIcon {...props}>
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </SvgIcon>
-  );
-}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -213,9 +214,13 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
                   <BottomNavigationAction
                     icon={
                       value === 0 ? (
-                        <HomeIcon sx={{ color: corIgreja.iconeOn }} />
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <MdGroups />
+                        </SvgIcon>
                       ) : (
-                        <HomeIcon sx={{ color: corIgreja.iconeOff }} />
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <MdGroups />
+                        </SvgIcon>
                       )
                     }
                   />
@@ -224,11 +229,11 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <CallIcon />
+                          <GiMeepleGroup />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                          <CallIcon />
+                          <GiMeepleGroup />
                         </SvgIcon>
                       )
                     }
@@ -237,11 +242,11 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
                     icon={
                       value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <LocationOnIcon />
+                          <FaChurch />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                          <LocationOnIcon />
+                          <FaChurch />
                         </SvgIcon>
                       )
                     }
@@ -260,7 +265,22 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <NabarLider perfilUser={perfilUser} />
+          {perfilUser.Funcao === 'Membro' && (
+            <NabarMembro perfilUser={perfilUser} />
+          )}
+
+          {perfilUser.Funcao === 'Lider' && (
+            <NabarLider perfilUser={perfilUser} />
+          )}
+          {perfilUser.Funcao === 'Supervisor' && (
+            <NavbarSuper perfilUser={perfilUser} />
+          )}
+          {perfilUser.Funcao === 'Coordenador' && (
+            <NavbarCoord perfilUser={perfilUser} />
+          )}
+          {perfilUser.Funcao === 'PastorDistrito' && (
+            <NavbarCoord perfilUser={perfilUser} />
+          )}
         </Drawer>
 
         <main
@@ -275,10 +295,10 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
             <Aniversarios rolMembros={rolMembros} perfilUser={perfilUser} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <TelaPadrao />
+            <Aniversarios2 rolMembros={rolMembros} perfilUser={perfilUser} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <TelaPadrao />
+            <Aniversarios3 rolMembros={rolMembros} perfilUser={perfilUser} />
           </TabPanel>
         </main>
       </div>

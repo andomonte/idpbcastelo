@@ -20,7 +20,12 @@ export default function NestedGrid() {
 
   return (
     <div className={classes.root}>
-      <Box display="flex" justifyContent="center">
+      <Box
+        fontFamily="arial Black"
+        mt={25}
+        display="flex"
+        justifyContent="center"
+      >
         Tela em Desenvolvimento (Ativa em Maio)
       </Box>
     </div>

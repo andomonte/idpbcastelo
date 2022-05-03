@@ -141,7 +141,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
 
   const niverSetor = niverGeral.filter((results) => {
     if (
-      Number(results.Celula) === Number(perfilUser.Celula) &&
+      Number(results.Supervisao) === Number(perfilUser.supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito)
     ) {
       return results;
@@ -169,7 +169,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
           >
             <Box width="100%" ml={1} minWidth={370}>
               <Box mb={2} textAlign="center" color="yellow">
-                ANIVERSARIANTES DA CÉLULA
+                ANIVERSARIANTES DA SUPERVISÃO {perfilUser.supervisao}
               </Box>
               <Grid container item xs={12} spacing={1}>
                 <Grid item xs={12}>
@@ -226,33 +226,10 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
               </Grid>
             </Box>
           </Box>
-          {/* <TextField
-            InputProps={{
-              endAdornment: (
-                <Tooltip title="Pesquisar Igreja">
-                  <Box onClick={handleClick} style={{ cursor: 'pointer' }}>
-                    <SearchIcon />
-                  </Box>
-                </Tooltip>
-              ),
-            }}
-            className={classes.search}
-            id="field1"
-            name="password"
-            autoComplete="off"
-            type="text"
-            value={valor}
-            variant="outlined"
-            placeholder="Nome ou Número da Celula, Nome do Lider"
-            onChange={handleChange}
-            // onKeyPress={handlePress}
-            onKeyPress={handlePress}
-          /> */}
         </Box>
       </Box>
       <Box
         width="100%"
-        minWidth={370}
         height="100%"
         display="flex"
         justifyContent="center"

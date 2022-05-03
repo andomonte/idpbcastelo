@@ -167,20 +167,20 @@ const primaryMenu = [
 const secondaryManu = [
   {
     id: 1,
-    label: 'Relatórios',
-    path: '/relatorio',
+    label: 'Cadastro de Pessoas',
+    path: '/cadastrarPessoas',
     icon: RelatorioIcones,
   },
   {
     id: 2,
-    label: 'Atualizar',
-    path: '/atualizar',
+    label: 'Cadastrar Cursos',
+    path: '/cadastrarCursos',
     icon: Upload, // iconeAtualizarDados,
   },
   {
     id: 3,
-    label: 'Planejamento',
-    path: '/planejamento',
+    label: 'Eventos da Igreja ',
+    path: '/eventosIgreja',
     icon: Panejamento,
   },
   {
@@ -191,8 +191,8 @@ const secondaryManu = [
   },
   {
     id: 5,
-    label: 'Midia IDPB',
-    path: '/midia',
+    label: 'Reservas',
+    path: '/reservas',
     icon: midiaPlay,
   },
   {

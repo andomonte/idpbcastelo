@@ -30,11 +30,11 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   const semana4 = semana + 3;
   const semana5 = semana + 4;
 
-  const url1 = `/api/consultaRelatorioCelebracao/${semana1}`;
-  const url2 = `/api/consultaRelatorioCelebracao/${semana2}`;
-  const url3 = `/api/consultaRelatorioCelebracao/${semana3}`;
-  const url4 = `/api/consultaRelatorioCelebracao/${semana4}`;
-  const url5 = `/api/consultaRelatorioCelebracao/${semana5}`;
+  const url1 = `/api/consultaRelatorioDiscipulado/${semana1}`;
+  const url2 = `/api/consultaRelatorioDiscipulado/${semana2}`;
+  const url3 = `/api/consultaRelatorioDiscipulado/${semana3}`;
+  const url4 = `/api/consultaRelatorioDiscipulado/${semana4}`;
+  const url5 = `/api/consultaRelatorioDiscipulado/${semana5}`;
   const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
   const { data: sem2, errorSem2 } = useSWR(url2, fetcher);
   const { data: sem3, errorSem3 } = useSWR(url3, fetcher);
@@ -81,16 +81,19 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   }, [sem1]);
 
   React.useEffect(() => {
+    console.log('ola');
     if (sem2 && sem2.length) {
       const presCelula = sem2.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
+
       if (presCelula.length) {
         const nomes = Object.keys(presCelula).map((i) =>
           JSON.parse(presCelula[Number(i)].NomesMembros),
         );
+        console.log(nomes);
         setDataSem2(presCelula[0].Data);
         const pSem2 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),

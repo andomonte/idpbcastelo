@@ -19,7 +19,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import Login from './botaoLogin';
-import Navbar from './navBarNormal';
+import Navbar from './navBarLogado';
 import PesquisaCelulas from './pesquisa/celulas';
 import Contato from './contato';
 import Home from './home';

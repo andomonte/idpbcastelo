@@ -1,9 +1,9 @@
 import React from 'react';
-import Aniversariantes from 'src/components/castelo/logado/aniversariantes';
+import CadastrarPessoas from 'src/components/castelo/logado/cadastrarPessoas';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
-function Planejar({ rolMembros }) {
+function Atualizar({ rolMembros }) {
   const router = useRouter();
   const perfilUser = router.query;
 
@@ -24,16 +24,16 @@ function Planejar({ rolMembros }) {
   }, []);
 
   if (typeof window !== 'undefined') {
-    window.history.replaceState(null, '', '/aniversariantes');
+    window.history.replaceState(null, '', '/cadastrarPessoas');
   }
 
   return (
     <div>
       {perfilUserF && (
-        <Aniversariantes
-          title="IDPB-CASTELO"
-          rolMembros={rolMembros}
+        <CadastrarPessoas
           perfilUser={perfilUserF}
+          rolMembros={rolMembros}
+          title="IDPB-CASTELO"
         />
       )}
     </div>
@@ -61,9 +61,9 @@ export const getStaticProps = async () => {
   return {
     props: {
       rolMembros: JSON.parse(JSON.stringify(rolMembros)),
-    }, // will be passed to the pperfilUser component as props
+    }, // will be passed to the page component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };
 };
 
-export default Planejar;
+export default Atualizar;

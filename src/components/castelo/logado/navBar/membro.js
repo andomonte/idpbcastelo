@@ -131,7 +131,7 @@ const primaryMenu = [
   {
     id: 1,
     label: 'Home',
-    path: '/',
+    path: '/logado/',
     icon: HomeIcon2,
   },
 
@@ -153,7 +153,7 @@ const secondaryManu = [
   {
     id: 2,
     label: 'Ensino',
-    path: '/ensino',
+    path: '/cursos',
     icon: SchoolIcon,
   },
   {
@@ -255,6 +255,7 @@ function navBar({ perfilUser }) {
                   selected={isSelected(itemSecondary)}
                   onClick={() => {
                     if (itemSecondary.path !== '/installApp') {
+                      console.log('aqui', itemSecondary.path);
                       router.push({
                         pathname: itemSecondary.path,
                         query: { perfilUser },

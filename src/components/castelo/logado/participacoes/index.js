@@ -152,8 +152,6 @@ function Relatorios({ title, rolMembros, perfilUser }) {
   };
 
   const handleDrawerClose = () => {
-    // console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }

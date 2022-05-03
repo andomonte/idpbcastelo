@@ -524,7 +524,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
       setPontosAtual(pontosSemanaAtual);
       setPontosAnterior(pontosSemanaAnterior);
-      //  console.log(pontosSemanaAtual, pontosSemanaAnterior);
     }
 
     return 0;
@@ -777,7 +776,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   };
-  console.log(rankGeral);
+
   const posicao = () => {
     if (rankGeral.length > 0) {
       const CelulaAtual = rankGeral.filter(
@@ -1053,7 +1052,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                             }}
                             id="Fone"
                             // label="Matricula"
-                            type="phone"
+                            type="tel"
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -1088,7 +1087,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                             }}
                             id="Nascimento"
                             // label="Matricula"
-                            type="text"
+                            type="tel"
                             InputLabelProps={{
                               shrink: true,
                             }}

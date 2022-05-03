@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
-
+import useSWR from 'swr';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, TextField } from '@material-ui/core';
 import Cadastro from 'src/components/castelo/cadastro';
@@ -11,6 +12,7 @@ import { IdpbCastelo } from 'src/components/castelo/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
 
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     //   border: '0px solid #b91a30',
   },
 }));
-function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
+function SelectPerfil() {
   const classes = useStyles();
 
   const [session] = useSession();
@@ -72,6 +74,63 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
   const [perfilUser, setPerfilUser] = React.useState('');
   const [perfilSelect] = React.useState('0');
   const router = useRouter();
+  const [lideranca, setLideranca] = React.useState('');
+  const [rolMembros, setRolMembros] = React.useState('');
+  const [celulas, setCelulas] = React.useState('');
+  const [userIgrejas, setUserIgrejas] = React.useState('');
+  const url = `/api/consultaMembros`;
+
+  const url2 = `/api/consultaLideranca`;
+
+  const url3 = `/api/consultaCelulas`;
+
+  const url4 = `/api/consultaIgreja`;
+  React.useEffect(() => {
+    const { data: members, error: errorMembers } = useSWR(url, fetcher);
+    const { data: lideres, error: errorLideres } = useSWR(url2, fetcher);
+    const { data: cells, error: errorCells } = useSWR(url3, fetcher);
+    const { data: igrejas, error: errorIgrejas } = useSWR(url4, fetcher);
+  }, []);
+
+  React.useEffect(() => {
+    if (errorMembers) return <div>An error occured.</div>;
+    if (!members) return <div>Loading ...</div>;
+    if (members) {
+      setRolMembros(members);
+    }
+
+    return 0;
+  }, [members]);
+
+  React.useEffect(() => {
+    if (errorLideres) return <div>An error occured.</div>;
+    if (!lideres) return <div>Loading ...</div>;
+    if (lideres) {
+      setLideranca(lideres);
+    }
+
+    return 0;
+  }, [lideres]);
+
+  React.useEffect(() => {
+    if (errorCells) return <div>An error occured.</div>;
+    if (!cells) return <div>Loading ...</div>;
+    if (cells) {
+      setCelulas(cells);
+    }
+
+    return 0;
+  }, [cells]);
+
+  React.useEffect(() => {
+    if (errorIgrejas) return <div>An error occured.</div>;
+    if (!igrejas) return <div>Loading ...</div>;
+    if (igrejas) {
+      setUserIgrejas(igrejas);
+    }
+
+    return 0;
+  }, [igrejas]);
 
   let secao = [{ email: '' }];
 
@@ -299,32 +358,30 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
                     </Box>
                     <Box mt={5} mb={3} width="100%" textAlign="center">
                       <Grid item xs={12} md={12}>
-                        {valorPerfil && valorPerfil[0].id && (
-                          <Box>
-                            <TextField
-                              value={perfilSelect}
-                              select
-                              onChange={handleChange}
-                              variant="outlined"
-                              placeholder="Escolha seu Perfil"
-                              className={classes.tf_s}
-                              style={{
-                                textAlign: 'start',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              }}
-                            >
-                              <MenuItem value={perfilSelect}>
-                                <em>Escolha seu Perfil</em>
+                        <Box>
+                          <TextField
+                            value={perfilSelect}
+                            select
+                            onChange={handleChange}
+                            variant="outlined"
+                            placeholder="Escolha seu Perfil"
+                            className={classes.tf_s}
+                            style={{
+                              textAlign: 'start',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            }}
+                          >
+                            <MenuItem value={perfilSelect}>
+                              <em>Escolha seu Perfil</em>
+                            </MenuItem>
+                            {console.log('vl perfil', valorPerfil)}
+                            {valorPerfil?.map((items) => (
+                              <MenuItem key={items.id} value={items.id}>
+                                {items.Descricao ?? items.Descricao}
                               </MenuItem>
-
-                              {valorPerfil?.map((items) => (
-                                <MenuItem key={items.id} value={items.id}>
-                                  {items.Descricao ?? items.Descricao}
-                                </MenuItem>
-                              ))}
-                            </TextField>
-                          </Box>
-                        )}
+                            ))}
+                          </TextField>
+                        </Box>
                       </Grid>
                     </Box>
 
@@ -337,7 +394,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
         </Box>
       </Box>
     );
-
+    console.log('start', start);
     if (start) {
       if (valorPerfil.length === 1 && perfilUser === '')
         setPerfilUser(valorPerfil);

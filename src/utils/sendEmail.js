@@ -16,7 +16,6 @@ export default async function SendEmail(dadosEmail) {
       cc: '',
       subject: dadosEmail.assunto,
     });
-    console.log(message);
   } catch (err) {
     console.error(err);
   }

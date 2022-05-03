@@ -810,7 +810,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   }, [PontosSemana]);
   React.useEffect(() => {
     let timer;
-    console.log(progress, loading);
+
     if (progress === 4) setLoading(false);
     if (loading) {
       let prevProgress = 5;
@@ -1005,7 +1005,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                             }}
                             id="Fone"
                             // label="Matricula"
-                            type="phone"
+                            type="tel"
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -1040,7 +1040,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                             }}
                             id="Nascimento"
                             // label="Matricula"
-                            type="text"
+                            type="tel"
                             InputLabelProps={{
                               shrink: true,
                             }}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Box } from '@material-ui/core';
 import PegaSemana from 'src/utils/getSemana';
 
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { BsFillEmojiSmileFill, BsFillEmojiFrownFill } from 'react-icons/bs';
 
@@ -11,53 +11,171 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 export default function TabCelula({ Mes, Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
-  const [presSem1, setPresSem1] = React.useState([]);
+  const [presSem1, setPresSem1] = React.useState(false);
+  const [dataSem1, setDataSem1] = React.useState([]);
   const [presSem2, setPresSem2] = React.useState([]);
+  const [dataSem2, setDataSem2] = React.useState([]);
   const [presSem3, setPresSem3] = React.useState([]);
+  const [dataSem3, setDataSem3] = React.useState([]);
   const [presSem4, setPresSem4] = React.useState([]);
+  const [dataSem4, setDataSem4] = React.useState([]);
   const [presSem5, setPresSem5] = React.useState([]);
+  const [dataSem5, setDataSem5] = React.useState([]);
   const semana = PegaSemana(Mes, Ano);
   // para usar semanas
 
   const semana1 = semana;
-  const rol = perfilUser.RolMembro;
+  const semana2 = semana + 1;
+  const semana3 = semana + 2;
+  const semana4 = semana + 3;
+  const semana5 = semana + 4;
 
-  const url = `/api/consultaPresCelula/${rol}`;
+  const url1 = `/api/consultaRelatorioCelulas/${semana1}`;
+  const url2 = `/api/consultaRelatorioCelulas/${semana2}`;
+  const url3 = `/api/consultaRelatorioCelulas/${semana3}`;
+  const url4 = `/api/consultaRelatorioCelulas/${semana4}`;
+  const url5 = `/api/consultaRelatorioCelulas/${semana5}`;
+  const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
+  const { data: sem2, errorSem2 } = useSWR(url2, fetcher);
+  const { data: sem3, errorSem3 } = useSWR(url3, fetcher);
+  const { data: sem4, errorSem4 } = useSWR(url4, fetcher);
+  const { data: sem5, errorSem5 } = useSWR(url5, fetcher);
 
-  const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
-    if (data) {
-      //      const dadosMesa = data.filter((val) => val.codigo === Number(codigo));
-      const dadosPresenca1 = data.filter(
-        (val) => val.Semana === Number(semana1),
+    mutate(url1);
+    mutate(url2);
+    mutate(url3);
+    mutate(url4);
+    mutate(url5);
+    setDataSem1([]);
+    setPresSem1([]);
+    setDataSem2([]);
+    setPresSem2([]);
+    setDataSem3([]);
+    setPresSem3([]);
+    setDataSem4([]);
+    setPresSem4([]);
+    setDataSem5([]);
+    setPresSem5([]);
+  }, [semana]);
+  React.useEffect(() => {
+    if (sem1 && sem1.length) {
+      const presCelula = sem1.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
       );
-      setPresSem1(dadosPresenca1);
-
-      const dadosPresenca2 = data.filter(
-        (val) => val.Semana === Number(semana1) + 1,
-      );
-      setPresSem2(dadosPresenca2);
-
-      const dadosPresenca3 = data.filter(
-        (val) => val.Semana === Number(semana1) + 2,
-      );
-      setPresSem3(dadosPresenca3);
-
-      const dadosPresenca4 = data.filter(
-        (val) => val.Semana === Number(semana1) + 3,
-      );
-      setPresSem4(dadosPresenca4);
-
-      const dadosPresenca5 = data.filter(
-        (val) => val.Semana === Number(semana1) + 4,
-      );
-      setPresSem5(dadosPresenca5);
+      if (presCelula.length) {
+        const nomes = Object.keys(presCelula).map((i) =>
+          JSON.parse(presCelula[Number(i)].NomesMembros),
+        );
+        setDataSem1(presCelula[0].Data);
+        const pSem1 = nomes[0].filter(
+          (val) => val.Rol === Number(perfilUser.RolMembro),
+        );
+        setPresSem1(pSem1);
+      }
     }
-    if (error) return <div>An error occured.</div>;
-    if (!data) return <div>Loading ...</div>;
-
+    if (errorSem1) return <div>An error occured.</div>;
+    if (!sem1) return <div>Loading ...</div>;
     return 0;
-  }, [data]);
+  }, [sem1]);
+
+  React.useEffect(() => {
+    if (sem2 && sem2.length) {
+      const presCelula = sem2.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+
+      if (presCelula.length) {
+        const nomes = Object.keys(presCelula).map((i) =>
+          JSON.parse(presCelula[Number(i)].NomesMembros),
+        );
+        console.log('oilalala', perfilUser.RolMembro);
+
+        setDataSem2(presCelula[0].Data);
+        const pSem2 = nomes[0].filter(
+          (val) =>
+            val.Rol === Number(perfilUser.RolMembro) ||
+            val.Nome === perfilUser.Nome,
+        );
+        setPresSem2(pSem2);
+      }
+    }
+    if (errorSem2) return <div>An error occured.</div>;
+    if (!sem2) return <div>Loading ...</div>;
+    return 0;
+  }, [sem2]);
+
+  React.useEffect(() => {
+    if (sem3 && sem3.length) {
+      const presCelula = sem3.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        const nomes = Object.keys(presCelula).map((i) =>
+          JSON.parse(presCelula[Number(i)].NomesMembros),
+        );
+        setDataSem3(presCelula[0].Data);
+        const pSem3 = nomes[0].filter(
+          (val) => val.Rol === Number(perfilUser.RolMembro),
+        );
+        setPresSem3(pSem3);
+      }
+    }
+    if (errorSem3) return <div>An error occured.</div>;
+    if (!sem3) return <div>Loading ...</div>;
+    return 0;
+  }, [sem3]);
+
+  React.useEffect(() => {
+    if (sem4 && sem4.length) {
+      const presCelula = sem4.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        const nomes = Object.keys(presCelula).map((i) =>
+          JSON.parse(presCelula[Number(i)].NomesMembros),
+        );
+        setDataSem4(presCelula[0].Data);
+        const pSem4 = nomes[0].filter(
+          (val) => val.Rol === Number(perfilUser.RolMembro),
+        );
+        setPresSem4(pSem4);
+      }
+    }
+    if (errorSem4) return <div>An error occured.</div>;
+    if (!sem4) return <div>Loading ...</div>;
+    return 0;
+  }, [sem4]);
+  React.useEffect(() => {
+    if (sem5 && sem5.length) {
+      const presCelula = sem5.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        const nomes = Object.keys(presCelula).map((i) =>
+          JSON.parse(presCelula[Number(i)].NomesMembros),
+        );
+        setDataSem5(presCelula[0].Data);
+        const pSem5 = nomes[0].filter(
+          (val) => val.Rol === Number(perfilUser.RolMembro),
+        );
+        setPresSem5(pSem5);
+      }
+    }
+    if (errorSem5) return <div>An error occured.</div>;
+    if (!sem5) return <div>Loading ...</div>;
+    return 0;
+  }, [sem5]);
 
   return (
     <Box height="100%">
@@ -136,7 +254,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '2px solid #000',
           }}
         >
-          {presSem1.length ? presSem1[0].Data : '-'}
+          {dataSem1.length ? dataSem1 : '-'}
         </Box>
         <Box
           height="100%"
@@ -148,7 +266,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           {presSem1.length ? (
             <Box mt={1}>
-              {presSem1[0].ReuniaoCelula === 'SIM' ? (
+              {presSem1[0].Presenca ? (
                 <BsFillEmojiSmileFill size={25} color="green" />
               ) : (
                 <BsFillEmojiFrownFill size={25} color="red" />
@@ -193,12 +311,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '2px solid #000',
           }}
         >
-          {presSem2.length ? presSem2[0].Data : '-'}
+          {dataSem2.length ? dataSem2 : '-'}
         </Box>
         <Box textAlign="center" width="33%">
           {presSem2.length ? (
             <Box>
-              {presSem2[0].ReuniaoCelula === 'SIM' ? (
+              {presSem2[0].Presenca ? (
                 <BsFillEmojiSmileFill size={25} color="green" />
               ) : (
                 <BsFillEmojiFrownFill size={25} color="red" />
@@ -242,12 +360,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '2px solid #000',
           }}
         >
-          {presSem3.length ? presSem3[0].Data : '-'}
+          {dataSem3.length ? dataSem3 : '-'}
         </Box>
         <Box textAlign="center" width="33%">
           {presSem3.length ? (
             <Box>
-              {presSem3[0].ReuniaoCelula === 'SIM' ? (
+              {presSem3[0].Presenca ? (
                 <BsFillEmojiSmileFill size={25} color="green" />
               ) : (
                 <BsFillEmojiFrownFill size={25} color="red" />
@@ -292,12 +410,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '2px solid #000',
           }}
         >
-          {presSem4.length ? presSem4[0].Data : '-'}
+          {dataSem4.length ? dataSem4 : '-'}
         </Box>
         <Box textAlign="center" width="33%">
           {presSem4.length ? (
             <Box>
-              {presSem4[0].ReuniaoCelula === 'SIM' ? (
+              {presSem4[0].Presenca ? (
                 <BsFillEmojiSmileFill size={25} color="green" />
               ) : (
                 <BsFillEmojiFrownFill size={25} color="red" />
@@ -341,12 +459,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '2px solid #000',
           }}
         >
-          {presSem5.length ? presSem5[0].Data : '-'}
+          {dataSem5.length ? dataSem5 : '-'}
         </Box>
         <Box textAlign="center" width="33%">
           {presSem5.length ? (
             <Box>
-              {presSem5[0].ReuniaoCelula === 'SIM' ? (
+              {presSem5[0].Presenca ? (
                 <BsFillEmojiSmileFill size={25} color="green" />
               ) : (
                 <BsFillEmojiFrownFill size={25} color="red" />

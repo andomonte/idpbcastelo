@@ -22,13 +22,6 @@ function getDados(email, nome) {
 
   return data;
 } */
-const nomeDistrito = [
-  'Castelo',
-  'União da Vitória',
-  'Campos Sales',
-  'Bairro da Paz',
-  'Calado',
-];
 
 function meuPerfil({ secao, perfilUser }) {
   return (
@@ -198,91 +191,16 @@ function meuPerfil({ secao, perfilUser }) {
                           >
                             Função:
                           </Box>
-                          {(perfilUser.Funcao === 'Lider' ||
-                            perfilUser.Funcao === 'Membro') && (
-                            <Box
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {perfilUser.Funcao} da Célula {perfilUser.Celula}
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'Supervisor' && (
-                            <Box
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {perfilUser.Funcao} do Setor{' '}
-                              {perfilUser.supervisao}
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'Coordenador' && (
-                            <Box
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {perfilUser.Funcao} da Coordenação{' '}
-                              {perfilUser.Coordenacao}
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'Secretaria' && (
-                            <Box
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {perfilUser.Funcao} da Igreja
-                            </Box>
-                          )}
                           <Box
-                            display="flex"
                             sx={{
-                              color: '#fff',
+                              color: '#76ff03',
                               fontFamily: 'Times New Roman Times serif',
+                              fontWeight: 'bold',
                             }}
                           >
-                            Supervisão:
-                            <Box
-                              ml={1}
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {perfilUser.supervisao}{' '}
-                            </Box>
+                            {perfilUser.Funcao} da Célula {perfilUser.Celula}
                           </Box>
-                          <Box
-                            display="flex"
-                            sx={{
-                              color: '#fff',
-                              fontFamily: 'Times New Roman Times serif',
-                            }}
-                          >
-                            Distrito:
-                            <Box
-                              ml={1}
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {nomeDistrito[perfilUser.Distrito - 1]}
-                            </Box>
-                          </Box>
+
                           <Box
                             sx={{
                               color: '#fff',

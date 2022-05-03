@@ -338,7 +338,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
-      console.log('esse é o valor,', formId);
+
       if (formId === 'Multiplicacao') horarioRef.current.focus();
       if (formId === 'horario') anfitriaoRef.current.focus();
       //  if (formId === 'Conversao') batismoRef.current.focus();
@@ -499,18 +499,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     if (Encontro && Exaltacao && Evangelismo && Edificacao && Lanche) {
       setEtapas('completo');
     }
-    console.log('encontro', Encontro);
-    console.log('Exaltacao', Exaltacao);
-    console.log('Edificacao', Edificacao);
-    console.log('Evangelismo', Evangelismo);
-    console.log('Lanche', Lanche);
-    console.log('encontro', Encontro);
-    console.log('etapas', etapas);
-    console.log('multiplicacao', multiplicacao);
-    console.log('encontro', horario);
-    console.log('objetivos', objetivo);
-    console.log('valorAnfitrião', valueAnfitriao.label);
-    console.log('horario', horario);
   }, [
     Exaltacao,
     Encontro,
@@ -1026,7 +1014,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                             selectOnFocus
                                             clearOnBlur
                                             handleHomeEndKeys
-                                            id="anfitricao"
+                                            id="anfitriao"
                                             options={nomesCelulaParcial}
                                             getOptionLabel={(option) => {
                                               // Value selected with enter, right from the input

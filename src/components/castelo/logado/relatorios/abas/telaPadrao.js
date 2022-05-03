@@ -1,52 +1,41 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import { Box } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-
-    justifyContent: 'center',
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
-function FormRow() {
-  const classes = useStyles();
-  return (
-    <>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>item</Paper>
-      </Grid>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>item</Paper>
-      </Grid>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>item</Paper>
-      </Grid>
-    </>
-  );
-}
 export default function NestedGrid() {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-      </Grid>
-    </div>
+    <Box display="flex" justifyContent="center" alignItems="center">
+      <Box mt={10}>
+        <Box textAlign="center" mt={3} mb={2}>
+          <img src="/images/castelo.png" alt="Castelo" width={80} />
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box
+            height="auto"
+            width="80%"
+            sx={{ background: '#fff' }}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius={5}
+            minWidth={300}
+          >
+            <Box textAlign="center" mt={2} mb={2}>
+              <Box style={{ fontFamily: 'arial black', fontSize: '20px' }}>
+                Tela em Desenvolvimento
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+              >
+                <strong style={{ marginTop: 20, textAlign: 'center' }}>
+                  Estará disponível em Breve
+                </strong>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }

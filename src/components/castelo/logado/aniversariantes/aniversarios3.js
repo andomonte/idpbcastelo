@@ -3,12 +3,14 @@ import React from 'react';
 import { Box, Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@mui/material/List';
-import Meses from 'src/utils/meses';
-import corIgreja from 'src/utils/coresIgreja';
 
-import IconButton from '@mui/material/IconButton';
-import SvgIcon from '@mui/material/SvgIcon';
-import { BiCaretRight, BiCaretLeft } from 'react-icons/bi';
+import corIgreja from 'src/utils/coresIgreja';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import moment from 'moment';
 import SearchList from './searchList';
 
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +103,7 @@ function compare(a, b) {
   return true;
 }
 
-function BuscarAniversariantes({ rolMembros, perfilUser }) {
+function BuscarAniversariantes({ rolMembros }) {
   const classes = useStyles();
 
   // const mes = Meses();
@@ -109,47 +111,75 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
   //= ========================================================================
   // data de inicio
   //= ========================================================================
+  const timeElapsed2 = Date.now();
+  const dataAtual2 = new Date(timeElapsed2);
+  const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
+  const [inputValue, setInputValue] = React.useState(
+    moment(new Date()).format('DD/MM/YYYY'),
+  );
+  const [open, setIsPickerOpen] = React.useState(false);
+  const handleDateChange = (date, value) => {
+    setInputValue(value);
+    setSelectedDate(date);
+    setIsPickerOpen(false);
+  };
+
+  const getData = () => {
+    //  enviarData = inputValue;
+    //  enviarDia = Number(inputValue.slice(0, 2));
+  };
+
+  const handleDateClick = () => {
+    //   setSelectedDate();
+    setIsPickerOpen(true);
+  };
 
   //= ========================================================================
-  //= ================================================================
-  const mes = Meses();
-  const d = new Date();
-  const mesAtual = Number(d.getMonth());
-  const [contMes, setContMes] = React.useState(mesAtual);
-
-  const handleIncMes = () => {
-    let contMesAtual = contMes + 1;
-
-    if (contMesAtual > 11) contMesAtual = 0;
-    setContMes(contMesAtual);
-  };
-  const handleDecMes = () => {
-    let contMesAtual = contMes - 1;
-
-    if (contMesAtual < 0) contMesAtual = 11;
-    setContMes(contMesAtual);
-  };
 
   //= ========================================================================
   // data de Final
   //= ========================================================================
+  const [selectedDate2, setSelectedDate2] = React.useState(dataAtual2);
+  const [inputValue2, setInputValue2] = React.useState(
+    moment(new Date()).format('DD/MM/YYYY'),
+  );
+  const [open2, setIsPickerOpen2] = React.useState(false);
+  const handleDateChange2 = (date, value) => {
+    setInputValue2(value);
+    setSelectedDate2(date);
+    setIsPickerOpen2(false);
+  };
+
+  const getData2 = () => {
+    //  enviarData = inputValue;
+    //  enviarDia = Number(inputValue.slice(0, 2));
+  };
+
+  const handleDateClick2 = () => {
+    //   setSelectedDate();
+    setIsPickerOpen2(true);
+  };
+
   //= ========================================================================
 
-  const niverGeral = rolMembros.filter(
-    (results) => converteData(results.Nascimento).getMonth() === contMes,
-  );
+  const dataInicial = converteData(inputValue);
+  const dataFinal = converteData(inputValue2);
 
-  const niverSetor = niverGeral.filter((results) => {
+  const niverGeral = rolMembros.filter(
+    (results) =>
+      converteData(results.Nascimento) >= dataInicial &&
+      converteData(results.Nascimento) <= dataFinal,
+  );
+  /* const niverSetor = niverGeral.filter((results) => {
     if (
-      Number(results.Celula) === Number(perfilUser.Celula) &&
+      Number(results.Coordenacao) === Number(perfilUser.Coordenacao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito)
     ) {
       return results;
     }
     return 0;
-  });
-  const niverSetorOrdenado = niverSetor.sort(compare);
-
+  }); */
+  const niverSetorOrdenado = niverGeral.sort(compare);
   return (
     <Box>
       <Box display="flex" justifyContent="center">
@@ -169,58 +199,73 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
           >
             <Box width="100%" ml={1} minWidth={370}>
               <Box mb={2} textAlign="center" color="yellow">
-                ANIVERSARIANTES DA CÉLULA
+                ANIVERSARIANTES DA IGREJA
               </Box>
               <Grid container item xs={12} spacing={1}>
-                <Grid item xs={12}>
-                  <Paper width="100%" className={classes.paper}>
-                    <Box width="100%" display="flex">
-                      <Box
-                        width="20%"
-                        display="flex"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                          onClick={() => {
-                            handleDecMes();
+                <Grid item xs={6} md={6} lg={6} xl={6}>
+                  <Box textAlign="center" color="white">
+                    Escolha a Data Inicial
+                  </Box>
+                  <Paper style={{ background: '#fafafa', height: 40 }}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Grid container justifyContent="center">
+                        <KeyboardDatePicker
+                          open={open}
+                          disableToolbar
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          id="date-picker-inline"
+                          value={selectedDate}
+                          inputValue={inputValue}
+                          onClick={handleDateClick}
+                          onChange={handleDateChange}
+                          onClose={getData()}
+                          style={{
+                            marginLeft: 10,
+                            marginRight: 10,
+                            marginTop: 5,
+                            height: 30,
+                            background: '#fafafa',
                           }}
-                        >
-                          <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                          <BiCaretLeft />
-                        </IconButton>
-                      </Box>
-                      <Box
-                        width="60%"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ fontFamily: 'arial black' }}
-                      >
-                        {mes[contMes].descricao}
-                      </Box>
-                      <Box
-                        width="20%"
-                        display="flex"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                          onClick={() => {
-                            handleIncMes();
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
                           }}
-                        >
-                          <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                          <BiCaretRight />
-                        </IconButton>
-                      </Box>
-                    </Box>
+                        />
+                      </Grid>
+                    </MuiPickersUtilsProvider>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6} md={6} lg={6} xl={6}>
+                  <Box textAlign="center" color="white">
+                    Escolha a Data Final
+                  </Box>
+                  <Paper style={{ background: '#fafafa', height: 40 }}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Grid container justifyContent="center">
+                        <KeyboardDatePicker
+                          open={open2}
+                          disableToolbar
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          id="date-picker-inline"
+                          value={selectedDate2}
+                          inputValue={inputValue2}
+                          onClick={handleDateClick2}
+                          onChange={handleDateChange2}
+                          onClose={getData2()}
+                          style={{
+                            marginLeft: 10,
+                            marginRight: 10,
+                            marginTop: 5,
+                            height: 30,
+                            background: '#fafafa',
+                          }}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </Grid>
+                    </MuiPickersUtilsProvider>
                   </Paper>
                 </Grid>
               </Grid>
@@ -252,7 +297,6 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
       </Box>
       <Box
         width="100%"
-        minWidth={370}
         height="100%"
         display="flex"
         justifyContent="center"

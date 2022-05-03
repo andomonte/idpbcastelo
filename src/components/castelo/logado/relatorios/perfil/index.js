@@ -22,6 +22,7 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
+import NabarSecretaria from '../../navBar/secretaria';
 import NabarMembro from '../../navBar/membro';
 import NabarLider from '../../navBar/lider';
 import NavbarSuper from '../../navBar/supervisor';
@@ -274,6 +275,9 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
+          {perfilUser.Funcao === 'Secretaria' && (
+            <NabarSecretaria perfilUser={perfilUser} />
+          )}
           {perfilUser.Funcao === 'Membro' && (
             <NabarMembro perfilUser={perfilUser} />
           )}
@@ -325,11 +329,21 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                 {perfilUser.Funcao === 'Lider' ? (
                   <MeuPerfil secao={session} perfilUser={perfilUser} />
                 ) : null}
-                {perfilUser.Funcao === 'Secretaria' ? <CadastroUser /> : null}
-                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Secretaria' ? (
+                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                ) : null}
+                {perfilUser.Funcao === 'Supervisor' ? (
+                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                ) : null}
+                {perfilUser.Funcao === 'Coordenador' ? (
+                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                ) : null}
+                {perfilUser.Funcao === 'PastorDistrito' ? (
+                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                ) : null}
+                {perfilUser.Funcao === 'Presidente' ? (
+                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                ) : null}
               </Box>
             )}
           </TabPanel>

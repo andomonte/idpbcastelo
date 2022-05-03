@@ -1,5 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
-import { useRouter } from 'next/router';
+
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Box from '@material-ui/core/Box';
@@ -26,12 +26,8 @@ const useStyles = makeStyles(() => ({
 }));
 export default function BotaoLogin() {
   const [session] = useSession();
-  const router = useRouter();
   const classes = useStyles();
-  if (session)
-    router.push({
-      pathname: '/selectPerfil',
-    });
+
   return (
     <Box>
       {!session ? (

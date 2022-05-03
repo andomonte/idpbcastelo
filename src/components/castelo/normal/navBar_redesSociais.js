@@ -1,17 +1,16 @@
 import {
   makeStyles,
   Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+
   //  ListSubheader,
   //  Avatar,
   Divider,
   // Typography,
   //  Button,
 } from '@material-ui/core';
+import React from 'react';
 import IconeInstalar from 'src/components/icones/instalar';
+
 // import { useState } from 'react';
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
@@ -21,13 +20,12 @@ import SchoolIcon from '@material-ui/icons/School';
 import FacebookIcon from 'src/components/icones/facebook';
 import YouTubeIcon from 'src/components/icones/youtube';
 import InstagramIcon from 'src/components/icones/instagram';
-import IconesPerfil from 'src/components/icones/perfil';
-import { useSession } from 'next-auth/client';
 import HomeIcon from '@material-ui/icons/Home';
 import KeyboardSharpIcon from '@mui/icons-material/KeyboardSharp';
 import SvgIcon from '@mui/material/SvgIcon';
-import CakeSharpIcon from '@mui/icons-material/CakeSharp';
 import { usePWAInstall } from 'react-use-pwa-install';
+import { useSession } from 'next-auth/client';
+import meuPerfil from '../logado/relatorios/perfil/meuPerfil copy';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -64,217 +62,196 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: corIgreja.principal,
   },
 }));
-function CursoIcon() {
+function SecretIcon() {
   return (
     <SvgIcon style={{ color: '#f48fb1' }}>
       <KeyboardSharpIcon />
     </SvgIcon>
   );
 }
-function NiverIcon() {
-  return (
-    <SvgIcon style={{ color: '#b2ff59' }}>
-      <CakeSharpIcon />
-    </SvgIcon>
-  );
-}
-function LogoPerfil() {
-  return (
-    <SvgIcon style={{ color: '#76ff03' }}>
-      <IconesPerfil />
-    </SvgIcon>
-  );
-}
-function iconeInstall() {
-  return <IconeInstalar size={25} color="yellow" />;
-}
-const primaryMenuLogout = [
-  { id: 1, label: 'Home', path: '/', icon: HomeIcon },
-  {
-    id: 2,
-    label: 'Cursos',
-    path: '/cursos',
-    icon: SchoolIcon,
-  },
-  {
-    id: 3,
-    label: 'Secretaria',
-    path: '/secretaria',
-    icon: CursoIcon,
-  },
-  {
-    id: 4,
-    label: 'Aniversariantes',
-    path: '/Aniversariantes',
-    icon: NiverIcon,
-  },
-
-  {
-    id: 5,
-    label: 'Quem Somos',
-    path: '/quemSomos',
-    icon: IconCastelo,
-  },
-];
-const primaryMenuLogin = [
-  { id: 1, label: 'Home', path: '/logado', icon: HomeIcon },
-  {
-    id: 2,
-    label: 'Cursos',
-    path: '/cursos',
-    icon: SchoolIcon,
-  },
-  {
-    id: 3,
-    label: 'Secretaria',
-    path: '/secretaria',
-    icon: CursoIcon,
-  },
-  {
-    id: 4,
-    label: 'Quem Somos',
-    path: '/quemSomos',
-    icon: IconCastelo,
-  },
-  {
-    id: 5,
-    label: 'Meu Perfil',
-    path: '/meuPerfil',
-    icon: LogoPerfil,
-  },
-];
 
 function navBar({ userIgrejas }) {
   const classes = useStyles();
   const router = useRouter();
   const install = usePWAInstall();
-  const isSelected = (item) => router.pathname === item.path;
-  const [session] = useSession();
+  const isSelected = (item) => router.pathname === item;
 
-  const secondaryManu = [
-    {
-      id: 1,
-      label: 'FaceBook',
-      path: userIgrejas[0].faceBook,
-      icon: FacebookIcon,
-    },
-    {
-      id: 2,
-      label: 'YouTube',
-      path: userIgrejas[0].youTube,
-      icon: YouTubeIcon,
-    },
-    {
-      id: 3,
-      label: 'Instagran',
-      icon: InstagramIcon,
-      path: userIgrejas[0].instagram,
-    },
-
-    {
-      id: 4,
-      label: 'Instalar App',
-      icon: iconeInstall,
-      path: '/installApp',
-    },
-  ];
   const checkInstall = () => {
     if (install) install();
   };
-  const content = (
+  const [session] = useSession();
+  if (session) router.push('/selectPerfil');
+
+  return (
     <Box className={classes.root}>
-      <List>
-        {!session
-          ? primaryMenuLogout.map((itemPrimary) => {
-              const Icon = itemPrimary.icon;
-              return (
-                <ListItem
-                  key={itemPrimary.label}
-                  button
-                  classes={{ root: classes.listItem }}
-                  selected={isSelected(itemPrimary)}
-                  onClick={() => {
-                    router.push(itemPrimary.path);
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={{ color: isSelected(itemPrimary) && '#ffeb3b' }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    style={{ color: isSelected(itemPrimary) && '#ffeb3b' }}
-                    classes={{
-                      primary: classes.listItemText,
-                    }}
-                    primary={itemPrimary.label}
-                  />
-                </ListItem>
-              );
-            })
-          : primaryMenuLogin.map((itemPrimary) => {
-              const Icon = itemPrimary.icon;
-              return (
-                <ListItem
-                  key={itemPrimary.label}
-                  button
-                  classes={{ root: classes.listItem }}
-                  selected={isSelected(itemPrimary)}
-                  onClick={() => {
-                    router.push(itemPrimary.path);
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={{ color: isSelected(itemPrimary) && '#ffeb3b' }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    style={{ color: isSelected(itemPrimary) && '#ffeb3b' }}
-                    classes={{
-                      primary: classes.listItemText,
-                    }}
-                    primary={itemPrimary.label}
-                  />
-                </ListItem>
-              );
-            })}
-      </List>
-      <Divider style={{ background: '#fafafa' }} />
-      <List>
-        {secondaryManu.map((itemSecondary) => {
-          const Icon = itemSecondary.icon;
-          return (
-            <ListItem
-              key={itemSecondary.id}
-              button
-              classes={{ root: classes.listItem }}
-              selected={isSelected(itemSecondary)}
-              onClick={() => {
-                if (itemSecondary.path !== '/installApp') {
-                  router.push(itemSecondary.path);
-                } else {
-                  checkInstall();
-                }
-              }}
-            >
-              <ListItemIcon>
-                <Icon
-                  style={{ color: isSelected(itemSecondary) && '#ffeb3b' }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                classes={{
-                  primary: classes.listItemText,
-                }}
-                primary={itemSecondary.label}
-              />
-            </ListItem>
-          );
-        })}
-      </List>
+      <Box
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+          background: isSelected('/') && '#1565c0',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push('/');
+        }}
+      >
+        <HomeIcon style={{ color: isSelected('/') ? '#ffeb3b' : '#fafafa' }} />{' '}
+        <Box
+          style={{
+            color: isSelected('/') ? '#ffeb3b' : '#fff',
+          }}
+          ml={2}
+          mt={0.5}
+        >
+          Home
+        </Box>
+      </Box>
+      <Box
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+          background: isSelected('/cursos') && '#1565c0',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push('/cursos');
+        }}
+      >
+        <SchoolIcon
+          style={{ color: isSelected('/cursos') ? '#ffeb3b' : '#000' }}
+        />{' '}
+        <Box
+          style={{
+            color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
+          }}
+          ml={2}
+          mt={0.5}
+        >
+          Cursos
+        </Box>
+      </Box>
+      <Box
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+          background: isSelected('/secretaria') && '#1565c0',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push('/secretaria');
+        }}
+      >
+        <SecretIcon
+          style={{ color: isSelected('/secretaria') ? '#ffeb3b' : '#faff' }}
+        />{' '}
+        <Box
+          style={{
+            color: isSelected('/secretaria') ? '#ffeb3b' : '#fff',
+          }}
+          ml={2}
+          mt={0.5}
+        >
+          Secretaria
+        </Box>
+      </Box>
+      <Box
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+          background: isSelected('/quemSomos') && '#1565c0',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push('/quemSomos');
+        }}
+      >
+        <IconCastelo
+          style={{ color: isSelected('/quemSomos') ? '#ffeb3b' : '#faff' }}
+        />{' '}
+        <Box
+          style={{
+            color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
+          }}
+          ml={2}
+          mt={0.5}
+        >
+          Quem Somos
+        </Box>
+      </Box>
+      <Divider style={{ marginTop: 10, background: '#fafafa' }} />
+      <Box
+        mt={2}
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push(userIgrejas[0].faceBook);
+        }}
+      >
+        <FacebookIcon />{' '}
+        <Box ml={2} mt={0.5}>
+          FaceBook
+        </Box>
+      </Box>
+      <Box
+        mt={1}
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push(userIgrejas[0].youTube);
+        }}
+      >
+        <YouTubeIcon />{' '}
+        <Box ml={2} mt={0.5}>
+          YouTube
+        </Box>
+      </Box>
+      <Box
+        mt={1}
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          router.push(userIgrejas[0].instagram);
+        }}
+      >
+        <InstagramIcon />{' '}
+        <Box ml={2} mt={0.5}>
+          Instagram
+        </Box>
+      </Box>
+      <Box
+        mt={1}
+        mb={0.3}
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+        }}
+        classes={{ root: classes.listItem }}
+        onClick={() => {
+          checkInstall();
+        }}
+      >
+        <IconeInstalar />{' '}
+        <Box ml={2} mt={0.5}>
+          Instalar App
+        </Box>
+      </Box>
     </Box>
   );
-  return content;
 }
 export default navBar;

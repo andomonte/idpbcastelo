@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
-import { BiCaretUp, BiCaretDown } from 'react-icons/bi';
+import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
 /* import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -44,7 +44,7 @@ function Label({ lab1, lab2 }) {
     </>
   );
 }
-function Celebracao({ rolMembros, perfilUser }) {
+function Celebracao({ perfilUser }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -91,11 +91,6 @@ function Celebracao({ rolMembros, perfilUser }) {
     setIsPickerOpen(true);
   };
  */
-  const nomesCelulas = rolMembros.filter(
-    (val) =>
-      val.Celula === Number(perfilUser.Celula) &&
-      val.Distrito === Number(perfilUser.Distrito),
-  );
 
   /* 
 <Grid item xs={12} md={12} lg={12} xl={12}>
@@ -144,7 +139,7 @@ function Celebracao({ rolMembros, perfilUser }) {
   const handleDecAno = () => {
     let contAnoAtual = contAno - 1;
 
-    if (contAnoAtual < 2021) contAnoAtual = 2021;
+    if (contAnoAtual < 2022) contAnoAtual = 2022;
     setContAno(contAnoAtual);
   };
 
@@ -198,11 +193,11 @@ function Celebracao({ rolMembros, perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleIncMes();
+                                handleDecMes();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretUp />
+                              <BiCaretLeft />
                             </IconButton>
                           </Box>
                           <Box
@@ -225,11 +220,11 @@ function Celebracao({ rolMembros, perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleDecMes();
+                                handleIncMes();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretDown />
+                              <BiCaretRight />
                             </IconButton>
                           </Box>
                         </Box>
@@ -249,11 +244,11 @@ function Celebracao({ rolMembros, perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleIncAno();
+                                handleDecAno();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretUp />
+                              <BiCaretLeft />
                             </IconButton>
                           </Box>
                           <Box
@@ -276,11 +271,11 @@ function Celebracao({ rolMembros, perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleDecAno();
+                                handleIncAno();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretDown />
+                              <BiCaretRight />
                             </IconButton>
                           </Box>
                         </Box>
@@ -320,7 +315,7 @@ function Celebracao({ rolMembros, perfilUser }) {
                     fontSize: '14px',
                   }}
                 >
-                  PARTICIPAÇÃO NAS CELEBRAÇÕES
+                  PARTICIPAÇÃO NAS REUNIÕES DA CÉLULA
                 </Box>
                 <Box
                   height="85%"
@@ -330,7 +325,7 @@ function Celebracao({ rolMembros, perfilUser }) {
                   borderRadius={16}
                 >
                   <TabCelebracao
-                    nomesCelulas={nomesCelulas}
+                    perfilUser={perfilUser}
                     Mes={contMes}
                     Ano={contAno}
                   />

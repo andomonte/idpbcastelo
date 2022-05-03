@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
-import { BiCaretUp, BiCaretDown } from 'react-icons/bi';
+import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
 /* import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -139,7 +139,7 @@ function RelCelula({ perfilUser }) {
   const handleDecAno = () => {
     let contAnoAtual = contAno - 1;
 
-    if (contAnoAtual < 2021) contAnoAtual = 2021;
+    if (contAnoAtual < 2022) contAnoAtual = 2022;
     setContAno(contAnoAtual);
   };
 
@@ -193,11 +193,11 @@ function RelCelula({ perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleIncMes();
+                                handleDecMes();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretUp />
+                              <BiCaretLeft />
                             </IconButton>
                           </Box>
                           <Box
@@ -220,11 +220,11 @@ function RelCelula({ perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleDecMes();
+                                handleIncMes();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretDown />
+                              <BiCaretRight />
                             </IconButton>
                           </Box>
                         </Box>
@@ -244,11 +244,11 @@ function RelCelula({ perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleIncAno();
+                                handleDecAno();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretUp />
+                              <BiCaretLeft />
                             </IconButton>
                           </Box>
                           <Box
@@ -271,11 +271,11 @@ function RelCelula({ perfilUser }) {
                               aria-label="upload picture"
                               component="span"
                               onClick={() => {
-                                handleDecAno();
+                                handleIncAno();
                               }}
                             >
                               <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretDown />
+                              <BiCaretRight />
                             </IconButton>
                           </Box>
                         </Box>

@@ -340,8 +340,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       );
 
       setPontosAtual(pontosSemanaAtual);
-
-      //  console.log(pontosSemanaAtual, pontosSemanaAnterior);
     }
 
     return 0;
