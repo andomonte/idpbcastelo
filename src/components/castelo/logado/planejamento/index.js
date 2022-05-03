@@ -22,10 +22,12 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
+import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
 import PlanCelula from './planejamentoCelula';
+import PlanCelulaMembro from './planejamentoCelulaMembro';
 // import DadosAdicionais from './dadosAdicionais';
 // import DadosEndereco from './dadosEndereco';
 import Padrao from './telaPadrao';
@@ -259,6 +261,9 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
+          {perfilUser.Funcao === 'Membro' && (
+            <NabarMembro perfilUser={perfilUser} />
+          )}
           {perfilUser.Funcao === 'Lider' && (
             <NabarLider perfilUser={perfilUser} />
           )}
@@ -284,6 +289,13 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           <TabPanel value={value} index={0}>
             {session && (
               <Box>
+                {perfilUser.Funcao === 'Membro' ? (
+                  <PlanCelulaMembro
+                    perfilUser={perfilUser}
+                    secao={session}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Lider' ? (
                   <PlanCelula
                     perfilUser={perfilUser}
