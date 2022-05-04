@@ -265,7 +265,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const fases = [
     { label: 'Integrar na Visão', value: 1 },
     { label: 'Comunhão', value: 2 },
-    { label: 'Edificao', value: 3 },
+    { label: 'Edificação', value: 3 },
     { label: 'Evangelismo', value: 4 },
     { label: 'multiplicacao', value: 5 },
   ];
@@ -1074,7 +1074,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        E1 (ENCONTRO)
+                                        Quebra Gelo
                                       </Typography>
                                     </Box>
 
@@ -1101,7 +1101,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        E2 (EXALTAÇÃO)
+                                        Louvor
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
@@ -1127,7 +1127,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        E3 (EDIFICAÇÃO)
+                                        Oração
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
@@ -1153,7 +1153,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        E4 (EVANGELISMO)
+                                        Compartilhamento
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
@@ -1179,7 +1179,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        E5 (LANCHE)
+                                        LANCHE
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
