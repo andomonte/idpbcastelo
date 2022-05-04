@@ -262,7 +262,7 @@ function IdpbCastelo({ userIgrejas, title, celulas }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar userIgrejas={userIgrejas} />
+          <Navbar userIgrejas={userIgrejas} setOpen={setOpen} />
         </Drawer>
 
         <main

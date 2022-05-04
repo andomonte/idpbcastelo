@@ -1,16 +1,16 @@
 import {
   makeStyles,
   Box,
-
-  //  ListSubheader,
-  //  Avatar,
+  Avatar,
   Divider,
   // Typography,
   //  Button,
 } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 import React from 'react';
 import IconeInstalar from 'src/components/icones/instalar';
-
+import { Oval } from 'react-loading-icons';
 // import { useState } from 'react';
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
@@ -25,7 +25,6 @@ import KeyboardSharpIcon from '@mui/icons-material/KeyboardSharp';
 import SvgIcon from '@mui/material/SvgIcon';
 import { usePWAInstall } from 'react-use-pwa-install';
 import { useSession } from 'next-auth/client';
-import meuPerfil from '../logado/relatorios/perfil/meuPerfil copy';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -69,12 +68,46 @@ function SecretIcon() {
     </SvgIcon>
   );
 }
-
-function navBar({ userIgrejas }) {
+function SecIcon() {
+  return (
+    <SvgIcon style={{ color: '#f48fb1' }}>
+      <KeyboardSharpIcon />
+    </SvgIcon>
+  );
+}
+function CursoIcon({ isSelected }) {
+  return (
+    <SvgIcon
+      style={{
+        marginLeft: -148,
+        width: 120,
+        height: 25,
+        color: isSelected ? '#ffeb3b' : '#000',
+      }}
+    >
+      <SchoolIcon />
+    </SvgIcon>
+  );
+}
+function LogoPerfil() {
+  return <IconCastelo />;
+}
+function iconeInstall() {
+  return <IconeInstalar size={25} color="yellow" />;
+}
+function navBar({ userIgrejas, setOpen }) {
   const classes = useStyles();
   const router = useRouter();
   const install = usePWAInstall();
   const isSelected = (item) => router.pathname === item;
+  const [esperaHome, setEsperaHome] = React.useState(false);
+  const [esperaCurso, setEsperaCurso] = React.useState(false);
+  const [esperaQuem, setEsperaQuem] = React.useState(false);
+  const [esperaSec, setEsperaSec] = React.useState(false);
+  const [esperaFac, setEsperaFac] = React.useState(false);
+  const [esperaYouTube, setEsperaYouTube] = React.useState(false);
+  const [esperaInst, setEsperaInst] = React.useState(false);
+  const [esperaInstall, setEsperaInstall] = React.useState(false);
 
   const checkInstall = () => {
     if (install) install();
@@ -82,56 +115,224 @@ function navBar({ userIgrejas }) {
   const [session] = useSession();
   if (session) router.push('/selectPerfil');
 
+  const BootstrapButton = styled(Button)({
+    boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: 15,
+    padding: '6px 12px',
+    border: '1px solid',
+    lineHeight: 1.5,
+
+    '&:hover': {
+      backgroundColor: '#b92F2F',
+      borderColor: '#b92F2F',
+      boxShadow: 'none',
+    },
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: '#b92F2F',
+      borderColor: '#b92F2F',
+    },
+  });
   return (
     <Box className={classes.root}>
-      <Box
-        mb={0.3}
-        display="flex"
-        sx={{
-          cursor: 'pointer',
-          background: isSelected('/') && '#1565c0',
-        }}
-        classes={{ root: classes.listItem }}
-        onClick={() => {
-          router.push('/');
-        }}
-      >
-        <HomeIcon style={{ color: isSelected('/') ? '#ffeb3b' : '#fafafa' }} />{' '}
-        <Box
-          style={{
-            color: isSelected('/') ? '#ffeb3b' : '#fff',
+      {!esperaHome ? (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/');
+            console.log('checklocal', checkLocal);
+            setEsperaHome(!checkLocal);
+            router.push('/');
           }}
-          ml={2}
-          mt={0.5}
+          style={{ marginBottom: 2, background: isSelected('/') && '#b92F2F' }}
+          startIcon={
+            <HomeIcon
+              style={{
+                marginLeft: -150,
+                width: 120,
+                height: 25,
+                color: isSelected('/') ? '#ffeb3b' : '#fafafa',
+              }}
+            />
+          }
         >
-          Home
-        </Box>
-      </Box>
-      <Box
-        mb={0.3}
-        display="flex"
-        sx={{
-          cursor: 'pointer',
-          background: isSelected('/cursos') && '#1565c0',
-        }}
-        classes={{ root: classes.listItem }}
-        onClick={() => {
-          router.push('/cursos');
-        }}
-      >
-        <SchoolIcon
-          style={{ color: isSelected('/cursos') ? '#ffeb3b' : '#000' }}
-        />{' '}
-        <Box
-          style={{
-            color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
+          <Box
+            style={{
+              color: isSelected('/') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-9}
+            mt={1.8}
+            mb={1}
+          >
+            Home
+          </Box>
+        </BootstrapButton>
+      ) : (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          style={{ marginBottom: 2, background: isSelected('/') && '#b92F2F' }}
+          onClick={() => {
+            const checkLocal = isSelected('/');
+
+            if (checkLocal) {
+              setEsperaHome(!checkLocal);
+              setOpen(false);
+            }
+            router.push('/');
           }}
-          ml={2}
-          mt={0.5}
+          startIcon={
+            <Oval
+              style={{
+                marginLeft: -150,
+                width: 120,
+                height: 25,
+                color: isSelected('/') ? '#ffeb3b' : '#fafafa',
+              }}
+            />
+          }
         >
-          Cursos
+          <Box
+            style={{
+              color: isSelected('/') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-9}
+            mt={1.8}
+            mb={0.5}
+          >
+            Home
+          </Box>
+        </BootstrapButton>
+      )}
+      {!esperaCurso ? (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/cursos');
+
+            setEsperaCurso(!checkLocal);
+            router.push('/cursos');
+          }}
+          style={{
+            marginBottom: 5,
+            background: isSelected('/cursos') && '#b92F2F',
+          }}
+          startIcon={<CursoIcon isSelected={isSelected('/cursos')} />}
+        >
+          <Box
+            style={{
+              color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-9}
+            mt={0.5}
+            mb={0.5}
+          >
+            Cursos
+          </Box>
+        </BootstrapButton>
+      ) : (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/cursos');
+
+            setEsperaCurso(!checkLocal);
+            router.push('/cursos');
+          }}
+          style={{
+            marginBottom: 5,
+            background: isSelected('/cursos') && '#b92F2F',
+          }}
+          startIcon={<CursoIcon isSelected={isSelected('/cursos')} />}
+        >
+          <Box
+            style={{
+              color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-9}
+            mt={0.5}
+            mb={0.5}
+          >
+            <Oval
+              style={{
+                marginLeft: -150,
+                width: 120,
+                height: 25,
+                color: isSelected('/cursos') ? '#ffeb3b' : '#fafafa',
+              }}
+            />
+          </Box>
+        </BootstrapButton>
+      )}
+      {!esperaQuem ? (
+        <Box
+          mb={0}
+          display="flex"
+          style={{ background: isSelected('/quemSomos') && '#b92F2F' }}
+        >
+          <Box ml={3.5}>
+            <IconCastelo />
+          </Box>
+          <BootstrapButton
+            variant="contained"
+            disableRipple
+            onClick={() => {
+              const checkLocal = isSelected('/quemSomos');
+
+              setEsperaQuem(!checkLocal);
+              router.push('/quemSomos');
+            }}
+            style={{ background: isSelected('/quemSomos') && '#b92F2F' }}
+          >
+            <Box
+              style={{
+                color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
+              }}
+              ml={1.6}
+              mt={0.5}
+              mb={0.5}
+            >
+              Quem Somos
+            </Box>
+          </BootstrapButton>
         </Box>
-      </Box>
+      ) : (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/quemSomos');
+
+            setEsperaQuem(!checkLocal);
+            router.push('/quemSomos');
+          }}
+          style={{ background: isSelected('/quemSomos') && '#b92F2F' }}
+          startIcon={<IconCastelo />}
+        >
+          <Box
+            style={{
+              color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-9}
+            mt={0.5}
+            mb={0.5}
+          >
+            <Oval
+              style={{
+                marginLeft: -150,
+                width: 120,
+                height: 25,
+                color: isSelected('/quemSomos') ? '#ffeb3b' : '#fafafa',
+              }}
+            />
+          </Box>
+        </BootstrapButton>
+      )}
+
       <Box
         mb={0.3}
         display="flex"
