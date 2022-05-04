@@ -87,7 +87,7 @@ function iconeCursos() {
   );
 }
 const primaryMenuLogout = [
-  { id: 1, label: 'Home', path: '/', icon: HomeIcon },
+  { id: 1, label: 'HomeS', path: '/', icon: HomeIcon },
   {
     id: 2,
     label: 'Cursos',

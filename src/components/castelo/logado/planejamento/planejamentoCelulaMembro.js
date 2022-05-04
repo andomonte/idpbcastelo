@@ -342,6 +342,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
+      console.log('onde está o erro');
 
       if (formId === 'Multiplicacao') horarioRef.current.focus();
       if (formId === 'Horario') {
@@ -388,7 +389,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [semana, setSemana] = React.useState(0);
   const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
-  const [setEtapas] = React.useState('incompleto');
   const [inputValor, setInputValor] = React.useState('');
 
   React.useEffect(() => {
@@ -518,22 +518,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       }
     }
   }, [selectedDate]);
-
-  React.useEffect(() => {
-    if (Encontro && Exaltacao && Evangelismo && Edificacao && Lanche) {
-      setEtapas('completo');
-    }
-  }, [
-    Exaltacao,
-    Encontro,
-    Evangelismo,
-    Edificacao,
-    Lanche,
-    objetivo,
-    valueAnfitriao,
-    multiplicacao,
-    horario,
-  ]);
 
   React.useEffect(() => {
     let timer;

@@ -303,7 +303,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
   );
-
   // zera as opções dos 5 Es
   const zerarValues = () => {
     setValues(valorInicial);
