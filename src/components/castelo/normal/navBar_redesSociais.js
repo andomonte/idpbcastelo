@@ -1,7 +1,6 @@
 import {
   makeStyles,
   Box,
-  Avatar,
   Divider,
   // Typography,
   //  Button,
@@ -338,7 +337,7 @@ function navBar({ userIgrejas, setOpen }) {
         display="flex"
         sx={{
           cursor: 'pointer',
-          background: isSelected('/secretaria') && '#1565c0',
+          background: isSelected('/secretaria') && '#b92F2F',
         }}
         classes={{ root: classes.listItem }}
         onClick={() => {
@@ -358,31 +357,7 @@ function navBar({ userIgrejas, setOpen }) {
           Secretaria
         </Box>
       </Box>
-      <Box
-        mb={0.3}
-        display="flex"
-        sx={{
-          cursor: 'pointer',
-          background: isSelected('/quemSomos') && '#1565c0',
-        }}
-        classes={{ root: classes.listItem }}
-        onClick={() => {
-          router.push('/quemSomos');
-        }}
-      >
-        <IconCastelo
-          style={{ color: isSelected('/quemSomos') ? '#ffeb3b' : '#faff' }}
-        />{' '}
-        <Box
-          style={{
-            color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
-          }}
-          ml={2}
-          mt={0.5}
-        >
-          Quem Somos
-        </Box>
-      </Box>
+
       <Divider style={{ marginTop: 10, background: '#fafafa' }} />
       <Box
         mt={2}
