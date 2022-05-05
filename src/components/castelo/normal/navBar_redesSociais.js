@@ -5,6 +5,7 @@ import {
   // Typography,
   //  Button,
 } from '@material-ui/core';
+import { HiOutlineIdentification } from 'react-icons/hi';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import React from 'react';
@@ -88,6 +89,21 @@ function CursoIcon({ isSelected }) {
     </SvgIcon>
   );
 }
+
+function QuemSomosIcon({ isSelected }) {
+  return (
+    <SvgIcon
+      style={{
+        width: 120,
+        height: 25,
+        color: isSelected ? '#ffeb3b' : '#000',
+      }}
+    >
+      <HiOutlineIdentification />
+    </SvgIcon>
+  );
+}
+
 function LogoPerfil() {
   return <IconCastelo />;
 }
@@ -121,17 +137,6 @@ function navBar({ userIgrejas, setOpen }) {
     padding: '6px 12px',
     border: '1px solid',
     lineHeight: 1.5,
-
-    '&:hover': {
-      backgroundColor: '#b92F2F',
-      borderColor: '#b92F2F',
-      boxShadow: 'none',
-    },
-    '&:active': {
-      boxShadow: 'none',
-      backgroundColor: '#b92F2F',
-      borderColor: '#b92F2F',
-    },
   });
   return (
     <Box className={classes.root}>
@@ -217,7 +222,7 @@ function navBar({ userIgrejas, setOpen }) {
           }}
           style={{
             marginBottom: 5,
-            background: isSelected('/cursos') && '#b92F2F',
+            background: isSelected('/cursos') ? '#b92F2F' : corIgreja.principal,
           }}
           startIcon={<CursoIcon isSelected={isSelected('/cursos')} />}
         >
@@ -226,8 +231,8 @@ function navBar({ userIgrejas, setOpen }) {
               color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
             }}
             ml={-9}
-            mt={0.5}
-            mb={0.5}
+            mt={1.2}
+            mb={1.2}
           >
             Cursos
           </Box>
@@ -253,7 +258,7 @@ function navBar({ userIgrejas, setOpen }) {
               color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
             }}
             ml={-9}
-            mt={0.5}
+            mt={0.8}
             mb={0.5}
           >
             <Oval
@@ -267,38 +272,37 @@ function navBar({ userIgrejas, setOpen }) {
           </Box>
         </BootstrapButton>
       )}
-      {!esperaQuem ? (
-        <Box
-          mb={0}
-          display="flex"
-          style={{ background: isSelected('/quemSomos') && '#b92F2F' }}
-        >
-          <Box ml={3.5}>
-            <IconCastelo />
-          </Box>
-          <BootstrapButton
-            variant="contained"
-            disableRipple
-            onClick={() => {
-              const checkLocal = isSelected('/quemSomos');
 
-              setEsperaQuem(!checkLocal);
-              router.push('/quemSomos');
+      {!esperaQuem ? (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/quemSomos');
+
+            setEsperaQuem(!checkLocal);
+            router.push('/quemSomos');
+          }}
+          style={{
+            marginBottom: 5,
+            background: isSelected('/quemSomos')
+              ? '#b92F2F'
+              : corIgreja.principal,
+          }}
+          startIcon={<QuemSomosIcon isSelected={isSelected('/quemSomos')} />}
+        >
+          <Box
+            style={{
+              color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
             }}
-            style={{ background: isSelected('/quemSomos') && '#b92F2F' }}
+            ml={-9}
+            mr={-6}
+            mt={1.2}
+            mb={1.2}
           >
-            <Box
-              style={{
-                color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
-              }}
-              ml={1.6}
-              mt={0.5}
-              mb={0.5}
-            >
-              Quem Somos
-            </Box>
-          </BootstrapButton>
-        </Box>
+            Quem Somos
+          </Box>
+        </BootstrapButton>
       ) : (
         <BootstrapButton
           variant="contained"
@@ -309,16 +313,21 @@ function navBar({ userIgrejas, setOpen }) {
             setEsperaQuem(!checkLocal);
             router.push('/quemSomos');
           }}
-          style={{ background: isSelected('/quemSomos') && '#b92F2F' }}
-          startIcon={<IconCastelo />}
+          style={{
+            marginBottom: 5,
+            background: isSelected('/quemSomos')
+              ? '#b92F2F'
+              : corIgreja.principal,
+          }}
+          startIcon={<QuemSomosIcon isSelected={isSelected('/quemSomos')} />}
         >
           <Box
             style={{
               color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
             }}
             ml={-9}
-            mt={0.5}
-            mb={0.5}
+            mt={1.2}
+            mb={1.2}
           >
             <Oval
               style={{
