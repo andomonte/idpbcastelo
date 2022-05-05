@@ -4,7 +4,8 @@ import {
   Divider,
   // Typography,
   //  Button,
-} from '@material-ui/core';
+} from '@material-ui/core'; //
+import { AiFillFacebook } from 'react-icons/ai';
 import { HiOutlineIdentification } from 'react-icons/hi';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -17,7 +18,7 @@ import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
 import IconCastelo from 'src/components/icones/castelo';
 import SchoolIcon from '@material-ui/icons/School';
-import FacebookIcon from 'src/components/icones/facebook';
+
 import YouTubeIcon from 'src/components/icones/youtube';
 import InstagramIcon from 'src/components/icones/instagram';
 import HomeIcon from '@material-ui/icons/Home';
@@ -106,6 +107,22 @@ function QuemSomosIcon({ isSelected }) {
   );
 }
 
+function FacebookIcon() {
+  return (
+    <SvgIcon
+      style={{
+        marginLeft: -120,
+        width: 120,
+        height: 30,
+
+        color: '#0000ff',
+      }}
+    >
+      <AiFillFacebook />
+    </SvgIcon>
+  );
+}
+
 function LogoPerfil() {
   return <IconCastelo />;
 }
@@ -121,7 +138,7 @@ function navBar({ userIgrejas, setOpen }) {
   const [esperaCurso, setEsperaCurso] = React.useState(false);
   const [esperaQuem, setEsperaQuem] = React.useState(false);
   const [esperaSec, setEsperaSec] = React.useState(false);
-  const [esperaFac, setEsperaFac] = React.useState(false);
+  const [esperaFace, setEsperaFace] = React.useState(false);
   const [esperaYouTube, setEsperaYouTube] = React.useState(false);
   const [esperaInst, setEsperaInst] = React.useState(false);
   const [esperaInstall, setEsperaInstall] = React.useState(false);
@@ -137,7 +154,7 @@ function navBar({ userIgrejas, setOpen }) {
     textTransform: 'none',
     fontSize: 15,
     padding: '6px 12px',
-    border: '1px solid',
+
     lineHeight: 1.5,
   });
   return (
@@ -274,7 +291,6 @@ function navBar({ userIgrejas, setOpen }) {
           </Box>
         </BootstrapButton>
       )}
-
       {!esperaSec ? (
         <BootstrapButton
           variant="contained"
@@ -343,7 +359,6 @@ function navBar({ userIgrejas, setOpen }) {
           </Box>
         </BootstrapButton>
       )}
-
       {!esperaQuem ? (
         <BootstrapButton
           variant="contained"
@@ -412,25 +427,22 @@ function navBar({ userIgrejas, setOpen }) {
           </Box>
         </BootstrapButton>
       )}
-
-      <Divider style={{ marginTop: 10, background: '#fafafa' }} />
-      <Box
-        mt={2}
-        mb={0.3}
-        display="flex"
-        sx={{
-          cursor: 'pointer',
-        }}
-        classes={{ root: classes.listItem }}
+      <Divider
+        style={{ marginTop: 10, marginBottom: 15, background: '#fafafa' }}
+      />
+      <BootstrapButton
+        variant="contained"
+        disableRipple
+        style={{ background: corIgreja.principal }}
         onClick={() => {
           router.push(userIgrejas[0].faceBook);
         }}
+        startIcon={<FacebookIcon />}
       >
-        <FacebookIcon />{' '}
-        <Box ml={2} mt={0.5}>
+        <Box ml={-5.5} mr={0.5} mt={1.2} mb={1.2}>
           FaceBook
         </Box>
-      </Box>
+      </BootstrapButton>
       <Box
         mt={1}
         mb={0.3}
