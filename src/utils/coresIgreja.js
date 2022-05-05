@@ -6,6 +6,7 @@ import { colors } from '@material-ui/core';
 const Cores = createTheme({
   principal: '#a11008',
   secundaria: '#fafafa',
+  tercenaria: '#304ffe',
   texto1: '#90a4ae',
   texto2: '#ffff8d',
   iconeOn: '#ffff8d',

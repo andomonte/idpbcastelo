@@ -61,27 +61,28 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: corIgreja.principal,
   },
 }));
-function SecretIcon() {
+function SecretIcon({ isSelected }) {
   return (
-    <SvgIcon style={{ color: '#f48fb1' }}>
+    <SvgIcon
+      style={{
+        marginLeft: -148,
+        width: 120,
+        height: 27,
+        color: isSelected ? '#ffeb3b' : '#ce93d8',
+      }}
+    >
       <KeyboardSharpIcon />
     </SvgIcon>
   );
 }
-function SecIcon() {
-  return (
-    <SvgIcon style={{ color: '#f48fb1' }}>
-      <KeyboardSharpIcon />
-    </SvgIcon>
-  );
-}
+
 function CursoIcon({ isSelected }) {
   return (
     <SvgIcon
       style={{
         marginLeft: -148,
         width: 120,
-        height: 25,
+        height: 27,
         color: isSelected ? '#ffeb3b' : '#000',
       }}
     >
@@ -94,9 +95,10 @@ function QuemSomosIcon({ isSelected }) {
   return (
     <SvgIcon
       style={{
+        marginLeft: -120,
         width: 120,
-        height: 25,
-        color: isSelected ? '#ffeb3b' : '#000',
+        height: 30,
+        color: isSelected ? '#ffeb3b' : '#dce775',
       }}
     >
       <HiOutlineIdentification />
@@ -258,8 +260,8 @@ function navBar({ userIgrejas, setOpen }) {
               color: isSelected('/cursos') ? '#ffeb3b' : '#fff',
             }}
             ml={-9}
-            mt={0.8}
-            mb={0.5}
+            mt={1.2}
+            mb={1.2}
           >
             <Oval
               style={{
@@ -267,6 +269,75 @@ function navBar({ userIgrejas, setOpen }) {
                 width: 120,
                 height: 25,
                 color: isSelected('/cursos') ? '#ffeb3b' : '#fafafa',
+              }}
+            />
+          </Box>
+        </BootstrapButton>
+      )}
+
+      {!esperaSec ? (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/secretaria');
+
+            setEsperaSec(!checkLocal);
+            router.push('/secretaria');
+          }}
+          style={{
+            marginBottom: 5,
+            background: isSelected('/secretaria')
+              ? '#b92F2F'
+              : corIgreja.principal,
+          }}
+          startIcon={<SecretIcon isSelected={isSelected('/secretaria')} />}
+        >
+          <Box
+            style={{
+              color: isSelected('/secretaria') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-8.8}
+            mr={-2.8}
+            mt={1.2}
+            mb={1.2}
+          >
+            Secretaria
+          </Box>
+        </BootstrapButton>
+      ) : (
+        <BootstrapButton
+          variant="contained"
+          disableRipple
+          onClick={() => {
+            const checkLocal = isSelected('/secretaria');
+
+            setEsperaSec(!checkLocal);
+            router.push('/secretaria');
+          }}
+          style={{
+            marginBottom: 5,
+            background: isSelected('/secretaria')
+              ? '#b92F2F'
+              : corIgreja.principal,
+          }}
+          startIcon={<SecretIcon isSelected={isSelected('/secretaria')} />}
+        >
+          <Box
+            style={{
+              color: isSelected('/secretaria') ? '#ffeb3b' : '#fff',
+            }}
+            ml={-8.0}
+            mr={-5.8}
+            mt={1.2}
+            mb={1.2}
+          >
+            <Oval
+              style={{
+                marginLeft: -150,
+                width: 120,
+                height: 25,
+                color: isSelected('/secretaria') ? '#ffeb3b' : '#fafafa',
               }}
             />
           </Box>
@@ -295,8 +366,8 @@ function navBar({ userIgrejas, setOpen }) {
             style={{
               color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
             }}
-            ml={-9}
-            mr={-6}
+            ml={-5.5}
+            mr={-2.5}
             mt={1.2}
             mb={1.2}
           >
@@ -325,7 +396,8 @@ function navBar({ userIgrejas, setOpen }) {
             style={{
               color: isSelected('/quemSomos') ? '#ffeb3b' : '#fff',
             }}
-            ml={-9}
+            ml={-8.0}
+            mr={-5.8}
             mt={1.2}
             mb={1.2}
           >
@@ -340,32 +412,6 @@ function navBar({ userIgrejas, setOpen }) {
           </Box>
         </BootstrapButton>
       )}
-
-      <Box
-        mb={0.3}
-        display="flex"
-        sx={{
-          cursor: 'pointer',
-          background: isSelected('/secretaria') && '#b92F2F',
-        }}
-        classes={{ root: classes.listItem }}
-        onClick={() => {
-          router.push('/secretaria');
-        }}
-      >
-        <SecretIcon
-          style={{ color: isSelected('/secretaria') ? '#ffeb3b' : '#faff' }}
-        />{' '}
-        <Box
-          style={{
-            color: isSelected('/secretaria') ? '#ffeb3b' : '#fff',
-          }}
-          ml={2}
-          mt={0.5}
-        >
-          Secretaria
-        </Box>
-      </Box>
 
       <Divider style={{ marginTop: 10, background: '#fafafa' }} />
       <Box
