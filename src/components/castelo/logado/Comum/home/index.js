@@ -15,7 +15,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import Login from './botaoLogin';
@@ -174,73 +174,71 @@ function HomeLogado({ perfilUser, userIgrejas, title, celulas }) {
 
       <div className={classes.root}>
         <AppBar className={classes.root2}>
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" alignItems="center">
-                {open ? (
-                  <MenuOpenIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-                {!open ? (
-                  <MenuIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-              </Box>
+          <Toolbar className={classes.toolbar}>
+            <Box display="flex" alignItems="center">
+              {open ? (
+                <MenuOpenIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+              {!open ? (
+                <MenuIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+            </Box>
 
-              <Box display="flex">
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  showLabels
-                  className={classes.rootTopbarIcon}
-                >
-                  <BottomNavigationAction
-                    icon={
-                      value === 0 ? (
-                        <HomeIcon sx={{ color: '#ff9100' }} />
-                      ) : (
-                        <HomeIcon sx={{ color: '#ffa' }} />
-                      )
-                    }
-                  />
+            <Box display="flex">
+              <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                showLabels
+                className={classes.rootTopbarIcon}
+              >
+                <BottomNavigationAction
+                  icon={
+                    value === 0 ? (
+                      <HomeIcon sx={{ color: '#ff9100' }} />
+                    ) : (
+                      <HomeIcon sx={{ color: '#ffa' }} />
+                    )
+                  }
+                />
 
-                  <BottomNavigationAction
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: '#ff9100' }}>
-                          <CallIcon />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#ffa' }}>
-                          <CallIcon />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    icon={
-                      value === 2 ? (
-                        <SvgIcon sx={{ color: '#ff9100' }}>
-                          <LocationOnIcon />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#ffa' }}>
-                          <LocationOnIcon />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                </BottomNavigation>
-              </Box>
-              <Login />
-            </Toolbar>
-          </ClickAwayListener>
+                <BottomNavigationAction
+                  icon={
+                    value === 1 ? (
+                      <SvgIcon sx={{ color: '#ff9100' }}>
+                        <CallIcon />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#ffa' }}>
+                        <CallIcon />
+                      </SvgIcon>
+                    )
+                  }
+                />
+                <BottomNavigationAction
+                  icon={
+                    value === 2 ? (
+                      <SvgIcon sx={{ color: '#ff9100' }}>
+                        <LocationOnIcon />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#ffa' }}>
+                        <LocationOnIcon />
+                      </SvgIcon>
+                    )
+                  }
+                />
+              </BottomNavigation>
+            </Box>
+            <Login />
+          </Toolbar>
         </AppBar>
 
         <Drawer

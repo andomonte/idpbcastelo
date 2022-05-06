@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Box } from '@material-ui/core';
 import PegaSemana from 'src/utils/getSemana';
-
+import Espera from 'src/utils/espera';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { BsFillEmojiSmileFill, BsFillEmojiFrownFill } from 'react-icons/bs';
+import { Oval } from 'react-loading-icons';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -58,6 +59,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     setDataSem5([]);
     setPresSem5([]);
   }, [semana]);
+
   React.useEffect(() => {
     if (sem1 && sem1.length) {
       const presCelula = sem1.filter(
@@ -77,7 +79,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       }
     }
     if (errorSem1) return <div>An error occured.</div>;
-    if (!sem1) return <div>Loading ...</div>;
+
+    if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem1]);
 
@@ -93,7 +96,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         const nomes = Object.keys(presCelula).map((i) =>
           JSON.parse(presCelula[Number(i)].NomesMembros),
         );
-        console.log('oilalala', perfilUser.RolMembro);
 
         setDataSem2(presCelula[0].Data);
         const pSem2 = nomes[0].filter(
@@ -105,7 +107,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       }
     }
     if (errorSem2) return <div>An error occured.</div>;
-    if (!sem2) return <div>Loading ...</div>;
+    if (!sem2) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem2]);
 
@@ -128,7 +130,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       }
     }
     if (errorSem3) return <div>An error occured.</div>;
-    if (!sem3) return <div>Loading ...</div>;
+    if (!sem3) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem3]);
 
@@ -151,7 +153,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       }
     }
     if (errorSem4) return <div>An error occured.</div>;
-    if (!sem4) return <div>Loading ...</div>;
+    if (!sem4) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem4]);
   React.useEffect(() => {
@@ -173,7 +175,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       }
     }
     if (errorSem5) return <div>An error occured.</div>;
-    if (!sem5) return <div>Loading ...</div>;
+    if (!sem5) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem5]);
 
@@ -242,20 +244,37 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           1
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem1.length ? dataSem1 : '-'}
-        </Box>
+        {sem1 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem1.length ? dataSem1 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box
           height="100%"
           display="flex"
@@ -299,20 +318,37 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           2
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem2.length ? dataSem2 : '-'}
-        </Box>
+        {sem2 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem2.length ? dataSem2 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem2.length ? (
             <Box>
@@ -348,20 +384,37 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           3
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem3.length ? dataSem3 : '-'}
-        </Box>
+        {sem3 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem3.length ? dataSem3 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem3.length ? (
             <Box>
@@ -398,20 +451,37 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           4
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem4.length ? dataSem4 : '-'}
-        </Box>
+        {sem4 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem4.length ? dataSem4 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem4.length ? (
             <Box>
@@ -447,20 +517,37 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           5
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem5.length ? dataSem5 : '-'}
-        </Box>
+        {sem5 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem5.length ? dataSem5 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem5.length ? (
             <Box>

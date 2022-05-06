@@ -13,10 +13,8 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { FaChurch } from 'react-icons/fa';
 import { GiMeepleGroup } from 'react-icons/gi';
-
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import { MdGroups } from 'react-icons/md';
@@ -177,85 +175,83 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
 
       <div className={classes.root}>
         <AppBar className={classes.root2}>
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" alignItems="center">
-                {open ? (
-                  <MenuOpenIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-                {!open ? (
-                  <MenuIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
+          <Toolbar className={classes.toolbar}>
+            <Box display="flex" alignItems="center">
+              {open ? (
+                <MenuOpenIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+              {!open ? (
+                <MenuIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
 
-                <Hidden mdDown>
-                  <img
-                    src="/images/castelo.png"
-                    alt="logo"
-                    className={classes.logo}
-                  />
-                </Hidden>
-              </Box>
+              <Hidden mdDown>
+                <img
+                  src="/images/castelo.png"
+                  alt="logo"
+                  className={classes.logo}
+                />
+              </Hidden>
+            </Box>
 
-              <Box display="flex">
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  showLabels
-                  className={classes.rootTopbarIcon}
-                >
-                  <BottomNavigationAction
-                    icon={
-                      value === 0 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <MdGroups />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <MdGroups />
-                        </SvgIcon>
-                      )
-                    }
-                  />
+            <Box display="flex">
+              <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                showLabels
+                className={classes.rootTopbarIcon}
+              >
+                <BottomNavigationAction
+                  icon={
+                    value === 0 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <MdGroups />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <MdGroups />
+                      </SvgIcon>
+                    )
+                  }
+                />
 
-                  <BottomNavigationAction
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <GiMeepleGroup />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                          <GiMeepleGroup />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    icon={
-                      value === 2 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaChurch />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                          <FaChurch />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                </BottomNavigation>
-              </Box>
-              <Login />
-            </Toolbar>
-          </ClickAwayListener>
+                <BottomNavigationAction
+                  icon={
+                    value === 1 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <GiMeepleGroup />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                        <GiMeepleGroup />
+                      </SvgIcon>
+                    )
+                  }
+                />
+                <BottomNavigationAction
+                  icon={
+                    value === 2 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <FaChurch />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                        <FaChurch />
+                      </SvgIcon>
+                    )
+                  }
+                />
+              </BottomNavigation>
+            </Box>
+            <Login />
+          </Toolbar>
         </AppBar>
 
         <Drawer

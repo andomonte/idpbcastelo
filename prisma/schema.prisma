@@ -119,6 +119,7 @@ model membros {
   Sexo              String   @db.VarChar(15)
   EstadoCivil       String   @db.VarChar(45)
   Nascimento        String   @db.VarChar(10)
+  Naturalidade      String   @db.VarChar(255)
   Situacao          String   @db.VarChar(12)
   MOTIVO            String   @db.VarChar(245)
   Conversao         String   @db.VarChar(25)
@@ -139,7 +140,6 @@ model membros {
   CriadoEm          DateTime @db.DateTime(0)
   AtualizadoEm      DateTime @db.DateTime(0)
   AtualizadoPor     String   @db.VarChar(255)
-  Naturalidade      String   @db.VarChar(255)
 
   @@index([Celula], name: "Celula_index")
   @@index([Coordenacao], name: "Coordencacao_index")
@@ -232,7 +232,7 @@ model relatorioDiscipulado {
   Distrito       Int
   Semana         Int
   Data           String   @db.VarChar(25)
-  NomesMembros   String   @db.VarChar(255)
+  NomesMembros   Json
   LeituraBiblica Int
   Observacoes    String   @db.VarChar(255)
   CriadoPor      String   @db.VarChar(255)

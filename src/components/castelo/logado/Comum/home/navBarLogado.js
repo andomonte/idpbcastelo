@@ -11,12 +11,13 @@ import {
   // Typography,
   //  Button,
 } from '@material-ui/core';
+
 // import { useState } from 'react';
 import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
 import IconBrasil from 'src/components/icones/brasil';
 import IconMissoes from 'src/components/icones/missoes';
-import IconCastelo from 'src/components/icones/castelo';
+import IconCastelo from 'src/components/icones/filadelfia';
 import SchoolIcon from '@material-ui/icons/School';
 import FacebookIcon from 'src/components/icones/facebook';
 import YouTubeIcon from 'src/components/icones/youtube';
@@ -81,13 +82,13 @@ function NiverIcon() {
 }
 function iconeCursos() {
   return (
-    <SvgIcon style={{ color: 'black' }}>
+    <SvgIcon style={{ color: 'blue' }}>
       <SchoolIcon />
     </SvgIcon>
   );
 }
 const primaryMenuLogout = [
-  { id: 1, label: 'HomeS', path: '/', icon: HomeIcon },
+  { id: 1, label: 'Home', path: '/', icon: HomeIcon },
   {
     id: 2,
     label: 'Cursos',
@@ -100,14 +101,8 @@ const primaryMenuLogout = [
     path: '/secretaria',
     icon: SecIcon,
   },
-  {
-    id: 4,
-    label: 'Aniversariantes',
-    path: '/Aniversariantes',
-    icon: NiverIcon,
-  },
 
-  { id: 5, label: 'Quem Somos', path: '/quemSomos', icon: IconCastelo },
+  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconCastelo },
 ];
 const primaryMenuLogin = [
   { id: 1, label: 'IDPB-Nacional', path: '/', icon: IconBrasil },
@@ -172,11 +167,7 @@ function navBar({ userIgrejas }) {
                   classes={{ root: classes.listItem }}
                   selected={isSelected(itemPrimary)}
                   onClick={() => {
-                    <BrowserRouter>
-                      <Routes>
-                        <Route path={itemPrimary.path} />
-                      </Routes>
-                    </BrowserRouter>;
+                    router.push(itemPrimary.path);
                   }}
                 >
                   <ListItemIcon>
@@ -203,11 +194,7 @@ function navBar({ userIgrejas }) {
                   classes={{ root: classes.listItem }}
                   selected={isSelected(itemPrimary)}
                   onClick={() => {
-                    <BrowserRouter>
-                      <Routes>
-                        <Route path={itemPrimary.path} />
-                      </Routes>
-                    </BrowserRouter>;
+                    router.push(itemPrimary.path);
                   }}
                 >
                   <ListItemIcon>
@@ -237,11 +224,7 @@ function navBar({ userIgrejas }) {
               classes={{ root: classes.listItem }}
               selected={isSelected(itemSecondary)}
               onClick={() => {
-                <BrowserRouter>
-                  <Routes>
-                    <Route path={itemSecondary.path} />
-                  </Routes>
-                </BrowserRouter>;
+                router.push(itemSecondary.path);
               }}
             >
               <ListItemIcon>

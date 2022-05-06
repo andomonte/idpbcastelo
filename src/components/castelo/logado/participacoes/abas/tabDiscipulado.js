@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box } from '@material-ui/core';
 import PegaSemana from 'src/utils/getSemana';
-
+import { Oval } from 'react-loading-icons';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { BsFillEmojiSmileFill, BsFillEmojiFrownFill } from 'react-icons/bs';
@@ -81,7 +81,6 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   }, [sem1]);
 
   React.useEffect(() => {
-    console.log('ola');
     if (sem2 && sem2.length) {
       const presCelula = sem2.filter(
         (val) =>
@@ -93,7 +92,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         const nomes = Object.keys(presCelula).map((i) =>
           JSON.parse(presCelula[Number(i)].NomesMembros),
         );
-        console.log(nomes);
+
         setDataSem2(presCelula[0].Data);
         const pSem2 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),
@@ -130,12 +129,14 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   }, [sem3]);
 
   React.useEffect(() => {
+    console.log('presCelula');
     if (sem4 && sem4.length) {
       const presCelula = sem4.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
+      console.log(presCelula[0].NomesMembros);
       if (presCelula.length) {
         const nomes = Object.keys(presCelula).map((i) =>
           JSON.parse(presCelula[Number(i)].NomesMembros),
@@ -240,20 +241,37 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         >
           1
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem1.length ? dataSem1 : '-'}
-        </Box>
+        {sem1 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem1.length ? dataSem1 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box
           height="100%"
           display="flex"
@@ -297,20 +315,37 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         >
           2
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem2.length ? dataSem2 : '-'}
-        </Box>
+        {sem2 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem2.length ? dataSem2 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem2.length ? (
             <Box>
@@ -346,20 +381,37 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         >
           3
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem3.length ? dataSem3 : '-'}
-        </Box>
+        {sem3 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem3.length ? dataSem3 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem3.length ? (
             <Box>
@@ -396,20 +448,37 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         >
           4
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem4.length ? dataSem4 : '-'}
-        </Box>
+        {sem4 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem4.length ? dataSem4 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem4.length ? (
             <Box>
@@ -445,20 +514,37 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         >
           5
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="34%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
-        >
-          {dataSem5.length ? dataSem5 : '-'}
-        </Box>
+        {sem5 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem5.length ? dataSem5 : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
         <Box textAlign="center" width="33%">
           {presSem5.length ? (
             <Box>

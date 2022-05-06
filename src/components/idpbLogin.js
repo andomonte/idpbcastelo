@@ -1,15 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 import Login from 'src/components/botaoLogin';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
@@ -116,8 +116,7 @@ const useStyles = makeStyles((theme) => ({
 function IdpbLogin({ title }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   // console.log(item);
   const handleDrawerOpen = () => {
     if (!open) {
@@ -129,13 +128,6 @@ function IdpbLogin({ title }) {
     //! open ? setOpen(true) : setOpen(false);
   };
 
-  const handleDrawerClose = () => {
-    // console.log(mobile);
-
-    if (mobile) {
-      setOpen(false);
-    }
-  };
   return (
     <div>
       <Head>
@@ -148,34 +140,32 @@ function IdpbLogin({ title }) {
 
       <div className={classes.root}>
         <AppBar className={classes.root2} color="default">
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" alignItems="center">
-                {open ? (
-                  <MenuOpenIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-                {!open ? (
-                  <MenuIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
+          <Toolbar className={classes.toolbar}>
+            <Box display="flex" alignItems="center">
+              {open ? (
+                <MenuOpenIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+              {!open ? (
+                <MenuIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
 
-                <Hidden mdDown>
-                  <img
-                    src="/images/castelo.png"
-                    alt="logo"
-                    className={classes.logo}
-                  />
-                </Hidden>
-              </Box>
+              <Hidden mdDown>
+                <img
+                  src="/images/castelo.png"
+                  alt="logo"
+                  className={classes.logo}
+                />
+              </Hidden>
+            </Box>
 
-              <Login />
-            </Toolbar>
-          </ClickAwayListener>
+            <Login />
+          </Toolbar>
         </AppBar>
 
         <main

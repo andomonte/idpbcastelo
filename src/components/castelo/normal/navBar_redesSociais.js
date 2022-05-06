@@ -26,7 +26,7 @@ import { useSession } from 'next-auth/client';
 import HomeIcon from '@material-ui/icons/Home';
 import KeyboardSharpIcon from '@mui/icons-material/KeyboardSharp';
 import SvgIcon from '@mui/material/SvgIcon';
-import CakeSharpIcon from '@mui/icons-material/CakeSharp';
+
 import { usePWAInstall } from 'react-use-pwa-install';
 
 const useStyles = makeStyles((theme) => ({

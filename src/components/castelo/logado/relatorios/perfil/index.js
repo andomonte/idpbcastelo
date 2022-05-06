@@ -14,7 +14,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
 import PersonIcon from '@material-ui/icons/Person';
@@ -177,95 +177,93 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
 
       <div className={classes.root}>
         <AppBar className={classes.root2} color="default">
-          <ClickAwayListener onClickAway={handleDrawerClose}>
-            <Toolbar className={classes.toolbar}>
-              <Box display="flex" alignItems="center">
-                {open ? (
-                  <MenuOpenIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-                {!open ? (
-                  <MenuIcon
-                    className={classes.hamburger}
-                    onClick={handleDrawerOpen}
-                  />
-                ) : null}
-              </Box>
+          <Toolbar className={classes.toolbar}>
+            <Box display="flex" alignItems="center">
+              {open ? (
+                <MenuOpenIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+              {!open ? (
+                <MenuIcon
+                  className={classes.hamburger}
+                  onClick={handleDrawerOpen}
+                />
+              ) : null}
+            </Box>
 
-              <Box display="flex" m={0}>
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  fontSize="large"
-                  showLabels
-                  className={classes.rootTopbarIcon}
-                >
-                  <BottomNavigationAction
-                    style={
-                      value === 0
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Meu"
-                    icon={
-                      value === 0 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <PersonIcon />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <PersonIcon />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 1
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Local"
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaHome />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FaHome />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 2
-                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
-                        : { color: '#eeeeee', fontSize: '12px' }
-                    }
-                    label="Celula"
-                    icon={
-                      value === 2 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <IoIosPeople />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <IoIosPeople />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                </BottomNavigation>
-              </Box>
-              <Login />
-            </Toolbar>
-          </ClickAwayListener>
+            <Box display="flex" m={0}>
+              <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                fontSize="large"
+                showLabels
+                className={classes.rootTopbarIcon}
+              >
+                <BottomNavigationAction
+                  style={
+                    value === 0
+                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                      : { color: '#eeeeee', fontSize: '18px' }
+                  }
+                  label="Meu"
+                  icon={
+                    value === 0 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <PersonIcon />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <PersonIcon />
+                      </SvgIcon>
+                    )
+                  }
+                />
+                <BottomNavigationAction
+                  style={
+                    value === 1
+                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                      : { color: '#eeeeee', fontSize: '18px' }
+                  }
+                  label="Local"
+                  icon={
+                    value === 1 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <FaHome />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <FaHome />
+                      </SvgIcon>
+                    )
+                  }
+                />
+                <BottomNavigationAction
+                  style={
+                    value === 2
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Celula"
+                  icon={
+                    value === 2 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <IoIosPeople />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <IoIosPeople />
+                      </SvgIcon>
+                    )
+                  }
+                />
+              </BottomNavigation>
+            </Box>
+            <Login />
+          </Toolbar>
         </AppBar>
 
         <Drawer

@@ -306,7 +306,6 @@ function Cadastro({ lideranca, rolMembros }) {
 
       // expected output: Object { a: 1, b: 4, c: 5 }
 
-      console.log('ola estou aqui', valorPerfil);
       setPerfilUserFinal(valorPerfil);
       setOpenSelect(true);
     }
