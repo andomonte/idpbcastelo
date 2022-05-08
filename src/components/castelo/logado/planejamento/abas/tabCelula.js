@@ -1,124 +1,945 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import TableContainer from '@mui/material/TableContainer';
-import Box from '@material-ui/core/Box';
+import { Box, Button, Grid } from '@material-ui/core';
+import PegaSemana from 'src/utils/getSemana';
+import Espera from 'src/utils/espera';
+import useSWR, { mutate } from 'swr';
+import axios from 'axios';
+import { MdScreenSearchDesktop } from 'react-icons/md';
 
-import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { Oval } from 'react-loading-icons';
+import corIgreja from 'src/utils/coresIgreja';
+import IconButton from '@mui/material/IconButton';
+import SvgIcon from '@mui/material/SvgIcon';
 
-export default function TabCelula({
-  nomesCelulas,
-  setPresentes,
-  setRelCelula,
-  podeEditar,
-}) {
+import Modal from '@material-ui/core/Modal';
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
+
+export default function TabCelula({ Mes, Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
-  const [respostas, setRespostas] = React.useState({});
-  let dados = [{ Nome: 'Sem nomes registrados', Presenca: false }];
-  if (nomesCelulas) dados = nomesCelulas;
+  const [openPlan, setOpenPlan] = React.useState(false);
 
-  const handleRegistro = (index) => {
-    let cor;
+  const [dataSend, setDataSend] = React.useState([]);
 
-    if (podeEditar) dados[index].Presenca = !dados[index].Presenca;
-    if (dados[index].Presenca) {
-      cor = '#F0FFF0';
-    } else {
-      cor = '#feff';
-    }
-    setRelCelula(dados);
-    const updatedValue = { [index]: cor };
-    setRespostas((shopCart) => ({
-      ...shopCart,
-      ...updatedValue,
-    }));
-  };
+  const [dataSem1, setDataSem1] = React.useState([]);
+  const [presSem1, setPresSem1] = React.useState(false);
+  const [presSem2, setPresSem2] = React.useState(false);
+  const [dataSem2, setDataSem2] = React.useState([]);
+  const [presSem3, setPresSem3] = React.useState(false);
+  const [dataSem3, setDataSem3] = React.useState([]);
+  const [presSem4, setPresSem4] = React.useState(false);
+  const [dataSem4, setDataSem4] = React.useState([]);
+  const [presSem5, setPresSem5] = React.useState(false);
+  const [dataSem5, setDataSem5] = React.useState([]);
+  const semana = PegaSemana(Mes, Ano);
+  // para usar semanas
+
+  const semana1 = semana;
+  const semana2 = semana + 1;
+  const semana3 = semana + 2;
+  const semana4 = semana + 3;
+  const semana5 = semana + 4;
+
+  const url1 = `/api/consultaPlanejamentoCelulas/${semana1}`;
+  const url2 = `/api/consultaPlanejamentoCelulas/${semana2}`;
+  const url3 = `/api/consultaPlanejamentoCelulas/${semana3}`;
+  const url4 = `/api/consultaPlanejamentoCelulas/${semana4}`;
+  const url5 = `/api/consultaPlanejamentoCelulas/${semana5}`;
+  const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
+  const { data: sem2, errorSem2 } = useSWR(url2, fetcher);
+  const { data: sem3, errorSem3 } = useSWR(url3, fetcher);
+  const { data: sem4, errorSem4 } = useSWR(url4, fetcher);
+  const { data: sem5, errorSem5 } = useSWR(url5, fetcher);
 
   React.useEffect(() => {
-    //    setPresentes(setPresentes(dados.length));
-    const qtyPresentes = dados.filter((val) => val.Presenca === true);
-
-    setPresentes(qtyPresentes.length);
-  }, [respostas]);
+    mutate(url1);
+    mutate(url2);
+    mutate(url3);
+    mutate(url4);
+    mutate(url5);
+    setDataSem1([]);
+    setPresSem1(false);
+    setDataSem2([]);
+    setPresSem2(false);
+    setDataSem3([]);
+    setPresSem3(false);
+    setDataSem4([]);
+    setPresSem4(false);
+    setDataSem5([]);
+    setPresSem5(false);
+  }, [semana]);
 
   React.useEffect(() => {
-    for (let index = 0; index < dados.length; index += 1) {
-      let cor;
-      if (dados[index].Presenca) {
-        cor = '#F0FFF0';
-      } else {
-        cor = '#feff';
+    if (sem1 && sem1.length) {
+      const presCelula = sem1.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        setDataSem1(presCelula[0]);
+        setPresSem1(true);
       }
-      setRelCelula(dados);
-      const updatedValue = { [index]: cor };
-      setRespostas((shopCart) => ({
-        ...shopCart,
-        ...updatedValue,
-      }));
     }
-  }, []);
-  React.useEffect(() => {
-    for (let index = 0; index < dados.length; index += 1) {
-      let cor;
-      if (dados[index].Presenca) {
-        cor = '#F0FFF0';
-      } else {
-        cor = '#feff';
-      }
+    if (errorSem1) return <div>An error occured.</div>;
 
-      setRelCelula(dados);
-      const updatedValue = { [index]: cor };
-      setRespostas((shopCart) => ({
-        ...shopCart,
-        ...updatedValue,
-      }));
+    if (!sem1) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [sem1]);
+
+  React.useEffect(() => {
+    if (sem2 && sem2.length) {
+      const presCelula = sem2.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        setDataSem2(presCelula[0]);
+        setPresSem2(true);
+      }
     }
-  }, [nomesCelulas.length]);
-  return (
-    <Paper
-      sx={{
-        background: '#fff9',
-        width: '98%',
-        height: '95%',
-        marginLeft: 0.5,
-        marginTop: 1,
-        overflow: 'hidden',
-      }}
-    >
-      <TableContainer sx={{ maxHeight: 310 }}>
-        {dados.map((row, index) => (
+    if (errorSem2) return <div>An error occured.</div>;
+    if (!sem2) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [sem2]);
+
+  React.useEffect(() => {
+    if (sem3 && sem3.length) {
+      const presCelula = sem3.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        setDataSem3(presCelula[0]);
+        setPresSem3(true);
+      }
+    }
+    if (errorSem3) return <div>An error occured.</div>;
+    if (!sem3) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [sem3]);
+
+  React.useEffect(() => {
+    if (sem4 && sem4.length) {
+      const presCelula = sem4.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        setDataSem4(presCelula[0]);
+        setPresSem4(true);
+      }
+    }
+    if (errorSem4) return <div>An error occured.</div>;
+    if (!sem4) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [sem4]);
+  React.useEffect(() => {
+    if (sem5 && sem5.length) {
+      const presCelula = sem5.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      if (presCelula.length) {
+        setDataSem5(presCelula[0]);
+        setPresSem5(true);
+      }
+    }
+    if (errorSem5) return <div>An error occured.</div>;
+    if (!sem5) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [sem5]);
+
+  const body = (
+    <Box width="100vw">
+      <Box
+        height="100vh"
+        width="100%"
+        minWidth={300}
+        minHeight={500}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        bgcolor={corIgreja.principal}
+      >
+        <Box>
           <Box
-            mt={0}
-            bgcolor={Object.keys(respostas).length && respostas[index]}
             display="flex"
-            alignItems="center"
-            key={row.Nome}
-            height={40}
-            sx={{ borderBottom: '2px solid #00a' }}
+            justifyContent="center"
+            fontFamily="arial black"
+            textAlign="center"
+            mt={2}
+            color="yellow"
           >
-            <Box display="flex" width="100%">
-              <Box width="100%" display="flex" alignItems="center" ml={1}>
-                {row.Nome}
-              </Box>
-              <Box
-                onClick={() => {
-                  handleRegistro(index);
-                }}
-                width="10%"
-                display="flex"
-                alignItems="center"
-                ml={1}
-              >
-                {dados[index].Presenca ? (
-                  <BsFillCheckCircleFill color="green" />
-                ) : (
-                  <BsXCircleFill color="red" />
-                )}
-              </Box>
+            <Box color="#ffff8d" mr={2}>
+              {' '}
+              Multiplicação:{' '}
+            </Box>{' '}
+            {dataSend.Multiplicacao}
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={6}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Data da Reunião da Célula
+                  </Box>
+                </Grid>
+                <Grid container item xs={6}>
+                  <Box
+                    ml={3}
+                    mr={-3}
+                    width="40vw"
+                    color="white"
+                    fontSize="10px"
+                  >
+                    Horário da Célula
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Box
+                    ml={2}
+                    mr={-2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Data}</Box>
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box
+                    ml={2}
+                    mr={0}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Horario}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
             </Box>
           </Box>
-        ))}
-      </TableContainer>
-    </Paper>
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Objetivo Central da Reunião
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Fase}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Anfitrião (local) da Reunião
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Anfitriao}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Quebra Gelo
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Encontro}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Louvor
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Exaltacao}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Oração
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Edificacao}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Compartilhamento
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Evangelismo}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+
+          <Box mt={2}>
+            <Box display="flex" justifyContent="center">
+              <Grid container spacing={2}>
+                <Grid container item xs={12}>
+                  <Box ml={3} width="40vw" color="white" fontSize="10px">
+                    Lanche
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Box
+                    ml={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    borderRadius="5px"
+                    bgcolor="#fff"
+                    color={corIgreja.principal}
+                    fontSize="14px"
+                    fontFamily="arial black"
+                  >
+                    <Box mt={0.5}>{dataSend.Lanche}</Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+          <Box mt={3} display="flex" justifyContent="center">
+            <Button
+              style={{
+                background: '#69f0ae',
+                color: '#780810',
+                fontFamily: 'arial black',
+              }}
+              component="a"
+              variant="contained"
+              onClick={() => setOpenPlan(false)}
+            >
+              FECHAR PLANEJAMENTO
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+
+  return (
+    <Box height="100%">
+      <Box
+        bgcolor="#c5e1a5"
+        sx={{
+          fontFamily: 'arial black',
+          borderBottom: '2px solid #000',
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
+        }}
+        height="16.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="33%"
+        >
+          SEMANA
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="34%"
+          sx={{
+            borderLeft: '2px solid #000',
+            borderRight: '2px solid #000',
+          }}
+        >
+          DATA
+        </Box>
+        <Box textAlign="center" width="33%">
+          VISUALIZAR
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          fontFamily: 'arial black',
+          borderBottom: '2px solid #000',
+        }}
+        height="16.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="33%"
+        >
+          {semana1}
+        </Box>
+        {sem1 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem1 && dataSem1.Data ? dataSem1.Data : '-'}{' '}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
+        <Box
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+          width="33%"
+        >
+          {presSem1 ? (
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => {
+                setOpenPlan(true);
+
+                setDataSend(dataSem1);
+              }}
+            >
+              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                <MdScreenSearchDesktop size={25} color="green" />
+              </SvgIcon>
+            </IconButton>
+          ) : (
+            '-'
+          )}
+        </Box>
+      </Box>
+      <Box
+        bgcolor="#eeeeee"
+        sx={{
+          fontFamily: 'arial black',
+          borderBottom: '2px solid #000',
+        }}
+        height="16.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="33%"
+        >
+          {semana2}
+        </Box>
+        {sem2 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem2 && dataSem2.Data ? dataSem2.Data : '-'}{' '}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
+        <Box
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+          width="33%"
+        >
+          {presSem2 ? (
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => {
+                setOpenPlan(true);
+
+                setDataSend(dataSem2);
+              }}
+            >
+              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                <MdScreenSearchDesktop size={25} color="green" />
+              </SvgIcon>
+            </IconButton>
+          ) : (
+            '-'
+          )}
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          fontFamily: 'arial black',
+          borderBottom: '2px solid #000',
+        }}
+        height="16.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="33%"
+        >
+          {semana3}
+        </Box>
+        {sem3 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem3 && dataSem3.Data ? dataSem3.Data : '-'}{' '}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
+        <Box
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+          width="33%"
+        >
+          {presSem3 ? (
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => {
+                setOpenPlan(true);
+
+                setDataSend(dataSem3);
+              }}
+            >
+              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                <MdScreenSearchDesktop size={25} color="green" />
+              </SvgIcon>
+            </IconButton>
+          ) : (
+            '-'
+          )}
+        </Box>
+      </Box>
+      <Box
+        bgcolor="#eeeeee"
+        sx={{
+          fontFamily: 'arial black',
+          borderBottom: '2px solid #000',
+        }}
+        height="16.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="33%"
+        >
+          {semana4}
+        </Box>
+        {sem4 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem4 && dataSem4.Data ? dataSem4.Data : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
+        <Box
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+          width="33%"
+        >
+          {presSem4 ? (
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => {
+                setOpenPlan(true);
+
+                setDataSend(dataSem4);
+              }}
+            >
+              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                <MdScreenSearchDesktop size={25} color="green" />
+              </SvgIcon>
+            </IconButton>
+          ) : (
+            '-'
+          )}
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          fontFamily: 'arial black',
+        }}
+        height="16.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="33%"
+        >
+          {semana5}
+        </Box>
+        {sem5 ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            {dataSem5 && dataSem5.Data ? dataSem5.Data : '-'}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="34%"
+            sx={{
+              borderLeft: '2px solid #000',
+              borderRight: '2px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
+        <Box
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+          width="33%"
+        >
+          {presSem5 ? (
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => {
+                setOpenPlan(true);
+
+                setDataSend(dataSem5);
+              }}
+            >
+              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                <MdScreenSearchDesktop size={25} color="green" />
+              </SvgIcon>
+            </IconButton>
+          ) : (
+            '-'
+          )}
+        </Box>
+      </Box>
+
+      <Modal
+        open={openPlan}
+        //  onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
+    </Box>
   );
 }

@@ -239,7 +239,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          1
+          {semana1}
         </Box>
         {sem1 ? (
           <Box
@@ -313,7 +313,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          2
+          {semana2}
         </Box>
         {sem2 ? (
           <Box
@@ -379,7 +379,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          3
+          {semana3}
         </Box>
         {sem3 ? (
           <Box
@@ -446,7 +446,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          4
+          {semana4}
         </Box>
         {sem4 ? (
           <Box
@@ -512,7 +512,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          5
+          {semana5}
         </Box>
         {sem5 ? (
           <Box

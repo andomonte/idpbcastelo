@@ -23,7 +23,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   const [dataSem5, setDataSem5] = React.useState([]);
   const semana = PegaSemana(Mes, Ano);
   // para usar semanas
-  const [chamaEspera, setChamaEspera] = React.useState(false);
+
   const semana1 = semana;
   const semana2 = semana + 1;
   const semana3 = semana + 2;
@@ -150,8 +150,6 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   }, [sem4]);
 
   React.useEffect(() => {
-    setChamaEspera(false);
-
     if (sem5 && sem5.length) {
       const presCelula = sem5.filter(
         (val) =>
@@ -170,7 +168,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
       }
     }
     if (errorSem5) return <div>An error occured.</div>;
-    if (!sem5) setChamaEspera(true);
+
     if (!sem5) return <div>Loading ...</div>;
     return 0;
   }, [sem5]);
@@ -238,7 +236,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          1
+          {semana1}
         </Box>
         {sem1 ? (
           <Box
@@ -312,7 +310,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          2
+          {semana2}
         </Box>
         {sem2 ? (
           <Box
@@ -378,7 +376,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          3
+          {semana3}
         </Box>
         {sem3 ? (
           <Box
@@ -445,7 +443,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          4
+          {semana4}
         </Box>
         {sem4 ? (
           <Box
@@ -511,7 +509,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="33%"
         >
-          5
+          {semana5}
         </Box>
         {sem5 ? (
           <Box
