@@ -92,20 +92,25 @@ function SearchList({ rolMembros }) {
   return (
     <Box sx={{ maxHeight: 310 }} className={classes.dadosBox}>
       <TableContainer sx={{ maxHeight: 310 }}>
-        <Paper
-          sx={{
-            background: '#fff9',
-            width: '90%',
-            height: '95%',
-            marginLeft: 0.5,
-            marginTop: 1,
-            overflow: 'hidden',
-          }}
-        >
-          <Box mt={2} ml={2}>
-            <Box mt={4} ml={2}>
+        <Box mt={2} ml={2}>
+          <Box mt={4} ml={2}>
+            <Typography
+              style={{ marginLeft: 15 }}
+              className={classes.caption}
+              gutterBottom
+              component="span"
+              variant="body1"
+              color="textPrimary"
+              button="true"
+              onClick={handleSistema}
+            >
+              <Box fontSize="10px" color={corIgreja.principal}>
+                Nome:
+              </Box>{' '}
+              {rolMembros.Nome}
+            </Typography>
+            <Box ml={2} display="flex">
               <Typography
-                style={{ marginLeft: 15 }}
                 className={classes.caption}
                 gutterBottom
                 component="span"
@@ -114,76 +119,57 @@ function SearchList({ rolMembros }) {
                 button="true"
                 onClick={handleSistema}
               >
-                <Box fontSize="10px" color={corIgreja.principal}>
-                  Nome:
-                </Box>{' '}
-                {rolMembros.Nome}
-              </Typography>
-              <Box ml={2} display="flex">
-                <Typography
-                  className={classes.caption}
-                  gutterBottom
-                  component="span"
-                  variant="body1"
-                  color="textPrimary"
-                  button="true"
-                  onClick={handleSistema}
-                >
-                  <Box display="flex">
-                    <Box>
-                      <Box fontSize="10px" color={corIgreja.principal}>
-                        Dia do Aniversário:
-                      </Box>
-                      {diaAniversario} de {meses[mesAniversario]}
+                <Box display="flex">
+                  <Box>
+                    <Box fontSize="10px" color={corIgreja.principal}>
+                      Dia do Aniversário:
                     </Box>
+                    {diaAniversario} de {meses[mesAniversario]}
                   </Box>
-                </Typography>
-              </Box>
+                </Box>
+              </Typography>
+            </Box>
+            <Typography
+              className={classes.caption}
+              gutterBottom
+              component="span"
+              variant="body1"
+              color="textPrimary"
+              button="true"
+              onClick={handleSistema}
+            />
+            <Box mb={2} display="flex" ml={2}>
               <Typography
-                className={classes.caption}
-                gutterBottom
+                display="block"
+                variant="body2"
                 component="span"
-                variant="body1"
-                color="textPrimary"
-                button="true"
-                onClick={handleSistema}
-              />
-              <Box mb={2} display="flex" ml={2}>
-                <Typography
-                  display="block"
-                  variant="body2"
-                  component="span"
-                  color="textSecondary"
-                >
-                  <small style={{ color: corIgreja.principal }}>
-                    {' '}
-                    Célula:{' '}
-                  </small>{' '}
-                  {rolMembros.Celula}
-                </Typography>
-                <Typography
-                  display="block"
-                  variant="body2"
-                  component="span"
-                  color="textSecondary"
-                  style={{ marginLeft: 20 }}
-                >
-                  Supervisão: {rolMembros.Supervisao}
-                </Typography>
-                <Typography
-                  display="block"
-                  variant="body2"
-                  component="span"
-                  color="textSecondary"
-                  style={{ marginLeft: 20 }}
-                >
-                  {distrito[rolMembros.Distrito - 1]}
-                </Typography>
-              </Box>
+                color="textSecondary"
+              >
+                <small style={{ color: corIgreja.principal }}> Célula: </small>{' '}
+                {rolMembros.Celula}
+              </Typography>
+              <Typography
+                display="block"
+                variant="body2"
+                component="span"
+                color="textSecondary"
+                style={{ marginLeft: 20 }}
+              >
+                Supervisão: {rolMembros.Supervisao}
+              </Typography>
+              <Typography
+                display="block"
+                variant="body2"
+                component="span"
+                color="textSecondary"
+                style={{ marginLeft: 20 }}
+              >
+                {distrito[rolMembros.Distrito - 1]}
+              </Typography>
             </Box>
           </Box>
-          <Divider />
-        </Paper>
+        </Box>
+        <Divider />
       </TableContainer>
     </Box>
   );

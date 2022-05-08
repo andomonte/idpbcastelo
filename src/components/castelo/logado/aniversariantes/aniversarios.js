@@ -259,15 +259,16 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
         alignItems="center"
       >
         {Object.keys(niverSetorOrdenado).length ? (
-          <Box width="90%" border={1}>
+          <Box height="65vh" width="90%" border={1}>
             <List
               sx={{
                 width: '100%',
+                height: '60vh',
 
                 bgcolor: 'background.paper',
                 position: 'relative',
                 overflow: 'auto',
-                maxHeight: 380,
+                maxHeight: 480,
                 '& ul': { padding: 0 },
               }}
               subheader={<li />}
@@ -284,7 +285,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
             </List>
           </Box>
         ) : (
-          <Box height="60vh" width="90%" border={1}>
+          <Box height="65vh" width="90%" border={1}>
             <Box mt={20} textAlign="center">
               {' '}
               Não temos aniversariantes registrados nesse Periodo
