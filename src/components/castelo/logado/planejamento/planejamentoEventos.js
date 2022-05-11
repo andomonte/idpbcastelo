@@ -14,7 +14,7 @@ import {
 import moment from 'moment'; */
 import Meses from 'src/utils/meses';
 
-import TabCelula from './abas/tabCelula';
+import TabEventos from './abas/tabEventos';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +44,7 @@ function Label({ lab1, lab2 }) {
     </>
   );
 }
-function PlanMembro({ perfilUser }) {
+function PlanMembro({ perfilUser, rolMembros }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -315,7 +315,7 @@ function PlanMembro({ perfilUser }) {
                     fontSize: '14px',
                   }}
                 >
-                  PLANEJAMENTO DAS CÉLULAS
+                  PLANEJAMENTO DOS EVENTOS DA CÉLULA
                 </Box>
                 <Box
                   height="85%"
@@ -324,10 +324,11 @@ function PlanMembro({ perfilUser }) {
                   width="100%"
                   borderRadius={16}
                 >
-                  <TabCelula
+                  <TabEventos
                     perfilUser={perfilUser}
                     Mes={contMes}
                     Ano={contAno}
+                    rolMembros={rolMembros}
                   />
                 </Box>
               </Box>

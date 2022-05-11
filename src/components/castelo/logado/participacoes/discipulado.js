@@ -178,7 +178,7 @@ function Discipulado({ perfilUser }) {
               <Box width="100%" ml={1} minWidth={370}>
                 <Grid container spacing={0}>
                   <Grid container item xs={12} spacing={1}>
-                    <Label lab1="Selecine o Mês" lab2="Selecione o Ano" />
+                    <Label lab1="Selecione o Mês" lab2="Selecione o Ano" />
                     <Grid item xs={6}>
                       <Paper width="100%" className={classes.paper}>
                         <Box width="100%" display="flex">

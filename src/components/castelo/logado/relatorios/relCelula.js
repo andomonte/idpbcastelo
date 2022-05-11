@@ -128,10 +128,9 @@ function createPontuacao(
 function RelCelula({ rolMembros, perfilUser, visitantes }) {
   //  const classes = useStyles();
   // const router = useRouter();
-  const visitantesCelula = visitantes.filter(
+  let visitantesCelula = visitantes.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
-      val.Distrito === Number(perfilUser.Distrito) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
   const timeElapsed2 = Date.now();
@@ -155,6 +154,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   // let enviarDia;
   // let enviarData;
   const [nomeVistante, setNomeVisitante] = React.useState('');
+  const [nomesVisitanteTab, setNomesVisitanteTab] = React.useState('');
   const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
   const [foneVisitante, setFoneVisitante] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
@@ -227,6 +227,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const [semana, setSemana] = React.useState(0);
   const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
+  const [deleteVis, setDeleteVis] = React.useState(false);
 
   React.useEffect(() => {
     const timeElapsed = Date.now();
@@ -296,6 +297,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     fetcher,
   );
 
+  const url4 = `/api/consultaVisitantes`;
+  const { data: novoVisitante, error: errorVisitante } = useSWR(url4, fetcher);
+
   const ajusteRelatorio = () => {
     const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
     // const qtyVis = visitantes.filter((val) => val.Presenca === true);
@@ -331,6 +335,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
         const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
         const nVisitantes = relatorio[0].NomesVisitantes;
+
         const qtyPresentes = nomesMembros.filter(
           (val) => val.Presenca === true,
         );
@@ -342,15 +347,13 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         setContEventos(relatorio[0].PresentesEventos);
         setRelPresentes(nomesMembros);
         setObservacoes(relatorio[0].Observacoes);
-        setNomesVisitantes(nVisitantes);
+
+        setNomesVisitanteTab(nVisitantes);
         setStartShow(!startShow);
 
         // setRelCelula(relatorio);
       } else {
-        const nomesVisitantesParcial = visitantesCelula.map((row) =>
-          createRelVisitantes(row.id, row.Nome, false),
-        );
-        setNomesVisitantes(nomesVisitantesParcial);
+        //   setNomesVisitantes(nomesVisitantesParcial);
         const qtyVisitanteNovo = visitantesCelula.filter(
           (val) => val.Presenca === true,
         );
@@ -359,10 +362,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         setStartShow(!startShow);
       }
     } else {
-      const nomesVisitantesParcial = visitantesCelula.map((row) =>
-        createRelVisitantes(row.id, row.Nome, false),
-      );
-      setNomesVisitantes(nomesVisitantesParcial);
+      // setNomesVisitantes(nomesVisitantesParcial);
       const qtyVisitanteNovo = visitantesCelula.filter(
         (val) => val.Presenca === true,
       );
@@ -383,11 +383,65 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     }
     return 0;
   }, [semana]);
+
+  React.useEffect(() => {
+    if (deleteVis) {
+      mutate(url4);
+      setDeleteVis(false);
+    }
+    return 0;
+  }, [deleteVis]);
+
+  React.useEffect(() => {
+    if (errorVisitante) return <div>An error occured.</div>;
+    if (!novoVisitante) return <div>Loading ...</div>;
+
+    if (novoVisitante) {
+      // se teve relatório nomesVisitantes tras a lista
+
+      const visitantesCelula2 = novoVisitante.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      // filtrou apenas os visitantes da célula
+
+      let visitantesPresentes = '';
+
+      if (nomesVisitanteTab) {
+        visitantesPresentes = nomesVisitanteTab.filter(
+          (val) => val.Presenca === true,
+        );
+      }
+
+      // filtrou apenas os visitantes da célula presentes
+
+      if (visitantesCelula2.length) {
+        const nomesVisitantesParcial = visitantesCelula2.map((row) =>
+          createRelVisitantes(row.id, row.Nome, false),
+        );
+        // atribuiu falta a todos visitantes da célula
+
+        for (let i = 0; i < nomesVisitantesParcial.length; i += 1) {
+          for (let j = 0; j < visitantesPresentes.length; j += 1) {
+            if (nomesVisitantesParcial[i].Rol === visitantesPresentes[j].Rol)
+              nomesVisitantesParcial[i].Presenca = true;
+          }
+        }
+
+        visitantesCelula = nomesVisitantesParcial;
+        setNomesVisitantes(nomesVisitantesParcial);
+      }
+    }
+    return 0;
+  }, [novoVisitante, nomesVisitanteTab]);
+
   React.useEffect(() => {
     ajusteRelatorio();
 
     return 0;
   }, [members]);
+
   React.useEffect(() => {
     //  contEffect += 1;
     setExisteRelatorio('inicio');
@@ -412,15 +466,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       }),
     );
   }, [relPresentes]);
-  React.useEffect(() => {
-    setNomesVisitantes(
-      nomesVisitantes.sort((a, b) => {
-        if (a.Nome > b.Nome) return 1;
-        if (b.Nome > a.Nome) return -1;
-        return 0;
-      }),
-    );
-  }, [nomesVisitantes]);
 
   //= ========================calcular adulto e crianca========================
 
@@ -479,6 +524,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
             setNomeVisitante('');
             setNascimentoVisitante('');
             setFoneVisitante('');
+
             let dadosNovos = [];
             dadosNovos = response.data;
 
@@ -492,6 +538,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
             nomesNovos.push(nomesVisitantesParcial);
 
             setNomesVisitantes((state) => [...state, nomesVisitantesParcial]);
+
+            // mutate(url4);
           }
         })
         .catch((erro) => {
@@ -973,6 +1021,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                           setQtyVisitante={setQtyVisitante}
                           setNomesVisitantes={setNomesVisitantes}
                           podeEditar={podeEditar}
+                          setDeleteVis={setDeleteVis}
                         />
                       </Box>
                     </Box>
@@ -999,7 +1048,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                             textAlign="start"
                             ml={1}
                           >
-                            Nome
+                            Nome do Visitante
                           </Box>
                           <TextField
                             inputProps={{
@@ -2041,7 +2090,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                       height: 40,
                                     }}
                                   >
-                                    {existeRelatorio ? (
+                                    {existeRelatorio === true ? (
                                       <Box>
                                         {podeEditar ? (
                                           <Box>
@@ -2411,9 +2460,10 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                   >
                                     <Button
                                       onClick={() => {
-                                        setCheckRelatorio(true);
-
-                                        setTela(1);
+                                        if (existeRelatorio !== 'inicio') {
+                                          setCheckRelatorio(true);
+                                          setTela(1);
+                                        }
                                       }}
                                     >
                                       <Box
@@ -2423,7 +2473,17 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                         color="blue"
                                         sx={{ fontFamily: 'arial black' }}
                                       >
-                                        FAZER RELATÓRIO
+                                        {existeRelatorio === 'inicio' ? (
+                                          <Box>
+                                            <Oval
+                                              stroke="red"
+                                              width={20}
+                                              height={20}
+                                            />
+                                          </Box>
+                                        ) : (
+                                          'FAZER RELATÓRIO'
+                                        )}
                                       </Box>
                                     </Button>
                                   </Paper>

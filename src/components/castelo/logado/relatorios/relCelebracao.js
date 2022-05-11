@@ -28,7 +28,7 @@ import Espera from 'src/utils/espera';
 import Erros from 'src/utils/erros';
 import Emojis from 'src/components/icones/emojis';
 import TabCelebracao from './abas/tabCelebracao';
-import TabVisitantes from './abas/tabVisitantes';
+import TabVisitantes from './abas/tabVisitantes2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
@@ -125,13 +125,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   // const router = useRouter();
   const [openErro, setOpenErro] = React.useState(false);
   const [progress, setProgress] = React.useState(5);
-
+  console.log('aquei', visitantes, perfilUser.Distrito);
   const visitantesCelula = visitantes.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
-      val.Distrito === Number(perfilUser.Distrito) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
+  console.log('onde estou', visitantesCelula);
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2);
   const [contConversoes, setContConversoes] = React.useState(0);
@@ -261,6 +261,27 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     url3,
     fetcher,
   );
+  const url4 = `/api/consultaVisitantes`;
+  const { data: novoVisitante, error: errorVisitante } = useSWR(url4, fetcher);
+
+  React.useEffect(() => {
+    if (errorVisitante) return <div>An error occured.</div>;
+    if (!novoVisitante) return <div>Loading ...</div>;
+
+    if (novoVisitante) {
+      // se teve relatório nomesVisitantes tras a lista
+
+      const visitantesCelula2 = novoVisitante.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      // filtrou apenas os visitantes da célula
+      console.log('vsc2', visitantesCelula2);
+      setNomesVisitantes(visitantesCelula2);
+    }
+    return 0;
+  }, [novoVisitante]);
 
   const ajusteRelatorio = () => {
     const qtyPres = dadosCelula.filter((val) => val.Presenca === 'igreja');
@@ -314,10 +335,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         // setRelCelula(relatorio);
         setStartShow(!startShow);
       } else {
-        const nomesVisitantesParcial = visitantesCelula.map((row) =>
-          createRelVisitantes(row.id, row.Nome, false),
-        );
-        setNomesVisitantes(nomesVisitantesParcial);
         const qtyVisitanteNovo = visitantesCelula.filter(
           (val) => val.Presenca === true,
         );
@@ -326,10 +343,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         setStartShow(!startShow);
       }
     } else {
-      const nomesVisitantesParcial = visitantesCelula.map((row) =>
-        createRelVisitantes(row.id, row.Nome, false),
-      );
-      setNomesVisitantes(nomesVisitantesParcial);
       const qtyVisitanteNovo = visitantesCelula.filter(
         (val) => val.Presenca === true,
       );
@@ -912,10 +925,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                     flexDirection="column"
                     width="95%"
                     height="100%"
+                    mt={22}
                   >
                     <Box
-                      height="43.7%"
-                      minHeight={220}
+                      height="63.7%"
+                      minHeight={370}
                       bgcolor="#ffff"
                       width="100%"
                       borderRadius={16}
@@ -940,123 +954,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                 justifyContent="center"
                 alignItems="center"
                 bgcolor={corIgreja.principal}
-              >
-                <Box ml={1}>
-                  <Grid container spacing={0}>
-                    <Grid container item xs={12} spacing={1}>
-                      <Grid item xs={12} md={12} lg={12} xl={12}>
-                        <Box width="100%" mt={2} textAlign="center">
-                          <Box
-                            color="yellow"
-                            fontSize="14px"
-                            textAlign="start"
-                            ml={1}
-                          >
-                            Nome
-                          </Box>
-                          <TextField
-                            inputProps={{
-                              style: {
-                                width: '90vw',
-                                height: 30,
-                                borderRadius: 6,
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Nome"
-                            // label="Matricula"
-                            type="text"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={nomeVistante}
-                            variant="standard"
-                            placeholder="Nome completo"
-                            onChange={(e) => {
-                              setNomeVisitante(e.target.value);
-                            }}
-                          />
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={0}>
-                    <Grid container item xs={12} spacing={1}>
-                      <Grid item xs={6} md={6} lg={6} xl={6}>
-                        <Box width="100%" mt={2} textAlign="center">
-                          <Box
-                            color="yellow"
-                            fontSize="14px"
-                            textAlign="start"
-                            ml={1}
-                          >
-                            Celular
-                          </Box>
-                          <TextField
-                            inputProps={{
-                              style: {
-                                width: '100%',
-                                height: 30,
-                                borderRadius: 6,
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Fone"
-                            // label="Matricula"
-                            type="tel"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={celularMask(foneVisitante)}
-                            variant="standard"
-                            placeholder="telefone"
-                            onChange={(e) => {
-                              setFoneVisitante(e.target.value);
-                            }}
-                          />
-                        </Box>
-                      </Grid>
-                      <Grid item xs={6} md={6} lg={6} xl={6}>
-                        <Box width="100%" mt={2} textAlign="center">
-                          <Box
-                            color="yellow"
-                            fontSize="14px"
-                            textAlign="start"
-                            ml={1}
-                          >
-                            Data de Nascimento
-                          </Box>
-                          <TextField
-                            inputProps={{
-                              style: {
-                                width: '100%',
-                                height: 30,
-                                borderRadius: 6,
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Nascimento"
-                            // label="Matricula"
-                            type="tel"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={dataMask(nascimentoVisitante)}
-                            variant="standard"
-                            placeholder="dd/mm/aaaa"
-                            onChange={(e) => {
-                              setNascimentoVisitante(e.target.value);
-                            }}
-                          />
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Box>
+              />
               <Box
                 height="10%"
                 minHeight={75}
@@ -2162,9 +2060,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                   >
                                     <Button
                                       onClick={() => {
-                                        setCheckRelatorio(true);
-
-                                        setTela(1);
+                                        if (existeRelatorio !== 'inicio') {
+                                          setCheckRelatorio(true);
+                                          setTela(1);
+                                        }
                                       }}
                                     >
                                       <Box
@@ -2174,7 +2073,17 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                         color="blue"
                                         sx={{ fontFamily: 'arial black' }}
                                       >
-                                        FAZER RELATÓRIO
+                                        {existeRelatorio === 'inicio' ? (
+                                          <Box>
+                                            <Oval
+                                              stroke="red"
+                                              width={20}
+                                              height={20}
+                                            />
+                                          </Box>
+                                        ) : (
+                                          'FAZER RELATÓRIO'
+                                        )}
                                       </Box>
                                     </Button>
                                   </Paper>

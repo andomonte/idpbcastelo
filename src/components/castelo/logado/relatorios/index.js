@@ -361,6 +361,7 @@ function Relatorios({
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
+
             {perfilUser.Funcao === 'Lider' ? (
               <RelDiscipulado
                 perfilUser={perfilUser}

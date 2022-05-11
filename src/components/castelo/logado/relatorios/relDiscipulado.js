@@ -1618,9 +1618,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                 >
                                   <Button
                                     onClick={() => {
-                                      setCheckRelatorio(true);
-
-                                      setTela(1);
+                                      if (existeRelatorio !== 'inicio') {
+                                        setCheckRelatorio(true);
+                                        setTela(1);
+                                      }
                                     }}
                                   >
                                     <Box
@@ -1630,7 +1631,17 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                       color="blue"
                                       sx={{ fontFamily: 'arial black' }}
                                     >
-                                      FAZER RELATÓRIO
+                                      {existeRelatorio === 'inicio' ? (
+                                        <Box>
+                                          <Oval
+                                            stroke="red"
+                                            width={20}
+                                            height={20}
+                                          />
+                                        </Box>
+                                      ) : (
+                                        'FAZER RELATÓRIO'
+                                      )}
                                     </Box>
                                   </Button>
                                 </Paper>

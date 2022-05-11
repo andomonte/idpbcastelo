@@ -52,17 +52,18 @@ model cursosinscritos {
 }
 
 model eventosCelulas {
-  id          Int      @id @default(autoincrement())
-  Evento      String   @db.Text
-  Responsavel String   @db.Text
-  Semana      Int
-  Data        String   @db.VarChar(25)
-  Celula      Int
-  Supervisao  Int
-  Coordenacao Int
-  Distrito    Int
-  Descricao   String   @db.Text
-  CriadoEm    DateTime @db.DateTime(0)
+  id        Int      @id @default(autoincrement())
+  Data      String   @db.VarChar(25)
+  Evento    String   @db.Text
+  Local     String   @db.Text
+  Objetivo  String   @db.Text
+  Descricao String?  @db.Text
+  Mes       Int
+  Ano       Int
+  Horario   String   @db.VarChar(15)
+  Celula    Int
+  Distrito  Int
+  CriadoEm  DateTime @db.DateTime(0)
 }
 
 model igreja {

@@ -27,6 +27,7 @@ import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
 import PlanCelula from './planejamentoCelula';
+import PlanEventos from './planejamentoEventos';
 import PlanCelulaMembro from './planejamentoCelulaMembro';
 // import DadosAdicionais from './dadosAdicionais';
 // import DadosEndereco from './dadosEndereco';
@@ -321,7 +322,13 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           <TabPanel value={value} index={1}>
             {session && (
               <Box>
-                {perfilUser.Funcao === 'Lider' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Lider' ? (
+                  <PlanEventos
+                    perfilUser={perfilUser}
+                    secao={session}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}

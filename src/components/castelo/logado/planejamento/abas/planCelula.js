@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
+
   novoBox: {
     flexGrow: 1,
     padding: theme.spacing(1),

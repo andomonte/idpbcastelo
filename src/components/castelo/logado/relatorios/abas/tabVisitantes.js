@@ -1,19 +1,29 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
-import Box from '@material-ui/core/Box';
-
+import { Box, Button } from '@material-ui/core';
+import { MdDeleteForever } from 'react-icons/md';
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import api from 'src/components/services/api';
+import Erros from 'src/utils/erros';
+import Modal from '@mui/material/Modal';
+import Espera from 'src/utils/espera';
+// import Espera from 'src/utils/espera';
 
 export default function TabCelula({
   nomesVisitantes,
   setNomesVisitantes,
   setQtyVisitante,
   podeEditar,
+  setDeleteVis,
 }) {
   // const dados = nomesVisitantes.map((row) => createData(row.Nome, true));
 
   const [respostas, setRespostas] = React.useState({});
+  const [openErro, setOpenErro] = React.useState(false);
+  const [openEspera, setOpenEspera] = React.useState(false);
+  const [openQuestion, setOpenQuestion] = React.useState(false);
+  const [indexDel, setindexDel] = React.useState('');
 
   let dados = [{ Nome: 'Sem nomes registrados', Presenca: false }];
   if (nomesVisitantes) dados = nomesVisitantes;
@@ -34,6 +44,33 @@ export default function TabCelula({
       ...updatedValue,
     }));
   };
+
+  const handleQuestion = (index) => {
+    setindexDel(index);
+    setOpenQuestion(true);
+  };
+
+  const handleDelete = () => {
+    setOpenEspera(true);
+    const id = Number(dados[indexDel].Rol);
+
+    api
+      .post(`/api/excluirVisitante`, {
+        id,
+      })
+      .then((response) => {
+        if (response) {
+          setDeleteVis(true);
+          setOpenEspera(false);
+        }
+      })
+      .catch(() => {
+        setOpenErro(true);
+        return 0;
+        //  updateFile(uploadedFile.id, { error: true });
+      });
+  };
+
   React.useEffect(() => {
     //    setPresentes(setPresentes(dados.length));
     const qtyPresentes = dados.filter((val) => val.Presenca === true);
@@ -70,7 +107,7 @@ export default function TabCelula({
       }}
     >
       <TableContainer sx={{ maxHeight: 190 }}>
-        {dados.length > 0
+        {dados.length > 0 && dados[0]
           ? dados.map((row, index) => (
               <Box
                 mt={0}
@@ -82,6 +119,17 @@ export default function TabCelula({
                 sx={{ borderBottom: '2px solid #00a' }}
               >
                 <Box display="flex" width="100%">
+                  <Box
+                    onClick={() => {
+                      handleQuestion(index);
+                    }}
+                    width="10%"
+                    display="flex"
+                    alignItems="center"
+                    ml={1}
+                  >
+                    <MdDeleteForever size={20} color="#455a64" />
+                  </Box>
                   <Box width="100%" display="flex" alignItems="center" ml={1}>
                     {row.Nome}
                   </Box>
@@ -105,6 +153,77 @@ export default function TabCelula({
             ))
           : 'sem nomes'}
       </TableContainer>
+      {openErro && (
+        <Erros
+          descricao="banco"
+          setOpenErro={(openErros) => setOpenErro(openErros)}
+        />
+      )}
+
+      <Modal
+        open={openQuestion}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box>
+          <Box
+            height="100vh"
+            width="100%"
+            sx={{ background: '#ffebee' }}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              fontSize="16px"
+              justifyContent="center"
+              display="flex"
+              flexDirection="column"
+            >
+              <Box textAlign="center">Quer mesmo Excluir</Box>
+              <Box fontFamily="arial black" textAlign="center">
+                {nomesVisitantes[indexDel] && nomesVisitantes[indexDel].Nome}
+              </Box>
+              <Box textAlign="center">da sua lista?</Box>
+
+              <Box mt={5} display="flex" justifyContent="center">
+                <Button
+                  style={{
+                    background: '#780810',
+                    color: '#ffff',
+
+                    fontFamily: 'arial black',
+                  }}
+                  component="a"
+                  variant="contained"
+                  onClick={() => {
+                    setOpenQuestion(false);
+                  }}
+                >
+                  Não
+                </Button>
+                <Box ml={10} />
+                <Button
+                  style={{
+                    background: '#69f0ae',
+                    color: '#780810',
+                    fontFamily: 'arial black',
+                  }}
+                  component="a"
+                  variant="contained"
+                  onClick={() => {
+                    handleDelete();
+                    setOpenQuestion(false);
+                  }}
+                >
+                  Sim
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Modal>
+      {openEspera && <Espera descricao="Excluindo Visitante" />}
     </Paper>
   );
 }
