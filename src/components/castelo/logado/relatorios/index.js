@@ -11,7 +11,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import { FaHome, FaPeopleCarry } from 'react-icons/fa';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
+import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
@@ -29,6 +29,8 @@ import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
 
 import RelCelula from './relCelula';
+import RelCelulaSup from './relCelulaSup';
+
 import RelCelebracao from './relCelebracao';
 import RelDiscipulado from './relDiscipulado';
 import Padrao from './abas/telaPadrao';
@@ -199,75 +201,149 @@ function Relatorios({
               ) : null}
             </Box>
 
-            <Box display="flex" m={0}>
-              <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                fontSize="large"
-                showLabels
-                className={classes.rootTopbarIcon}
-              >
-                <BottomNavigationAction
-                  style={
-                    value === 0
-                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                      : { color: '#eeeeee', fontSize: '18px' }
-                  }
-                  label="Celula"
-                  icon={
-                    value === 0 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <IoIosPeople />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: '#eeeeee' }}>
-                        <IoIosPeople />
-                      </SvgIcon>
-                    )
-                  }
-                />
-                <BottomNavigationAction
-                  style={
-                    value === 1
-                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                      : { color: '#eeeeee', fontSize: '18px' }
-                  }
-                  label="Celebração"
-                  icon={
-                    value === 1 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <FaHome />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: '#eeeeee' }}>
-                        <FaHome />
-                      </SvgIcon>
-                    )
-                  }
-                />
-                <BottomNavigationAction
-                  style={
-                    value === 2
-                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
-                      : { color: '#eeeeee', fontSize: '12px' }
-                  }
-                  label="Discipul."
-                  icon={
-                    value === 2 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <FaPeopleCarry />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: '#eeeeee' }}>
-                        <FaPeopleCarry />
-                      </SvgIcon>
-                    )
-                  }
-                />
-              </BottomNavigation>
-            </Box>
+            {perfilUser.Funcao !== 'Supervisor' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Celula"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Celebração"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaHome />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <FaHome />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Discipul."
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaPeopleCarry />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <FaPeopleCarry />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
+
+            {perfilUser.Funcao === 'Supervisor' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Celula"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Supervisão"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <MdOutlineSupervisorAccount />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <MdOutlineSupervisorAccount />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Visita"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaPeopleCarry />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <FaPeopleCarry />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
             <Login />
           </Toolbar>
         </AppBar>
@@ -333,7 +409,14 @@ function Relatorios({
                 ) : null}
 
                 {perfilUser.Funcao === 'Secretaria' ? <CadastroUser /> : null}
-                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Supervisor' ? (
+                  <RelCelulaSup
+                    perfilUser={perfilUser}
+                    secao={session}
+                    rolMembros={rolMembros}
+                    lideranca={lideranca}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}

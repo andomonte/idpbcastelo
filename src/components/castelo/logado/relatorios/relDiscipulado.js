@@ -48,6 +48,8 @@ function createEstatistico(
   Observacoes,
   CriadoPor,
   CriadoEm,
+  Adultos,
+  Criancas,
 ) {
   return {
     Celula,
@@ -59,6 +61,8 @@ function createEstatistico(
     Observacoes,
     CriadoPor,
     CriadoEm,
+    Adultos,
+    Criancas,
   };
 }
 
@@ -423,7 +427,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     const percLeituraBiblica = Number(
       Number((pontosLeituraBiblia * 100) / relPresentes.length).toFixed(2) / 10,
     ).toFixed(2);
-    // toal rank conta os eventos mas o total não pois nem sempre tem eventos e pode
+    // toal rank conta os eventos mas o total não coloquei nem sempre tem eventos e pode
     // causar erros no percentual de crescimento.
     if (pontosTotalAtual === 0)
       pontosTotalAtual = Number(
@@ -561,6 +565,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       String(observacoes),
       perfilUser.Nome,
       criadoEm,
+      Number(adultos),
+      Number(criancas),
     );
 
     // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
@@ -587,8 +593,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     if (PontosSemana) {
       setRankGeral(
         PontosSemana.sort((a, b) => {
-          if (a.Total > b.Total) return 1;
-          if (b.Total > a.Total) return -1;
+          if (Number(a.TotalRank) < Number(b.TotalRank)) return 1;
+          if (Number(b.TotalRank) < Number(a.TotalRank)) return -1;
           return 0;
         }),
       );

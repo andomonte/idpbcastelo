@@ -815,8 +815,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     if (PontosSemana) {
       setRankGeral(
         PontosSemana.sort((a, b) => {
-          if (a.Total > b.Total) return 1;
-          if (b.Total > a.Total) return -1;
+          if (Number(a.TotalRank) < Number(b.TotalRank)) return 1;
+          if (Number(b.TotalRank) < Number(a.TotalRank)) return -1;
           return 0;
         }),
       );

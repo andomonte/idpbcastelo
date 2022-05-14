@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Button, TextField } from '@material-ui/core';
+import { Box, Grid, Paper, Button } from '@material-ui/core';
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
@@ -9,8 +9,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import dataMask from 'src/components/mascaras/datas';
-import celularMask from 'src/components/mascaras/celular';
+
 import moment from 'moment';
 import { TiUserAdd } from 'react-icons/ti';
 import { IoIosSave, IoIosAddCircle, IoMdRemoveCircle } from 'react-icons/io';
@@ -125,13 +124,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   // const router = useRouter();
   const [openErro, setOpenErro] = React.useState(false);
   const [progress, setProgress] = React.useState(5);
-  console.log('aquei', visitantes, perfilUser.Distrito);
   const visitantesCelula = visitantes.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
-  console.log('onde estou', visitantesCelula);
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2);
   const [contConversoes, setContConversoes] = React.useState(0);
@@ -277,7 +274,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           val.Distrito === Number(perfilUser.Distrito),
       );
       // filtrou apenas os visitantes da célula
-      console.log('vsc2', visitantesCelula2);
       setNomesVisitantes(visitantesCelula2);
     }
     return 0;
@@ -729,8 +725,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     if (PontosSemana) {
       setRankGeral(
         PontosSemana.sort((a, b) => {
-          if (a.Total > b.Total) return 1;
-          if (b.Total > a.Total) return -1;
+          if (Number(a.TotalRank) < Number(b.TotalRank)) return 1;
+          if (Number(b.TotalRank) < Number(a.TotalRank)) return -1;
           return 0;
         }),
       );

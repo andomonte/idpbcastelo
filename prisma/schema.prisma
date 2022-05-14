@@ -233,6 +233,8 @@ model relatorioDiscipulado {
   Distrito       Int
   Semana         Int
   Data           String   @db.VarChar(25)
+  Adultos        Int
+  Criancas       Int
   NomesMembros   Json
   LeituraBiblica Int
   Observacoes    String   @db.VarChar(255)
