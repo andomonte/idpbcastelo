@@ -171,9 +171,9 @@ function IdpbCastelo({ userIgrejas, title, celulas }) {
   if (session) {
     router.push(
       {
-        pathname: '/meuPerfil',
+        pathname: '/selectPerfil',
       },
-      '/meuPerfil',
+      '/selectPerfil',
     );
   }
   return (
