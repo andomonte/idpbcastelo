@@ -410,7 +410,6 @@ function Cadastro({ lideranca, rolMembros }) {
         setOpenEspera(true);
       }
     } else {
-      console.log('algo deu errado aqui sem membro depois de salvar no membro');
       setCarregar(true);
       setOpenEspera(true);
     }

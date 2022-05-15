@@ -95,7 +95,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
   if (session) {
     if (lideranca.length) {
       secao = lideranca.filter((val) => val.Email === session.user.email);
-
+      console.log('entrou no liderança', secao);
       valorPerfil = secao.map((items, index) => {
         if (items.Funcao === 'Secretaria')
           return {
@@ -200,7 +200,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
       });
     }
     const membro = rolMembros.filter((val) => val.Email === session.user.email);
-
+    console.log('valor bem aqui antes do membro.lent', valorPerfil);
     if (membro.length > 0) {
       userMembro = {
         Celula: membro[0].Celula,
@@ -281,6 +281,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
                             fontFamily: 'arial black',
                           }}
                         >
+                          {console.log('vl prfil', valorPerfil)}
                           VOCÊ TEM {valorPerfil.length} Pefis
                         </Box>
                       </Grid>
