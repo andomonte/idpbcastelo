@@ -18,7 +18,7 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Login from '../botaoLogin';
 import Navbar from './navBar_redesSociais';

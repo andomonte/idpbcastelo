@@ -96,13 +96,12 @@ function Cadastro({ lideranca, rolMembros }) {
   const [validacaoNome, setValidacaoNome] = React.useState('testar');
   const nomeRef = useRef();
   const [nome, setNome] = React.useState('');
-  const [inputValor, setInputValor] = React.useState('');
   const [usuarioMembro, setUsuarioMembro] = React.useState('');
   const [validacaoNascimento, setValidacaoNascimento] =
     React.useState('testar');
   const nascimentoRef = useRef();
   const [nascimento, setNascimento] = React.useState('');
-  const [cadastroConcluido, setCadastroConcluido] = React.useState(false);
+  const [querys, updateQuery] = React.useState(null);
   const [carregar, setCarregar] = React.useState(false);
   const [contId, setContId] = React.useState(0);
   const [usuarioLider, setUsuarioLider] = React.useState(false);
@@ -115,15 +114,13 @@ function Cadastro({ lideranca, rolMembros }) {
   const [perfilUser, setPerfilUser] = React.useState('');
   //= =========================================================================
   const handleValidacaoClose = () => {
-    if (validacaoNome !== 'testar' && validacaoNome !== true) {
+    if (validacaoNome !== 'testar' && validacaoNome) {
       setValidacaoNome('testar');
       nomeRef.current.focus();
     }
   };
-  const listaNomes = rolMembros.map((nomes) => nomes.Nome);
-
   const [novoMembro, setNovoMembro] = React.useState('');
-  // const [, setListaNomlistaNomee] = React.useState(listaParcial);
+  const [listaNome, setListaNome] = React.useState('');
   const [novoLider, setNovoLider] = React.useState('');
 
   const url = `/api/consultaMembros`;
@@ -176,15 +173,17 @@ function Cadastro({ lideranca, rolMembros }) {
     );
   };
   React.useEffect(() => {
-    /* console.log(
+    console.log(
       'valor nm,nl,ul,um',
       novoMembro.length,
       novoLider.length,
       usuarioLider.length,
       usuarioMembro.length,
-    ); */
-    console.log('cadastroConcluido:', cadastroConcluido);
-    if (cadastroConcluido) {
+    );
+    if (
+      novoMembro.length >= usuarioMembro.length &&
+      novoLider.length >= usuarioLider.length
+    ) {
       if (lideranca.length && members.length) {
         secao = lideres.filter((val) => val.Email === session.user.email);
 
@@ -317,12 +316,15 @@ function Cadastro({ lideranca, rolMembros }) {
       // expected output: Object { a: 1, b: 4, c: 5 }
 
       setPerfilUserFinal(valorPerfil);
-      console.log('agora veio o novo valor de perfilUserFinal', valorPerfil);
       setOpenSelect(true);
     }
     return 0;
   }, [novoLider, novoMembro]);
-
+  console.log(
+    'fora novoLider.length e o novoMmembro.length',
+    novoLider.length,
+    novoMembro.length,
+  );
   const cadastrarEmailLider = () => {
     if (usuarioLider.length > 0) {
       if (contId - 1 < usuarioLider.length) {
@@ -333,12 +335,11 @@ function Cadastro({ lideranca, rolMembros }) {
           })
           .then((response) => {
             if (response) {
-              setCadastroConcluido(false);
+              console.log('contId', contId, usuarioLider.length);
               if (contId < usuarioLider.length) setContId(contId + 1);
               else {
                 setContId(0);
                 setOpenEspera(true);
-                setCadastroConcluido(true);
                 mutate(url2);
               }
             }
@@ -357,14 +358,12 @@ function Cadastro({ lideranca, rolMembros }) {
   };
 
   React.useEffect(() => {
-    console.log('contId:', contId, 'usuarioLider:', usuarioLider.length);
     if (contId !== 0) {
       if (contId - 1 < usuarioLider.length) {
         cadastrarEmailLider();
       } else {
         setContId(0);
         setCarregar(false);
-        // setCadastroConcluido(true);
       }
     }
   }, [contId]);
@@ -406,7 +405,6 @@ function Cadastro({ lideranca, rolMembros }) {
         setContId(1); // duvida sobre qual deveria ser se não
       } else {
         setCarregar(true);
-        setCadastroConcluido(true);
         setOpenEspera(true);
       }
     } else {
@@ -427,7 +425,6 @@ function Cadastro({ lideranca, rolMembros }) {
 
         .then((response) => {
           if (response) {
-            console.log(response);
             mutate(url);
             handleCheckDadosLideranca();
           }
@@ -453,41 +450,27 @@ function Cadastro({ lideranca, rolMembros }) {
       } else {
         //= para procurar os dados  ==========================================
 
+        updateQuery(nome);
+
         const searcher = new FuzzySearch(rolMembros, ['Nome'], {
           caseSensitive: false,
         });
 
-        const checarNome = searcher.search(nome);
-        let valNasc = 'testar';
-        //  console.log('searcher,checarNome', searcher, checarNome, nome);
+        const checarNome = searcher.search(querys);
 
-        if (checarNome.length === 1) {
-          setValidacaoNome(true);
+        console.log('searcher,checarNome', searcher, checarNome);
 
-          if (checarNome[0].Nascimento === nascimento) {
-            setValidacaoNascimento(true);
-            valNasc = true;
-            console.log('são iguais');
-          } else {
-            valNasc = false;
-            setValidacaoNascimento(false);
-            console.log('Não são iguais');
-          }
-          setValidacaoNascimento(valNasc);
-          console.log(
-            'valNasc',
-            validacaoNascimento,
-            checarNome[0].Nascimento,
-            nascimento,
-            valNasc,
+        if (checarNome.length > 0) {
+          const checarNascimento = rolMembros.filter(
+            (val) => val.Nascimento === nascimento,
           );
-
-          if (valNasc) {
-            setUsuarioMembro(checarNome);
+          if (checarNascimento.length > 0) {
+            setUsuarioMembro(checarNascimento);
+            setValidacaoNascimento(true);
             cadastrarEmailMembro();
             // verificar se é da liderança
           } else setValidacaoNascimento(false);
-        } else setValidacaoNome('Procure a Secretaria da Igreja');
+        } else setValidacaoNome('Nome não Encontrado');
       }
     } else {
       setValidacaoNome('Digite um Nome');
@@ -525,11 +508,11 @@ function Cadastro({ lideranca, rolMembros }) {
           setOpenErro={(openErros) => setOpenErro(openErros)}
         />
       )}
-      {/*  {console.log(
+      {console.log(
         'valores de openSelect e perfilUserFinal.length',
         openSelect,
         perfilUserFinal.length,
-      )} */}
+      )}
       {openSelect && perfilUserFinal.length ? (
         <Box width="100vw">
           <Box
@@ -714,7 +697,7 @@ function Cadastro({ lideranca, rolMembros }) {
                     <Box
                       border={1}
                       borderColor={
-                        validacaoNome === true || validacaoNome === 'testar'
+                        validacaoNome === 'true' || validacaoNome === 'testar'
                           ? 'green'
                           : 'red'
                       }
@@ -743,43 +726,68 @@ function Cadastro({ lideranca, rolMembros }) {
                           </Typography>
                         </Box>
                         <Box mt={0} textAlign="center">
-                          <Box width="92%" ml={2}>
-                            <Autocomplete
-                              sx={{
-                                width: '100%',
-                                textAlign: 'center',
-                              }}
-                              id="Nome"
-                              freeSolo
-                              value={nome}
-                              onChange={(_, newValue) => {
-                                setValidacaoNome('testar');
-                                if (inputValor && newValue) setNome(newValue);
-                                else setNome('');
-                              }}
-                              onBlur={() => {
-                                if (inputValor.length > 0) {
-                                  setNome(inputValor);
-                                  setValidacaoNome('testar');
-                                }
-                              }}
-                              selectOnFocus
-                              inputValue={inputValor}
-                              onInputChange={(_, newInputValue) => {
-                                if (newInputValue !== '')
-                                  setInputValor(newInputValue.toUpperCase());
-                                else setInputValor('');
-                              }}
-                              options={listaNomes}
+                          <Box>
+                            {/* <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={listaNome}
+                              sx={{ width: 300 }}
                               renderInput={(params) => (
                                 <TextField
-                                  className={classes.textField}
                                   {...params}
-                                  inputRef={nomeRef}
-                                  onKeyDown={handleEnter}
-                                  placeholder="Digite seu Nome"
+                                  onChange={(e) => {
+                                    const searcher = new FuzzySearch(
+                                      rolMembros,
+                                      ['Nome'],
+                                      {
+                                        caseSensitive: false,
+                                      },
+                                    );
+
+                                    setListaNome(searcher.search(querys));
+                                    setNome(e.target.value);
+                                    handleValidacaoClose();
+                                  }}
                                 />
                               )}
+                            /> */}
+                            <TextField
+                              className={classes.tf_s}
+                              inputProps={{
+                                style: {
+                                  textAlign: 'center',
+                                  WebkitBoxShadow:
+                                    '0 0 0 1000px #fafafa  inset',
+                                },
+                              }}
+                              id="Nome"
+                              // label="Matricula"
+                              type="text"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={nome}
+                              variant="standard"
+                              placeholder="Nome completo"
+                              onChange={(e) => {
+                                const searcher = new FuzzySearch(
+                                  rolMembros,
+                                  ['Nome'],
+                                  {
+                                    caseSensitive: false,
+                                  },
+                                );
+                                const listaParcial = searcher.search(nome);
+                                console.log('lista', listaParcial);
+                                setListaNome(searcher.search(querys));
+                                setNome(e.target.value);
+                                handleValidacaoClose();
+                              }}
+                              onFocus={(e) => {
+                                setNome(e.target.value);
+                              }}
+                              onKeyDown={handleEnter}
+                              inputRef={nomeRef}
                             />
                           </Box>
                         </Box>
@@ -795,21 +803,6 @@ function Cadastro({ lideranca, rolMembros }) {
                               style={{ fontSize: '12px' }}
                             >
                               {validacaoNome}
-                            </Box>
-                          </Box>
-                        )}
-                        {validacaoNome === true && (
-                          <Box display="flex" ml={2} mt={0} color="#000">
-                            <SvgIcon sx={{ color: 'green' }}>
-                              <ErrorOutlineIcon />{' '}
-                            </SvgIcon>
-                            <Box
-                              mt={0.5}
-                              ml={2}
-                              color="green"
-                              style={{ fontSize: '12px' }}
-                            >
-                              Nome Encontrado
                             </Box>
                           </Box>
                         )}

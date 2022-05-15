@@ -139,7 +139,7 @@ const primaryMenu = [
   {
     id: 1,
     label: 'Home',
-    path: '/',
+    path: '/logado',
     icon: HomeIcon2,
   },
   {
