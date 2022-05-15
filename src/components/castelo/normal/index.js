@@ -18,12 +18,13 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
+import { signIn, signOut, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import Login from '../botaoLogin';
 import Navbar from './navBar_redesSociais';
 import PesquisaCelulas from './pesquisa/celulas';
 import Contato from './contato';
 import Home from './home';
-
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -142,9 +143,9 @@ function TabPanel(props) {
 function IdpbCastelo({ userIgrejas, title, celulas }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  const router = useRouter();
   const theme = useTheme();
-
+  const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = React.useState(false);
@@ -166,6 +167,15 @@ function IdpbCastelo({ userIgrejas, title, celulas }) {
       setOpen(false);
     }
   };
+
+  if (session) {
+    router.push(
+      {
+        pathname: '/meuPerfil',
+      },
+      '/meuPerfil',
+    );
+  }
   return (
     <div onLoad={handleDrawerClose}>
       <Head>
