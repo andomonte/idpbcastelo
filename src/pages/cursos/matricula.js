@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
   const cursos = await prisma.cursos.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  const inscritosCursos = await prisma.cursosinscritos
+  const inscritosCursos = await prisma.inscritosCursos
     .findMany()
     .finally(async () => {
       await prisma.$disconnect();
