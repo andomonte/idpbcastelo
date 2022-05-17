@@ -16,7 +16,13 @@ export default function TabCelula({ nomesCelulas }) {
   const dados = nomesCelulas.map((row) => createData(row.Nome));
 
   return (
-    <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+    <Paper
+      sx={{
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+      }}
+    >
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableBody>

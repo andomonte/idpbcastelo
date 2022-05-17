@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    borderRadius: '16px',
   },
   button1: {
     display: 'flex',
@@ -138,6 +139,8 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
                   sx={{
                     borderTopLeftRadius: '16px',
                     borderTopRightRadius: '16px',
+                    borderBottomLeftRadius: '16px',
+                    borderBottomRightRadius: '16px',
                   }}
                 >
                   <ResumoParticipacao
@@ -157,78 +160,77 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
               alignItems="center"
               bgcolor={corIgreja.principal}
             >
-              <Box width="100%" ml={1} minWidth={370}>
-                <Grid container spacing={0}>
-                  <Grid container item xs={12} spacing={1}>
-                    <Grid item xs={6}>
-                      <Paper width="100%" className={classes.paper}>
-                        <Box height={30} width="100%" display="flex">
-                          <Box
-                            width="20%"
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="center"
+              <Box mt={5} width="100%" ml={1} minWidth={370}>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={6}>
+                    <Paper width="100%" className={classes.paper}>
+                      <Box height={30} width="100%" display="flex">
+                        <Box
+                          width="20%"
+                          display="flex"
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              handleDecMes();
+                            }}
                           >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                handleDecMes();
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretLeft />
-                            </IconButton>
-                          </Box>
-                          <Box
-                            width="60%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
-                          >
-                            {mes[contMes].descricao} / {contAno}
-                          </Box>
-                          <Box
-                            width="20%"
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                handleIncMes();
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretRight />
-                            </IconButton>
-                          </Box>
+                            <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
+                            <BiCaretLeft />
+                          </IconButton>
                         </Box>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Button
-                        style={{
-                          background: '#ffd740',
-                          color: 'blue',
-                          fontFamily: 'arial black',
-                          width: '100%',
-                          height: '100%',
-                        }}
-                        variant="contained"
-                        id="reload"
-                        onClick={() => {
-                          setOpenBuscar(false);
-                        }}
-                      >
-                        Fechar
-                      </Button>
-                    </Grid>
+                        <Box
+                          width="60%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          {mes[contMes].descricao} / {contAno}
+                        </Box>
+                        <Box
+                          width="20%"
+                          display="flex"
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              handleIncMes();
+                            }}
+                          >
+                            <SvgIcon sx={{ color: corIgreja.iconeOn }} />
+                            <BiCaretRight />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      style={{
+                        background: '#ffd740',
+                        color: 'blue',
+                        fontFamily: 'arial black',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '16px',
+                      }}
+                      variant="contained"
+                      id="reload"
+                      onClick={() => {
+                        setOpenBuscar(false);
+                      }}
+                    >
+                      Fechar
+                    </Button>
                   </Grid>
                 </Grid>
               </Box>

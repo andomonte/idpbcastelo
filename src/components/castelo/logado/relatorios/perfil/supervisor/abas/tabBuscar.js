@@ -405,9 +405,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   }, [semDiscipulado]);
 
   return (
-    <Box height="100%">
+    <Box
+      height="100%"
+      sx={{ borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}
+    >
       <Box
-        bgcolor="#80cbc4"
+        bgcolor="#f4ff81"
         sx={{
           fontFamily: 'arial black',
           fontSize: '12px',
@@ -1104,6 +1107,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         sx={{
           fontFamily: 'arial black',
           borderBottom: '2px solid #000',
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
         }}
         height="16.66%"
         width="100%"
@@ -1256,11 +1261,14 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         </Box>
       </Box>
       <Box
-        bgcolor="#c6ff00"
+        bgcolor="#bdbdbd"
+        mt={2}
         sx={{
           fontFamily: 'arial black',
           fontSize: '12px',
           borderBottom: '2px solid #000',
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
         }}
         height="14.66%"
         width="100%"
@@ -1311,6 +1319,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           fontFamily: 'arial black',
           fontSize: '12px',
           borderBottom: '2px solid #000',
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
         }}
         height="18.66%"
         width="100%"
