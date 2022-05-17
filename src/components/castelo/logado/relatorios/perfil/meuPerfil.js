@@ -37,7 +37,7 @@ function meuPerfil({ secao, perfilUser }) {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="90vh"
+        height={janela.height < 570 ? '85vh' : '90vh'}
         width="95vw"
         minHeight={400}
       >
@@ -197,19 +197,21 @@ function meuPerfil({ secao, perfilUser }) {
                             }}
                           >
                             Função:
+                            {(perfilUser.Funcao === 'Lider' ||
+                              perfilUser.Funcao === 'Membro') && (
+                              <Box
+                                sx={{
+                                  color: '#76ff03',
+                                  fontFamily: 'Times New Roman Times serif',
+                                  fontWeight: 'bold',
+                                }}
+                              >
+                                {perfilUser.Funcao} da Célula{' '}
+                                {perfilUser.Celula}
+                              </Box>
+                            )}
                           </Box>
-                          {(perfilUser.Funcao === 'Lider' ||
-                            perfilUser.Funcao === 'Membro') && (
-                            <Box
-                              sx={{
-                                color: '#76ff03',
-                                fontFamily: 'Times New Roman Times serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {perfilUser.Funcao} da Célula {perfilUser.Celula}
-                            </Box>
-                          )}
+
                           {perfilUser.Funcao === 'Supervisor' && (
                             <Box
                               sx={{
@@ -284,22 +286,24 @@ function meuPerfil({ secao, perfilUser }) {
                             </Box>
                           </Box>
                           <Box
+                            display="flex"
                             sx={{
                               color: '#fff',
                               fontFamily: 'Times New Roman Times serif',
                             }}
                           >
                             Matricula:
-                          </Box>
-                          <Box
-                            sx={{
-                              color: '#76ff03',
-                              fontFamily: 'Times New Roman Times serif',
-                              fontWeight: 'bold',
-                            }}
-                          >
-                            {perfilUser.Igreja}
-                            {perfilUser.RolMembro}{' '}
+                            <Box
+                              ml={1}
+                              sx={{
+                                color: '#76ff03',
+                                fontFamily: 'Times New Roman Times serif',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              {perfilUser.Igreja}
+                              {perfilUser.RolMembro}{' '}
+                            </Box>
                           </Box>
                         </Box>
                       </Box>
