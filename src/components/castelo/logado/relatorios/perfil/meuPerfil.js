@@ -37,9 +37,9 @@ function meuPerfil({ secao, perfilUser }) {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height={janela.height - 56}
+        height="90vh"
         width="95vw"
-        minHeight={500}
+        minHeight={400}
       >
         <Box
           height="100%"
@@ -50,7 +50,7 @@ function meuPerfil({ secao, perfilUser }) {
           alignItems="center"
         >
           <Box
-            minWidth={370}
+            minWidth={300}
             height="100%"
             width="100%"
             maxWidth={600}

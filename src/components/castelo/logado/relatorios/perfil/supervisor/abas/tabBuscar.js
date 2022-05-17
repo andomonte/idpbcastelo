@@ -409,857 +409,896 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       height="100%"
       sx={{ borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}
     >
-      <Box
-        bgcolor="#f4ff81"
-        sx={{
-          fontFamily: 'arial black',
-          fontSize: '12px',
-          borderBottom: '2px solid #000',
-          borderTopLeftRadius: '16px',
-          borderTopRightRadius: '16px',
-        }}
-        height="16.66%"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
+      {sem1 ? (
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
           height="100%"
-          textAlign="center"
-          width="15%"
-        >
-          SEM
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="25%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: '16px',
           }}
         >
-          DATA
+          <Box
+            bgcolor="#f4ff81"
+            sx={{
+              fontFamily: 'arial black',
+              fontSize: '12px',
+              borderBottom: '2px solid #000',
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+            }}
+            height="16.66%"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="15%"
+            >
+              SEM
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="25%"
+              sx={{
+                borderLeft: '2px solid #000',
+                borderRight: '2px solid #000',
+              }}
+            >
+              DATA
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              sx={{
+                borderRight: '2px solid #000',
+              }}
+              width="20%"
+            >
+              CELULA
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              sx={{
+                borderRight: '2px solid #000',
+              }}
+              width="20%"
+            >
+              CELEB.
+            </Box>
+            <Box textAlign="center" width="20%">
+              DISC.
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              fontFamily: 'arial black',
+              borderBottom: '2px solid #000',
+            }}
+            height="16.66%"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="15%"
+            >
+              {semana1}
+            </Box>
+
+            {sem1 ? ( // data semana 1
+              <Box
+                fontSize="12px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {dataSem1.length ? dataSem1 : '-'}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // Celula Semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {presSem1.length ? (
+                  <Box mt={1}>
+                    {presSem1[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // celebracao  semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {celebSem1.length ? (
+                  <Box mt={1}>
+                    {celebSem1[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+            <Box
+              height="100%"
+              display="flex"
+              justifyContent="center"
+              textAlign="center"
+              alignItems="center"
+              width="20%"
+            >
+              {discSem1.length ? ( // discipulado semana 1
+                <Box mt={1}>
+                  {discSem1[0].Presenca ? (
+                    <MdDone size={25} color="green" />
+                  ) : (
+                    <MdOutlineClose size={25} color="red" />
+                  )}
+                </Box>
+              ) : (
+                '-'
+              )}
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              fontFamily: 'arial black',
+              borderBottom: '2px solid #000',
+            }}
+            height="16.66%"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="15%"
+            >
+              {semana2}
+            </Box>
+
+            {sem1 ? ( // data semana 1
+              <Box
+                fontSize="12px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {dataSem2.length ? dataSem2 : '-'}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // Celula Semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {presSem2.length ? (
+                  <Box mt={1}>
+                    {presSem2[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // celebracao  semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {celebSem2.length ? (
+                  <Box mt={1}>
+                    {celebSem2[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+            <Box
+              height="100%"
+              display="flex"
+              justifyContent="center"
+              textAlign="center"
+              alignItems="center"
+              width="20%"
+            >
+              {discSem2.length ? ( // discipulado semana 1
+                <Box mt={1}>
+                  {discSem2[0].Presenca ? (
+                    <MdDone size={25} color="green" />
+                  ) : (
+                    <MdOutlineClose size={25} color="red" />
+                  )}
+                </Box>
+              ) : (
+                '-'
+              )}
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              fontFamily: 'arial black',
+              borderBottom: '2px solid #000',
+            }}
+            height="16.66%"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="15%"
+            >
+              {semana3}
+            </Box>
+
+            {sem1 ? ( // data semana 1
+              <Box
+                fontSize="12px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {dataSem3.length ? dataSem3 : '-'}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // Celula Semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {presSem3.length ? (
+                  <Box mt={1}>
+                    {presSem3[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // celebracao  semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {celebSem3.length ? (
+                  <Box mt={1}>
+                    {celebSem3[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+            <Box
+              height="100%"
+              display="flex"
+              justifyContent="center"
+              textAlign="center"
+              alignItems="center"
+              width="20%"
+            >
+              {discSem3.length ? ( // discipulado semana 1
+                <Box mt={1}>
+                  {discSem3[0].Presenca ? (
+                    <MdDone size={25} color="green" />
+                  ) : (
+                    <MdOutlineClose size={25} color="red" />
+                  )}
+                </Box>
+              ) : (
+                '-'
+              )}
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              fontFamily: 'arial black',
+              borderBottom: '2px solid #000',
+            }}
+            height="16.66%"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="15%"
+            >
+              {semana4}
+            </Box>
+
+            {sem1 ? ( // data semana 1
+              <Box
+                fontSize="12px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {dataSem4.length ? dataSem4 : '-'}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // Celula Semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {presSem4.length ? (
+                  <Box mt={1}>
+                    {presSem4[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // celebracao  semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {celebSem4.length ? (
+                  <Box mt={1}>
+                    {celebSem4[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+            <Box
+              height="100%"
+              display="flex"
+              justifyContent="center"
+              textAlign="center"
+              alignItems="center"
+              width="20%"
+            >
+              {discSem4.length ? ( // discipulado semana 1
+                <Box mt={1}>
+                  {discSem4[0].Presenca ? (
+                    <MdDone size={25} color="green" />
+                  ) : (
+                    <MdOutlineClose size={25} color="red" />
+                  )}
+                </Box>
+              ) : (
+                '-'
+              )}
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              fontFamily: 'arial black',
+              borderBottom: '2px solid #000',
+              borderBottomLeftRadius: '16px',
+              borderBottomRightRadius: '16px',
+            }}
+            height="16.66%"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="15%"
+            >
+              {semana5}
+            </Box>
+
+            {sem1 ? ( // data semana 5
+              <Box
+                fontSize="12px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {dataSem5.length ? dataSem5 : '-'}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="25%"
+                sx={{
+                  borderLeft: '2px solid #000',
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // Celula Semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {presSem5.length ? (
+                  <Box mt={1}>
+                    {presSem5[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+
+            {sem1 ? ( // celebracao  semana 1
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                {celebSem5.length ? (
+                  <Box mt={1}>
+                    {celebSem5[0].Presenca ? (
+                      <MdDone size={25} color="green" />
+                    ) : (
+                      <MdOutlineClose size={25} color="red" />
+                    )}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="20%"
+                sx={{
+                  borderRight: '2px solid #000',
+                }}
+              >
+                <Oval stroke="blue" width={20} height={20} />
+              </Box>
+            )}
+            <Box
+              height="100%"
+              display="flex"
+              justifyContent="center"
+              textAlign="center"
+              alignItems="center"
+              width="20%"
+            >
+              {discSem5.length ? ( // discipulado semana 5
+                <Box mt={1}>
+                  {discSem5[0].Presenca ? (
+                    <MdDone size={25} color="green" />
+                  ) : (
+                    <MdOutlineClose size={25} color="red" />
+                  )}
+                </Box>
+              ) : (
+                '-'
+              )}
+            </Box>
+          </Box>
         </Box>
+      ) : (
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           height="100%"
+          bgcolor="#fafafa"
           textAlign="center"
+          width="100%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRadius: '16px',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: '16px',
           }}
-          width="20%"
         >
-          CELULA
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          sx={{
-            borderRight: '2px solid #000',
-          }}
-          width="20%"
-        >
-          CELEB.
-        </Box>
-        <Box textAlign="center" width="20%">
-          DISC.
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
-        }}
-        height="16.66%"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="15%"
-        >
-          {semana1}
-        </Box>
-
-        {sem1 ? ( // data semana 1
-          <Box
-            fontSize="12px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            {dataSem1.length ? dataSem1 : '-'}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // Celula Semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {presSem1.length ? (
-              <Box mt={1}>
-                {presSem1[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // celebracao  semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {celebSem1.length ? (
-              <Box mt={1}>
-                {celebSem1[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-        <Box
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          textAlign="center"
-          alignItems="center"
-          width="20%"
-        >
-          {discSem1.length ? ( // discipulado semana 1
-            <Box mt={1}>
-              {discSem1[0].Presenca ? (
-                <MdDone size={25} color="green" />
-              ) : (
-                <MdOutlineClose size={25} color="red" />
-              )}
+          <Box>
+            <Box
+              fontSize="16px"
+              fontFamily="arial black"
+              mb={5}
+              mt={5}
+              textAlign="center"
+              color="Blue"
+            >
+              Buscando Dados
             </Box>
-          ) : (
-            '-'
-          )}
+            <Oval stroke="blue" width={50} height="5.5vh" />
+          </Box>
         </Box>
-      </Box>
-
-      <Box
-        sx={{
-          fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
-        }}
-        height="16.66%"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="15%"
-        >
-          {semana2}
-        </Box>
-
-        {sem1 ? ( // data semana 1
-          <Box
-            fontSize="12px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            {dataSem2.length ? dataSem2 : '-'}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // Celula Semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {presSem2.length ? (
-              <Box mt={1}>
-                {presSem2[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // celebracao  semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {celebSem2.length ? (
-              <Box mt={1}>
-                {celebSem2[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-        <Box
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          textAlign="center"
-          alignItems="center"
-          width="20%"
-        >
-          {discSem2.length ? ( // discipulado semana 1
-            <Box mt={1}>
-              {discSem2[0].Presenca ? (
-                <MdDone size={25} color="green" />
-              ) : (
-                <MdOutlineClose size={25} color="red" />
-              )}
-            </Box>
-          ) : (
-            '-'
-          )}
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
-        }}
-        height="16.66%"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="15%"
-        >
-          {semana3}
-        </Box>
-
-        {sem1 ? ( // data semana 1
-          <Box
-            fontSize="12px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            {dataSem3.length ? dataSem3 : '-'}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // Celula Semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {presSem3.length ? (
-              <Box mt={1}>
-                {presSem3[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // celebracao  semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {celebSem3.length ? (
-              <Box mt={1}>
-                {celebSem3[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-        <Box
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          textAlign="center"
-          alignItems="center"
-          width="20%"
-        >
-          {discSem3.length ? ( // discipulado semana 1
-            <Box mt={1}>
-              {discSem3[0].Presenca ? (
-                <MdDone size={25} color="green" />
-              ) : (
-                <MdOutlineClose size={25} color="red" />
-              )}
-            </Box>
-          ) : (
-            '-'
-          )}
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
-        }}
-        height="16.66%"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="15%"
-        >
-          {semana4}
-        </Box>
-
-        {sem1 ? ( // data semana 1
-          <Box
-            fontSize="12px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            {dataSem4.length ? dataSem4 : '-'}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // Celula Semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {presSem4.length ? (
-              <Box mt={1}>
-                {presSem4[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // celebracao  semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {celebSem4.length ? (
-              <Box mt={1}>
-                {celebSem4[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-        <Box
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          textAlign="center"
-          alignItems="center"
-          width="20%"
-        >
-          {discSem4.length ? ( // discipulado semana 1
-            <Box mt={1}>
-              {discSem4[0].Presenca ? (
-                <MdDone size={25} color="green" />
-              ) : (
-                <MdOutlineClose size={25} color="red" />
-              )}
-            </Box>
-          ) : (
-            '-'
-          )}
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
-          borderBottomLeftRadius: '16px',
-          borderBottomRightRadius: '16px',
-        }}
-        height="16.66%"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="15%"
-        >
-          {semana5}
-        </Box>
-
-        {sem1 ? ( // data semana 5
-          <Box
-            fontSize="12px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            {dataSem5.length ? dataSem5 : '-'}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="25%"
-            sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // Celula Semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {presSem5.length ? (
-              <Box mt={1}>
-                {presSem5[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-
-        {sem1 ? ( // celebracao  semana 1
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            {celebSem5.length ? (
-              <Box mt={1}>
-                {celebSem5[0].Presenca ? (
-                  <MdDone size={25} color="green" />
-                ) : (
-                  <MdOutlineClose size={25} color="red" />
-                )}
-              </Box>
-            ) : (
-              '-'
-            )}
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            textAlign="center"
-            width="20%"
-            sx={{
-              borderRight: '2px solid #000',
-            }}
-          >
-            <Oval stroke="blue" width={20} height={20} />
-          </Box>
-        )}
-        <Box
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          textAlign="center"
-          alignItems="center"
-          width="20%"
-        >
-          {discSem5.length ? ( // discipulado semana 5
-            <Box mt={1}>
-              {discSem5[0].Presenca ? (
-                <MdDone size={25} color="green" />
-              ) : (
-                <MdOutlineClose size={25} color="red" />
-              )}
-            </Box>
-          ) : (
-            '-'
-          )}
-        </Box>
-      </Box>
+      )}
       <Box
         bgcolor="#bdbdbd"
         mt={2}
@@ -1287,7 +1326,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '2px solid #000',
           }}
         >
-          ULTIMO CURSO
+          ÚLTIMO CURSO
         </Box>
         <Box
           display="flex"

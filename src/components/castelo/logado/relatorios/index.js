@@ -29,6 +29,7 @@ import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
 
 import RelCelula from './relCelula';
+import RelVisitasSuper from './relVisitaSuper';
 import RelCelulaSup from './relCelulaSup';
 
 import RelCelebracao from './relCelebracao';
@@ -454,7 +455,14 @@ function Relatorios({
               />
             ) : null}
             {perfilUser.Funcao === 'Secretaria' ? <CadastroUser /> : null}
-            {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'Supervisor' ? (
+              <RelVisitasSuper
+                perfilUser={perfilUser}
+                secao={session}
+                rolMembros={rolMembros}
+                visitantes={visitantes}
+              />
+            ) : null}
             {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
             {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
             {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}

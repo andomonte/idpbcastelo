@@ -5,7 +5,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
-import PegaSemana from 'src/utils/getSemana';
+
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
 import PegaMes from 'src/utils/getMes';
 /* import DateFnsUtils from '@date-io/date-fns';
@@ -14,7 +14,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers'; 
 import moment from 'moment'; */
-import Meses from 'src/utils/meses';
+import Meses from 'src/utils/mesesAbrev';
 
 import TabCelula from './abas/tabRelSuper';
 import TabResumo from './abas/tabResumo';
@@ -56,7 +56,7 @@ function RelCelula({ perfilUser, lideranca }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-  let semana = PegaSemana(contMes, contAno);
+
   const dataAtual = Date.now();
   const semanaAtual = PegaSemanaAtual(dataAtual);
 
@@ -77,42 +77,6 @@ function RelCelula({ perfilUser, lideranca }) {
   const [numeroCelula] = React.useState(uniqueArr);
 
   //  const [contCelula, setContCelula] = React.useState(0);
-
-  const handleIncMes = () => {
-    let contMesAtual = contMes + 1;
-    let contAnoAtual = contAno;
-    if (contMesAtual > mesAtual && anoAtual === contAno)
-      contMesAtual = mesAtual;
-    if (contMesAtual > 11) {
-      contMesAtual = 0;
-      contAnoAtual = contAno + 1;
-      if (contAnoAtual > anoAtual) contAnoAtual = anoAtual;
-      setContAno(contAnoAtual);
-    }
-
-    semana = PegaSemana(contMesAtual, contAnoAtual);
-    if (mesAtual !== contMes) setContSemana(semana);
-    else setContSemana(semanaAtual);
-
-    setContMes(contMesAtual);
-  };
-  const handleDecMes = () => {
-    let contMesAtual = contMes - 1;
-    let contAnoAtual = contAno;
-    if (contMesAtual < 0) {
-      contMesAtual = 11;
-      contAnoAtual = contAno - 1;
-
-      if (contAnoAtual < 2021) contAnoAtual = 2021;
-      setContAno(contAnoAtual);
-    }
-
-    semana = PegaSemana(contMesAtual, contAnoAtual);
-    if (mesAtual !== contMesAtual) setContSemana(semana);
-    else setContSemana(semanaAtual);
-
-    setContMes(contMesAtual);
-  };
 
   /* const handleIncCelula = () => {
     let contCelulaAtual = contCelula + 1;
@@ -183,111 +147,77 @@ function RelCelula({ perfilUser, lideranca }) {
                 }}
               >
                 <Box width="100%" ml={1} minWidth={370}>
-                  <Grid container spacing={0}>
-                    <Grid container item xs={12} spacing={1}>
-                      <Label lab1="Selecione o Mês" lab2="Escolha a Célula" />
-                      <Grid item xs={6}>
-                        <Paper width="100%" className={classes.paper}>
-                          <Box height={25} width="100%" display="flex">
-                            <Box
-                              width="20%"
-                              display="flex"
-                              justifyContent="flex-end"
-                              alignItems="center"
+                  <Grid container spacing={1} item xs={12}>
+                    <Grid item xs={8}>
+                      <Label lab1="Escolha a Semana" />
+                      <Paper width="100%" className={classes.paper}>
+                        <Box height={30} width="100%" display="flex">
+                          <Box
+                            width="20%"
+                            display="flex"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                              onClick={() => {
+                                handleDecSemana();
+                              }}
                             >
-                              <IconButton
-                                color="primary"
-                                aria-label="upload picture"
-                                component="span"
-                                onClick={() => {
-                                  handleDecMes();
-                                }}
-                              >
-                                <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                                <BiCaretLeft />
-                              </IconButton>
-                            </Box>
-                            <Box
-                              width="60%"
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                              sx={{ fontFamily: 'arial black' }}
-                            >
-                              {mes[contMes].descricao}
-                            </Box>
-                            <Box
-                              width="20%"
-                              display="flex"
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <IconButton
-                                color="primary"
-                                aria-label="upload picture"
-                                component="span"
-                                onClick={() => {
-                                  handleIncMes();
-                                }}
-                              >
-                                <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                                <BiCaretRight />
-                              </IconButton>
-                            </Box>
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
+                              <BiCaretLeft size={30} />
+                            </IconButton>
                           </Box>
-                        </Paper>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Paper width="100%" className={classes.paper}>
-                          <Box height={25} width="100%" display="flex">
-                            <Box
-                              width="20%"
-                              display="flex"
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <IconButton
-                                color="primary"
-                                aria-label="upload picture"
-                                component="span"
-                                onClick={() => {
-                                  handleDecSemana();
-                                }}
-                              >
-                                <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                                <BiCaretLeft />
-                              </IconButton>
-                            </Box>
-                            <Box
-                              width="60%"
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                              sx={{ fontFamily: 'arial black' }}
-                            >
-                              Semana - {contSemana}
-                            </Box>
-                            <Box
-                              width="20%"
-                              display="flex"
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <IconButton
-                                color="primary"
-                                aria-label="upload picture"
-                                component="span"
-                                onClick={() => {
-                                  handleIncSemana();
-                                }}
-                              >
-                                <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                                <BiCaretRight />
-                              </IconButton>
-                            </Box>
+                          <Box
+                            width="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            fontSize="16px"
+                            sx={{ fontFamily: 'arial black' }}
+                          >
+                            SEMANA - {contSemana}
                           </Box>
-                        </Paper>
-                      </Grid>
+                          <Box
+                            width="20%"
+                            display="flex"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                              onClick={() => {
+                                handleIncSemana();
+                              }}
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />
+                              <BiCaretRight size={30} />
+                            </IconButton>
+                          </Box>
+                        </Box>
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Box width="100%" ml={1}>
+                        <Label lab1="Mes / Ano" />
+                      </Box>
+                      <Paper width="100%" className={classes.paper}>
+                        <Box height={30} width="100%" display="flex">
+                          <Box
+                            width="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            sx={{ fontFamily: 'arial black' }}
+                          >
+                            {mes[contMes].descricao} / {contAno}
+                          </Box>
+                        </Box>
+                      </Paper>
                     </Grid>
                   </Grid>
                 </Box>
@@ -322,7 +252,7 @@ function RelCelula({ perfilUser, lideranca }) {
                       fontSize: '14px',
                     }}
                   >
-                    RELATÓRIOS DAS CÉLULAS - Ano de {contAno}
+                    RELATÓRIOS DAS CÉLULAS
                   </Box>
                   <Box
                     height="85%"

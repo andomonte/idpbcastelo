@@ -136,7 +136,7 @@ function Celula({ perfilUser, lideranca, rolMembros }) {
                             width="100%"
                             display="flex"
                           >
-                            <Box ml={0} width="100%" display="flex">
+                            <Box ml={-1.8} width="100%" display="flex">
                               <Box
                                 width="20%"
                                 display="flex"
@@ -195,59 +195,14 @@ function Celula({ perfilUser, lideranca, rolMembros }) {
                         <Paper width="100%" className={classes.paper}>
                           <Box
                             height={30}
+                            alignItems="center"
                             justifyContent="center"
+                            fontSize="18px"
+                            sx={{ fontFamily: 'arial black' }}
                             width="100%"
                             display="flex"
                           >
-                            <Box ml={0} width="100%" display="flex">
-                              <Box
-                                width="20%"
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                              >
-                                <IconButton
-                                  color="primary"
-                                  aria-label="upload picture"
-                                  component="span"
-                                  onClick={() => {
-                                    handleDecCelula();
-                                  }}
-                                >
-                                  <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                                  <BiCaretLeft />
-                                </IconButton>
-                              </Box>
-                              <Box
-                                width="60%"
-                                ml={0}
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                fontSize="18px"
-                                sx={{ fontFamily: 'arial black' }}
-                              >
-                                <Box width="100%">{membroCelula.length}</Box>
-                              </Box>
-                              <Box
-                                width="20%"
-                                display="flex"
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <IconButton
-                                  color="primary"
-                                  aria-label="upload picture"
-                                  component="span"
-                                  onClick={() => {
-                                    handleIncCelula();
-                                  }}
-                                >
-                                  <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                                  <BiCaretRight />
-                                </IconButton>
-                              </Box>
-                            </Box>
+                            {membroCelula.length}
                           </Box>
                         </Paper>
                       </Grid>

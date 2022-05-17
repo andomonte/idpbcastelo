@@ -1126,12 +1126,7 @@ export default function TabCelula({
                   >
                     Buscando Dados
                   </Box>
-                  <Oval
-                    stroke="blue"
-                    width={50}
-                    height="5.5vh"
-                    minHeight={30}
-                  />
+                  <Oval stroke="blue" width={50} height="5.5vh" />
                 </Box>
               </Box>
             </TableContainer>
