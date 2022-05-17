@@ -173,13 +173,6 @@ function Cadastro({ lideranca, rolMembros }) {
     );
   };
   React.useEffect(() => {
-    console.log(
-      'valor nm,nl,ul,um',
-      novoMembro.length,
-      novoLider.length,
-      usuarioLider.length,
-      usuarioMembro.length,
-    );
     if (
       novoMembro.length >= usuarioMembro.length &&
       novoLider.length >= usuarioLider.length

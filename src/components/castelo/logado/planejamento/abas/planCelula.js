@@ -238,7 +238,7 @@ function createListaMembros(value, label) {
 
 function RelatorioCelebracao({ planCelula }) {
   const classes = useStyles();
-  console.log('ROL', planCelula);
+
   const dadosUser = [];
   dadosUser[0] = planCelula;
 

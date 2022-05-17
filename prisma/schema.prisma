@@ -35,22 +35,6 @@ model cursos {
   Fim    String @db.VarChar(25)
 }
 
-model cursosinscritos {
-  id         Int    @id @default(autoincrement())
-  CPF        String @db.Text
-  RG         String @db.Text
-  idCurso    String @db.Text
-  Nome       String @db.Text
-  Nascimento String @db.Text
-  Contato    String @db.Text
-  Email      String @db.Text
-  Igreja     String @db.Text
-  Status     String @db.Text
-  Rol        String @db.Text
-  Nota       String @db.Text
-  CreatedAt  String @db.Text
-}
-
 model eventosCelulas {
   id        Int      @id @default(autoincrement())
   Data      String   @db.VarChar(25)
@@ -261,4 +245,36 @@ model relatorioSupervisao {
   EtapasCelula   String @db.Text
   Local          String @db.Text
   Observacoes    String @db.Text
+}
+
+model contribuicoes {
+  id        Int      @unique @default(autoincrement())
+  RolMembro Int      @id
+  Nome      String   @db.Text
+  Semana    Int
+  Mes       String   @db.VarChar(2)
+  Data      String   @db.VarChar(25)
+  Ano       String   @db.VarChar(5)
+  Tipo      String   @db.VarChar(45)
+  Valor     String   @db.VarChar(145)
+  CriadoPor String   @db.VarChar(245)
+  CriandaEm DateTime @db.DateTime(0)
+}
+
+model inscritosCursos {
+  id         Int      @id @default(autoincrement())
+  CPF        String   @db.VarChar(45)
+  NomeCurso  String   @db.Text
+  idCurso    String   @db.Text
+  DataCurso  String?  @db.VarChar(45)
+  Nome       String   @db.Text
+  Nascimento String   @db.VarChar(25)
+  Contato    String   @db.VarChar(25)
+  Email      String   @db.Text
+  Igreja     String   @db.Text
+  Status     String   @db.Text
+  RolMembro  Int
+  Nota       String   @db.VarChar(45)
+  Frequencia String   @db.VarChar(45)
+  CreatedAt  DateTime @db.DateTime(0)
 }

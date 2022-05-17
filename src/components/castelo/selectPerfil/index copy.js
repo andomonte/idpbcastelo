@@ -374,7 +374,7 @@ function SelectPerfil() {
                             <MenuItem value={perfilSelect}>
                               <em>Escolha seu Perfil</em>
                             </MenuItem>
-                            {console.log('vl perfil', valorPerfil)}
+
                             {valorPerfil?.map((items) => (
                               <MenuItem key={items.id} value={items.id}>
                                 {items.Descricao ?? items.Descricao}
@@ -394,7 +394,7 @@ function SelectPerfil() {
         </Box>
       </Box>
     );
-    console.log('start', start);
+
     if (start) {
       if (valorPerfil.length === 1 && perfilUser === '')
         setPerfilUser(valorPerfil);

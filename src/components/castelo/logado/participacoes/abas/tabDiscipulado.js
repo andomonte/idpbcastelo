@@ -129,14 +129,13 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
   }, [sem3]);
 
   React.useEffect(() => {
-    console.log('presCelula');
     if (sem4 && sem4.length) {
       const presCelula = sem4.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
-      console.log(presCelula[0].NomesMembros);
+
       if (presCelula.length) {
         const nomes = Object.keys(presCelula).map((i) =>
           JSON.parse(presCelula[Number(i)].NomesMembros),

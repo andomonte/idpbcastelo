@@ -20,14 +20,19 @@ import Login from 'src/components/botaoLogin';
 import PersonIcon from '@material-ui/icons/Person';
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
+
+import { MdGroupWork } from 'react-icons/md';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
+
 import NabarSecretaria from '../../navBar/secretaria';
 import NabarMembro from '../../navBar/membro';
 import NabarLider from '../../navBar/lider';
 import NavbarSuper from '../../navBar/supervisor';
 import NavbarCoord from '../../navBar/coordenador';
 import Endereco from './endereco';
+import Liderados from './liderados';
+import Membros from './membros';
 import CelulaMembro from './membro/celula';
 import CelulaLider from './lider/celula';
 import MeuPerfil from './meuPerfil';
@@ -192,76 +197,295 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                 />
               ) : null}
             </Box>
+            {perfilUser.Funcao === 'Membro' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Meu"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Local"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaHome />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <FaHome />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Celula"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
 
-            <Box display="flex" m={0}>
-              <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                fontSize="large"
-                showLabels
-                className={classes.rootTopbarIcon}
-              >
-                <BottomNavigationAction
-                  style={
-                    value === 0
-                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                      : { color: '#eeeeee', fontSize: '18px' }
-                  }
-                  label="Meu"
-                  icon={
-                    value === 0 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <PersonIcon />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: '#eeeeee' }}>
-                        <PersonIcon />
-                      </SvgIcon>
-                    )
-                  }
-                />
-                <BottomNavigationAction
-                  style={
-                    value === 1
-                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                      : { color: '#eeeeee', fontSize: '18px' }
-                  }
-                  label="Local"
-                  icon={
-                    value === 1 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <FaHome />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: '#eeeeee' }}>
-                        <FaHome />
-                      </SvgIcon>
-                    )
-                  }
-                />
-                <BottomNavigationAction
-                  style={
-                    value === 2
-                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
-                      : { color: '#eeeeee', fontSize: '12px' }
-                  }
-                  label="Celula"
-                  icon={
-                    value === 2 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <IoIosPeople />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: '#eeeeee' }}>
-                        <IoIosPeople />
-                      </SvgIcon>
-                    )
-                  }
-                />
-              </BottomNavigation>
-            </Box>
+            {perfilUser.Funcao === 'Lider' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Meu"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Local"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaHome />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <FaHome />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Celula"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
+            {perfilUser.Funcao === 'Secretaria' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Meu"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Local"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaHome />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <FaHome />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Celula"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
+            {(perfilUser.Funcao === 'Supervisor' ||
+              perfilUser.Funcao === 'Coordenador' ||
+              perfilUser.Funcao === 'PastorDistrito' ||
+              perfilUser.Funcao === 'Presidente') && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Meu"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <PersonIcon />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Liderados"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <MdGroupWork />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <MdGroupWork />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Membros"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
+
             <Login />
           </Toolbar>
         </AppBar>
@@ -366,7 +590,13 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                   />
                 ) : null}
                 {perfilUser.Funcao === 'Secretaria' ? <CadastroUser /> : null}
-                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Supervisor' ? (
+                  <Liderados
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
@@ -390,7 +620,14 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
               />
             ) : null}
             {perfilUser.Funcao === 'Secretaria' ? <CadastroUser /> : null}
-            {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'Supervisor' ? (
+              <Membros
+                secao={session}
+                perfilUser={perfilUser}
+                lideranca={lideranca}
+                rolMembros={rolMembros}
+              />
+            ) : null}
             {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
             {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
             {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}

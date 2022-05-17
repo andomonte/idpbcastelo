@@ -36,7 +36,6 @@ function selectPerfil({ userIgrejas, celulas }) {
     return 0;
   }, [liders]);
 
-  console.log(rolMembros.length, lideranca.length);
   return (
     <div>
       {rolMembros.length && lideranca.length ? (

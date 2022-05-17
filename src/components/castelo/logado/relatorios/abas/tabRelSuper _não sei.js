@@ -15,7 +15,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function TabCelula({ Mes, Ano, perfilUser, numeroCelula }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-  console.log(numeroCelula);
+
   const [presSem1, setPresSem1] = React.useState(false);
   const [dataSem1, setDataSem1] = React.useState([]);
   const [presSem2, setPresSem2] = React.useState([]);
@@ -260,7 +260,6 @@ export default function TabCelula({ Mes, Ano, perfilUser, numeroCelula }) {
               borderRight: '2px solid #000',
             }}
           >
-            {console.log('presSem1', presSem1)}
             {presSem1.length ? presSem1[0].Data : '-'}
           </Box>
         ) : (

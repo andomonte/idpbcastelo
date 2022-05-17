@@ -131,7 +131,9 @@ export default function TabCelula({
                     <MdDeleteForever size={20} color="#455a64" />
                   </Box>
                   <Box width="100%" display="flex" alignItems="center" ml={1}>
-                    {row.Nome}
+                    {row.Nome.length > 30
+                      ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))
+                      : row.Nome}
                   </Box>
                   <Box
                     onClick={() => {

@@ -36,7 +36,7 @@ const handler = async (req, res) => {
           ...dados,
         },
       });
-      console.log(dados);
+
       res.status(200).send('OK');
     } catch (errors) {
       console.log('erro aqui', errors);

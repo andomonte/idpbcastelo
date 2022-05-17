@@ -183,7 +183,7 @@ function Cadastro({ lideranca, rolMembros }) {
       usuarioLider.length,
       usuarioMembro.length,
     ); */
-    console.log('cadastroConcluido:', cadastroConcluido);
+
     if (cadastroConcluido) {
       if (lideranca.length && members.length) {
         secao = lideres.filter((val) => val.Email === session.user.email);
@@ -317,7 +317,6 @@ function Cadastro({ lideranca, rolMembros }) {
       // expected output: Object { a: 1, b: 4, c: 5 }
 
       setPerfilUserFinal(valorPerfil);
-      console.log('agora veio o novo valor de perfilUserFinal', valorPerfil);
       setOpenSelect(true);
     }
     return 0;
@@ -357,7 +356,6 @@ function Cadastro({ lideranca, rolMembros }) {
   };
 
   React.useEffect(() => {
-    console.log('contId:', contId, 'usuarioLider:', usuarioLider.length);
     if (contId !== 0) {
       if (contId - 1 < usuarioLider.length) {
         cadastrarEmailLider();
@@ -426,7 +424,6 @@ function Cadastro({ lideranca, rolMembros }) {
 
         .then((response) => {
           if (response) {
-            console.log(response);
             mutate(url);
             handleCheckDadosLideranca();
           }
@@ -466,21 +463,11 @@ function Cadastro({ lideranca, rolMembros }) {
           if (checarNome[0].Nascimento === nascimento) {
             setValidacaoNascimento(true);
             valNasc = true;
-            console.log('são iguais');
           } else {
             valNasc = false;
             setValidacaoNascimento(false);
-            console.log('Não são iguais');
           }
           setValidacaoNascimento(valNasc);
-          console.log(
-            'valNasc',
-            validacaoNascimento,
-            checarNome[0].Nascimento,
-            nascimento,
-            valNasc,
-          );
-
           if (valNasc) {
             setUsuarioMembro(checarNome);
             cadastrarEmailMembro();
