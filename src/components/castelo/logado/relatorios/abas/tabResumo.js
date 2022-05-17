@@ -459,12 +459,12 @@ export default function TabCelula({
   //= ==================================================================
 
   const body = (
-    <Box mt={0} ml={0} width="100vw" minHeight={500}>
+    <Box mt={0} ml={0} width="100vw" height="90vh" minHeight={500}>
       <Box
-        height="90vh"
+        height="100%"
         width="100%"
         minWidth={300}
-        minHeight={550}
+        minHeight={500}
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -477,7 +477,7 @@ export default function TabCelula({
             fontFamily="arial black"
             fontSize="16px"
             textAlign="center"
-            mt={0}
+            mt={-1}
             color="yellow"
           >
             <Box color="#ffff8d" mr={2}>
@@ -485,138 +485,7 @@ export default function TabCelula({
             </Box>
             <Box color="#ffffff">Célula {dadosCelula.Celula} </Box>
           </Box>
-          <Box
-            mt={2}
-            bgcolor="#c5cae9"
-            fontSize="14px"
-            sx={{
-              borderTopLeftRadius: '16px',
-              borderTopRightRadius: '16px',
-              fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
-            }}
-            height={50}
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
-              fontSize="16px"
-              textAlign="center"
-              width="50%"
-              minWidth={370 / 2}
-              flexDirection="column"
-              sx={{
-                borderRight: '2px solid #000',
-              }}
-            >
-              <Box fontFamily="arial black"> Média de Crescimento</Box>
-              <Box mt={0} color="red">
-                <Box fontFamily="arial black">
-                  {mediaCrescimento !== 'NaN' ? (
-                    <Box mt={0.6} color="red">
-                      {mediaCrescimento}
-                    </Box>
-                  ) : (
-                    '-'
-                  )}
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="column"
-              height="100%"
-              fontSize="16px"
-              textAlign="center"
-              width="50%"
-              minWidth={370 / 2}
-            >
-              <Box>Ranking Semanal</Box>
-              <Box>
-                {rankGeral.length && rank && rankGeral[rank - 1] ? (
-                  <Box mt={0.6} color="red">
-                    {rankGeral[rank - 1].TotalRank.toString().replace('.', ',')}
-                  </Box>
-                ) : (
-                  '-'
-                )}
-              </Box>
-            </Box>
-          </Box>
-          <Box
-            bgcolor="#faffca"
-            fontSize="12px"
-            sx={{
-              borderBottom: '2px solid #000',
-              borderBottomLeftRadius: '16px',
-              borderBottomRightRadius: '16px',
-            }}
-            height={50}
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
-              textAlign="center"
-              width="50%"
-              flexDirection="column"
-              sx={{
-                borderRight: '2px solid #000',
-              }}
-            >
-              {rankGeral.length && rank && rankGeral[rank - 1] ? (
-                <Box
-                  fontFamily="arial black"
-                  color="#000"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  width="100%"
-                  mt={0.5}
-                >
-                  {mediaCrescimento && mediaCrescimento > 0 ? (
-                    <Emojis tipo="alegre" />
-                  ) : (
-                    <Box>
-                      {Number(mediaCrescimento) === 0 ? (
-                        <Emojis tipo="igual" />
-                      ) : (
-                        <Emojis tipo="triste" />
-                      )}
-                    </Box>
-                  )}
-                </Box>
-              ) : (
-                '-'
-              )}
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
-              textAlign="center"
-              width="50%"
-              fontFamily="arial black"
-              fontSize="18px"
-              color="blue"
-            >
-              {rank ? <Box mt={0.6}>{rank}º Lugar</Box> : '-'}
-            </Box>
-          </Box>
+
           <Box
             bgcolor="#80cbc4"
             fontSize="14px"
@@ -683,7 +552,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 bgcolor="#fafafa"
               >
                 <Box
@@ -760,7 +630,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 bgcolor="#fafafa"
               >
                 <Box
@@ -837,7 +708,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 bgcolor="#fafafa"
               >
                 <Box
@@ -917,7 +789,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 fontSize="14px"
                 bgcolor="#fafafa"
               >
@@ -995,7 +868,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 bgcolor="#fafafa"
               >
                 <Box
@@ -1071,7 +945,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 bgcolor="#fafafa"
                 sx={{
                   fontFamily: 'arial black',
@@ -1150,7 +1025,8 @@ export default function TabCelula({
                 mt={0}
                 display="flex"
                 alignItems="center"
-                height={38}
+                height="5.5vh"
+                minHeight={30}
                 bgcolor="#fafafa"
                 sx={{
                   borderBottomLeftRadius: '16px',
@@ -1250,12 +1126,149 @@ export default function TabCelula({
                   >
                     Buscando Dados
                   </Box>
-                  <Oval stroke="blue" width={50} height={38} />
+                  <Oval
+                    stroke="blue"
+                    width={50}
+                    height="5.5vh"
+                    minHeight={30}
+                  />
                 </Box>
               </Box>
             </TableContainer>
           )}
-          <Box mt={1} display="flex" justifyContent="center">
+          <Box
+            mt="5vh"
+            bgcolor="#c5cae9"
+            fontSize="14px"
+            sx={{
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+              fontFamily: 'arial black',
+              borderBottom: '2px solid #000',
+            }}
+            height={50}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              fontSize="16px"
+              textAlign="center"
+              width="50%"
+              minWidth={370 / 2}
+              flexDirection="column"
+              sx={{
+                borderRight: '2px solid #000',
+              }}
+            >
+              <Box fontFamily="arial black">Crescimento</Box>
+              <Box mt={0} color="red">
+                <Box fontFamily="arial black">
+                  {mediaCrescimento !== 'NaN' ? (
+                    <Box mt={0} color="red">
+                      {mediaCrescimento} %
+                    </Box>
+                  ) : (
+                    '-'
+                  )}
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
+              height="100%"
+              fontSize="16px"
+              textAlign="center"
+              width="50%"
+              minWidth={370 / 2}
+            >
+              <Box>Ranking Semanal</Box>
+              <Box>
+                {rankGeral.length && rank && rankGeral[rank - 1] ? (
+                  <Box mt={0} color="red">
+                    {rankGeral[rank - 1].TotalRank.toString().replace('.', ',')}
+                  </Box>
+                ) : (
+                  '-'
+                )}
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            bgcolor="#faffca"
+            fontSize="12px"
+            sx={{
+              borderBottom: '2px solid #000',
+              borderBottomLeftRadius: '16px',
+              borderBottomRightRadius: '16px',
+            }}
+            height={50}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="50%"
+              flexDirection="column"
+              sx={{
+                borderRight: '2px solid #000',
+              }}
+            >
+              {rankGeral.length && rank && rankGeral[rank - 1] ? (
+                <Box
+                  fontFamily="arial black"
+                  color="#000"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  width="100%"
+                  mt={0.5}
+                >
+                  {mediaCrescimento && mediaCrescimento > 0 ? (
+                    <Emojis tipo="alegre" />
+                  ) : (
+                    <Box>
+                      {Number(mediaCrescimento) === 0 ? (
+                        <Emojis tipo="igual" />
+                      ) : (
+                        <Emojis tipo="triste" />
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              ) : (
+                '-'
+              )}
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="50%"
+              fontFamily="arial black"
+              fontSize="18px"
+              color="blue"
+            >
+              {rank ? <Box mt={0.6}>{rank}º Lugar</Box> : '-'}
+            </Box>
+          </Box>
+          <Box mt="3vh" display="flex" justifyContent="center">
             <Grid container spacing={6}>
               <Grid container item xs={6}>
                 <Paper width="100%">
