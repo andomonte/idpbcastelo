@@ -34,9 +34,9 @@ export default function TabCelula({
   const [pontosSem4, setPontosSem4] = React.useState([]);
   const [celebracaoSem1, setCelebracaoSem1] = React.useState([]);
   const [discipuladoSem1, setDiscipuladoSem1] = React.useState([]);
-  const [presentesCelula, setPresentesCelula] = React.useState(0);
-  const [presentesCelebracao, setPresentesCelebracao] = React.useState(0);
-  const [presentesDisc, setPresentesDisc] = React.useState(0);
+  const [presentesCelula, setPresentesCelula] = React.useState('');
+  const [presentesCelebracao, setPresentesCelebracao] = React.useState('');
+  const [presentesDisc, setPresentesDisc] = React.useState('');
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
   const [dadosCelula, setDadosCelula] = React.useState(dadosCelulaSend);
@@ -77,7 +77,9 @@ export default function TabCelula({
     setCelebracaoSem1([]);
     setDiscipuladoSem1([]);
     setDiscipuladoSem1([]);
-
+    setPresentesCelula('');
+    setPresentesCelebracao('');
+    setPresentesDisc('');
     setPontosSem([]);
     setPontosSem2([]);
     setPontosSem3([]);
@@ -362,6 +364,7 @@ export default function TabCelula({
   } */
 
   React.useEffect(() => {
+    console.log('entrou antes do erro');
     if (discipuladoSem1.length) {
       const idCelula = dadosCelula.Celula;
       const index = pontos.map((e) => e.Celula).indexOf(idCelula);
@@ -371,21 +374,22 @@ export default function TabCelula({
 
     const myMedia = [];
 
-    if (dadosPontuacao1 && dadosPontuacao1) {
+    if (dadosPontuacao1 && dadosPontuacao1 !== undefined) {
       myMedia.push(dadosPontuacao1.Total);
     }
-    if (dadosPontuacao2 && dadosPontuacao2) {
+    if (dadosPontuacao2 && dadosPontuacao2 !== undefined) {
       myMedia.push(dadosPontuacao2.Total);
     }
-    if (dadosPontuacao3 && dadosPontuacao3) {
-      myMedia.push(dadosPontuacao2.Total);
+    if (dadosPontuacao3 && dadosPontuacao3 !== undefined) {
+      myMedia.push(dadosPontuacao3.Total);
     }
-    if (dadosPontuacao4 && dadosPontuacao4) {
-      myMedia.push(dadosPontuacao2.Total);
+    if (dadosPontuacao4 && dadosPontuacao4 !== undefined) {
+      myMedia.push(dadosPontuacao4.Total);
     }
 
     let somaTotais = 0;
     let contElementos = 0;
+
     for (let i = 0; i < myMedia.length; i += 1) {
       if (myMedia[i]) {
         somaTotais += Number(myMedia[i]);
@@ -418,7 +422,7 @@ export default function TabCelula({
   React.useEffect(() => {
     // 2, isto é, Venda1 e Venda2
 
-    if (Object.keys(dadosCelula).length) {
+    if (dadosCelula.Adultos !== undefined) {
       let somaPresentes = 0;
       if (dadosCelula.Adultos) somaPresentes += dadosCelula.Adultos;
       if (dadosCelula.Criancas) somaPresentes += dadosCelula.Criancas;
@@ -431,7 +435,7 @@ export default function TabCelula({
   React.useEffect(() => {
     // 2, isto é, Venda1 e Venda2
 
-    if (Object.keys(dadosCelebracao).length) {
+    if (dadosCelebracao.Adultos !== undefined) {
       let somaPresentes = 0;
       if (dadosCelebracao.Adultos) somaPresentes += dadosCelebracao.Adultos;
       if (dadosCelebracao.Criancas) somaPresentes += dadosCelebracao.Criancas;
@@ -445,7 +449,7 @@ export default function TabCelula({
   React.useEffect(() => {
     // 2, isto é, Venda1 e Venda2
 
-    if (Object.keys(dadosDiscipulado).length) {
+    if (dadosDiscipulado.Adultos !== undefined) {
       let somaPresentes = 0;
       if (dadosDiscipulado.Adultos) somaPresentes += dadosDiscipulado.Adultos;
       if (dadosDiscipulado.Criancas) somaPresentes += dadosDiscipulado.Criancas;
@@ -488,7 +492,7 @@ export default function TabCelula({
 
           <Box
             bgcolor="#80cbc4"
-            fontSize="14px"
+            fontSize="3vw"
             sx={{
               fontFamily: 'arial black',
               borderBottom: '2px solid #000',
@@ -574,7 +578,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     Adultos
                   </Box>
@@ -652,7 +656,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     Criancas
                   </Box>
@@ -730,7 +734,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     Visitantes
                   </Box>
@@ -742,7 +746,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                     sx={{
                       borderLeft: '2px solid #000',
                       borderRight: '2px solid #000',
@@ -760,7 +764,7 @@ export default function TabCelula({
                     textAlign="center"
                     alignItems="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                     sx={{
                       borderRight: '2px solid #000',
                     }}
@@ -775,7 +779,7 @@ export default function TabCelula({
                     justifyContent="center"
                     textAlign="center"
                     alignItems="center"
-                    fontSize="14px"
+                    fontSize="3vw"
                     width="25%"
                   >
                     {dadosDiscipulado.Visitantes !== undefined
@@ -791,7 +795,7 @@ export default function TabCelula({
                 alignItems="center"
                 height="5.5vh"
                 minHeight={30}
-                fontSize="14px"
+                fontSize="3vw"
                 bgcolor="#fafafa"
               >
                 <Box
@@ -812,7 +816,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     Conversões
                   </Box>
@@ -856,7 +860,7 @@ export default function TabCelula({
                     textAlign="center"
                     alignItems="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     {dadosDiscipulado.Conversoes !== undefined
                       ? dadosDiscipulado.Conversoes
@@ -890,7 +894,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     Visitas
                   </Box>
@@ -970,7 +974,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                   >
                     Leitura
                   </Box>
@@ -1015,8 +1019,8 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                   >
-                    {dadosDiscipulado.Leitura !== undefined
-                      ? dadosDiscipulado.Leitura
+                    {dadosDiscipulado.LeituraBiblica !== undefined
+                      ? dadosDiscipulado.LeituraBiblica
                       : '-'}
                   </Box>
                 </Box>
@@ -1050,7 +1054,7 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="14px"
+                    fontSize="3vw"
                     color="blue"
                   >
                     Presentes
@@ -1069,7 +1073,7 @@ export default function TabCelula({
                       borderRight: '2px solid #000',
                     }}
                   >
-                    {presentesCelula || '-'}
+                    {presentesCelula !== '' ? presentesCelula : '-'}
                   </Box>
 
                   <Box
@@ -1084,7 +1088,7 @@ export default function TabCelula({
                       borderRight: '2px solid #000',
                     }}
                   >
-                    {presentesCelebracao || '-'}
+                    {presentesCelebracao !== '' ? presentesCelebracao : '-'}
                   </Box>
                   <Box
                     display="flex"
@@ -1095,7 +1099,7 @@ export default function TabCelula({
                     width="25%"
                     color="blue"
                   >
-                    {presentesDisc || '-'}
+                    {presentesDisc !== '' ? presentesDisc : '-'}
                   </Box>
                 </Box>
               </Box>
@@ -1134,7 +1138,7 @@ export default function TabCelula({
           <Box
             mt="5vh"
             bgcolor="#c5cae9"
-            fontSize="14px"
+            fontSize="3vw"
             sx={{
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',

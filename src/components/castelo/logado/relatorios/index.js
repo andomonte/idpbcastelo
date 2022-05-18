@@ -460,7 +460,7 @@ function Relatorios({
                 perfilUser={perfilUser}
                 secao={session}
                 rolMembros={rolMembros}
-                visitantes={visitantes}
+                lideranca={lideranca}
               />
             ) : null}
             {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}

@@ -31,20 +31,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ lab1, lab2 }) {
+function Label({ lab1 }) {
   return (
-    <>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab1}
-        </Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab2}
-        </Box>
-      </Grid>
-    </>
+    <Grid item xs={12}>
+      <Box color="#fff" textAlign="center">
+        {lab1}
+      </Box>
+    </Grid>
   );
 }
 function RelCelula({ perfilUser, lideranca }) {
@@ -118,7 +111,7 @@ function RelCelula({ perfilUser, lideranca }) {
       {!sendResumo ? (
         <Box
           height="100%"
-          minWidth={370}
+          minWidth={400}
           width="100vw"
           mt={0}
           display="flex"
@@ -127,16 +120,16 @@ function RelCelula({ perfilUser, lideranca }) {
         >
           <Box
             height="100%"
-            width="100vw"
+            width="90vw"
             maxWidth={600}
-            minWidth={370}
+            minWidth={380}
             border="4px solid #fff"
           >
             <Box height="100%">
               <Box
                 height="20%"
                 minHeight={80}
-                minWidth={370}
+                minWidth={380}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -146,10 +139,12 @@ function RelCelula({ perfilUser, lideranca }) {
                   borderTopRightRadius: '16px',
                 }}
               >
-                <Box width="100%" ml={1} minWidth={370}>
+                <Box width="100%" ml={1} minWidth={380}>
                   <Grid container spacing={1} item xs={12}>
                     <Grid item xs={8}>
-                      <Label lab1="Escolha a Semana" />
+                      <Box ml={1} color="white">
+                        Escolha a Semana
+                      </Box>
                       <Paper width="100%" className={classes.paper}>
                         <Box height={30} width="100%" display="flex">
                           <Box
@@ -202,8 +197,8 @@ function RelCelula({ perfilUser, lideranca }) {
                       </Paper>
                     </Grid>
                     <Grid item xs={4}>
-                      <Box width="100%" ml={1}>
-                        <Label lab1="Mes / Ano" />
+                      <Box ml={1} color="white">
+                        Mes / Ano
                       </Box>
                       <Paper width="100%" className={classes.paper}>
                         <Box height={30} width="100%" display="flex">
@@ -228,7 +223,7 @@ function RelCelula({ perfilUser, lideranca }) {
                   borderBottomRightRadius: '16px',
                 }}
                 height="80%"
-                minWidth={370}
+                minWidth={380}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"

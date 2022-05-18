@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function RelCelula({ perfilUser, setOpenBuscar }) {
+function RelCelula({ perfilUser, setOpenNovoRelatorio }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -226,7 +226,7 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
                       variant="contained"
                       id="reload"
                       onClick={() => {
-                        setOpenBuscar(false);
+                        setOpenNovoRelatorio(false);
                       }}
                     >
                       Fechar

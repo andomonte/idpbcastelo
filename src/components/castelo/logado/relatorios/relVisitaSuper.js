@@ -7,15 +7,12 @@ import SvgIcon from '@mui/material/SvgIcon';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import { MdCreateNewFolder } from 'react-icons/md';
 import NovoRelatorio from 'src/components/castelo/logado/relatorios/perfil/supervisor/novoRelatorio';
-/* import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers'; 
-import moment from 'moment'; */
-import Meses from 'src/utils/meses';
 
-import TabEventos from './abas/tabEventos';
+import Meses from 'src/utils/meses';
+import TamanhoJanela from 'src/utils/getSize';
+import TabRelSuperVisita from './abas/tabRelVisita';
+
+const janela = TamanhoJanela();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,23 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ lab1, lab2 }) {
-  return (
-    <>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab1}
-        </Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab2}
-        </Box>
-      </Grid>
-    </>
-  );
-}
-function PlanMembro({ perfilUser, rolMembros }) {
+function PlanMembro({ perfilUser, rolMembros, lideranca }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -88,38 +69,34 @@ function PlanMembro({ perfilUser, rolMembros }) {
   };
 
   return (
-    <Box height="90vh" minHeight={500}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+      width="100%"
+    >
       <Box
-        height="100%"
-        minWidth={370}
-        width="100vw"
+        width="96vw"
+        minWidth={300}
+        minHeight={450}
+        height={janela.height > 570 ? '90vh' : '88vh'}
         mt={0}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
       >
-        <Box
-          height="100%"
-          width="100vw"
-          maxWidth={600}
-          minWidth={370}
-          border="4px solid #fff"
-        >
+        <Box height="100%" width="100%" maxWidth={600} border="4px solid #fff">
           <Box height="100%">
             <Box
-              height="25%"
-              minHeight={150}
-              minWidth={370}
+              height="100%"
               display="flex"
               justifyContent="center"
               alignItems="center"
+              flexDirection="column"
               bgcolor={corIgreja.principal}
               style={{
-                borderTopLeftRadius: '16px',
-                borderTopRightRadius: '16px',
+                borderRadius: '16px',
               }}
             >
-              <Box width="100%" ml={1} minWidth={370}>
+              <Box mt={2} width="100%" ml={1}>
                 <Box ml={2} color="white">
                   Selecione o Mês
                 </Box>
@@ -194,22 +171,7 @@ function PlanMembro({ perfilUser, rolMembros }) {
                   </Grid>
                 </Grid>
               </Box>
-            </Box>
-            <Box
-              style={{
-                borderBottomLeftRadius: '16px',
-                borderBottomRightRadius: '16px',
-              }}
-              height="73%"
-              minWidth={370}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              minHeight={350}
-              width="100%"
-              bgcolor={corIgreja.principal}
-              borderTop="2px solid #fff"
-            >
+
               <Box width="95%" height="100%">
                 <Box
                   height="10%"
@@ -225,20 +187,21 @@ function PlanMembro({ perfilUser, rolMembros }) {
                     fontSize: '14px',
                   }}
                 >
-                  PLANEJAMENTO DOS EVENTOS DA CÉLULA
+                  EVENTOS DA CÉLULA
                 </Box>
+                {console.log(janela.height)}
                 <Box
-                  height="85%"
-                  minHeight={315}
+                  height={janela.height > 570 ? '64vh' : '58vh'}
+                  minHeight={280}
                   bgcolor="#fafafa"
                   width="100%"
                   borderRadius={16}
                 >
-                  <TabEventos
+                  <TabRelSuperVisita
                     perfilUser={perfilUser}
                     Mes={contMes}
                     Ano={contAno}
-                    rolMembros={rolMembros}
+                    lideranca={lideranca}
                   />
                 </Box>
               </Box>
@@ -246,7 +209,12 @@ function PlanMembro({ perfilUser, rolMembros }) {
           </Box>
         </Box>
       </Box>
-      {openNovoRelatorio && <NovoRelatorio />}
+      {openNovoRelatorio && (
+        <NovoRelatorio
+          perfilUser={{ perfilUser }}
+          setOpenNovoRelatorio={setOpenNovoRelatorio}
+        />
+      )}
     </Box>
   );
 }

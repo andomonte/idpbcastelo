@@ -332,13 +332,9 @@ export default function TabCelula({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100%"
+          height="80%"
           textAlign="center"
           width="100%"
-          sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
-          }}
         >
           <Box>
             <Box

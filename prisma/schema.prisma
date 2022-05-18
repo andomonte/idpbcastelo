@@ -89,7 +89,7 @@ model lideranca {
 }
 
 model membros {
-  id                Int      @id @default(autoincrement())
+  id                Int      @id
   Igreja            String   @db.VarChar(12)
   Nome              String   @db.VarChar(145)
   Celula            Int
@@ -97,7 +97,7 @@ model membros {
   Coordenacao       Int
   Supervisao        Int
   Discipulador      String   @db.VarChar(145)
-  RolMembro         Int
+  RolMembro         Int      @unique @default(autoincrement())
   TelCelular        String   @db.VarChar(25)
   TelFixo           String   @db.VarChar(25)
   Email             String   @db.VarChar(255)
@@ -245,6 +245,8 @@ model relatorioSupervisao {
   EtapasCelula   String @db.Text
   Local          String @db.Text
   Observacoes    String @db.Text
+  Mes            Int
+  Ano            Int
 }
 
 model contribuicoes {

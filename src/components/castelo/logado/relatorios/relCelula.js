@@ -868,7 +868,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
         ).toFixed(2);
-
+        console.log(
+          'valor do relatorio',
+          mediaCrescimento,
+          pTotalAtual,
+          somaTotal,
+        );
         if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
         else {
           if (pTotalAtual === somaTotal) {
@@ -887,7 +892,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     mediaCelula();
 
     return 0;
-  }, [members, pTotalAtual]);
+  }, [members, pTotalAtual, pontos]);
 
   React.useEffect(() => {
     posicao();
