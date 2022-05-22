@@ -563,7 +563,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                   </Button>
                 ) : (
                   <Button
-                    style={{ background: 'green' }}
+                    style={{ background: 'green', color: 'white' }}
                     onClick={handleSalvar}
                     variant="contained"
                     severity="success"

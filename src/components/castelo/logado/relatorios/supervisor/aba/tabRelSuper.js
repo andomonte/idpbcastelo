@@ -10,18 +10,13 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
-import { object } from 'joi';
-import { keys } from 'lodash';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function TabCelula({
   perfilUser,
-  contSemana,
-
   setSendResumo,
-  setDadosCelulaSend,
-  setValorIndexSend,
+  setDadosRelVisita,
   Mes,
   Ano,
 }) {
@@ -29,16 +24,11 @@ export default function TabCelula({
 
   const [relEncontrado, setRelEncontrado] = React.useState([]);
   const [rel, setRel] = React.useState('nada');
+  const [necessidades, setNecessidades] = React.useState('');
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
 
   // para usar semanas
-  const [contSemana2, setContSemana2] = React.useState(contSemana);
-
-  const [rankGeral, setRankGeral] = React.useState(0);
-
-  const [posicaoRank, setPosicaoRank] = React.useState(0);
-  const [posicaoFinal, setPosicaoFinal] = React.useState(0);
 
   const url1 = `/api/consultaRelatorioSupervisao/${Mes}/${Ano}`;
 
@@ -49,7 +39,18 @@ export default function TabCelula({
     if (sem1) {
       setRel(sem1);
       if (sem1 && sem1[0]) {
-        console.log('rel', sem1);
+        const listaRelSuper = sem1.filter(
+          (val) => Number(val.Supervisao) === Number(perfilUser.supervisao),
+        );
+
+        if (listaRelSuper && listaRelSuper.length) {
+          const listaMinhaVisitas = listaRelSuper.sort((a, b) => {
+            if (new Date(a.Data) > new Date(b.Data)) return 1;
+            if (new Date(b.Data) > new Date(a.Data)) return -1;
+            return 0;
+          });
+          if (listaMinhaVisitas.length) setRelEncontrado(listaMinhaVisitas);
+        }
       }
     }
     if (errorSem1) return <div>An error occured.</div>;
@@ -60,6 +61,18 @@ export default function TabCelula({
 
   //= ==================================================================
 
+  React.useEffect(() => {
+    if (relEncontrado.length) {
+      const obj = JSON.parse(relEncontrado[0].Necessidades);
+      let strNecessidade = '';
+      for (let i = 0; i < obj.length; i += 1) {
+        if (strNecessidade !== '')
+          strNecessidade = `${String(strNecessidade)}${obj[i]},`;
+        else strNecessidade = `${obj[i]}`;
+      }
+      setNecessidades(strNecessidade);
+    }
+  }, [relEncontrado]);
   return (
     <Box height="100%">
       <Box
@@ -86,34 +99,22 @@ export default function TabCelula({
         >
           CÉLULA
         </Box>
+
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="30%"
+          width="60%"
           sx={{
             borderLeft: '2px solid #000',
             borderRight: '2px solid #000',
           }}
         >
-          DATA
+          NECESSIDADE
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="25%"
-          sx={{
-            borderRight: '2px solid #000',
-          }}
-        >
-          RANKING
-        </Box>
-        <Box textAlign="center" width="20%">
+        <Box textAlign="center" width="15%">
           VER
         </Box>
       </Box>
@@ -127,12 +128,13 @@ export default function TabCelula({
                   mt={0}
                   display="flex"
                   alignItems="center"
-                  key={row.Celula}
+                  key={row.id}
                   height={58}
                 >
                   <Box
                     sx={{
                       fontFamily: 'arial black',
+                      fontSize: '14px',
                       borderBottom: '2px solid #000',
                     }}
                     height="100%"
@@ -149,45 +151,40 @@ export default function TabCelula({
                       textAlign="center"
                       width="25%"
                     >
-                      {relEncontrado[index] ? relEncontrado[index].Celula : '-'}
+                      {relEncontrado[index]
+                        ? relEncontrado[index].CelulaVisitada.slice(9, 10)
+                        : '-'}
                     </Box>
 
                     <Box
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
+                      flexDirection="column"
                       height="100%"
                       textAlign="center"
-                      width="30%"
+                      width="60%"
                       sx={{
+                        borderRight: '2px solid #000',
                         borderLeft: '2px solid #000',
-                        borderRight: '2px solid #000',
                       }}
                     >
-                      {relEncontrado[index].Data
-                        ? relEncontrado[index].Data
-                        : '-'}
-                    </Box>
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height="100%"
-                      textAlign="center"
-                      width="25%"
-                      sx={{
-                        borderRight: '2px solid #000',
-                      }}
-                    >
-                      {posicaoFinal[index] ? (
+                      {relEncontrado[index] ? (
                         <Box color="blue" display="flex">
                           <Box>
-                            {posicaoFinal[index].Posicao ? (
-                              <Box> {posicaoFinal[index].Posicao} º</Box>
+                            {necessidades !== '' ? (
+                              <Box> {necessidades}</Box>
                             ) : (
                               ''
                             )}
                           </Box>
+                        </Box>
+                      ) : (
+                        ''
+                      )}
+                      {relEncontrado[index].Progresso ? (
+                        <Box color="#ba68c8" display="flex">
+                          {relEncontrado[index].Progresso}%
                         </Box>
                       ) : (
                         ''
@@ -199,7 +196,7 @@ export default function TabCelula({
                       justifyContent="center"
                       textAlign="center"
                       alignItems="center"
-                      width="20%"
+                      width="15%"
                     >
                       {relEncontrado[index].Data ? (
                         <IconButton
@@ -207,9 +204,7 @@ export default function TabCelula({
                           aria-label="upload picture"
                           component="span"
                           onClick={() => {
-                            setValorIndexSend(index);
-
-                            setDadosCelulaSend(relEncontrado[index]);
+                            setDadosRelVisita(relEncontrado[index]);
                             setSendResumo(true);
                           }}
                         >
@@ -227,7 +222,7 @@ export default function TabCelula({
             </Box>
           ) : (
             <Box
-              height="45vh"
+              height="40vh"
               display="flex"
               justifyContent="center"
               alignItems="center"

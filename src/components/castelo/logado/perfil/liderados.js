@@ -1,8 +1,8 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
 import corIgreja from 'src/utils/coresIgreja';
-import TabLideres from './supervisor/abas/tabLideres';
-import BuscarNome from './supervisor/buscarNome';
+import TabLideres from './abas/tabLideres';
+import BuscarNome from '../relatorios/supervisor/buscarNome';
 
 function Celula({ perfilUser, lideranca }) {
   const [buscarNome, setBuscarNome] = React.useState([]);

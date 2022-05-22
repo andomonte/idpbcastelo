@@ -8,16 +8,11 @@ import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
 import PegaMes from 'src/utils/getMes';
-/* import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers'; 
-import moment from 'moment'; */
+
 import Meses from 'src/utils/mesesAbrev';
 
-import TabCelula from './abas/tabRelSuper';
-import TabResumo from './abas/tabResumo';
+import TabCelula from './supervisor/aba/tabRelSuperCelulas';
+import TabResumo from './supervisor/aba/tabResumo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,15 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ lab1 }) {
-  return (
-    <Grid item xs={12}>
-      <Box color="#fff" textAlign="center">
-        {lab1}
-      </Box>
-    </Grid>
-  );
-}
 function RelCelula({ perfilUser, lideranca }) {
   const classes = useStyles();
   //= ================================================================
@@ -107,29 +93,21 @@ function RelCelula({ perfilUser, lideranca }) {
   };
   React.useEffect(() => {}, [contMes]);
   return (
-    <Box height="90vh" minHeight={500}>
+    <Box height="90vh" width="100vw" minHeight={500}>
       {!sendResumo ? (
         <Box
           height="100%"
-          minWidth={400}
-          width="100vw"
           mt={0}
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-          <Box
-            height="100%"
-            width="90vw"
-            maxWidth={600}
-            minWidth={380}
-            border="4px solid #fff"
-          >
+          <Box height="100%" width="96vw" border="4px solid #fff">
             <Box height="100%">
               <Box
                 height="20%"
                 minHeight={80}
-                minWidth={380}
+                minWidth={300}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -139,7 +117,7 @@ function RelCelula({ perfilUser, lideranca }) {
                   borderTopRightRadius: '16px',
                 }}
               >
-                <Box width="100%" ml={1} minWidth={380}>
+                <Box width="96%" ml={1} minWidth={300}>
                   <Grid container spacing={1} item xs={12}>
                     <Grid item xs={8}>
                       <Box ml={1} color="white">
@@ -170,7 +148,7 @@ function RelCelula({ perfilUser, lideranca }) {
                             display="flex"
                             justifyContent="center"
                             alignItems="center"
-                            fontSize="16px"
+                            fontSize="15px"
                             sx={{ fontFamily: 'arial black' }}
                           >
                             SEMANA - {contSemana}
@@ -223,7 +201,7 @@ function RelCelula({ perfilUser, lideranca }) {
                   borderBottomRightRadius: '16px',
                 }}
                 height="80%"
-                minWidth={380}
+                minWidth={300}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"

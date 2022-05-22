@@ -12,6 +12,25 @@ import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import Emojis from 'src/components/icones/emojis';
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  fontResponsive: {
+    fontSize: '3vw',
+
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '1.8vw',
+    },
+    [theme.breakpoints.up('lg')]: { fontSize: '1.3vw' },
+  },
+  fontResponsive16: {
+    fontSize: '2vw',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '4vw',
+    },
+  },
+}));
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -25,7 +44,7 @@ export default function TabCelula({
   valorIndexSend,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
+  const classes = useStyles();
   const [valorIndex] = React.useState(valorIndexSend);
   const [presSem1, setPresSem1] = React.useState([]);
   const [pontosSem, setPontosSem] = React.useState([]);
@@ -463,7 +482,14 @@ export default function TabCelula({
   //= ==================================================================
 
   const body = (
-    <Box mt={0} ml={0} width="100vw" height="90vh" minHeight={500}>
+    <Box
+      className={classes.fontResponsive}
+      mt={0}
+      ml={0}
+      width="100vw"
+      height="90vh"
+      minHeight={500}
+    >
       <Box
         height="100%"
         width="100%"
@@ -479,7 +505,7 @@ export default function TabCelula({
             display="flex"
             justifyContent="center"
             fontFamily="arial black"
-            fontSize="16px"
+            className={classes.fontResponsive16}
             textAlign="center"
             mt={-1}
             color="yellow"
@@ -492,7 +518,6 @@ export default function TabCelula({
 
           <Box
             bgcolor="#80cbc4"
-            fontSize="3vw"
             sx={{
               fontFamily: 'arial black',
               borderBottom: '2px solid #000',
@@ -559,6 +584,7 @@ export default function TabCelula({
                 height="5.5vh"
                 minHeight={30}
                 bgcolor="#fafafa"
+                className={classes.fontResponsive}
               >
                 <Box
                   sx={{
@@ -578,7 +604,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     Adultos
                   </Box>
@@ -656,7 +681,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     Criancas
                   </Box>
@@ -734,7 +758,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     Visitantes
                   </Box>
@@ -746,7 +769,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                     sx={{
                       borderLeft: '2px solid #000',
                       borderRight: '2px solid #000',
@@ -764,7 +786,6 @@ export default function TabCelula({
                     textAlign="center"
                     alignItems="center"
                     width="25%"
-                    fontSize="3vw"
                     sx={{
                       borderRight: '2px solid #000',
                     }}
@@ -779,7 +800,6 @@ export default function TabCelula({
                     justifyContent="center"
                     textAlign="center"
                     alignItems="center"
-                    fontSize="3vw"
                     width="25%"
                   >
                     {dadosDiscipulado.Visitantes !== undefined
@@ -795,7 +815,6 @@ export default function TabCelula({
                 alignItems="center"
                 height="5.5vh"
                 minHeight={30}
-                fontSize="3vw"
                 bgcolor="#fafafa"
               >
                 <Box
@@ -816,7 +835,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     Conversões
                   </Box>
@@ -860,7 +878,6 @@ export default function TabCelula({
                     textAlign="center"
                     alignItems="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     {dadosDiscipulado.Conversoes !== undefined
                       ? dadosDiscipulado.Conversoes
@@ -894,7 +911,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     Visitas
                   </Box>
@@ -974,7 +990,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                   >
                     Leitura
                   </Box>
@@ -1054,7 +1069,6 @@ export default function TabCelula({
                     height="100%"
                     textAlign="center"
                     width="25%"
-                    fontSize="3vw"
                     color="blue"
                   >
                     Presentes
@@ -1121,7 +1135,6 @@ export default function TabCelula({
               >
                 <Box>
                   <Box
-                    fontSize="16px"
                     fontFamily="arial black"
                     mb={5}
                     mt={5}
@@ -1138,7 +1151,6 @@ export default function TabCelula({
           <Box
             mt="5vh"
             bgcolor="#c5cae9"
-            fontSize="3vw"
             sx={{
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
@@ -1156,7 +1168,6 @@ export default function TabCelula({
               justifyContent="center"
               alignItems="center"
               height="100%"
-              fontSize="16px"
               textAlign="center"
               width="50%"
               minWidth={370 / 2}
@@ -1165,7 +1176,9 @@ export default function TabCelula({
                 borderRight: '2px solid #000',
               }}
             >
-              <Box fontFamily="arial black">Crescimento</Box>
+              <Box width="100%" fontFamily="arial black">
+                Crescimento
+              </Box>
               <Box mt={0} color="red">
                 <Box fontFamily="arial black">
                   {mediaCrescimento !== 'NaN' ? (
@@ -1184,7 +1197,6 @@ export default function TabCelula({
               alignItems="center"
               flexDirection="column"
               height="100%"
-              fontSize="16px"
               textAlign="center"
               width="50%"
               minWidth={370 / 2}

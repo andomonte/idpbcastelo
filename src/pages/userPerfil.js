@@ -1,5 +1,5 @@
 import React from 'react';
-import { Perfil } from 'src/components/castelo/logado/relatorios/perfil';
+import { Perfil } from 'src/components/castelo/logado/perfil';
 import Cadastro from 'src/components/castelo/cadastro';
 import { useSession } from 'next-auth/client';
 import prisma from 'src/lib/prisma';

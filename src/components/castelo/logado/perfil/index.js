@@ -25,19 +25,19 @@ import { MdGroupWork } from 'react-icons/md';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 
-import NabarSecretaria from '../../navBar/secretaria';
-import NabarMembro from '../../navBar/membro';
-import NabarLider from '../../navBar/lider';
-import NavbarSuper from '../../navBar/supervisor';
-import NavbarCoord from '../../navBar/coordenador';
+import NabarSecretaria from '../navBar/secretaria';
+import NabarMembro from '../navBar/membro';
+import NabarLider from '../navBar/lider';
+import NavbarSuper from '../navBar/supervisor';
+import NavbarCoord from '../navBar/coordenador';
 import Endereco from './endereco';
 import Liderados from './liderados';
 import Membros from './membros';
-import CelulaMembro from './membro/celula';
-import CelulaLider from './lider/celula';
+import CelulaMembro from '../relatorios/membro/celula';
+import CelulaLider from '../relatorios/lider/celula';
 import MeuPerfil from './meuPerfil';
-import Padrao from './lider/abas/telaPadrao';
-import CadastroUser from './lider/abas/cadastroUser';
+import Padrao from '../relatorios/lider/abas/telaPadrao';
+import CadastroUser from '../relatorios/lider/abas/cadastroUser';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {

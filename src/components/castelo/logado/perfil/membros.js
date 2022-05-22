@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
-import BuscarNome from './supervisor/buscarNome';
-import TabMembros from './supervisor/abas/tabMembros';
+import BuscarNome from '../relatorios/supervisor/buscarNome';
+import TabMembros from './abas/tabMembros';
 
 const useStyles = makeStyles((theme) => ({
   root: {

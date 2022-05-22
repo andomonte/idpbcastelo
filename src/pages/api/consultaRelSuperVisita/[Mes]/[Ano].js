@@ -8,7 +8,7 @@ export default async function handle(req, res) {
   const newMes = Number(Mes);
   const newAno = Number(Ano);
 
-  const posts = await prisma.relSupervisao
+  const posts = await prisma.relatorioVisitaSupervisao
     .findMany({
       where: {
         AND: [{ Mes: newMes }, { Ano: newAno }],

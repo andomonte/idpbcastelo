@@ -231,24 +231,6 @@ model relatorioDiscipulado {
   @@index([Semana], name: "Semana_index")
 }
 
-model relatorioSupervisao {
-  id             Int    @id @default(autoincrement())
-  Nome           String @db.Text
-  Funcao         String @db.Text
-  CelulaVisitada Int
-  Supervisao     Int
-  Coordenacao    Int
-  Distrito       Int
-  Semana         Int
-  Data           String @db.Char(25)
-  Ambiente       String @db.Text
-  EtapasCelula   String @db.Text
-  Local          String @db.Text
-  Observacoes    String @db.Text
-  Mes            Int
-  Ano            Int
-}
-
 model contribuicoes {
   id        Int      @unique @default(autoincrement())
   RolMembro Int      @id
@@ -279,4 +261,39 @@ model inscritosCursos {
   Nota       String   @db.VarChar(45)
   Frequencia String   @db.VarChar(45)
   CreatedAt  DateTime @db.DateTime(0)
+}
+
+model relatorioVisitaSupervisao {
+  id             Int    @id @default(autoincrement())
+  Nome           String @db.Text
+  Funcao         String @db.Text
+  CelulaVisitada String @db.VarChar(25)
+  Supervisao     Int
+  Coordenacao    Int
+  Distrito       Int
+  Data           String @db.Char(25)
+  Recepcao       String @db.Text
+  Etapas         String @db.Text
+  Estrutura      String @db.Text
+  Observacoes    String @db.Text
+  Mes            Int
+  Ano            Int
+  Ranking        String @db.VarChar(45)
+}
+
+model relSupervisao {
+  id             Int    @id @default(autoincrement())
+  Nome           String @db.Text
+  Funcao         String @db.Text
+  CelulaVisitada String @db.VarChar(25)
+  Supervisao     Int
+  Coordenacao    Int
+  Distrito       Int
+  Data           String @db.Char(25)
+  Necessidades   Json
+  Obstaculos     Json
+  Acao           Json
+  Mes            Int
+  Ano            Int
+  Progresso      String @db.VarChar(5)
 }

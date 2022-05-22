@@ -6,12 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import { MdCreateNewFolder } from 'react-icons/md';
-import NovoRelatorio from 'src/components/castelo/logado/relatorios/supervisor/novoRelVisitaSuper';
-import MostrarRelatorio from 'src/components/castelo/logado/relatorios/supervisor/mostrarRelVisitaSuper';
+import NovoRelatorio from 'src/components/castelo/logado/relatorios/supervisor/novoRelSuper';
+import MostrarRelatorio from 'src/components/castelo/logado/relatorios/supervisor/mostrarRelSuper';
 
 import Meses from 'src/utils/meses';
 import TamanhoJanela from 'src/utils/getSize';
-import TabRelSuperVisita from './supervisor/aba/tabRelVisita';
+import TabRelSuperVisita from './supervisor/aba/tabRelSuper';
 
 const janela = TamanhoJanela();
 
@@ -220,7 +220,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                         fontWeight: 'bold',
                       }}
                     >
-                      RELATÓRIO DE VISITAS ÀS CÉLULAS
+                      RELATÓRIO DO SUPERVISOR
                     </Box>
 
                     <Box
