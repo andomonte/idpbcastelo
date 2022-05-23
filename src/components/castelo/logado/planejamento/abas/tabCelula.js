@@ -174,6 +174,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             fontFamily="arial black"
             textAlign="center"
             mt={2}
+            fontSize="3vh"
             color="yellow"
           >
             <Box color="#ffff8d" mr={2}>

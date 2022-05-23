@@ -14,7 +14,7 @@ import {
 import moment from 'moment'; */
 import Meses from 'src/utils/meses';
 
-import TabDiscipulado from './abas/tabDiscipulado';
+import TabCelula from './abas/tabContribuicoes';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +44,7 @@ function Label({ lab1, lab2 }) {
     </>
   );
 }
-function Discipulado({ perfilUser }) {
+function RelCelula({ perfilUser }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -154,13 +154,7 @@ function Discipulado({ perfilUser }) {
         justifyContent="center"
         alignItems="center"
       >
-        <Box
-          height="100%"
-          width="100vw"
-          maxWidth={600}
-          minWidth={300}
-          border="4px solid #fff"
-        >
+        <Box height="100%" width="100vw" minWidth={300} border="4px solid #fff">
           <Box height="100%">
             <Box
               height="20%"
@@ -315,7 +309,7 @@ function Discipulado({ perfilUser }) {
                     fontSize: '14px',
                   }}
                 >
-                  MEUS DISCIPULADOS
+                  MINHAS CONTRIBUIÇÕES
                 </Box>
                 <Box
                   height="85%"
@@ -324,7 +318,7 @@ function Discipulado({ perfilUser }) {
                   width="100%"
                   borderRadius={16}
                 >
-                  <TabDiscipulado
+                  <TabCelula
                     perfilUser={perfilUser}
                     Mes={contMes}
                     Ano={contAno}
@@ -339,4 +333,4 @@ function Discipulado({ perfilUser }) {
   );
 }
 
-export default Discipulado;
+export default RelCelula;

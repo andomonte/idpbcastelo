@@ -22,9 +22,11 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 
 import { MdGroupWork } from 'react-icons/md';
-import { IoIosPeople } from 'react-icons/io';
+import { IoIosPeople, IoIosSchool } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 
+import { GiMoneyStack } from 'react-icons/gi';
+import { FcMoneyTransfer } from 'react-icons/fc';
 import NabarSecretaria from '../navBar/secretaria';
 import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
@@ -33,9 +35,11 @@ import NavbarCoord from '../navBar/coordenador';
 import Endereco from './endereco';
 import Liderados from './liderados';
 import Membros from './membros';
-import CelulaMembro from '../relatorios/membro/celula';
+
 import CelulaLider from '../relatorios/lider/celula';
 import MeuPerfil from './meuPerfil';
+import MeusCursos from './meusCursos';
+import Contribuicoes from './contribuicoes';
 import Padrao from '../relatorios/lider/abas/telaPadrao';
 import CadastroUser from '../relatorios/lider/abas/cadastroUser';
 // const drawerWidth = 240;
@@ -233,15 +237,15 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Local"
+                    label="Contribuições"
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaHome />
+                          <GiMoneyStack />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FaHome />
+                          <GiMoneyStack />
                         </SvgIcon>
                       )
                     }
@@ -252,15 +256,15 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
-                    label="Celula"
+                    label="Cursos"
                     icon={
                       value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <IoIosPeople />
+                          <IoIosSchool />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <IoIosPeople />
+                          <IoIosSchool />
                         </SvgIcon>
                       )
                     }
@@ -473,11 +477,11 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                     icon={
                       value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <IoIosPeople />
+                          <FcMoneyTransfer />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <IoIosPeople />
+                          <FcMoneyTransfer />
                         </SvgIcon>
                       )
                     }
@@ -574,10 +578,9 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
             {session && (
               <Box>
                 {perfilUser.Funcao === 'Membro' ? (
-                  <Endereco
-                    Celulas={celulas}
-                    secao={session}
+                  <Contribuicoes
                     perfilUser={perfilUser}
+                    secao={session}
                     rolMembros={rolMembros}
                   />
                 ) : null}
@@ -606,7 +609,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
             {perfilUser.Funcao === 'Membro' ? (
-              <CelulaMembro
+              <MeusCursos
                 perfilUser={perfilUser}
                 secao={session}
                 rolMembros={rolMembros}

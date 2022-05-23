@@ -147,25 +147,19 @@ function Celebracao({ perfilUser }) {
     <Box height="90vh" minHeight={500}>
       <Box
         height="100%"
-        minWidth={370}
+        minWidth={300}
         width="100vw"
         mt={0}
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
-        <Box
-          height="100%"
-          width="100vw"
-          maxWidth={600}
-          minWidth={370}
-          border="4px solid #fff"
-        >
+        <Box height="100%" width="100vw" minWidth={300} border="4px solid #fff">
           <Box height="100%">
             <Box
-              height="25%"
-              minHeight={150}
-              minWidth={370}
+              height="20%"
+              minHeight={100}
+              minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -175,7 +169,7 @@ function Celebracao({ perfilUser }) {
                 borderTopRightRadius: '16px',
               }}
             >
-              <Box width="100%" ml={1} minWidth={370}>
+              <Box width="100%" ml={1} minWidth={300}>
                 <Grid container spacing={0}>
                   <Grid container item xs={12} spacing={1}>
                     <Label lab1="Selecione o Mês" lab2="Selecione o Ano" />
@@ -290,8 +284,8 @@ function Celebracao({ perfilUser }) {
                 borderBottomLeftRadius: '16px',
                 borderBottomRightRadius: '16px',
               }}
-              height="73%"
-              minWidth={370}
+              height="80%"
+              minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -315,7 +309,7 @@ function Celebracao({ perfilUser }) {
                     fontSize: '14px',
                   }}
                 >
-                  PARTICIPAÇÃO NAS REUNIÕES DA CÉLULA
+                  PARTICIPAÇÃO NAS CELEBRAÇÕES
                 </Box>
                 <Box
                   height="85%"

@@ -6,15 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
-/* import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers'; 
-import moment from 'moment'; */
 import Meses from 'src/utils/meses';
 
-import TabDiscipulado from './abas/tabDiscipulado';
+import TabMeusCursos from './abas/tabMeusCursos';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +38,7 @@ function Label({ lab1, lab2 }) {
     </>
   );
 }
-function Discipulado({ perfilUser }) {
+function RelCelula({ perfilUser }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -53,69 +47,6 @@ function Discipulado({ perfilUser }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-  /*
-  let enviarDia;
-  let enviarData;
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-  const [open, setIsPickerOpen] = React.useState(false);
-
-  const [inputValue, setInputValue] = React.useState(
-    moment(new Date()).format('DD/MM/YYYY'),
-  );
-  const dates = selectedDate;
-   const firstDay = new Date(dates.getFullYear(), dates.getMonth(), 1).getDay();
-  // const lastDay = new Date(dates.getFullYear(), dates.getMonth() + 1, 0);
-  let firstSunday;
-
-  if (firstDay > 0) {
-    firstSunday = 1 + (7 - firstDay);
-  } else {
-    firstSunday = 1;
-  }
-  //= ==============================================================
-  const handleDateChange = (date, value) => {
-    setInputValue(value);
-    setSelectedDate(date);
-    setIsPickerOpen(false);
-  };
-  //= ==================================================================
-
-  const getData = () => {
-    enviarData = inputValue;
-    enviarDia = Number(inputValue.slice(0, 2));
-  };
-
-  //= ============================================================
-  const handleDateClick = () => {
-    //   setSelectedDate();
-    setIsPickerOpen(true);
-  };
- */
-
-  /* 
-<Grid item xs={12} md={12} lg={12} xl={12}>
-                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <Grid container justifyContent="center">
-                              <KeyboardDatePicker
-                                open={open}
-                                disableToolbar
-                                variant="inline"
-                                format="dd/MM/yyyy"
-                                margin="normal"
-                                id="date-picker-inline"
-                                label="Data"
-                                value={selectedDate}
-                                inputValue={inputValue}
-                                onClick={handleDateClick}
-                                onChange={handleDateChange}
-                                onClose={getData()}
-                                KeyboardButtonProps={{
-                                  'aria-label': 'change date',
-                                }}
-                              />
-                            </Grid>
-                          </MuiPickersUtilsProvider>
-                        </Grid> */
 
   const handleIncMes = () => {
     let contMesAtual = contMes + 1;
@@ -154,13 +85,7 @@ function Discipulado({ perfilUser }) {
         justifyContent="center"
         alignItems="center"
       >
-        <Box
-          height="100%"
-          width="100vw"
-          maxWidth={600}
-          minWidth={300}
-          border="4px solid #fff"
-        >
+        <Box height="100%" width="100vw" minWidth={300} border="4px solid #fff">
           <Box height="100%">
             <Box
               height="20%"
@@ -178,59 +103,11 @@ function Discipulado({ perfilUser }) {
               <Box width="100%" ml={1} minWidth={300}>
                 <Grid container spacing={0}>
                   <Grid container item xs={12} spacing={1}>
-                    <Label lab1="Selecione o Mês" lab2="Selecione o Ano" />
-                    <Grid item xs={6}>
-                      <Paper width="100%" className={classes.paper}>
-                        <Box width="100%" display="flex">
-                          <Box
-                            width="20%"
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                handleDecMes();
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretLeft />
-                            </IconButton>
-                          </Box>
-                          <Box
-                            width="60%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
-                          >
-                            {mes[contMes].descricao}
-                          </Box>
-                          <Box
-                            width="20%"
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                handleIncMes();
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretRight />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
+                    <Box ml={2} color="white">
+                      Selecione o Ano
+                    </Box>
+
+                    <Grid item xs={12}>
                       <Paper width="100%" className={classes.paper}>
                         <Box width="100%" display="flex">
                           <Box
@@ -315,7 +192,7 @@ function Discipulado({ perfilUser }) {
                     fontSize: '14px',
                   }}
                 >
-                  MEUS DISCIPULADOS
+                  MEUS CURSOS
                 </Box>
                 <Box
                   height="85%"
@@ -324,7 +201,7 @@ function Discipulado({ perfilUser }) {
                   width="100%"
                   borderRadius={16}
                 >
-                  <TabDiscipulado
+                  <TabMeusCursos
                     perfilUser={perfilUser}
                     Mes={contMes}
                     Ano={contAno}
@@ -339,4 +216,4 @@ function Discipulado({ perfilUser }) {
   );
 }
 
-export default Discipulado;
+export default RelCelula;
