@@ -157,7 +157,7 @@ function QuemSomos({ userIgrejas, title, celulas }) {
   };
 
   const handleDrawerClose = () => {
-    // console.log(mobile);
+    // //console.log(mobile);
 
     if (mobile && open) {
       setOpen(false);

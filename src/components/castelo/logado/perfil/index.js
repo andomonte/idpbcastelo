@@ -21,22 +21,25 @@ import PersonIcon from '@material-ui/icons/Person';
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 
-import { MdGroupWork } from 'react-icons/md';
+import { MdGroupWork, MdTipsAndUpdates } from 'react-icons/md';
 import { IoIosPeople, IoIosSchool } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 
-import { GiMoneyStack } from 'react-icons/gi';
+import { HiUserGroup } from 'react-icons/hi';
 import { FcMoneyTransfer } from 'react-icons/fc';
 import NabarSecretaria from '../navBar/secretaria';
 import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';
-import NavbarCoord from '../navBar/coordenador';
-import Endereco from './endereco';
-import Liderados from './liderados';
-import Membros from './membros';
 
-import CelulaLider from '../relatorios/lider/celula';
+import Dicas from './dicas';
+import Liderados from './liderados';
+import LideradosCoord from './lideradosCoord';
+import Membros from './membrosSuper';
+import MembrosCoord from './membrosCoord';
+
+import MembrosCelula from './membrosCelula';
+
 import MeuPerfil from './meuPerfil';
 import MeusCursos from './meusCursos';
 import Contribuicoes from './contribuicoes';
@@ -167,8 +170,6 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
   };
 
   const handleDrawerClose = () => {
-    // console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
@@ -241,11 +242,11 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <GiMoneyStack />
+                          <FcMoneyTransfer />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <GiMoneyStack />
+                          <FcMoneyTransfer />
                         </SvgIcon>
                       )
                     }
@@ -309,15 +310,15 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Local"
+                    label="Dicas"
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaHome />
+                          <MdTipsAndUpdates />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FaHome />
+                          <MdTipsAndUpdates />
                         </SvgIcon>
                       )
                     }
@@ -454,7 +455,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Liderados"
+                    label="Lideres"
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -477,11 +478,11 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                     icon={
                       value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FcMoneyTransfer />
+                          <HiUserGroup />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FcMoneyTransfer />
+                          <HiUserGroup />
                         </SvgIcon>
                       )
                     }
@@ -511,24 +512,11 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
           {perfilUser.Funcao === 'Lider' && (
             <NabarLider perfilUser={perfilUser} />
           )}
-          {perfilUser.Funcao === 'Supervisor' && (
+          {(perfilUser.Funcao === 'Supervisor' ||
+            perfilUser.Funcao === 'Coordenador' ||
+            perfilUser.Funcao === 'PastorDistrito' ||
+            perfilUser.Funcao === 'Presidente') && (
             <NavbarSuper
-              items={lideranca}
-              celulas={celulas}
-              rolMembros={rolMembros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser.Funcao === 'Coordenador' && (
-            <NavbarCoord
-              items={lideranca}
-              celulas={celulas}
-              rolMembros={rolMembros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser.Funcao === 'PastorDistrito' && (
-            <NavbarCoord
               items={lideranca}
               celulas={celulas}
               rolMembros={rolMembros}
@@ -584,25 +572,40 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                     rolMembros={rolMembros}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Lider' ? (
-                  <Endereco
-                    Celulas={celulas}
-                    secao={session}
-                    perfilUser={perfilUser}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
+                {perfilUser.Funcao === 'Lider' ? <Dicas /> : null}
                 {perfilUser.Funcao === 'Secretaria' ? <CadastroUser /> : null}
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <Liderados
                     secao={session}
                     perfilUser={perfilUser}
                     lideranca={lideranca}
+                    rolMembros={rolMembros}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Coordenador' ? (
+                  <LideradosCoord
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
+                {perfilUser.Funcao === 'PastorDistrito' ? (
+                  <LideradosCoord
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
+                {perfilUser.Funcao === 'Presidente' ? (
+                  <LideradosCoord
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
               </Box>
             )}
           </TabPanel>
@@ -616,9 +619,10 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
               />
             ) : null}
             {perfilUser.Funcao === 'Lider' ? (
-              <CelulaLider
-                perfilUser={perfilUser}
+              <MembrosCelula
                 secao={session}
+                perfilUser={perfilUser}
+                lideranca={lideranca}
                 rolMembros={rolMembros}
               />
             ) : null}
@@ -631,7 +635,14 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                 rolMembros={rolMembros}
               />
             ) : null}
-            {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'Coordenador' ? (
+              <MembrosCoord
+                secao={session}
+                perfilUser={perfilUser}
+                lideranca={lideranca}
+                rolMembros={rolMembros}
+              />
+            ) : null}
             {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
             {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
           </TabPanel>

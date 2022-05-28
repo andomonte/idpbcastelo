@@ -20,7 +20,7 @@ export default async function handle(req, res) {
     res.setHeader('Content-Type', 'aplication/json');
     res.json(posts);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.json(err);
   } // Get route's catch handler, if it exists
 }

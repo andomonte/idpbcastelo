@@ -14,7 +14,7 @@ function Celula({ rolMembros, perfilUser }) {
     <Box height="90vh" minHeight={500}>
       <Box
         height="100%"
-        minWidth={370}
+        minWidth={300}
         width="100vw"
         mt={0}
         display="flex"
@@ -22,7 +22,7 @@ function Celula({ rolMembros, perfilUser }) {
         alignItems="center"
       >
         <Box
-          minWidth={370}
+          minWidth={300}
           height="100%"
           width="100vw"
           maxWidth={600}

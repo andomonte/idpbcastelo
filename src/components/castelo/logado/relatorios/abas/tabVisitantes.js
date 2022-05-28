@@ -114,7 +114,11 @@ export default function TabCelula({
                 bgcolor={Object.keys(respostas).length && respostas[index]}
                 display="flex"
                 alignItems="center"
-                key={row.Nome}
+                key={
+                  row.Nome.length > 30
+                    ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))
+                    : row.Nome
+                }
                 height={40}
                 sx={{ borderBottom: '2px solid #00a' }}
               >

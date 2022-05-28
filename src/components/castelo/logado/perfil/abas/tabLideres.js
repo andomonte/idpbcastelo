@@ -12,12 +12,18 @@ export default function TabCelula({
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
-  const lideresSetor = lideranca.filter(
+  const lideresParcial = lideranca.filter(
     (val) =>
       Number(val.supervisao) === Number(perfilUser.supervisao) &&
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       val.Funcao === 'Lider',
   );
+
+  const lideresSetor = lideresParcial.sort((a, b) => {
+    if (new Date(a.Celula) > new Date(b.Celula)) return 1;
+    if (new Date(b.Celula) > new Date(a.Celula)) return -1;
+    return 0;
+  });
 
   return (
     <Paper
@@ -38,13 +44,16 @@ export default function TabCelula({
               // bgcolor={Object.keys(respostas).length && respostas[index]}
               display="flex"
               alignItems="center"
-              key={row.Nome}
+              key={row.id}
               height={40}
               sx={{ borderBottom: '2px solid #00a' }}
             >
               <Box display="flex" width="100%">
                 <Box width="100%" display="flex" alignItems="center" ml={1}>
-                  {row.Nome}
+                  {row.Celula} -{' '}
+                  {row.Nome.length > 30
+                    ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))
+                    : row.Nome}
                 </Box>
                 <Box
                   onClick={() => {

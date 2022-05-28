@@ -613,14 +613,14 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       bgcolor={corIgreja.principal}
       height="90vh"
       width="100vw"
-      minWidth={370}
+      minWidth={300}
       minHeight={500}
     >
       <Box height="100%">
         {checkRelatorio ? (
           <Box
             height="100%"
-            minWidth={370}
+            minWidth={300}
             width="100vw"
             mt={0}
             display="flex"
@@ -628,7 +628,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
             alignItems="center"
           >
             <Box
-              minWidth={370}
+              minWidth={300}
               height="100%"
               width="100vw"
               maxWidth="1410px"
@@ -1489,7 +1489,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
         ) : (
           <Box
             height="100%"
-            minWidth={370}
+            minWidth={300}
             width="100vw"
             mt={0}
             display="flex"
@@ -1497,7 +1497,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
             alignItems="center"
           >
             <Box
-              minWidth={370}
+              minWidth={300}
               height="100%"
               width="100vw"
               maxWidth={1200}

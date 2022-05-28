@@ -111,7 +111,7 @@ const primaryMenuLogout = [
   },
 ];
 const primaryMenuLogin = [
-  { id: 1, label: 'Home Logado', path: '/logado', icon: HomeIcon },
+  { id: 1, label: 'Home', path: '/logado', icon: IconHome },
   {
     id: 2,
     label: 'Cursos',

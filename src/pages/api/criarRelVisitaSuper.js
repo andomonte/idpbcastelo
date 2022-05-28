@@ -40,7 +40,7 @@ const handler = async (req, res) => {
 
       res.status(200).send('OK');
     } catch (errors) {
-      console.log('erros', errors);
+      // console.log('erros', errors);
       res.status(400).send(errors);
     }
   }

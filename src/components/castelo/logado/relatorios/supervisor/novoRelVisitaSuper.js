@@ -244,14 +244,14 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
     <Box height="90vh" minHeight={500} width="100%">
       <Box
         height="100%"
-        minWidth={370}
+        minWidth={300}
         width="100vw"
         mt={0}
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
-        <Box height="100%" width="100vw" minWidth={370}>
+        <Box height="100%" width="100vw" minWidth={300}>
           <Box height="100%">
             <Box
               height="100%"

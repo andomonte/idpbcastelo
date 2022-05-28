@@ -157,7 +157,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
           <Box
             height="25%"
             minHeight={150}
-            minWidth={370}
+            minWidth={300}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -167,7 +167,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
               borderTopRightRadius: '16px',
             }}
           >
-            <Box width="100%" ml={1} minWidth={370}>
+            <Box width="100%" ml={1} minWidth={300}>
               <Box mb={2} textAlign="center" color="yellow">
                 ANIVERSARIANTES DA CÉLULA
               </Box>
@@ -252,7 +252,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
       </Box>
       <Box
         width="100%"
-        minWidth={370}
+        minWidth={300}
         height="100%"
         display="flex"
         justifyContent="center"

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box } from '@material-ui/core';
-import PegaSemana from 'src/utils/getSemana';
+
 import Espera from 'src/utils/espera';
 import useSWR from 'swr';
 import axios from 'axios';
@@ -8,20 +8,11 @@ import TableContainer from '@mui/material/TableContainer';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-function createDizimoSem1(Valor, Data, semana) {
-  return {
-    Valor,
-    Data,
-    semana,
-  };
-}
-
-export default function TabCelula({ Mes, Ano, perfilUser }) {
+export default function TabCelula({ Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
-  const [meusCursos, setMeusCursos] = React.useState([]);
+  const [meusCursos, setMeusCursos] = React.useState('inicio');
 
-  const semana = PegaSemana(Mes, Ano);
   // para usar semanas
 
   const rolMembros = perfilUser.RolMembro;
@@ -30,7 +21,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
   React.useEffect(() => {
     //  mutate(url);
-  }, [semana]);
+    setMeusCursos('inicio');
+  }, [Ano]);
 
   React.useEffect(() => {
     if (meusCursos2 && meusCursos2.length) {
@@ -55,7 +47,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         borderTopRightRadius: '16px',
       }}
     >
-      {meusCursos && meusCursos.length ? (
+      {meusCursos !== 'inicio' && meusCursos.length ? (
         <Box width="100%" height="100%">
           <TableContainer sx={{ minHeight: 320, height: '58vh' }}>
             {meusCursos.map((row, index) => (

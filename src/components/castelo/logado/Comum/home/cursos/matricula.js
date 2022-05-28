@@ -231,7 +231,7 @@ function Matricula() {
   const fpRef = useRef();
   const router = useRouter();
   const handleChangeFP = (event) => {
-    // console.log(event.target.value);
+    // //console.log(event.target.value);
     setFPagamento(event.target.value);
   };
   /* const pagar = () => {
@@ -297,7 +297,7 @@ function Matricula() {
           setValidacaoEmail(false);
         }
       }
-      // console.log('aqui no final', form);
+      // //console.log('aqui no final', form);
     }
   };
   //= ======================================================================

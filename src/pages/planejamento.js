@@ -3,7 +3,7 @@ import Planejamento from 'src/components/castelo/logado/planejamento';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
-function Planejar({ rolMembros }) {
+function Planejar({ rolMembros, lideranca }) {
   const router = useRouter();
   const perfilUser = router.query;
 
@@ -33,6 +33,7 @@ function Planejar({ rolMembros }) {
         <Planejamento
           title="IDPB-CELULAS"
           rolMembros={rolMembros}
+          lideranca={lideranca}
           perfilUser={perfilUserF}
         />
       )}
@@ -42,7 +43,9 @@ function Planejar({ rolMembros }) {
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
-
+  const lideranca = await prisma.lideranca.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   const rolMembros = await prisma.membros
     .findMany({
       where: {
@@ -61,6 +64,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       rolMembros: JSON.parse(JSON.stringify(rolMembros)),
+      lideranca: JSON.parse(JSON.stringify(lideranca)),
     }, // will be passed to the pperfilUser component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };

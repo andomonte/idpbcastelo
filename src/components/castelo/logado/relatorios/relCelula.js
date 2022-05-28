@@ -542,9 +542,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
             // mutate(url4);
           }
         })
-        .catch((erro) => {
+        .catch(() => {
           setOpenErro(true);
-          console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+          // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
         });
     } else {
       handleVisitantes();
@@ -761,8 +761,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           //    router.reload(window.location.pathname);
         }
       })
-      .catch((erro) => {
-        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+      .catch(() => {
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
   const handleSalvar = () => {
@@ -804,9 +804,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           enviarPontuacao();
         }
       })
-      .catch((erro) => {
+      .catch(() => {
         setOpenErro(true);
-        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
   const pegaRankSemana = () => {
@@ -868,12 +868,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
         ).toFixed(2);
-        console.log(
-          'valor do relatorio',
-          mediaCrescimento,
-          pTotalAtual,
-          somaTotal,
-        );
+
         if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
         else {
           if (pTotalAtual === somaTotal) {
@@ -942,12 +937,12 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       bgcolor={corIgreja.principal}
       height="90vh"
       width="100vw"
-      minWidth={370}
+      minWidth={300}
       minHeight={500}
     >
       {openVisitantes ? (
         <Box
-          minWidth={370}
+          minWidth={300}
           height="100%"
           width="100%"
           maxWidth={600}
@@ -1280,7 +1275,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           {checkRelatorio ? (
             <Box
               height="100%"
-              minWidth={370}
+              minWidth={300}
               width="100vw"
               mt={0}
               display="flex"
@@ -1288,7 +1283,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
               alignItems="center"
             >
               <Box
-                minWidth={370}
+                minWidth={300}
                 height="100%"
                 width="100vw"
                 maxWidth={600}
@@ -2208,7 +2203,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           ) : (
             <Box
               height="100%"
-              minWidth={370}
+              minWidth={300}
               width="100vw"
               mt={0}
               display="flex"
@@ -2216,7 +2211,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
               alignItems="center"
             >
               <Box
-                minWidth={370}
+                minWidth={300}
                 height="100%"
                 width="100vw"
                 maxWidth={600}

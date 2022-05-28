@@ -14,7 +14,7 @@ export default async function downloadImg(urlFile) {
       })
       .then((result) => result)
       .catch((error) => {
-        console.log('ERROR ', error);
+        //console.log('ERROR ', error);
         return error;
       }); */
   };

@@ -538,11 +538,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           //    router.reload(window.location.pathname);
         }
       })
-      .catch((erro) => {
+      .catch(() => {
         setOpenErro(true);
         setCarregando(false);
 
-        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
   const handleSalvar = () => {
@@ -580,11 +580,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           enviarPontuacao();
         }
       })
-      .catch((erro) => {
+      .catch(() => {
         setOpenErro(true);
         setCarregando(false);
 
-        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
   const pegaRankSemana = () => {
@@ -708,14 +708,14 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
       bgcolor={corIgreja.principal}
       height="90vh"
       width="100vw"
-      minWidth={370}
+      minWidth={300}
       minHeight={500}
     >
       <Box height="100%">
         {checkRelatorio ? (
           <Box
             height="100%"
-            minWidth={370}
+            minWidth={300}
             width="100vw"
             mt={0}
             display="flex"
@@ -723,7 +723,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
             alignItems="center"
           >
             <Box
-              minWidth={370}
+              minWidth={300}
               height="100%"
               width="100vw"
               maxWidth={600}
@@ -1367,7 +1367,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
         ) : (
           <Box
             height="100%"
-            minWidth={370}
+            minWidth={300}
             width="100vw"
             mt={0}
             display="flex"
@@ -1375,7 +1375,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
             alignItems="center"
           >
             <Box
-              minWidth={370}
+              minWidth={300}
               height="100%"
               width="100vw"
               maxWidth={600}

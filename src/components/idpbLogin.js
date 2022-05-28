@@ -117,7 +117,7 @@ function IdpbLogin({ title }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
-  // console.log(item);
+  // //console.log(item);
   const handleDrawerOpen = () => {
     if (!open) {
       setOpen(true);

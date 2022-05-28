@@ -39,18 +39,18 @@ function Celula({ perfilUser, rolMembros }) {
 
   //= ===================================================================
   return (
-    <Box height="90vh" minHeight={500} minWidth={370}>
+    <Box height="90vh" minHeight={500} minWidth={300}>
       <Box
         height="100%"
         width="100vw"
-        minWidth={370}
+        minWidth={300}
         mt={0}
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
         <Box
-          minWidth={370}
+          minWidth={300}
           height="100%"
           width="100vw"
           maxWidth={600}
@@ -60,7 +60,7 @@ function Celula({ perfilUser, rolMembros }) {
             <Box
               height="25%"
               minHeight={150}
-              minWidth={370}
+              minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -112,7 +112,7 @@ function Celula({ perfilUser, rolMembros }) {
               justifyContent="center"
               alignItems="center"
               minHeight={350}
-              minWidth={370}
+              minWidth={300}
               width="100%"
               bgcolor={corIgreja.principal}
               borderTop="2px solid #fff"

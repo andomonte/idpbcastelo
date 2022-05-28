@@ -9,7 +9,7 @@ const PegaCEP = async (req, res) => {
     })
     .catch((error) => {
       res.status(500).send(error);
-      console.log(error);
+      // console.log(error);
     });
 };
 //= =========================================================================

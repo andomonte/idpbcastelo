@@ -95,18 +95,18 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
     <Box height="90vh" minHeight={500}>
       <Box
         height="100%"
-        minWidth={370}
+        minWidth={300}
         width="100vw"
         mt={0}
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
-        <Box height="100%" width="100vw" maxWidth={600} minWidth={370}>
+        <Box height="100%" width="100vw" maxWidth={600} minWidth={300}>
           <Box height="100%">
             <Box
               height="80%"
-              minWidth={370}
+              minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -154,13 +154,13 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
             <Box
               height="20%"
               minHeight={100}
-              minWidth={370}
+              minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
               bgcolor={corIgreja.principal}
             >
-              <Box mt={5} width="100%" ml={1} minWidth={370}>
+              <Box mt={5} width="100%" ml={1} minWidth={300}>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={6}>
                     <Paper width="100%" className={classes.paper}>

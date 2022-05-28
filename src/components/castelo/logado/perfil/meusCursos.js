@@ -6,8 +6,6 @@ import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
-import Meses from 'src/utils/meses';
-
 import TabMeusCursos from './abas/tabMeusCursos';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,44 +20,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ lab1, lab2 }) {
-  return (
-    <>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab1}
-        </Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab2}
-        </Box>
-      </Grid>
-    </>
-  );
-}
 function RelCelula({ perfilUser }) {
   const classes = useStyles();
   //= ================================================================
-  const mes = Meses();
   const d = new Date();
-  const mesAtual = Number(d.getMonth());
   const anoAtual = Number(d.getFullYear());
-  const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-
-  const handleIncMes = () => {
-    let contMesAtual = contMes + 1;
-
-    if (contMesAtual > 11) contMesAtual = 0;
-    setContMes(contMesAtual);
-  };
-  const handleDecMes = () => {
-    let contMesAtual = contMes - 1;
-
-    if (contMesAtual < 0) contMesAtual = 11;
-    setContMes(contMesAtual);
-  };
 
   const handleIncAno = () => {
     let contAnoAtual = contAno + 1;
@@ -109,9 +75,13 @@ function RelCelula({ perfilUser }) {
 
                     <Grid item xs={12}>
                       <Paper width="100%" className={classes.paper}>
-                        <Box width="100%" display="flex">
+                        <Box
+                          width="100%"
+                          justifyContent="center"
+                          display="flex"
+                        >
                           <Box
-                            width="20%"
+                            width="10%"
                             display="flex"
                             justifyContent="flex-end"
                             alignItems="center"
@@ -201,11 +171,7 @@ function RelCelula({ perfilUser }) {
                   width="100%"
                   borderRadius={16}
                 >
-                  <TabMeusCursos
-                    perfilUser={perfilUser}
-                    Mes={contMes}
-                    Ano={contAno}
-                  />
+                  <TabMeusCursos perfilUser={perfilUser} Ano={contAno} />
                 </Box>
               </Box>
             </Box>

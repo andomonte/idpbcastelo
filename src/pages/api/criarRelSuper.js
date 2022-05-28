@@ -15,6 +15,8 @@ const handler = async (req, res) => {
               Mes: dados.Mes,
               Ano: dados.Ano,
               Supervisao: Number(dados.Supervisao),
+              Coordenacao: Number(dados.Coordenacao),
+              Funcao: dados.Funcao,
               Distrito: Number(dados.Distrito),
             },
           },
@@ -39,7 +41,6 @@ const handler = async (req, res) => {
 
       res.status(200).send('OK');
     } catch (errors) {
-      console.log('erros', errors);
       res.status(400).send(errors);
     }
   }

@@ -7,7 +7,7 @@ export default async function handle(req, res) {
   } = req;
   const newMes = Number(Mes);
   const newAno = Number(Ano);
-  // console.log('dados do api', codigoIgreja, mes, ano);
+
   // const action = `${rel}.findMany`
   const posts = await prisma.eventosCelulas
     .findMany({

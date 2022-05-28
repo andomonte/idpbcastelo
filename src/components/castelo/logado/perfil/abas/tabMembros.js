@@ -36,7 +36,7 @@ else nomeLider = nomes;
               // bgcolor={Object.keys(respostas).length && respostas[index]}
               display="flex"
               alignItems="center"
-              key={row.Nome}
+              key={row.id}
               height={40}
               sx={{ borderBottom: '2px solid #00a' }}
             >

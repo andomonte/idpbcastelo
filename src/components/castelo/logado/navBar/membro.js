@@ -5,27 +5,17 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  //  ListSubheader,
-  //  Avatar,
   Divider,
-  // Typography,
-  //  Button,
 } from '@material-ui/core';
 
-// import { useState } from 'react';
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
-// import { signIn } from 'next-auth/client';
-// import IconCastelo from 'src/components/icones/castelo';
-// import IconEMT from 'src/components/icones/emt';
 import SchoolIcon from '@material-ui/icons/School';
 import change from 'src/components/icones/change';
 import { useSession } from 'next-auth/client';
 import { FcCalendar } from 'react-icons/fc';
 import { FaHome } from 'react-icons/fa';
-// import IconesPerfil from 'src/components/icones/perfil';
 import React from 'react';
-import { BsCash } from 'react-icons/bs';
 import IconeAtualizarDados from 'src/components/icones/atualizarDados';
 import IconeRelatorio from 'src/components/icones/relatorio';
 import midiaPlay from 'src/components/icones/midia';
@@ -114,13 +104,6 @@ function Upload() {
     </SvgIcon>
   );
 }
-function ContribuicoesIcones() {
-  return (
-    <SvgIcon style={{ color: '#cddc39' }}>
-      <BsCash />
-    </SvgIcon>
-  );
-}
 function ParticipacoesIcones() {
   return <IconeRelatorio cor="#ffe0b2" />;
 }
@@ -152,48 +135,44 @@ const secondaryManu = [
   },
   {
     id: 2,
-    label: 'Ensino',
-    path: '/cursos',
-    icon: SchoolIcon,
+    label: 'Planejamento',
+    path: '/planejamento',
+    icon: Panejamento,
   },
+
   {
     id: 3,
-    label: 'Contribuições',
-    path: '/contribuicoes',
-    icon: ContribuicoesIcones,
-  },
-  {
-    id: 4,
     label: 'Atualizar',
     path: '/atualizar',
     icon: Upload, // iconeAtualizarDados,
   },
   {
-    id: 5,
-    label: 'Planejamento',
-    path: '/planejamento',
-    icon: Panejamento,
+    id: 4,
+    label: 'Ensino',
+    path: '/cursos',
+    icon: SchoolIcon,
   },
+
   {
-    id: 6,
+    id: 5,
     label: 'Aniversariantes',
     path: '/aniversariantes',
     icon: NiverIcon,
   },
   {
-    id: 7,
+    id: 6,
     label: 'Midia IDPB',
     path: '/midia',
     icon: midiaPlay,
   },
   {
-    id: 8,
+    id: 7,
     label: 'Mudar Usuário',
     path: '/selectPerfil',
     icon: change,
   },
   {
-    id: 9,
+    id: 8,
     label: 'Instalar App',
     icon: iconeInstall,
     path: '/installApp',

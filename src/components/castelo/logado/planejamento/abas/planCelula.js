@@ -260,7 +260,7 @@ function RelatorioCelebracao({ planCelula }) {
       bgcolor={corIgreja.principal}
       height="90vh"
       width="100vw"
-      minWidth={370}
+      minWidth={300}
       minHeight={500}
     >
       ola

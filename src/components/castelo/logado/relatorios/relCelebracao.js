@@ -459,7 +459,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           setOpenErro(true);
           setCarregando(false);
 
-          console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+          // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
         });
     } else {
       handleVisitantes();
@@ -672,7 +672,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         setOpenErro(true);
         setCarregando(false);
 
-        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
   const handleSalvar = () => {
@@ -716,7 +716,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         setOpenErro(true);
         setCarregando(false);
 
-        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
   const pegaRankSemana = () => {
@@ -851,12 +851,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       bgcolor={corIgreja.principal}
       height="90vh"
       width="100vw"
-      minWidth={370}
+      minWidth={300}
       minHeight={500}
     >
       {openVisitantes ? (
         <Box
-          minWidth={370}
+          minWidth={300}
           height="100%"
           width="100%"
           maxWidth={600}
@@ -1073,7 +1073,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           {checkRelatorio ? (
             <Box
               height="100%"
-              minWidth={370}
+              minWidth={300}
               width="100vw"
               mt={0}
               display="flex"
@@ -1081,7 +1081,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
               alignItems="center"
             >
               <Box
-                minWidth={370}
+                minWidth={300}
                 height="100%"
                 width="100vw"
                 maxWidth={600}
@@ -1800,7 +1800,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           ) : (
             <Box
               height="100%"
-              minWidth={370}
+              minWidth={300}
               width="100vw"
               mt={0}
               display="flex"
@@ -1808,7 +1808,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
               alignItems="center"
             >
               <Box
-                minWidth={370}
+                minWidth={300}
                 height="100%"
                 width="100vw"
                 maxWidth={600}

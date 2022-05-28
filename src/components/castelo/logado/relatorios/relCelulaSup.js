@@ -12,6 +12,7 @@ import PegaMes from 'src/utils/getMes';
 import Meses from 'src/utils/mesesAbrev';
 
 import TabCelula from './supervisor/aba/tabRelSuperCelulas';
+import TabSetor from './supervisor/aba/tabRelSuperTotal';
 import TabResumo from './supervisor/aba/tabResumo';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,8 +44,14 @@ function RelCelula({ perfilUser, lideranca }) {
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
   const [valorIndexSend, setValorIndexSend] = React.useState([]);
 
-  const [contSemana, setContSemana] = React.useState(semanaAtual);
-  const celulaSetor = lideranca.filter(
+  const [contSemana, setContSemana] = React.useState(semanaAtual - 1);
+
+  const lideresSetor = lideranca.sort((a, b) => {
+    if (new Date(a.Celula) > new Date(b.Celula)) return 1;
+    if (new Date(b.Celula) > new Date(a.Celula)) return -1;
+    return 0;
+  });
+  const celulaSetor = lideresSetor.filter(
     (results) =>
       Number(results.supervisao) === Number(perfilUser.supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
@@ -68,6 +75,25 @@ function RelCelula({ perfilUser, lideranca }) {
     if (contCelulaAtual < 0) contCelulaAtual = numeroCelula.length - 1;
     setContCelula(contCelulaAtual);
   }; */
+
+  const tipo = ['Relatório das Celulas', 'Relatório Geral'];
+  const [contTipo, setContTipo] = React.useState(0);
+  const handleIncTipo = () => {
+    let contTipoAtual = contTipo + 1;
+
+    if (contTipoAtual > 1) {
+      contTipoAtual = 0;
+    }
+    setContTipo(contTipoAtual);
+  };
+  const handleDecTipo = () => {
+    let contTipoAtual = contTipo - 1;
+
+    if (contTipoAtual < 0) {
+      contTipoAtual = 1;
+    }
+    setContTipo(contTipoAtual);
+  };
 
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
@@ -102,11 +128,19 @@ function RelCelula({ perfilUser, lideranca }) {
           justifyContent="center"
           alignItems="center"
         >
-          <Box height="100%" width="96vw" border="4px solid #fff">
+          <Box
+            bgcolor={corIgreja.principal}
+            style={{
+              borderRadius: '16px',
+            }}
+            height="100%"
+            width="96vw"
+            border="4px solid #fff"
+          >
             <Box height="100%">
               <Box
-                height="20%"
-                minHeight={80}
+                height="25%"
+                minHeight={150}
                 minWidth={300}
                 display="flex"
                 justifyContent="center"
@@ -119,12 +153,12 @@ function RelCelula({ perfilUser, lideranca }) {
               >
                 <Box width="96%" ml={1} minWidth={300}>
                   <Grid container spacing={1} item xs={12}>
-                    <Grid item xs={8}>
+                    <Grid item xs={6}>
                       <Box ml={1} color="white">
                         Escolha a Semana
                       </Box>
                       <Paper width="100%" className={classes.paper}>
-                        <Box height={30} width="100%" display="flex">
+                        <Box height={25} width="100%" display="flex">
                           <Box
                             width="20%"
                             display="flex"
@@ -151,7 +185,7 @@ function RelCelula({ perfilUser, lideranca }) {
                             fontSize="15px"
                             sx={{ fontFamily: 'arial black' }}
                           >
-                            SEMANA - {contSemana}
+                            SEM - {contSemana}
                           </Box>
                           <Box
                             width="20%"
@@ -174,12 +208,12 @@ function RelCelula({ perfilUser, lideranca }) {
                         </Box>
                       </Paper>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                       <Box ml={1} color="white">
                         Mes / Ano
                       </Box>
                       <Paper width="100%" className={classes.paper}>
-                        <Box height={30} width="100%" display="flex">
+                        <Box height={25} width="100%" display="flex">
                           <Box
                             width="100%"
                             display="flex"
@@ -192,6 +226,61 @@ function RelCelula({ perfilUser, lideranca }) {
                         </Box>
                       </Paper>
                     </Grid>
+                    <Grid item xs={12}>
+                      <Box
+                        borderRadius={5}
+                        bgcolor="white"
+                        width="100%"
+                        display="flex"
+                      >
+                        <Box
+                          width="10%"
+                          display="flex"
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              handleDecTipo();
+                            }}
+                          >
+                            <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
+                            <BiCaretLeft />
+                          </IconButton>
+                        </Box>
+                        <Box
+                          width="100%"
+                          className={classes.fontResponsive16}
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          {tipo[contTipo]}
+                        </Box>
+                        <Box
+                          width="10%"
+                          display="flex"
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              handleIncTipo();
+                            }}
+                          >
+                            <SvgIcon sx={{ color: corIgreja.iconeOn }} />
+                            <BiCaretRight />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                    </Grid>
                   </Grid>
                 </Box>
               </Box>
@@ -200,50 +289,53 @@ function RelCelula({ perfilUser, lideranca }) {
                   borderBottomLeftRadius: '16px',
                   borderBottomRightRadius: '16px',
                 }}
-                height="80%"
+                height="70%"
                 minWidth={300}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight={430}
+                minHeight={230}
                 width="100%"
                 bgcolor={corIgreja.principal}
                 borderTop="2px solid #fff"
               >
-                <Box width="95%" height="100%">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="95%"
+                  height="100%"
+                >
                   <Box
-                    height="10%"
-                    minHeight={50}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    sx={{
-                      bgcolor: corIgreja.principal,
-                      color: 'yellow',
-                      fontFamily: 'arial black',
-                      fontWeight: 'bold',
-                      fontSize: '14px',
-                    }}
-                  >
-                    RELATÓRIOS DAS CÉLULAS
-                  </Box>
-                  <Box
-                    height="85%"
-                    minHeight={315}
+                    height="90%"
+                    minHeight={225}
                     bgcolor="#fafafa"
                     width="100%"
                     borderRadius={16}
                   >
-                    <TabCelula
-                      perfilUser={perfilUser}
-                      Mes={contMes}
-                      Ano={contAno}
-                      contSemana={contSemana}
-                      numeroCelula={numeroCelula}
-                      setSendResumo={setSendResumo}
-                      setDadosCelulaSend={setDadosCelulaSend}
-                      setValorIndexSend={setValorIndexSend}
-                    />
+                    {!contTipo ? (
+                      <TabCelula
+                        perfilUser={perfilUser}
+                        Mes={contMes}
+                        Ano={contAno}
+                        contSemana={contSemana}
+                        numeroCelula={numeroCelula}
+                        setSendResumo={setSendResumo}
+                        setDadosCelulaSend={setDadosCelulaSend}
+                        setValorIndexSend={setValorIndexSend}
+                      />
+                    ) : (
+                      <TabSetor
+                        perfilUser={perfilUser}
+                        Mes={contMes}
+                        Ano={contAno}
+                        contSemana={contSemana}
+                        numeroCelula={numeroCelula}
+                        setSendResumo={setSendResumo}
+                        setDadosCelulaSend={setDadosCelulaSend}
+                        setValorIndexSend={setValorIndexSend}
+                      />
+                    )}
                   </Box>
                 </Box>
               </Box>
@@ -253,6 +345,7 @@ function RelCelula({ perfilUser, lideranca }) {
       ) : (
         <TabResumo
           perfilUser={perfilUser}
+          lideranca={lideranca}
           Mes={contMes}
           Ano={contAno}
           contSemana={contSemana}
@@ -265,5 +358,4 @@ function RelCelula({ perfilUser, lideranca }) {
     </Box>
   );
 }
-
 export default RelCelula;

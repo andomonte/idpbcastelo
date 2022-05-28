@@ -11,7 +11,7 @@ import MostrarRelatorio from 'src/components/castelo/logado/relatorios/superviso
 
 import Meses from 'src/utils/meses';
 import TamanhoJanela from 'src/utils/getSize';
-import TabRelSuperVisita from './supervisor/aba/tabRelSuper';
+import TabRelSuper from './supervisor/aba/tabRelSuper';
 
 const janela = TamanhoJanela();
 
@@ -215,7 +215,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                       justifyContent="center"
                       sx={{
                         bgcolor: corIgreja.principal,
-                        color: 'yellow',
+                        color: '#F0F0F0',
                         fontFamily: 'arial black',
                         fontWeight: 'bold',
                       }}
@@ -230,7 +230,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                       width="100%"
                       borderRadius={16}
                     >
-                      <TabRelSuperVisita
+                      <TabRelSuper
                         perfilUser={perfilUser}
                         Mes={contMes}
                         Ano={contAno}

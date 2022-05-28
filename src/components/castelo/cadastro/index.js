@@ -176,7 +176,7 @@ function Cadastro({ lideranca, rolMembros }) {
     );
   };
   React.useEffect(() => {
-    /* console.log(
+    /* //console.log(
       'valor nm,nl,ul,um',
       novoMembro.length,
       novoLider.length,
@@ -455,7 +455,7 @@ function Cadastro({ lideranca, rolMembros }) {
 
         const checarNome = searcher.search(nome);
         let valNasc = 'testar';
-        //  console.log('searcher,checarNome', searcher, checarNome, nome);
+        //  //console.log('searcher,checarNome', searcher, checarNome, nome);
 
         if (checarNome.length === 1) {
           setValidacaoNome(true);
@@ -511,7 +511,7 @@ function Cadastro({ lideranca, rolMembros }) {
           setOpenErro={(openErros) => setOpenErro(openErros)}
         />
       )}
-      {/*  {console.log(
+      {/*  {//console.log(
         'valores de openSelect e perfilUserFinal.length',
         openSelect,
         perfilUserFinal.length,

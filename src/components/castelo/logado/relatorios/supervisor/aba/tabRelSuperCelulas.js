@@ -172,6 +172,7 @@ export default function TabCelula({
         bgcolor="#80cbc4"
         sx={{
           fontFamily: 'arial black',
+          fontSize: '13px',
           borderBottom: '2px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
@@ -225,14 +226,14 @@ export default function TabCelula({
       </Box>
 
       {Object.keys(presSem1).length ? (
-        <TableContainer sx={{ maxHeight: 290 }}>
+        <TableContainer sx={{ maxHeight: 210 }}>
           {presSem1.map((row, index) => (
             <Box
               mt={0}
               display="flex"
               alignItems="center"
               key={row.Celula}
-              height={58}
+              height="6.8vh"
             >
               <Box
                 sx={{

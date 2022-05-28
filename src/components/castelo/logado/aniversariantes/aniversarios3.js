@@ -187,7 +187,7 @@ function BuscarAniversariantes({ rolMembros }) {
           <Box
             height="25%"
             minHeight={150}
-            minWidth={370}
+            minWidth={300}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -197,7 +197,7 @@ function BuscarAniversariantes({ rolMembros }) {
               borderTopRightRadius: '16px',
             }}
           >
-            <Box width="100%" ml={1} minWidth={370}>
+            <Box width="100%" ml={1} minWidth={300}>
               <Box mb={2} textAlign="center" color="yellow">
                 ANIVERSARIANTES DA IGREJA
               </Box>

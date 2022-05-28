@@ -21,7 +21,6 @@ const handler = async (req, res) => {
 
       res.status(200).send(result);
     } catch (errors) {
-      console.log('erro aqui', errors);
       res.status(400).send('vou criar o banco');
     }
   }

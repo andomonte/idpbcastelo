@@ -67,7 +67,7 @@ const necessidade = [
   { label: 'Leitura Bíblica e Oração', value: -1 },
   { label: 'Integrar na Visão', value: 0 },
   { label: 'Melhorar a Unidade', value: 1 },
-  { label: 'Tabalhar a Comunhão', value: 2 },
+  { label: 'Trabalhar a Comunhão', value: 2 },
   { label: 'Treinar a Liderança', value: 3 },
   { label: 'Lider em Treinamento', value: 4 },
   { label: 'Melhorar a Estrutura', value: 5 },
@@ -269,20 +269,19 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
 
   // const jsonNecessidade = JSON.stringify(valorNecessidade);
   //  const obj = JSON.parse(jsonNecessidade);
-  //  console.log('JSON', jsonNecessidade, obj);
 
   return (
     <Box height="90vh" minHeight={500} width="100%">
       <Box
         height="100%"
-        minWidth={370}
+        minWidth={300}
         width="100vw"
         mt={0}
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
-        <Box height="100%" width="100vw" minWidth={370}>
+        <Box height="100%" width="100vw" minWidth={300}>
           <Box height="100%">
             <Box
               height="100%"
@@ -385,12 +384,12 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                     flexDirection: 'column',
                     marginTop: 2,
                     maxHeight: 300,
-                    background: '#bdbdbd',
+                    background: corIgreja.principal,
                     borderRadius: 6,
                   }}
                 >
                   <Box width="100%">
-                    <Box mt="2vh" ml={2} width="90%" color="black">
+                    <Box mt="2vh" ml={2} width="90%" color="white">
                       <Typography
                         variant="caption"
                         display="block"
@@ -411,7 +410,7 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                           sx={{
                             background: 'white',
                             color: 'black',
-                            border: '2px solid black',
+
                             borderRadius: 2,
                           }}
                           onChange={(_, newValue) => {
@@ -440,7 +439,7 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                     </Box>
                   </Box>
                   <Box width="100%">
-                    <Box mt="2vh" ml={2} width="90%" color="black">
+                    <Box mt="2vh" ml={2} width="90%" color="white">
                       <Typography
                         variant="caption"
                         display="block"
@@ -461,7 +460,6 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                           sx={{
                             background: 'white',
                             color: 'black',
-                            border: '2px solid black',
                             borderRadius: 2,
                           }}
                           onChange={(_, newValue) => {
@@ -490,7 +488,7 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                     </Box>
                   </Box>
                   <Box mb={2} width="100%">
-                    <Box mt="2vh" ml={2} width="80%" color="black">
+                    <Box mt="2vh" ml={2} width="80%" color="white">
                       <Typography
                         variant="caption"
                         display="block"
@@ -511,7 +509,7 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                           sx={{
                             background: 'white',
                             color: 'black',
-                            border: '2px solid black',
+
                             borderRadius: 2,
                           }}
                           onChange={(_, newValue) => {
@@ -543,8 +541,9 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
                 <Grid item xs={11}>
                   <Box
                     textAlign="center"
-                    mt="2vh"
-                    color="yellow"
+                    mt="1vh"
+                    mb="2vh"
+                    color="white"
                     sx={{ fontSize: 'bold' }}
                   >
                     <Typography variant="caption" display="block" gutterBottom>

@@ -14,8 +14,8 @@ import { MdScreenSearchDesktop } from 'react-icons/md';
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function TabCelula({
-  perfilUser,
   setSendResumo,
+  perfilUser,
   setDadosRelVisita,
   Mes,
   Ano,
@@ -36,11 +36,16 @@ export default function TabCelula({
 
   React.useEffect(() => {
     setRel('nada');
+    setRelEncontrado([]);
+
     if (sem1) {
       setRel(sem1);
       if (sem1 && sem1[0]) {
         const listaRelSuper = sem1.filter(
-          (val) => Number(val.Supervisao) === Number(perfilUser.supervisao),
+          (val) =>
+            Number(val.Supervisao) === Number(perfilUser.supervisao) &&
+            Number(val.Distrito) === Number(perfilUser.Distrito) &&
+            val.Funcao === perfilUser.Funcao,
         );
 
         if (listaRelSuper && listaRelSuper.length) {
@@ -152,7 +157,7 @@ export default function TabCelula({
                       width="25%"
                     >
                       {relEncontrado[index]
-                        ? relEncontrado[index].CelulaVisitada.slice(9, 10)
+                        ? relEncontrado[index].CelulaVisitada.slice(9, 11)
                         : '-'}
                     </Box>
 

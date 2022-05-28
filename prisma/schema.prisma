@@ -41,9 +41,9 @@ model eventosCelulas {
   Evento    String   @db.Text
   Local     String   @db.Text
   Objetivo  String   @db.Text
-  Descricao String?  @db.Text
-  Mes       Int
+  Descricao String   @db.Text
   Ano       Int
+  Mes       Int
   Horario   String   @db.VarChar(15)
   Celula    Int
   Distrito  Int
@@ -296,4 +296,24 @@ model relSupervisao {
   Mes            Int
   Ano            Int
   Progresso      String @db.VarChar(5)
+}
+
+model eventos {
+  id       Int    @id @default(autoincrement())
+  Data     String @db.VarChar(25)
+  Horario  String @db.VarChar(15)
+  Evento   String @db.Text
+  Local    String @db.Text
+  Distrito Int
+  Mes      Int
+  Ano      Int
+  Objetivo String @db.Text
+  Publico  String @db.VarChar(45)
+  Numero   Int
+  Funcao   String @db.VarChar(45)
+}
+
+model dicas {
+  id   Int    @id @default(autoincrement())
+  Dica String @db.Text
 }

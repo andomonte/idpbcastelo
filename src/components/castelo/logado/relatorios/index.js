@@ -21,18 +21,21 @@ import Login from 'src/components/botaoLogin';
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import { IoIosPeople } from 'react-icons/io';
+import { CgFileDocument } from 'react-icons/cg';
+
 import corIgreja from 'src/utils/coresIgreja';
 import NabarLider from '../navBar/lider';
 import NabarSecretaria from '../navBar/secretaria';
 
 import NavbarSuper from '../navBar/supervisor';
-import NavbarCoord from '../navBar/coordenador';
 
 import RelCelula from './relCelula';
 import RelVisitasSuper from './relVisitaSuper';
+import RelCoord from './relCoord';
 import RelSuper from './relSuper';
+import RelSuperCoord from './relSuperCoord';
 import RelCelulaSup from './relCelulaSup';
-
+import RelCelulaCoord from './relCelulaCoord';
 import RelCelebracao from './relCelebracao';
 import RelDiscipulado from './relDiscipulado';
 import Padrao from './abas/telaPadrao';
@@ -203,7 +206,7 @@ function Relatorios({
               ) : null}
             </Box>
 
-            {perfilUser.Funcao !== 'Supervisor' && (
+            {perfilUser.Funcao === 'Lider' && (
               <Box display="flex" m={0}>
                 <BottomNavigation
                   value={value}
@@ -346,6 +349,78 @@ function Relatorios({
                 </BottomNavigation>
               </Box>
             )}
+            {perfilUser.Funcao === 'Coordenador' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Celula"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <IoIosPeople />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Supervisão"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <MdOutlineSupervisorAccount />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <MdOutlineSupervisorAccount />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Coordenac."
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <CgFileDocument />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <CgFileDocument />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
+
             <Login />
           </Toolbar>
         </AppBar>
@@ -364,24 +439,11 @@ function Relatorios({
             <NabarSecretaria perfilUser={perfilUser} />
           )}
 
-          {perfilUser.Funcao === 'Supervisor' && (
+          {(perfilUser.Funcao === 'Supervisor' ||
+            perfilUser.Funcao === 'Coordenador' ||
+            perfilUser.Funcao === 'PastorDistrito' ||
+            perfilUser.Funcao === 'Presidente') && (
             <NavbarSuper
-              items={lideranca}
-              celulas={celulas}
-              rolMembros={rolMembros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser.Funcao === 'Coordenador' && (
-            <NavbarCoord
-              items={lideranca}
-              celulas={celulas}
-              rolMembros={rolMembros}
-              perfilUser={perfilUser}
-            />
-          )}
-          {perfilUser.Funcao === 'PastorDistrito' && (
-            <NavbarCoord
               items={lideranca}
               celulas={celulas}
               rolMembros={rolMembros}
@@ -419,7 +481,14 @@ function Relatorios({
                     lideranca={lideranca}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Coordenador' ? (
+                  <RelCelulaCoord
+                    perfilUser={perfilUser}
+                    secao={session}
+                    rolMembros={rolMembros}
+                    lideranca={lideranca}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
               </Box>
@@ -445,7 +514,14 @@ function Relatorios({
                     lideranca={lideranca}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Coordenador' ? (
+                  <RelSuperCoord
+                    perfilUser={perfilUser}
+                    secao={session}
+                    rolMembros={rolMembros}
+                    lideranca={lideranca}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
               </Box>
@@ -471,7 +547,14 @@ function Relatorios({
                 lideranca={lideranca}
               />
             ) : null}
-            {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+            {perfilUser.Funcao === 'Coordenador' ? (
+              <RelCoord
+                perfilUser={perfilUser}
+                secao={session}
+                rolMembros={rolMembros}
+                lideranca={lideranca}
+              />
+            ) : null}
             {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
             {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
           </TabPanel>

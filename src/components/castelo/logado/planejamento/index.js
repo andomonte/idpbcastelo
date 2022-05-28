@@ -16,10 +16,8 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import Login from 'src/components/botaoLogin';
-// import PerfilIcon from 'src/components/icones/perfil';
 
 import { useSession } from 'next-auth/client';
-// import Eventos from './eventos';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 import NabarMembro from '../navBar/membro';
@@ -27,10 +25,12 @@ import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';
 import NavbarCoord from '../navBar/coordenador';
 import PlanCelula from './planejamentoCelula';
+import PlanCelulaSuper from './planejamentoCelulaSuper';
 import PlanEventos from './planejamentoEventos';
+import PlanEventosGeral from './planejamentoEventosGeral';
+import PlanEventosMembros from './planejamentoEventosMembros';
 import PlanCelulaMembro from './planejamentoCelulaMembro';
-// import DadosAdicionais from './dadosAdicionais';
-// import DadosEndereco from './dadosEndereco';
+import Calendario from './calendario';
 import Padrao from './telaPadrao';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -137,7 +137,7 @@ function TabPanel(props) {
   );
 }
 
-function AtualizarDados({ title, rolMembros, perfilUser }) {
+function AtualizarDados({ title, rolMembros, perfilUser, lideranca }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -312,7 +312,14 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
                     rolMembros={rolMembros}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Supervisor' ? (
+                  <PlanCelulaSuper
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    secao={session}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
@@ -322,6 +329,13 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           <TabPanel value={value} index={1}>
             {session && (
               <Box>
+                {perfilUser.Funcao === 'Membro' ? (
+                  <PlanEventosMembros
+                    perfilUser={perfilUser}
+                    secao={session}
+                    rolMembros={rolMembros}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Lider' ? (
                   <PlanEventos
                     perfilUser={perfilUser}
@@ -330,8 +344,14 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
                   />
                 ) : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
-                {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Supervisor' ||
+                perfilUser.Funcao === 'Coordenador' ? (
+                  <PlanEventosGeral
+                    perfilUser={perfilUser}
+                    secao={session}
+                    lideranca={lideranca}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
               </Box>
@@ -339,12 +359,12 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
-            {perfilUser.Funcao === 'Lider' ? <Padrao /> : null}
-            {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
-            {perfilUser.Funcao === 'Supervisor' ? <Padrao /> : null}
-            {perfilUser.Funcao === 'Coordenador' ? <Padrao /> : null}
-            {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
-            {perfilUser.Funcao === 'Presidente' ? <Padrao /> : null}
+
+            <Calendario
+              perfilUser={perfilUser}
+              secao={session}
+              rolMembros={rolMembros}
+            />
           </TabPanel>
         </main>
       </div>
