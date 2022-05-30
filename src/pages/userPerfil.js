@@ -1,6 +1,6 @@
 import React from 'react';
-import { Perfil } from 'src/components/castelo/logado/perfil';
-import Cadastro from 'src/components/castelo/cadastro';
+import { Perfil } from 'src/components/igrejas/logado/perfil';
+import Cadastro from 'src/components/igrejas/cadastro';
 import { useSession } from 'next-auth/client';
 import prisma from 'src/lib/prisma';
 // import Modal from '@material-ui/core/Modal';

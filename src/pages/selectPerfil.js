@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectPerfil from 'src/components/castelo/selectPerfil';
+import SelectPerfil from 'src/components/igrejas/selectPerfil';
 import prisma from 'src/lib/prisma';
 import Espera from 'src/utils/espera';
 import axios from 'axios';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Midia from 'src/components/castelo/logado/midia';
+import Midia from 'src/components/igrejas/logado/midia';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IdpbCastelo } from 'src/components/castelo/logado/home';
+import { IdpbCastelo } from 'src/components/igrejas/logado/home';
 import prisma from 'src/lib/prisma';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas }) {

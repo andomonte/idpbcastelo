@@ -1,5 +1,5 @@
 import React from 'react';
-import CadastrarPessoas from 'src/components/castelo/logado/cadastrarPessoas';
+import CadastrarPessoas from 'src/components/igrejas/logado/cadastrarPessoas';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

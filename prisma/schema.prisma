@@ -164,15 +164,17 @@ model relatorioCelulas {
 }
 
 model pontuacao {
-  id        Int      @id @default(autoincrement())
-  Semana    Int
-  Celula    Int
-  Distrito  Int
-  Pontuacao Json
-  TotalRank String   @db.VarChar(25)
-  Total     String   @db.VarChar(25)
-  CriadoPor String   @db.Text
-  CriadoEm  DateTime @db.DateTime(0)
+  id         Int      @id @default(autoincrement())
+  Semana     Int
+  Ano        Int
+  Celula     Int
+  Supervisao Int
+  Distrito   Int
+  Pontuacao  Json
+  TotalRank  String   @db.VarChar(25)
+  Total      String   @db.VarChar(25)
+  CriadoPor  String   @db.Text
+  CriadoEm   DateTime @db.DateTime(0)
 }
 
 model relatorioCelebracao {

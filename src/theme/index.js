@@ -24,7 +24,7 @@ const theme = createTheme({
       default: '#fff',
       dark: '#ffff',
       paper: colors.common.white,
-      yellow: '#ffd600',
+      white: '#ffd600',
     },
     text: {
       primary: colors.blueGrey[900],

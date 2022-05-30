@@ -1,5 +1,5 @@
 import React from 'react';
-import Matricula from 'src/components/castelo/normal/cursos/matricula';
+import Matricula from 'src/components/igrejas/normal/cursos/matricula';
 import prisma from 'src/lib/prisma';
 
 function Home({ cursos, inscritosCursos }) {
