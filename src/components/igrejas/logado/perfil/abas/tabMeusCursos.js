@@ -57,7 +57,7 @@ export default function TabCelula({ Ano, perfilUser }) {
                     bgcolor="#dcedc8"
                     sx={{
                       fontFamily: 'arial black',
-                      borderBottom: '2px solid #000',
+                      borderBottom: '1px solid #000',
                       borderTopLeftRadius: '16px',
                       borderTopRightRadius: '16px',
                     }}
@@ -76,7 +76,7 @@ export default function TabCelula({ Ano, perfilUser }) {
                     color="blue"
                     sx={{
                       fontFamily: 'arial black',
-                      borderBottom: '2px solid #000',
+                      borderBottom: '1px solid #000',
                     }}
                     height="8vh"
                     width="100%"
@@ -90,7 +90,7 @@ export default function TabCelula({ Ano, perfilUser }) {
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   fontSize="12px"
                   height="10.66%"
@@ -117,8 +117,8 @@ export default function TabCelula({ Ano, perfilUser }) {
                     textAlign="center"
                     width="35%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     STATUS
@@ -131,7 +131,7 @@ export default function TabCelula({ Ano, perfilUser }) {
                     textAlign="center"
                     width="20%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     NOTA
@@ -143,7 +143,7 @@ export default function TabCelula({ Ano, perfilUser }) {
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="8vh"
                   width="100%"
@@ -170,8 +170,8 @@ export default function TabCelula({ Ano, perfilUser }) {
                     textAlign="center"
                     width="35%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {row.Status ? row.Status : '-'}
@@ -184,7 +184,7 @@ export default function TabCelula({ Ano, perfilUser }) {
                     textAlign="center"
                     width="20%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {row.Nota ? row.Nota : '-'}

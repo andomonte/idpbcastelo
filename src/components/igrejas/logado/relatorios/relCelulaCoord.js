@@ -43,7 +43,7 @@ function RelCelula({ perfilUser, lideranca }) {
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
   const [valorIndexSend, setValorIndexSend] = React.useState([]);
-
+  const [indexTabela, setIndexTabela] = React.useState([]);
   const [contSemana, setContSemana] = React.useState(semanaAtual - 1);
 
   const lideresSetor = lideranca.sort((a, b) => {
@@ -304,6 +304,7 @@ function RelCelula({ perfilUser, lideranca }) {
                         setSendResumo={setSendResumo}
                         setDadosCelulaSend={setDadosCelulaSend}
                         setValorIndexSend={setValorIndexSend}
+                        setIndexTabela={setIndexTabela}
                       />
                     ) : (
                       <TabSetor
@@ -334,6 +335,7 @@ function RelCelula({ perfilUser, lideranca }) {
           setSendResumo={setSendResumo}
           dadosCelulaSend={dadosCelulaSend}
           valorIndexSend={valorIndexSend}
+          indexTabela={indexTabela}
         />
       )}
     </Box>

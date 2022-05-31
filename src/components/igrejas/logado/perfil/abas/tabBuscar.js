@@ -422,7 +422,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             sx={{
               fontFamily: 'arial black',
               fontSize: '12px',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
             }}
@@ -450,8 +450,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               textAlign="center"
               width="25%"
               sx={{
-                borderLeft: '2px solid #000',
-                borderRight: '2px solid #000',
+                borderLeft: '1px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               DATA
@@ -463,7 +463,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               height="100%"
               textAlign="center"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
               width="20%"
             >
@@ -476,7 +476,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               height="100%"
               textAlign="center"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
               width="20%"
             >
@@ -490,7 +490,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
             }}
             height="16.66%"
             width="100%"
@@ -519,8 +519,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {dataSem1.length ? dataSem1 : '-'}
@@ -534,8 +534,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -551,7 +551,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {presSem1.length ? (
@@ -575,7 +575,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -591,7 +591,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {celebSem1.length ? (
@@ -615,7 +615,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -646,7 +646,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
             }}
             height="16.66%"
             width="100%"
@@ -675,8 +675,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {dataSem2.length ? dataSem2 : '-'}
@@ -690,8 +690,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -707,7 +707,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {presSem2.length ? (
@@ -731,7 +731,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -747,7 +747,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {celebSem2.length ? (
@@ -771,7 +771,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -802,7 +802,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
             }}
             height="16.66%"
             width="100%"
@@ -831,8 +831,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {dataSem3.length ? dataSem3 : '-'}
@@ -846,8 +846,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -863,7 +863,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {presSem3.length ? (
@@ -887,7 +887,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -903,7 +903,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {celebSem3.length ? (
@@ -927,7 +927,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -958,7 +958,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
             }}
             height="16.66%"
             width="100%"
@@ -987,8 +987,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {dataSem4.length ? dataSem4 : '-'}
@@ -1002,8 +1002,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -1019,7 +1019,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {presSem4.length ? (
@@ -1043,7 +1043,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -1059,7 +1059,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {celebSem4.length ? (
@@ -1083,7 +1083,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -1114,7 +1114,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderBottomLeftRadius: '16px',
               borderBottomRightRadius: '16px',
             }}
@@ -1145,8 +1145,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {dataSem5.length ? dataSem5 : '-'}
@@ -1160,8 +1160,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="25%"
                 sx={{
-                  borderLeft: '2px solid #000',
-                  borderRight: '2px solid #000',
+                  borderLeft: '1px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -1177,7 +1177,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {presSem5.length ? (
@@ -1201,7 +1201,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -1217,7 +1217,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 {celebSem5.length ? (
@@ -1241,7 +1241,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 textAlign="center"
                 width="20%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Oval stroke="blue" width={20} height={20} />
@@ -1305,7 +1305,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         sx={{
           fontFamily: 'arial black',
           fontSize: '12px',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -1323,7 +1323,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="60%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           ÚLTIMO CURSO
@@ -1336,7 +1336,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="20%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DÍZIMO
@@ -1357,7 +1357,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         sx={{
           fontFamily: 'arial black',
           fontSize: '12px',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderBottomLeftRadius: '16px',
           borderBottomRightRadius: '16px',
         }}
@@ -1375,7 +1375,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="60%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           {Object.keys(listaCursos).length ? (
@@ -1395,7 +1395,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="20%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           {dizimo ? (

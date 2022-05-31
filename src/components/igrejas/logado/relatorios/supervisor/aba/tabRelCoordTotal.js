@@ -322,7 +322,7 @@ export default function TabCelula({
         sx={{
           fontFamily: 'arial black',
           fontSize: '10px',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -350,8 +350,8 @@ export default function TabCelula({
           textAlign="center"
           width="15%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           ADUL
@@ -364,7 +364,7 @@ export default function TabCelula({
           textAlign="center"
           width="15%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           CRIAN
@@ -377,7 +377,7 @@ export default function TabCelula({
           textAlign="center"
           width="15%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           VISIT
@@ -390,7 +390,7 @@ export default function TabCelula({
           textAlign="center"
           width="15%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           CONV
@@ -406,7 +406,7 @@ export default function TabCelula({
           sx={{
             fontFamily: 'arial black',
             fontSize: '10px',
-            borderBottom: '2px solid #000',
+            borderBottom: '1px solid #000',
           }}
           height="33%"
           width="100%"
@@ -435,8 +435,8 @@ export default function TabCelula({
             fontSize="12px"
             color="blue"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {adulCelulas}
@@ -451,7 +451,7 @@ export default function TabCelula({
             fontSize="12px"
             color="blue"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {criCelulas}
@@ -466,7 +466,7 @@ export default function TabCelula({
             fontSize="12px"
             color="blue"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {visCelulas}
@@ -481,7 +481,7 @@ export default function TabCelula({
             fontSize="12px"
             color="blue"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {convCelulas}
@@ -495,7 +495,7 @@ export default function TabCelula({
           sx={{
             fontFamily: 'arial black',
             fontSize: '10px',
-            borderBottom: '2px solid #000',
+            borderBottom: '1px solid #000',
           }}
           height="33%"
           width="100%"
@@ -524,8 +524,8 @@ export default function TabCelula({
             fontSize="12px"
             color="brown"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {adulCeleb}
@@ -540,7 +540,7 @@ export default function TabCelula({
             fontSize="12px"
             color="brown"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {criCeleb}
@@ -555,7 +555,7 @@ export default function TabCelula({
             fontSize="12px"
             color="brown"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {visCeleb}
@@ -570,7 +570,7 @@ export default function TabCelula({
             fontSize="12px"
             color="brown"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {convCeleb}
@@ -584,7 +584,7 @@ export default function TabCelula({
           sx={{
             fontFamily: 'arial black',
             fontSize: '10px',
-            borderBottom: '2px solid #000',
+            borderBottom: '1px solid #000',
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px',
           }}
@@ -615,8 +615,8 @@ export default function TabCelula({
             fontSize="12px"
             color="#7b1fa2"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {adulDisc}
@@ -631,7 +631,7 @@ export default function TabCelula({
             fontSize="12px"
             color="#7b1fa2"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {criDisc}
@@ -646,7 +646,7 @@ export default function TabCelula({
             fontSize="12px"
             color="#7b1fa2"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {visDisc}
@@ -661,7 +661,7 @@ export default function TabCelula({
             fontSize="12px"
             color="#7b1fa2"
             sx={{
-              borderRight: '2px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {convDisc}

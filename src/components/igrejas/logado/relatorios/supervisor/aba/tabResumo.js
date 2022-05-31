@@ -43,9 +43,11 @@ export default function TabCelula({
   setSendResumo,
   dadosCelulaSend,
   valorIndexSend,
+  indexTabela,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
   const classes = useStyles();
+
   const nomeLider = lideranca.filter((val) => {
     if (
       Number(val.Celula) === Number(valorIndexSend) &&
@@ -55,9 +57,10 @@ export default function TabCelula({
 
     return 0;
   });
+
   const primeiroNome = nomeLider[0].Nome.split(' ');
 
-  const [valorIndex] = React.useState(valorIndexSend);
+  const [valorIndex] = React.useState(indexTabela);
   const [presSem1, setPresSem1] = React.useState([]);
   const [pontosSem, setPontosSem] = React.useState([]);
   const [pontosSem2, setPontosSem2] = React.useState([]);
@@ -186,6 +189,7 @@ export default function TabCelula({
         }
       }
     }
+
     if (errorCelebracaoSem) return <div>An error occured.</div>;
 
     if (!celebracaoSem) return <Espera descricao="Buscando os Dados" />;
@@ -530,15 +534,16 @@ export default function TabCelula({
             <Box color="#ffff8d" mr={2}>
               Célula:
             </Box>
-
+            {console.log('aqui1')}
             <Box color="#ffffff"> {dadosCelula.Celula} </Box>
+            {console.log('aqui2')}
           </Box>
 
           <Box
             bgcolor="#80cbc4"
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
             }}
@@ -569,8 +574,8 @@ export default function TabCelula({
               textAlign="center"
               width="25%"
               sx={{
-                borderLeft: '2px solid #000',
-                borderRight: '2px solid #000',
+                borderLeft: '1px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               Célula
@@ -583,7 +588,7 @@ export default function TabCelula({
               textAlign="center"
               width="25%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               Celebração
@@ -607,7 +612,7 @@ export default function TabCelula({
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="100%"
                   width="100%"
@@ -634,8 +639,8 @@ export default function TabCelula({
                     textAlign="center"
                     width="25%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelula.Adultos !== undefined
@@ -651,7 +656,7 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelebracao.Adultos !== undefined
@@ -684,7 +689,7 @@ export default function TabCelula({
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="100%"
                   width="100%"
@@ -711,8 +716,8 @@ export default function TabCelula({
                     textAlign="center"
                     width="25%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelula.Criancas !== undefined
@@ -728,7 +733,7 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelebracao.Criancas !== undefined
@@ -761,7 +766,7 @@ export default function TabCelula({
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="100%"
                   width="100%"
@@ -788,8 +793,8 @@ export default function TabCelula({
                     textAlign="center"
                     width="25%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelula.Visitantes !== undefined
@@ -805,7 +810,7 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelebracao.Visitantes !== undefined
@@ -838,7 +843,7 @@ export default function TabCelula({
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="100%"
                   width="100%"
@@ -865,8 +870,8 @@ export default function TabCelula({
                     textAlign="center"
                     width="25%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelula.Conversoes !== undefined
@@ -882,7 +887,7 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelebracao.Conversoes !== undefined
@@ -914,7 +919,7 @@ export default function TabCelula({
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="100%"
                   width="100%"
@@ -941,8 +946,8 @@ export default function TabCelula({
                     textAlign="center"
                     width="25%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelula.Visitas !== undefined
@@ -958,7 +963,7 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelebracao.Visitas !== undefined
@@ -988,7 +993,7 @@ export default function TabCelula({
                 bgcolor="#fafafa"
                 sx={{
                   fontFamily: 'arial black',
-                  borderBottom: '2px solid #000',
+                  borderBottom: '1px solid #000',
                 }}
               >
                 <Box
@@ -1020,8 +1025,8 @@ export default function TabCelula({
                     textAlign="center"
                     width="25%"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelula.Leitura !== undefined
@@ -1037,7 +1042,7 @@ export default function TabCelula({
                     alignItems="center"
                     width="25%"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {dadosCelebracao.Leitura !== undefined
@@ -1069,7 +1074,7 @@ export default function TabCelula({
                 <Box
                   sx={{
                     fontFamily: 'arial black',
-                    borderBottom: '2px solid #000',
+                    borderBottom: '1px solid #000',
                   }}
                   height="100%"
                   width="100%"
@@ -1098,8 +1103,8 @@ export default function TabCelula({
                     width="25%"
                     color="blue"
                     sx={{
-                      borderLeft: '2px solid #000',
-                      borderRight: '2px solid #000',
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {presentesCelula !== '' ? presentesCelula : '-'}
@@ -1114,7 +1119,7 @@ export default function TabCelula({
                     width="25%"
                     color="blue"
                     sx={{
-                      borderRight: '2px solid #000',
+                      borderRight: '1px solid #000',
                     }}
                   >
                     {presentesCelebracao !== '' ? presentesCelebracao : '-'}
@@ -1202,7 +1207,7 @@ export default function TabCelula({
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
             }}
             height={40}
             width="100%"
@@ -1220,7 +1225,7 @@ export default function TabCelula({
               minWidth={370 / 2}
               flexDirection="column"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box width="100%" fontFamily="arial black">
@@ -1264,7 +1269,7 @@ export default function TabCelula({
             bgcolor="#faffca"
             fontSize="12px"
             sx={{
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderBottomLeftRadius: '16px',
               borderBottomRightRadius: '16px',
             }}
@@ -1283,7 +1288,7 @@ export default function TabCelula({
               width="50%"
               flexDirection="column"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               {rankGeral.length && rank && rankGeral[rank - 1] ? (

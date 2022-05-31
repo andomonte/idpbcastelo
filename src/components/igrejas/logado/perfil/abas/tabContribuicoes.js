@@ -103,7 +103,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         bgcolor="#80cbc4"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -131,8 +131,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="32%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DATA
@@ -145,7 +145,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="25%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DIZIMO
@@ -160,7 +160,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box
               key={index}
               borderBottom={
-                index + 1 < dizimo.length ? '2px solid #000' : '0px solid #000'
+                index + 1 < dizimo.length ? '1px solid #000' : '0px solid #000'
               }
               sx={{
                 fontFamily: 'arial black',
@@ -190,8 +190,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   textAlign="center"
                   width="32%"
                   sx={{
-                    borderLeft: '2px solid #000',
-                    borderRight: '2px solid #000',
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
                   }}
                 >
                   {row.Data ? row.Data : '-'}
@@ -205,8 +205,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   textAlign="center"
                   width="32%"
                   sx={{
-                    borderLeft: '2px solid #000',
-                    borderRight: '2px solid #000',
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
                   }}
                 >
                   <Oval stroke="blue" width={20} height={20} />
@@ -220,7 +220,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 alignItems="center"
                 width="25%"
                 sx={{
-                  borderRight: '2px solid #000',
+                  borderRight: '1px solid #000',
                 }}
               >
                 <Box>{row.Valor ? row.Valor : '-'}</Box>

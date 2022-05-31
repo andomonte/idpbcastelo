@@ -21,6 +21,7 @@ export default function TabCelula({
   setSendResumo,
   setDadosCelulaSend,
   setValorIndexSend,
+  setIndexTabela,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
@@ -173,7 +174,7 @@ export default function TabCelula({
         sx={{
           fontFamily: 'arial black',
           fontSize: '13px',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -201,8 +202,8 @@ export default function TabCelula({
           textAlign="center"
           width="30%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DATA
@@ -215,7 +216,7 @@ export default function TabCelula({
           textAlign="center"
           width="25%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           RANKING
@@ -241,11 +242,7 @@ export default function TabCelula({
                 sx={{
                   fontFamily: 'arial black',
                 }}
-                borderBottom={
-                  index + 1 < presSem1.length
-                    ? '2px solid #000'
-                    : '0px solid #000'
-                }
+                borderBottom="1px solid #000"
                 height="100%"
                 width="100%"
                 display="flex"
@@ -271,8 +268,8 @@ export default function TabCelula({
                   textAlign="center"
                   width="30%"
                   sx={{
-                    borderLeft: '2px solid #000',
-                    borderRight: '2px solid #000',
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
                   }}
                 >
                   {presSem1[index].Data ? presSem1[index].Data : '-'}
@@ -285,7 +282,7 @@ export default function TabCelula({
                   textAlign="center"
                   width="25%"
                   sx={{
-                    borderRight: '2px solid #000',
+                    borderRight: '1px solid #000',
                   }}
                 >
                   {posicaoFinal[index] ? (
@@ -330,10 +327,11 @@ export default function TabCelula({
                       aria-label="upload picture"
                       component="span"
                       onClick={() => {
-                        setValorIndexSend(index);
+                        setValorIndexSend(presSem1[index].Celula);
 
                         setDadosCelulaSend(presSem1[index]);
                         setSendResumo(true);
+                        setIndexTabela(index);
                       }}
                     >
                       <SvgIcon sx={{ color: corIgreja.iconeOn }}>

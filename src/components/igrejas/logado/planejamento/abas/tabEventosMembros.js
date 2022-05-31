@@ -1017,7 +1017,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
         bgcolor="#c5e1a5"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -1045,8 +1045,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
           textAlign="center"
           width="50%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DESCRIÇÃO
@@ -1060,7 +1060,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
         <Box
           sx={{
             fontFamily: 'arial black',
-            borderBottom: '2px solid #000',
+            borderBottom: '1px solid #000',
           }}
           height="16.66%"
           width="100%"
@@ -1087,8 +1087,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
               textAlign="center"
               width="50%"
               sx={{
-                borderLeft: '2px solid #000',
-                borderRight: '2px solid #000',
+                borderLeft: '1px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               {dataSem1[0] && dataSem1[0].Evento ? dataSem1[0].Evento : '-'}{' '}
@@ -1102,8 +1102,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
               textAlign="center"
               width="50%"
               sx={{
-                borderLeft: '2px solid #000',
-                borderRight: '2px solid #000',
+                borderLeft: '1px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Oval stroke="blue" width={20} height={20} />

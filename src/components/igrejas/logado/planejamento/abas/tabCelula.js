@@ -500,7 +500,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         bgcolor="#c5e1a5"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -528,8 +528,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="34%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DATA
@@ -541,7 +541,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       <Box
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -568,8 +568,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem1 && dataSem1.Data ? dataSem1.Data : '-'}{' '}
@@ -583,8 +583,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -622,7 +622,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         bgcolor="#eeeeee"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -649,8 +649,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem2 && dataSem2.Data ? dataSem2.Data : '-'}{' '}
@@ -664,8 +664,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -702,7 +702,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       <Box
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -729,8 +729,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem3 && dataSem3.Data ? dataSem3.Data : '-'}{' '}
@@ -744,8 +744,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -783,7 +783,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         bgcolor="#eeeeee"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -810,8 +810,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem4 && dataSem4.Data ? dataSem4.Data : '-'}
@@ -825,8 +825,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -890,8 +890,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem5 && dataSem5.Data ? dataSem5.Data : '-'}
@@ -905,8 +905,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />

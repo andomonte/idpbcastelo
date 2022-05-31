@@ -179,7 +179,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         bgcolor="#80cbc4"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -207,8 +207,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
           textAlign="center"
           width="34%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DATA
@@ -220,7 +220,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
       <Box
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -247,8 +247,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem1.length ? dataSem1 : '-'}
@@ -262,8 +262,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -294,7 +294,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         bgcolor="#eeeeee"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -321,8 +321,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem2.length ? dataSem2 : '-'}
@@ -336,8 +336,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -360,7 +360,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
       <Box
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -387,8 +387,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem3.length ? dataSem3 : '-'}
@@ -402,8 +402,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -427,7 +427,7 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
         bgcolor="#eeeeee"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
         }}
         height="16.66%"
         width="100%"
@@ -454,8 +454,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem4.length ? dataSem4 : '-'}
@@ -469,8 +469,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />
@@ -520,8 +520,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             {dataSem5.length ? dataSem5 : '-'}
@@ -535,8 +535,8 @@ export default function TabCelebracao({ Mes, Ano, perfilUser }) {
             textAlign="center"
             width="34%"
             sx={{
-              borderLeft: '2px solid #000',
-              borderRight: '2px solid #000',
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
             }}
           >
             <Oval stroke="blue" width={20} height={20} />

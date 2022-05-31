@@ -68,7 +68,7 @@ export default function TabCelula({
         bgcolor="#80cbc4"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -97,8 +97,8 @@ export default function TabCelula({
           textAlign="center"
           width="55%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           EVENTO
@@ -123,7 +123,7 @@ export default function TabCelula({
                     sx={{
                       fontFamily: 'arial black',
                       fontSize: '14px',
-                      borderBottom: '2px solid #000',
+                      borderBottom: '1px solid #000',
                     }}
                     height="100%"
                     width="100%"
@@ -154,8 +154,8 @@ export default function TabCelula({
                       textAlign="center"
                       width="55%"
                       sx={{
-                        borderRight: '2px solid #000',
-                        borderLeft: '2px solid #000',
+                        borderRight: '1px solid #000',
+                        borderLeft: '1px solid #000',
                       }}
                     >
                       {eventoEncontrado[index] ? (

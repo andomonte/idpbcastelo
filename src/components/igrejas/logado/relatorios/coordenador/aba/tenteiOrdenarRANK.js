@@ -209,7 +209,7 @@ export default function TabCelula({
         sx={{
           fontFamily: 'arial black',
           fontSize: '13px',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -240,8 +240,8 @@ export default function TabCelula({
           textAlign="center"
           width="30%"
           sx={{
-            borderLeft: '2px solid #000',
-            borderRight: '2px solid #000',
+            borderLeft: '1px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DATA
@@ -254,7 +254,7 @@ export default function TabCelula({
           textAlign="center"
           width="25%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
           onClick={() => {
             setOrder('Posicao');
@@ -285,7 +285,7 @@ export default function TabCelula({
                 }}
                 borderBottom={
                   index + 1 < presSem1.length
-                    ? '2px solid #000'
+                    ? '1px solid #000'
                     : '0px solid #000'
                 }
                 height="100%"
@@ -313,8 +313,8 @@ export default function TabCelula({
                   textAlign="center"
                   width="30%"
                   sx={{
-                    borderLeft: '2px solid #000',
-                    borderRight: '2px solid #000',
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
                   }}
                 >
                   {presSem1[index].Data ? presSem1[index].Data : '-'}
@@ -327,7 +327,7 @@ export default function TabCelula({
                   textAlign="center"
                   width="25%"
                   sx={{
-                    borderRight: '2px solid #000',
+                    borderRight: '1px solid #000',
                   }}
                 >
                   {posicaoFinal[index] ? (

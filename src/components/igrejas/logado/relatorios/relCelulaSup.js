@@ -43,6 +43,7 @@ function RelCelula({ perfilUser, lideranca }) {
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
   const [valorIndexSend, setValorIndexSend] = React.useState([]);
+  const [indexTabela, setIndexTabela] = React.useState([]);
 
   const [contSemana, setContSemana] = React.useState(semanaAtual - 1);
 
@@ -212,6 +213,7 @@ function RelCelula({ perfilUser, lideranca }) {
                         borderRadius={5}
                         bgcolor="white"
                         width="100%"
+                        height={40}
                         display="flex"
                       >
                         <Box
@@ -304,6 +306,7 @@ function RelCelula({ perfilUser, lideranca }) {
                         setSendResumo={setSendResumo}
                         setDadosCelulaSend={setDadosCelulaSend}
                         setValorIndexSend={setValorIndexSend}
+                        setIndexTabela={setIndexTabela}
                       />
                     ) : (
                       <TabSetor
@@ -334,6 +337,7 @@ function RelCelula({ perfilUser, lideranca }) {
           setSendResumo={setSendResumo}
           dadosCelulaSend={dadosCelulaSend}
           valorIndexSend={valorIndexSend}
+          indexTabela={indexTabela}
         />
       )}
     </Box>

@@ -367,7 +367,7 @@ export default function TabCelula({ Mes, Ano }) {
         bgcolor="#c5e1a5"
         sx={{
           fontFamily: 'arial black',
-          borderBottom: '2px solid #000',
+          borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -385,7 +385,7 @@ export default function TabCelula({ Mes, Ano }) {
           textAlign="center"
           width="14%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           DOM
@@ -398,7 +398,7 @@ export default function TabCelula({ Mes, Ano }) {
           textAlign="center"
           width="14%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           SEG
@@ -411,7 +411,7 @@ export default function TabCelula({ Mes, Ano }) {
           textAlign="center"
           width="14%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           TER
@@ -424,7 +424,7 @@ export default function TabCelula({ Mes, Ano }) {
           textAlign="center"
           width="14%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           QUA
@@ -437,7 +437,7 @@ export default function TabCelula({ Mes, Ano }) {
           textAlign="center"
           width="14%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           QUI
@@ -450,7 +450,7 @@ export default function TabCelula({ Mes, Ano }) {
           textAlign="center"
           width="14%"
           sx={{
-            borderRight: '2px solid #000',
+            borderRight: '1px solid #000',
           }}
         >
           SEX
@@ -472,7 +472,7 @@ export default function TabCelula({ Mes, Ano }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
             }}
@@ -491,7 +491,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -533,7 +533,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -575,7 +575,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -617,7 +617,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -659,7 +659,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -701,7 +701,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -777,7 +777,7 @@ export default function TabCelula({ Mes, Ano }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
             }}
@@ -796,7 +796,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -838,7 +838,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -880,7 +880,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -922,7 +922,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -964,7 +964,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1006,7 +1006,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1082,7 +1082,7 @@ export default function TabCelula({ Mes, Ano }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
             }}
@@ -1101,7 +1101,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1143,7 +1143,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1185,7 +1185,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1227,7 +1227,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1269,7 +1269,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1311,7 +1311,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1387,7 +1387,7 @@ export default function TabCelula({ Mes, Ano }) {
           <Box
             sx={{
               fontFamily: 'arial black',
-              borderBottom: '2px solid #000',
+              borderBottom: '1px solid #000',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
             }}
@@ -1406,7 +1406,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1448,7 +1448,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1490,7 +1490,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1532,7 +1532,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1574,7 +1574,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1616,7 +1616,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1711,7 +1711,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1753,7 +1753,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1795,7 +1795,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1837,7 +1837,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1879,7 +1879,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
@@ -1921,7 +1921,7 @@ export default function TabCelula({ Mes, Ano }) {
               textAlign="center"
               width="14%"
               sx={{
-                borderRight: '2px solid #000',
+                borderRight: '1px solid #000',
               }}
             >
               <Box mt={1} ml={0} width="100%" fontSize="12px">
