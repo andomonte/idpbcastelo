@@ -108,6 +108,7 @@ function Celula({ perfilUser, lideranca, rolMembros }) {
 
     if (contCoordAtual > numeroCoord.length - 1) contCoordAtual = 0;
     setContNumeroCoord(contCoordAtual);
+    setContNumeroCelula(0);
   };
 
   const handleDecCoord = () => {
@@ -115,6 +116,7 @@ function Celula({ perfilUser, lideranca, rolMembros }) {
 
     if (contCoordAtual < 0) contCoordAtual = numeroCoord.length - 1;
     setContNumeroCoord(contCoordAtual);
+    setContNumeroCelula(0);
   };
 
   const nomeLiderCelula = lideranca.filter(
