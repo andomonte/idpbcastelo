@@ -13,6 +13,7 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
   const [openBuscar, setOpenBuscar] = React.useState(false);
   const numeroFuncoes = ['Supervisor', 'Lider'];
   const tipoLiderados = ['Supervisões', 'Células'];
+  const tipoPesquisado = ['Coordenacao', 'supervisao', 'Celula'];
   const [contNumeroFucao, setContNumeroFucao] = React.useState(0);
   //= ===================================================================
   const membrosCoordenacao = rolMembros.filter(
@@ -27,7 +28,9 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       val.Funcao === numeroFuncoes[contNumeroFucao],
   );
-  const numberCelulas = celulasSetorP.map((itens) => itens.Celula);
+  const numberCelulas = celulasSetorP.map(
+    (itens) => itens[tipoPesquisado[contNumeroFucao]],
+  );
   const celulaSetor = [...new Set(numberCelulas)];
 
   const handleIncFucao = () => {

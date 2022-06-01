@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
-import corIgreja from 'src/utils/coresIgreja';
+import corIgreja from 'src/utils/coresIgrejaFiladelfia';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +12,8 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
   const [buscarNome, setBuscarNome] = React.useState([]);
   const [openBuscar, setOpenBuscar] = React.useState(false);
   const numeroFuncoes = ['Coordenador', 'Supervisor', 'Lider'];
+  const tipoLiderados = ['Coordenações', 'Supervisões', 'Células'];
+  const tipoPesquisado = ['Coordenacao', 'supervisao', 'Celula'];
   const [contNumeroFucao, setContNumeroFucao] = React.useState(0);
   //= ===================================================================
   const membrosDistrito = rolMembros.filter(
@@ -19,11 +21,15 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
   );
 
   const celulasCoordP = lideranca.filter(
-    (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    (val) =>
+      Number(val.Distrito) === Number(perfilUser.Distrito) &&
+      val.Funcao === numeroFuncoes[contNumeroFucao],
   );
-
-  const numberCelulas = celulasCoordP.map((itens) => itens.Celula);
+  const numberCelulas = celulasCoordP.map(
+    (itens) => itens[tipoPesquisado[contNumeroFucao]],
+  );
   const celulaCoord = [...new Set(numberCelulas)];
+  console.log(celulaCoord);
 
   const handleIncFucao = () => {
     let contFuncaoAtual = contNumeroFucao + 1;
@@ -163,7 +169,7 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                         mt={0.3}
                         fontSize="12px"
                       >
-                        Total de Células:{' '}
+                        Total de {tipoLiderados[contNumeroFucao]}:{' '}
                         <Box
                           fontFamily="arial black"
                           fontSize="14px"
