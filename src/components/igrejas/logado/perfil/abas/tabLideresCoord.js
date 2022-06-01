@@ -16,6 +16,7 @@ export default function TabCelula({
   const listaParcial = lideranca.filter(
     (val) =>
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
+      Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
       val.Funcao === Funcao,
   );
 
