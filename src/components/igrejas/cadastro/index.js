@@ -326,7 +326,7 @@ function Cadastro({ lideranca, rolMembros }) {
     if (usuarioLider.length > 0) {
       if (contId - 1 < usuarioLider.length) {
         api
-          .post(`/api/castelo/cadastrarEmailLideranca`, {
+          .post(`/api/igrejas/cadastrarEmailLideranca`, {
             Email: session.user.email,
             id: usuarioLider[contId - 1].id,
           })
