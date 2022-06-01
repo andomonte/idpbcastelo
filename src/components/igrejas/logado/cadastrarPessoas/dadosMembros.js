@@ -199,7 +199,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid #000',
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(1, 1, 1),
   },

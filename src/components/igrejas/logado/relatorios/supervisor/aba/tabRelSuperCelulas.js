@@ -174,7 +174,7 @@ export default function TabCelula({
         sx={{
           fontFamily: 'arial black',
           fontSize: '13px',
-          borderBottom: '1px solid #000',
+          borderBottom: '2px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
@@ -202,8 +202,8 @@ export default function TabCelula({
           textAlign="center"
           width="30%"
           sx={{
-            borderLeft: '1px solid #000',
-            borderRight: '1px solid #000',
+            borderLeft: '2px solid #000',
+            borderRight: '2px solid #000',
           }}
         >
           DATA
@@ -216,7 +216,7 @@ export default function TabCelula({
           textAlign="center"
           width="25%"
           sx={{
-            borderRight: '1px solid #000',
+            borderRight: '2px solid #000',
           }}
         >
           RANKING
@@ -268,8 +268,8 @@ export default function TabCelula({
                   textAlign="center"
                   width="30%"
                   sx={{
-                    borderLeft: '1px solid #000',
-                    borderRight: '1px solid #000',
+                    borderLeft: '2px solid #000',
+                    borderRight: '2px solid #000',
                   }}
                 >
                   {presSem1[index].Data ? presSem1[index].Data : '-'}
@@ -282,7 +282,7 @@ export default function TabCelula({
                   textAlign="center"
                   width="25%"
                   sx={{
-                    borderRight: '1px solid #000',
+                    borderRight: '2px solid #000',
                   }}
                 >
                   {posicaoFinal[index] ? (
