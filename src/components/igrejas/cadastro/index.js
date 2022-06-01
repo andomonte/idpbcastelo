@@ -417,7 +417,7 @@ function Cadastro({ lideranca, rolMembros }) {
       setCarregar(true);
 
       api
-        .post(`/api/castelo/cadastrarEmailMembro`, {
+        .post(`/api/igrejas/cadastrarEmailMembro`, {
           Email: session.user.email,
           id: usuarioMembro[0].id,
         })
