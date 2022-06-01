@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
-import corIgreja from 'src/utils/coresIgrejaFiladelfia';
+import corIgreja from 'src/utils/coresIgreja';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import IconButton from '@mui/material/IconButton';
