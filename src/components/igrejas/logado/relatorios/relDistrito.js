@@ -75,7 +75,7 @@ function PlanMembro({ perfilUser, lideranca }) {
     if (new Date(b.supervisao) > new Date(a.supervisao)) return -1;
     return 0;
   });
-  const superParcial = setor.map((itens) => itens.supervisao);
+  const superParcial = setor.map((itens) => itens.Coordenacao);
   const numeroCoord = [...new Set(superParcial)];
 
   const handleIncAno = () => {
