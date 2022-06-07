@@ -1278,6 +1278,11 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
+"@fontsource/rubik@^4.5.10":
+  "integrity" "sha512-VQuuko0lAKgI6p9lylpeJ/xcG/FpQqUYgPC+NUwVGvYvZNSQYT20UT13MKjPk2bPuxSuSHeeOyZ9x/6eRy4pfQ=="
+  "resolved" "https://registry.npmjs.org/@fontsource/rubik/-/rubik-4.5.10.tgz"
+  "version" "4.5.10"
+
 "@hapi/address@^4.0.1":
   "integrity" "sha512-SkszZf13HVgGmChdHo/PxchnSaCJ6cetVqLzyciudzZRT0jcOouIF/Q93mgjw8cce+D+4F4C1Z/WrfFN+O3VHQ=="
   "resolved" "https://registry.npmjs.org/@hapi/address/-/address-4.1.0.tgz"
