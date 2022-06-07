@@ -1,4 +1,3 @@
-import Grid from '@material-ui/core/Grid';
 import { Box, Avatar } from '@material-ui/core';
 import React from 'react';
 import QRCode from 'react-qr-code';
@@ -71,7 +70,7 @@ function meuPerfil({ secao, perfilUser }) {
               <Box>
                 <Box>
                   <Box
-                    mt={2}
+                    mt="3vh"
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
@@ -84,73 +83,201 @@ function meuPerfil({ secao, perfilUser }) {
                   </Box>
                 </Box>
                 <Box
-                  height="100%"
-                  width="100%"
                   display="flex"
+                  width="100%"
+                  height="74vh"
+                  sx={{ minHeight: 410 }}
                   justifyContent="center"
                   alignItems="center"
-                  mt={3}
-                  mb={3}
                 >
-                  <Box
-                    height={130}
-                    width={130}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    border="4px solid #fff"
-                    borderRadius="100%"
-                  >
-                    <Avatar
-                      style={{
-                        width: 115,
-                        height: 115,
-                      }}
-                      alt="Remy Sharp"
-                      src={secao.user.image}
-                    />
-                  </Box>
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  height="100%"
-                  width="100%"
-                >
-                  <Box
-                    height={100}
-                    width={100}
-                    display="flex"
-                    bgcolor="white"
-                    borderRadius={6}
-                    justifyContent="center"
-                    alignItems="center"
-                    mt={1}
-                    ml={2}
-                  >
-                    <QRCode
-                      size={90}
-                      value={perfilUser.Igreja + perfilUser.RolMembro}
-                    />
-                  </Box>
-                  <Box ml={3} width="60%">
-                    <Box fontFamily="Rubik" fontSize="20px" color="white">
-                      {secao.user.name.toUpperCase()}
+                  <Box>
+                    <Box
+                      height="100%"
+                      width="100%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      mt="5vh"
+                      mb="5vh"
+                    >
+                      <Box
+                        height={130}
+                        width={130}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        border="4px solid #fff"
+                        borderRadius="100%"
+                      >
+                        <Avatar
+                          style={{
+                            width: 115,
+                            height: 115,
+                          }}
+                          alt="Remy Sharp"
+                          src={secao.user.image}
+                        />
+                      </Box>
                     </Box>
-                    <Box fontFamily="Rubik" fontSize="18px" color="white">
-                      {(perfilUser.Funcao === 'Lider' ||
-                        perfilUser.Funcao === 'Membro') && (
-                        <Box
-                          sx={{
-                            color: 'white',
-                            fontFamily: 'Rubik',
+                    <Box
+                      display="flex"
+                      justifyContent="flex-start"
+                      alignItems="center"
+                      height="100%"
+                      width="100%"
+                    >
+                      <Box
+                        height={100}
+                        width={110}
+                        display="flex"
+                        bgcolor="white"
+                        borderRadius={6}
+                        justifyContent="center"
+                        alignItems="center"
+                        mt={1}
+                        ml={2}
+                      >
+                        <QRCode
+                          size={90}
+                          value={perfilUser.Igreja + perfilUser.RolMembro}
+                        />
+                      </Box>
+                      <Box ml={3} width="60%">
+                        <Box fontFamily="Rubik" fontSize="20px" color="white">
+                          {secao.user.name.toUpperCase()}
+                        </Box>
+                        <Box fontFamily="Rubik" fontSize="18px" color="white">
+                          {(perfilUser.Funcao === 'Lider' ||
+                            perfilUser.Funcao === 'Membro') && (
+                            <Box
+                              sx={{
+                                color: 'white',
+                                fontFamily: 'Rubik',
 
+                                fontSize: '12px',
+                              }}
+                              display="flex"
+                            >
+                              {perfilUser.Funcao}:
+                              <Box
+                                ml={1}
+                                sx={{
+                                  color: '#ffdd55',
+                                  fontFamily: 'Rubik',
+                                  fontWeight: 'bold',
+                                  fontSize: '12px',
+                                }}
+                              >
+                                Célula {perfilUser.Celula}
+                              </Box>
+                            </Box>
+                          )}
+                          {perfilUser.Funcao === 'Supervisor' && (
+                            <Box
+                              sx={{
+                                color: 'white',
+                                fontFamily: 'Rubik',
+
+                                fontSize: '12px',
+                              }}
+                              display="flex"
+                            >
+                              {perfilUser.Funcao}:
+                              <Box
+                                ml={1}
+                                sx={{
+                                  color: '#ffdd55',
+                                  fontFamily: 'Rubik',
+                                  fontWeight: 'bold',
+                                  fontSize: '12px',
+                                }}
+                              >
+                                {perfilUser.supervisao}
+                              </Box>
+                            </Box>
+                          )}
+                          {perfilUser.Funcao === 'Coordenador' && (
+                            <Box
+                              sx={{
+                                color: 'white',
+                                fontFamily: 'Rubik',
+
+                                fontSize: '12px',
+                              }}
+                              display="flex"
+                            >
+                              {perfilUser.Funcao}:
+                              <Box
+                                ml={1}
+                                sx={{
+                                  color: '#ffdd55',
+                                  fontFamily: 'Rubik',
+                                  fontWeight: 'bold',
+                                  fontSize: '12px',
+                                }}
+                              >
+                                {perfilUser.Coordenacao}
+                              </Box>
+                            </Box>
+                          )}
+                          {perfilUser.Funcao === 'Secretaria' && (
+                            <Box
+                              sx={{
+                                color: 'white',
+                                fontFamily: 'Rubik',
+
+                                fontSize: '12px',
+                              }}
+                              display="flex"
+                            >
+                              {perfilUser.Funcao}:
+                              <Box
+                                ml={1}
+                                sx={{
+                                  color: '#ffdd55',
+                                  fontFamily: 'Rubik',
+                                  fontWeight: 'bold',
+                                  fontSize: '12px',
+                                }}
+                              >
+                                Igreja - {perfilUser.Igreja}
+                              </Box>
+                            </Box>
+                          )}
+                          {perfilUser.Funcao === 'PastorDistrito' && (
+                            <Box
+                              sx={{
+                                color: 'white',
+                                fontFamily: 'Rubik',
+
+                                fontSize: '12px',
+                              }}
+                              display="flex"
+                            >
+                              {perfilUser.Funcao}:
+                              <Box
+                                ml={1}
+                                sx={{
+                                  color: '#ffdd55',
+                                  fontFamily: 'Rubik',
+                                  fontWeight: 'bold',
+                                  fontSize: '12px',
+                                }}
+                              >
+                                {nomeDistrito[perfilUser.Distrito - 1]}
+                              </Box>
+                            </Box>
+                          )}
+                        </Box>
+                        <Box
+                          display="flex"
+                          sx={{
+                            color: '#fff',
+                            fontFamily: 'Rubik',
                             fontSize: '12px',
                           }}
-                          display="flex"
                         >
-                          {perfilUser.Funcao}:
+                          Supervisão:
                           <Box
                             ml={1}
                             sx={{
@@ -160,21 +287,18 @@ function meuPerfil({ secao, perfilUser }) {
                               fontSize: '12px',
                             }}
                           >
-                            Célula {perfilUser.Celula}
+                            {perfilUser.supervisao}{' '}
                           </Box>
                         </Box>
-                      )}
-                      {perfilUser.Funcao === 'Supervisor' && (
                         <Box
+                          display="flex"
                           sx={{
-                            color: 'white',
+                            color: '#fff',
                             fontFamily: 'Rubik',
-
                             fontSize: '12px',
                           }}
-                          display="flex"
                         >
-                          {perfilUser.Funcao}:
+                          Coordenação:
                           <Box
                             ml={1}
                             sx={{
@@ -184,69 +308,18 @@ function meuPerfil({ secao, perfilUser }) {
                               fontSize: '12px',
                             }}
                           >
-                            {perfilUser.supervisao}
+                            {perfilUser.Coordenacao}{' '}
                           </Box>
                         </Box>
-                      )}
-                      {perfilUser.Funcao === 'Coordenador' && (
                         <Box
-                          sx={{
-                            color: 'white',
-                            fontFamily: 'Rubik',
-
-                            fontSize: '12px',
-                          }}
                           display="flex"
-                        >
-                          {perfilUser.Funcao}:
-                          <Box
-                            ml={1}
-                            sx={{
-                              color: '#ffdd55',
-                              fontFamily: 'Rubik',
-                              fontWeight: 'bold',
-                              fontSize: '12px',
-                            }}
-                          >
-                            {perfilUser.Coordenacao}
-                          </Box>
-                        </Box>
-                      )}
-                      {perfilUser.Funcao === 'Secretaria' && (
-                        <Box
                           sx={{
-                            color: 'white',
-                            fontFamily: 'Rubik',
-
+                            color: '#fff',
                             fontSize: '12px',
-                          }}
-                          display="flex"
-                        >
-                          {perfilUser.Funcao}:
-                          <Box
-                            ml={1}
-                            sx={{
-                              color: '#ffdd55',
-                              fontFamily: 'Rubik',
-                              fontWeight: 'bold',
-                              fontSize: '12px',
-                            }}
-                          >
-                            Igreja - {perfilUser.Igreja}
-                          </Box>
-                        </Box>
-                      )}
-                      {perfilUser.Funcao === 'PastorDistrito' && (
-                        <Box
-                          sx={{
-                            color: 'white',
                             fontFamily: 'Rubik',
-
-                            fontSize: '12px',
                           }}
-                          display="flex"
                         >
-                          {perfilUser.Funcao}:
+                          Distrito:
                           <Box
                             ml={1}
                             sx={{
@@ -259,103 +332,40 @@ function meuPerfil({ secao, perfilUser }) {
                             {nomeDistrito[perfilUser.Distrito - 1]}
                           </Box>
                         </Box>
-                      )}
-                    </Box>
-                    <Box
-                      display="flex"
-                      sx={{
-                        color: '#fff',
-                        fontFamily: 'Rubik',
-                        fontSize: '12px',
-                      }}
-                    >
-                      Supervisão:
-                      <Box
-                        ml={1}
-                        sx={{
-                          color: '#ffdd55',
-                          fontFamily: 'Rubik',
-                          fontWeight: 'bold',
-                          fontSize: '12px',
-                        }}
-                      >
-                        {perfilUser.supervisao}{' '}
                       </Box>
                     </Box>
-                    <Box
-                      display="flex"
-                      sx={{
-                        color: '#fff',
-                        fontFamily: 'Rubik',
-                        fontSize: '12px',
-                      }}
-                    >
-                      Coordenação:
-                      <Box
-                        ml={1}
-                        sx={{
-                          color: '#ffdd55',
-                          fontFamily: 'Rubik',
-                          fontWeight: 'bold',
-                          fontSize: '12px',
-                        }}
-                      >
-                        {perfilUser.Coordenacao}{' '}
-                      </Box>
-                    </Box>
-                    <Box
-                      display="flex"
-                      sx={{
-                        color: '#fff',
-                        fontSize: '12px',
-                        fontFamily: 'Rubik',
-                      }}
-                    >
-                      Distrito:
-                      <Box
-                        ml={1}
-                        sx={{
-                          color: '#ffdd55',
-                          fontFamily: 'Rubik',
-                          fontWeight: 'bold',
-                          fontSize: '12px',
-                        }}
-                      >
-                        {nomeDistrito[perfilUser.Distrito - 1]}
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
 
-                <Box
-                  height="40%"
-                  minHeight={150}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Box
-                    height="40%"
-                    minHeight={150}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    flexDirection="column"
-                  >
-                    <Box fontFamily="Rubik" fontSize="12px" color="white">
-                      MATRÍCULA
-                    </Box>
                     <Box
-                      mt={0}
-                      sx={{
-                        color: '#ffdd55',
-                        fontFamily: 'Rubik',
-                        fontWeight: 'bold',
-                        fontSize: '28px',
-                      }}
+                      height="40%"
+                      minHeight={150}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
                     >
-                      {perfilUser.Igreja}
-                      {perfilUser.RolMembro}{' '}
+                      <Box
+                        height="40%"
+                        minHeight={150}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        flexDirection="column"
+                      >
+                        <Box fontFamily="Rubik" fontSize="12px" color="white">
+                          MATRÍCULA
+                        </Box>
+                        <Box
+                          mt={0}
+                          sx={{
+                            color: '#ffdd55',
+                            fontFamily: 'Rubik',
+                            fontWeight: 'bold',
+                            fontSize: '28px',
+                          }}
+                        >
+                          {perfilUser.Igreja}
+                          {perfilUser.RolMembro}{' '}
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
