@@ -9,7 +9,7 @@ function Planejar({ rolMembros, lideranca }) {
 
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
-  const [perfilUserF, setPerfilUserF] = React.useState();
+  const [perfilUserF, setPerfilUserF] = React.useState(perfilUser);
 
   React.useEffect(() => {
     setPerfilUserF(perfilUserF);

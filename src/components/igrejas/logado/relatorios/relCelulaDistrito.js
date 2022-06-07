@@ -36,7 +36,7 @@ function RelCelula({ perfilUser, lideranca }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-
+  const [indexTabela, setIndexTabela] = React.useState([]);
   const dataAtual = Date.now();
   const semanaAtual = PegaSemanaAtual(dataAtual);
 
@@ -303,6 +303,7 @@ function RelCelula({ perfilUser, lideranca }) {
                         setSendResumo={setSendResumo}
                         setDadosCelulaSend={setDadosCelulaSend}
                         setValorIndexSend={setValorIndexSend}
+                        setIndexTabela={setIndexTabela}
                       />
                     ) : (
                       <TabSetor
@@ -333,6 +334,7 @@ function RelCelula({ perfilUser, lideranca }) {
           setSendResumo={setSendResumo}
           dadosCelulaSend={dadosCelulaSend}
           valorIndexSend={valorIndexSend}
+          indexTabela={indexTabela}
         />
       )}
     </Box>

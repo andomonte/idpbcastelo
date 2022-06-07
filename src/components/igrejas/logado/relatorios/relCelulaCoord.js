@@ -216,6 +216,7 @@ function RelCelula({ perfilUser, lideranca }) {
                       >
                         <Box
                           width="10%"
+                          height={40}
                           display="flex"
                           justifyContent="flex-end"
                           alignItems="center"

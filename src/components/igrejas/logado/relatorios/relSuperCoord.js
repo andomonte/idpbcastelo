@@ -193,6 +193,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                       <Box
                         borderRadius={5}
                         bgcolor="white"
+                        height={40}
                         width="100%"
                         display="flex"
                       >
@@ -253,6 +254,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                         borderRadius={5}
                         bgcolor="white"
                         width="100%"
+                        height={40}
                         display="flex"
                       >
                         <Box
@@ -312,6 +314,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                         borderRadius={5}
                         bgcolor="white"
                         width="100%"
+                        height={40}
                         display="flex"
                       >
                         <Box
