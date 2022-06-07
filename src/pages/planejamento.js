@@ -9,7 +9,7 @@ function Planejar({ rolMembros, lideranca }) {
 
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
-  const [perfilUserF, setPerfilUserF] = React.useState(perfilUser);
+  const [perfilUserF, setPerfilUserF] = React.useState();
 
   React.useEffect(() => {
     setPerfilUserF(perfilUserF);
@@ -29,13 +29,24 @@ function Planejar({ rolMembros, lideranca }) {
 
   return (
     <div>
-      {perfilUserF && (
+      {perfilUser.id ? (
         <Planejamento
           title="IDPB-CELULAS"
           rolMembros={rolMembros}
           lideranca={lideranca}
-          perfilUser={perfilUserF}
+          perfilUser={perfilUser}
         />
+      ) : (
+        <div>
+          {perfilUserF && (
+            <Planejamento
+              title="IDPB-CELULAS"
+              rolMembros={rolMembros}
+              lideranca={lideranca}
+              perfilUser={perfilUserF}
+            />
+          )}
+        </div>
       )}
     </div>
   );
