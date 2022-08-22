@@ -1,17 +1,12 @@
 import React from 'react';
-import { IdpbCastelo } from 'src/components/igrejas/normal';
+import { Pagina } from 'src/components/igrejas/normal';
 import prisma from 'src/lib/prisma';
 
-function Home({ userIgrejas, celulas, LiderancaCelulas }) {
+function Home({ userIgrejas, celulas }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
 
   return (
-    <IdpbCastelo
-      celulas={celulas}
-      lideranca={LiderancaCelulas}
-      userIgrejas={dadosUser}
-      title="IDPB-CELULAS"
-    />
+    <Pagina celulas={celulas} userIgrejas={dadosUser} title="IDPB-CELULAS" />
   );
 }
 export const getStaticProps = async () => {
@@ -25,18 +20,10 @@ export const getStaticProps = async () => {
     await prisma.$disconnect();
   });
 
-  const LiderancaCelulas = await prisma.lideranca
-    .findMany()
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-
   return {
     props: {
       userIgrejas: JSON.parse(JSON.stringify(userIgrejas)),
       celulas: JSON.parse(JSON.stringify(celulas)),
-
-      LiderancaCelulas: JSON.parse(JSON.stringify(LiderancaCelulas)),
     }, // will be passed to the page component as props
     //  revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };

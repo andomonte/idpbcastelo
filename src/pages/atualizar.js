@@ -1,5 +1,5 @@
 import React from 'react';
-import AtualizarDados from 'src/components/igrejas/logado/atualizarDados';
+import AtualizarDados from 'src/components/igrejas/principal/atualizarDados';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

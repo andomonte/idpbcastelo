@@ -5,17 +5,16 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 import corIgreja from 'src/utils/coresIgreja';
-// import HomeIcon from '@material-ui/icons/Home';
-import Hidden from '@material-ui/core/Hidden';
+import { useRouter } from 'next/router';
+import { TiArrowBack } from 'react-icons/ti';
+
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import Login from '../../botaoLogin';
@@ -120,6 +119,7 @@ function HomeIcon(props) {
     </SvgIcon>
   );
 }
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -146,15 +146,13 @@ function QuemSomos({ userIgrejas, title, celulas }) {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    if (!open) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
+  const router = useRouter();
 
-    //! open ? setOpen(true) : setOpen(false);
+  const handleVoltar = () => {
+    router.back();
   };
+
+  //! open ? setOpen(true) : setOpen(false);
 
   const handleDrawerClose = () => {
     // //console.log(mobile);
@@ -177,26 +175,9 @@ function QuemSomos({ userIgrejas, title, celulas }) {
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
-              {open ? (
-                <MenuOpenIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-              {!open ? (
-                <MenuIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-
-              <Hidden mdDown>
-                <img
-                  src="/images/castelo.png"
-                  alt="logo"
-                  className={classes.logo}
-                />
-              </Hidden>
+              <Box display="flex" alignItems="center" onClick={handleVoltar}>
+                <TiArrowBack size={25} />
+              </Box>
             </Box>
 
             <Box display="flex">

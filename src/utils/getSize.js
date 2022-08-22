@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-
 function getWindowDimensions() {
   if (typeof window !== 'undefined') {
     const { innerWidth: width, innerHeight: height } = window;

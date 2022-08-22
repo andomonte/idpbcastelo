@@ -27,14 +27,6 @@ model celulas {
   @@index([Supervisao], name: "Supervisao_index")
 }
 
-model cursos {
-  id     Int    @id @default(autoincrement())
-  Nome   String @db.Text
-  Inicio String @db.VarChar(25)
-  valor  String @db.VarChar(25)
-  Fim    String @db.VarChar(25)
-}
-
 model eventosCelulas {
   id        Int      @id @default(autoincrement())
   Data      String   @db.VarChar(25)
@@ -70,7 +62,7 @@ model igreja {
 
 model lideranca {
   id          Int     @id @default(autoincrement())
-  Funcao      String? @db.VarChar(12)
+  Funcao      String? @db.VarChar(25)
   Nome        String? @db.VarChar(145)
   Nascimento  String? @db.VarChar(10)
   RolMembro   Int
@@ -80,6 +72,7 @@ model lideranca {
   Coordenacao Int
   Distrito    Int
   Igreja      String? @db.VarChar(5)
+  foto        String? @db.VarChar(255)
 
   @@index([Celula], name: "Celula_index")
   @@index([Coordenacao], name: "Coordenacao_index")
@@ -92,6 +85,7 @@ model membros {
   id                Int      @id
   Igreja            String   @db.VarChar(12)
   Nome              String   @db.VarChar(145)
+  foto              String?  @db.VarChar(255)
   Celula            Int
   Distrito          Int
   Coordenacao       Int
@@ -318,4 +312,71 @@ model eventos {
 model dicas {
   id   Int    @id @default(autoincrement())
   Dica String @db.Text
+}
+
+model boletim {
+  id         Int     @id @default(autoincrement())
+  ano        String? @db.VarChar(45)
+  semana     Int     @unique
+  titulo     String? @db.Text
+  introducao String? @db.Text
+  ponto1     String? @db.Text
+  conteudo1  String? @db.Text
+  ponto2     String? @db.Text
+  conteudo2  String? @db.Text
+  ponto3     String? @db.Text
+  conteudo3  String? @db.Text
+  ponto4     String? @db.Text
+  conteudo4  String? @db.Text
+  ponto5     String? @db.Text
+  conteudo5  String? @db.Text
+  ponto6     String? @db.Text
+  conteudo6  String? @db.Text
+  ponto7     String? @db.Text
+  conteudo7  String? @db.Text
+  ponto8     String? @db.Text
+  conteudo8  String? @db.Text
+  ponto9     String? @db.Text
+  conteudo9  String? @db.Text
+  ponto10    String? @db.Text
+  conteudo10 String? @db.Text
+  conclusao  String? @db.Text
+}
+
+model avisos {
+  id         Int     @id @default(autoincrement())
+  semana     Int?
+  ano        String? @db.VarChar(45)
+  avisos1    String? @db.VarChar(255)
+  conteudo1  String? @db.VarChar(255)
+  avisos2    String? @db.VarChar(255)
+  conteudo2  String? @db.VarChar(255)
+  avisos3    String? @db.VarChar(255)
+  conteudo3  String? @db.VarChar(255)
+  avisos4    String? @db.VarChar(255)
+  conteudo4  String? @db.VarChar(255)
+  avisos5    String? @db.VarChar(255)
+  conteudo5  String? @db.VarChar(255)
+  avisos6    String? @db.VarChar(255)
+  conteudo6  String? @db.VarChar(255)
+  avisos7    String? @db.VarChar(255)
+  conteudo7  String? @db.VarChar(255)
+  avisos8    String? @db.VarChar(255)
+  conteudo8  String? @db.VarChar(255)
+  avisos9    String? @db.VarChar(255)
+  conteudo9  String? @db.VarChar(255)
+  avisos10   String? @db.VarChar(255)
+  conteudo10 String? @db.VarChar(255)
+}
+
+model inscricoes {
+  id         Int    @id @default(autoincrement())
+  Nome       String @db.Text
+  Tipo       String @db.VarChar(255)
+  Inicio     String @db.VarChar(25)
+  valor      String @db.VarChar(25)
+  Fim        String @db.VarChar(25)
+  Imagem     String @db.VarChar(255)
+  DataEvento String @db.VarChar(255)
+  Local      String @db.VarChar(255)
 }

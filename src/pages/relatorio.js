@@ -1,5 +1,5 @@
 import React from 'react';
-import Relatorio from 'src/components/igrejas/logado/relatorios';
+import Relatorio from 'src/components/igrejas/principal/relatorios';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

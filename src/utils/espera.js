@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import corIgreja from 'src/utils/coresIgreja';
 import { Oval } from 'react-loading-icons';
+import '@fontsource/rubik';
 
 const style = {
   position: 'absolute',
@@ -33,7 +34,11 @@ export default function Espere({ descricao }) {
         >
           <Box mt={-5}>
             <Box textAlign="center" mt={3} mb={2}>
-              <img src="/images/castelo.png" alt="Castelo" width={80} />
+              <img
+                src="/images/castelo/castelo3.png"
+                alt="Castelo"
+                width={200}
+              />
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
               <Box
@@ -47,15 +52,17 @@ export default function Espere({ descricao }) {
                 minWidth={300}
               >
                 <Box textAlign="center" mt={2} mb={2}>
-                  <Box style={{ fontFamily: 'arial black', fontSize: '20px' }}>
-                    {descricao}
+                  <Box style={{ fontFamily: 'Fugaz One', fontSize: '16px' }}>
+                    {descricao.toUpperCase()}
                   </Box>
                   <Box
                     display="flex"
                     justifyContent="center"
                     flexDirection="column"
                   >
-                    <strong style={{ textAlign: 'center' }}>
+                    <strong
+                      style={{ textAlign: 'center', fontFamily: 'Rubik' }}
+                    >
                       Por Favor Espere ...
                     </strong>
                     <Box display="flex" justifyContent="center" mt={5}>

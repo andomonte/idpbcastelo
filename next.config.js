@@ -18,7 +18,7 @@ const nextConfig = {
   images: {
     domains: [
       'localhost',
-      'sistemaidpb.s3.amazonaws.com',
+      'arquivocastelo.s3.amazonaws.com',
       'idpb-app.vercel.app',
       'sistemaidpb.com.br',
     ],

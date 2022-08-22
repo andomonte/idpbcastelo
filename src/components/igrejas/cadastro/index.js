@@ -16,6 +16,7 @@ import axios from 'axios';
 import MenuItem from '@material-ui/core/MenuItem';
 import Espera from 'src/utils/espera';
 import Autocomplete from '@mui/material/Autocomplete';
+import '@fontsource/rubik';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -204,6 +205,7 @@ function Cadastro({ lideranca, rolMembros }) {
               Nome: items.Nome,
               RolMembro: items.RolMembro,
               supervisao: items.supervisao,
+              foto: items.foto,
             };
           if (items.Funcao === 'Presidente')
             return {
@@ -220,6 +222,7 @@ function Cadastro({ lideranca, rolMembros }) {
               Nome: items.Nome,
               RolMembro: items.RolMembro,
               supervisao: items.supervisao,
+              foto: items.foto,
             };
           if (items.Funcao === 'PastorDistrito')
             return {
@@ -236,6 +239,7 @@ function Cadastro({ lideranca, rolMembros }) {
               Nome: items.Nome,
               RolMembro: items.RolMembro,
               supervisao: items.supervisao,
+              foto: items.foto,
             };
 
           if (items.Funcao === 'Coordenador')
@@ -253,6 +257,7 @@ function Cadastro({ lideranca, rolMembros }) {
               Nome: items.Nome,
               RolMembro: items.RolMembro,
               supervisao: items.supervisao,
+              foto: items.foto,
             };
           if (items.Funcao === 'Supervisor')
             return {
@@ -269,6 +274,7 @@ function Cadastro({ lideranca, rolMembros }) {
               Nome: items.Nome,
               RolMembro: items.RolMembro,
               supervisao: items.supervisao,
+              foto: items.foto,
             };
 
           if (items.Funcao === 'Lider')
@@ -286,6 +292,7 @@ function Cadastro({ lideranca, rolMembros }) {
               Nome: items.Nome,
               RolMembro: items.RolMembro,
               supervisao: items.supervisao,
+              foto: items.foto,
             };
 
           return 0;
@@ -499,7 +506,7 @@ function Cadastro({ lideranca, rolMembros }) {
       height="100vh"
       width="100%"
       minWidth={300}
-      minHeight={500}
+      minHeight={570}
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -522,7 +529,7 @@ function Cadastro({ lideranca, rolMembros }) {
             height="100vh"
             width="100%"
             minWidth={300}
-            minHeight={500}
+            minHeight={570}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -530,7 +537,7 @@ function Cadastro({ lideranca, rolMembros }) {
           >
             <Box width="100%">
               <Box textAlign="center" mt={-3} mb={2}>
-                <img src="/images/castelo.png" alt="Castelo" width={80} />
+                <img src="/images/castelo3.png" alt="Castelo" width={80} />
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <Box
@@ -566,7 +573,7 @@ function Cadastro({ lideranca, rolMembros }) {
                               fontFamily: 'arial black',
                             }}
                           >
-                            VOCÊ TEM {perfilUserFinal.length} Pefis
+                            VOCÊ TEM {perfilUserFinal.length} PERFIS
                           </Box>
                         </Grid>
                         <Grid item container direction="column" xs={12}>

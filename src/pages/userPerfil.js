@@ -1,5 +1,5 @@
 import React from 'react';
-import { Perfil } from 'src/components/igrejas/logado/perfil';
+import { Perfil } from 'src/components/igrejas/principal/perfil';
 import Cadastro from 'src/components/igrejas/cadastro';
 import { useSession } from 'next-auth/client';
 import prisma from 'src/lib/prisma';

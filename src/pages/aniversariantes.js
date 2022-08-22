@@ -1,5 +1,5 @@
 import React from 'react';
-import Aniversariantes from 'src/components/igrejas/logado/aniversariantes';
+import Aniversariantes from 'src/components/igrejas/principal/aniversariantes';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 

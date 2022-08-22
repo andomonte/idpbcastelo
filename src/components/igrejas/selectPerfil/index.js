@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { IdpbCastelo } from 'src/components/igrejas/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
+import '@fontsource/rubik';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,6 +113,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
             Nome: items.Nome,
             RolMembro: items.RolMembro,
             supervisao: items.supervisao,
+            foto: items.foto,
           };
         if (items.Funcao === 'Presidente')
           return {
@@ -128,6 +130,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
             Nome: items.Nome,
             RolMembro: items.RolMembro,
             supervisao: items.supervisao,
+            foto: items.foto,
           };
         if (items.Funcao === 'PastorDistrito')
           return {
@@ -144,6 +147,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
             Nome: items.Nome,
             RolMembro: items.RolMembro,
             supervisao: items.supervisao,
+            foto: items.foto,
           };
 
         if (items.Funcao === 'Coordenador')
@@ -161,6 +165,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
             Nome: items.Nome,
             RolMembro: items.RolMembro,
             supervisao: items.supervisao,
+            foto: items.foto,
           };
         if (items.Funcao === 'Supervisor')
           return {
@@ -177,6 +182,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
             Nome: items.Nome,
             RolMembro: items.RolMembro,
             supervisao: items.supervisao,
+            foto: items.foto,
           };
 
         if (items.Funcao === 'Lider')
@@ -194,6 +200,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
             Nome: items.Nome,
             RolMembro: items.RolMembro,
             supervisao: items.supervisao,
+            foto: items.foto,
           };
 
         return 0;
@@ -234,101 +241,123 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
     const body = (
       <Box width="100vw">
         <Box
-          height="100vh"
-          width="100%"
-          minWidth={300}
-          minHeight={500}
           display="flex"
           justifyContent="center"
           alignItems="center"
-          bgcolor={corIgreja.principal}
+          height="100vh"
+          width="100vw"
+          minHeight={570}
+          bgcolor={corIgreja.principal2}
         >
-          <Box width="100%">
-            <Box textAlign="center" mt={-3} mb={2}>
-              <img src="/images/castelo.png" alt="Castelo" width={80} />
-            </Box>
-            <Box display="flex" justifyContent="center" alignItems="center">
+          <Box
+            height="94vh"
+            width="92%"
+            minWidth={300}
+            minHeight={570}
+            borderRadius={16}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor={corIgreja.principal}
+          >
+            <Box width="100%">
+              <Box textAlign="center" mt={-3} mb={5}>
+                <img
+                  src="/images/castelo/castelo3.png"
+                  alt="Castelo"
+                  width={200}
+                />
+              </Box>
               <Box
-                width="90%"
+                fontFamily="Rubik"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minWidth={280}
-                borderRadius={16}
-                height="auto"
-                bgcolor="#fafafa"
               >
-                <Box>
-                  <Box
-                    mt={3}
-                    mb={3}
-                    display="flex"
-                    justifyContent="center"
-                    flexDirection="column"
-                    width="100%"
-                    minWidth={300}
-                  >
+                <Box
+                  width="90%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  minWidth={280}
+                  borderRadius={16}
+                  height="auto"
+                  bgcolor="#fafafa"
+                >
+                  <Box>
                     <Box
-                      color="#000"
-                      style={{ fontSize: '22px', fontFamily: 'arial black' }}
+                      mt={3}
+                      mb={3}
+                      display="flex"
+                      justifyContent="center"
+                      flexDirection="column"
+                      width="100%"
+                      minWidth={300}
                     >
-                      <Grid item container direction="column" xs={12}>
-                        <Box
-                          textAlign="center"
-                          color="#000"
-                          style={{
-                            fontSize: '18px',
-                            fontFamily: 'arial black',
-                          }}
-                        >
-                          VOCÊ TEM {valorPerfil.length} Pefis
-                        </Box>
-                      </Grid>
-                      <Grid item container direction="column" xs={12}>
-                        <Box
-                          textAlign="center"
-                          mt={1}
-                          color="#000"
-                          style={{ fontSize: '16px', fontFamily: 'arial' }}
-                        >
-                          <strong style={{ color: '' }}>
-                            Escolha qual deseja acessar{' '}
-                          </strong>{' '}
-                        </Box>
-                      </Grid>
-                    </Box>
-                    <Box mt={5} mb={3} width="100%" textAlign="center">
-                      <Grid item xs={12} md={12}>
-                        {valorPerfil && valorPerfil[0].id && (
-                          <Box>
-                            <TextField
-                              value={perfilSelect}
-                              select
-                              onChange={handleChange}
-                              variant="outlined"
-                              placeholder="Escolha seu Perfil"
-                              className={classes.tf_s}
-                              style={{
-                                textAlign: 'start',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              }}
-                            >
-                              <MenuItem value={perfilSelect}>
-                                <em>Escolha seu Perfil</em>
-                              </MenuItem>
-
-                              {valorPerfil?.map((items) => (
-                                <MenuItem key={items.id} value={items.id}>
-                                  {items.Descricao ?? items.Descricao}
-                                </MenuItem>
-                              ))}
-                            </TextField>
+                      <Box
+                        color="#000"
+                        style={{ fontSize: '22px', fontFamily: 'Rubik' }}
+                      >
+                        <Grid item container direction="column" xs={12}>
+                          <Box
+                            textAlign="center"
+                            color="#000"
+                            style={{
+                              fontSize: '18px',
+                              fontFamily: 'Rubik',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            VOCÊ TEM {valorPerfil.length} PERFIS
                           </Box>
-                        )}
-                      </Grid>
-                    </Box>
+                        </Grid>
+                        <Grid item container direction="column" xs={12}>
+                          <Box
+                            textAlign="center"
+                            mt={1}
+                            color="#000"
+                            style={{ fontSize: '16px', fontFamily: 'Rubik' }}
+                          >
+                            Escolha qual deseja acessar
+                          </Box>
+                        </Grid>
+                      </Box>
+                      <Box mt={5} mb={3} width="100%" textAlign="center">
+                        <Grid item xs={12} md={12}>
+                          {valorPerfil && valorPerfil[0].id && (
+                            <Box>
+                              <TextField
+                                value={perfilSelect}
+                                select
+                                onChange={handleChange}
+                                variant="outlined"
+                                placeholder="Escolha seu Perfil"
+                                className={classes.tf_s}
+                                style={{
+                                  textAlign: 'start',
+                                  WebkitBoxShadow:
+                                    '0 0 0 1000px #fafafa  inset',
+                                }}
+                              >
+                                <MenuItem value={perfilSelect}>
+                                  <em>Escolha seu Perfil</em>
+                                </MenuItem>
 
-                    {contagem && <Espera descricao="Atualizando Seu Perfil" />}
+                                {valorPerfil?.map((items) => (
+                                  <MenuItem key={items.id} value={items.id}>
+                                    {items.Descricao ?? items.Descricao}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            </Box>
+                          )}
+                        </Grid>
+                      </Box>
+
+                      {contagem && (
+                        <Espera descricao="Atualizando Seu Perfil" />
+                      )}
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -346,10 +375,10 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
       if (perfilUser !== '') {
         router.push(
           {
-            pathname: '/meuPerfil',
+            pathname: '/principal',
             query: perfilUser[0],
           },
-          '/meuPerfil',
+          '/principal',
         );
       }
       return <Box>{open && start && <Box minHeight={500}>{body}</Box>} </Box>;

@@ -140,7 +140,7 @@ function TabPanel(props) {
   );
 }
 
-function IdpbCastelo({ userIgrejas, title, celulas }) {
+function Pagina({ userIgrejas, title, celulas }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const router = useRouter();
@@ -296,4 +296,4 @@ function IdpbCastelo({ userIgrejas, title, celulas }) {
   );
 }
 
-export { IdpbCastelo, TabPanel };
+export { Pagina, TabPanel };
