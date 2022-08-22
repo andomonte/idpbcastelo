@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate && npm run download-webviewer",
-    "download-webviewer": "npx @pdftron/webviewer-downloader --webviewerLocation ./public/webviewer/lib"
   },
   "dependencies": {
     "@aws-crypto/sha256-browser": "^1.1.1",
@@ -33,6 +32,7 @@
     "@mui/icons-material": "^5.0.0-rc.1",
     "@mui/material": "^5.0.0-rc.1",
     "@mui/utils": "^5.0.1",
+    
     "@prisma/client": "3",
     "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
     "@sideway/address": "^4.1.3",
