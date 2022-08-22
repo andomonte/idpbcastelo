@@ -33,7 +33,6 @@
     "@mui/icons-material": "^5.0.0-rc.1",
     "@mui/material": "^5.0.0-rc.1",
     "@mui/utils": "^5.0.1",
-    "@pdftron/webviewer": "^8.7.0",
     "@prisma/client": "3",
     "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
     "@sideway/address": "^4.1.3",

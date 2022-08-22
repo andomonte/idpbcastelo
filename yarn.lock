@@ -1602,11 +1602,6 @@
   "resolved" "https://registry.npmjs.org/@panva/asn1.js/-/asn1.js-1.0.0.tgz"
   "version" "1.0.0"
 
-"@pdftron/webviewer@^8.7.0":
-  "integrity" "sha512-Ji0a6A+2HFNMlTpBmTNO10sgizQnmybqZOkJkanU46CLegn4rRaTMBEmAlXWoUaY0M/bx2Br1FHHeS6MTjhb1w=="
-  "resolved" "https://registry.npmjs.org/@pdftron/webviewer/-/webviewer-8.7.0.tgz"
-  "version" "8.7.0"
-
 "@popperjs/core@^2.10.1", "@popperjs/core@^2.4.4":
   "integrity" "sha512-zrsUxjLOKAzdewIDRWy9nsV1GQsKBCWaGwsZQlCgr6/q+vjyZhFgqedLfFBuI9anTPEUT4APq9Mu0SZBTzIcGQ=="
   "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.0.tgz"
