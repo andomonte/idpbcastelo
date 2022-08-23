@@ -131,6 +131,7 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
       setOpen(false);
     }
   };
+
   if (!perfilUser) {
     router.push({
       pathname: '/',

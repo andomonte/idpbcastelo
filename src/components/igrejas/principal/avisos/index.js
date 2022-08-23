@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
+import { Oval } from 'react-loading-icons';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { TiArrowBack } from 'react-icons/ti';
@@ -116,7 +116,9 @@ function IdpbCastelo({ title }) {
     }
   };
 
+  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
 
     // setOpen(false);
@@ -142,7 +144,13 @@ function IdpbCastelo({ title }) {
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center" onClick={handleVoltar}>
-              <TiArrowBack size={25} />
+              {loading ? (
+                <Box>
+                  <Oval stroke="white" width={25} height={25} />
+                </Box>
+              ) : (
+                <TiArrowBack size={25} color="white" />
+              )}
             </Box>
 
             <Box display="flex">

@@ -8,7 +8,7 @@ import { BsMegaphone } from 'react-icons/bs';
 import { MdOutlinePublishedWithChanges } from 'react-icons/md';
 import { usePWAInstall } from 'react-use-pwa-install';
 import { IoGameControllerOutline } from 'react-icons/io5';
-
+import { Oval } from 'react-loading-icons';
 import { RiInstallLine } from 'react-icons/ri';
 import { useRouter } from 'next/router';
 
@@ -19,41 +19,73 @@ import Mensagem from './mensagem';
 const home = ({ perfilUser }) => {
   //  const classes = useStyles();
   // somente letras  const zapOnlyLetters = userIgrejas[0].contatoWhatsApp.replace(/[^a-z]+/gi, '').split('');
-
   const [openMensagem, setOpenMensagem] = React.useState(false);
   const [openAviso, setOpenAviso] = React.useState(false);
   const router = useRouter();
+  const [loadingMensagem, setLoadingMensagem] = React.useState(false);
+  const [loadingAviso, setLoadingAviso] = React.useState(false);
+  const [loadingAniversarios, setLoadingAniversarios] = React.useState(false);
+  const [loadingInscricoes, setLoadingInscricoes] = React.useState(false);
+  const [loadingSec, setLoadingSec] = React.useState(false);
+  const [loadingHow, setLoadingHow] = React.useState(false);
+  const [loadingPerfil, setLoadingPerfil] = React.useState(false);
+  const [loadingCont, setLoadingCont] = React.useState(false);
+  const [loadingRel, setLoadingRel] = React.useState(false);
+  const [loadingPlan, setLoadingPlan] = React.useState(false);
+  const [loadingAtual, setLoadingAtual] = React.useState(false);
+  const [loadingMidia, setLoadingMidia] = React.useState(false);
+  const [loadingJogos, setLoadingJogos] = React.useState(false);
+  const [loadingMudar, setLoadingMudar] = React.useState(false);
+
   const handleAvisos = () => {
+    setLoadingAviso(true);
     router.push({
       pathname: '/principal/aviso',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
+  const handleJogos = () => {
+    setLoadingJogos(true);
+    router.push({
+      pathname: '/principal',
+      //      query: { idCompra, qrCode, qrCodeCopy },
+    });
+    setLoadingJogos(false);
+  };
   const handleAniversarios = () => {
+    setLoadingAniversarios(true);
     router.push({
       pathname: '/aniversariantes',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const handleContribuicoes = () => {
+    setLoadingCont(true);
+
     router.push({
       pathname: '/contribuicoes',
       query: { perfilUser },
     });
   };
   const handleInscricoes = () => {
+    setLoadingInscricoes(true);
+
     router.push({
       pathname: '/inscricoes',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const handleSecretaria = () => {
+    setLoadingSec(true);
+
     router.push({
       pathname: '/secretaria',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const handleQuemSomos = () => {
+    setLoadingHow(true);
+
     router.push({
       pathname: '/quemSomos',
       //      query: { idCompra, qrCode, qrCodeCopy },
@@ -61,18 +93,24 @@ const home = ({ perfilUser }) => {
   };
 
   const handleMensagem = () => {
+    setLoadingMensagem(true);
+
     router.push({
       pathname: '/principal/mensagem',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const handleAtualizar = () => {
+    setLoadingAtual(true);
+
     router.push({
       pathname: '/atualizar',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const handlePerfil = () => {
+    setLoadingPerfil(true);
+
     router.push({
       pathname: '/meuPerfil',
       query: { perfilUser },
@@ -80,6 +118,8 @@ const home = ({ perfilUser }) => {
   };
 
   const handleRelatorios = () => {
+    setLoadingRel(true);
+
     router.push({
       pathname: '/relatorio',
       query: { perfilUser },
@@ -87,6 +127,8 @@ const home = ({ perfilUser }) => {
   };
 
   const handlePlanejamento = () => {
+    setLoadingPlan(true);
+
     router.push({
       pathname: '/planejamento',
       //      query: { idCompra, qrCode, qrCodeCopy },
@@ -94,8 +136,17 @@ const home = ({ perfilUser }) => {
   };
 
   const handleMudarPerfil = () => {
+    setLoadingMudar(true);
+
     router.push({
       pathname: '/selectPerfil',
+    });
+  };
+  const handleMidia = () => {
+    setLoadingMidia(true);
+
+    router.push({
+      pathname: '/midia',
     });
   };
   const install = usePWAInstall();
@@ -163,12 +214,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/biblia.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingMensagem ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/biblia.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">MENSAGENS</Box>
               </Box>
@@ -194,7 +251,13 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <BsMegaphone size={35} />
+                  {loadingAviso ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <BsMegaphone size={35} />
+                  )}
                 </Box>
                 <Box fontSize="12px">AVISOS</Box>
               </Box>
@@ -220,12 +283,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/bolo.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingAniversarios ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/bolo.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">ANIVERSÁRIOS</Box>
               </Box>
@@ -259,12 +328,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/inscricoes.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingInscricoes ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/inscricoes.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">INSCRIÇÕES</Box>
               </Box>
@@ -290,12 +365,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/secretaria.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingSec ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/secretaria.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">SECRETARIA</Box>
               </Box>
@@ -321,12 +402,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/quemSomos.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingHow ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/quemSomos.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">QUEM SOMOS</Box>
               </Box>
@@ -360,12 +447,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/credencial.png"
-                    height={40}
-                    width={30}
-                    alt="bolo"
-                  />
+                  {loadingPerfil ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/credencial.png"
+                      height={40}
+                      width={30}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">MEU PERFIL</Box>
               </Box>
@@ -391,12 +484,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/contribuicoes.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingCont ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/contribuicoes.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">CONTRIBUIÇÃO</Box>
               </Box>
@@ -422,12 +521,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/relatorio.png"
-                    height={35}
-                    width={30}
-                    alt="bolo"
-                  />
+                  {loadingRel ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/relatorio.png"
+                      height={35}
+                      width={30}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">RELATÓRIOS</Box>
               </Box>
@@ -461,12 +566,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/planejamento.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingPlan ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/planejamento.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="11px">PLANEJAMENTO</Box>
               </Box>
@@ -492,18 +603,24 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/atualizar.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingAtual ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/atualizar.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">ATUALIZAR</Box>
               </Box>
             </Box>
             <Box
-              onClick={console.log('ainda será feito')}
+              onClick={handleMidia}
               ml={1}
               borderRadius={16}
               height="100%"
@@ -523,12 +640,18 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <img
-                    src="/images/midia2.png"
-                    height={35}
-                    width={35}
-                    alt="bolo"
-                  />
+                  {loadingMidia ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/midia2.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
                 </Box>
                 <Box fontSize="12px">MÍDIA</Box>
               </Box>
@@ -543,7 +666,7 @@ const home = ({ perfilUser }) => {
             alignItems="center"
           >
             <Box
-              onClick={console.log('em desenvolvimento')}
+              onClick={handleJogos}
               borderRadius={16}
               height="100%"
               width="32%"
@@ -562,7 +685,13 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <IoGameControllerOutline color="white" size={35} />
+                  {loadingJogos ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <IoGameControllerOutline color="white" size={35} />
+                  )}
                 </Box>
                 <Box fontSize="12px">JOGOS</Box>
               </Box>
@@ -588,7 +717,13 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  <MdOutlinePublishedWithChanges color="white" size={35} />
+                  {loadingMudar ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <MdOutlinePublishedWithChanges color="white" size={35} />
+                  )}
                 </Box>
                 <Box fontSize="12px">MUDAR PERFIL</Box>
               </Box>

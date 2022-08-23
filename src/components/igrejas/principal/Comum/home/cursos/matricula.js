@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 // import PagCC from './pagCC';
 // import CheckoutPro from './checkouPro';
 import FormControl from '@material-ui/core/FormControl';
-
+import { Oval } from 'react-loading-icons';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
 import ValidaCPF from 'src/utils/validarCPF';
@@ -368,7 +368,10 @@ function Matricula() {
       setValidacaoEmail(false);
     }
   };
+
+  const [loading, setLoading] = React.useState(false);
   const voltar = () => {
+    setLoading(true);
     router.back();
 
     // setOpen(false);
@@ -381,13 +384,19 @@ function Matricula() {
         <Box>
           <Hidden smDown>
             <Box p={1} ml={1} mr={0} display="flex" alignItems="center">
-              <ArrowBackIcon
-                sx={{
-                  fontSize: 20,
-                  color: '#fff',
-                }}
-                onClick={voltar}
-              />
+              {loading ? (
+                <Box>
+                  <Oval stroke="white" width={25} height={25} />
+                </Box>
+              ) : (
+                <ArrowBackIcon
+                  sx={{
+                    fontSize: 20,
+                    color: '#fff',
+                  }}
+                  onClick={voltar}
+                />
+              )}
             </Box>
             <Box display="flex" justifyContent="center">
               {fPagamento === 'inicio' && (

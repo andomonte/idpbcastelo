@@ -2,7 +2,7 @@ import React from 'react';
 
 import Head from 'next/head';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { Oval } from 'react-loading-icons';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { TiArrowBack } from 'react-icons/ti';
@@ -142,7 +142,10 @@ function AtualizarDados({ title, rolMembros, perfilUser, lideranca }) {
 
   const [session] = useSession();
   const router = useRouter();
+
+  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
 
     // setOpen(false);
@@ -164,7 +167,13 @@ function AtualizarDados({ title, rolMembros, perfilUser, lideranca }) {
             <Box display="flex" alignItems="center">
               <Box display="flex" alignItems="center">
                 <Box display="flex" alignItems="center" onClick={handleVoltar}>
-                  <TiArrowBack size={25} color="white" />
+                  {loading ? (
+                    <Box>
+                      <Oval stroke="white" width={25} height={25} />
+                    </Box>
+                  ) : (
+                    <TiArrowBack size={25} color="white" />
+                  )}
                 </Box>
               </Box>
             </Box>

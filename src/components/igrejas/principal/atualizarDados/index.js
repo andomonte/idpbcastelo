@@ -14,7 +14,7 @@ import { FaHome } from 'react-icons/fa';
 import { DiDatabase } from 'react-icons/di';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
+import { Oval } from 'react-loading-icons';
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import corIgreja from 'src/utils/coresIgreja';
@@ -133,7 +133,10 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
   const [value, setValue] = React.useState(0);
   const [session] = useSession();
   const router = useRouter();
+
+  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
 
     // setOpen(false);
@@ -153,7 +156,13 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center" onClick={handleVoltar}>
-              <TiArrowBack size={25} />
+              {loading ? (
+                <Box>
+                  <Oval stroke="white" width={25} height={25} />
+                </Box>
+              ) : (
+                <TiArrowBack size={25} color="white" />
+              )}
             </Box>
 
             <Box display="flex" m={0}>

@@ -7,6 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { useRouter } from 'next/router';
 import Box from '@material-ui/core/Box';
+import { Oval } from 'react-loading-icons';
 // import HomeIcon from '@material-ui/icons/Home';
 import Hidden from '@material-ui/core/Hidden';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -132,7 +133,7 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
   const classes = useStyles();
   const router = useRouter();
   const [value, setValue] = React.useState(0);
-
+  const [loading, setLoading] = React.useState(false);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -140,6 +141,7 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
   const [open, setOpen] = React.useState(false);
 
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
   };
 
@@ -165,7 +167,13 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
               <Box display="flex" alignItems="center" onClick={handleVoltar}>
-                <TiArrowBack size={25} />
+                {loading ? (
+                  <Box>
+                    <Oval stroke="white" width={25} height={25} />
+                  </Box>
+                ) : (
+                  <TiArrowBack size={25} color="white" />
+                )}
               </Box>
 
               <Hidden mdDown>

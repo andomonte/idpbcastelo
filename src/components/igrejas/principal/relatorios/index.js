@@ -11,7 +11,7 @@ import { FaHome, FaPeopleCarry } from 'react-icons/fa';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
-
+import { Oval } from 'react-loading-icons';
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
 
@@ -148,7 +148,10 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
   const [session] = useSession();
 
   const router = useRouter();
+
+  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
 
     // setOpen(false);
@@ -170,7 +173,13 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             <Box display="flex" alignItems="center">
               <Box display="flex" alignItems="center">
                 <Box display="flex" alignItems="center" onClick={handleVoltar}>
-                  <TiArrowBack size={25} color="white" />
+                  {loading ? (
+                    <Box>
+                      <Oval stroke="white" width={25} height={25} />
+                    </Box>
+                  ) : (
+                    <TiArrowBack size={25} color="white" />
+                  )}
                 </Box>
               </Box>
             </Box>

@@ -19,6 +19,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
+
       if (!result) {
         router.push(
           {
@@ -32,9 +33,6 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
     }
   }, [mudaDados]);
 
-  if (typeof window !== 'undefined') {
-    window.history.replaceState(null, '', '/principal');
-  }
   return (
     <div>
       {perfilUserF && perfilUserF.id ? (

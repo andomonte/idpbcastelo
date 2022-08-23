@@ -4,7 +4,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
+import { Oval } from 'react-loading-icons';
 import Hidden from '@material-ui/core/Hidden';
 import Login from 'src/components/botaoLogin';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -123,7 +123,9 @@ function Cursos({ title }) {
     });
   };
 
+  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
   };
   const ColorButton = withStyles(() => ({
@@ -148,10 +150,16 @@ function Cursos({ title }) {
         <AppBar className={classes.root2} color="default">
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
-              <ArrowBackIcon
-                className={classes.hamburger}
-                onClick={handleVoltar}
-              />
+              {loading ? (
+                <Box>
+                  <Oval stroke="white" width={25} height={25} />
+                </Box>
+              ) : (
+                <ArrowBackIcon
+                  className={classes.hamburger}
+                  onClick={handleVoltar}
+                />
+              )}
             </Box>
             <Hidden smDown>
               <Box color="#fff" display="flex" justifyContent="center">

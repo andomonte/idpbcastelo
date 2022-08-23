@@ -13,7 +13,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import { Oval } from 'react-loading-icons';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import Login from '../../botaoLogin';
@@ -144,7 +144,9 @@ function Secretaria({ userIgrejas, title, celulas }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
+    setLoading(true);
     router.back();
   };
 
@@ -170,7 +172,13 @@ function Secretaria({ userIgrejas, title, celulas }) {
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
               <Box display="flex" alignItems="center" onClick={handleVoltar}>
-                <TiArrowBack size={25} />
+                {loading ? (
+                  <Box>
+                    <Oval stroke="white" width={25} height={25} />
+                  </Box>
+                ) : (
+                  <TiArrowBack size={25} color="white" />
+                )}
               </Box>
             </Box>
 
