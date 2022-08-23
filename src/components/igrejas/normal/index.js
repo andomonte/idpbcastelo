@@ -1,20 +1,16 @@
 import React from 'react';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Drawer from '@material-ui/core/Drawer';
 import { useSession } from 'next-auth/client';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import Home from './home';
 import Login from '../botaoLogin';
-import Navbar from './navBar_redesSociais';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
@@ -115,7 +111,7 @@ function TabPanel(props) {
     </div>
   );
 }
-function Pagina({ perfilUser, rolMembros, userIgrejas, title }) {
+function Pagina({ userIgrejas, title }) {
   const classes = useStyles();
   const [session] = useSession();
   const theme = useTheme();
@@ -137,14 +133,6 @@ function Pagina({ perfilUser, rolMembros, userIgrejas, title }) {
       pathname: '/principal',
     });
   }
-  const handleDrawerOpen = () => {
-    if (!open) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-    //! open ? setOpen(true) : setOpen(false);
-  };
   return (
     <div
       style={{
@@ -164,22 +152,7 @@ function Pagina({ perfilUser, rolMembros, userIgrejas, title }) {
       <div>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
-            <Box display="flex" alignItems="center">
-              {open ? (
-                <MenuOpenIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-              {!open ? (
-                <MenuIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-            </Box>
-
-            <Box display="flex">
+            <Box width="100%" display="flex" justifyContent="center">
               <img
                 src="/images/castelo/castelo1.png"
                 height={30}
@@ -191,23 +164,9 @@ function Pagina({ perfilUser, rolMembros, userIgrejas, title }) {
             <Login />
           </Toolbar>
         </AppBar>
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={open}
-          className={classes.drawer}
-          classes={{ paper: classes.desktopDrawer }}
-        >
-          <Navbar userIgrejas={userIgrejas} />
-        </Drawer>
         <main>
           <div className={classes.drawerHeader} />
-          {/* {children} */}
-          <Home
-            userIgrejas={userIgrejas}
-            rolMembros={rolMembros}
-            perfilUser={perfilUser}
-          />
+          <Home />
         </main>
       </div>
     </div>
