@@ -9,7 +9,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';
-
+  console.log('perfilUser', perfilUser, 'mudaDados', mudaDados);
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
 
@@ -26,8 +26,8 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   }, [mudaDados]);
 
   React.useEffect(() => {
-    console.log('perfilUser', perfilUserF);
-    if (perfilUserF) {
+    console.log('perfilUser', perfilUser, 'perfilUserF', perfilUserF);
+    if (perfilUser === '') {
       router.push(
         {
           pathname: '/selectPerfil',
@@ -52,7 +52,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
         </div>
       ) : (
         <div>
-          {!perfilUser && !perfilUser && (
+          {!perfilUserF && !perfilUser && (
             <Pagina userIgrejas={dadosUser} title="IDPB-CELULAS" />
           )}
         </div>
