@@ -15,6 +15,7 @@ function selectPerfil({ userIgrejas, celulas }) {
   const { data: liders, errorLiders } = useSWR(url2, fetcher);
 
   React.useEffect(() => {
+    console.log('chegou aqui select');
     if (members) {
       setRolMembros(members);
     }
