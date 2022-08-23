@@ -7,7 +7,7 @@ import Cadastro from 'src/components/igrejas/cadastro';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import { useRouter } from 'next/router';
-import { IdpbCastelo } from 'src/components/igrejas/normal';
+import { Pagina } from 'src/components/igrejas/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
 import '@fontsource/rubik';
@@ -395,7 +395,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
         />
       ) : (
         <Box>
-          <IdpbCastelo
+          <Pagina
             lideranca={lideranca}
             rolMembros={rolMembros}
             userIgrejas={dadosUser}
