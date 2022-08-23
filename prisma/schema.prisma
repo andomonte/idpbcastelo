@@ -380,3 +380,10 @@ model inscricoes {
   DataEvento String @db.VarChar(255)
   Local      String @db.VarChar(255)
 }
+
+model radio {
+  id         Int    @unique @default(autoincrement())
+  url        String @db.VarChar(255)
+  label      String @db.VarChar(255)
+  compositor String @db.VarChar(255)
+}

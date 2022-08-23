@@ -1,34 +1,24 @@
 import React from 'react';
-import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+import MenuIcon from '@material-ui/icons/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import { useSession } from 'next-auth/client';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
-import Hidden from '@material-ui/core/Hidden';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-
-import SvgIcon from '@mui/material/SvgIcon';
-import corIgreja from 'src/utils/coresIgreja';
-import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import corIgreja from 'src/utils/coresIgreja';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import Home from './home';
 import Login from '../botaoLogin';
 import Navbar from './navBar_redesSociais';
-import PesquisaCelulas from './pesquisa/celulas';
-import Contato from './contato';
-import Home from './home';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
-const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
@@ -47,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: corIgreja.principal,
     boxShadow: 'none',
     zIndex: theme.zIndex.drawer + 1,
+    height: 56,
   },
   toolbar: {
     minHeight: 56,
@@ -59,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
     height: 28,
   },
   logo: {
-    height: 25,
-    marginLeft: theme.spacing(2),
+    height: 35,
+    marginTop: 0,
   },
   avatar: {
     cursor: 'pointer',
@@ -79,15 +70,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  contentShiftMain: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: +drawerWidth,
-    },
-  },
+
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
@@ -117,13 +100,6 @@ const useStyles = makeStyles((theme) => ({
     borderRight: 'none',
   },
 }));
-function HomeIcon(props) {
-  return (
-    <SvgIcon {...props}>
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </SvgIcon>
-  );
-}
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -139,26 +115,14 @@ function TabPanel(props) {
     </div>
   );
 }
-
-function Pagina({ userIgrejas, title, celulas }) {
+function Pagina({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const router = useRouter();
-  const theme = useTheme();
   const [session] = useSession();
+  const theme = useTheme();
+  const router = useRouter();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    if (!open) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-
-    //! open ? setOpen(true) : setOpen(false);
-  };
 
   const handleDrawerClose = () => {
     // //console.log(mobile);
@@ -169,15 +133,26 @@ function Pagina({ userIgrejas, title, celulas }) {
   };
 
   if (session) {
-    router.push(
-      {
-        pathname: '/selectPerfil',
-      },
-      '/selectPerfil',
-    );
+    router.push({
+      pathname: '/principal',
+    });
   }
+  const handleDrawerOpen = () => {
+    if (!open) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+    //! open ? setOpen(true) : setOpen(false);
+  };
   return (
-    <div onLoad={handleDrawerClose}>
+    <div
+      style={{
+        minWidth: 350,
+        background: corIgreja.principal2,
+      }}
+      onLoad={handleDrawerClose}
+    >
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -186,7 +161,7 @@ function Pagina({ userIgrejas, title, celulas }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div className={classes.root}>
+      <div>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
@@ -202,67 +177,20 @@ function Pagina({ userIgrejas, title, celulas }) {
                   onClick={handleDrawerOpen}
                 />
               ) : null}
-
-              <Hidden mdDown>
-                <img
-                  src="/images/castelo.png"
-                  alt="logo"
-                  className={classes.logo}
-                />
-              </Hidden>
             </Box>
 
             <Box display="flex">
-              <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                showLabels
-                className={classes.rootTopbarIcon}
-              >
-                <BottomNavigationAction
-                  icon={
-                    value === 0 ? (
-                      <HomeIcon sx={{ color: corIgreja.iconeOn }} />
-                    ) : (
-                      <HomeIcon sx={{ color: corIgreja.iconeOff }} />
-                    )
-                  }
-                />
-
-                <BottomNavigationAction
-                  icon={
-                    value === 1 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <CallIcon />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                        <CallIcon />
-                      </SvgIcon>
-                    )
-                  }
-                />
-                <BottomNavigationAction
-                  icon={
-                    value === 2 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <LocationOnIcon />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                        <LocationOnIcon />
-                      </SvgIcon>
-                    )
-                  }
-                />
-              </BottomNavigation>
+              <img
+                src="/images/castelo/castelo1.png"
+                height={30}
+                width={120}
+                className={classes.logo}
+                alt="bolo"
+              />
             </Box>
             <Login />
           </Toolbar>
         </AppBar>
-
         <Drawer
           variant="persistent"
           anchor="left"
@@ -270,26 +198,16 @@ function Pagina({ userIgrejas, title, celulas }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar userIgrejas={userIgrejas} setOpen={setOpen} />
+          <Navbar userIgrejas={userIgrejas} />
         </Drawer>
-
-        <main
-          className={clsx(classes.contentMain, {
-            [classes.contentShiftMain]: open,
-          })}
-        >
+        <main>
           <div className={classes.drawerHeader} />
           {/* {children} */}
-
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home userIgrejas={userIgrejas} />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Contato userIgrejas={userIgrejas} />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <PesquisaCelulas celulas={celulas} />
-          </TabPanel>
+          <Home
+            userIgrejas={userIgrejas}
+            rolMembros={rolMembros}
+            perfilUser={perfilUser}
+          />
         </main>
       </div>
     </div>

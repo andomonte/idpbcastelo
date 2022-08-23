@@ -45,7 +45,11 @@ export default function BotaoLogin() {
             flexDirection="column"
           >
             <LoginIcon />{' '}
-            <Box mt={0} style={{ fontFamily: 'arial black', fontSize: '10px' }}>
+            <Box
+              color="white"
+              mt={0}
+              style={{ fontFamily: 'arial black', fontSize: '10px' }}
+            >
               LOGIN
             </Box>
           </Box>

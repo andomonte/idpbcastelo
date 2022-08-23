@@ -5,11 +5,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from '@material-ui/core/Drawer';
-
+import { useSession } from 'next-auth/client';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import Home from './home';
@@ -117,9 +117,9 @@ function TabPanel(props) {
 }
 function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
-
+  const [session] = useSession();
   const theme = useTheme();
-
+  const router = useRouter();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = React.useState(false);
@@ -131,14 +131,18 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
       setOpen(false);
     }
   };
-
+  console.log('ola seção', session);
+  if (!session) {
+    router.push({
+      pathname: '/',
+    });
+  }
   const handleDrawerOpen = () => {
     if (!open) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-
     //! open ? setOpen(true) : setOpen(false);
   };
   return (

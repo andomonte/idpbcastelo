@@ -2,41 +2,38 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-// import HomeIcon from '@material-ui/icons/Home';
-import Hidden from '@material-ui/core/Hidden';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import SvgIcon from '@mui/material/SvgIcon';
 import { BsPlayBtnFill, BsFillCameraFill } from 'react-icons/bs';
 import { GiSoundOn } from 'react-icons/gi';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { useRouter } from 'next/router';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import SvgIcon from '@mui/material/SvgIcon';
+import Login from 'src/components/botaoLogin';
+// import PerfilIcon from 'src/components/icones/perfil';
+// import Eventos from './eventos';
+import { TiArrowBack } from 'react-icons/ti';
+
 import corIgreja from 'src/utils/coresIgreja';
 
-import Login from '../../botaoLogin';
-import NabarMembro from '../navBar/membro';
-import NabarLider from '../navBar/lider';
-import NavbarSuper from '../navBar/supervisor';
-import NavbarCoord from '../navBar/coordenador';
-
 import TelaPadrao from './telaPadrao';
-// import GoogleMaps from './googleMap';
-// import Pesquisar from './pesquisar';
-const drawerWidth = 240;
+import Radio from './radio';
+import Videos from './videos';
+// const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
     width: '70vw',
     minWidth: 80,
+    height: 48,
   },
   root: {
-    backgroundColor: 'theme.palette.background.dark',
+    backgroundColor: corIgreja.principal2,
     display: 'flex',
     height: '100vh',
     overflow: 'hidden',
@@ -45,10 +42,12 @@ const useStyles = makeStyles((theme) => ({
   root2: {
     backgroundColor: corIgreja.principal,
     boxShadow: 'none',
+    height: 56,
     zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: {
-    minHeight: 56,
+    height: '8vh',
+
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -56,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
   hamburger: {
     cursor: 'pointer',
     height: 28,
+    color: '#fff',
   },
   logo: {
     height: 25,
@@ -83,9 +83,6 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: +drawerWidth,
-    },
   },
   drawerHeader: {
     display: 'flex',
@@ -133,25 +130,22 @@ function TabPanel(props) {
   );
 }
 
-function Aniversariantes({ title, perfilUser }) {
+function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
   const classes = useStyles();
-
   const [value, setValue] = React.useState(0);
-
+  const [open, setOpen] = React.useState(false);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const handleVoltar = () => {
+    router.push({
+      pathname: '/principal',
+    });
 
-  const handleDrawerOpen = () => {
-    if (!open) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-
-    //! open ? setOpen(true) : setOpen(false);
+    // setOpen(false);
+    // window.location.reload();
   };
 
   const handleDrawerClose = () => {
@@ -159,8 +153,9 @@ function Aniversariantes({ title, perfilUser }) {
       setOpen(false);
     }
   };
+
   return (
-    <div onLoad={handleDrawerClose}>
+    <div onLoad={handleDrawerClose} translate="no">
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -170,29 +165,12 @@ function Aniversariantes({ title, perfilUser }) {
       </Head>
 
       <div className={classes.root}>
-        <AppBar className={classes.root2}>
+        <AppBar className={classes.root2} color="default">
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
-              {open ? (
-                <MenuOpenIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-              {!open ? (
-                <MenuIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-
-              <Hidden mdDown>
-                <img
-                  src="/images/castelo.png"
-                  alt="logo"
-                  className={classes.logo}
-                />
-              </Hidden>
+              <Box display="flex" alignItems="center" onClick={handleVoltar}>
+                <TiArrowBack size={25} color="white" />
+              </Box>
             </Box>
 
             <Box display="flex">
@@ -205,6 +183,12 @@ function Aniversariantes({ title, perfilUser }) {
                 className={classes.rootTopbarIcon}
               >
                 <BottomNavigationAction
+                  style={
+                    value === 0
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Rádio"
                   icon={
                     value === 0 ? (
                       <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -219,6 +203,12 @@ function Aniversariantes({ title, perfilUser }) {
                 />
 
                 <BottomNavigationAction
+                  style={
+                    value === 1
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Vídeos"
                   icon={
                     value === 1 ? (
                       <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -232,6 +222,12 @@ function Aniversariantes({ title, perfilUser }) {
                   }
                 />
                 <BottomNavigationAction
+                  style={
+                    value === 2
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="FaceBook"
                   icon={
                     value === 2 ? (
                       <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -246,34 +242,10 @@ function Aniversariantes({ title, perfilUser }) {
                 />
               </BottomNavigation>
             </Box>
+
             <Login />
           </Toolbar>
         </AppBar>
-
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={open}
-          className={classes.drawer}
-          classes={{ paper: classes.desktopDrawer }}
-        >
-          {perfilUser.Funcao === 'Membro' && (
-            <NabarMembro perfilUser={perfilUser} />
-          )}
-
-          {perfilUser.Funcao === 'Lider' && (
-            <NabarLider perfilUser={perfilUser} />
-          )}
-          {perfilUser.Funcao === 'Supervisor' && (
-            <NavbarSuper perfilUser={perfilUser} />
-          )}
-          {perfilUser.Funcao === 'Coordenador' && (
-            <NavbarCoord perfilUser={perfilUser} />
-          )}
-          {perfilUser.Funcao === 'PastorDistrito' && (
-            <NavbarCoord perfilUser={perfilUser} />
-          )}
-        </Drawer>
 
         <main
           className={clsx(classes.contentMain, {
@@ -281,13 +253,11 @@ function Aniversariantes({ title, perfilUser }) {
           })}
         >
           <div className={classes.drawerHeader} />
-          {/* {children} */}
-
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <TelaPadrao />
+          <TabPanel value={value} index={0}>
+            <Radio radioIdpb={radioIdpb} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <TelaPadrao />
+            <Videos dataYouTube={dataYouTube} userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <TelaPadrao />
@@ -297,5 +267,4 @@ function Aniversariantes({ title, perfilUser }) {
     </div>
   );
 }
-
-export default Aniversariantes;
+export default Midia;

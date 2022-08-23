@@ -141,12 +141,7 @@ function Inscricoes({ title, rolMembros }) {
 
   const router = useRouter();
   const handleVoltar = () => {
-    router.push({
-      pathname: '/principal',
-    });
-
-    // setOpen(false);
-    // window.location.reload();
+    router.back();
   };
 
   const handleDrawerClose = () => {

@@ -21,7 +21,7 @@ export default function NestedGrid() {
           >
             <Box textAlign="center" mt={2} mb={2}>
               <Box style={{ fontFamily: 'arial black', fontSize: '20px' }}>
-                Tela em Desenvolvimento
+                Tela em Desenvolvimentos
               </Box>
               <Box
                 display="flex"
