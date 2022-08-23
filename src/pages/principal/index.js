@@ -19,7 +19,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-      if (result.Funcao === undefined) {
+      if (!result) {
         router.push(
           {
             pathname: '/selectPerfil',
