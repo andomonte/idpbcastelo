@@ -9,6 +9,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';
+  console.log('perfilUser', perfilUser);
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
 
@@ -23,6 +24,17 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       setPerfilUserF(result);
     }
   }, [mudaDados]);
+
+  React.useEffect(() => {
+    if (perfilUserF) {
+      router.push(
+        {
+          pathname: '/selectPerfil',
+        },
+        '/selectPerfil',
+      );
+    }
+  }, []);
 
   return (
     <div>
