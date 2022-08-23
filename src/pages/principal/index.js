@@ -26,7 +26,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
 
   return (
     <div>
-      {perfilUserF.id ? (
+      {perfilUserF && perfilUserF.id ? (
         <div>
           <IdpbCastelo
             celulas={celulas}

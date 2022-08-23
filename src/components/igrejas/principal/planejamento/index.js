@@ -143,9 +143,7 @@ function AtualizarDados({ title, rolMembros, perfilUser, lideranca }) {
   const [session] = useSession();
   const router = useRouter();
   const handleVoltar = () => {
-    router.push({
-      pathname: '/principal',
-    });
+    router.back();
 
     // setOpen(false);
     // window.location.reload();

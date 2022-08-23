@@ -140,9 +140,7 @@ function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
 
   const router = useRouter();
   const handleVoltar = () => {
-    router.push({
-      pathname: '/principal',
-    });
+    router.back();
 
     // setOpen(false);
     // window.location.reload();

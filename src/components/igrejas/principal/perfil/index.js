@@ -162,9 +162,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
 
   const router = useRouter();
   const handleVoltar = () => {
-    router.push({
-      pathname: '/principal',
-    });
+    router.back();
 
     // setOpen(false);
     // window.location.reload();

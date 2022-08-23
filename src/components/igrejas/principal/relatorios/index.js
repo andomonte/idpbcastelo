@@ -149,9 +149,7 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
 
   const router = useRouter();
   const handleVoltar = () => {
-    router.push({
-      pathname: '/principal',
-    });
+    router.back();
 
     // setOpen(false);
     // window.location.reload();

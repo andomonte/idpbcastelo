@@ -140,10 +140,7 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
   const [open, setOpen] = React.useState(false);
 
   const handleVoltar = () => {
-    router.push({
-      pathname: '/principal',
-      //      query: { idCompra, qrCode, qrCodeCopy },
-    });
+    router.back();
   };
 
   const handleDrawerClose = () => {
