@@ -118,7 +118,7 @@ function Cursos({ title }) {
   const router = useRouter();
   const inscrever = () => {
     router.push({
-      pathname: '/cursos/matricula',
+      pathname: '/principal',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
