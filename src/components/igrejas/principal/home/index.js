@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from '@material-ui/core/Drawer';
-import { useSession } from 'next-auth/client';
+// import { useSession } from 'next-auth/client';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -117,7 +117,7 @@ function TabPanel(props) {
 }
 function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
-  const [session] = useSession();
+  // const [session] = useSession();
   const theme = useTheme();
   const router = useRouter();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -131,8 +131,7 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
       setOpen(false);
     }
   };
-  console.log('ola seção', session);
-  if (!session) {
+  if (perfilUser.Funcao === undefined) {
     router.push({
       pathname: '/',
     });

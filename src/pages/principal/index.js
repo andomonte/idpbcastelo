@@ -9,7 +9,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';
-  console.log('perfilUser', perfilUser, 'mudaDados', mudaDados);
+
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
 
@@ -19,24 +19,22 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-
+      if (result.Funcao === undefined) {
+        router.push(
+          {
+            pathname: '/selectPerfil',
+          },
+          '/selectPerfil',
+        );
+      }
       // resultado = result.id;
       setPerfilUserF(result);
     }
   }, [mudaDados]);
 
-  React.useEffect(() => {
-    console.log('perfilUser', perfilUser, 'perfilUserF', perfilUserF);
-    if (perfilUser === '') {
-      router.push(
-        {
-          pathname: '/selectPerfil',
-        },
-        '/selectPerfil',
-      );
-    }
-  }, []);
-
+  if (typeof window !== 'undefined') {
+    window.history.replaceState(null, '', '/principal');
+  }
   return (
     <div>
       {perfilUserF && perfilUserF.id ? (
