@@ -111,7 +111,7 @@ function TabPanel(props) {
     </div>
   );
 }
-function Pagina({ userIgrejas, title }) {
+function Pagina({ title }) {
   const classes = useStyles();
   const [session] = useSession();
   const theme = useTheme();

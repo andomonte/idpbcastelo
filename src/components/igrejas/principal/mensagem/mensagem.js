@@ -15,10 +15,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 // import { useRouter } from 'next/router';
 
 function Mensagem() {
-  //  const classes = useStyles();
-  // somente letras  const zapOnlyLetters = userIgrejas[0].contatoWhatsApp.replace(/[^a-z]+/gi, '').split('');
   const [boletim, setBoletim] = React.useState('');
-
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
   const [contFonte, setContFonte] = React.useState(14);
