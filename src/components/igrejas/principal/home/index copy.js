@@ -185,8 +185,8 @@ function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
             <Box display="flex">
               <img
                 src="/images/filadelfia/filadelfia2.png"
-                height={30}
-                width={120}
+                width={150}
+                height={40}
                 className={classes.logo}
                 alt="bolo"
               />

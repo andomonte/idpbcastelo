@@ -376,7 +376,7 @@ const home = ({ perfilUser }) => {
                     </Box>
                   ) : (
                     <img
-                      src="/images/secretaria.png"
+                      src="/images/secretaria2.png"
                       height={35}
                       width={35}
                       alt="bolo"

@@ -223,7 +223,7 @@ const home = () => {
               >
                 <Box mb={1}>
                   <img
-                    src="/images/secretaria.png"
+                    src="/images/secretaria2.png"
                     height={50}
                     width={50}
                     alt="bolo"
@@ -328,7 +328,7 @@ const home = () => {
               >
                 <Box mb={1}>
                   <img
-                    src="/images/secretaria.png"
+                    src="/images/secretaria2.png"
                     height={50}
                     width={50}
                     alt="bolo"

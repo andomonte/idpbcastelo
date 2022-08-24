@@ -155,7 +155,8 @@ function Pagina({ title }) {
             <Box width="100%" display="flex" justifyContent="center">
               <img
                 src="/images/filadelfia/filadelfia2.png"
-                style={{ width: 220, height: 50 }}
+                width={150}
+                height={40}
                 className={classes.logo}
                 alt="bolo"
               />

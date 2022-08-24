@@ -265,7 +265,8 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
                 <img
                   src="/images/filadelfia/filadelfia2.png"
                   alt="Filadelfia"
-                  width={200}
+                  width={150}
+                  height={40}
                 />
               </Box>
               <Box
