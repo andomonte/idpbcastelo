@@ -59,11 +59,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
 }));
-function SearchList({ rolMembros, mesAtual }) {
+function SearchList({ rolMembros, semanaAtual }) {
   const classes = useStyles();
+
   const handleSistema = () => {};
   let nomeCelula = rolMembros.Nome;
   if (nomeCelula === '') nomeCelula = 'Nome não registrado';
+  const diaSemana = [
+    'Segunda',
+    'Terça',
+    'Quarta',
+    'Quinta',
+    'Sexta',
+    'Sábado',
+    'Domingo',
+  ];
   const meses = [
     'Janeiro',
     'Fevereiro',
@@ -78,15 +88,6 @@ function SearchList({ rolMembros, mesAtual }) {
     'Novembro',
     'Dezembro',
   ];
-  const diaSemana = [
-    'Domingo',
-    'Segunda',
-    'Terça',
-    'Quarta',
-    'Quinta',
-    'Sexta',
-    'Sábado',
-  ];
   const distrito = [
     'Castelo Branco',
     'União da Vitória',
@@ -94,18 +95,10 @@ function SearchList({ rolMembros, mesAtual }) {
     'Bairro da Paz',
     'Calado',
   ];
-
   const diaAniversario = converteData(rolMembros.Nascimento).getDate();
   const mesAniversario = converteData(rolMembros.Nascimento).getMonth();
-  let mesFinal = mesAtual + 1;
-  const d = new Date();
-  const ano = Number(d.getFullYear());
-  if (mesAtual < 10) mesFinal = `0${mesFinal}`;
-  console.log(ano, mesFinal);
 
-  console.log(
-    diaSemana[converteData(`${diaAniversario}/${mesFinal}/${ano}`).getDay()],
-  );
+  const dia = converteData(semanaAtual).getDate();
 
   return (
     <Box sx={{ maxHeight: 310, minWidth: 350 }} className={classes.dadosBox}>
@@ -146,14 +139,8 @@ function SearchList({ rolMembros, mesAtual }) {
                     >
                       Dia do Aniversário:
                       <Box color="black" ml={2}>
-                        {
-                          diaSemana[
-                            converteData(
-                              `${diaAniversario}/${mesFinal}/${ano}`,
-                            ).getDay()
-                          ]
-                        }{' '}
-                        {diaAniversario} de {meses[mesAniversario]}
+                        {diaSemana[diaAniversario - dia]} {diaAniversario} de{' '}
+                        {meses[mesAniversario]}
                       </Box>
                     </Box>
                   </Box>

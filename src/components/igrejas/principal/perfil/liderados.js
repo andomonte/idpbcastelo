@@ -22,23 +22,26 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
 
   return (
     <Box
-      height="90vh"
-      minHeight={570}
-      minWidth={300}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
       width="100vw"
+      minHeight={570}
+      minWidth={350}
       bgcolor={corIgreja.principal2}
+      height="calc(100vh - 56px)"
     >
       {!openBuscar ? (
         <Box
-          height="100%"
+          height="97%"
           width="100%"
-          minWidth={300}
-          mt={0}
+          ml={1.2}
+          mr={1.2}
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-          <Box minWidth={300} maxWidth={500} height="94%" width="92%">
+          <Box minWidth={300} maxWidth={500} height="100%" width="100%">
             <Box width="100%" height="100%">
               <Box
                 borderRadius={16}

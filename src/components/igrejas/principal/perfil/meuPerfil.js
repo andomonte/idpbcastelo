@@ -178,7 +178,7 @@ function meuPerfil({ secao, perfilUser }) {
                   </Box>
                 </Box>
                 <Box
-                  mt="5vh"
+                  mt="2vh"
                   display="flex"
                   width="100%"
                   height="74%"
@@ -193,11 +193,11 @@ function meuPerfil({ secao, perfilUser }) {
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
-                      mt="4vh"
+                      mt="1vh"
                     >
                       <Box
-                        height={130}
-                        width={130}
+                        height={160}
+                        width={160}
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
@@ -236,7 +236,7 @@ function meuPerfil({ secao, perfilUser }) {
                             }}
                           />
                           <Avatar
-                            style={{ width: 125, height: 125 }}
+                            style={{ width: 150, height: 150 }}
                             alt="nome"
                             src={
                               fileImage !== '' && fileImage !== null

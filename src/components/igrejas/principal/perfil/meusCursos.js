@@ -1,6 +1,5 @@
 import { Box, Grid, Paper } from '@material-ui/core';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -8,20 +7,7 @@ import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
 import TabMeusCursos from './abas/tabMeusCursos';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
-
 function RelCelula({ perfilUser }) {
-  const classes = useStyles();
   //= ================================================================
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
@@ -41,26 +27,36 @@ function RelCelula({ perfilUser }) {
   };
 
   return (
-    <Box height="90vh" minHeight={500}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="100vw"
+      minHeight={570}
+      minWidth={350}
+      bgcolor={corIgreja.principal2}
+      height="calc(100vh - 56px)"
+    >
       <Box
-        height="100%"
-        minWidth={300}
-        width="100vw"
-        mt={0}
+        height="97%"
+        width="100%"
+        ml={1.2}
+        mr={1.2}
+        borderRadius={16}
         display="flex"
         justifyContent="center"
         alignItems="center"
+        bgcolor={corIgreja.principal}
       >
         <Box
-          bgcolor={corIgreja.principal2}
           height="100%"
-          width="100vw"
+          width="100%"
           minWidth={300}
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-          <Box height="94%" width="92%">
+          <Box height="100%" width="100%">
             <Box
               height="20%"
               minHeight={100}
@@ -68,7 +64,6 @@ function RelCelula({ perfilUser }) {
               display="flex"
               justifyContent="center"
               alignItems="center"
-              bgcolor={corIgreja.principal}
               style={{
                 borderTopLeftRadius: '16px',
                 borderTopRightRadius: '16px',

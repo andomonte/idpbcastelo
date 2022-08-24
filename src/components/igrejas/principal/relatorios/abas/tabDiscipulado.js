@@ -68,7 +68,7 @@ export default function TabDiscipuado({
         overflow: 'hidden',
       }}
     >
-      <TableContainer sx={{ maxHeight: 310 }}>
+      <TableContainer sx={{ height: '100%' }}>
         {dados.map((row, index) => (
           <Box
             mt={0}

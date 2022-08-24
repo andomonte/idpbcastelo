@@ -1242,7 +1242,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         fontFamily="arial black"
                         fontSize="20px"
                       >
-                        <Box>RELATÓRIO DE CÉLULA</Box>
+                        <Box>RELATÓRIO DE CELEBRAÇÃO</Box>
                         <Box
                           color={corIgreja.texto1}
                           fontFamily="arial black"

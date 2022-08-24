@@ -1411,7 +1411,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                   height="100%"
                   width="100%"
                 >
-                  {existeRelatorio === 'sem' && (
+                  {(existeRelatorio === 'sem' ||
+                    existeRelatorio === 'inicio') && (
                     <Box height="100%">
                       <Box
                         height="100%"
@@ -1992,7 +1993,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                           >
                             <Button
                               onClick={() => {
-                                if (existeRelatorio !== 'inicio' && !loading) {
+                                if (existeRelatorio && !loading) {
                                   setCheckRelatorio(true);
                                   setTela(1);
                                 }
@@ -2005,7 +2006,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                 color="blue"
                                 sx={{ fontFamily: 'arial black' }}
                               >
-                                {existeRelatorio === 'inicio' || loading ? (
+                                {existeRelatorio === 'sem' || loading ? (
                                   <Box>
                                     <Oval stroke="red" width={20} height={20} />
                                   </Box>

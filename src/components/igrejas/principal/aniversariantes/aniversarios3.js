@@ -6,7 +6,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import { BiCaretRight, BiCaretLeft } from 'react-icons/bi';
-import SearchList from './searchList';
+import SearchListMes from './searchListMes';
 
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
@@ -210,7 +210,10 @@ function BuscarAniversariantes({ rolMembros }) {
                     <Box ml={0} key={itens.id}>
                       <Box>
                         <Grid>
-                          <SearchList rolMembros={itens} />
+                          <SearchListMes
+                            semanaAtual={semanaAtual}
+                            rolMembros={itens}
+                          />
                         </Grid>
                       </Box>
                     </Box>

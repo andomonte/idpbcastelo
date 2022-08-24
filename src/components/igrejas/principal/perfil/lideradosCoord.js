@@ -2,7 +2,6 @@ import { Box } from '@material-ui/core';
 import React from 'react';
 import corIgreja from 'src/utils/coresIgreja';
 
-import SvgIcon from '@mui/material/SvgIcon';
 import IconButton from '@mui/material/IconButton';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import TabLideresCoord from './abas/tabLideresCoord';
@@ -46,23 +45,27 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
     setContNumeroFucao(contFuncaoAtual);
   };
   return (
-    <Box width="100%" height="90vh" minHeight={500} minWidth={300}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="100vw"
+      minHeight={570}
+      minWidth={350}
+      bgcolor={corIgreja.principal2}
+      height="calc(100vh - 56px)"
+    >
       {!openBuscar ? (
         <Box
-          height="100%"
-          width="100vw"
-          minWidth={300}
-          mt={0}
+          height="97%"
+          width="100%"
+          ml={1.2}
+          mr={1.2}
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-          <Box
-            minWidth={300}
-            height="100%"
-            width="100%"
-            border="4px solid #fff"
-          >
+          <Box minWidth={300} height="100%" width="100%">
             <Box width="100%" height="100%">
               <Box
                 style={{
@@ -76,7 +79,6 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                 minWidth={300}
                 width="100%"
                 bgcolor={corIgreja.principal}
-                borderTop="2px solid #fff"
               >
                 <Box
                   display="flex"
@@ -92,7 +94,7 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                     <Box
                       mb={2}
                       bgcolor="#fff"
-                      height={35}
+                      height={40}
                       justifyContent="center"
                       width="100%"
                       display="flex"
@@ -113,8 +115,10 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                               handleDecFucao();
                             }}
                           >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                            <BiCaretLeft />
+                            <BiCaretLeft
+                              color={corIgreja.principal2}
+                              size={35}
+                            />
                           </IconButton>
                         </Box>
                         <Box
@@ -123,8 +127,8 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                           display="flex"
                           justifyContent="center"
                           alignItems="center"
-                          fontSize="14px"
-                          sx={{ fontFamily: 'arial black' }}
+                          fontSize="16px"
+                          sx={{ fontFamily: 'Fugaz One' }}
                         >
                           {numeroFuncoes[contNumeroFucao]}
                         </Box>
@@ -142,8 +146,10 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                               handleIncFucao();
                             }}
                           >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                            <BiCaretRight />
+                            <BiCaretRight
+                              color={corIgreja.principal2}
+                              size={35}
+                            />
                           </IconButton>
                         </Box>
                       </Box>
@@ -153,7 +159,7 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                     <Box
                       mb={2}
                       bgcolor="#fff"
-                      height={35}
+                      height={40}
                       justifyContent="center"
                       width="48%"
                       display="flex"
@@ -166,9 +172,9 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
                         alignItems="center"
                         borderRadius={10}
                         width="100%"
-                        height={30}
+                        height="100%"
                         ml={1}
-                        mt={0.3}
+                        mt={0}
                         fontSize="12px"
                       >
                         Total de {tipoLiderados[contNumeroFucao]}:{' '}

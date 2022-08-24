@@ -24,7 +24,6 @@ import { IoIosPeople, IoIosSchool } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 
 import { HiUserGroup } from 'react-icons/hi';
-import { FcMoneyTransfer } from 'react-icons/fc';
 import NabarSecretaria from '../navBar/secretaria';
 import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
@@ -42,7 +41,6 @@ import MembrosCelula from './membrosCelula';
 
 import MeuPerfil from './meuPerfil';
 import MeusCursos from './meusCursos';
-import Contribuicoes from './contribuicoes';
 import Padrao from '../relatorios/lider/abas/telaPadrao';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -237,15 +235,15 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Contribuições"
+                    label="Dicas"
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FcMoneyTransfer />
+                          <MdTipsAndUpdates />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FcMoneyTransfer />
+                          <MdTipsAndUpdates />
                         </SvgIcon>
                       )
                     }
@@ -564,13 +562,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
           <TabPanel value={value} index={1}>
             {session && (
               <Box>
-                {perfilUser.Funcao === 'Membro' ? (
-                  <Contribuicoes
-                    perfilUser={perfilUser}
-                    secao={session}
-                    rolMembros={rolMembros}
-                  />
-                ) : null}
+                {perfilUser.Funcao === 'Membro' ? <Dicas /> : null}
                 {perfilUser.Funcao === 'Lider' ? <Dicas /> : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Supervisor' ? (

@@ -2,34 +2,20 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
-import useSWR from 'swr';
-import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
-import api from 'src/components/services/api';
-
 import { GiCheckMark } from 'react-icons/gi';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
-// import PegaSemanaDomingo from 'src/utils/getSemanaDomingo';
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
-// import { useRouter } from 'next/router';
-
-function Avisos() {
-  //  const classes = useStyles();
-  // somente letras  const zapOnlyLetters = userIgrejas[0].contatoWhatsApp.replace(/[^a-z]+/gi, '').split('');
+function Avisos({ dadosAvisos }) {
   const [avisos, setAvisos] = React.useState('');
 
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
   const [contFonte, setContFonte] = React.useState(14);
-  const [contSemana, setContSemana] = React.useState(0);
-  const [contSemanaFix, setContSemanaFix] = React.useState(0);
+  const [contSemana, setContSemana] = React.useState(dadosAvisos.length);
+  const [contSemanaFix] = React.useState(dadosAvisos.length);
   const [contAno, setContAno] = React.useState(anoAtual);
-
-  const url = `/api/consultaAvisos`;
-
-  const { data, error } = useSWR(url, fetcher);
 
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
@@ -41,7 +27,7 @@ function Avisos() {
   const handleDecSemana = () => {
     let contSemanaAtual = contSemana - 1;
     if (contSemanaAtual < 1) {
-      contSemanaAtual = contSemanaFix;
+      contSemanaAtual = 1;
       setContAno(contAno - 1);
     }
     setContSemana(contSemanaAtual);
@@ -61,32 +47,8 @@ function Avisos() {
   };
 
   React.useEffect(() => {
-    if (contSemana > 0)
-      api
-        .post('/api/consultaAvisos2', {
-          id: Number(contSemana),
-        })
-        .then((response) => {
-          if (response) {
-            // enviarPontuacao();
-            setAvisos(response.data);
-          }
-        })
-        .catch((err1) => {
-          console.log('erros', err1);
-        });
+    setAvisos(dadosAvisos[contSemana - 1]);
   }, [contSemana]);
-
-  React.useEffect(() => {
-    if (data) {
-      setContSemana(Number(data));
-      setContSemanaFix(Number(data));
-    }
-    if (error) return <div>An error occured.</div>;
-    if (!data) return <div>Loading ...</div>;
-
-    return 0;
-  }, [data]);
 
   const ponto = [];
   const conteudo = [];

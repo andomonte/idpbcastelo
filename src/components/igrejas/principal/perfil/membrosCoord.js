@@ -82,24 +82,27 @@ function Celula({ perfilUser, lideranca, rolMembros }) {
   //= ===================================================================
 
   return (
-    <Box height="90vh" minHeight={500} minWidth={300}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="100vw"
+      minHeight={570}
+      minWidth={350}
+      bgcolor={corIgreja.principal2}
+      height="calc(100vh - 56px)"
+    >
       {!openBuscar ? (
         <Box
-          height="100%"
-          width="100vw"
-          minWidth={300}
-          mt={0}
+          height="97%"
+          width="100%"
+          ml={1.2}
+          mr={1.2}
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-          <Box
-            minWidth={300}
-            height="100%"
-            width="100vw"
-            maxWidth={600}
-            border="4px solid #fff"
-          >
+          <Box minWidth={300} height="100%" width="100%">
             <Box height="100%">
               <Box
                 style={{
@@ -113,7 +116,6 @@ function Celula({ perfilUser, lideranca, rolMembros }) {
                 minWidth={300}
                 width="100%"
                 bgcolor={corIgreja.principal}
-                borderTop="2px solid #fff"
               >
                 <Box width="95%" height="100%">
                   <Box

@@ -199,7 +199,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
                     <Box ml={0} key={itens.id}>
                       <Box>
                         <Grid>
-                          <SearchList rolMembros={itens} />
+                          <SearchList mesAtual={mesAtual} rolMembros={itens} />
                         </Grid>
                       </Box>
                     </Box>
