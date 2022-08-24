@@ -23,7 +23,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
     if (secao.length === 0) {
       return (
         <Cadastro
-          title="IDPB-CASTELO"
+          title="IDPB-FILADELFIA"
           rolMembros={rolMembros}
           lideranca={lideranca}
         />
@@ -32,7 +32,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
     return (
       <Perfil
         celulas={celulas}
-        title="IDPB-CASTELO"
+        title="IDPB-FILADELFIA"
         rolMembros={rolMembros}
         lideranca={lideranca}
         perfilUser={perfilUser}
@@ -46,7 +46,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
       alignItems="center"
       justifyContent="center"
     >
-      <img src="/images/castelo/castelo.png" alt="" width="125" />
+      <img src="/images/filadelfia/filadelfia.png" alt="" width="125" />
     </Box>
   );
 }

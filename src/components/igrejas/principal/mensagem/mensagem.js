@@ -123,7 +123,7 @@ function Mensagem({ mensagem }) {
           style={{
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            backgroundImage: `url('/images/castelo/mensagem.png')`,
+            backgroundImage: `url('/images/filadelfia/mensagem.png')`,
             backgroundPosition: 'center', // centraliza imagem
             backgroundSize: 'cover',
           }}
@@ -161,7 +161,7 @@ function Mensagem({ mensagem }) {
                 </IconButton>
               </Box>
               <Box fontFamily="Fugaz One" color="white" mt={-0.3}>
-                {boletim.semana}
+                {boletim && boletim.semana}
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <IconButton onClick={() => handleIncSemana()}>

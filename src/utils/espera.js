@@ -35,8 +35,8 @@ export default function Espere({ descricao }) {
           <Box mt={-5}>
             <Box textAlign="center" mt={3} mb={2}>
               <img
-                src="/images/castelo/castelo3.png"
-                alt="Castelo"
+                src="/images/filadelfia/filadelfia2.png"
+                alt="Filadelfia"
                 width={200}
               />
             </Box>

@@ -88,7 +88,7 @@ function SearchList({ rolMembros, mesAtual }) {
     'Sábado',
   ];
   const distrito = [
-    'Castelo Branco',
+    'Filadelfia ',
     'União da Vitória',
     'Campos Sales',
     'Bairro da Paz',

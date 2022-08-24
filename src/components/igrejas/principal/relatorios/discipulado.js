@@ -47,7 +47,7 @@ function Discipulado({ rolMembros, perfilUser }) {
                         height: 80,
                       }}
                       alt="Remy Sharp"
-                      src="images/castelo/castelo.png"
+                      src="images/filadelfia/filadelfia.png"
                     />
                   </Box>
 
@@ -61,7 +61,7 @@ function Discipulado({ rolMembros, perfilUser }) {
                     }}
                     textAlign="center"
                   >
-                    IDPB - CASTELO{' '}
+                    IDPB - FILADELFIA{' '}
                   </Box>
                 </Box>
               </Box>

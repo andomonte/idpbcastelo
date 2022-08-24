@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbCastelo({ title, dadosAvisos }) {
+function SistemaCelulas({ title, dadosAvisos }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -155,9 +155,8 @@ function IdpbCastelo({ title, dadosAvisos }) {
 
             <Box display="flex">
               <img
-                src="/images/castelo/castelo1.png"
-                height={30}
-                width={120}
+                src="/images/filadelfia/filadelfia2.png"
+                style={{ width: 180, height: 40 }}
                 className={classes.logo}
                 alt="bolo"
               />
@@ -177,4 +176,4 @@ function IdpbCastelo({ title, dadosAvisos }) {
   );
 }
 
-export default IdpbCastelo;
+export default SistemaCelulas;

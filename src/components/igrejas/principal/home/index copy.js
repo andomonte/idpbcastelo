@@ -124,7 +124,7 @@ function TabPanel(props) {
   );
 }
 
-function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
+function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
   const [value] = React.useState(0);
 
@@ -184,7 +184,7 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
 
             <Box display="flex">
               <img
-                src="/images/castelo/castelo1.png"
+                src="/images/filadelfia/filadelfia2.png"
                 height={30}
                 width={120}
                 className={classes.logo}
@@ -222,4 +222,4 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
   );
 }
 
-export { IdpbCastelo, TabPanel };
+export { SistemaCelulas, TabPanel };

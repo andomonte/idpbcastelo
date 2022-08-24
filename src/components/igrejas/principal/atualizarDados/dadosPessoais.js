@@ -372,6 +372,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
         display="flex"
         justifyContent="center"
         alignItems="center"
+        borderRadius={6}
       >
         <Box width="96%">
           <Grid container spacing={2}>

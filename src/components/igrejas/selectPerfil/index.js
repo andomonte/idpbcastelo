@@ -90,7 +90,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
 
   if (openEspera) return <Espera descricao="Buscando Seu Perfil" />;
 
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   let valorPerfil = {};
   let userMembro = {};
   if (session) {
@@ -244,27 +244,27 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh"
           width="100vw"
           minHeight={570}
+          minWidth={350}
           bgcolor={corIgreja.principal2}
+          height="100vh"
         >
           <Box
-            height="94vh"
-            width="92%"
-            minWidth={300}
-            minHeight={570}
-            borderRadius={16}
+            height="97%"
+            width="100%"
+            bgcolor={corIgreja.principal}
+            ml={1.2}
+            mr={1.2}
             display="flex"
             justifyContent="center"
             alignItems="center"
-            bgcolor={corIgreja.principal}
           >
             <Box width="100%">
               <Box textAlign="center" mt={-3} mb={5}>
                 <img
-                  src="/images/castelo/castelo3.png"
-                  alt="Castelo"
+                  src="/images/filadelfia/filadelfia2.png"
+                  alt="Filadelfia"
                   width={200}
                 />
               </Box>

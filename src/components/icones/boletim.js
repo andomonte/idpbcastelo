@@ -5,7 +5,7 @@ function LogoCastelo() {
   return (
     <Icon>
       <img
-        src="/images/castelo/boletim.png"
+        src="/images/filadelfia/boletim.png"
         height={20}
         width={50}
         alt="brasil"

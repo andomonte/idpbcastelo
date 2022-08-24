@@ -40,7 +40,7 @@ function getDados(email, nome) {
   return data;
 } */
 const nomeDistrito = [
-  'Castelo',
+  'Filadelfia',
   'União da Vitória',
   'Campos Sales',
   'Bairro da Paz',
@@ -51,6 +51,7 @@ function meuPerfil({ secao, perfilUser }) {
   const [upLoadFile, setUpLoadFile] = React.useState('');
   const [imageSize, setImageSize] = React.useState('');
   const [urlImage, setUrlImage] = React.useState('');
+  console.log(perfilUser);
   const [fileImage, setFileImage] = React.useState(perfilUser.foto);
   const [openCrop, setOpenCrop] = React.useState('inicio');
 
@@ -172,7 +173,7 @@ function meuPerfil({ secao, perfilUser }) {
                   >
                     <img
                       width={181}
-                      src="images/castelo/castelo3.png"
+                      src="images/filadelfia/filadelfia2.png"
                       alt="logo"
                     />
                   </Box>

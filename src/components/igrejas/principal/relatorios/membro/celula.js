@@ -54,7 +54,7 @@ function Celula({ rolMembros, perfilUser }) {
                         height: 80,
                       }}
                       alt="Remy Sharp"
-                      src="images/castelo/castelo.png"
+                      src="images/filadelfia/filadelfia.png"
                     />
                   </Box>
 
@@ -68,7 +68,7 @@ function Celula({ rolMembros, perfilUser }) {
                     }}
                     textAlign="center"
                   >
-                    IDPB - CASTELO{' '}
+                    IDPB - FILADELFIA{' '}
                   </Box>
                 </Box>
               </Box>

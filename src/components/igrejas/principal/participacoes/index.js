@@ -2,18 +2,19 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
+import { useRouter } from 'next/router';
 import Box from '@material-ui/core/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import { FaHome, FaPeopleCarry } from 'react-icons/fa';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { TiArrowBack } from 'react-icons/ti';
+import { Oval } from 'react-loading-icons';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
@@ -22,7 +23,7 @@ import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
-import NabarMembro from '../navBar/membro';
+
 import Celula from './celebracao';
 import Equipe from './discipulado';
 import RelCelula from './relCelula';
@@ -132,7 +133,7 @@ function TabPanel(props) {
   );
 }
 
-function Relatorios({ title, rolMembros, perfilUser }) {
+function Participacoes({ title, rolMembros, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -141,14 +142,15 @@ function Relatorios({ title, rolMembros, perfilUser }) {
   const [session] = useSession();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleDrawerOpen = () => {
-    if (!open) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
+  const router = useRouter();
 
-    //! open ? setOpen(true) : setOpen(false);
+  const [loading, setLoading] = React.useState(false);
+  const handleVoltar = () => {
+    setLoading(true);
+    router.back();
+
+    // setOpen(false);
+    // window.location.reload();
   };
 
   const handleDrawerClose = () => {
@@ -171,18 +173,15 @@ function Relatorios({ title, rolMembros, perfilUser }) {
         <AppBar className={classes.root2} color="default">
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
-              {open ? (
-                <MenuOpenIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
-              {!open ? (
-                <MenuIcon
-                  className={classes.hamburger}
-                  onClick={handleDrawerOpen}
-                />
-              ) : null}
+              <Box display="flex" alignItems="center" onClick={handleVoltar}>
+                {loading ? (
+                  <Box>
+                    <Oval stroke="white" width={25} height={25} />
+                  </Box>
+                ) : (
+                  <TiArrowBack size={25} color="white" />
+                )}
+              </Box>
             </Box>
 
             <Box display="flex" m={0}>
@@ -258,16 +257,6 @@ function Relatorios({ title, rolMembros, perfilUser }) {
           </Toolbar>
         </AppBar>
 
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={open}
-          className={classes.drawer}
-          classes={{ paper: classes.desktopDrawer }}
-        >
-          <NabarMembro perfilUser={perfilUser} />
-        </Drawer>
-
         <main
           className={clsx(classes.contentMain, {
             [classes.contentShiftMain]: open,
@@ -311,4 +300,4 @@ function Relatorios({ title, rolMembros, perfilUser }) {
   );
 }
 
-export default Relatorios;
+export default Participacoes;

@@ -3,11 +3,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
-import SvgIcon from '@mui/material/SvgIcon';
+
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
 import Meses from 'src/utils/meses';
-
 import TabCalendario from './abas/tabCalendario';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,22 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ lab1, lab2 }) {
-  return (
-    <>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab1}
-        </Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab2}
-        </Box>
-      </Grid>
-    </>
-  );
-}
 function PlanMembro({ perfilUser, rolMembros }) {
   const classes = useStyles();
   //= ================================================================
@@ -47,20 +30,6 @@ function PlanMembro({ perfilUser, rolMembros }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-
-  const handleIncMes = () => {
-    let contMesAtual = contMes + 1;
-
-    if (contMesAtual > 11) contMesAtual = 0;
-    setContMes(contMesAtual);
-  };
-  const handleDecMes = () => {
-    let contMesAtual = contMes - 1;
-
-    if (contMesAtual < 0) contMesAtual = 11;
-    setContMes(contMesAtual);
-  };
-
   const handleIncAno = () => {
     let contAnoAtual = contAno + 1;
 
@@ -72,6 +41,25 @@ function PlanMembro({ perfilUser, rolMembros }) {
 
     if (contAnoAtual < 2022) contAnoAtual = 2022;
     setContAno(contAnoAtual);
+  };
+
+  const handleIncMes = () => {
+    let contMesAtual = contMes + 1;
+
+    if (contMesAtual > 11) {
+      contMesAtual = 0;
+      handleIncAno();
+    }
+    setContMes(contMesAtual);
+  };
+  const handleDecMes = () => {
+    let contMesAtual = contMes - 1;
+
+    if (contMesAtual < 0) {
+      contMesAtual = 11;
+      handleDecAno();
+    }
+    setContMes(contMesAtual);
   };
 
   return (
@@ -86,25 +74,25 @@ function PlanMembro({ perfilUser, rolMembros }) {
       height="calc(100vh - 56px)"
     >
       <Box
-        width="96%"
         height="97%"
-        minHeight={550}
+        width="100%"
+        ml={1.2}
+        mr={1.2}
         display="flex"
-        alignItems="center"
         justifyContent="center"
+        alignItems="center"
         borderRadius={16}
-        bgcolor={corIgreja.principal} // cor principal tela inteira
+        bgcolor={corIgreja.principal}
       >
         <Box height="100%" width="100%" minWidth={300}>
-          <Box height="100%">
+          <Box height="100%" width="100%">
             <Box
-              height="15%"
-              minHeight={90}
+              height="20%"
+              minHeight={100}
               minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
-              bgcolor={corIgreja.principal}
               style={{
                 borderTopLeftRadius: '16px',
                 borderTopRightRadius: '16px',
@@ -113,14 +101,13 @@ function PlanMembro({ perfilUser, rolMembros }) {
               <Box width="100%" ml={1} minWidth={300}>
                 <Grid container spacing={0}>
                   <Grid container item xs={12} spacing={1}>
-                    <Label lab1="Selecione o Mês" lab2="Selecione o Ano" />
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                       <Paper width="100%" className={classes.paper}>
-                        <Box height={30} width="100%" display="flex">
+                        <Box width="100%" display="flex">
                           <Box
-                            width="20%"
+                            width="10%"
                             display="flex"
-                            justifyContent="flex-end"
+                            justifyContent="flex-start"
                             alignItems="center"
                           >
                             <IconButton
@@ -131,21 +118,26 @@ function PlanMembro({ perfilUser, rolMembros }) {
                                 handleDecMes();
                               }}
                             >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretLeft />
+                              <BiCaretLeft
+                                color={corIgreja.principal2}
+                                size={35}
+                              />
                             </IconButton>
                           </Box>
                           <Box
-                            width="60%"
+                            width="80%"
                             display="flex"
                             justifyContent="center"
                             alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
+                            fontFamily="Fugaz One"
+                            fontSize="18px"
+                            color="black"
                           >
-                            {mes[contMes].descricao}
+                            {mes[contMes].descricao.toLocaleUpperCase()} /{' '}
+                            {contAno}
                           </Box>
                           <Box
-                            width="20%"
+                            width="10%"
                             display="flex"
                             justifyContent="flex-end"
                             alignItems="center"
@@ -158,60 +150,10 @@ function PlanMembro({ perfilUser, rolMembros }) {
                                 handleIncMes();
                               }}
                             >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretRight />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Paper width="100%" className={classes.paper}>
-                        <Box height={30} width="100%" display="flex">
-                          <Box
-                            width="20%"
-                            height={30}
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                handleDecAno();
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
-                              <BiCaretLeft />
-                            </IconButton>
-                          </Box>
-                          <Box
-                            width="60%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
-                          >
-                            {contAno}
-                          </Box>
-                          <Box
-                            width="20%"
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                handleIncAno();
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />
-                              <BiCaretRight />
+                              <BiCaretRight
+                                color={corIgreja.principal2}
+                                size={35}
+                              />
                             </IconButton>
                           </Box>
                         </Box>
@@ -222,18 +164,13 @@ function PlanMembro({ perfilUser, rolMembros }) {
               </Box>
             </Box>
             <Box
-              style={{
-                borderBottomLeftRadius: '16px',
-                borderBottomRightRadius: '16px',
-              }}
-              height="73vh"
+              height="80%"
               minWidth={300}
               display="flex"
               justifyContent="center"
               alignItems="center"
-              minHeight={420}
+              minHeight={350}
               width="100%"
-              bgcolor={corIgreja.principal}
               borderTop="2px solid #fff"
             >
               <Box width="95%" height="100%">
@@ -244,17 +181,15 @@ function PlanMembro({ perfilUser, rolMembros }) {
                   alignItems="center"
                   justifyContent="center"
                   sx={{
-                    bgcolor: corIgreja.principal,
                     color: '#ffff',
-                    fontFamily: 'Geneva',
-                    fontWeight: 'bold',
+                    fontFamily: 'Fugaz One',
                     fontSize: '16px',
                   }}
                 >
                   CALENDARIO DE EVENTOS
                 </Box>
                 <Box
-                  height="63vh"
+                  height="85%"
                   minHeight={315}
                   bgcolor="#fafafa"
                   width="100%"

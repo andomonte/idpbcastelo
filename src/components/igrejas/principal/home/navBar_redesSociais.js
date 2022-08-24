@@ -16,7 +16,7 @@ import IconeInstalar from 'src/components/icones/instalar';
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
-import IconCastelo from 'src/components/icones/castelo';
+import IconCastelo from 'src/components/icones/filadelfia';
 import SchoolIcon from '@material-ui/icons/School';
 import FacebookIcon from 'src/components/icones/facebook';
 import YouTubeIcon from 'src/components/icones/youtube';

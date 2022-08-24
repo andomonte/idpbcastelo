@@ -31,34 +31,34 @@ const home = () => {
     <div>
       <Hidden smDown>
         <img
-          src="/images/castelo/infoDesk01.jpg"
+          src="/images/filadelfia/infoDesk01.jpg"
           alt="img01"
           className={classes.img}
         />
         <img
-          src="/images/castelo/infoDes02.jpg"
+          src="/images/filadelfia/infoDes02.jpg"
           alt="img02"
           className={classes.img}
         />
         <img
-          src="/images/castelo/infoDesk03.jpg"
+          src="/images/filadelfia/infoDesk03.jpg"
           alt="img03"
           className={classes.img}
         />
       </Hidden>
       <Hidden mdUp>
         <img
-          src="/images/castelo/info1.jpg"
+          src="/images/filadelfia/info1.jpg"
           alt="img01"
           className={classes.imgMobile}
         />
         <img
-          src="/images/castelo/info2.jpg"
+          src="/images/filadelfia/info2.jpg"
           alt="img01"
           className={classes.imgMobile}
         />
         <img
-          src="/images/castelo/info3.jpg"
+          src="/images/filadelfia/info3.jpg"
           alt="img01"
           className={classes.imgMobile}
         />

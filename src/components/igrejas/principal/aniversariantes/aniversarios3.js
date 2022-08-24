@@ -119,7 +119,7 @@ function BuscarAniversariantes({ rolMembros }) {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundImage: `url('/images/castelo/aniversariantes.png')`,
+              backgroundImage: `url('/images/filadelfia/aniversariantes.png')`,
               backgroundSize: '100% 100%',
             }}
           />

@@ -524,20 +524,34 @@ function Cadastro({ lideranca, rolMembros }) {
         perfilUserFinal.length,
       )} */}
       {openSelect && perfilUserFinal.length ? (
-        <Box width="100vw">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100vw"
+          minHeight={570}
+          minWidth={350}
+          bgcolor={corIgreja.principal2}
+          height="100vh"
+        >
           <Box
-            height="100vh"
+            height="97%"
             width="100%"
-            minWidth={300}
-            minHeight={570}
+            bgcolor={corIgreja.principal}
+            ml={1.2}
+            mr={1.2}
             display="flex"
             justifyContent="center"
             alignItems="center"
-            bgcolor={corIgreja.principal}
           >
+            >
             <Box width="100%">
               <Box textAlign="center" mt={-3} mb={2}>
-                <img src="/images/castelo3.png" alt="Castelo" width={80} />
+                <img
+                  src="/images/filadelfia2.png"
+                  alt="Filadelfia"
+                  style={{ width: 220, height: 50 }}
+                />
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <Box
@@ -573,7 +587,7 @@ function Cadastro({ lideranca, rolMembros }) {
                               fontFamily: 'arial black',
                             }}
                           >
-                            VOCÊ TEM {perfilUserFinal.length} PERFIS
+                            VOCÊ TEM{perfilUserFinal.length} PERFIS
                           </Box>
                         </Grid>
                         <Grid item container direction="column" xs={12}>

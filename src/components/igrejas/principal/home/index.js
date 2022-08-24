@@ -108,7 +108,7 @@ function TabPanel(props) {
     </div>
   );
 }
-function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
+function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
   // const [session] = useSession();
   const theme = useTheme();
@@ -153,15 +153,32 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
               width="100%"
               display="flex"
               alignItems="center"
-              justifyContent="center"
+              justifyContent="flex-start"
             >
-              <img
-                src="/images/castelo/castelo1.png"
-                height={30}
-                width={120}
-                className={classes.logo}
-                alt="bolo"
-              />
+              <Box
+                fontFamily="Fugaz One"
+                fontSize="14px"
+                textAlign="center"
+                height="100%"
+                width="20%"
+              >
+                {perfilUser.Funcao}
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height={50}
+                width="80%"
+                mr={2}
+              >
+                <img
+                  src="/images/filadelfia/filadelfia2.png"
+                  width="60%"
+                  height="80%"
+                  alt="bolo"
+                />
+              </Box>
             </Box>
             <Login />
           </Toolbar>
@@ -180,4 +197,4 @@ function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
   );
 }
 
-export { IdpbCastelo, TabPanel };
+export { SistemaCelulas, TabPanel };

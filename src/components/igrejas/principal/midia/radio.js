@@ -95,9 +95,9 @@ function Player({ radioIdpb }) {
             alignItems="center"
           >
             <img
-              src="/images/castelo/castelo3.png"
-              alt="Castelo"
-              height="40%"
+              src="/images/filadelfia/filadelfia2.png"
+              alt="Filadelfia"
+              height="30%"
               width="50%"
             />
           </Box>

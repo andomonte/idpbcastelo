@@ -16,7 +16,7 @@ import {
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
-import IconCastelo from 'src/components/icones/castelo';
+import IconCastelo from 'src/components/icones/filadelfia';
 // import IconEMT from 'src/components/icones/emt';
 import SchoolIcon from '@material-ui/icons/School';
 import change from 'src/components/icones/change';

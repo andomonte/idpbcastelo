@@ -15,7 +15,6 @@ function Dicas() {
   const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
     if (data) {
-      console.log('data', data);
       setTodos(data);
     }
     if (error) return <div>An error occured.</div>;
@@ -48,21 +47,21 @@ function Dicas() {
         justifyContent="center"
         alignItems="center"
       >
-        {todos ? (
-          <Box height="100%" width="100%">
-            <Box
-              mt={2}
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              height="10%"
-            >
-              <img
-                style={{ width: '50%', maxWidth: 200 }}
-                src="images/castelo/castelo3.png"
-                alt="logo"
-              />
-            </Box>
+        <Box height="100%" width="100%">
+          <Box
+            mt={2}
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            height="10%"
+          >
+            <img
+              style={{ width: 220, height: 50 }}
+              src="images/filadelfia/filadelfia2.png"
+              alt="logo"
+            />
+          </Box>
+          {todos.length ? (
             <Box height="80%" width="100%" mt="4vh">
               <Carousel showThumbs={false} showStatus={false}>
                 {todos.map((row) => (
@@ -153,17 +152,21 @@ function Dicas() {
                 ))}
               </Carousel>
             </Box>
-          </Box>
-        ) : (
-          <Box
-            width="100%"
-            height="100%"
-            fontFamily="Fugaz One"
-            fontSize="16px"
-          >
-            SEM EVENTOS PREVISTO
-          </Box>
-        )}
+          ) : (
+            <Box
+              width="100%"
+              height="80%"
+              fontFamily="Fugaz One"
+              fontSize="18px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              color="white"
+            >
+              NADA PREVISTO NESSE PERÍODO
+            </Box>
+          )}
+        </Box>
       </Box>
     </Box>
   );

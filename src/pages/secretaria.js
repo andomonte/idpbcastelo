@@ -3,7 +3,7 @@ import Secretaria from 'src/components/igrejas/normal/secretaria';
 import prisma from 'src/lib/prisma';
 
 function Sec({ userIgrejas, celulas, LiderancaCelulas }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
 
   return (
     <Secretaria

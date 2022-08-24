@@ -70,7 +70,7 @@ function Dicas() {
                 >
                   <img
                     width={181}
-                    src="images/castelo/castelo3.png"
+                    src="images/filadelfia/filadelfia2.png"
                     alt="logo"
                   />
                 </Box>

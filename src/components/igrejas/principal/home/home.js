@@ -119,11 +119,16 @@ const home = ({ perfilUser }) => {
 
   const handleRelatorios = () => {
     setLoadingRel(true);
-
-    router.push({
-      pathname: '/relatorio',
-      query: { perfilUser },
-    });
+    if (perfilUser.Funcao !== 'Membro')
+      router.push({
+        pathname: '/relatorio',
+        query: { perfilUser },
+      });
+    else
+      router.push({
+        pathname: '/participacoes',
+        query: { perfilUser },
+      });
   };
 
   const handlePlanejamento = () => {
@@ -728,20 +733,34 @@ const home = ({ perfilUser }) => {
                 <Box fontSize="12px">MUDAR PERFIL</Box>
               </Box>
             </Box>
-            <Box
-              onClick={checkInstall}
-              ml={1}
-              borderRadius={16}
-              height="100%"
-              width="32%"
-              minWidth={80}
-              bgcolor={corIgreja.principal}
-              display="flex"
-              color="white"
-              fontFamily="Rubik"
-              justifyContent="center"
-              alignItems="center"
-            >
+            {install ? (
+              <Box
+                onClick={checkInstall}
+                ml={1}
+                borderRadius={16}
+                height="100%"
+                width="32%"
+                minWidth={80}
+                bgcolor={corIgreja.principal}
+                display="flex"
+                color="white"
+                fontFamily="Rubik"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="column"
+                >
+                  <Box mb={1}>
+                    <RiInstallLine color="white" size={35} />
+                  </Box>
+                  <Box fontSize="12px">INSTALAR</Box>
+                </Box>
+              </Box>
+            ) : (
               <Box
                 display="flex"
                 justifyContent="center"
@@ -751,9 +770,9 @@ const home = ({ perfilUser }) => {
                 <Box mb={1}>
                   <RiInstallLine color="white" size={35} />
                 </Box>
-                <Box fontSize="12px">INSTALAR</Box>
+                <Box fontSize="12px">INSTALADO</Box>
               </Box>
-            </Box>
+            )}
           </Box>
         </TableContainer>
       </Box>

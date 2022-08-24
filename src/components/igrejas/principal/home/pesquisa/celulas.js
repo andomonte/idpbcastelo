@@ -123,7 +123,7 @@ function BuscarCelulas({ celulas }) {
       <Box display="flex" justifyContent="center">
         <Box className={classes.search2}>
           <Box textAlign="center" mt={5} mb={2}>
-            <img src="/images/castelo.png" alt="Castelo" width={100} />
+            <img src="/images/filadelfia.png" alt="Filadelfia" width={100} />
           </Box>
           <TextField
             InputProps={{

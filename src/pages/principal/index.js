@@ -1,11 +1,11 @@
 import React from 'react';
-import { IdpbCastelo } from 'src/components/igrejas/principal/home';
+import { SistemaCelulas } from 'src/components/igrejas/principal/home';
 import { Pagina } from 'src/components/igrejas/normal';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';
@@ -37,7 +37,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
     <div>
       {perfilUserF && perfilUserF.id ? (
         <div>
-          <IdpbCastelo
+          <SistemaCelulas
             celulas={celulas}
             lideranca={LiderancaCelulas}
             userIgrejas={dadosUser}

@@ -337,8 +337,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
           alignItems="center"
         >
           <img
-            src="/images/castelo/castelo3.png"
-            alt="Castelo"
+            src="/images/filadelfia/filadelfia2.png"
+            alt="Filadelfia"
             height="60%"
             width="50%"
           />
@@ -760,8 +760,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
           alignItems="center"
         >
           <img
-            src="/images/castelo/castelo3.png"
-            alt="Castelo"
+            src="/images/filadelfia/filadelfia2.png"
+            alt="Filadelfia"
             height="60%"
             width="50%"
           />

@@ -154,9 +154,8 @@ function Pagina({ title }) {
           <Toolbar className={classes.toolbar}>
             <Box width="100%" display="flex" justifyContent="center">
               <img
-                src="/images/castelo/castelo1.png"
-                height={30}
-                width={120}
+                src="/images/filadelfia/filadelfia2.png"
+                style={{ width: 220, height: 50 }}
                 className={classes.logo}
                 alt="bolo"
               />

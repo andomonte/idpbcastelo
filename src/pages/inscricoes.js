@@ -9,7 +9,7 @@ function FazerInscricoes({ rolMembros }) {
 
   return (
     <div>
-      <Inscricoes rolMembros={rolMembros} title="IDPB-CASTELO" />
+      <Inscricoes rolMembros={rolMembros} title="IDPB-FILADELFIA" />
     </div>
   );
 }
