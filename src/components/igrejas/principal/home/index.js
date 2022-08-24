@@ -174,8 +174,8 @@ function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
               >
                 <img
                   src="/images/filadelfia/filadelfia2.png"
-                  width="60%"
-                  height="80%"
+                  width="50%"
+                  height="70%"
                   alt="bolo"
                 />
               </Box>

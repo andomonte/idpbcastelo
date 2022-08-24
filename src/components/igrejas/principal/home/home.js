@@ -762,15 +762,29 @@ const home = ({ perfilUser }) => {
               </Box>
             ) : (
               <Box
+                ml={1}
+                borderRadius={16}
+                height="100%"
+                width="32%"
+                minWidth={80}
+                bgcolor={corIgreja.principal}
                 display="flex"
+                color="white"
+                fontFamily="Rubik"
                 justifyContent="center"
                 alignItems="center"
-                flexDirection="column"
               >
-                <Box mb={1}>
-                  <RiInstallLine color="white" size={35} />
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="column"
+                >
+                  <Box mb={1}>
+                    <RiInstallLine color="white" size={35} />
+                  </Box>
+                  <Box fontSize="12px">INSTALADO</Box>
                 </Box>
-                <Box fontSize="12px">INSTALADO</Box>
               </Box>
             )}
           </Box>
