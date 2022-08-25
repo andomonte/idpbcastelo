@@ -262,7 +262,7 @@ function Mensagem({ mensagem }) {
                   sx={{ textAlign: 'justify' }}
                 >
                   {boletim ? (
-                    <Box width="94%">
+                    <Box width="90%" color="black">
                       <Box width="100%">
                         <Box
                           mt={2}
@@ -299,16 +299,16 @@ function Mensagem({ mensagem }) {
                             ponto.map((row, index) => (
                               <Box key={index} mb={3} width="100%">
                                 <Box
-                                  ml={1}
+                                  ml={0}
                                   sx={{
                                     textAlign: 'justify',
-                                    textIndent: '10px',
+                                    textIndent: '0px',
                                   }}
                                   width="100%"
                                   display="flex"
                                   fontSize={contFonte}
                                 >
-                                  <Box ml={1}>
+                                  <Box ml={0}>
                                     {ponto[index].substring(
                                       0,
                                       ponto[index].indexOf(' '),
@@ -326,7 +326,7 @@ function Mensagem({ mensagem }) {
                                 <Box
                                   fontFamily="Rubik"
                                   fontSize={contFonte}
-                                  ml={2}
+                                  ml={0}
                                   mt={1}
                                   sx={{
                                     textAlign: 'justify',
