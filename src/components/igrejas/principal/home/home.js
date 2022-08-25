@@ -72,6 +72,7 @@ const home = ({ perfilUser }) => {
 
     router.push({
       pathname: '/inscricoes',
+      query: { perfilUser },
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
@@ -136,7 +137,7 @@ const home = ({ perfilUser }) => {
 
     router.push({
       pathname: '/planejamento',
-      //      query: { idCompra, qrCode, qrCodeCopy },
+      query: { perfilUser },
     });
   };
 

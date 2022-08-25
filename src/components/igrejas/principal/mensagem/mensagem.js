@@ -316,9 +316,11 @@ function Mensagem({ mensagem }) {
                                   </Box>
 
                                   <Box ml={1}>
-                                    {ponto[index].substring(
-                                      ponto[index].indexOf(' '),
-                                    )}{' '}
+                                    {ponto[index]
+                                      .toUpperCase()
+                                      .substring(
+                                        ponto[index].indexOf(' '),
+                                      )}{' '}
                                   </Box>
                                 </Box>
                                 <Box
@@ -331,10 +333,30 @@ function Mensagem({ mensagem }) {
                                     textIndent: '30px',
                                   }}
                                 >
-                                  {conteudo[index]}
+                                  {row && conteudo[index]}
                                 </Box>
                               </Box>
                             ))}
+
+                          <Box
+                            fontSize={contFonte + 1}
+                            textAlign="center"
+                            mb={1}
+                            fontFamily="Fugaz One"
+                          >
+                            {boletim &&
+                              boletim &&
+                              boletim.conclusao &&
+                              'CONCLUSÃO'}
+                          </Box>
+                          <Box
+                            mb={3}
+                            fontFamily="Rubik"
+                            fontSize={contFonte}
+                            sx={{ textAlign: 'justify', textIndent: '30px' }}
+                          >
+                            {boletim && boletim.conclusao}
+                          </Box>
                           <Box
                             mt={0}
                             width="100%"

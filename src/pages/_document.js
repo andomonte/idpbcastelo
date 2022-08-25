@@ -14,6 +14,17 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <meta content="yes" name="apple-mobile-web-app-capable" />
           <meta content="yes" name="mobile-web-app-capable" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Rubik:wght@200;400&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Fugaz One:wght@200;400&display=swap"
+            rel="stylesheet"
+          />
+
           <link rel="icon" href="/images/idpb.ico" type="image/x-icon" />
 
           <link rel="manifest" href="/images/manifest.json" />

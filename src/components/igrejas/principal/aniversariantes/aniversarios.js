@@ -122,7 +122,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
               width="100%"
               display="flex"
               justifyContent="center"
-              bgcolor="#fff"
+              bgcolor="#fafafa"
             >
               <Box
                 width="20%"

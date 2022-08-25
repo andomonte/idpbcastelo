@@ -64,7 +64,7 @@ function Dicas() {
           {todos.length ? (
             <Box height="80%" width="100%" mt="4vh">
               <Carousel showThumbs={false} showStatus={false}>
-                {todos.map((row) => (
+                {todos.map((row, index) => (
                   <Box height="100%" width="100%" mt={0}>
                     <Box
                       height="55%"
@@ -141,7 +141,7 @@ function Dicas() {
                         component="a"
                         variant="contained"
                         onClick={() => {
-                          handleIncricao(todos[0].id);
+                          handleIncricao(row.id);
                         }}
                       >
                         FAZER INSCRIÇÃO

@@ -134,7 +134,7 @@ function BuscarAniversariantes({ rolMembros }) {
               width="100%"
               display="flex"
               justifyContent="center"
-              bgcolor="#fff"
+              bgcolor="#fafafa"
             >
               <Box
                 width="20%"
@@ -161,7 +161,7 @@ function BuscarAniversariantes({ rolMembros }) {
                 fontSize="16px"
                 sx={{ fontFamily: 'Fugaz One' }}
               >
-                <Box>INÍCIO EM:</Box> <Box ml={2}> {semanaAtual}</Box>
+                <Box>SEMANA DE:</Box> <Box ml={2}> {semanaAtual}</Box>
               </Box>
               <Box
                 width="20%"
