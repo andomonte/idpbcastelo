@@ -57,7 +57,7 @@ function Avisos({ dadosAvisos }) {
       ponto[0] = avisos.avisos1;
       conteudo[0] = avisos.conteudo1;
     }
-    if (avisos.avisos1) {
+    if (avisos.avisos2) {
       ponto[1] = avisos.avisos2;
       conteudo[1] = avisos.conteudo2;
     }
