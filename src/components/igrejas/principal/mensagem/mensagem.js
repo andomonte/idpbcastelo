@@ -142,7 +142,7 @@ function Mensagem({ mensagem }) {
               justifyContent="center"
               alignItems="center"
               width="100%"
-              mt={0}
+              ml={2}
             >
               <Box width="100%" display="flex" justifyContent="flex-end">
                 <IconButton onClick={() => handleDecSemana()}>
@@ -156,12 +156,12 @@ function Mensagem({ mensagem }) {
                     display="flex"
                     width="100%"
                   >
-                    <MdOutlineArrowLeft size={45} />
+                    <MdOutlineArrowLeft size={55} color="yellow" />
                   </Box>
                 </IconButton>
               </Box>
               <Box fontFamily="Fugaz One" color="white" mt={-0.3}>
-                {boletim && boletim.semana}
+                {boletim.semana}
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <IconButton onClick={() => handleIncSemana()}>
@@ -170,13 +170,13 @@ function Mensagem({ mensagem }) {
                     style={{
                       color: 'white',
                       fontFamily: 'arial black',
-                      fontSize: '16px',
+                      fontSize: '14px',
                     }}
                     display="flex"
                     justifyContent="flex-end"
                     width="100%"
                   >
-                    <MdOutlineArrowRight size={45} />
+                    <MdOutlineArrowRight size={55} color="yellow" />
                   </Box>
                 </IconButton>
               </Box>
