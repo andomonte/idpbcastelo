@@ -295,12 +295,12 @@ function Avisos({ dadosAvisos }) {
                         alignItems="center"
                       >
                         <Box width="100%">
-                          <Box width="100%" height="100%">
+                          <Box width="90%" height="100%">
                             {ponto.length &&
                               ponto.map((row, index) => (
                                 <Box key={index} mb={5} width="100%">
                                   <Box
-                                    ml={1}
+                                    ml={0}
                                     sx={{
                                       textAlign: 'justify',
                                       textIndent: '10px',
@@ -309,23 +309,24 @@ function Avisos({ dadosAvisos }) {
                                     display="flex"
                                     fontSize={contFonte}
                                   >
-                                    <Box ml={1}>
+                                    <Box ml={0}>
                                       <GiCheckMark color="green" size={15} />{' '}
                                     </Box>
 
-                                    <Box ml={1}>
+                                    <Box ml={0}>
                                       {ponto[index].toUpperCase()}{' '}
                                     </Box>
                                   </Box>
                                   <Box
                                     fontFamily="Rubik"
                                     fontSize={contFonte}
-                                    ml={2}
+                                    ml={4.5}
                                     mt={1}
                                     sx={{
                                       textAlign: 'justify',
-                                      textIndent: '30px',
+                                      textIndent: '0px',
                                     }}
+                                    width="80%"
                                   >
                                     {conteudo[index]}
                                   </Box>

@@ -132,6 +132,7 @@ function Mensagem({ mensagem }) {
           minHeight={90}
         >
           <Box
+            height="100%"
             flexDirection="column"
             width="100%"
             display="flex"
@@ -142,53 +143,11 @@ function Mensagem({ mensagem }) {
               justifyContent="center"
               alignItems="center"
               width="100%"
-              ml={2}
-            >
-              <Box width="100%" display="flex" justifyContent="flex-end">
-                <IconButton onClick={() => handleDecSemana()}>
-                  <Box
-                    mt={-1}
-                    style={{
-                      color: 'white',
-                      fontFamily: 'arial black',
-                      fontSize: '16px',
-                    }}
-                    display="flex"
-                    width="100%"
-                  >
-                    <MdOutlineArrowLeft size={55} color="white" />
-                  </Box>
-                </IconButton>
-              </Box>
-              <Box fontFamily="Fugaz One" color="white" mt={-0.3}>
-                {boletim.semana}
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <IconButton onClick={() => handleIncSemana()}>
-                  <Box
-                    mt={-1}
-                    style={{
-                      color: 'white',
-                      fontFamily: 'arial black',
-                      fontSize: '14px',
-                    }}
-                    display="flex"
-                    justifyContent="flex-end"
-                    width="100%"
-                  >
-                    <MdOutlineArrowRight size={55} color="white" />
-                  </Box>
-                </IconButton>
-              </Box>
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
+              height="100%"
             >
               <Box
-                mt={2}
+                height="100%"
+                mt={10}
                 ml="4vw"
                 style={{
                   color: 'white',
@@ -197,10 +156,66 @@ function Mensagem({ mensagem }) {
                 }}
                 width="100vw"
               >
-                {boletim ? `Domingo ${boletim.ano}` : 'Não encontrado'}
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  ml={2}
+                  height="100%"
+                >
+                  <Box
+                    width="10%"
+                    display="flex"
+                    justifyContent="flex-end"
+                    height="100%"
+                  >
+                    <IconButton onClick={() => handleDecSemana()}>
+                      <Box
+                        mt={-1}
+                        style={{
+                          color: 'white',
+                          fontFamily: 'arial black',
+                          fontSize: '16px',
+                        }}
+                        display="flex"
+                        width="100%"
+                      >
+                        <MdOutlineArrowLeft size={55} color="white" />
+                      </Box>
+                    </IconButton>
+                  </Box>
+                  <Box fontFamily="Fugaz One" color="white" mt={-0.3}>
+                    {boletim ? `Domingo ${boletim.ano}` : 'Não encontrado'}
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <IconButton onClick={() => handleIncSemana()}>
+                      <Box
+                        mt={-1}
+                        style={{
+                          color: 'white',
+                          fontFamily: 'arial black',
+                          fontSize: '14px',
+                        }}
+                        display="flex"
+                        justifyContent="flex-end"
+                        width="100%"
+                      >
+                        <MdOutlineArrowRight size={55} color="white" />
+                      </Box>
+                    </IconButton>
+                  </Box>
+                </Box>{' '}
               </Box>
+
               <Box
+                mt={9}
                 ml={-4}
+                height="100%"
                 width="100%"
                 display="flex"
                 justifyContent="flex-end"
@@ -221,7 +236,12 @@ function Mensagem({ mensagem }) {
                 </IconButton>
               </Box>
 
-              <Box display="flex" justifyContent="center" alignItems="center">
+              <Box
+                mt={9}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
                 <IconButton onClick={() => handleDecFonte()}>
                   <Box
                     ml={4}
@@ -245,7 +265,7 @@ function Mensagem({ mensagem }) {
           style={{
             minWidth: 330,
             width: '96vw',
-            height: '82vh',
+            height: '98vh',
             minHeight: 400,
           }}
         >
