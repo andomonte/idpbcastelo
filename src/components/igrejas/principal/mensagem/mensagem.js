@@ -156,7 +156,7 @@ function Mensagem({ mensagem }) {
                     display="flex"
                     width="100%"
                   >
-                    <MdOutlineArrowLeft size={55} color="yellow" />
+                    <MdOutlineArrowLeft size={55} color="white" />
                   </Box>
                 </IconButton>
               </Box>
@@ -176,7 +176,7 @@ function Mensagem({ mensagem }) {
                     justifyContent="flex-end"
                     width="100%"
                   >
-                    <MdOutlineArrowRight size={55} color="yellow" />
+                    <MdOutlineArrowRight size={55} color="white" />
                   </Box>
                 </IconButton>
               </Box>
