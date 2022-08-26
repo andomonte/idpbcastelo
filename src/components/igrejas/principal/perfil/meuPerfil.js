@@ -90,7 +90,7 @@ function meuPerfil({ secao, perfilUser }) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://arquivocastelo.s3.amazonaws.com/${perfilUser.RolMembro}`,
+                  fileImage: `https://arquivofiladelfia.s3.amazonaws.com/${perfilUser.RolMembro}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {

@@ -1,7 +1,7 @@
 {
   "name": "IDPB-FILADELFIA",
   "short_name": "Filadelfia",
-  "description": "Nosso sistema das Células IDPBs",
+  "description": "Nosso sistema das Células IDPB",
   "theme_color": "#304ffe",
   "background_color": "#121214",
   "display": "standalone",
