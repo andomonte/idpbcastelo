@@ -94,7 +94,7 @@ export const getStaticProps = async () => {
       rolMembros: JSON.parse(JSON.stringify(rolMembros)),
       LiderancaCelulas: JSON.parse(JSON.stringify(LiderancaCelulas)),
     }, // will be passed to the page component as props
-    //  revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
+    revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };
 };
 export default Home;

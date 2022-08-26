@@ -51,7 +51,7 @@ function meuPerfil({ secao, perfilUser }) {
   const [upLoadFile, setUpLoadFile] = React.useState('');
   const [imageSize, setImageSize] = React.useState('');
   const [urlImage, setUrlImage] = React.useState('');
-  console.log(perfilUser);
+
   const [fileImage, setFileImage] = React.useState(perfilUser.foto);
   const [openCrop, setOpenCrop] = React.useState('inicio');
 
@@ -59,7 +59,8 @@ function meuPerfil({ secao, perfilUser }) {
   const url = `/api/consultaRolMembros2/${perfilUser.RolMembro}`;
   const { data: inscritos, error2 } = useSWR(url, fetcher);
   React.useEffect(() => {
-    if (inscritos) {
+    if (inscritos && inscritos.length) {
+      console.log(inscritos);
       setFileImage(inscritos[0].foto);
     }
     if (error2) return <div>An error occured.</div>;
