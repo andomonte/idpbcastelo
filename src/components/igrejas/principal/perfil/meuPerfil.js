@@ -52,15 +52,14 @@ function meuPerfil({ secao, perfilUser }) {
   const [imageSize, setImageSize] = React.useState('');
   const [urlImage, setUrlImage] = React.useState('');
 
-  const [fileImage, setFileImage] = React.useState(perfilUser.foto);
+  const [fileImage, setFileImage] = React.useState('');
   const [openCrop, setOpenCrop] = React.useState('inicio');
 
   const fetcher = (url) => axios.get(url).then((res) => res.data);
   const url = `/api/consultaRolMembros2/${perfilUser.RolMembro}`;
   const { data: inscritos, error2 } = useSWR(url, fetcher);
-  React.useEffect(() => {
+  React.useEffect(async () => {
     if (inscritos && inscritos.length) {
-      console.log('aqui', inscritos, perfilUser.foto);
       setFileImage(inscritos[0].foto);
     }
     if (error2) return <div>An error occured.</div>;
