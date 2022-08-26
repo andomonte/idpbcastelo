@@ -60,7 +60,7 @@ function meuPerfil({ secao, perfilUser }) {
   const { data: inscritos, error2 } = useSWR(url, fetcher);
   React.useEffect(() => {
     if (inscritos && inscritos.length) {
-      console.log(inscritos);
+      console.log('aqui', inscritos, perfilUser.foto);
       setFileImage(inscritos[0].foto);
     }
     if (error2) return <div>An error occured.</div>;
