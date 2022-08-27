@@ -77,20 +77,45 @@ function meuPerfil({ secao, perfilUser }) {
         const metadata = {
           type: 'image/png',
         };
+        const dataAtual = new Date();
+        const dia = dataAtual.getDate();
+        const mes = dataAtual.getMonth() + 1;
+        const ano = dataAtual.getFullYear();
+        const horas = dataAtual.getHours();
+        const minutos = dataAtual.getMinutes();
+        const segundos = dataAtual.getSeconds();
+
         const nomeFoto = perfilUser.RolMembro;
+        const nomeFoto2 =
+          perfilUser.RolMembro + dia + mes + ano + horas + minutos + segundos;
         const file = new File([data], perfilUser.RolMembro, metadata);
         const dataFile = new FormData();
         //      dataFile.append('file', uploadedFile[0], nomeFoto);
         dataFile.append('file', file, nomeFoto);
 
+        const dataFile2 = new FormData();
+        //      dataFile.append('file', uploadedFile[0], nomeFoto);
+
+        dataFile2.append('file', file, nomeFoto2);
+        console.log('imprimir aqui', dataFile2);
         api
-          .post('/api/fotos', dataFile)
+          .post('/api/delFoto', { dados: nomeFoto })
+          .then((responses) => {
+            if (responses) {
+              console.log(responses);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        api
+          .post('/api/fotos', dataFile2)
           .then((responses) => {
             if (responses) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://arquivofiladelfia.s3.amazonaws.com/${perfilUser.RolMembro}`,
+                  fileImage: `https://arquivofiladelfia.s3.amazonaws.com/${nomeFoto2}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
@@ -214,8 +239,8 @@ function meuPerfil({ secao, perfilUser }) {
                               const imageFile = e.target.files[0];
 
                               const options = {
-                                maxSizeMB: 1,
-                                maxWidthOrHeight: 1080,
+                                maxSizeMB: 0.5,
+                                maxWidthOrHeight: 320,
                                 useWebWorker: true,
                               };
                               try {
