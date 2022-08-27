@@ -97,7 +97,7 @@ function meuPerfil({ secao, perfilUser }) {
         //      dataFile.append('file', uploadedFile[0], nomeFoto);
 
         dataFile2.append('file', file, nomeFoto2);
-        console.log('imprimir aqui', dataFile2);
+
         api
           .post('/api/delFoto', { dados: nomeFoto })
           .then((responses) => {
