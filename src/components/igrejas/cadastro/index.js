@@ -170,10 +170,10 @@ function Cadastro({ lideranca, rolMembros }) {
     setPerfilUser(() => [perfilUserFinal[indexPerfil]]);
     router.push(
       {
-        pathname: '/meuPerfil',
+        pathname: '/principal',
         query: perfilUser[0],
       },
-      '/meuPerfil',
+      '/principal',
     );
   };
   React.useEffect(() => {
@@ -544,11 +544,10 @@ function Cadastro({ lideranca, rolMembros }) {
             justifyContent="center"
             alignItems="center"
           >
-            >
             <Box width="100%">
               <Box textAlign="center" mt={-3} mb={2}>
                 <img
-                  src="/images/filadelfia2.png"
+                  src="/images/filadelfia/filadelfia2.png"
                   alt="Filadelfia"
                   style={{ width: 220, height: 50 }}
                 />
@@ -587,7 +586,7 @@ function Cadastro({ lideranca, rolMembros }) {
                               fontFamily: 'arial black',
                             }}
                           >
-                            VOCÊ TEM{perfilUserFinal.length} PERFIS
+                            VOCÊ TEM {perfilUserFinal.length} PERFIS
                           </Box>
                         </Grid>
                         <Grid item container direction="column" xs={12}>
