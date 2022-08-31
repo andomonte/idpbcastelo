@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Button } from '@material-ui/core';
+import { Box, Grid, Paper, Button, TextField } from '@material-ui/core';
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
@@ -9,7 +9,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
+import Erros from 'src/utils/erros';
+import dataMask from 'src/components/mascaras/datas';
+import celularMask from 'src/components/mascaras/celular';
 import moment from 'moment';
 import { TiUserAdd } from 'react-icons/ti';
 import { IoIosSave, IoIosAddCircle, IoMdRemoveCircle } from 'react-icons/io';
@@ -20,10 +22,11 @@ import axios from 'axios';
 import PegaIdade from 'src/utils/getIdade';
 import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
-import Erros from 'src/utils/erros';
+
 import Emojis from 'src/components/icones/emojis';
-import TabCelebracao from './abas/tabCelebracao';
-import TabVisitantes from './abas/tabVisitantes2';
+
+import TabCelula from './abas/tabCelula';
+import TabVisitantes from './abas/tabVisitantes';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
@@ -56,7 +59,8 @@ function createEstatistico(
   Adultos,
   Criancas,
   Visitantes,
-
+  PresentesEventos,
+  Visitas,
   Conversoes,
   Observacoes,
   CriadoPor,
@@ -72,6 +76,8 @@ function createEstatistico(
     Adultos,
     Criancas,
     Visitantes,
+    PresentesEventos,
+    Visitas,
     Conversoes,
     Observacoes,
     CriadoPor,
@@ -115,23 +121,19 @@ function createPontuacao(
   };
 }
 
-function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
+function RelCelula({ rolMembros, perfilUser, visitantes }) {
   //  const classes = useStyles();
   // const router = useRouter();
-  const [openErro, setOpenErro] = React.useState(false);
-  const [progress, setProgress] = React.useState(5);
-  const visitantesCelula = visitantes.filter(
+  let visitantesCelula = visitantes.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2);
-  const anoAtual = dataAtual2.getFullYear();
-  const [AnoAtual, setAnoAtual] = React.useState(anoAtual);
-
   const [contConversoes, setContConversoes] = React.useState(0);
-
+  const [contEventos, setContEventos] = React.useState(0);
+  const [contVisitas, setContVisitas] = React.useState(0);
   const [observacoes, setObservacoes] = React.useState(0);
   const [nomesVisitantes, setNomesVisitantes] =
     React.useState(visitantesCelula);
@@ -142,27 +144,31 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   );
   const dadosCelula = nomesCelulas.map((row) => createData(row.Nome, false));
   const [checkRelatorio, setCheckRelatorio] = React.useState(false);
+  const [openErro, setOpenErro] = React.useState(false);
+  const [progress, setProgress] = React.useState(5);
 
   // let enviarDia;
   // let enviarData;
   const [nomeVistante, setNomeVisitante] = React.useState('');
+  const [nomesVisitanteTab, setNomesVisitanteTab] = React.useState('');
   const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
   const [foneVisitante, setFoneVisitante] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const [open, setIsPickerOpen] = React.useState(false);
   const [qtyVisitante, setQtyVisitante] = React.useState(0);
   const [presentes, setPresentes] = React.useState(0);
-  const [presentesLive, setPresentesLive] = React.useState(0);
   const [rankCelula, setRankCelula] = React.useState([]);
   const [rankGeral, setRankGeral] = React.useState(0);
   const [pontosAtual, setPontosAtual] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+
+  const [pontosAnterior, setPontosAnterior] = React.useState([]);
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
   const [tela, setTela] = React.useState(1);
   const [carregando, setCarregando] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
   );
+  const [loading, setLoading] = React.useState(true);
   const [pFinal, setPFinal] = React.useState({});
   const [pTotalAtualRank, setPTotalAtualRank] = React.useState(0);
   const [pTotalAtual, setPTotalAtual] = React.useState(0);
@@ -171,7 +177,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   const [criancas, setCriancas] = React.useState(0);
   const [openVisitantes, setOpenVisitantes] = React.useState(false);
   const [rank, setRank] = React.useState(0);
-
+  const anoAtual = dataAtual2.getFullYear();
+  const [AnoAtual, setAnoAtual] = React.useState(anoAtual);
   //= ==============================================================
   const handleDateChange = (date, value) => {
     setInputValue(value);
@@ -218,6 +225,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   const [semana, setSemana] = React.useState(0);
   const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
+  const [deleteVis, setDeleteVis] = React.useState(false);
 
   React.useEffect(() => {
     const timeElapsed = Date.now();
@@ -248,8 +256,34 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     if (contAtual < 0) contAtual = 0;
     setContConversoes(contAtual);
   };
+  const handleIncEventos = () => {
+    let contAtual = contEventos;
+    if (podeEditar) contAtual += 1;
 
-  const url = `/api/consultaRelatorioCelebracao/${semana}`;
+    if (contAtual > 9999) contAtual = 0;
+    setContEventos(contAtual);
+  };
+  const handleDecEventos = () => {
+    let contAtual = contEventos;
+    if (podeEditar) contAtual -= 1;
+    if (contAtual < 0) contAtual = 0;
+    setContEventos(contAtual);
+  };
+  const handleIncVisitas = () => {
+    let contAtual = contVisitas;
+    if (podeEditar) contAtual += 1;
+
+    if (contAtual > 9999) contAtual = 0;
+    setContVisitas(contAtual);
+  };
+  const handleDecVisitas = () => {
+    let contAtual = contVisitas;
+    if (podeEditar) contAtual -= 1;
+
+    if (contAtual < 0) contAtual = 0;
+    setContVisitas(contAtual);
+  };
+  const url = `/api/consultaRelatorioCelulas/${semana}`;
   const { data: members, error: errorMembers } = useSWR(url, fetcher);
   const url2 = `/api/consultaPontuacao/${perfilUser.Distrito}/${perfilUser.Celula}`;
   const { data: pontos, error: errorPontos } = useSWR(url2, fetcher);
@@ -258,43 +292,27 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     url3,
     fetcher,
   );
+
   const url4 = `/api/consultaVisitantes`;
   const { data: novoVisitante, error: errorVisitante } = useSWR(url4, fetcher);
 
-  React.useEffect(() => {
-    if (errorVisitante) return <div>An error occured.</div>;
-    if (!novoVisitante) return <div>Loading ...</div>;
-
-    if (novoVisitante) {
-      // se teve relatório nomesVisitantes tras a lista
-
-      const visitantesCelula2 = novoVisitante.filter(
-        (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          val.Distrito === Number(perfilUser.Distrito),
-      );
-      // filtrou apenas os visitantes da célula
-      setNomesVisitantes(visitantesCelula2);
-    }
-    return 0;
-  }, [novoVisitante]);
-
   const ajusteRelatorio = () => {
-    const qtyPres = dadosCelula.filter((val) => val.Presenca === 'igreja');
-    const qtyPresLive = dadosCelula.filter((val) => val.Presenca === 'live');
-    // const qtyVis = visitantes.filter((val) => val.Presenca === true);
+    const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
+
     setTela(1);
     setCarregando(false);
     setPresentes(qtyPres.length);
-    setPresentesLive(qtyPresLive.length);
     setQtyVisitante(0);
     setContConversoes(0);
+    setContVisitas(0);
+    setContEventos(0);
     setRelPresentes(dadosCelula);
     setObservacoes('');
     setCheckRelatorio(false);
     setPodeEditar(true);
-    if (members) setExisteRelatorio('sem');
-    else setExisteRelatorio('inicio');
+    if (!members) setExisteRelatorio('inicio');
+    // if (members) setExisteRelatorio('sem');
+    // else setExisteRelatorio('inicio');
     if (members && members.length > 0) {
       const relatorio = members.filter(
         (val) =>
@@ -306,36 +324,35 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       if (relatorio && relatorio.length) {
         const dataAgora = new Date();
         const semanaAgora = semanaExata(dataAgora);
-
         if (semanaAgora - semana < 2) setPodeEditar(true);
         else setPodeEditar(false);
-        setExisteRelatorio(true); // avisa que tem relatório
+
+        if (existeRelatorio !== true) setExisteRelatorio(true); // avisa que tem relatório
         // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
         const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
         const nVisitantes = relatorio[0].NomesVisitantes;
+
         const qtyPresentes = nomesMembros.filter(
-          (val) => val.Presenca === 'igreja',
-        );
-        const qtyPresentesLive = nomesMembros.filter(
-          (val) => val.Presenca === 'live',
+          (val) => val.Presenca === true,
         );
         const qtyVisitants = nVisitantes.filter((val) => val.Presenca === true);
         setPresentes(qtyPresentes.length);
-        setPresentesLive(qtyPresentesLive.length);
-        setContConversoes(relatorio[0].Conversoes);
         setQtyVisitante(qtyVisitants.length);
+        setContConversoes(relatorio[0].Conversoes);
+        setContVisitas(relatorio[0].Visitas);
+        setContEventos(relatorio[0].PresentesEventos);
         setRelPresentes(nomesMembros);
-        setNomesVisitantes(nVisitantes);
         setObservacoes(relatorio[0].Observacoes);
-        // setRelCelula(relatorio);
+
+        setNomesVisitanteTab(nVisitantes);
         setStartShow(!startShow);
       } else {
         const qtyVisitanteNovo = visitantesCelula.filter(
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
-        setExisteRelatorio('sem'); // avisa que não tem relatório
+        setExisteRelatorio('sem');
         setStartShow(!startShow);
       }
     } else {
@@ -346,8 +363,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
       setStartShow(!startShow);
     }
+
     if (errorMembers) return <div>An error occured.</div>;
     if (!members) return <div>Loading ...</div>;
+
     return 0;
   };
 
@@ -357,12 +376,84 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
     return 0;
   }, [semana]);
+
+  React.useEffect(() => {
+    if (deleteVis) {
+      console.log('entrou aqui');
+      setDeleteVis(false);
+      mutate(url4);
+    }
+    return 0;
+  }, [deleteVis]);
+
+  React.useEffect(() => {
+    if (errorVisitante) return <div>An error occured.</div>;
+    if (!novoVisitante) return <div>Loading ...</div>;
+    console.log('veio aqui também');
+    if (novoVisitante) {
+      // se teve relatório nomesVisitantes tras a lista
+
+      const visitantesCelula2 = novoVisitante.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      // filtrou apenas os visitantes da célula
+
+      let visitantesPresentes = '';
+
+      if (nomesVisitanteTab) {
+        visitantesPresentes = nomesVisitanteTab.filter(
+          (val) => val.Presenca === true,
+        );
+      }
+
+      // filtrou apenas os visitantes da célula presentes
+
+      if (visitantesCelula2.length) {
+        const nomesVisitantesParcial = visitantesCelula2.map((row) =>
+          createRelVisitantes(row.id, row.Nome, false),
+        );
+        // atribuiu falta a todos visitantes da célula
+
+        for (let i = 0; i < nomesVisitantesParcial.length; i += 1) {
+          for (let j = 0; j < visitantesPresentes.length; j += 1) {
+            if (nomesVisitantesParcial[i].Rol === visitantesPresentes[j].Rol)
+              nomesVisitantesParcial[i].Presenca = true;
+          }
+        }
+
+        visitantesCelula = nomesVisitantesParcial;
+        setNomesVisitantes(nomesVisitantesParcial);
+      } else {
+        setNomesVisitantes(visitantesCelula2);
+      }
+    }
+    return 0;
+  }, [novoVisitante, nomesVisitanteTab]);
+
   React.useEffect(() => {
     ajusteRelatorio();
 
     return 0;
   }, [members]);
-  /* React.useEffect(() => {
+
+  React.useEffect(() => {
+    //  contEffect += 1;
+    setExisteRelatorio('inicio');
+    if (selectedDate) {
+      const checkAno = selectedDate.getFullYear();
+      setAnoAtual(checkAno);
+      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
+      if (checkAno > 2020) {
+        setSemana(semanaExata(selectedDate));
+      }
+
+      ajusteRelatorio();
+    }
+  }, [selectedDate]);
+
+  React.useEffect(() => {
     setRelPresentes(
       relPresentes.sort((a, b) => {
         if (a.Nome > b.Nome) return 1;
@@ -370,29 +461,15 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         return 0;
       }),
     );
-  }, [relPresentes]); */
-  /* React.useEffect(() => {
-    setNomesVisitantes(
-      nomesVisitantes.sort((a, b) => {
-        if (a.Nome > b.Nome) return 1;
-        if (b.Nome > a.Nome) return -1;
-        return 0;
-      }),
-    );
-  }, [nomesVisitantes]); */
+  }, [relPresentes]);
 
   //= ========================calcular adulto e crianca========================
 
   const handleTela2 = () => {
     if (nomesCelulas && nomesCelulas.length > 0) {
-      const listaPresentes1 = nomesCelulas.filter((val) => val.Nome);
-      const listaPresentes = listaPresentes1.filter(
-        (val, index) =>
-          val.Nome &&
-          (relPresentes[index].Presenca === 'igreja' ||
-            relPresentes[index].Presenca === 'live'),
+      const listaPresentes = nomesCelulas.filter(
+        (val, index) => val.Nome && relPresentes[index].Presenca === true,
       );
-      console.log('oi', relPresentes);
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
@@ -443,6 +520,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
             setNomeVisitante('');
             setNascimentoVisitante('');
             setFoneVisitante('');
+
             let dadosNovos = [];
             dadosNovos = response.data;
 
@@ -456,12 +534,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
             nomesNovos.push(nomesVisitantesParcial);
 
             setNomesVisitantes((state) => [...state, nomesVisitantesParcial]);
+
+            // mutate(url4);
           }
         })
         .catch(() => {
           setOpenErro(true);
-          setCarregando(false);
-
           // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
         });
     } else {
@@ -484,8 +562,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       const pontosSemanaAtual = pontos.filter(
         (val) => val.Semana === Number(semana),
       );
+      const pontosSemanaAnterior = pontos.filter(
+        (val) => val.Semana === Number(semana - 1),
+      );
 
       setPontosAtual(pontosSemanaAtual);
+      setPontosAnterior(pontosSemanaAnterior);
     }
 
     return 0;
@@ -496,23 +578,24 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     // const dataRel = getDataPontos(selectedDate);
     const semanaPontuacao = semanaExata(criadoEm);
     let pontuacaoAtual = [];
+    const pontosRelCelula = 1;
     let pontosRelatorio = 0;
     let pontosPontualidade = 0;
-    let pontosPresentes = 0;
-    let pontosVisitantesCelula = 0;
-    let pontosEventos = 0;
-    let pontosNovoMembro = 0;
-    let pontosVisitas = 0;
-    let pontosRelCelula = 0;
-    const pontosRelCelebracao = 1;
-    const pontosCelebracaoIgreja = presentes;
-    const pontosCelebracaoLive = presentesLive;
-    const pontosVisitantesCelebracao = qtyVisitante;
+    const pontosPresentes = presentes;
+    const pontosVisitantesCelula = qtyVisitante;
+    const pontosEventos = contEventos;
+    const pontosNovoMembro = 0;
+    const pontosVisitas = contVisitas;
 
+    let pontosRelCelebracao = 0;
+    let pontosCelebracaoIgreja = 0;
+    let pontosCelebracaoLive = 0;
     let pontosRelDiscipulado = 0;
     let pontosDiscipulado = 0;
     let pontosLeituraBiblia = 0;
+    let pontosVisitantesCelebracao = 0;
     let pontosTotalAtual = 0;
+    let pontosTotalAnterior = 0;
     let pontosTotalAtualRank = 0;
 
     if (pontosAtual.length) {
@@ -521,30 +604,31 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       if (pontuacaoAtual !== '') {
         if (
           semanaPontuacao === semana &&
-          pontuacaoAtual.RelCelulaFeito === 1 &&
+          pontuacaoAtual.RelCelebracao === 1 &&
           pontuacaoAtual.RelDiscipulado === 1
         )
           pontosPontualidade = 1;
       }
-      if (
-        pontuacaoAtual.RelCelulaFeito === 1 &&
-        pontuacaoAtual.RelDiscipulado === 1
-      )
-        pontosRelatorio = 1;
-      if (pontuacaoAtual.RelCelulaFeito === 1) {
-        pontosRelCelula = pontuacaoAtual.RelCelulaFeito;
-        pontosPresentes = pontuacaoAtual.PresentesCelula;
-        pontosEventos = pontuacaoAtual.Eventos;
-        pontosNovoMembro = pontuacaoAtual.NovoMembro;
-        pontosVisitas = pontuacaoAtual.Visitas;
-        pontosVisitantesCelula = pontuacaoAtual.VisitantesCelula;
-        //        pontosCelebracaoIgreja = pontuacaoAtual.CelebracaoIgreja;
-        //        pontosCelebracaoLive = pontuacaoAtual.CelebracaoLive;
+      if (pontuacaoAtual.RelCelebracao === 1) {
+        pontosRelCelebracao = pontuacaoAtual.RelCelebracao;
+        pontosCelebracaoIgreja = pontuacaoAtual.CelebracaoIgreja;
+        pontosCelebracaoLive = pontuacaoAtual.CelebracaoLive;
+        pontosVisitantesCelebracao = pontuacaoAtual.VisitantesCelebracao;
       }
       if (pontuacaoAtual.RelDiscipulado === 1) {
         pontosRelDiscipulado = pontuacaoAtual.RelDiscipulado;
         pontosDiscipulado = pontuacaoAtual.Discipulados;
         pontosLeituraBiblia = pontuacaoAtual.LeituraBiblica;
+      }
+      if (
+        pontuacaoAtual.RelCelebracao === 1 &&
+        pontuacaoAtual.RelDiscipulado === 1
+      )
+        pontosRelatorio = 1;
+      if (pontosAnterior.length) {
+        if (pontosAnterior[0].Total) {
+          pontosTotalAnterior = pontosAnterior[0].Total;
+        }
       }
     }
 
@@ -594,6 +678,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           Number(percLeituraBiblica),
       ).toFixed(2);
     const TotalPercentual = pontosTotalAtual;
+    if (pontosTotalAnterior === 0)
+      pontosTotalAnterior = parseFloat(TotalPercentual).toFixed(2);
 
     const PontuacaoFinal = createPontuacao(
       Number(pontosRelCelula),
@@ -616,22 +702,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setPFinal(PontuacaoFinal);
     setPTotalAtual(TotalPercentual);
     setPTotalAtualRank(pontosTotalAtualRank);
-
     //  setPTotalAnterior(pontosTotalAnterior);
 
-    // const nomesMembros = JSON.parse(RelCelebracaoFinal.NomesMembros);
+    // const nomesMembros = JSON.parse(RelCelulaFinal.NomesMembros);
     /*
      */
   };
-
-  React.useEffect(() => {
-    pegarPontuacao();
-
-    criarPontuacao();
-
-    return 0;
-  }, [semana, presentes, qtyVisitante, contConversoes, pontos]);
-
   React.useEffect(() => {
     pegarPontuacao();
 
@@ -639,10 +715,20 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   }, [existeRelatorio]);
 
   React.useEffect(() => {
+    pegarPontuacao();
+
     criarPontuacao();
 
     return 0;
-  }, [pontosAtual]);
+  }, [
+    semana,
+    presentes,
+    qtyVisitante,
+    contConversoes,
+    contEventos,
+    contVisitas,
+    pontos,
+  ]);
 
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
@@ -674,9 +760,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         }
       })
       .catch(() => {
-        setOpenErro(true);
-        setCarregando(false);
-
         // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
@@ -690,7 +773,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
 
-    const RelCelebracaoFinal = createEstatistico(
+    const RelCelulaFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
       Number(semana),
@@ -700,17 +783,19 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       Number(adultos),
       Number(criancas),
       Number(qtyVisitante),
+      Number(contEventos),
+      Number(contVisitas),
       Number(contConversoes),
       String(observacoes),
       perfilUser.Nome,
       criadoEm,
     );
 
-    // const nomesMembros = JSON.parse(RelCelebracaoFinal.NomesMembros);
+    // const nomesMembros = JSON.parse(RelCelulaFinal.NomesMembros);
 
     api
-      .post('/api/criarRelCelebracao', {
-        relatorio: RelCelebracaoFinal,
+      .post('/api/criarRelCelula', {
+        relatorio: RelCelulaFinal,
       })
       .then((response) => {
         if (response) {
@@ -719,8 +804,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       })
       .catch(() => {
         setOpenErro(true);
-        setCarregando(false);
-
         // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
@@ -739,6 +822,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     return 0;
   };
+
   const posicao = () => {
     if (rankGeral.length > 0) {
       const CelulaAtual = rankGeral.filter(
@@ -756,7 +840,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
   };
   const mediaCelula = () => {
-    if (pontos) {
+    if (pontos && pontos.length > 0) {
       const semanas = [];
       const semanasTotal = [];
       for (let index = 0; index < 4; index += 1) {
@@ -774,8 +858,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           divisor += 1;
         }
       }
+
       if (divisor === 0) divisor = 1;
       somaTotal /= divisor;
+
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
@@ -786,6 +872,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           if (pTotalAtual === somaTotal) {
             mediaCrescimento = 0;
           }
+
           setRankCelula(mediaCrescimento);
         }
       } else setRankCelula(0);
@@ -798,33 +885,24 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     mediaCelula();
 
     return 0;
-  }, [members, pTotalAtual]);
+  }, [members, pTotalAtual, pontos]);
 
   React.useEffect(() => {
-    //  contEffect += 1;
+    posicao();
 
-    if (selectedDate) {
-      const checkAno = selectedDate.getFullYear();
-      setAnoAtual(checkAno);
-      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
-      if (checkAno > 2020) {
-        setSemana(semanaExata(selectedDate));
-      }
-
-      ajusteRelatorio();
-    }
-  }, [selectedDate]);
-
+    return 0;
+  }, [rankGeral]);
   React.useEffect(() => {
     ajusteRelatorio();
     pegaRankSemana();
     posicao();
     mediaCelula();
+
     return 0;
   }, [PontosSemana]);
+
   React.useEffect(() => {
     let timer;
-
     if (progress === 4) setLoading(false);
     if (loading) {
       let prevProgress = 5;
@@ -848,6 +926,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       clearInterval(timer);
     };
   }, [selectedDate]);
+
   return (
     <Box
       display="flex"
@@ -855,12 +934,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
       {openVisitantes ? (
         <Box
+          bgcolor={corIgreja.principal}
           width="96%"
           height="97%"
           display="flex"
@@ -890,7 +970,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           </Box>
 
           <Box
-            height="78%"
+            height="48%"
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -901,7 +981,133 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
               setQtyVisitante={setQtyVisitante}
               setNomesVisitantes={setNomesVisitantes}
               podeEditar={podeEditar}
+              setDeleteVis={setDeleteVis}
             />
+          </Box>
+          <Box
+            height="30%"
+            width="100%"
+            minHeight={120}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor={corIgreja.principal}
+          >
+            <Box ml={1}>
+              <Grid container spacing={0}>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={12} md={12} lg={12} xl={12}>
+                    <Box width="100%" mt={2} textAlign="center">
+                      <Box
+                        color="white"
+                        fontSize="14px"
+                        textAlign="start"
+                        ml={1}
+                      >
+                        Nome do Visitante
+                      </Box>
+                      <TextField
+                        inputProps={{
+                          style: {
+                            width: '90vw',
+                            height: 30,
+                            borderRadius: 6,
+                            textAlign: 'center',
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="Nome"
+                        // label="Matricula"
+                        type="text"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={nomeVistante}
+                        variant="standard"
+                        placeholder="Nome completo"
+                        onChange={(e) => {
+                          setNomeVisitante(e.target.value);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid container spacing={0}>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                    <Box width="100%" mt={2} textAlign="center">
+                      <Box
+                        color="white"
+                        fontSize="14px"
+                        textAlign="start"
+                        ml={1}
+                      >
+                        Celular
+                      </Box>
+                      <TextField
+                        inputProps={{
+                          style: {
+                            width: '100%',
+                            height: 30,
+                            borderRadius: 6,
+                            textAlign: 'center',
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="Fone"
+                        // label="Matricula"
+                        type="tel"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={celularMask(foneVisitante)}
+                        variant="standard"
+                        placeholder="telefone"
+                        onChange={(e) => {
+                          setFoneVisitante(e.target.value);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                    <Box width="100%" mt={2} textAlign="center">
+                      <Box
+                        color="white"
+                        fontSize="14px"
+                        textAlign="start"
+                        ml={1}
+                      >
+                        Data de Nasc.
+                      </Box>
+                      <TextField
+                        inputProps={{
+                          style: {
+                            width: '100%',
+                            height: 30,
+                            borderRadius: 6,
+                            textAlign: 'center',
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="Nascimento"
+                        // label="Matricula"
+                        type="tel"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={dataMask(nascimentoVisitante)}
+                        variant="standard"
+                        placeholder="dd/mm/aaaa"
+                        onChange={(e) => {
+                          setNascimentoVisitante(e.target.value);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
           <Box
             width="100%"
@@ -1176,7 +1382,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        {!checkRelatorio ? 'CÉLULA' : 'LIVE'}
+                        {!checkRelatorio ? 'CÉLULA' : 'PRESENTES'}
                       </Box>
                       <Box
                         fontFamily="arial black"
@@ -1185,7 +1391,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        {!checkRelatorio ? perfilUser.Celula : presentesLive}
+                        {!checkRelatorio ? perfilUser.Celula : presentes}
                       </Box>
                     </Box>
                     <Box
@@ -1202,7 +1408,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        {!checkRelatorio ? 'MEMBROS' : 'IGREJA'}
+                        MEMBROS
                       </Box>
                       <Box
                         fontFamily="arial black"
@@ -1211,7 +1417,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        {!checkRelatorio ? relPresentes.length : presentes}
+                        {relPresentes.length}
                       </Box>
                     </Box>
                   </Box>
@@ -1233,7 +1439,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                   height="100%"
                   width="100%"
                 >
-                  {existeRelatorio === 'sem' && (
+                  {(existeRelatorio === 'sem' ||
+                    existeRelatorio === 'inicio') && (
                     <Box height="100%">
                       <Box
                         height="100%"
@@ -1244,13 +1451,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         width="100%"
                         color={corIgreja.iconeOn}
                         fontFamily="arial black"
-                        fontSize="20px"
+                        fontSize="18px"
                       >
-                        <Box>RELATÓRIO DE CELEBRAÇÃO</Box>
+                        <Box>RELATÓRIO DE CÉLULA</Box>
                         <Box
                           color={corIgreja.texto1}
                           fontFamily="arial black"
-                          fontSize="20px"
+                          fontSize="18px"
                           mt={1}
                         >
                           SEMANA - {semana}
@@ -1320,7 +1527,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         width="100%"
                         color={corIgreja.iconeOn}
                         fontFamily="arial black"
-                        fontSize="20px"
+                        fontSize="18px"
                       >
                         <Box
                           height="100%"
@@ -1385,7 +1592,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                   PONTOS
                                 </Box>
                                 <Box
-                                  fontSize="20px"
+                                  fontSize="18px"
                                   fontFamily="arial black"
                                   color="#000"
                                   display="flex"
@@ -1426,7 +1633,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                   justifyContent="center"
                                   width="100%"
                                   height={50}
-                                  fontSize="20px"
+                                  fontSize="18px"
                                 >
                                   {rank}º
                                 </Box>
@@ -1543,11 +1750,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
               ) : (
                 <Box display="flex" alignItems="end" height="100%" width="96%">
                   {tela === 1 && (
-                    <TabCelebracao
+                    <TabCelula
                       nomesCelulas={relPresentes}
                       setPresentes={setPresentes}
-                      setPresentesLive={setPresentesLive}
-                      setRelPresentes={setRelPresentes}
+                      setRelCelula={setRelPresentes}
                       podeEditar={podeEditar}
                     />
                   )}
@@ -1647,8 +1853,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         display="flex"
                         justifyContent="center"
                         width="100%"
-                        mt={2}
-                        mb={2}
+                        mt={1}
+                        mb={1}
                       >
                         <Paper
                           style={{
@@ -1747,7 +1953,208 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                           </Box>
                         </Paper>
                       </Box>
-
+                      <Box
+                        mb={1}
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                      >
+                        <Paper
+                          style={{
+                            marginTop: 10,
+                            width: '90%',
+                            textAlign: 'center',
+                            background: '#fafafa',
+                            height: 40,
+                            borderRadius: 15,
+                            border: '1px solid #000',
+                          }}
+                        >
+                          <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleIncEventos();
+                              }}
+                            >
+                              <IoIosAddCircle color="green" size={30} />
+                            </Box>
+                            <Box
+                              width="70%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ fontFamily: 'arial black' }}
+                            >
+                              <Box
+                                width="100%"
+                                display="flex"
+                                textAlign="center"
+                              >
+                                <Box
+                                  ml={2}
+                                  width="60%"
+                                  mt={0.5}
+                                  display="flex"
+                                  justifyContent="center"
+                                  fontSize="14px"
+                                >
+                                  EVENTOS
+                                </Box>
+                                <Box
+                                  width="40%"
+                                  mt={0}
+                                  ml={-3}
+                                  display="flex"
+                                  color="blue"
+                                  fontSize="18px"
+                                  fontFamily="arial black"
+                                >
+                                  <Box
+                                    mt={0.9}
+                                    ml={2}
+                                    mr={2}
+                                    display="flex"
+                                    color="#000"
+                                    fontSize="16px"
+                                    fontFamily="arial "
+                                  >
+                                    <FaLongArrowAltRight />
+                                  </Box>
+                                  <Box
+                                    mt={0.5}
+                                    display="flex"
+                                    color="blue"
+                                    fontSize="16px"
+                                    fontFamily="arial black "
+                                  >
+                                    {contEventos}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleDecEventos();
+                              }}
+                            >
+                              <IoMdRemoveCircle color="red" size={30} />
+                            </Box>
+                          </Box>
+                        </Paper>
+                      </Box>
+                      <Box display="flex" justifyContent="center" width="100%">
+                        <Paper
+                          style={{
+                            marginTop: 10,
+                            width: '90%',
+                            textAlign: 'center',
+                            background: '#fafafa',
+                            height: 40,
+                            borderRadius: 15,
+                            border: '1px solid #000',
+                          }}
+                        >
+                          <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleIncVisitas();
+                              }}
+                            >
+                              <IoIosAddCircle color="green" size={30} />
+                            </Box>
+                            <Box
+                              width="70%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ fontFamily: 'arial black' }}
+                            >
+                              <Box
+                                width="100%"
+                                display="flex"
+                                textAlign="center"
+                              >
+                                <Box
+                                  ml={2}
+                                  width="60%"
+                                  mt={0.5}
+                                  display="flex"
+                                  justifyContent="center"
+                                  fontSize="14px"
+                                >
+                                  VISITAS
+                                </Box>
+                                <Box
+                                  width="40%"
+                                  mt={0}
+                                  ml={-3}
+                                  display="flex"
+                                  color="blue"
+                                  textAlign="center"
+                                  fontSize="18px"
+                                  fontFamily="arial black"
+                                >
+                                  <Box
+                                    mt={0.9}
+                                    ml={2}
+                                    mr={2}
+                                    display="flex"
+                                    color="#000"
+                                    fontSize="16px"
+                                    fontFamily="arial "
+                                  >
+                                    <FaLongArrowAltRight />
+                                  </Box>
+                                  <Box
+                                    mt={0.5}
+                                    display="flex"
+                                    color="blue"
+                                    fontSize="16px"
+                                    fontFamily="arial black "
+                                  >
+                                    {contVisitas}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleDecVisitas();
+                              }}
+                            >
+                              <IoMdRemoveCircle color="red" size={30} />
+                            </Box>
+                          </Box>
+                        </Paper>
+                      </Box>
                       <Box display="flex" justifyContent="center" width="100%">
                         <Box
                           width="100%"
@@ -1815,7 +2222,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                           >
                             <Button
                               onClick={() => {
-                                if (existeRelatorio !== 'inicio' && !loading) {
+                                if (existeRelatorio && !loading) {
                                   setCheckRelatorio(true);
                                   setTela(1);
                                 }
@@ -1828,7 +2235,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                 color="blue"
                                 sx={{ fontFamily: 'arial black' }}
                               >
-                                {existeRelatorio === 'inicio' || loading ? (
+                                {loading ? (
                                   <Box>
                                     <Oval stroke="red" width={20} height={20} />
                                   </Box>
@@ -2124,4 +2531,4 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   );
 }
 
-export default RelatorioCelebracao;
+export default RelCelula;

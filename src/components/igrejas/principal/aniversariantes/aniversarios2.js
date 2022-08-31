@@ -79,7 +79,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -96,8 +96,6 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
         <Box width="100%" height="100%">
           <Box
             height="16%"
-            minHeight={80}
-            minWidth={300}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -111,7 +109,20 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
               backgroundImage: `url('/images/filadelfia/aniversariantes.png')`,
               backgroundSize: '100% 100%',
             }}
-          />
+          >
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              fontSize="20px"
+              color="white"
+              sx={{ fontFamily: 'Fugaz One' }}
+            >
+              <Box>ANIVERSARIANTES</Box> <Box> DO MES (SUPERVISÃO) </Box>
+            </Box>
+          </Box>
           <Box
             height="8%"
             minHeight={40}

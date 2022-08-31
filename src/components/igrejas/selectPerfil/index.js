@@ -246,7 +246,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
           alignItems="center"
           width="100vw"
           minHeight={570}
-          minWidth={350}
+          minWidth={300}
           bgcolor={corIgreja.principal2}
           height="100vh"
         >

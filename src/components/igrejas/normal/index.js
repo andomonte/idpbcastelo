@@ -136,7 +136,7 @@ function Pagina({ title }) {
   return (
     <div
       style={{
-        minWidth: 350,
+        minWidth: 300,
         background: corIgreja.principal2,
       }}
       onLoad={handleDrawerClose}

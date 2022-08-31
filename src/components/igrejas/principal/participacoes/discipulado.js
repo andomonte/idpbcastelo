@@ -70,7 +70,7 @@ function RelDiscipulado({ perfilUser }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >

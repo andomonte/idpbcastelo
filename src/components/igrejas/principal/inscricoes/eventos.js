@@ -35,7 +35,7 @@ function Dicas() {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -159,7 +159,7 @@ function Dicas() {
               width="100%"
               height="80%"
               fontFamily="Fugaz One"
-              fontSize="18px"
+              fontSize="16px"
               display="flex"
               justifyContent="center"
               alignItems="center"

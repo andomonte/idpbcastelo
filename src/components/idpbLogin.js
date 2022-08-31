@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-import Hidden from '@material-ui/core/Hidden';
 
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
@@ -154,14 +153,6 @@ function IdpbLogin({ title }) {
                   onClick={handleDrawerOpen}
                 />
               ) : null}
-
-              <Hidden mdDown>
-                <img
-                  src="/images/filadelfia.png"
-                  alt="logo"
-                  className={classes.logo}
-                />
-              </Hidden>
             </Box>
 
             <Login />

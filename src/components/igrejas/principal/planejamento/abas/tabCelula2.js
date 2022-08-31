@@ -356,7 +356,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="100vh"
     >
@@ -458,7 +458,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       height="20%"
                       color={corIgreja.iconeOn}
                       fontFamily="arial black"
-                      fontSize="20px"
+                      fontSize="18px"
                       textAlign="center"
                     >
                       PLANEJAMENTO DA CÉLULA
@@ -707,7 +707,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="100vh"
     >
@@ -740,7 +740,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
               display="flex"
               justifyContent="center"
               fontFamily="Fugaz One"
-              fontSize="20px"
+              fontSize="18px"
               alignItems="center"
               color="white"
               height="10%"

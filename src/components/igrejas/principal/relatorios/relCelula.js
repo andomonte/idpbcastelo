@@ -441,8 +441,10 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const handleTela2 = () => {
     if (nomesCelulas && nomesCelulas.length > 0) {
       const listaPresentes = nomesCelulas.filter(
-        (val, index) => val.Nome && relPresentes[index],
+        (val, index) => val.Nome && relPresentes[index].Presenca === true,
       );
+
+      console.log('listaPresentes', listaPresentes);
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
@@ -794,6 +796,33 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     }
 
     return 0;
+  };
+  const handleIncEventos = () => {
+    let contAtual = contEventos;
+    if (podeEditar) contAtual += 1;
+
+    if (contAtual > 9999) contAtual = 0;
+    setContEventos(contAtual);
+  };
+  const handleDecEventos = () => {
+    let contAtual = contEventos;
+    if (podeEditar) contAtual -= 1;
+    if (contAtual < 0) contAtual = 0;
+    setContEventos(contAtual);
+  };
+  const handleIncVisitas = () => {
+    let contAtual = contVisitas;
+    if (podeEditar) contAtual += 1;
+
+    if (contAtual > 9999) contAtual = 0;
+    setContVisitas(contAtual);
+  };
+  const handleDecVisitas = () => {
+    let contAtual = contVisitas;
+    if (podeEditar) contAtual -= 1;
+
+    if (contAtual < 0) contAtual = 0;
+    setContVisitas(contAtual);
   };
 
   const posicao = () => {
@@ -1925,7 +1954,208 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                           </Box>
                         </Paper>
                       </Box>
-
+                      <Box display="flex" justifyContent="center" width="100%">
+                        <Paper
+                          style={{
+                            marginTop: 10,
+                            width: '90%',
+                            textAlign: 'center',
+                            background: '#fafafa',
+                            height: 40,
+                            borderRadius: 15,
+                            border: '1px solid #000',
+                          }}
+                        >
+                          <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleIncEventos();
+                              }}
+                            >
+                              <IoIosAddCircle color="green" size={30} />
+                            </Box>
+                            <Box
+                              width="70%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ fontFamily: 'arial black' }}
+                            >
+                              <Box
+                                width="100%"
+                                display="flex"
+                                textAlign="center"
+                              >
+                                <Box
+                                  ml={2}
+                                  width="60%"
+                                  mt={0.5}
+                                  display="flex"
+                                  justifyContent="center"
+                                  fontSize="14px"
+                                >
+                                  EVENTOS
+                                </Box>
+                                <Box
+                                  width="40%"
+                                  mt={0}
+                                  ml={-3}
+                                  display="flex"
+                                  color="blue"
+                                  fontSize="20px"
+                                  fontFamily="arial black"
+                                >
+                                  <Box
+                                    mt={0.9}
+                                    ml={2}
+                                    mr={2}
+                                    display="flex"
+                                    color="#000"
+                                    fontSize="16px"
+                                    fontFamily="arial "
+                                  >
+                                    <FaLongArrowAltRight />
+                                  </Box>
+                                  <Box
+                                    mt={0.5}
+                                    display="flex"
+                                    color="blue"
+                                    fontSize="16px"
+                                    fontFamily="arial black "
+                                  >
+                                    {contEventos}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleDecEventos();
+                              }}
+                            >
+                              <IoMdRemoveCircle color="red" size={30} />
+                            </Box>
+                          </Box>
+                        </Paper>
+                      </Box>
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        width="100%"
+                        mt={2}
+                      >
+                        <Paper
+                          style={{
+                            marginTop: 10,
+                            width: '90%',
+                            textAlign: 'center',
+                            background: '#fafafa',
+                            height: 40,
+                            borderRadius: 15,
+                            border: '1px solid #000',
+                          }}
+                        >
+                          <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleIncVisitas();
+                              }}
+                            >
+                              <IoIosAddCircle color="green" size={30} />
+                            </Box>
+                            <Box
+                              width="70%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ fontFamily: 'arial black' }}
+                            >
+                              <Box
+                                width="100%"
+                                display="flex"
+                                textAlign="center"
+                              >
+                                <Box
+                                  ml={2}
+                                  width="60%"
+                                  mt={0.5}
+                                  display="flex"
+                                  justifyContent="center"
+                                  fontSize="14px"
+                                >
+                                  VISITAS
+                                </Box>
+                                <Box
+                                  width="40%"
+                                  mt={0}
+                                  ml={-3}
+                                  display="flex"
+                                  color="blue"
+                                  textAlign="center"
+                                  fontSize="20px"
+                                  fontFamily="arial black"
+                                >
+                                  <Box
+                                    mt={0.9}
+                                    ml={2}
+                                    mr={2}
+                                    display="flex"
+                                    color="#000"
+                                    fontSize="16px"
+                                    fontFamily="arial "
+                                  >
+                                    <FaLongArrowAltRight />
+                                  </Box>
+                                  <Box
+                                    mt={0.5}
+                                    display="flex"
+                                    color="blue"
+                                    fontSize="16px"
+                                    fontFamily="arial black "
+                                  >
+                                    {contVisitas}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box
+                              width="15%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              onClick={() => {
+                                handleDecVisitas();
+                              }}
+                            >
+                              <IoMdRemoveCircle color="red" size={30} />
+                            </Box>
+                          </Box>
+                        </Paper>
+                      </Box>
                       <Box display="flex" justifyContent="center" width="100%">
                         <Box
                           width="100%"

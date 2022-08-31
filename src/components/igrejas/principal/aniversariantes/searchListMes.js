@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   caption: {
-    fontWeight: 'bold',
-
+    fontFamily: 'Fugaz One',
+    fontSize: '12pix',
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -95,7 +95,12 @@ function SearchList({ rolMembros, semanaAtual }) {
   const dia = converteData(semanaAtual).getDate();
 
   return (
-    <Box sx={{ maxHeight: 310, minWidth: 350 }} className={classes.dadosBox}>
+    <Box
+      width="10vw"
+      height="100%"
+      sx={{ maxHeight: 310, minWidth: 300 }}
+      className={classes.dadosBox}
+    >
       <TableContainer sx={{ maxHeight: 310 }}>
         <Box mt={2} ml={1} display="flex" alignItems="center">
           {rolMembros.foto !== null && rolMembros.foto !== undefined ? (
@@ -125,8 +130,8 @@ function SearchList({ rolMembros, semanaAtual }) {
               src=""
               alt="User"
               style={{
-                width: 70,
-                height: 70,
+                width: 50,
+                height: 50,
               }}
             />
           )}
@@ -183,15 +188,7 @@ function SearchList({ rolMembros, semanaAtual }) {
                 <strong style={{ color: 'black' }}>{rolMembros.Celula}</strong>
               </Typography>
             </Box>
-            <Typography
-              className={classes.caption}
-              gutterBottom
-              component="span"
-              variant="body1"
-              color="textPrimary"
-              button="true"
-              onClick={handleSistema}
-            />
+
             <Box mb={2} display="flex" ml={-0.5}>
               <Typography
                 display="block"

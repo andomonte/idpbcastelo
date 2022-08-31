@@ -33,7 +33,7 @@ function Dicas() {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -64,7 +64,7 @@ function Dicas() {
           {todos.length ? (
             <Box height="80%" width="100%" mt="4vh">
               <Carousel showThumbs={false} showStatus={false}>
-                {todos.map((row, index) => (
+                {todos.map((row) => (
                   <Box height="100%" width="100%" mt={0}>
                     <Box
                       height="55%"
@@ -100,7 +100,7 @@ function Dicas() {
                           ml={2}
                           color="white"
                           fontFamily="Fugaz One"
-                          fontSize="20px"
+                          fontSize="18px"
                         >
                           {row.DataEvento}
                         </Box>
@@ -119,7 +119,7 @@ function Dicas() {
                           ml={2}
                           color="white"
                           fontFamily="Fugaz One"
-                          fontSize="20px"
+                          fontSize="18px"
                         >
                           {row.Local}
                         </Box>
@@ -157,7 +157,7 @@ function Dicas() {
               width="100%"
               height="80%"
               fontFamily="Fugaz One"
-              fontSize="18px"
+              fontSize="16px"
               display="flex"
               justifyContent="center"
               alignItems="center"

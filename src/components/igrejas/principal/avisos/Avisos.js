@@ -12,7 +12,7 @@ function Avisos({ dadosAvisos }) {
 
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
-  const [contFonte, setContFonte] = React.useState(14);
+  const [contFonte, setContFonte] = React.useState(16);
   const [contSemana, setContSemana] = React.useState(dadosAvisos.length);
   const [contSemanaFix] = React.useState(dadosAvisos.length);
   const [contAno, setContAno] = React.useState(anoAtual);
@@ -103,7 +103,7 @@ function Avisos({ dadosAvisos }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -169,7 +169,7 @@ function Avisos({ dadosAvisos }) {
               </IconButton>
               <IconButton onClick={() => handleDecFonte()}>
                 <Box
-                  ml={4}
+                  ml="4vw"
                   style={{
                     color: 'white',
                     fontFamily: 'arial black',
@@ -216,17 +216,14 @@ function Avisos({ dadosAvisos }) {
               <Box
                 color="#fafafa"
                 fontSize="14px"
-                ml={-1}
-                mr={-1}
                 fontFamily="Rubik"
-                width="80%"
+                width="70%"
                 display="flex"
                 justifyContent="center"
               >
                 {avisos ? (
                   <Box display="flex" justifyContent="center">
                     <Box>Domingo</Box>
-
                     <Box ml={2}>{avisos.ano}</Box>
                   </Box>
                 ) : (
@@ -294,8 +291,8 @@ function Avisos({ dadosAvisos }) {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <Box width="100%">
-                          <Box width="90%" height="100%">
+                        <Box width="94%">
+                          <Box width="100%" height="100%">
                             {ponto.length &&
                               ponto.map((row, index) => (
                                 <Box key={index} mb={5} width="100%">
@@ -320,13 +317,13 @@ function Avisos({ dadosAvisos }) {
                                   <Box
                                     fontFamily="Rubik"
                                     fontSize={contFonte}
-                                    ml={4.5}
+                                    ml="6vw"
                                     mt={1}
                                     sx={{
                                       textAlign: 'justify',
                                       textIndent: '0px',
                                     }}
-                                    width="80%"
+                                    width="90%"
                                   >
                                     {conteudo[index]}
                                   </Box>

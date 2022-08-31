@@ -22,7 +22,7 @@ function Avisos({ setOpenAviso }) {
 
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
-  const [contFonte, setContFonte] = React.useState(14);
+  const [contFonte, setContFonte] = React.useState(16);
   const [contSemana, setContSemana] = React.useState(0);
   const [contSemanaFix, setContSemanaFix] = React.useState(0);
   const [contAno, setContAno] = React.useState(anoAtual);

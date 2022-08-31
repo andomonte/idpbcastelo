@@ -387,12 +387,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     if (nomesCelulas && nomesCelulas.length > 0) {
       const listaPresentes1 = nomesCelulas.filter((val) => val.Nome);
       const listaPresentes = listaPresentes1.filter(
-        (val, index) =>
-          val.Nome &&
-          (relPresentes[index].Presenca === 'igreja' ||
-            relPresentes[index].Presenca === 'live'),
+        (val) => val.Presenca === 'igreja' || val.Presenca === 'live',
       );
-      console.log('oi', relPresentes);
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
@@ -855,7 +851,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -1244,13 +1240,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         width="100%"
                         color={corIgreja.iconeOn}
                         fontFamily="arial black"
-                        fontSize="20px"
+                        fontSize="16px"
                       >
                         <Box>RELATÓRIO DE CELEBRAÇÃO</Box>
                         <Box
                           color={corIgreja.texto1}
                           fontFamily="arial black"
-                          fontSize="20px"
+                          fontSize="18px"
                           mt={1}
                         >
                           SEMANA - {semana}
@@ -1320,7 +1316,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                         width="100%"
                         color={corIgreja.iconeOn}
                         fontFamily="arial black"
-                        fontSize="20px"
+                        fontSize="18px"
                       >
                         <Box
                           height="100%"
@@ -1385,7 +1381,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                   PONTOS
                                 </Box>
                                 <Box
-                                  fontSize="20px"
+                                  fontSize="18px"
                                   fontFamily="arial black"
                                   color="#000"
                                   display="flex"
@@ -1426,7 +1422,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                   justifyContent="center"
                                   width="100%"
                                   height={50}
-                                  fontSize="20px"
+                                  fontSize="18px"
                                 >
                                   {rank}º
                                 </Box>
@@ -1828,7 +1824,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                                 color="blue"
                                 sx={{ fontFamily: 'arial black' }}
                               >
-                                {existeRelatorio === 'inicio' || loading ? (
+                                {loading ? (
                                   <Box>
                                     <Oval stroke="red" width={20} height={20} />
                                   </Box>

@@ -12,8 +12,7 @@ export default async function handle(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
+  console.log('valar do post', posts);
 
-  res.statuCode = 200;
-  res.setHeader('Content-Type', 'aplication/json');
-  res.json(posts);
+  res.status(200).send('OK');
 }

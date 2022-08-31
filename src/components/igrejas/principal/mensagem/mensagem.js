@@ -12,7 +12,7 @@ function Mensagem({ mensagem }) {
   const [boletim, setBoletim] = React.useState('');
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
-  const [contFonte, setContFonte] = React.useState(14);
+  const [contFonte, setContFonte] = React.useState(16);
   const [contSemana, setContSemana] = React.useState(mensagem.length);
   const [contSemanaFix] = React.useState(mensagem.length);
   const [contAno, setContAno] = React.useState(anoAtual);
@@ -103,7 +103,7 @@ function Mensagem({ mensagem }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -123,17 +123,33 @@ function Mensagem({ mensagem }) {
           style={{
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            backgroundImage: `url('/images/filadelfia/mensagem.png')`,
+            backgroundImage: `url('/images/filadelfia/mensagem2.png')`,
             backgroundPosition: 'center', // centraliza imagem
             backgroundSize: 'cover',
           }}
           display="flex"
+          flexDirection="column"
           height="15vh"
+          width="100%"
           minHeight={90}
         >
           <Box
-            height="100%"
-            flexDirection="column"
+            ml={2}
+            height="70%"
+            width="50%"
+            alignItems="flex-end"
+            display="flex"
+            color="white"
+            fontSize="36px"
+            fontFamily="Fugaz One"
+            justifyContent="flex-start"
+          >
+            MENSAGEM
+          </Box>
+
+          <Box
+            mt="1vw"
+            height="30%"
             width="100%"
             display="flex"
             justifyContent="flex-end"
@@ -146,126 +162,113 @@ function Mensagem({ mensagem }) {
               height="100%"
             >
               <Box
-                height="100%"
-                mt={10}
-                ml="4vw"
+                mt={0}
+                ml="0vw"
                 style={{
                   color: 'white',
                   fontFamily: 'arial black',
                   fontSize: '12px',
                 }}
-                width="100vw"
+                width="100%"
               >
                 <Box
                   display="flex"
-                  justifyContent="center"
+                  justifyContent="flex-start"
                   alignItems="center"
                   width="100%"
-                  ml={2}
+                  maxWidth={500}
+                  ml={-1}
                   height="100%"
                 >
+                  <MdOutlineArrowLeft
+                    cursor="pointer"
+                    size={55}
+                    color="white"
+                    onClick={() => handleDecSemana()}
+                  />
                   <Box
-                    width="10%"
-                    display="flex"
-                    justifyContent="flex-end"
-                    height="100%"
-                  >
-                    <IconButton onClick={() => handleDecSemana()}>
-                      <Box
-                        mt={-1}
-                        style={{
-                          color: 'white',
-                          fontFamily: 'arial black',
-                          fontSize: '16px',
-                        }}
-                        display="flex"
-                        width="100%"
-                      >
-                        <MdOutlineArrowLeft size={55} color="white" />
-                      </Box>
-                    </IconButton>
-                  </Box>
-                  <Box fontFamily="Fugaz One" color="white" mt={-0.3}>
-                    {boletim ? `Domingo ${boletim.ano}` : 'Não encontrado'}
-                  </Box>
-                  <Box
+                    width="50%"
                     display="flex"
                     justifyContent="center"
-                    alignItems="center"
+                    textAlign="center"
+                    fontFamily="Fugaz One"
+                    color="white"
+                    mt={0}
                   >
-                    <IconButton onClick={() => handleIncSemana()}>
-                      <Box
-                        mt={-1}
-                        style={{
-                          color: 'white',
-                          fontFamily: 'arial black',
-                          fontSize: '14px',
-                        }}
-                        display="flex"
-                        justifyContent="flex-end"
-                        width="100%"
-                      >
-                        <MdOutlineArrowRight size={55} color="white" />
+                    {boletim ? (
+                      <Box display="flex">
+                        Domingo
+                        <Box ml={1}>{boletim.ano} </Box>
                       </Box>
-                    </IconButton>
+                    ) : (
+                      'Não encontrado'
+                    )}
                   </Box>
-                </Box>{' '}
-              </Box>
-
-              <Box
-                mt={9}
-                ml={-4}
-                height="100%"
-                width="100%"
-                display="flex"
-                justifyContent="flex-end"
-              >
-                <IconButton onClick={() => handleIncFonte()}>
-                  <Box
-                    style={{
-                      color: 'white',
-                      fontFamily: 'arial black',
-                      fontSize: '16px',
+                  <MdOutlineArrowRight
+                    cursor="pointer"
+                    size={55}
+                    color="white"
+                    onClick={() => {
+                      handleIncSemana();
                     }}
-                    display="flex"
-                    justifyContent="flex-end"
-                    width="100%"
-                  >
-                    A+
-                  </Box>
-                </IconButton>
+                  />
+                </Box>
               </Box>
-
-              <Box
-                mt={9}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <IconButton onClick={() => handleDecFonte()}>
-                  <Box
-                    ml={4}
-                    mr={2}
-                    style={{
-                      color: 'white',
-                      fontFamily: 'arial black',
-                      fontSize: '16px',
-                    }}
-                    display="flex"
-                    justifyContent="flex-end"
-                  >
-                    A-
-                  </Box>
-                </IconButton>
+              <Box height="100%" width="20%" display="flex">
+                <Box
+                  mt={0}
+                  ml="-2vw"
+                  height="100%"
+                  width="30%"
+                  display="flex"
+                  justifyContent="flex-end"
+                >
+                  <IconButton onClick={() => handleIncFonte()}>
+                    <Box
+                      style={{
+                        color: 'white',
+                        fontFamily: 'arial black',
+                        fontSize: '16px',
+                      }}
+                      display="flex"
+                      justifyContent="flex-end"
+                      width="100%"
+                    >
+                      A+
+                    </Box>
+                  </IconButton>
+                </Box>
+                <Box ml={2} />
+                <Box
+                  mt={0}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <IconButton onClick={() => handleDecFonte()}>
+                    <Box
+                      style={{
+                        color: 'white',
+                        fontFamily: 'arial black',
+                        fontSize: '16px',
+                      }}
+                      display="flex"
+                      justifyContent="flex-end"
+                      width="100%"
+                    >
+                      A-
+                    </Box>
+                  </IconButton>
+                </Box>
               </Box>
             </Box>
           </Box>
         </Box>
         <TableContainer
           style={{
-            minWidth: 330,
+            minWidth: 280,
             width: '96vw',
-            height: '98vh',
+            height: '100%',
             minHeight: 400,
           }}
         >

@@ -124,7 +124,7 @@ function RelCelula({ perfilUser }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -155,7 +155,7 @@ function RelCelula({ perfilUser }) {
           <Box
             height="100%"
             minHeight={60}
-            minWidth={300}
+            minWidth={280}
             width="100%"
             color="white"
             fontFamily="Fugaz One"
@@ -171,12 +171,12 @@ function RelCelula({ perfilUser }) {
             <Box mr={2}> MINHAS CONTRIBUÇÕES</Box>
           </Box>
         </Box>
-        <Box height={50} width="100%" minWidth={300} bgcolor="white">
+        <Box height={50} width="100%" minWidth={280} bgcolor="white">
           <Box width="100%" display="flex">
             <Box
               width="10%"
               display="flex"
-              justifyContent="flex-end"
+              justifyContent="flex-start"
               alignItems="center"
             >
               <IconButton
@@ -227,7 +227,7 @@ function RelCelula({ perfilUser }) {
               borderBottomRightRadius: '16px',
             }}
             height="100%"
-            minWidth={300}
+            minWidth={280}
             display="flex"
             justifyContent="center"
             alignItems="center"

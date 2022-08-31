@@ -90,7 +90,7 @@ function BuscarAniversariantes({ rolMembros }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -107,8 +107,7 @@ function BuscarAniversariantes({ rolMembros }) {
         <Box width="100%" height="100%">
           <Box
             height="16%"
-            minHeight={80}
-            minWidth={300}
+            width="100%"
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -122,7 +121,20 @@ function BuscarAniversariantes({ rolMembros }) {
               backgroundImage: `url('/images/filadelfia/aniversariantes.png')`,
               backgroundSize: '100% 100%',
             }}
-          />
+          >
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              fontSize="20px"
+              color="white"
+              sx={{ fontFamily: 'Fugaz One' }}
+            >
+              <Box>ANIVERSARIANTES</Box> <Box> DA SEMANA (IGREJA)</Box>
+            </Box>
+          </Box>
           <Box
             height="8%"
             minHeight={40}
@@ -153,15 +165,16 @@ function BuscarAniversariantes({ rolMembros }) {
                   <BiCaretLeft size={30} />
                 </IconButton>
               </Box>
+
               <Box
-                width="76%"
+                width="60%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
                 fontSize="16px"
                 sx={{ fontFamily: 'Fugaz One' }}
               >
-                <Box>SEMANA DE:</Box> <Box ml={2}> {semanaAtual}</Box>
+                <Box>INÍCIO:</Box> <Box ml={2}> {semanaAtual}</Box>
               </Box>
               <Box
                 width="20%"
@@ -207,14 +220,12 @@ function BuscarAniversariantes({ rolMembros }) {
                   subheader={<li />}
                 >
                   {niverSetorOrdenado.map((itens) => (
-                    <Box ml={0} key={itens.id}>
-                      <Box>
-                        <Grid>
-                          <SearchListMes
-                            semanaAtual={semanaAtual}
-                            rolMembros={itens}
-                          />
-                        </Grid>
+                    <Box width="100%" ml={0} key={itens.id}>
+                      <Box width="100%">
+                        <SearchListMes
+                          semanaAtual={semanaAtual}
+                          rolMembros={itens}
+                        />
                       </Box>
                     </Box>
                   ))}

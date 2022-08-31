@@ -133,7 +133,7 @@ function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
   return (
     <div
       style={{
-        minWidth: 350,
+        minWidth: 300,
         background: corIgreja.principal2,
       }}
       onLoad={handleDrawerClose}

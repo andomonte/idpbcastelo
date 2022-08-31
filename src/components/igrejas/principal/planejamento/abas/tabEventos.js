@@ -316,7 +316,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="100vh"
     >
@@ -739,7 +739,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="100vh"
     >

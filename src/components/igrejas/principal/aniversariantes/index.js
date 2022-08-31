@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import Box from '@material-ui/core/Box';
 import { Oval } from 'react-loading-icons';
 // import HomeIcon from '@material-ui/icons/Home';
-import Hidden from '@material-ui/core/Hidden';
+
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { FaChurch } from 'react-icons/fa';
@@ -175,14 +175,6 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
                   <TiArrowBack size={25} color="white" />
                 )}
               </Box>
-
-              <Hidden mdDown>
-                <img
-                  src="/images/filadelfia.png"
-                  alt="logo"
-                  className={classes.logo}
-                />
-              </Hidden>
             </Box>
 
             <Box display="flex">

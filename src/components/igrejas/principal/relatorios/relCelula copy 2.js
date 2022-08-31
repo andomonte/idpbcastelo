@@ -1,21 +1,22 @@
 import { Box, Grid } from '@material-ui/core';
 import React from 'react';
+import TamanhoJanela from 'src/utils/getSize';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
+
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
-import TamanhoJanela from 'src/utils/getSize';
 
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
 import PegaMes from 'src/utils/getMes';
 
 import Meses from 'src/utils/mesesAbrev';
 
-import TabCelula from './coordenador/aba/tabRelCoordCelulas';
+import TabCelula from './abas/tabRelCelulas';
 import TabSetor from './coordenador/aba/tabRelCoordTotal';
 import TabResumo from './supervisor/aba/tabResumo';
 
+const janela = TamanhoJanela();
 function RelCelula({ perfilUser, lideranca }) {
-  const janela = TamanhoJanela();
   //= ================================================================
   const mes = Meses();
   const d = new Date();
@@ -23,14 +24,14 @@ function RelCelula({ perfilUser, lideranca }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-
+  const [indexTabela, setIndexTabela] = React.useState([]);
   const dataAtual = Date.now();
   const semanaAtual = PegaSemanaAtual(dataAtual);
 
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
   const [valorIndexSend, setValorIndexSend] = React.useState([]);
-  const [indexTabela, setIndexTabela] = React.useState([]);
+
   const [contSemana, setContSemana] = React.useState(semanaAtual - 1);
 
   const lideresSetor = lideranca.sort((a, b) => {
@@ -41,7 +42,6 @@ function RelCelula({ perfilUser, lideranca }) {
 
   const celulaSetor = lideresSetor.filter(
     (results) =>
-      Number(results.Coordenacao) === Number(perfilUser.Coordenacao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
       results.Funcao === 'Lider',
   );
@@ -267,7 +267,7 @@ function RelCelula({ perfilUser, lideranca }) {
                     borderBottomRightRadius: '16px',
                   }}
                   height={janela.height > 570 ? '74%' : '70%'}
-                  minWidth={300}
+                  minWidth={280}
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
