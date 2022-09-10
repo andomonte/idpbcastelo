@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   caption: {
-    fontFamily: 'Fugaz One',
-    fontSize: '12pix',
+    fontWeight: 'bold',
+
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -88,19 +88,20 @@ function SearchList({ rolMembros, semanaAtual }) {
     'Domingo',
   ];
 
-  const distrito = ['Filadelfia ', 'Filadelfia2'];
+  const distrito = [
+    'Filadelfia',
+    'União da Vitória',
+    'Campos Sales',
+    'Bairro da Paz',
+    'Calado',
+  ];
   const diaAniversario = converteData(rolMembros.Nascimento).getDate();
   // const mesAniversario = converteData(rolMembros.Nascimento).getMonth();
 
   const dia = converteData(semanaAtual).getDate();
 
   return (
-    <Box
-      width="10vw"
-      height="100%"
-      sx={{ maxHeight: 310, minWidth: 300 }}
-      className={classes.dadosBox}
-    >
+    <Box sx={{ maxHeight: 310, minWidth: 280 }} className={classes.dadosBox}>
       <TableContainer sx={{ maxHeight: 310 }}>
         <Box mt={2} ml={1} display="flex" alignItems="center">
           {rolMembros.foto !== null && rolMembros.foto !== undefined ? (
@@ -130,8 +131,8 @@ function SearchList({ rolMembros, semanaAtual }) {
               src=""
               alt="User"
               style={{
-                width: 50,
-                height: 50,
+                width: 70,
+                height: 70,
               }}
             />
           )}
@@ -188,7 +189,15 @@ function SearchList({ rolMembros, semanaAtual }) {
                 <strong style={{ color: 'black' }}>{rolMembros.Celula}</strong>
               </Typography>
             </Box>
-
+            <Typography
+              className={classes.caption}
+              gutterBottom
+              component="span"
+              variant="body1"
+              color="textPrimary"
+              button="true"
+              onClick={handleSistema}
+            />
             <Box mb={2} display="flex" ml={-0.5}>
               <Typography
                 display="block"

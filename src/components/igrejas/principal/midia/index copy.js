@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -7,15 +8,23 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
+import Hidden from '@material-ui/core/Hidden';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { BsPlayBtnFill, BsFillCameraFill } from 'react-icons/bs';
+import { GiSoundOn } from 'react-icons/gi';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-
+import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
-import Login from './botaoLogin';
-import Navbar from './navBar_redesSociais';
-import Home from './home';
 
-// import Carrossel from '../carrossel';
+import Login from '../../botaoLogin';
+import NabarMembro from '../navBar/membro';
+import NabarLider from '../navBar/lider';
+import NavbarSuper from '../navBar/supervisor';
+import NavbarCoord from '../navBar/coordenador';
+
+import TelaPadrao from './telaPadrao';
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
 const drawerWidth = 240;
@@ -49,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
     height: 28,
   },
   logo: {
-    height: 35,
-    marginTop: 10,
+    height: 25,
+    marginLeft: theme.spacing(2),
   },
   avatar: {
     cursor: 'pointer',
@@ -124,9 +133,10 @@ function TabPanel(props) {
   );
 }
 
-function IdpbFiladelfia({ perfilUser, rolMembros, userIgrejas, title }) {
+function Aniversariantes({ title, perfilUser }) {
   const classes = useStyles();
-  const [value] = React.useState(0);
+
+  const [value, setValue] = React.useState(0);
 
   const theme = useTheme();
 
@@ -145,17 +155,12 @@ function IdpbFiladelfia({ perfilUser, rolMembros, userIgrejas, title }) {
   };
 
   const handleDrawerClose = () => {
-    // //console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
   };
   return (
-    <div
-      style={{ height: '90.8vh', background: corIgreja.principal2 }}
-      onLoad={handleDrawerClose}
-    >
+    <div onLoad={handleDrawerClose}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -164,7 +169,7 @@ function IdpbFiladelfia({ perfilUser, rolMembros, userIgrejas, title }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div>
+      <div className={classes.root}>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
             <Box display="flex" alignItems="center">
@@ -183,13 +188,55 @@ function IdpbFiladelfia({ perfilUser, rolMembros, userIgrejas, title }) {
             </Box>
 
             <Box display="flex">
-              <img
-                src="/images/logo1.png"
-                height={30}
-                width={120}
-                className={classes.logo}
-                alt="bolo"
-              />
+              <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                showLabels
+                className={classes.rootTopbarIcon}
+              >
+                <BottomNavigationAction
+                  icon={
+                    value === 0 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <GiSoundOn />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <GiSoundOn />
+                      </SvgIcon>
+                    )
+                  }
+                />
+
+                <BottomNavigationAction
+                  icon={
+                    value === 1 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <BsPlayBtnFill />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                        <BsPlayBtnFill />
+                      </SvgIcon>
+                    )
+                  }
+                />
+                <BottomNavigationAction
+                  icon={
+                    value === 2 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <BsFillCameraFill />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                        <BsFillCameraFill />
+                      </SvgIcon>
+                    )
+                  }
+                />
+              </BottomNavigation>
             </Box>
             <Login />
           </Toolbar>
@@ -202,19 +249,40 @@ function IdpbFiladelfia({ perfilUser, rolMembros, userIgrejas, title }) {
           className={classes.drawer}
           classes={{ paper: classes.desktopDrawer }}
         >
-          <Navbar userIgrejas={userIgrejas} />
+          {perfilUser.Funcao === 'Membro' && (
+            <NabarMembro perfilUser={perfilUser} />
+          )}
+
+          {perfilUser.Funcao === 'Lider' && (
+            <NabarLider perfilUser={perfilUser} />
+          )}
+          {perfilUser.Funcao === 'Supervisor' && (
+            <NavbarSuper perfilUser={perfilUser} />
+          )}
+          {perfilUser.Funcao === 'Coordenador' && (
+            <NavbarCoord perfilUser={perfilUser} />
+          )}
+          {perfilUser.Funcao === 'PastorDistrito' && (
+            <NavbarCoord perfilUser={perfilUser} />
+          )}
         </Drawer>
 
-        <main>
+        <main
+          className={clsx(classes.contentMain, {
+            [classes.contentShiftMain]: open,
+          })}
+        >
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Home
-              userIgrejas={userIgrejas}
-              rolMembros={rolMembros}
-              perfilUser={perfilUser}
-            />
+            <TelaPadrao />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <TelaPadrao />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <TelaPadrao />
           </TabPanel>
         </main>
       </div>
@@ -222,4 +290,4 @@ function IdpbFiladelfia({ perfilUser, rolMembros, userIgrejas, title }) {
   );
 }
 
-export { IdpbFiladelfia, TabPanel };
+export default Aniversariantes;

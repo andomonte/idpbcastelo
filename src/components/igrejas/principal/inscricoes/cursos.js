@@ -5,19 +5,29 @@ import useSWR from 'swr';
 import axios from 'axios';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import { Carousel } from 'react-responsive-carousel';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
+import Inscricoes from './inscricoes';
 
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-function Dicas() {
-  const [todos, setTodos] = React.useState('');
+function Cursos({ perfilUser, rolMembros }) {
+  //  const eventoIni = consultaInscricoes.filter((val) => Number(val.id) === Number(0));
 
+  const [todos, setTodos] = React.useState('');
+  const [openPlan, setOpenPlan] = React.useState(false);
+  const [eventoEscolhido, setEventoEscolhido] = React.useState('');
   const url = `/api/consultaInscricoes`;
   const { data, error } = useSWR(url, fetcher);
+
   React.useEffect(() => {
     if (data) {
-      const dataEventos = data.filter((val) => val.Tivo === 'curso');
+      const evento = data.filter((val) => val.Tipo === 'curso');
 
-      setTodos(dataEventos);
+      setTodos(evento);
     }
     if (error) return <div>An error occured.</div>;
     if (!data) return <div>Loading ...</div>;
@@ -26,8 +36,11 @@ function Dicas() {
   }, [data]);
 
   const handleIncricao = (index) => {
-    console.log(index);
+    setOpenPlan(true);
+    const evento = todos.filter((val) => Number(val.id) === Number(index));
+    setEventoEscolhido(evento);
   };
+
   return (
     <Box
       display="flex"
@@ -48,6 +61,7 @@ function Dicas() {
         display="flex"
         justifyContent="center"
         alignItems="center"
+        borderRadius={16}
       >
         <Box height="100%" width="100%">
           <Box
@@ -58,8 +72,8 @@ function Dicas() {
             height="10%"
           >
             <img
-              style={{ width: 220, height: 50 }}
-              src="images/filadelfia/filadelfia2.png"
+              style={{ width: 200, height: 60 }}
+              src={corIgreja.logo}
               alt="logo"
             />
           </Box>
@@ -67,15 +81,16 @@ function Dicas() {
             <Box height="80%" width="100%" mt="4vh">
               <Carousel showThumbs={false} showStatus={false}>
                 {todos.map((row) => (
-                  <Box height="100%" width="100%" mt={0}>
+                  <Box key={row.id} height="100%" width="100%" mt={0}>
                     <Box
-                      height="55%"
+                      height="45%"
                       width="100%"
+                      alignItems="center"
                       display="flex"
                       justifyContent="center"
                     >
                       <img
-                        style={{ width: '90%', height: '100%', maxWidth: 300 }}
+                        style={{ width: '90%', height: '100%', maxWidth: 220 }}
                         src={row.Imagem}
                         alt="brasil"
                       />
@@ -95,9 +110,6 @@ function Dicas() {
                         width="100%"
                         height="50%"
                       >
-                        <Box mt={-1} color="#bf9f3e" fontFamily="arial black">
-                          Data:
-                        </Box>
                         <Box
                           ml={2}
                           color="white"
@@ -111,13 +123,16 @@ function Dicas() {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        flexDirection="column"
                         width="100%"
                         height="30%"
                       >
-                        <Box mt={-1} color="#bf9f3e" fontFamily="arial black">
+                        <Box mt={1} color="#bf9f3e" fontFamily="arial black">
                           Local:
                         </Box>
                         <Box
+                          mb={2}
+                          mt={1}
                           ml={2}
                           color="white"
                           fontFamily="Fugaz One"
@@ -128,7 +143,7 @@ function Dicas() {
                       </Box>
                     </Box>
 
-                    <Box width="100%" height="13%">
+                    <Box mb="10vh" mt="3vh" width="100%" height="13%">
                       <Button
                         style={{
                           background: 'white',
@@ -143,13 +158,13 @@ function Dicas() {
                         component="a"
                         variant="contained"
                         onClick={() => {
-                          handleIncricao(todos[0].id);
+                          handleIncricao(row.id);
                         }}
                       >
                         FAZER INSCRIÇÃO
                       </Button>
+                      <Box width="100%" height="3vh" />
                     </Box>
-                    <Box width="100%" height={100} />
                   </Box>
                 ))}
               </Carousel>
@@ -165,13 +180,21 @@ function Dicas() {
               alignItems="center"
               color="white"
             >
-              NENHUM CURSO NOVO
+              NADA PREVISTO NESSE PERÍODO
             </Box>
           )}
         </Box>
       </Box>
+      <Dialog fullScreen open={openPlan} TransitionComponent={Transition}>
+        <Inscricoes
+          eventoEscolhido={eventoEscolhido}
+          setOpenPlan={setOpenPlan}
+          rolMembros={rolMembros}
+          perfilUser={perfilUser}
+        />
+      </Dialog>
     </Box>
   );
 }
 
-export default Dicas;
+export default Cursos;

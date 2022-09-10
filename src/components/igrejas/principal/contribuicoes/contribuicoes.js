@@ -155,7 +155,7 @@ function RelCelula({ perfilUser }) {
           <Box
             height="100%"
             minHeight={60}
-            minWidth={280}
+            minWidth={300}
             width="100%"
             color="white"
             fontFamily="Fugaz One"
@@ -171,7 +171,7 @@ function RelCelula({ perfilUser }) {
             <Box mr={2}> MINHAS CONTRIBUÇÕES</Box>
           </Box>
         </Box>
-        <Box height={50} width="100%" minWidth={280} bgcolor="white">
+        <Box height={50} width="100%" minWidth={300} bgcolor="white">
           <Box width="100%" display="flex">
             <Box
               width="10%"
@@ -227,7 +227,7 @@ function RelCelula({ perfilUser }) {
               borderBottomRightRadius: '16px',
             }}
             height="100%"
-            minWidth={280}
+            minWidth={300}
             display="flex"
             justifyContent="center"
             alignItems="center"

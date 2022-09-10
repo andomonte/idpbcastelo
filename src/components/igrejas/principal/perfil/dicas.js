@@ -68,11 +68,7 @@ function Dicas() {
                   justifyContent="center"
                   alignItems="center"
                 >
-                  <img
-                    width={181}
-                    src="images/filadelfia/filadelfia2.png"
-                    alt="logo"
-                  />
+                  <img width={181} src={corIgreja.logo} alt="logo" />
                 </Box>
               </Box>
 

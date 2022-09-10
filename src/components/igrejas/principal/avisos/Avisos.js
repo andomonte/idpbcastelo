@@ -35,7 +35,7 @@ function Avisos({ dadosAvisos }) {
 
   const handleIncFonte = () => {
     let contFonteAtual = contFonte + 1;
-    if (contFonteAtual > 24) contFonteAtual = 24;
+    if (contFonteAtual > 64) contFonteAtual = 64;
     setContFonte(contFonteAtual);
   };
 
@@ -129,8 +129,7 @@ function Avisos({ dadosAvisos }) {
           }}
           width="100%"
           display="flex"
-          height="15vh"
-          minHeight={90}
+          height="20%"
           bgcolor="#1d3557"
           flexDirection="column"
         >
@@ -169,7 +168,7 @@ function Avisos({ dadosAvisos }) {
               </IconButton>
               <IconButton onClick={() => handleDecFonte()}>
                 <Box
-                  ml="4vw"
+                  ml="4px"
                   style={{
                     color: 'white',
                     fontFamily: 'arial black',
@@ -216,6 +215,8 @@ function Avisos({ dadosAvisos }) {
               <Box
                 color="#fafafa"
                 fontSize="14px"
+                ml={-1}
+                mr={-1}
                 fontFamily="Rubik"
                 width="70%"
                 display="flex"
@@ -224,10 +225,11 @@ function Avisos({ dadosAvisos }) {
                 {avisos ? (
                   <Box display="flex" justifyContent="center">
                     <Box>Domingo</Box>
+
                     <Box ml={2}>{avisos.ano}</Box>
                   </Box>
                 ) : (
-                  'Não encontrado'
+                  'Sem Avisos'
                 )}
               </Box>
 
@@ -255,12 +257,12 @@ function Avisos({ dadosAvisos }) {
             </Box>
           </Box>
         </Box>
-        <Box height="82vh" width="100%" minHeight={400}>
+        <Box height="80%" width="100%" minHeight={400} mb={2}>
           <TableContainer
             style={{
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+
               width: '100%',
               height: '100%',
               minHeight: 40,
@@ -291,8 +293,8 @@ function Avisos({ dadosAvisos }) {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <Box width="94%">
-                          <Box width="100%" height="100%">
+                        <Box mt={5} height="100%" width="100%">
+                          <Box width="90%" height="100%">
                             {ponto.length &&
                               ponto.map((row, index) => (
                                 <Box key={index} mb={5} width="100%">
@@ -317,13 +319,13 @@ function Avisos({ dadosAvisos }) {
                                   <Box
                                     fontFamily="Rubik"
                                     fontSize={contFonte}
-                                    ml="6vw"
+                                    ml={4.5}
                                     mt={1}
                                     sx={{
                                       textAlign: 'justify',
                                       textIndent: '0px',
                                     }}
-                                    width="90%"
+                                    width="80%"
                                   >
                                     {conteudo[index]}
                                   </Box>

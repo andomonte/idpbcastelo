@@ -882,13 +882,13 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                       width="100%"
                       color={corIgreja.iconeOn}
                       fontFamily="arial black"
-                      fontSize="18px"
+                      fontSize="20px"
                     >
                       <Box>RELATÓRIO DE DICIPULADO</Box>
                       <Box
                         color={corIgreja.texto1}
                         fontFamily="arial black"
-                        fontSize="18px"
+                        fontSize="20px"
                         mt={1}
                       >
                         SEMANA - {semana}
@@ -958,7 +958,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                       width="100%"
                       color={corIgreja.iconeOn}
                       fontFamily="arial black"
-                      fontSize="18px"
+                      fontSize="20px"
                     >
                       <Box
                         height="100%"
@@ -1023,7 +1023,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                 PONTOS
                               </Box>
                               <Box
-                                fontSize="18px"
+                                fontSize="20px"
                                 fontFamily="arial black"
                                 color="#000"
                                 display="flex"
@@ -1064,7 +1064,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                 justifyContent="center"
                                 width="100%"
                                 height={50}
-                                fontSize="18px"
+                                fontSize="20px"
                               >
                                 {rank}º
                               </Box>
@@ -1179,7 +1179,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                 )}
               </Box>
             ) : (
-              <Box display="flex" alignItems="end" height="100%" width="100%">
+              <Box display="flex" alignItems="end" height="100%" width="96%">
                 {tela === 1 && (
                   <TabDiscipulado
                     nomesCelulas={relPresentes}
@@ -1199,7 +1199,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                     mt={1}
                   >
                     <Box display="flex" justifyContent="center" width="100%">
-                      <Box width="100%" ml={1}>
+                      <Box width="90%" ml={1}>
                         <Grid container item xs={12} spacing={1}>
                           <Grid item xs={6} md={6} lg={6} xl={6}>
                             <Box

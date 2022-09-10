@@ -99,14 +99,13 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            bgcolor={corIgreja.principal}
             style={{
               borderTopLeftRadius: 16,
               borderTopRightRadius: 16,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundImage: `url('/images/filadelfia/aniversariantes.png')`,
+              backgroundImage: `url('/images/aniversariantes.png')`,
               backgroundSize: '100% 100%',
             }}
           >
@@ -183,7 +182,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
             </Box>
           </Box>
           <Box
-            width="100%"
+            width="99%"
             height="76%"
             minHeight={200}
             display="flex"

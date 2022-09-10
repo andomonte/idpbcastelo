@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SistemaCelulas({ title, mensagem }) {
+function IdpbFiladelfia({ title, mensagem }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -143,24 +143,43 @@ function SistemaCelulas({ title, mensagem }) {
       <div>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
-            <Box display="flex" alignItems="center" onClick={handleVoltar}>
-              {loading ? (
-                <Box>
-                  <Oval stroke="white" width={25} height={25} />
-                </Box>
-              ) : (
-                <TiArrowBack size={25} color="white" />
-              )}
-            </Box>
-
-            <Box display="flex">
-              <img
-                src="/images/filadelfia/filadelfia2.png"
-                width={150}
-                height={40}
-                className={classes.logo}
-                alt="bolo"
-              />
+            <Box
+              width="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+            >
+              <Box
+                fontFamily="Fugaz One"
+                fontSize="12px"
+                textAlign="center"
+                height="100%"
+                width="20%"
+                onClick={handleVoltar}
+              >
+                {loading ? (
+                  <Box>
+                    <Oval stroke="white" width={25} height={25} />
+                  </Box>
+                ) : (
+                  <TiArrowBack size={25} color="white" />
+                )}
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height={50}
+                width="80%"
+              >
+                <img
+                  src="/images/logo1.png"
+                  height={30}
+                  width={120}
+                  className={classes.logo}
+                  alt="bolo"
+                />
+              </Box>
             </Box>
             <Login />
           </Toolbar>
@@ -169,7 +188,6 @@ function SistemaCelulas({ title, mensagem }) {
         <main>
           <div className={classes.drawerHeader} />
           {/* {children} */}
-
           <Mensagem mensagem={mensagem} />
         </main>
       </div>
@@ -177,4 +195,4 @@ function SistemaCelulas({ title, mensagem }) {
   );
 }
 
-export default SistemaCelulas;
+export default IdpbFiladelfia;

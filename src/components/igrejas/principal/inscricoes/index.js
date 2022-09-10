@@ -131,7 +131,7 @@ function TabPanel(props) {
   );
 }
 
-function Inscricoes({ title, rolMembros }) {
+function Inscricoes({ title, rolMembros, perfilUser }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -261,17 +261,17 @@ function Inscricoes({ title, rolMembros }) {
 
           <TabPanel value={value} index={0}>
             <Box>
-              <Todos rolMembros={rolMembros} />
+              <Todos perfilUser={perfilUser} rolMembros={rolMembros} />
             </Box>
           </TabPanel>
 
           <TabPanel value={value} index={1}>
             <Box>
-              <Eventos rolMembros={rolMembros} />
+              <Eventos rolMembros={rolMembros} perfilUser={perfilUser} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Cursos rolMembros={rolMembros} />
+            <Cursos rolMembros={rolMembros} perfilUser={perfilUser} />
           </TabPanel>
         </main>
       </div>

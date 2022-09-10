@@ -579,18 +579,19 @@ export default function TabCelula({
         bgcolor={corIgreja.principal} // cor principal tela inteira
       >
         <Box
-          height="90vh"
+          height="100%"
           width="100%"
           minWidth={300}
           minHeight={570}
           display="flex"
           justifyContent="center"
           alignItems="center"
-          bgcolor={corIgreja.principal}
         >
           <form>
-            <Box>
+            <Box height="100%" width="100%">
               <Box
+                height="100%"
+                width="100%"
                 display="flex"
                 justifyContent="center"
                 fontFamily="arial black"
@@ -604,7 +605,7 @@ export default function TabCelula({
                     <Box> EVENTO DA SUPERVISÃO {perfilUser.supervisao}</Box>
                   )}
                   {perfilUser.Funcao === 'Coordenador' && (
-                    <Box> EVENTO DA SUPERVISÃO {perfilUser.Coordenacao}</Box>
+                    <Box> EVENTO DA COORDENAÇÃO {perfilUser.Coordenacao}</Box>
                   )}
                   {perfilUser.Funcao === 'PastorDistrito' && (
                     <Box> EVENTO DO DISTRITO {perfilUser.Distrito}</Box>
@@ -612,7 +613,13 @@ export default function TabCelula({
                 </Box>
               </Box>
 
-              <Box mt={4}>
+              <Box
+                height="100%"
+                width="100%"
+                mt={4}
+                display="flex"
+                justifyContent="center"
+              >
                 <Box
                   ml={1.3}
                   width="96%"

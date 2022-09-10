@@ -118,7 +118,7 @@ function SearchList({ rolMembros, mesAtual }) {
   if (mesAtual < 10) mesFinal = `0${mesFinal}`;
 
   return (
-    <Box sx={{ maxHeight: 310, minWidth: 300 }} className={classes.dadosBox}>
+    <Box sx={{ maxHeight: 310, minWidth: 280 }} className={classes.dadosBox}>
       <TableContainer sx={{ maxHeight: 310 }}>
         <Box mt={2} ml={1} display="flex" alignItems="center">
           {rolMembros.foto !== null && rolMembros.foto !== undefined ? (
@@ -130,8 +130,8 @@ function SearchList({ rolMembros, mesAtual }) {
               src=""
               alt="User"
               style={{
-                width: 50,
-                height: 50,
+                width: 70,
+                height: 70,
               }}
             >
               <Image

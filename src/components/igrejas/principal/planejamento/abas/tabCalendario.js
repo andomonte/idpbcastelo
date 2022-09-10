@@ -9,7 +9,12 @@ import { MdScreenSearchDesktop } from 'react-icons/md';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import 'react-toastify/dist/ReactToastify.css';
-import Modal from '@material-ui/core/Modal';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
+
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -74,20 +79,18 @@ export default function TabCelula({ Mes, Ano }) {
         fontSize="16px"
         fontFamily="arial black"
       >
-        EVENTOS
+        <img src={corIgreja.logo} alt="logo" height={60} />
       </Box>
       <Box
+        mt={2}
         height="70%"
         width="94%"
         display="flex"
         justifyContent="center"
         alignItems="center"
-        bgcolor="#fafafa"
+        bgcolor={corIgreja.principal}
         sx={{
-          borderWidth: '0.5px',
-          borderStyle: 'solid',
           borderRadius: '10px',
-          border: '3px solid #fff',
         }}
       >
         {mostrarEvento && (
@@ -105,7 +108,7 @@ export default function TabCelula({ Mes, Ano }) {
                   width="100%"
                   key={row.id}
                   height={250}
-                  bgcolor={corIgreja.principal}
+                  bgcolor={corIgreja.principal2}
                   borderRadius={16}
                   mt={2}
                 >
@@ -212,9 +215,10 @@ export default function TabCelula({ Mes, Ano }) {
                       <Box
                         display="flex"
                         mt={0}
+                        justifyContent="center"
                         color="black"
                         fontSize="18px"
-                        fontFamily="arial black"
+                        fontFamily="Fugaz One"
                       >
                         {mostrarEvento[index].Evento}
                       </Box>
@@ -2006,14 +2010,9 @@ export default function TabCelula({ Mes, Ano }) {
         </Box>
       )}
 
-      <Modal
-        open={openShowPlan}
-        //  onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
+      <Dialog fullScreen open={openShowPlan} TransitionComponent={Transition}>
         {bodyShowPlan}
-      </Modal>
+      </Dialog>
     </Box>
   );
 }

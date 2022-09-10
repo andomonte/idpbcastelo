@@ -936,7 +936,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       alignItems="center"
       width="100vw"
       minHeight={570}
-      minWidth={350}
+      minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
     >
@@ -2236,7 +2236,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                 color="blue"
                                 sx={{ fontFamily: 'arial black' }}
                               >
-                                {existeRelatorio === 'sem' || loading ? (
+                                {loading ? (
                                   <Box>
                                     <Oval stroke="red" width={20} height={20} />
                                   </Box>

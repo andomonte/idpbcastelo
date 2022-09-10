@@ -149,6 +149,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                                 handleDecMes();
                               }}
                             >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }} />{' '}
                               <BiCaretLeft />
                             </IconButton>
                           </Box>

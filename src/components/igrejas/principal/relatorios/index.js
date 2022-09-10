@@ -486,7 +486,6 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                   <RelCelula
                     perfilUser={perfilUser}
                     secao={session}
-                    lideranca={lideranca}
                     rolMembros={rolMembros}
                     visitantes={visitantes}
                   />

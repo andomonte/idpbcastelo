@@ -524,33 +524,20 @@ function Cadastro({ lideranca, rolMembros }) {
         perfilUserFinal.length,
       )} */}
       {openSelect && perfilUserFinal.length ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="100vw"
-          minHeight={570}
-          minWidth={300}
-          bgcolor={corIgreja.principal2}
-          height="100vh"
-        >
+        <Box width="100vw">
           <Box
-            height="97%"
+            height="100vh"
             width="100%"
-            bgcolor={corIgreja.principal}
-            ml={1.2}
-            mr={1.2}
+            minWidth={300}
+            minHeight={570}
             display="flex"
             justifyContent="center"
             alignItems="center"
+            bgcolor={corIgreja.principal}
           >
             <Box width="100%">
               <Box textAlign="center" mt={-3} mb={2}>
-                <img
-                  src="/images/filadelfia/filadelfia2.png"
-                  alt="Filadelfia"
-                  style={{ width: 220, height: 50 }}
-                />
+                <img src="/images/logo1.png" alt="Filadelfia" width={80} />
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <Box

@@ -2,29 +2,13 @@ import React from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
-import Select from 'react-select';
+
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
+import Chip from '@mui/material/Chip';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
-const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    fontWeight: state.isSelected ? 'bold' : 'normal',
-    color: 'black',
-    backgroundColor: state.data.color,
-    fontSize: '16px',
-  }),
-  singleValue: (provided, state) => ({
-    ...provided,
-    color: state.data.color,
-    fontSize: '16px',
-    height: 40,
-
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }),
-};
 function Player({ radioIdpb }) {
   const musics = radioIdpb;
   const musicaInicial = {
@@ -33,31 +17,74 @@ function Player({ radioIdpb }) {
   };
 
   const [numberMusic, setNumberMusic] = React.useState(0);
+  const [selMusica, setSelMusica] = React.useState('');
   const [musica, setMusica] = React.useState(musicaInicial);
+  const [novaLista, setNovaLista] = React.useState('');
   const [repeat, setRepeat] = React.useState(false);
 
   const handleMudar = () => {
-    let newMusic = Math.floor(Math.random() * musics.length);
-    if (newMusic === numberMusic) newMusic -= 1;
-    if (newMusic < 0) newMusic = musics.length;
-    setMusica(musics[newMusic]);
-    setNumberMusic(newMusic);
+    if (!novaLista.length) {
+      let newMusic = Math.floor(Math.random() * musics.length);
+      if (newMusic === numberMusic) newMusic -= 1;
+      if (newMusic < 0) newMusic = musics.length - 1;
+      setMusica(musics[newMusic]);
+      setNumberMusic(newMusic);
+    } else {
+      let newMusic = numberMusic + 1;
+      if (numberMusic > novaLista.length) newMusic = novaLista.length - 1;
+      if (newMusic > novaLista.length - 1) newMusic = 0;
+
+      setMusica(novaLista[newMusic]);
+      setNumberMusic(newMusic);
+    }
   };
+
+  React.useEffect(() => {
+    const newLista = [];
+
+    if (selMusica) {
+      for (let i = 0; i < selMusica.length; i += 1) {
+        for (let j = 0; j < musics.length; j += 1) {
+          if (musics[j].label === selMusica[i]) newLista[i] = musics[j];
+        }
+      }
+
+      setNovaLista(newLista);
+      setNumberMusic(1);
+    }
+  }, [selMusica]);
+
   React.useEffect(() => {
     const newMusic = Math.floor(Math.random() * musics.length);
-    setMusica(musics[newMusic]);
+    setNumberMusic(newMusic);
+    handleMudar();
   }, []);
+  React.useEffect(() => {
+    handleMudar();
+  }, [novaLista]);
   const handleIncMusica = () => {
     let newMusic = numberMusic + 1;
-    if (newMusic >= musics.length) newMusic = 0;
-    setMusica(musics[newMusic]);
-    setNumberMusic(newMusic);
+    if (novaLista.length < 1) {
+      if (newMusic >= musics.length) newMusic = 0;
+      setMusica(musics[newMusic]);
+      setNumberMusic(newMusic);
+    } else {
+      if (newMusic >= novaLista.length) newMusic = 0;
+      setMusica(novaLista[newMusic]);
+      setNumberMusic(newMusic);
+    }
   };
   const handleDecMusica = () => {
     let newMusic = numberMusic - 1;
-    if (newMusic < 0) newMusic = 5;
-    setMusica(musics[newMusic]);
-    setNumberMusic(newMusic);
+    if (novaLista.length < 1) {
+      if (newMusic < 0) newMusic = musics.length - 1;
+      setMusica(musics[newMusic]);
+      setNumberMusic(newMusic);
+    } else {
+      if (newMusic < 0) newMusic = novaLista.length - 1;
+      setMusica(novaLista[newMusic]);
+      setNumberMusic(newMusic);
+    }
   };
   const handleRepMusica = () => {
     setRepeat(!repeat);
@@ -94,25 +121,40 @@ function Player({ radioIdpb }) {
             justifyContent="center"
             alignItems="center"
           >
-            <img
-              src="/images/filadelfia/filadelfia2.png"
-              alt="Filadelfia"
-              height="30%"
-              width="50%"
-            />
+            <img src={corIgreja.logo} alt="Filadelfia" height={60} />
           </Box>
           <Box display="flex" justifyContent="center" width="100%">
-            <Box width="90%">
-              <Select
-                id="long-value-select"
-                instanceId="long-value-select"
-                styles={customStyles}
-                isSearchable={false}
-                value={musica}
-                onChange={(e) => {
-                  setMusica(e);
+            <Box width="96%">
+              <Autocomplete
+                multiple
+                id="tags-filled"
+                sx={{
+                  background: 'white',
+                  color: 'black',
+
+                  borderRadius: 2,
                 }}
-                options={musics}
+                onChange={(_, newValue) => {
+                  if (newValue) setSelMusica(newValue);
+                }}
+                options={musics.map((option) => option.label)}
+                freeSolo
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    //                    inputRef={necessidadeRef}
+                    placeholder="Escolha suas Músicas"
+                  />
+                )}
               />
             </Box>
           </Box>
@@ -140,20 +182,20 @@ function Player({ radioIdpb }) {
                 <FaCaretLeft
                   onClick={handleDecMusica}
                   size={25}
-                  color="#C1C2C3"
+                  color={corIgreja.principal2}
                 />
                 <Box ml={5} mr={5}>
                   <MdLoop
                     onClick={handleRepMusica}
                     size={25}
-                    color={repeat ? 'blue' : '#C1C2C3'}
+                    color={repeat ? 'blue' : corIgreja.principal2}
                   />
                 </Box>
 
                 <FaCaretRight
                   onClick={handleIncMusica}
                   size={25}
-                  color="#C1C2C3"
+                  color={corIgreja.principal2}
                 />
               </Box>
             </Box>

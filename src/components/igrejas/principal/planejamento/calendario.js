@@ -186,7 +186,7 @@ function PlanMembro({ perfilUser, rolMembros }) {
                     fontSize: '16px',
                   }}
                 >
-                  CALENDARIO DE EVENTOS
+                  CALENDÁRIO DE EVENTOS
                 </Box>
                 <Box
                   height="85%"

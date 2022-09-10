@@ -118,7 +118,7 @@ function BuscarAniversariantes({ rolMembros }) {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundImage: `url('/images/filadelfia/aniversariantes.png')`,
+              backgroundImage: `url('/images/aniversariantes.png')`,
               backgroundSize: '100% 100%',
             }}
           >
@@ -165,16 +165,15 @@ function BuscarAniversariantes({ rolMembros }) {
                   <BiCaretLeft size={30} />
                 </IconButton>
               </Box>
-
               <Box
-                width="60%"
+                width="76%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
                 fontSize="16px"
                 sx={{ fontFamily: 'Fugaz One' }}
               >
-                <Box>INÍCIO:</Box> <Box ml={2}> {semanaAtual}</Box>
+                <Box>SEMANA:</Box> <Box ml={2}> {semanaAtual}</Box>
               </Box>
               <Box
                 width="20%"
@@ -196,7 +195,7 @@ function BuscarAniversariantes({ rolMembros }) {
             </Box>
           </Box>
           <Box
-            width="100%"
+            width="99%"
             height="76%"
             minHeight={200}
             display="flex"
@@ -220,12 +219,14 @@ function BuscarAniversariantes({ rolMembros }) {
                   subheader={<li />}
                 >
                   {niverSetorOrdenado.map((itens) => (
-                    <Box width="100%" ml={0} key={itens.id}>
-                      <Box width="100%">
-                        <SearchListMes
-                          semanaAtual={semanaAtual}
-                          rolMembros={itens}
-                        />
+                    <Box ml={0} key={itens.id}>
+                      <Box>
+                        <Grid>
+                          <SearchListMes
+                            semanaAtual={semanaAtual}
+                            rolMembros={itens}
+                          />
+                        </Grid>
                       </Box>
                     </Box>
                   ))}

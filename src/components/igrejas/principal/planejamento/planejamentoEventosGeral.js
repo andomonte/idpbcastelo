@@ -8,12 +8,9 @@ import { MdCreateNewFolder } from 'react-icons/md';
 
 import Meses from 'src/utils/meses';
 
-import TamanhoJanela from 'src/utils/getSize';
 import NovoEventoGeral from './abas/novoEventoGeral';
 import MostrarEvento from './abas/mostrarEventoGeral';
 import TabEventoGeral from './abas/tabEventoGeral';
-
-const janela = TamanhoJanela();
 
 const useStyles = makeStyles((theme) => ({
   root: {

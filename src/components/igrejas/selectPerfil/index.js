@@ -90,7 +90,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
 
   if (openEspera) return <Espera descricao="Buscando Seu Perfil" />;
 
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
   let valorPerfil = {};
   let userMembro = {};
   if (session) {
@@ -244,30 +244,25 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
           display="flex"
           justifyContent="center"
           alignItems="center"
+          height="100vh"
           width="100vw"
           minHeight={570}
-          minWidth={300}
           bgcolor={corIgreja.principal2}
-          height="100vh"
         >
           <Box
-            height="97%"
-            width="100%"
-            bgcolor={corIgreja.principal}
-            ml={1.2}
-            mr={1.2}
+            height="94vh"
+            width="92%"
+            minWidth={300}
+            minHeight={570}
+            borderRadius={16}
             display="flex"
             justifyContent="center"
             alignItems="center"
+            bgcolor={corIgreja.principal}
           >
             <Box width="100%">
               <Box textAlign="center" mt={-3} mb={5}>
-                <img
-                  src="/images/filadelfia/filadelfia2.png"
-                  alt="Filadelfia"
-                  width={150}
-                  height={40}
-                />
+                <img src={corIgreja.logo} alt="Filadelfia" width={200} />
               </Box>
               <Box
                 fontFamily="Rubik"
@@ -309,7 +304,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
                               fontWeight: 'bold',
                             }}
                           >
-                            VOCÊ TEM {valorPerfil.length} PERFIS
+                            VOCÊ TEM{valorPerfil.length} PERFIS
                           </Box>
                         </Grid>
                         <Grid item container direction="column" xs={12}>

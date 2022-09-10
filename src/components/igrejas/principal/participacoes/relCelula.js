@@ -192,7 +192,7 @@ function RelCelula({ perfilUser }) {
                     fontSize: '16px',
                   }}
                 >
-                  PARTICIPAÇÃO NAS REUNIÕES DA CÉLULA
+                  PARTICIPAÇÃO NA CÉLULA
                 </Box>
                 <Box
                   height="85%"

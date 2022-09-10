@@ -9,6 +9,7 @@ const Cores = createTheme({
   secundaria: '#fafafa',
   iconeOn: '#ffff00',
   iconeOff: '#eeee',
+  logo: 'images/logo1.png',
   palette: {
     primary: {
       main: '#304ffe', // '#ff3d00',

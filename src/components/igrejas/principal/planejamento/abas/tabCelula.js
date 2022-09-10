@@ -5,29 +5,23 @@ import Espera from 'src/utils/espera';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { MdScreenSearchDesktop } from 'react-icons/md';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { Oval } from 'react-loading-icons';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
 
-import Modal from '@material-ui/core/Modal';
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-const useStyles = makeStyles(() => ({
-  modal: {
-    position: 'absolute',
-    overflow: 'scroll',
-    height: '100%',
-    width: '102%',
-    background: corIgreja.principal,
-  },
-}));
-
 export default function TabCelula({ Mes, Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-  const classes = useStyles();
+
   const [openPlan, setOpenPlan] = React.useState(false);
 
   const [dataSend, setDataSend] = React.useState([]);
@@ -168,6 +162,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const body = (
     <Box width="100vw" height="100%">
       <Box
+        bgcolor={corIgreja.principal}
         height="100vh"
         width="100%"
         minWidth={300}
@@ -176,14 +171,14 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         justifyContent="center"
         alignItems="center"
       >
-        <Box width="100%" mr={2}>
+        <Box width="86%" mr={0}>
           <Box
             display="flex"
             justifyContent="center"
             fontFamily="arial black"
             textAlign="center"
             mt={2}
-            fontSize="3vh"
+            fontSize="16px"
             color="white"
           >
             <Box color="#f0f0f0" mr={2}>
@@ -196,18 +191,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={6}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Data da Célula
                   </Box>
                 </Grid>
                 <Grid container item xs={6}>
-                  <Box
-                    ml={3}
-                    mr={-3}
-                    width="100%"
-                    color="white"
-                    fontSize="10px"
-                  >
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Horário da Célula
                   </Box>
                 </Grid>
@@ -217,12 +206,11 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Box
-                    ml={2}
-                    mr={-2}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -234,12 +222,11 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                 </Grid>
                 <Grid item xs={6}>
                   <Box
-                    ml={2}
-                    mr={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -256,7 +243,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Objetivo Central da Reunião
                   </Box>
                 </Grid>
@@ -266,11 +253,11 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -288,7 +275,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Anfitrião (local) da Reunião
                   </Box>
                 </Grid>
@@ -298,11 +285,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
+                    ml={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -320,7 +308,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Quebra Gelo
                   </Box>
                 </Grid>
@@ -330,11 +318,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
+                    ml={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -352,7 +341,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Louvor
                   </Box>
                 </Grid>
@@ -362,11 +351,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
+                    ml={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -384,7 +374,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Oração
                   </Box>
                 </Grid>
@@ -394,11 +384,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
+                    ml={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -416,7 +407,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Compartilhamento
                   </Box>
                 </Grid>
@@ -426,11 +417,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
+                    ml={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -448,7 +440,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             <Box display="flex" justifyContent="center">
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
-                  <Box ml={3} width="100%" color="white" fontSize="12px">
+                  <Box ml={1} width="100%" color="white" fontSize="12px">
                     Lanche
                   </Box>
                 </Grid>
@@ -458,11 +450,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box
-                    ml={2}
+                    ml={0}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    height={30}
+                    height="4vh"
+                    minHeight={25}
                     borderRadius="5px"
                     bgcolor="#fff"
                     color={corIgreja.tercenaria}
@@ -940,16 +933,9 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           )}
         </Box>
       </Box>
-
-      <Modal
-        className={classes.modal}
-        open={openPlan}
-        //  onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
+      <Dialog fullScreen open={openPlan} TransitionComponent={Transition}>
         {body}
-      </Modal>
+      </Dialog>
     </Box>
   );
 }

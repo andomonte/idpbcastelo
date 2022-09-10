@@ -48,21 +48,17 @@ const nomeDistrito = [
 ];
 
 function meuPerfil({ secao, perfilUser }) {
-  const urlImagem = perfilUser
-    ? `https://arquivofiladelfia.s3.amazonaws.com/${perfilUser.RolMembro}`
-    : '';
   const [upLoadFile, setUpLoadFile] = React.useState('');
   const [imageSize, setImageSize] = React.useState('');
   const [urlImage, setUrlImage] = React.useState('');
-
-  const [fileImage, setFileImage] = React.useState(urlImagem);
+  const [fileImage, setFileImage] = React.useState(perfilUser.foto);
   const [openCrop, setOpenCrop] = React.useState('inicio');
 
   const fetcher = (url) => axios.get(url).then((res) => res.data);
   const url = `/api/consultaRolMembros2/${perfilUser.RolMembro}`;
   const { data: inscritos, error2 } = useSWR(url, fetcher);
-  React.useEffect(async () => {
-    if (inscritos && inscritos.length) {
+  React.useEffect(() => {
+    if (inscritos) {
       setFileImage(inscritos[0].foto);
     }
     if (error2) return <div>An error occured.</div>;
@@ -80,44 +76,20 @@ function meuPerfil({ secao, perfilUser }) {
         const metadata = {
           type: 'image/png',
         };
-        const dataAtual = new Date();
-        const dia = dataAtual.getDate();
-        const mes = dataAtual.getMonth() + 1;
-        const ano = dataAtual.getFullYear();
-        const horas = dataAtual.getHours();
-        const minutos = dataAtual.getMinutes();
-        const segundos = dataAtual.getSeconds();
-
         const nomeFoto = perfilUser.RolMembro;
-        const nomeFoto2 =
-          perfilUser.RolMembro + dia + mes + ano + horas + minutos + segundos;
         const file = new File([data], perfilUser.RolMembro, metadata);
         const dataFile = new FormData();
+        //      dataFile.append('file', uploadedFile[0], nomeFoto);
         dataFile.append('file', file, nomeFoto);
 
-        const dataFile2 = new FormData();
-        //      dataFile.append('file', uploadedFile[0], nomeFoto);
-
-        dataFile2.append('file', file, nomeFoto2);
-
         api
-          .post('/api/delFoto', { dados: nomeFoto })
-          .then((responses) => {
-            if (responses) {
-              console.log(responses);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        api
-          .post('/api/fotos', dataFile2)
+          .post('/api/fotos', dataFile)
           .then((responses) => {
             if (responses) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://arquivofiladelfia.s3.amazonaws.com/${nomeFoto2}`,
+                  fileImage: `https://arquivofiladelfia.s3.amazonaws.com/${perfilUser.RolMembro}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
@@ -237,8 +209,8 @@ function meuPerfil({ secao, perfilUser }) {
                               const imageFile = e.target.files[0];
 
                               const options = {
-                                maxSizeMB: 0.5,
-                                maxWidthOrHeight: 320,
+                                maxSizeMB: 1,
+                                maxWidthOrHeight: 1080,
                                 useWebWorker: true,
                               };
                               try {

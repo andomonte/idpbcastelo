@@ -73,7 +73,6 @@ const home = ({ perfilUser }) => {
     router.push({
       pathname: '/inscricoes',
       query: { perfilUser },
-      //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
   const handleSecretaria = () => {
@@ -377,7 +376,7 @@ const home = ({ perfilUser }) => {
                     </Box>
                   ) : (
                     <img
-                      src="/images/secretaria2.png"
+                      src="/images/secretaria.png"
                       height={35}
                       width={35}
                       alt="bolo"

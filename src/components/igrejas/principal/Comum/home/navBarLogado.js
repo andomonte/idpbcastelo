@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
 import IconBrasil from 'src/components/icones/brasil';
 import IconMissoes from 'src/components/icones/missoes';
-import IconCastelo from 'src/components/icones/filadelfia';
+import IconFiladelfia from 'src/components/icones/filadelfia';
 import SchoolIcon from '@material-ui/icons/School';
 import FacebookIcon from 'src/components/icones/facebook';
 import YouTubeIcon from 'src/components/icones/youtube';
@@ -102,7 +102,7 @@ const primaryMenuLogout = [
     icon: SecIcon,
   },
 
-  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconCastelo },
+  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconFiladelfia },
 ];
 const primaryMenuLogin = [
   { id: 1, label: 'IDPB-Nacional', path: '/', icon: IconBrasil },

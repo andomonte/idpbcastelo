@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SistemaCelulas({ title, perfilUser }) {
+function IdpbFiladelfia({ title, perfilUser }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -155,9 +155,9 @@ function SistemaCelulas({ title, perfilUser }) {
 
             <Box display="flex">
               <img
-                src="/images/filadelfia/filadelfia2.png"
-                width={150}
-                height={40}
+                src="/images/logo1.png"
+                height={30}
+                width={120}
                 className={classes.logo}
                 alt="bolo"
               />
@@ -177,4 +177,4 @@ function SistemaCelulas({ title, perfilUser }) {
   );
 }
 
-export default SistemaCelulas;
+export default IdpbFiladelfia;

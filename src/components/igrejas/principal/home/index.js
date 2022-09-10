@@ -157,7 +157,7 @@ function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
             >
               <Box
                 fontFamily="Fugaz One"
-                fontSize="14px"
+                fontSize="10px"
                 textAlign="center"
                 height="100%"
                 width="20%"
@@ -170,12 +170,12 @@ function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
                 alignItems="center"
                 height={50}
                 width="80%"
-                mr={2}
               >
                 <img
-                  src="/images/filadelfia/filadelfia2.png"
-                  width={150}
-                  height={40}
+                  src="/images/logo1.png"
+                  height={30}
+                  width={120}
+                  className={classes.logo}
                   alt="bolo"
                 />
               </Box>

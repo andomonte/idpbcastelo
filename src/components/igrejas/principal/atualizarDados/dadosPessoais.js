@@ -5,7 +5,6 @@ import { Oval } from 'react-loading-icons';
 import { Box, capitalize } from '@mui/material';
 import React from 'react';
 import Select from 'react-select';
-// import Image from 'next/image';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@mui/material/Typography';
 import api from 'src/components/services/api';
@@ -542,6 +541,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
               </Box>
               <Box className={classes.novoBox} mt={-2}>
                 <Select
+                  ref={sexoRef}
                   defaultValue={sexo}
                   onChange={(e) => {
                     setSexo(e);
