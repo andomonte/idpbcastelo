@@ -362,7 +362,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   React.useEffect(() => {
     if (errorVisitante) return <div>An error occured.</div>;
     if (!novoVisitante) return <div>Loading ...</div>;
-
+    console.log('novoVisistante');
     if (novoVisitante) {
       // se teve relatório nomesVisitantes tras a lista
 
@@ -983,6 +983,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
               setQtyVisitante={setQtyVisitante}
               setNomesVisitantes={setNomesVisitantes}
               podeEditar={podeEditar}
+              setDeleteVis={setDeleteVis}
             />
           </Box>
           <Box

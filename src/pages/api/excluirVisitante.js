@@ -3,7 +3,7 @@ import prisma from 'src/lib/prisma';
 export default async function handle(req, res) {
   const { id } = req.body;
 
-  await prisma.visitantes
+  const post = await prisma.visitantes
     .delete({
       where: {
         id: Number(id),
@@ -13,5 +13,5 @@ export default async function handle(req, res) {
       await prisma.$disconnect();
     });
 
-  res.status(200).send('OK');
+  res.status(200).send(post);
 }

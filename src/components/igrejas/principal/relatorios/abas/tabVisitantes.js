@@ -62,6 +62,7 @@ export default function TabCelula({
         if (response) {
           setDeleteVis(true);
           setOpenEspera(false);
+          setDeleteVis(true);
         }
       })
       .catch((erro) => {
