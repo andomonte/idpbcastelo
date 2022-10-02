@@ -45,7 +45,7 @@ function Mensagem({ mensagem }) {
 
   const handleIncFonte = () => {
     let contFonteAtual = contFonte + 1;
-    if (contFonteAtual > 60) contFonteAtual = 60;
+    if (contFonteAtual > 100) contFonteAtual = 100;
     setContFonte(contFonteAtual);
   };
 
