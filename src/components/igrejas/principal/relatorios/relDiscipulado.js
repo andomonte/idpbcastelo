@@ -132,7 +132,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [pontosAtual, setPontosAtual] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
-  const [tela, setTela] = React.useState(1);
+  const [tela, setTela] = React.useState(0);
   const [carregando, setCarregando] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
@@ -230,63 +230,65 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   );
 
   const ajusteRelatorio = () => {
-    const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
-    // const qtyVis = visitantes.filter((val) => val.Presenca === true);
-    setTela(1);
-    setCarregando(false);
-    setPresentes(qtyPres.length);
+    if (tela !== 1) {
+      const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
+      // const qtyVis = visitantes.filter((val) => val.Presenca === true);
+      setTela(1);
+      setCarregando(false);
+      setPresentes(qtyPres.length);
 
-    setContBiblia(0);
-    setRelPresentes(dadosCelula);
-    setObservacoes('');
-    setCheckRelatorio(false);
-    setPodeEditar(true);
-    let relExiste = 'inicio';
-    if (members) relExiste = 'sem'; // setExisteRelatorio('sem');
+      setContBiblia(0);
+      setRelPresentes(dadosCelula);
+      setObservacoes('');
+      setCheckRelatorio(false);
+      setPodeEditar(true);
+      let relExiste = 'inicio';
+      if (members) relExiste = 'sem'; // setExisteRelatorio('sem');
 
-    setExisteRelatorio(relExiste);
-    if (members && members.length > 0) {
-      const relatorio = members.filter(
-        (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          val.Distrito === Number(perfilUser.Distrito) &&
-          val.Distrito === Number(perfilUser.Distrito),
-      );
-
-      if (relatorio && relatorio.length) {
-        const dataAgora = new Date();
-        const semanaAgora = semanaExata(dataAgora);
-
-        if (semanaAgora - semana < 2) setPodeEditar(true);
-        else setPodeEditar(false);
-        setExisteRelatorio(true); // avisa que tem relatório
-        // setCheckRelatorio(true); // avisa que tem relatório nessa data
-
-        const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-
-        const qtyPresentes = nomesMembros.filter(
-          (val) => val.Presenca === true,
+      setExisteRelatorio(relExiste);
+      if (members && members.length > 0) {
+        const relatorio = members.filter(
+          (val) =>
+            val.Celula === Number(perfilUser.Celula) &&
+            val.Distrito === Number(perfilUser.Distrito) &&
+            val.Distrito === Number(perfilUser.Distrito),
         );
 
-        setPresentes(qtyPresentes.length);
+        if (relatorio && relatorio.length) {
+          const dataAgora = new Date();
+          const semanaAgora = semanaExata(dataAgora);
 
-        setContBiblia(relatorio[0].LeituraBiblica);
+          if (semanaAgora - semana < 2) setPodeEditar(true);
+          else setPodeEditar(false);
+          setExisteRelatorio(true); // avisa que tem relatório
+          // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
-        setRelPresentes(nomesMembros);
+          const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
 
-        setObservacoes(relatorio[0].Observacoes);
-        setStartShow(!startShow);
-        // setRelCelula(relatorio);
+          const qtyPresentes = nomesMembros.filter(
+            (val) => val.Presenca === true,
+          );
+
+          setPresentes(qtyPresentes.length);
+
+          setContBiblia(relatorio[0].LeituraBiblica);
+
+          setRelPresentes(nomesMembros);
+
+          setObservacoes(relatorio[0].Observacoes);
+          setStartShow(!startShow);
+          // setRelCelula(relatorio);
+        } else {
+          setExisteRelatorio('sem'); // avisa que tem relatório
+          setStartShow(!startShow);
+        }
       } else {
-        setExisteRelatorio('sem'); // avisa que tem relatório
+        //
         setStartShow(!startShow);
       }
-    } else {
-      //
-      setStartShow(!startShow);
+      if (errorMembers) return <div>An error occured.</div>;
+      if (!members) return <div>Loading ...</div>;
     }
-    if (errorMembers) return <div>An error occured.</div>;
-    if (!members) return <div>Loading ...</div>;
     return 0;
   };
 
@@ -1448,6 +1450,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                           }}
                         >
                           <Button
+                            style={{ width: '100%' }}
                             onClick={() => {
                               if (existeRelatorio !== 'inicio' && !loading) {
                                 setCheckRelatorio(true);
@@ -1495,6 +1498,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             }}
                           >
                             <Button
+                              style={{ width: '100%' }}
                               onClick={() => {
                                 setCheckRelatorio(true);
                                 setTela(1);
@@ -1521,6 +1525,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             }}
                           >
                             <Button
+                              style={{ width: '100%' }}
                               onClick={() => {
                                 setCheckRelatorio(true);
                                 setTela(1);
@@ -1565,9 +1570,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             }}
                           >
                             <Button
+                              style={{ width: '100%' }}
                               onClick={() => {
                                 setCheckRelatorio(false);
                                 ajusteRelatorio();
+                                setTela(0);
                               }}
                               startIcon={<IoArrowUndoSharp color="blue" />}
                             >
@@ -1592,6 +1599,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             }}
                           >
                             <Button
+                              style={{ width: '100%' }}
                               onClick={() => {
                                 handleTela2();
                               }}
@@ -1622,6 +1630,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             }}
                           >
                             <Button
+                              style={{ width: '100%' }}
                               onClick={() => {
                                 setTela(1);
                               }}
@@ -1654,6 +1663,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                     )}
                                     {!carregando ? (
                                       <Button
+                                        style={{ width: '100%' }}
                                         onClick={handleSalvar}
                                         startIcon={<IoIosSave color="blue" />}
                                       >
@@ -1667,7 +1677,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         </Box>
                                       </Button>
                                     ) : (
-                                      <Button>
+                                      <Button style={{ width: '100%' }}>
                                         <Box
                                           display="flex"
                                           mt={0.5}
@@ -1688,7 +1698,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                     )}
                                   </Box>
                                 ) : (
-                                  <Button>
+                                  <Button style={{ width: '100%' }}>
                                     <Box
                                       color="#fff"
                                       mt={0.3}
@@ -1703,6 +1713,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                               <Box>
                                 {!carregando ? (
                                   <Button
+                                    style={{ width: '100%' }}
                                     onClick={handleSalvar}
                                     startIcon={<IoIosSave color="blue" />}
                                   >
@@ -1714,7 +1725,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                     </Box>
                                   </Button>
                                 ) : (
-                                  <Button>
+                                  <Button style={{ width: '100%' }}>
                                     <Box
                                       display="flex"
                                       mt={0.5}

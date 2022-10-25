@@ -26,6 +26,7 @@ function relatorios({ celulas, rolMembros, lideranca, visitantes }) {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/relatorio');
   }
+
   const Visitantes = visitantes.filter((val) => val.Celula && val.Distrito);
 
   return (

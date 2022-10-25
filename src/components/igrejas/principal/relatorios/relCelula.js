@@ -163,7 +163,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
   const [pontosAnterior, setPontosAnterior] = React.useState([]);
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
-  const [tela, setTela] = React.useState(1);
+  const [tela, setTela] = React.useState(0);
   const [carregando, setCarregando] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(
     moment(new Date()).format('DD/MM/YYYY'),
@@ -271,76 +271,79 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const { data: novoVisitante, error: errorVisitante } = useSWR(url4, fetcher);
 
   const ajusteRelatorio = () => {
-    const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
+    if (tela !== 1) {
+      const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
 
-    setTela(1);
-    setCarregando(false);
-    setPresentes(qtyPres.length);
-    setQtyVisitante(0);
-    setContConversoes(0);
-    setContVisitas(0);
-    setContEventos(0);
-    setRelPresentes(dadosCelula);
-    setObservacoes('');
-    setCheckRelatorio(false);
-    setPodeEditar(true);
-    if (!members) setExisteRelatorio('inicio');
-    // if (members) setExisteRelatorio('sem');
-    // else setExisteRelatorio('inicio');
-    if (members && members.length > 0) {
-      const relatorio = members.filter(
-        (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          val.Distrito === Number(perfilUser.Distrito) &&
-          val.Distrito === Number(perfilUser.Distrito),
-      );
-
-      if (relatorio && relatorio.length) {
-        const dataAgora = new Date();
-        const semanaAgora = semanaExata(dataAgora);
-        if (semanaAgora - semana < 2) setPodeEditar(true);
-        else setPodeEditar(false);
-
-        if (existeRelatorio !== true) setExisteRelatorio(true); // avisa que tem relatório
-        // setCheckRelatorio(true); // avisa que tem relatório nessa data
-
-        const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-        const nVisitantes = relatorio[0].NomesVisitantes;
-
-        const qtyPresentes = nomesMembros.filter(
-          (val) => val.Presenca === true,
+      setTela(0);
+      setCarregando(false);
+      setPresentes(qtyPres.length);
+      setQtyVisitante(0);
+      setContConversoes(0);
+      setContVisitas(0);
+      setContEventos(0);
+      setRelPresentes(dadosCelula);
+      setObservacoes('');
+      setCheckRelatorio(false);
+      setPodeEditar(true);
+      if (!members) setExisteRelatorio('inicio');
+      // if (members) setExisteRelatorio('sem');
+      // else setExisteRelatorio('inicio');
+      if (members && members.length > 0) {
+        const relatorio = members.filter(
+          (val) =>
+            val.Celula === Number(perfilUser.Celula) &&
+            val.Distrito === Number(perfilUser.Distrito) &&
+            val.Distrito === Number(perfilUser.Distrito),
         );
-        const qtyVisitants = nVisitantes.filter((val) => val.Presenca === true);
-        setPresentes(qtyPresentes.length);
-        setQtyVisitante(qtyVisitants.length);
-        setContConversoes(relatorio[0].Conversoes);
-        setContVisitas(relatorio[0].Visitas);
-        setContEventos(relatorio[0].PresentesEventos);
-        setRelPresentes(nomesMembros);
-        setObservacoes(relatorio[0].Observacoes);
 
-        setNomesVisitanteTab(nVisitantes);
-        setStartShow(!startShow);
+        if (relatorio && relatorio.length) {
+          const dataAgora = new Date();
+          const semanaAgora = semanaExata(dataAgora);
+          if (semanaAgora - semana < 2) setPodeEditar(true);
+          else setPodeEditar(false);
+
+          if (existeRelatorio !== true) setExisteRelatorio(true); // avisa que tem relatório
+          // setCheckRelatorio(true); // avisa que tem relatório nessa data
+
+          const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
+          const nVisitantes = relatorio[0].NomesVisitantes;
+
+          const qtyPresentes = nomesMembros.filter(
+            (val) => val.Presenca === true,
+          );
+          const qtyVisitants = nVisitantes.filter(
+            (val) => val.Presenca === true,
+          );
+          setPresentes(qtyPresentes.length);
+          setQtyVisitante(qtyVisitants.length);
+          setContConversoes(relatorio[0].Conversoes);
+          setContVisitas(relatorio[0].Visitas);
+          setContEventos(relatorio[0].PresentesEventos);
+          setRelPresentes(nomesMembros);
+          setObservacoes(relatorio[0].Observacoes);
+
+          setNomesVisitanteTab(nVisitantes);
+          setStartShow(!startShow);
+        } else {
+          const qtyVisitanteNovo = visitantesCelula.filter(
+            (val) => val.Presenca === true,
+          );
+          setQtyVisitante(qtyVisitanteNovo.length);
+          setExisteRelatorio('sem');
+          setStartShow(!startShow);
+        }
       } else {
         const qtyVisitanteNovo = visitantesCelula.filter(
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
-        setExisteRelatorio('sem');
+
         setStartShow(!startShow);
       }
-    } else {
-      const qtyVisitanteNovo = visitantesCelula.filter(
-        (val) => val.Presenca === true,
-      );
-      setQtyVisitante(qtyVisitanteNovo.length);
 
-      setStartShow(!startShow);
+      if (errorMembers) return <div>An error occured.</div>;
+      if (!members) return <div>Loading ...</div>;
     }
-
-    if (errorMembers) return <div>An error occured.</div>;
-    if (!members) return <div>Loading ...</div>;
-
     return 0;
   };
 
@@ -362,7 +365,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   React.useEffect(() => {
     if (errorVisitante) return <div>An error occured.</div>;
     if (!novoVisitante) return <div>Loading ...</div>;
-    console.log('novoVisistante');
+
     if (novoVisitante) {
       // se teve relatório nomesVisitantes tras a lista
 
@@ -444,7 +447,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         (val, index) => val.Nome && relPresentes[index].Presenca === true,
       );
 
-      console.log('listaPresentes', listaPresentes);
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
@@ -1136,6 +1138,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                     }}
                   >
                     <Button
+                      style={{ width: '100%' }}
                       startIcon={<IoArrowUndoSharp color="blue" />}
                       onClick={() => {
                         handleCancelaVisitante();
@@ -1167,6 +1170,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         <Box>
                           {!carregando ? (
                             <Button
+                              style={{ width: '100%' }}
                               onClick={handleSalvarVisitante}
                               startIcon={<IoIosSave color="blue" />}
                             >
@@ -1175,7 +1179,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               </Box>
                             </Button>
                           ) : (
-                            <Button>
+                            <Button style={{ width: '100%' }}>
                               <Box
                                 display="flex"
                                 mt={0.5}
@@ -1191,7 +1195,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         </Box>
                       </Box>
                     ) : (
-                      <Button>
+                      <Button style={{ width: '100%' }}>
                         <Box
                           mr={0}
                           ml={0}
@@ -1269,6 +1273,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                   }}
                 >
                   <Button
+                    style={{ width: '100%' }}
                     onClick={handleVisitantes}
                     startIcon={<TiUserAdd color="red" />}
                   >
@@ -2223,6 +2228,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                             }}
                           >
                             <Button
+                              style={{ width: '100%' }}
                               onClick={() => {
                                 if (existeRelatorio && !loading) {
                                   setCheckRelatorio(true);
@@ -2270,6 +2276,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               }}
                             >
                               <Button
+                                style={{ width: '100%' }}
                                 onClick={() => {
                                   setCheckRelatorio(true);
                                   setTela(1);
@@ -2296,6 +2303,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               }}
                             >
                               <Button
+                                style={{ width: '100%' }}
                                 onClick={() => {
                                   setCheckRelatorio(true);
                                   setTela(1);
@@ -2340,8 +2348,10 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               }}
                             >
                               <Button
+                                style={{ width: '100%' }}
                                 onClick={() => {
                                   setCheckRelatorio(false);
+                                  setTela(0);
                                   ajusteRelatorio();
                                 }}
                                 startIcon={<IoArrowUndoSharp color="blue" />}
@@ -2367,6 +2377,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               }}
                             >
                               <Button
+                                style={{ width: '100%' }}
                                 onClick={() => {
                                   handleTela2();
                                 }}
@@ -2397,6 +2408,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               }}
                             >
                               <Button
+                                style={{ width: '100%' }}
                                 onClick={() => {
                                   setTela(1);
                                 }}
@@ -2432,6 +2444,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                       )}
                                       {!carregando ? (
                                         <Button
+                                          style={{ width: '100%' }}
                                           onClick={handleSalvar}
                                           startIcon={<IoIosSave color="blue" />}
                                         >
@@ -2445,7 +2458,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                           </Box>
                                         </Button>
                                       ) : (
-                                        <Button>
+                                        <Button style={{ width: '100%' }}>
                                           <Box
                                             display="flex"
                                             mt={0.5}
@@ -2466,7 +2479,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                       )}
                                     </Box>
                                   ) : (
-                                    <Button>
+                                    <Button style={{ width: '100%' }}>
                                       <Box
                                         color="#fff"
                                         mt={0.3}
@@ -2481,6 +2494,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                 <Box>
                                   {!carregando ? (
                                     <Button
+                                      style={{ width: '100%' }}
                                       onClick={handleSalvar}
                                       startIcon={<IoIosSave color="blue" />}
                                     >
@@ -2492,7 +2506,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                       </Box>
                                     </Button>
                                   ) : (
-                                    <Button>
+                                    <Button style={{ width: '100%' }}>
                                       <Box
                                         display="flex"
                                         mt={0.5}
