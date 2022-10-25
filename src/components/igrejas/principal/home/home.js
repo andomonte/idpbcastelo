@@ -155,11 +155,7 @@ const home = ({ perfilUser }) => {
     });
   };
   const install = usePWAInstall();
-  const checkInstall = () => {
-    if (install) {
-      install();
-    }
-  };
+
   return (
     <Box
       display="flex"
@@ -735,7 +731,7 @@ const home = ({ perfilUser }) => {
             </Box>
             {install ? (
               <Box
-                onClick={checkInstall}
+                onClick={install}
                 ml={1}
                 borderRadius={16}
                 height="100%"
@@ -766,6 +762,7 @@ const home = ({ perfilUser }) => {
                 borderRadius={16}
                 height="100%"
                 width="32%"
+                onClick={install}
                 minWidth={80}
                 bgcolor={corIgreja.principal}
                 display="flex"
@@ -783,7 +780,7 @@ const home = ({ perfilUser }) => {
                   <Box mb={1}>
                     <RiInstallLine color="white" size={35} />
                   </Box>
-                  <Box fontSize="12px">INSTALADO</Box>
+                  <Box fontSize="12px">INSTALAR</Box>
                 </Box>
               </Box>
             )}
