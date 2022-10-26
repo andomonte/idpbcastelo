@@ -271,7 +271,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const { data: novoVisitante, error: errorVisitante } = useSWR(url4, fetcher);
 
   const ajusteRelatorio = () => {
-    if (tela !== 1) {
+    if (tela === 0) {
       const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
 
       setTela(0);

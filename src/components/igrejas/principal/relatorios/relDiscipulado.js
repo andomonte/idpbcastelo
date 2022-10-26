@@ -230,10 +230,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   );
 
   const ajusteRelatorio = () => {
-    if (tela !== 1) {
+    if (tela === 0) {
       const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
       // const qtyVis = visitantes.filter((val) => val.Presenca === true);
-      setTela(1);
+      setTela(0);
       setCarregando(false);
       setPresentes(qtyPres.length);
 
