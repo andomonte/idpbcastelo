@@ -538,7 +538,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           setCheckRelatorio(false);
           ajusteRelatorio();
           setTela(1);
-*/
+*/ setTela(0);
           mutate(url);
           mutate(url2);
           mutate(url3);
