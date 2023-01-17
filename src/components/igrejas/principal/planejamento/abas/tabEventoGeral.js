@@ -10,6 +10,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import ConvData2 from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -43,7 +44,7 @@ export default function TabCelula({
         const listaEveSuper = sem1.filter(
           (val) => val.Funcao === perfilUser.Funcao,
         );
-        console.log('listaEveSuper', listaEveSuper);
+
         if (listaEveSuper && listaEveSuper.length) {
           const listaEventosSetor = listaEveSuper.sort((a, b) => {
             if (new Date(a.Data) > new Date(b.Data)) return 1;
@@ -141,7 +142,7 @@ export default function TabCelula({
                       width="30%"
                     >
                       {eventoEncontrado[index]
-                        ? eventoEncontrado[index].Data
+                        ? ConvData2(eventoEncontrado[index].Data)
                         : '-'}
                     </Box>
 

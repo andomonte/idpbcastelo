@@ -1,51 +1,51 @@
 const Meses = () => {
   const mes = [
     {
-      descricao: 'Janeiro',
+      descricao: 'Jan',
       numero: 1,
     },
     {
-      descricao: 'Fevereiro',
+      descricao: 'Fev',
       numero: 2,
     },
     {
-      descricao: 'Março',
+      descricao: 'Mar',
       numero: 3,
     },
     {
-      descricao: 'Abril',
+      descricao: 'Abr',
       numero: 4,
     },
     {
-      descricao: 'Maio',
+      descricao: 'Mai',
       numero: 5,
     },
     {
-      descricao: 'Junho',
+      descricao: 'Jun',
       numero: 6,
     },
     {
-      descricao: 'Julho',
+      descricao: 'Jul',
       numero: 7,
     },
     {
-      descricao: 'Agosto',
+      descricao: 'Ago',
       numero: 8,
     },
     {
-      descricao: 'Setembro',
+      descricao: 'Set',
       numero: 9,
     },
     {
-      descricao: 'Outubro',
+      descricao: 'Out',
       numero: 10,
     },
     {
-      descricao: 'Novembro',
+      descricao: 'Nov',
       numero: 11,
     },
     {
-      descricao: 'Dezembro',
+      descricao: 'Dez',
       numero: 12,
     },
   ];

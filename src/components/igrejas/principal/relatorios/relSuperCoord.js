@@ -3,10 +3,9 @@ import React from 'react';
 
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
-
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
-import MostrarRelatorioGeral from 'src/components/igrejas/principal/relatorios/coordenador/mostrarRelCoord';
+import MostrarRelatorioGeral from 'src/components/igrejas/principal/relatorios/supervisor/mostrarRelSuper';
 import MostrarRelatorioVisita from 'src/components/igrejas/principal/relatorios/coordenador/mostrarRelVisitaCoord';
 
 import Meses from 'src/utils/mesesAbrev';
@@ -27,25 +26,8 @@ function PlanMembro({ perfilUser, lideranca }) {
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosRelVisita, setDadosRelVisita] = React.useState(false);
 
-  const [contSuper, setContSuper] = React.useState(0);
-
   // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
   //= ===================================================================
-
-  const lideresParcial = lideranca.filter(
-    (val) =>
-      Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
-      Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      val.Funcao === 'Supervisor',
-  );
-
-  const setor = lideresParcial.sort((a, b) => {
-    if (new Date(a.supervisao) > new Date(b.supervisao)) return 1;
-    if (new Date(b.supervisao) > new Date(a.supervisao)) return -1;
-    return 0;
-  });
-  const superParcial = setor.map((itens) => itens.supervisao);
-  const numeroSuper = [...new Set(superParcial)];
 
   const handleIncAno = () => {
     let contAnoAtual = contAno + 1;
@@ -95,23 +77,6 @@ function PlanMembro({ perfilUser, lideranca }) {
       contTipoAtual = 1;
     }
     setContTipo(contTipoAtual);
-  };
-
-  const handleIncSuper = () => {
-    let contTipoAtual = contSuper + 1;
-
-    if (contTipoAtual >= numeroSuper.length) {
-      contTipoAtual = 0;
-    }
-    setContSuper(contTipoAtual);
-  };
-  const handleDecSuper = () => {
-    let contTipoAtual = contSuper - 1;
-
-    if (contTipoAtual < 0) {
-      contTipoAtual = numeroSuper.length - 1;
-    }
-    setContSuper(contTipoAtual);
   };
 
   return (
@@ -213,23 +178,6 @@ function PlanMembro({ perfilUser, lideranca }) {
                         fontSize="16px"
                       >
                         <Box
-                          width="10%"
-                          display="flex"
-                          justifyContent="flex-start"
-                          alignItems="center"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              handleDecSuper();
-                            }}
-                          >
-                            <BiCaretLeft size={35} color="white" />
-                          </IconButton>
-                        </Box>
-                        <Box
                           width="80%"
                           display="flex"
                           justifyContent="center"
@@ -238,25 +186,8 @@ function PlanMembro({ perfilUser, lideranca }) {
                           color="white"
                           sx={{ fontFamily: 'Fugaz One' }}
                         >
-                          <Box mr={2}>Setor</Box>
-                          {numeroSuper[contSuper]}
-                        </Box>
-                        <Box
-                          width="10%"
-                          display="flex"
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              handleIncSuper();
-                            }}
-                          >
-                            <BiCaretRight size={35} color="white" />
-                          </IconButton>
+                          <Box mr={2}>Coord. </Box>
+                          {perfilUser.Coordenacao}
                         </Box>
                       </Box>
                     </Grid>
@@ -348,7 +279,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                   >
                     {contTipo ? (
                       <TabRelSuperGeral
-                        numeroSuper={numeroSuper[contSuper]}
+                        numeroSuper={perfilUser.Coordenacao}
                         Mes={contMes}
                         Ano={contAno}
                         perfilUser={perfilUser}
@@ -361,7 +292,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                         perfilUser={perfilUser}
                         Mes={contMes}
                         Ano={contAno}
-                        numeroSuper={numeroSuper[contSuper]}
+                        numeroSuper={perfilUser.Coordenacao}
                         lideranca={lideranca}
                         setSendResumo={setSendResumo}
                         setDadosRelVisita={setDadosRelVisita}
@@ -374,7 +305,7 @@ function PlanMembro({ perfilUser, lideranca }) {
           </Box>
         ) : (
           <Box>
-            {dadosRelVisita && dadosRelVisita.Necessidades ? (
+            {dadosRelVisita && dadosRelVisita.Avaliacoes ? (
               <MostrarRelatorioGeral
                 dadosRelVisita={dadosRelVisita}
                 perfilUser={perfilUser}

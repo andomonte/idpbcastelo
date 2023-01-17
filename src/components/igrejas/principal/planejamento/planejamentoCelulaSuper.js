@@ -50,7 +50,7 @@ function PlanMembro({ perfilUser, lideranca }) {
   const [contNumeroCelula, setContNumeroCelula] = React.useState(0);
   const celulaSetor = lideranca.filter(
     (results) =>
-      Number(results.supervisao) === Number(perfilUser.supervisao) &&
+      Number(results.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
       results.Funcao === 'Lider',
   );

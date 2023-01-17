@@ -4,7 +4,7 @@ import { Box, Grid } from '@material-ui/core';
 import List from '@mui/material/List';
 import Meses from 'src/utils/meses';
 import corIgreja from 'src/utils/coresIgreja';
-
+import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import { BiCaretRight, BiCaretLeft } from 'react-icons/bi';
 import SearchList from './searchList';
@@ -21,7 +21,15 @@ function converteData(DataDDMMYY) {
 }
 
 function compare(a, b) {
-  if (converteData(a.Nascimento) < converteData(b.Nascimento)) return -1;
+  if (
+    converteData(
+      moment(a.Nascimento.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
+    ) <
+    converteData(
+      moment(b.Nascimento.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
+    )
+  )
+    return -1;
   return true;
 }
 
@@ -57,13 +65,20 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
   //= ========================================================================
   //= ========================================================================
 
-  const niverGeral = rolMembros.filter(
-    (results) => converteData(results.Nascimento).getMonth() === contMes,
+  const niverGeralValido = rolMembros.filter(
+    (results) => results.Nascimento !== null && results.Nascimento.length > 8,
+  );
+
+  const niverGeral = niverGeralValido.filter(
+    (results) =>
+      converteData(
+        moment(results.Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
+      ).getMonth() === contMes,
   );
 
   const niverSetor = niverGeral.filter((results) => {
     if (
-      Number(results.Supervisao) === Number(perfilUser.supervisao) &&
+      Number(results.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito)
     ) {
       return results;
@@ -119,7 +134,7 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
               color="white"
               sx={{ fontFamily: 'Fugaz One' }}
             >
-              <Box>ANIVERSARIANTES</Box> <Box> DO MES (SUPERVISÃO) </Box>
+              <Box>ANIVERSARIANTES</Box> <Box> DO MÊS (SUPERVISÃO) </Box>
             </Box>
           </Box>
           <Box
@@ -209,7 +224,11 @@ function BuscarAniversariantes({ rolMembros, perfilUser }) {
                     <Box ml={0} key={itens.id}>
                       <Box>
                         <Grid>
-                          <SearchList mesAtual={mesAtual} rolMembros={itens} />
+                          <SearchList
+                            perfilUser={perfilUser}
+                            mesAtual={contMes}
+                            rolMembros={itens}
+                          />
                         </Grid>
                       </Box>
                     </Box>

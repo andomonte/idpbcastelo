@@ -1,5 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
-
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Box from '@material-ui/core/Box';
@@ -27,6 +27,16 @@ const useStyles = makeStyles(() => ({
 export default function BotaoLogin() {
   const [session] = useSession();
   const classes = useStyles();
+  const [foto, setFoto] = React.useState('');
+  React.useEffect(() => {
+    if (session === null)
+      sessionStorage.setItem('perfilUser', JSON.stringify(''));
+    else {
+      const result = JSON.parse(sessionStorage.getItem('perfilUser'));
+      if (result) setFoto(result);
+    }
+    return 0;
+  }, [session]);
 
   return (
     <Box>
@@ -64,7 +74,7 @@ export default function BotaoLogin() {
             }
             alt="User"
             className={classes.avatar}
-            src={session?.user?.image}
+            src={foto.foto || session?.user?.image}
           />
         </Box>
       )}

@@ -10,22 +10,22 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import ConvertData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function TabCelula({
   setSendResumo,
   perfilUser,
-  numeroSuper,
   setDadosRelVisita,
   Mes,
   Ano,
+  numeroSuper,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [relEncontrado, setRelEncontrado] = React.useState([]);
   const [rel, setRel] = React.useState('nada');
-  const [necessidades, setNecessidades] = React.useState('');
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
 
@@ -44,9 +44,12 @@ export default function TabCelula({
       if (sem1 && sem1[0]) {
         const listaRelSuper = sem1.filter(
           (val) =>
-            Number(val.Supervisao) === Number(numeroSuper) &&
-            Number(val.Distrito) === Number(perfilUser.Distrito) &&
-            val.Funcao === perfilUser.Funcao,
+            Number(val.Distrito) ===
+            Number(
+              perfilUser.Distrito &&
+                Number(val.Coordenacao) === Number(numeroSuper) &&
+                val.Funcao === 'Supervisor',
+            ),
         );
 
         if (listaRelSuper && listaRelSuper.length) {
@@ -67,18 +70,6 @@ export default function TabCelula({
 
   //= ==================================================================
 
-  React.useEffect(() => {
-    if (relEncontrado.length) {
-      const obj = JSON.parse(relEncontrado[0].Necessidades);
-      let strNecessidade = '';
-      for (let i = 0; i < obj.length; i += 1) {
-        if (strNecessidade !== '')
-          strNecessidade = `${String(strNecessidade)}${obj[i]},`;
-        else strNecessidade = `${obj[i]}`;
-      }
-      setNecessidades(strNecessidade);
-    }
-  }, [relEncontrado]);
   return (
     <Box height="100%">
       <Box
@@ -104,7 +95,7 @@ export default function TabCelula({
           textAlign="center"
           width="25%"
         >
-          CÉLULA
+          DATA
         </Box>
 
         <Box
@@ -115,7 +106,7 @@ export default function TabCelula({
           textAlign="center"
           width="60%"
         >
-          NECESSIDADE
+          SUPERVISÃO
         </Box>
         <Box textAlign="center" width="15%">
           VER
@@ -151,11 +142,12 @@ export default function TabCelula({
                       justifyContent="center"
                       alignItems="center"
                       height="100%"
+                      fontSize="12px"
                       textAlign="center"
                       width="25%"
                     >
                       {relEncontrado[index]
-                        ? relEncontrado[index].CelulaVisitada.slice(7, 11)
+                        ? ConvertData(relEncontrado[index].Data) // relEncontrado[index].CelulaVisitada.slice(8, 11)
                         : '-'}
                     </Box>
 
@@ -175,8 +167,9 @@ export default function TabCelula({
                       {relEncontrado[index] ? (
                         <Box color="blue" display="flex">
                           <Box>
-                            {necessidades !== '' ? (
-                              <Box> {necessidades}</Box>
+                            {console.log(relEncontrado[index])}
+                            {relEncontrado[index].Supervisao !== '' ? (
+                              <Box> {relEncontrado[index].Supervisao}</Box>
                             ) : (
                               ''
                             )}

@@ -12,7 +12,7 @@ function Fucao({ perfilUser, lideranca, rolMembros }) {
   const [openBuscar, setOpenBuscar] = React.useState(false);
   const numeroFuncoes = ['Supervisor', 'Lider'];
   const tipoLiderados = ['Supervisões', 'Células'];
-  const tipoPesquisado = ['Coordenacao', 'supervisao', 'Celula'];
+  const tipoPesquisado = ['Coordenacao', 'Supervisao', 'Celula'];
   const [contNumeroFucao, setContNumeroFucao] = React.useState(0);
   //= ===================================================================
   const membrosCoordenacao = rolMembros.filter(

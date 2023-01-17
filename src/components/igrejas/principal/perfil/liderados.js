@@ -12,7 +12,7 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
   //= ===================================================================
   const membrosSetor = rolMembros.filter(
     (val) =>
-      Number(val.Supervisao) === Number(perfilUser.supervisao) &&
+      Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
       Number(val.Distrito) === Number(perfilUser.Distrito),
   );
@@ -148,7 +148,7 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
                         fontSize="16px"
                         sx={{ fontFamily: 'Fugaz One' }}
                       >
-                        SUPERVISÃO <Box ml={3}>{perfilUser.supervisao}</Box>
+                        SUPERVISÃO <Box ml={3}>{perfilUser.Supervisao}</Box>
                       </Box>
                     </Box>
                   </Box>

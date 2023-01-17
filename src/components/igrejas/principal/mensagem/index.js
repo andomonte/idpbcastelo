@@ -10,8 +10,8 @@ import Box from '@material-ui/core/Box';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
+import Login from 'src/components/botaoLogin';
 import Mensagem from './mensagem';
-import Login from '../botaoLogin';
 
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';

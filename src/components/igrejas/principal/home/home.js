@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { BsMegaphone } from 'react-icons/bs';
 import { MdOutlinePublishedWithChanges } from 'react-icons/md';
 import { usePWAInstall } from 'react-use-pwa-install';
-import { IoGameControllerOutline } from 'react-icons/io5';
+// import { IoGameControllerOutline } from 'react-icons/io5';
 import { Oval } from 'react-loading-icons';
 import { RiInstallLine } from 'react-icons/ri';
 import { useRouter } from 'next/router';
@@ -34,7 +34,8 @@ const home = ({ perfilUser }) => {
   const [loadingPlan, setLoadingPlan] = React.useState(false);
   const [loadingAtual, setLoadingAtual] = React.useState(false);
   const [loadingMidia, setLoadingMidia] = React.useState(false);
-  const [loadingJogos, setLoadingJogos] = React.useState(false);
+  // const [loadingJogos, setLoadingJogos] = React.useState(false);
+  const [loadingCursos, setLoadingCursos] = React.useState(false);
   const [loadingMudar, setLoadingMudar] = React.useState(false);
 
   const handleAvisos = () => {
@@ -44,14 +45,14 @@ const home = ({ perfilUser }) => {
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
-  const handleJogos = () => {
+  /* const handleJogos = () => {
     setLoadingJogos(true);
     router.push({
       pathname: '/principal',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
     setLoadingJogos(false);
-  };
+  }; */
   const handleAniversarios = () => {
     setLoadingAniversarios(true);
     router.push({
@@ -71,10 +72,20 @@ const home = ({ perfilUser }) => {
     setLoadingInscricoes(true);
 
     router.push({
-      pathname: '/inscricoes',
+      pathname: '/eventos',
       query: { perfilUser },
     });
   };
+
+  const handleCursos = () => {
+    setLoadingCursos(true);
+
+    router.push({
+      pathname: '/cursos',
+      query: { perfilUser },
+    });
+  };
+
   const handleSecretaria = () => {
     setLoadingSec(true);
 
@@ -142,10 +153,15 @@ const home = ({ perfilUser }) => {
 
   const handleMudarPerfil = () => {
     setLoadingMudar(true);
+    if (perfilUser.login === 'google')
+      router.push({
+        pathname: '/selectPerfil',
+      });
 
-    router.push({
-      pathname: '/selectPerfil',
-    });
+    if (perfilUser.login === 'credencial')
+      router.push({
+        pathname: '/selectPerfilCPF',
+      });
   };
   const handleMidia = () => {
     setLoadingMidia(true);
@@ -335,14 +351,14 @@ const home = ({ perfilUser }) => {
                     </Box>
                   ) : (
                     <img
-                      src="/images/inscricoes.png"
+                      src="/images/eventos.png"
                       height={35}
                       width={35}
                       alt="bolo"
                     />
                   )}
                 </Box>
-                <Box fontSize="12px">INSCRIÇÕES</Box>
+                <Box fontSize="12px">EVENTOS</Box>
               </Box>
             </Box>
             <Box
@@ -383,7 +399,7 @@ const home = ({ perfilUser }) => {
               </Box>
             </Box>
             <Box
-              onClick={handleQuemSomos}
+              onClick={handleCursos}
               ml={1}
               borderRadius={16}
               height="100%"
@@ -403,20 +419,20 @@ const home = ({ perfilUser }) => {
                 flexDirection="column"
               >
                 <Box mb={1}>
-                  {loadingHow ? (
+                  {loadingCursos ? (
                     <Box>
                       <Oval stroke="white" width={35} height={35} />
                     </Box>
                   ) : (
                     <img
-                      src="/images/quemSomos.png"
+                      src="/images/school.png"
                       height={35}
                       width={35}
-                      alt="bolo"
+                      alt="cursos"
                     />
                   )}
                 </Box>
-                <Box fontSize="12px">QUEM SOMOS</Box>
+                <Box fontSize="12px">CURSOS</Box>
               </Box>
             </Box>
           </Box>
@@ -666,7 +682,7 @@ const home = ({ perfilUser }) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Box
+            {/* <Box
               onClick={handleJogos}
               borderRadius={16}
               height="100%"
@@ -695,6 +711,43 @@ const home = ({ perfilUser }) => {
                   )}
                 </Box>
                 <Box fontSize="12px">JOGOS</Box>
+              </Box>
+            </Box> */}
+            <Box
+              onClick={handleQuemSomos}
+              ml={0}
+              borderRadius={16}
+              height="100%"
+              width="32%"
+              minWidth={80}
+              bgcolor={corIgreja.principal}
+              display="flex"
+              color="white"
+              fontFamily="Rubik"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
+              >
+                <Box mb={1}>
+                  {loadingHow ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <img
+                      src="/images/quemSomos.png"
+                      height={35}
+                      width={35}
+                      alt="bolo"
+                    />
+                  )}
+                </Box>
+                <Box fontSize="12px">QUEM SOMOS</Box>
               </Box>
             </Box>
             <Box

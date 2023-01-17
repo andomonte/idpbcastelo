@@ -27,7 +27,7 @@ export default function TabCelula({
 
   const lideresParcial = lideranca.filter(
     (val) =>
-      Number(val.supervisao) === Number(perfilUser.supervisao) &&
+      Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       val.Funcao === 'Lider',
   );
@@ -94,7 +94,7 @@ export default function TabCelula({
                       <Box ml={0.5}>Coordenação: </Box>
                       <Box ml={1}> {row.Coordenacao}</Box>
                       <Box ml={2}>Super.: </Box>
-                      <Box ml={1}> {row.supervisao}</Box>
+                      <Box ml={1}> {row.Supervisao}</Box>
                       <Box ml={2}>Célula: </Box>
                       <Box ml={1}> {row.Celula}</Box>
                     </Box>
@@ -193,7 +193,7 @@ export default function TabCelula({
                     }}
                   >
                     <Box ml={1.5}>Supervisão: </Box>
-                    <Box ml={1}> {row.supervisao}</Box>
+                    <Box ml={1}> {row.Supervisao}</Box>
                     <Box ml={2}>Célula: </Box>
                     <Box ml={1}> {row.Celula}</Box>
                   </Box>

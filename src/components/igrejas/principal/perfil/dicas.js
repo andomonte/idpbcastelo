@@ -11,6 +11,7 @@ function Dicas() {
 
   const url = `/api/consultaDicas`;
   const { data, error } = useSWR(url, fetcher);
+
   React.useEffect(() => {
     if (data) {
       const index = Math.floor(Math.random() * data.length);

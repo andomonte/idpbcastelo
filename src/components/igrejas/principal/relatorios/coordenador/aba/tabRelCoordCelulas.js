@@ -10,6 +10,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import converteData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -24,7 +25,6 @@ export default function TabCelula({
   setIndexTabela,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
   const [presSem1, setPresSem1] = React.useState([]);
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
@@ -58,7 +58,7 @@ export default function TabCelula({
             (val) =>
               val.Celula === Number(numeroCelula[i]) &&
               val.Distrito === Number(perfilUser.Distrito) &&
-              Number(val.Data.slice(6, 10)) === Number(Ano),
+              Number(val.Data.slice(0, 4)) === Number(Ano),
           );
 
           if (presCelula && presCelula[0]) {
@@ -82,7 +82,7 @@ export default function TabCelula({
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem1]);
-
+  // console.log('sem1', presSem1, rankGeral);
   React.useEffect(() => {
     if (pontos) {
       if (pontos.length) {
@@ -266,7 +266,9 @@ export default function TabCelula({
                     borderRight: '1px solid #000',
                   }}
                 >
-                  {presSem1[index].Data ? presSem1[index].Data : '-'}
+                  {presSem1[index].Data
+                    ? converteData(presSem1[index].Data)
+                    : '-'}
                 </Box>
                 <Box
                   display="flex"

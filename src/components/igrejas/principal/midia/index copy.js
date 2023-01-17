@@ -18,7 +18,7 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 
-import Login from '../../botaoLogin';
+import Login from 'src/components/botaoLogin';
 import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';

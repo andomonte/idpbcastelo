@@ -252,7 +252,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                         }}
                       >
                         {perfilUser.Funcao === 'Supervisor' && (
-                          <Box>EVENTO DO SETOR {perfilUser.supervisao}</Box>
+                          <Box>EVENTO DO SETOR {perfilUser.Supervisao}</Box>
                         )}
                         {perfilUser.Funcao === 'Coordenador' && (
                           <Box>

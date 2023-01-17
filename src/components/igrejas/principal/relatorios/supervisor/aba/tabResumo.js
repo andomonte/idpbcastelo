@@ -12,7 +12,13 @@ import IconButton from '@mui/material/IconButton';
 import Emojis from 'src/components/icones/emojis';
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
 import TelaSize from 'src/utils/getSize';
+import converterData from 'src/utils/convData2';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
 
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 function createRelFinal(Rol, Nome, Funcao, PresCelula, PresCulto, PresDisc) {
@@ -50,6 +56,8 @@ export default function TabCelula({
   });
   const altura = TelaSize().height;
   const [valorIndex] = React.useState(indexTabela);
+  const [openPlan, setOpenPlan] = React.useState(false);
+
   const [presSem1, setPresSem1] = React.useState([]);
   const [pontosSem, setPontosSem] = React.useState([]);
   const [pontosSem2, setPontosSem2] = React.useState([]);
@@ -127,7 +135,7 @@ export default function TabCelula({
             (val) =>
               val.Celula === Number(numeroCelula[i]) &&
               val.Distrito === Number(perfilUser.Distrito) &&
-              Number(val.Data.slice(6, 10)) === Number(Ano),
+              Number(val.Data.slice(0, 4)) === Number(Ano),
           );
 
           if (presCelula && presCelula[0]) {
@@ -160,9 +168,8 @@ export default function TabCelula({
             (val) =>
               val.Celula === Number(numeroCelula[i]) &&
               val.Distrito === Number(perfilUser.Distrito) &&
-              Number(val.Data.slice(6, 10)) === Number(Ano),
+              Number(val.Data.slice(0, 4)) === Number(Ano),
           );
-
           if (presCelula.length) {
             setCelebracaoSem1((presSemAtual) => [
               ...presSemAtual,
@@ -195,7 +202,7 @@ export default function TabCelula({
             (val) =>
               val.Celula === Number(numeroCelula[i]) &&
               val.Distrito === Number(perfilUser.Distrito) &&
-              Number(val.Data.slice(6, 10)) === Number(Ano),
+              Number(val.Data.slice(0, 4)) === Number(Ano),
           );
 
           if (presCelula.length) {
@@ -370,8 +377,14 @@ export default function TabCelula({
 
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana2 + 1;
-
-    if (contSemanaAtual > semanaAtual) contSemanaAtual = semanaAtual;
+    const AnoAtual = new Date().getFullYear;
+    let contAno = Ano;
+    if (contSemanaAtual > 52) {
+      contAno = Ano + 1;
+      contSemanaAtual = 1;
+    }
+    if (contSemanaAtual > semanaAtual && contAno === AnoAtual)
+      contSemanaAtual = semanaAtual;
     setContSemana2(contSemanaAtual);
   };
   const handleDecSemana = () => {
@@ -507,7 +520,6 @@ export default function TabCelula({
       ) {
         const listNomes = nomeCelula[0].NomesMembros;
         const object = JSON.parse(listNomes);
-
         const nomesParcial = object.map((rol) =>
           createRelFinal(rol.Rol, rol.Nome, '', rol.Presenca, '', ''),
         );
@@ -529,16 +541,20 @@ export default function TabCelula({
         if (nomesParcial && nomeCelebracao[0].Adultos) {
           const listNomes2 = nomeCelebracao[0].NomesMembros;
           const object2 = JSON.parse(listNomes2);
+          //          const object2 = JSON.parse(object3);
           for (let n = 0; n < nomesParcial.length; n += 1) {
             for (let i = 0; i < object2.length; i += 1) {
-              if (nomesParcial[n].Rol === object2[i].Rol)
+              if (nomesParcial[n].Rol === object2[i].Rol) {
                 nomesParcial[n].PresCulto = object2[i].Presenca;
+              }
             }
           }
         }
+
         if (nomesParcial && nomeDisc[0].Adultos) {
           const listNomes3 = nomeDisc[0].NomesMembros;
           const object3 = JSON.parse(listNomes3);
+
           for (let n = 0; n < nomesParcial.length; n += 1) {
             for (let i = 0; i < object3.length; i += 1) {
               if (nomesParcial[n].Rol === object3[i].Rol)
@@ -752,13 +768,19 @@ export default function TabCelula({
 
                   <Box color="#ffffff">
                     {tipo[contTipo] === 'Relatório da Célula' &&
-                      dadosCelula.Data}
-                    {tipo[contTipo] === 'Relatório da Celebração' &&
-                      dadosCelebracao.Data}
+                      dadosCelula.Data &&
+                      converterData(dadosCelula.Data)}
+                    {tipo[contTipo] === 'Relatório da Celebração' && (
+                      <Box>
+                        {dadosCelebracao.Data !== undefined
+                          ? converterData(dadosCelebracao.Data)
+                          : 'S/R'}
+                      </Box>
+                    )}
                     {tipo[contTipo] === 'Relatório do Discipulado' && (
                       <Box>
                         {dadosDiscipulado.Data !== undefined
-                          ? dadosDiscipulado.Data
+                          ? converterData(dadosDiscipulado.Data)
                           : 'S/R'}
                       </Box>
                     )}
@@ -1123,7 +1145,7 @@ export default function TabCelula({
                   border: '1px solid ',
                   borderColor: corIgreja.principal2,
                   minHeight: 10,
-                  height: altura > 700 ? '35vh' : '25vh',
+                  height: altura > 700 ? '45vh' : '35vh',
                 }}
               >
                 <Box width="100%" height="100%">
@@ -1283,7 +1305,7 @@ export default function TabCelula({
                               row.PresCDisc === false ? '#fce4ec' : '#e8f5e9'
                             }
                           >
-                            {row.PresCulto !== '' ? (
+                            {row.PresDisc !== '' ? (
                               <Box
                                 height="100%"
                                 display="flex"
@@ -1351,63 +1373,6 @@ export default function TabCelula({
                             )}
                           </Box>
                         )}
-                        {tipo[contTipo] === 'Relatório do Discipulado' && (
-                          <Box
-                            mt={0}
-                            display="flex"
-                            alignItems="center"
-                            height="5vh"
-                            sx={{ borderBottom: '1px solid ' }}
-                            borderColor={corIgreja.principal2}
-                            minHeight={40}
-                            bgcolor={row.PresDisc ? '#e8f5e9' : '#fce4ec'}
-                          >
-                            <Box
-                              height="100%"
-                              display="flex"
-                              justifyContent="center"
-                              textAlign="center"
-                              alignItems="center"
-                              width="10%"
-                            >
-                              {row.Funcao === 'Lider' ? (
-                                <Box>
-                                  <img
-                                    src="/images/lider.png"
-                                    height={25}
-                                    width={25}
-                                    alt="lider"
-                                  />
-                                </Box>
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                            <Box
-                              sx={{
-                                fontFamily: 'Fugaz One',
-                              }}
-                              height="100%"
-                              width="90%"
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                            >
-                              <Box
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                height="100%"
-                                textAlign="center"
-                                width="100%"
-                              >
-                                {row.Nome.length >= 35
-                                  ? row.Nome.substring(0, 35)
-                                  : row.Nome.toUpperCase()}
-                              </Box>
-                            </Box>
-                          </Box>
-                        )}
                       </Box>
                     ))
                   ) : (
@@ -1459,8 +1424,9 @@ export default function TabCelula({
                 </Box>
               </TableContainer>
             )}
+
             <Box
-              mt={0}
+              mt={2}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -1468,34 +1434,95 @@ export default function TabCelula({
               minHeight={10}
               bgcolor="#fafafa"
             >
-              <Box fontFamily="arial black" mt={0.5}>
-                {' '}
-                Obs:
-              </Box>
+              {dadosCelula.Observacoes ? (
+                <Button
+                  style={{
+                    background: 'white',
+                    color: 'blue',
+                    fontFamily: 'arial black',
+                    width: '100%',
+                  }}
+                  component="a"
+                  variant="contained"
+                  onClick={() => {
+                    setOpenPlan(true);
+                  }}
+                >
+                  Ver Observações
+                </Button>
+              ) : (
+                <Button
+                  style={{
+                    background: 'white',
+                    color: 'gray',
+                    fontFamily: 'arial black',
+                    width: '100%',
+                  }}
+                  component="a"
+                  variant="contained"
+                >
+                  SEM OBSERVAÇÕES
+                </Button>
+              )}
             </Box>
-            <Box
-              mt={0}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              height={50}
-              bgcolor="#fafafa"
-              sx={{
-                borderBottomLeftRadius: '16px',
-                borderBottomRightRadius: '16px',
-              }}
-            >
-              <Box mt={-1} textAlign="center">
-                {dadosCelula.Observacoes !== undefined
-                  ? dadosCelula.Observacoes
-                  : 'S/R'}
+            <Dialog fullScreen open={openPlan} TransitionComponent={Transition}>
+              <Box
+                mt={0}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height="95%"
+                color="black"
+                bgcolor="#fafafa"
+              >
+                <Box
+                  mt={-1}
+                  height="100%"
+                  width="94%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {dadosCelula.Observacoes !== undefined &&
+                  dadosCelula.Observacoes !== null ? (
+                    <Box textAlign="justify"> {dadosCelula.Observacoes}</Box>
+                  ) : (
+                    'Sem Observações'
+                  )}
+                </Box>
               </Box>
-            </Box>
+              <Box
+                mb={2}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height="5%"
+                minHeight={10}
+                bgcolor="#fafafa"
+              >
+                <Button
+                  style={{
+                    background: 'orange',
+                    color: 'black',
+                    fontFamily: 'arial black',
+                    fontSize: '16px',
+                    width: '90%',
+                  }}
+                  component="a"
+                  variant="contained"
+                  onClick={() => {
+                    setOpenPlan(false);
+                  }}
+                >
+                  FECHAR OBSERVAÇÕES
+                </Button>
+              </Box>
+            </Dialog>
           </Box>
         </Box>
         <Box mt="3vh" width="100%" display="flex" justifyContent="center">
           <Grid container spacing={0}>
-            <Grid container xs={6}>
+            <Grid container item xs={6}>
               <Paper width="100%">
                 <Box height={36} width="100%" display="flex">
                   <Box

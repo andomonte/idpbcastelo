@@ -2,7 +2,7 @@ import { Box, Grid, Paper, Button, Typography } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
-
+import ConverteData from 'src/utils/convData2';
 import 'react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -109,7 +109,7 @@ function RelCelula({ dadosRelVisita, setSendResumo }) {
                         justifyContent="center"
                         height={50}
                       >
-                        {dadosRelVisita.Data}
+                        {ConverteData(dadosRelVisita.Data)}
                       </Box>
                     </Paper>
                   </Grid>

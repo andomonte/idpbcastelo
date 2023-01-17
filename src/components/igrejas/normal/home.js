@@ -26,7 +26,7 @@ const home = () => {
   };
   const handleInscricoes = () => {
     router.push({
-      pathname: '/inscricoes',
+      pathname: '/eventos',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
@@ -253,11 +253,30 @@ const home = () => {
                   height="100%"
                   borderRadius={16}
                   style={{
-                    backgroundImage: `url('/images/quemSomos2.png')`,
+                    backgroundImage: `url('/images/quemSomos3.png')`,
                     backgroundPosition: 'center', // centraliza imagem
                     backgroundSize: 'cover',
                   }}
-                />
+                >
+                  <Box width="30%" display="flex" justifyContent="center">
+                    <img
+                      src="/images/quemSomos.png"
+                      alt="quemSomos"
+                      width="60%"
+                    />
+                  </Box>
+                  <Box
+                    fontSize="30px"
+                    fontFamily="Rubik"
+                    fontWeight="bold"
+                    display="flex"
+                    justifyContent="center"
+                    width="70%"
+                    color="white"
+                  >
+                    QUEM SOMOS
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>

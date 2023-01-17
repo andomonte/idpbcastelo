@@ -16,11 +16,11 @@ function Mensagens({ mensagem }) {
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const mensagem = await prisma.boletim
+  const mensagem = await prisma.mensagem
     .findMany({
       orderBy: [
         {
-          semana: 'asc',
+          Data: 'asc',
         },
       ],
     })

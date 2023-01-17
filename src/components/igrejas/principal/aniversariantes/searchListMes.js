@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import Image from 'next/image';
 import Avatar from '@material-ui/core/Avatar';
 import Modal from '@mui/material/Modal';
+import moment from 'moment';
 
 dayjs.extend(relativeTime);
 const bannerBlurHash =
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   caption: {
-    fontWeight: 'bold',
-
+    fontSize: '14px',
+    fontFamily: 'Fugaz One',
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
 }));
-function SearchList({ rolMembros, semanaAtual }) {
+function SearchList({ rolMembros, semanaAtual, perfilUser }) {
   const classes = useStyles();
   const [openModal, setOpenModal] = React.useState(false);
   const [imagem, setImagem] = React.useState('');
@@ -88,16 +89,12 @@ function SearchList({ rolMembros, semanaAtual }) {
     'Domingo',
   ];
 
-  const distrito = [
-    'Filadelfia',
-    'União da Vitória',
-    'Campos Sales',
-    'Bairro da Paz',
-    'Calado',
-  ];
-  const diaAniversario = converteData(rolMembros.Nascimento).getDate();
+  const diaAniversario = converteData(
+    moment(rolMembros.Nascimento.substring(0, 10)).format(
+      'DD/MM/YYYY hh:mm:ss',
+    ),
+  ).getDate();
   // const mesAniversario = converteData(rolMembros.Nascimento).getMonth();
-
   const dia = converteData(semanaAtual).getDate();
 
   return (
@@ -223,7 +220,7 @@ function SearchList({ rolMembros, semanaAtual }) {
                 style={{ marginLeft: 20, color: 'black' }}
               >
                 <Box className={classes.caption}>
-                  {distrito[rolMembros.Distrito - 1]}
+                  {perfilUser.Distrito_Nome}
                 </Box>
               </Typography>
             </Box>

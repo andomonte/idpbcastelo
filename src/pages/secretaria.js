@@ -26,17 +26,21 @@ export const getStaticProps = async () => {
     await prisma.$disconnect();
   });
 
-  const LiderancaCelulas = await prisma.lideranca
-    .findMany()
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
+  const lideranca = await prisma.lideranca.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
 
   return {
     props: {
       userIgrejas: JSON.parse(JSON.stringify(userIgrejas)),
       celulas: JSON.parse(JSON.stringify(celulas)),
-      LiderancaCelulas: JSON.parse(JSON.stringify(LiderancaCelulas)),
+      lideranca: JSON.parse(
+        JSON.stringify(
+          lideranca,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
     }, // will be passed to the page component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };

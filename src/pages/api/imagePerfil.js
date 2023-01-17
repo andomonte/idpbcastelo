@@ -21,25 +21,7 @@ export default async function handle(req, res) {
         await prisma.$disconnect();
       });
 
-    //    res.send(result);
-  } catch (errors) {
-    console.log('erros', errors);
-    res.status(400).send('vou criar o banco');
-  }
-
-  try {
-    const result = await prisma.lideranca
-      .updateMany({
-        where: { RolMembro: Number(dados.RolMembro) },
-        data: {
-          foto,
-        },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-
-    res.send(result);
+    res.send('ok');
   } catch (errors) {
     console.log('erros', errors);
     res.status(400).send('vou criar o banco');

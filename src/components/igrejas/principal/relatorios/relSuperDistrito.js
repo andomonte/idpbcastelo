@@ -5,7 +5,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
-import MostrarRelatorioGeral from 'src/components/igrejas/principal/relatorios/coordenador/mostrarRelCoord';
+import MostrarRelatorioGeral from 'src/components/igrejas/principal/relatorios/supervisor/mostrarRelSuper';
 import MostrarRelatorioVisita from 'src/components/igrejas/principal/relatorios/coordenador/mostrarRelVisitaCoord';
 
 import Meses from 'src/utils/mesesAbrev';
@@ -38,11 +38,12 @@ function PlanMembro({ perfilUser, lideranca }) {
   );
 
   const setor = lideresParcial.sort((a, b) => {
-    if (new Date(a.supervisao) > new Date(b.supervisao)) return 1;
-    if (new Date(b.supervisao) > new Date(a.supervisao)) return -1;
+    if (new Date(a.Coordenacao) > new Date(b.Coordenacao)) return 1;
+    if (new Date(b.Coordenacao) > new Date(a.Coordenacao)) return -1;
     return 0;
   });
-  const superParcial = setor.map((itens) => itens.supervisao);
+
+  const superParcial = setor.map((itens) => itens.Coordenacao);
   const numeroSuper = [...new Set(superParcial)];
 
   const handleIncAno = () => {
@@ -236,7 +237,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                           color="white"
                           sx={{ fontFamily: 'Fugaz One' }}
                         >
-                          <Box mr={2}>Setor</Box>
+                          <Box mr={2}>Coord.</Box>
                           {numeroSuper[contSuper]}
                         </Box>
                         <Box
@@ -372,7 +373,7 @@ function PlanMembro({ perfilUser, lideranca }) {
           </Box>
         ) : (
           <Box>
-            {dadosRelVisita && dadosRelVisita.Necessidades ? (
+            {dadosRelVisita && dadosRelVisita.Avaliacoes ? (
               <MostrarRelatorioGeral
                 dadosRelVisita={dadosRelVisita}
                 perfilUser={perfilUser}

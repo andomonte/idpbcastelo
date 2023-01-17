@@ -1,16 +1,14 @@
 import { Box, Grid, Button } from '@material-ui/core';
 import React from 'react';
-
+import { MdCreateNewFolder } from 'react-icons/md';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
-
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
-import { MdCreateNewFolder } from 'react-icons/md';
-import NovoRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/novoRelSuper';
-import MostrarRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/mostrarRelSuper';
 
-import Meses from 'src/utils/meses';
+import Meses from 'src/utils/mesesAbrev';
 import TamanhoJanela from 'src/utils/getSize';
+import NovoRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/novoRelSuper';
+import MostrarRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/aba/editarRelSuper';
 import TabRelSuper from './supervisor/aba/tabRelSuper';
 
 const janela = TamanhoJanela();
@@ -23,9 +21,11 @@ function PlanMembro({ perfilUser, lideranca }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
-  const [openNovoRelatorio, setOpenNovoRelatorio] = React.useState(false);
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosRelVisita, setDadosRelVisita] = React.useState(false);
+  const [openNovoRelatorio, setOpenNovoRelatorio] = React.useState(false);
+  // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
+  //= ===================================================================
 
   const handleIncAno = () => {
     let contAnoAtual = contAno + 1;
@@ -87,6 +87,7 @@ function PlanMembro({ perfilUser, lideranca }) {
               }}
               height="100%"
               width="100%"
+              bgcolor={corIgreja.principal}
             >
               <Box height="100%">
                 <Box
@@ -100,13 +101,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                   <Box width="96%" mt={-1} ml={1}>
                     <Grid container item xs={12} spacing={1}>
                       <Grid item xs={8}>
-                        <Box
-                          width="100%"
-                          height={40}
-                          display="flex"
-                          bgcolor="#f0f0f0"
-                          borderRadius={5}
-                        >
+                        <Box width="100%" height={40} display="flex">
                           <Box
                             width="20%"
                             display="flex"
@@ -121,10 +116,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                                 handleDecMes();
                               }}
                             >
-                              <BiCaretLeft
-                                color={corIgreja.principal2}
-                                size={35}
-                              />
+                              <BiCaretLeft color="white" size={35} />
                             </IconButton>
                           </Box>
                           <Box
@@ -133,8 +125,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                             justifyContent="center"
                             alignItems="center"
                             fontSize="16px"
-                            color="black"
-                            mt={0.5}
+                            color="white"
                             sx={{ fontFamily: 'Fugaz One' }}
                           >
                             {mes[contMes].descricao.toUpperCase()} / {contAno}
@@ -153,10 +144,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                                 handleIncMes();
                               }}
                             >
-                              <BiCaretRight
-                                size={35}
-                                color={corIgreja.principal2}
-                              />
+                              <BiCaretRight size={35} color="white" />
                             </IconButton>
                           </Box>
                         </Box>
@@ -173,25 +161,20 @@ function PlanMembro({ perfilUser, lideranca }) {
                           onClick={() => setOpenNovoRelatorio(true)}
                           variant="contained"
                           severity="success"
-                          endIcon={
-                            <MdCreateNewFolder
-                              size={30}
-                              color={corIgreja.principal}
-                            />
-                          }
+                          endIcon={<MdCreateNewFolder size={30} color="blue" />}
                         >
                           Novo
                         </Button>
                       </Grid>
                     </Grid>
                   </Box>
-                  <Box mt={2} width="96%" ml={1}>
+                  <Box mt={1} width="96%" ml={1}>
                     <Grid container item xs={12} spacing={1}>
                       <Grid item xs={12}>
                         <Box
+                          mt="4vh"
                           borderRadius={5}
-                          height={40}
-                          color="white"
+                          height={20}
                           width="100%"
                           display="flex"
                         >
@@ -200,9 +183,10 @@ function PlanMembro({ perfilUser, lideranca }) {
                             display="flex"
                             justifyContent="center"
                             alignItems="center"
-                            sx={{ fontSize: '16px', fontFamily: 'Fugaz One' }}
+                            color="white"
+                            sx={{ fontSize: '18px', fontFamily: 'Fugaz One' }}
                           >
-                            RELATÓRIO DE SUPERVISÃO
+                            RELATÓRIO DO SUPERVISOR
                           </Box>
                         </Box>
                       </Grid>
@@ -250,6 +234,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                 Mes={contMes}
                 Ano={contAno}
                 setSendResumo={setSendResumo}
+                lideranca={lideranca}
               />
             </Box>
           )}

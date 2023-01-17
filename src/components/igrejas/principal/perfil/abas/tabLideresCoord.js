@@ -32,8 +32,8 @@ export default function TabCelula({
 
   if (Funcao === 'Supervisor') {
     lideresSetor = listaParcial.sort((a, b) => {
-      if (new Date(a.supervisao) > new Date(b.supervisao)) return 1;
-      if (new Date(b.supervisao) > new Date(a.supervisao)) return -1;
+      if (new Date(a.Supervisao) > new Date(b.Supervisao)) return 1;
+      if (new Date(b.Supervisao) > new Date(a.Supervisao)) return -1;
       return 0;
     });
   }
@@ -72,7 +72,7 @@ export default function TabCelula({
                   {Funcao === 'Supervisor' && (
                     <Box>
                       {' '}
-                      {row.supervisao} -{' '}
+                      {row.Supervisao} -{' '}
                       {row.Nome.length > 30
                         ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))
                         : row.Nome}

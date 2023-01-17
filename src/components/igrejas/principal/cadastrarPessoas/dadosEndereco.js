@@ -211,9 +211,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
     dadosUser[0].Complemento,
   );
   const [bairro, setBairro] = React.useState(dadosUser[0].Bairro);
-  const [localizador, setLocalizador] = React.useState(
-    dadosUser[0].Localizador,
-  );
+  const [nomeNucleo, setNomeNucleo] = React.useState(dadosUser[0].nomeNucleo);
   const [cidade, setCidade] = React.useState(dadosUser[0].Localidade);
   const [cep, setCEP] = React.useState(dadosUser[0].CEP);
   const [uf, setUF] = React.useState(dadosUser[0].UF);
@@ -251,7 +249,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
       setUF(data[0].UF);
       setCidade(data[0].Localidade);
       setComplemento(data[0].Complemento);
-      setLocalizador(data[0].Localizador);
+      setNomeNucleo(data[0].nomeNucleo);
     }
     if (error) return <div>An error occured.</div>;
     if (!data) return <div>Loading ...</div>;
@@ -269,7 +267,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
         Numero: numero,
         Bairro: bairro,
         CEP: cep,
-        Localizador: localizador,
+        nomeNucleo,
         Complemento: complemento,
         Localidade: cidade,
         UF: uf,
@@ -577,31 +575,31 @@ function DadosEndereco({ rolMembros, perfilUser }) {
             <Grid item xs={12} md={12}>
               <Box mt={-1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                 <Typography variant="caption" display="block" gutterBottom>
-                  LOCALIZADOR
+                  NÚCLEO (IGREJA)
                 </Typography>
               </Box>
               <Box className={classes.novoBox} mt={-2}>
                 <TextField
                   className={classes.tf_m}
-                  id="localizador"
+                  id="nomeNucleo"
                   // label="Cidade"
                   type="text"
                   InputLabelProps={{
                     shrink: true,
                   }}
                   inputRef={localizadorRef}
-                  value={localizador}
+                  value={nomeNucleo}
                   variant="outlined"
-                  placeholder="Localizado - googleMap"
+                  placeholder="Núcleo que frequenta"
                   size="small"
                   onBlur={
-                    localizador === ''
+                    nomeNucleo === ''
                       ? () => setValidarLocalizador('nao')
                       : () => setValidarLocalizador('sim')
                   }
-                  onChange={(e) => setLocalizador(e.target.value)}
+                  onChange={(e) => setNomeNucleo(e.target.value)}
                   error={validarLocalizador === 'nao'}
-                  onFocus={(e) => setLocalizador(e.target.value)}
+                  onFocus={(e) => setNomeNucleo(e.target.value)}
                 />
               </Box>
             </Grid>

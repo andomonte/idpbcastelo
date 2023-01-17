@@ -41,6 +41,7 @@ const handler = async (req, res) => {
 
       res.status(200).send('OK');
     } catch (errors) {
+      console.log(errors);
       res.status(400).send(errors);
     }
   }

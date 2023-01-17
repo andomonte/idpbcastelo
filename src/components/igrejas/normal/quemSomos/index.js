@@ -17,7 +17,7 @@ import CallIcon from '@material-ui/icons/Call';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import SvgIcon from '@mui/material/SvgIcon';
-import Login from '../../botaoLogin';
+import Login from 'src/components/botaoLogin';
 import Navbar from '../navBar_redesSociais';
 import TelaPadrao from './telaPadrao';
 // import Carrossel from '../carrossel';

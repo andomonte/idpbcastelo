@@ -31,7 +31,7 @@ function RelCelula({ perfilUser, lideranca }) {
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
   const [valorIndexSend, setValorIndexSend] = React.useState([]);
   const [indexTabela, setIndexTabela] = React.useState([]);
-  const [contSemana, setContSemana] = React.useState(semanaAtual - 1);
+  const [contSemana, setContSemana] = React.useState(semanaAtual);
 
   const lideresSetor = lideranca.sort((a, b) => {
     if (new Date(a.Celula) > new Date(b.Celula)) return 1;

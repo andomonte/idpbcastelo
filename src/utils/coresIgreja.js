@@ -7,9 +7,13 @@ const Cores = createTheme({
   principal: '#1a237e',
   principal2: '#5c6bc0', // '#3f50b5',
   secundaria: '#fafafa',
+  tercenaria: '#b91072',
+  button1: '#1b5e20',
+  button2: '#e65100',
   iconeOn: '#ffff00',
   iconeOff: '#eeee',
-  logo: 'images/logo1.png',
+  logo: 'images/filadelfia/logo.png',
+  logo2: 'images/filadelfia/logo2.png',
   palette: {
     primary: {
       main: '#304ffe', // '#ff3d00',

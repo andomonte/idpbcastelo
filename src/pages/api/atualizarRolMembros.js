@@ -8,7 +8,7 @@ const handler = async (req, res) => {
 
   const result = await prisma.membros
     .update({
-      where: { id: Number(dados.id) },
+      where: { RolMembro: Number(dados.RolMembro) },
       data: {
         ...dados,
       },

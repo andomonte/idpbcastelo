@@ -3,387 +3,634 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
+model avisos {
+  Data     DateTime @id @db.DateTime
+  avisos   String?  @db.VarChar(255)
+  conteudo String?  @db.Text
+  Distrito Int?     @default(0)
+}
+
+model boletim {
+  id         Int       @id @default(autoincrement())
+  Data       DateTime? @db.DateTime
+  semana     Int       @default(0)
+  titulo     String?   @db.Text
+  introducao String?   @db.Text
+  ponto1     String?   @db.VarChar(255)
+  conteudo1  String?   @db.VarChar(4000)
+  ponto2     String?   @db.VarChar(255)
+  conteudo2  String?   @db.VarChar(500)
+  ponto3     String?   @db.VarChar(255)
+  conteudo3  String?   @db.VarChar(500)
+  ponto4     String?   @db.VarChar(255)
+  conteudo4  String?   @db.VarChar(500)
+  ponto5     String?   @db.VarChar(255)
+  conteudo5  String?   @db.VarChar(500)
+  ponto6     String?   @db.VarChar(255)
+  conteudo6  String?   @db.VarChar(500)
+  ponto7     String?   @db.VarChar(255)
+  conteudo7  String?   @db.VarChar(500)
+  ponto8     String?   @db.VarChar(255)
+  conteudo8  String?   @db.VarChar(500)
+  ponto9     String?   @db.VarChar(255)
+  conteudo9  String?   @db.VarChar(500)
+  ponto10    String?   @db.VarChar(255)
+  conteudo10 String?   @db.VarChar(500)
+  conclusao  String?   @db.VarChar(4000)
+  Autor      String    @db.VarChar(200)
+}
+
 model celulas {
-  id            Int       @id @default(autoincrement())
-  Celula        Int
-  Nome          String?   @db.VarChar(125)
-  Lider         String?   @db.VarChar(145)
-  Supervisao    Int
-  Coordenacao   Int
-  Distrito      Int
+  Celula        Int       @default(0)
+  Nome          String    @db.VarChar(255)
+  Supervisao    Int       @default(0)
   Anfitriao     String?   @db.VarChar(255)
-  CriadoEm      DateTime? @default(now()) @db.DateTime(0)
+  CriadoEm      DateTime? @db.DateTime
   CriandoPor    String?   @db.VarChar(145)
-  AtualizadoEm  DateTime? @default(now()) @db.DateTime(0)
-  AtualizadoPor String?   @db.VarChar(145)
+  AtualizadoEm  DateTime? @db.DateTime
+  AtualizadoPor String?   @db.VarChar(255)
+  Distrito      Int       @default(0)
+  Coordenacao   Int       @default(0)
 
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordenacao], name: "Coordenacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([Supervisao], name: "Supervisao_index")
-}
-
-model eventosCelulas {
-  id        Int      @id @default(autoincrement())
-  Data      String   @db.VarChar(25)
-  Evento    String   @db.Text
-  Local     String   @db.Text
-  Objetivo  String   @db.Text
-  Descricao String   @db.Text
-  Ano       Int
-  Mes       Int
-  Horario   String   @db.VarChar(15)
-  Celula    Int
-  Distrito  Int
-  CriadoEm  DateTime @db.DateTime(0)
-}
-
-model igreja {
-  id              Int    @id @default(autoincrement())
-  codigo          String @db.VarChar(20)
-  nome            String @db.Text
-  foneSecretaria  String @db.Text
-  contatoWhatsApp String @db.Text
-  foneFinanceiro  String @db.Text
-  corPrimaria     String @db.Text
-  corSecundaria   String @db.Text
-  img01           String @db.Text
-  img02           String @db.Text
-  img03           String @db.Text
-  faceBook        String @db.Text
-  youTube         String @db.Text
-  instagram       String @db.Text
-  googloMap       String @db.Text
-}
-
-model lideranca {
-  id          Int     @id @default(autoincrement())
-  Funcao      String? @db.VarChar(25)
-  Nome        String? @db.VarChar(145)
-  Nascimento  String? @db.VarChar(10)
-  RolMembro   Int
-  Email       String? @db.VarChar(255)
-  Celula      Int
-  supervisao  Int
-  Coordenacao Int
-  Distrito    Int
-  Igreja      String? @db.VarChar(5)
-  foto        String? @db.VarChar(255)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordenacao], name: "Coordenacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([RolMembro], name: "RolMembro_index")
-  @@index([supervisao], name: "supervisao_index")
-}
-
-model membros {
-  id                Int      @id
-  Igreja            String   @db.VarChar(12)
-  Nome              String   @db.VarChar(145)
-  foto              String?  @db.VarChar(255)
-  Celula            Int
-  Distrito          Int
-  Coordenacao       Int
-  Supervisao        Int
-  Discipulador      String   @db.VarChar(145)
-  RolMembro         Int      @unique @default(autoincrement())
-  TelCelular        String   @db.VarChar(25)
-  TelFixo           String   @db.VarChar(25)
-  Email             String   @db.VarChar(255)
-  Sexo              String   @db.VarChar(15)
-  EstadoCivil       String   @db.VarChar(45)
-  Nascimento        String   @db.VarChar(10)
-  Naturalidade      String   @db.VarChar(255)
-  Situacao          String   @db.VarChar(12)
-  MOTIVO            String   @db.VarChar(245)
-  Conversao         String   @db.VarChar(25)
-  Batismo           String   @db.VarChar(25)
-  CEP               String   @db.VarChar(25)
-  Logradouro        String   @db.VarChar(255)
-  Bairro            String   @db.VarChar(255)
-  Numero            String   @db.VarChar(255)
-  Complemento       String   @db.VarChar(255)
-  Localidade        String   @db.VarChar(255)
-  UF                String   @db.VarChar(25)
-  CPF               String   @db.VarChar(25)
-  RG                String   @db.VarChar(25)
-  FormacaoAcademica String   @db.VarChar(255)
-  Profissao         String   @db.VarChar(255)
-  Pai               String   @db.VarChar(255)
-  Mae               String   @db.VarChar(255)
-  CriadoEm          DateTime @db.DateTime(0)
-  AtualizadoEm      DateTime @db.DateTime(0)
-  AtualizadoPor     String   @db.VarChar(255)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Coordenacao], name: "Coordencacao_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([RolMembro], name: "RolMembro_index")
-  @@index([Supervisao], name: "Supervisao_index")
-}
-
-model visitantes {
-  id         Int      @id @default(autoincrement())
-  Celula     Int
-  Distrito   Int
-  Nome       String   @db.Text
-  Contato    String   @db.VarChar(25)
-  Nascimento String   @db.VarChar(25)
-  CriadoPor  String   @db.Text
-  CriadoEm   DateTime @db.DateTime(0)
-}
-
-model relatorioCelulas {
-  id               Int      @id @default(autoincrement())
-  Celula           Int
-  Distrito         Int
-  Semana           Int
-  Data             String   @db.VarChar(25)
-  NomesMembros     Json
-  NomesVisitantes  Json
-  Adultos          Int
-  Criancas         Int
-  Visitantes       Int
-  PresentesEventos Int
-  Visitas          Int
-  Conversoes       Int
-  Observacoes      String   @db.Text
-  CriadoPor        String   @db.Text
-  CriadoEm         DateTime @db.DateTime(0)
-}
-
-model pontuacao {
-  id         Int      @id @default(autoincrement())
-  Semana     Int
-  Ano        Int
-  Celula     Int
-  Supervisao Int
-  Distrito   Int
-  Pontuacao  Json
-  TotalRank  String   @db.VarChar(25)
-  Total      String   @db.VarChar(25)
-  CriadoPor  String   @db.Text
-  CriadoEm   DateTime @db.DateTime(0)
-}
-
-model relatorioCelebracao {
-  id              Int      @id @default(autoincrement()) @db.UnsignedInt
-  Semana          Int
-  Data            String   @db.VarChar(25)
-  Celula          Int
-  Distrito        Int
-  NomesMembros    Json
-  NomesVisitantes Json
-  Adultos         Int
-  Criancas        Int
-  Visitantes      Int
-  Conversoes      Int
-  Observacoes     String   @db.Text
-  CriadoPor       String   @db.Text
-  CriadoEm        DateTime @db.DateTime(0)
-}
-
-model plancelula {
-  id            Int    @id @default(autoincrement())
-  Anfitriao     String @db.Text
-  Multiplicacao String @db.VarChar(25)
-  Horario       String @db.VarChar(25)
-  Fase          String @db.Text
-  Semana        Int
-  Data          String @db.VarChar(25)
-  Celula        Int
-  Supervisao    Int
-  Coordenacao   Int
-  Distrito      Int
-  Encontro      String @db.Text
-  Exaltacao     String @db.Text
-  Edificacao    String @db.Text
-  Evangelismo   String @db.Text
-  Lanche        String @db.Text
-}
-
-model relatorioDiscipulado {
-  id             Int      @id @default(autoincrement())
-  Celula         Int
-  Distrito       Int
-  Semana         Int
-  Data           String   @db.VarChar(25)
-  Adultos        Int
-  Criancas       Int
-  NomesMembros   Json
-  LeituraBiblica Int
-  Observacoes    String   @db.VarChar(255)
-  CriadoPor      String   @db.VarChar(255)
-  CriadoEm       DateTime @default(now()) @db.DateTime(0)
-
-  @@index([Celula], name: "Celula_index")
-  @@index([Distrito], name: "Distrito_index")
-  @@index([LeituraBiblica], name: "LeituraBiblica_index")
-  @@index([Semana], name: "Semana_index")
+  @@id([Celula, Supervisao, Coordenacao, Distrito])
 }
 
 model contribuicoes {
-  id        Int      @unique @default(autoincrement())
-  RolMembro Int      @id
-  Nome      String   @db.Text
-  Semana    Int
-  Mes       String   @db.VarChar(2)
-  Data      String   @db.VarChar(25)
-  Ano       String   @db.VarChar(5)
-  Tipo      String   @db.VarChar(45)
-  Valor     String   @db.VarChar(145)
-  CriadoPor String   @db.VarChar(245)
-  CriandaEm DateTime @db.DateTime(0)
+  id        Int       @id @default(autoincrement())
+  RolMembro Int       @default(0)
+  Nome      String    @db.VarChar(255)
+  Semana    Int?      @default(0)
+  Mes       Int?      @default(0)
+  Data      DateTime  @db.DateTime
+  Ano       Int?      @default(0)
+  Tipo      String    @db.VarChar(45)
+  Valor     String    @db.VarChar(145)
+  CriadoPor String?   @db.VarChar(150)
+  CriandaEm DateTime? @db.DateTime
 }
 
-model inscritosCursos {
-  id         Int      @id @default(autoincrement())
-  CPF        String   @db.VarChar(45)
-  NomeCurso  String   @db.Text
-  idCurso    String   @db.Text
-  DataCurso  String?  @db.VarChar(45)
-  Nome       String   @db.Text
-  Nascimento String   @db.VarChar(25)
-  Contato    String   @db.VarChar(25)
-  Email      String   @db.Text
-  Igreja     String   @db.Text
-  Status     String   @db.Text
-  RolMembro  Int
-  Nota       String   @db.VarChar(45)
-  Frequencia String   @db.VarChar(45)
-  CreatedAt  DateTime @db.DateTime(0)
+model cordenacao {
+  Coordenacao      Int       @default(0)
+  Coordenacao_Nome String    @db.VarChar(150)
+  Distrito         Int       @default(0)
+  CriadoEm         DateTime? @db.DateTime
+  CriadoPor        String?   @db.VarChar(150)
+  AtualizadoEm     DateTime? @db.DateTime
+  AtualizadoPor    String?   @db.VarChar(255)
+
+  @@id([Coordenacao, Distrito])
 }
 
-model relatorioVisitaSupervisao {
-  id             Int    @id @default(autoincrement())
-  Nome           String @db.Text
-  Funcao         String @db.Text
-  CelulaVisitada String @db.VarChar(25)
-  Supervisao     Int
-  Coordenacao    Int
-  Distrito       Int
-  Data           String @db.Char(25)
-  Recepcao       String @db.Text
-  Etapas         String @db.Text
-  Estrutura      String @db.Text
-  Observacoes    String @db.Text
-  Mes            Int
-  Ano            Int
-  Ranking        String @db.VarChar(45)
+model cursos {
+  codigoCurso  BigInt  @id @default(0)
+  Curso        String  @db.VarChar(255)
+  imagemCurso  String? @db.VarChar(255)
+  PreRequisito Boolean @default(false)
+  Requisito    BigInt? @default(0)
+  inscricao    Boolean
 }
 
-model relSupervisao {
-  id             Int    @id @default(autoincrement())
-  Nome           String @db.Text
-  Funcao         String @db.Text
-  CelulaVisitada String @db.VarChar(25)
-  Supervisao     Int
-  Coordenacao    Int
-  Distrito       Int
-  Data           String @db.Char(25)
-  Necessidades   Json
-  Obstaculos     Json
-  Acao           Json
-  Mes            Int
-  Ano            Int
-  Progresso      String @db.VarChar(5)
-}
-
-model eventos {
-  id       Int    @id @default(autoincrement())
-  Data     String @db.VarChar(25)
-  Horario  String @db.VarChar(15)
-  Evento   String @db.Text
-  Local    String @db.Text
-  Distrito Int
-  Mes      Int
-  Ano      Int
-  Objetivo String @db.Text
-  Publico  String @db.VarChar(45)
-  Numero   Int
-  Funcao   String @db.VarChar(45)
-}
-
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model dicas {
   id   Int    @id @default(autoincrement())
   Dica String @db.Text
 }
 
-model boletim {
-  id         Int     @id @default(autoincrement())
-  ano        String? @db.VarChar(45)
-  semana     Int     @unique
-  titulo     String? @db.Text
-  introducao String? @db.Text
-  ponto1     String? @db.Text
-  conteudo1  String? @db.Text
-  ponto2     String? @db.Text
-  conteudo2  String? @db.Text
-  ponto3     String? @db.Text
-  conteudo3  String? @db.Text
-  ponto4     String? @db.Text
-  conteudo4  String? @db.Text
-  ponto5     String? @db.Text
-  conteudo5  String? @db.Text
-  ponto6     String? @db.Text
-  conteudo6  String? @db.Text
-  ponto7     String? @db.Text
-  conteudo7  String? @db.Text
-  ponto8     String? @db.Text
-  conteudo8  String? @db.Text
-  ponto9     String? @db.Text
-  conteudo9  String? @db.Text
-  ponto10    String? @db.Text
-  conteudo10 String? @db.Text
-  conclusao  String? @db.Text
+model distrito {
+  Distrito      Int       @id @default(0)
+  Distrito_Nome String    @db.VarChar(200)
+  Endereco      String?   @db.VarChar(250)
+  CriadoEm      DateTime? @db.DateTime
+  CriadoPor     String    @db.VarChar(150)
+  AtualizadoEm  DateTime? @db.DateTime
+  AtualizadoPor String?   @db.VarChar(255)
 }
 
-model avisos {
-  id         Int     @id @default(autoincrement())
-  semana     Int?
-  ano        String? @db.VarChar(45)
-  avisos1    String? @db.VarChar(255)
-  conteudo1  String? @db.VarChar(255)
-  avisos2    String? @db.VarChar(255)
-  conteudo2  String? @db.VarChar(255)
-  avisos3    String? @db.VarChar(255)
-  conteudo3  String? @db.VarChar(255)
-  avisos4    String? @db.VarChar(255)
-  conteudo4  String? @db.VarChar(255)
-  avisos5    String? @db.VarChar(255)
-  conteudo5  String? @db.VarChar(255)
-  avisos6    String? @db.VarChar(255)
-  conteudo6  String? @db.VarChar(255)
-  avisos7    String? @db.VarChar(255)
-  conteudo7  String? @db.VarChar(255)
-  avisos8    String? @db.VarChar(255)
-  conteudo8  String? @db.VarChar(255)
-  avisos9    String? @db.VarChar(255)
-  conteudo9  String? @db.VarChar(255)
-  avisos10   String? @db.VarChar(255)
-  conteudo10 String? @db.VarChar(255)
+model eventos {
+  id       Int      @id @default(autoincrement())
+  Data     DateTime @db.DateTime
+  Horario  String?  @db.VarChar(5)
+  Evento   String   @db.Text
+  Local    String?  @db.Text
+  Distrito Int?     @default(0)
+  Mes      Int?     @default(0)
+  Ano      Int?     @default(0)
+  Objetivo String?  @db.Text
+  Publico  String?  @db.VarChar(45)
+  Numero   Int?     @default(0)
+  Funcao   String?  @db.VarChar(100)
 }
 
-model inscricoes {
-  id         Int    @id @default(autoincrement())
-  Nome       String @db.Text
-  Tipo       String @db.VarChar(255)
-  Inicio     String @db.VarChar(25)
-  valor      String @db.VarChar(25)
-  Fim        String @db.VarChar(25)
-  Imagem     String @db.VarChar(255)
-  DataEvento String @db.VarChar(255)
-  Local      String @db.VarChar(255)
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model eventosCelulas {
+  id        Int      @id @default(autoincrement())
+  Data      DateTime @db.DateTime
+  Evento    String   @db.Text
+  Local     String   @db.Text
+  Objetivo  String   @db.Text
+  Descricao String   @db.VarChar(255)
+  Ano       Int      @default(0)
+  Mes       Int      @default(0)
+  Horario   String   @db.VarChar(5)
+  Celula    Int      @default(0)
+  Distrito  Int      @default(0)
+  CriadoEm  DateTime @db.DateTime
+}
+
+model eventosGeral {
+  id         Int       @id @default(autoincrement())
+  Evento     String    @db.Text
+  Distrito   Int?      @default(0)
+  DataIni    DateTime  @db.DateTime
+  DataFim    DateTime  @db.DateTime
+  LogoEvento String    @db.VarChar(500)
+  nomeEvento String    @db.VarChar(300)
+  inscricao  Boolean
+  DataEvento DateTime? @db.Date
+}
+
+model funcao {
+  id     Int    @id @default(autoincrement())
+  Funcao String @db.VarChar(100)
+}
+
+model igreja {
+  id              Int       @id @default(autoincrement())
+  codigo          String    @db.VarChar(20)
+  nome            String    @db.Text
+  foneSecretaria  String?   @db.VarChar(15)
+  contatoWhatsApp String?   @db.VarChar(15)
+  foneFinanceiro  String?   @db.VarChar(15)
+  corPrimaria     String?   @db.Text
+  corSecundaria   String?   @db.Text
+  img01           String?   @db.VarChar(500)
+  img02           String?   @db.VarChar(500)
+  img03           String?   @db.VarChar(500)
+  faceBook        String?   @db.Text
+  youTube         String?   @db.Text
+  instagram       String?   @db.Text
+  googloMap       String?   @db.Text
+  cnpj            String    @db.VarChar(18)
+  CriadoEm        DateTime? @db.DateTime
+  CriadoPor       String?   @db.VarChar(150)
+  AtualizadoEm    DateTime? @db.DateTime
+  AtualizadoPor   String?   @db.VarChar(255)
+}
+
+model inscritosCursos {
+  id              Int       @unique @default(autoincrement())
+  idTurma         BigInt    @default(0)
+  codigoCurso     BigInt    @default(0)
+  Curso           String    @db.VarChar(255)
+  DataCurso       DateTime  @db.DateTime
+  Documento       String    @default("0") @db.VarChar(50)
+  RolMembro       Int       @default(0)
+  Nome            String    @db.VarChar(255)
+  Nascimento      DateTime? @db.Date
+  Contato         String?   @db.VarChar(20)
+  Email           String?   @db.VarChar(255)
+  Igreja          String    @db.VarChar(20)
+  Status          String?   @db.VarChar(50)
+  Nota            String?   @db.VarChar(45)
+  Frequencia      String?   @db.VarChar(45)
+  Situacao        String?   @db.VarChar(50)
+  CreatedAt       DateTime  @db.DateTime
+  CriadoPor       String?   @db.VarChar(150)
+  valor_pago      Decimal?  @default(0) @db.Decimal(10, 2)
+  data_pagamento  DateTime? @db.Date
+  forma_pagamento String?   @db.VarChar(50)
+  participante    String?   @db.VarChar(50)
+
+  @@id([codigoCurso, Documento, RolMembro])
+}
+
+model inscritosEventosGeral {
+  id              Int       @unique @default(autoincrement())
+  idEvento        Int       @default(0)
+  Evento          String?   @db.Text
+  Identificador   String    @db.VarChar(45)
+  Nome            String    @db.VarChar(255)
+  Nascimento      DateTime? @db.Date
+  Contato         String?   @db.VarChar(20)
+  Email           String?   @db.VarChar(255)
+  Igreja          String    @db.VarChar(20)
+  Status          String    @db.VarChar(50)
+  RolMembro       Int       @default(0)
+  CreatedAt       DateTime  @db.DateTime
+  Distrito        Int?      @default(0)
+  participante    String    @db.VarChar(50)
+  Documento       String    @default("0") @db.VarChar(50)
+  valor_pago      Decimal?  @default(0) @db.Decimal(10, 2)
+  forma_pagamento String?   @db.VarChar(50)
+  data_pagamento  DateTime? @db.Date
+
+  @@id([idEvento, RolMembro, Documento])
+}
+
+model lideranca {
+  Funcao        String    @db.VarChar(100)
+  Nome          String    @db.VarChar(255)
+  Nascimento    DateTime? @db.Date
+  RolMembro     Int       @default(0)
+  Email         String?   @db.VarChar(255)
+  Celula        Int       @default(0)
+  CriadoEm      DateTime? @db.DateTime
+  CriadoPor     String?   @db.VarChar(150)
+  AtualizadoEm  DateTime? @db.DateTime
+  AtualizadoPor String?   @db.VarChar(255)
+  Sexo          String?   @db.VarChar(10)
+  Distrito      Int       @default(0)
+  Coordenacao   Int       @default(0)
+  Supervisao    Int       @default(0)
+  id            Int       @unique @default(autoincrement())
+  foto          String?   @db.VarChar(500)
+  Igreja        String    @db.VarChar(20)
+  Nucleo        BigInt?   @default(0)
+  idTurma       BigInt?   @default(0)
+
+  @@id([RolMembro, Distrito, Coordenacao, Supervisao, Celula, Funcao])
+}
+
+model membros {
+  id                Int?
+  Igreja            String    @db.VarChar(20)
+  Nome              String    @db.VarChar(255)
+  foto              String?   @db.VarChar(500)
+  Celula            Int       @default(0)
+  Distrito          Int?      @default(0)
+  Coordenacao       Int?      @default(0)
+  Supervisao        Int?      @default(0)
+  Discipulador      String?   @db.VarChar(145)
+  RolMembro         Int       @id @default(0)
+  TelCelular        String?   @db.VarChar(25)
+  TelFixo           String?   @db.VarChar(25)
+  Email             String?   @db.VarChar(255)
+  Sexo              String?   @db.VarChar(15)
+  EstadoCivil       String?   @db.VarChar(45)
+  Nascimento        DateTime? @db.Date
+  Naturalidade      String?   @db.VarChar(255)
+  Situacao          String    @db.VarChar(50)
+  MOTIVO            String?   @db.VarChar(245)
+  Conversao         DateTime? @db.Date
+  Batismo           DateTime? @db.Date
+  CEP               String?   @db.VarChar(10)
+  Logradouro        String?   @db.VarChar(255)
+  Bairro            String?   @db.VarChar(255)
+  Numero            Int?      @default(0)
+  Complemento       String?   @db.VarChar(255)
+  Localidade        String?   @db.VarChar(255)
+  UF                String?   @db.VarChar(25)
+  CPF               String?   @default("0") @db.VarChar(14)
+  RG                String?   @db.VarChar(25)
+  FormacaoAcademica String?   @db.VarChar(255)
+  Profissao         String?   @db.VarChar(255)
+  Pai               String?   @db.VarChar(255)
+  Mae               String?   @db.VarChar(255)
+  CriadoEm          DateTime? @db.DateTime
+  AtualizadoEm      DateTime? @db.DateTime
+  AtualizadoPor     String?   @db.VarChar(255)
+  CriadoPor         String?   @db.VarChar(150)
+  idFuncao          BigInt?   @default(0)
+  Funcao            String?   @db.VarChar(100)
+  GrauMinisterial   String?   @db.VarChar(255)
+  idNucleo          BigInt?
+  nomeNucleo        String?   @db.VarChar(255)
+  senha             String?   @db.VarChar(255)
+}
+
+model mensagem {
+  Data     DateTime @id @db.DateTime
+  titulo   String   @db.VarChar(255)
+  Mensagem String   @db.Text
+  Autor    String   @db.VarChar(250)
+  Distrito Int?     @default(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model plancelula {
+  id            Int      @id @default(autoincrement())
+  Anfitriao     String   @db.VarChar(255)
+  Multiplicacao String   @db.VarChar(25)
+  Horario       String   @db.VarChar(5)
+  Fase          String   @db.Text
+  Semana        Int      @default(0)
+  Data          DateTime @db.DateTime
+  Celula        Int      @default(0)
+  Supervisao    Int      @default(0)
+  Coordenacao   Int      @default(0)
+  Distrito      Int      @default(0)
+  Encontro      String   @db.Text
+  Exaltacao     String   @db.Text
+  Edificacao    String   @db.Text
+  Evangelismo   String   @db.Text
+  Lanche        String   @db.Text
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model pontuacao {
+  id         Int      @id @default(autoincrement())
+  Semana     Int      @default(0)
+  Ano        Int      @default(0)
+  Celula     Int      @default(0)
+  Supervisao Int      @default(0)
+  Distrito   Int      @default(0)
+  Pontuacao  String   @db.VarChar(4000)
+  TotalRank  Decimal  @default(0) @db.Decimal(10, 2)
+  Total      String   @db.VarChar(25)
+  CriadoPor  String   @db.VarChar(150)
+  CriadoEm   DateTime @db.DateTime
 }
 
 model radio {
-  id         Int    @unique @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   url        String @db.VarChar(255)
   label      String @db.VarChar(255)
   compositor String @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model relatorioCelebracao {
+  id              Int       @id @default(autoincrement())
+  Semana          Int       @default(0)
+  Data            DateTime  @db.DateTime
+  Celula          Int       @default(0)
+  Distrito        Int       @default(0)
+  NomesMembros    String    @db.VarChar(4000)
+  NomesVisitantes String?   @db.VarChar(4000)
+  Adultos         Int?      @default(0)
+  Criancas        Int?      @default(0)
+  Visitantes      Int?      @default(0)
+  Conversoes      Int?      @default(0)
+  Observacoes     String?   @db.VarChar(4000)
+  CriadoPor       String?   @db.VarChar(150)
+  CriadoEm        DateTime? @db.DateTime
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model relatorioCelulas {
+  id               Int       @id @default(autoincrement())
+  Celula           Int       @default(0)
+  Distrito         Int       @default(0)
+  Semana           Int       @default(0)
+  Data             DateTime  @db.DateTime
+  NomesMembros     String    @db.VarChar(4000)
+  NomesVisitantes  String?   @db.NVarChar(Max)
+  Adultos          Int?      @default(0)
+  Criancas         Int?      @default(0)
+  Visitantes       Int?      @default(0)
+  PresentesEventos Int?      @default(0)
+  Visitas          Int?      @default(0)
+  Conversoes       Int?      @default(0)
+  Observacoes      String?   @db.VarChar(4000)
+  CriadoPor        String?   @db.VarChar(150)
+  CriadoEm         DateTime? @db.DateTime
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model relatorioDiscipulado {
+  id             Int       @id @default(autoincrement())
+  Celula         Int       @default(0)
+  Distrito       Int       @default(0)
+  Semana         Int       @default(0)
+  Data           DateTime  @db.DateTime
+  Adultos        Int?      @default(0)
+  Criancas       Int?      @default(0)
+  NomesMembros   String    @db.VarChar(4000)
+  LeituraBiblica Int?      @default(0)
+  Observacoes    String?   @db.VarChar(4000)
+  CriadoPor      String?   @db.VarChar(150)
+  CriadoEm       DateTime? @db.DateTime
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model relatorioVisitaSupervisao {
+  id             Int      @id @default(autoincrement())
+  Nome           String   @db.VarChar(255)
+  Funcao         String   @db.VarChar(100)
+  CelulaVisitada String   @db.VarChar(25)
+  Supervisao     Int      @default(0)
+  Coordenacao    Int      @default(0)
+  Distrito       Int      @default(0)
+  Data           DateTime @db.DateTime
+  Recepcao       String   @db.Text
+  Etapas         String   @db.Text
+  Estrutura      String   @db.Text
+  Observacoes    String   @db.VarChar(4000)
+  Mes            Int      @default(0)
+  Ano            Int      @default(0)
+  Ranking        String   @db.VarChar(45)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model relSupervisao {
+  id               Int      @id @default(autoincrement())
+  Nome             String   @db.VarChar(255)
+  Funcao           String   @db.VarChar(100)
+  CelulaVisitada   Int      @default(0)
+  Supervisao       Int      @default(0)
+  Coordenacao      Int      @default(0)
+  Distrito         Int      @default(0)
+  Data             DateTime @db.DateTime
+  Avaliacoes       String   @db.VarChar(4000)
+  Presentes        String   @db.VarChar(4000)
+  Mes              Int      @default(0)
+  Ano              Int      @default(0)
+  MembrosVisitados Int      @default(0)
+}
+
+model TB_CATEGORIA {
+  CAT_ID   BigInt @id
+  CAT_NOME String @db.VarChar(100)
+  GC_ID    BigInt
+}
+
+model TB_CENTRO_CUSTO {
+  CC_ID   BigInt @id @default(autoincrement())
+  CC_NOME String @db.VarChar(100)
+}
+
+model TB_CONTA {
+  CT_ID   BigInt @id @default(autoincrement())
+  CT_NOME String @db.VarChar(100)
+}
+
+model TB_CORRENTISTA {
+  COR_ID       BigInt  @id @default(autoincrement())
+  COR_NOME     String  @db.VarChar(200)
+  COR_TIPO_DOC String? @db.VarChar(14)
+  COR_NUM_DOC  String? @db.VarChar(50)
+  COR_ENDERECO String? @db.VarChar(100)
+  COR_BAIRRO   String? @db.VarChar(100)
+  COR_CIDADE   String? @db.VarChar(100)
+  COR_EMAIL    String? @db.VarChar(100)
+}
+
+model TB_GRUPO_CATEGORIA {
+  GC_ID   BigInt @id @default(autoincrement())
+  GC_NOME String @db.VarChar(100)
+}
+
+model TB_LANCAMENTO {
+  LANC_ID                 BigInt    @id @default(autoincrement())
+  LANC_DESCRICAO          String?   @db.VarChar(100)
+  LANC_DATA               DateTime  @db.Date
+  LANC_TIPO               String?   @db.VarChar(100)
+  LANC_VALOR              Decimal   @default(0) @db.Decimal(10, 2)
+  LANC_PAGO               Boolean
+  LANC_DATA_HORA_INCLUSAO DateTime? @db.DateTime
+  COR_ID                  BigInt?
+  CAT_ID                  BigInt
+  CT_ID                   BigInt
+  CC_ID                   BigInt
+  nota_recibo             String?   @db.VarChar(500)
+  id_membro               BigInt?   @default(0)
+  tipo_ofertante          Boolean
+  plano_conta             String?   @db.VarChar(20)
+  forma_pagamento         String?   @db.VarChar(50)
+}
+
+model TB_LOGIN_DEVICE {
+  LOGIN_DEVICE_ID           String   @id @db.VarChar(255)
+  LOGIN_USER_LOGIN          String?  @db.VarChar(40)
+  LOGIN_DEVICE_TYPE         Int      @default(0) @db.SmallInt
+  LOGIN_DEVICE_REGISTRATION DateTime @db.DateTime
+}
+
+model TB_LOGIN_GROUP {
+  LOGIN_GROUP_NAME     String          @id @db.VarChar(60)
+  LOGIN_GROUP_IS_ADMIN Boolean
+  TB_LOGIN_RULE        TB_LOGIN_RULE[]
+  TB_LOGIN_USER        TB_LOGIN_USER[]
+}
+
+model TB_LOGIN_RULE {
+  LOGIN_RULE_PROJECT     String         @db.VarChar(8)
+  LOGIN_GROUP_NAME       String         @db.VarChar(60)
+  LOGIN_RULE_OBJECT      String         @db.VarChar(100)
+  LOGIN_RULE_PERMISSIONS String         @db.VarChar(100)
+  TB_LOGIN_GROUP         TB_LOGIN_GROUP @relation(fields: [LOGIN_GROUP_NAME], references: [LOGIN_GROUP_NAME])
+
+  @@id([LOGIN_RULE_PROJECT, LOGIN_GROUP_NAME, LOGIN_RULE_OBJECT])
+}
+
+model TB_LOGIN_TOKEN {
+  LOGIN_TOKEN_ID         String        @id @db.VarChar(36)
+  LOGIN_USER_LOGIN       String        @db.VarChar(40)
+  LOGIN_TOKEN_ACQUIRED   DateTime      @db.DateTime
+  LOGIN_TOKEN_EXPIRATION DateTime      @db.DateTime
+  TB_LOGIN_USER          TB_LOGIN_USER @relation(fields: [LOGIN_USER_LOGIN], references: [LOGIN_USER_LOGIN])
+}
+
+model TB_LOGIN_USER {
+  LOGIN_GROUP_NAME    String           @db.VarChar(60)
+  LOGIN_USER_LOGIN    String           @id @db.VarChar(40)
+  LOGIN_USER_PASSWORD String           @db.VarChar(40)
+  LOGIN_USER_NAME     String           @db.VarChar(60)
+  LOGIN_USER_OBS      String           @db.Text
+  TB_LOGIN_GROUP      TB_LOGIN_GROUP   @relation(fields: [LOGIN_GROUP_NAME], references: [LOGIN_GROUP_NAME])
+  TB_LOGIN_TOKEN      TB_LOGIN_TOKEN[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model TB_PARAMETRO {
+  PAR_CAT_TRANSF BigInt @id @default(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model TB_SALDO_INICAL {
+  ano   Int     @default(0) @db.SmallInt
+  valor Decimal @default(0) @db.Decimal(10, 2)
+  Mes   Int     @default(0)
+
+  @@id([ano, Mes])
+}
+
+model TB_TRANSFERENCIA {
+  TF_ID                 BigInt   @id @default(autoincrement())
+  TF_DESCRICAO          String   @db.VarChar(100)
+  TF_DATA               DateTime @db.Date
+  TF_CT_ORIGEM          BigInt   @default(0)
+  TF_CT_DESTINO         BigInt   @default(0)
+  TF_VALOR              Decimal  @default(0) @db.Decimal(10, 2)
+  TF_DATA_HORA_INCLUSAO DateTime @db.DateTime
+  CAT_ID                BigInt
+}
+
+model turma {
+  idTurma          BigInt   @id @default(autoincrement())
+  codigoCurso      BigInt   @default(0)
+  Curso            String   @db.VarChar(255)
+  DataCurso        DateTime @db.DateTime
+  imagemCurso      String?  @db.VarChar(255)
+  PreRequisito     Boolean? @default(false)
+  Requisito        BigInt?  @default(0)
+  inicioDivulgacao DateTime @db.DateTime
+  fimDivulgacao    DateTime @db.DateTime
+  valor            Decimal? @default(0) @db.Decimal(10, 2)
+  Distrito         Int?     @default(0)
+  Professor        String?  @db.VarChar(255)
+  Email            String?  @db.VarChar(255)
+  RolMembro        Int?     @default(0)
+  Status           String   @db.VarChar(50)
+}
+
+model visitantes {
+  id         Int      @id @default(autoincrement())
+  Celula     Int      @default(0)
+  Distrito   Int      @default(0)
+  Nome       String   @db.VarChar(255)
+  Contato    String   @db.VarChar(20)
+  Nascimento DateTime @db.Date
+  CriadoPor  String   @db.VarChar(150)
+  CriadoEm   DateTime @db.DateTime
+}
+
+model supervisao {
+  Supervisao      Int       @default(0)
+  Supervisao_Nome String    @db.VarChar(100)
+  CriadoEm        DateTime? @db.DateTime
+  CriadoPor       String    @db.VarChar(150)
+  AtualizadoEm    DateTime? @db.DateTime
+  AtualizadoPor   String?   @db.VarChar(255)
+  Coordenacao     Int       @default(0)
+  Distrito        Int       @default(0)
+
+  @@id([Supervisao, Coordenacao, Distrito])
+}
+
+model cursosConcluidos {
+  codigoCurso BigInt   @default(0)
+  Curso       String   @db.VarChar(255)
+  RolMembro   Int      @default(0)
+  Nome        String   @db.VarChar(255)
+  Data        DateTime @db.DateTime
+  id          Int      @id @default(autoincrement())
+  idTurma     BigInt?  @default(0)
+}
+
+model Nucleos {
+  nomeNucleo String  @db.VarChar(255)
+  Endereco   String? @db.VarChar(250)
+  idNucleo   BigInt  @id
+}
+
+model agenda_igreja {
+  id_agenda BigInt   @id @default(autoincrement())
+  Descricao String   @db.VarChar(255)
+  Objetivo  String?  @db.Text
+  DataIni   DateTime @db.DateTime
+  DataFim   DateTime @db.DateTime
+}
+
+model TB_PLANO_CONTA {
+  codigo     String   @id @db.VarChar(20)
+  Descricao  String?  @db.VarChar(255)
+  Reduz      String?  @default("0") @db.VarChar(20)
+  analitica  Boolean?
+  patrimonio Boolean?
+  natureza   String?  @db.VarChar(100)
 }

@@ -1,32 +1,28 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
-import Dialog from '@mui/material/Dialog';
-import IconButton from '@mui/material/IconButton';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {
-  MdOutlineArrowLeft,
-  MdOutlineArrowRight,
-  MdOutlineOndemandVideo,
-} from 'react-icons/md';
-import TableContainer from '@mui/material/TableContainer';
-import Slide from '@mui/material/Slide';
-import VideosMensagem from './videoMensagem';
 
-const Transition = React.forwardRef((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
+import IconButton from '@mui/material/IconButton';
+
+import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
+import TableContainer from '@mui/material/TableContainer';
+
 function Mensagem({ mensagem }) {
   const [boletim, setBoletim] = React.useState('');
+  const [dataBr, setDataBr] = React.useState('');
   const d = new Date();
   const anoAtual = Number(d.getFullYear());
   const [contFonte, setContFonte] = React.useState(16);
   const [contSemana, setContSemana] = React.useState(mensagem.length);
   const [contSemanaFix] = React.useState(mensagem.length);
   const [contAno, setContAno] = React.useState(anoAtual);
-  const [openTutorial, setOpenTutorial] = React.useState(false);
+
+  // const diaBr = Number(d.getDate());
+  // const mesBr = Number(d.getMonth());
+  // const anoBr = Number(d.getFullYear());
+  // const dataBr = `${diaBr}/${mesBr}/${anoBr}`;
+
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
     if (contSemanaAtual > contSemanaFix) {
@@ -45,7 +41,7 @@ function Mensagem({ mensagem }) {
 
   const handleIncFonte = () => {
     let contFonteAtual = contFonte + 1;
-    if (contFonteAtual > 100) contFonteAtual = 100;
+    if (contFonteAtual > 24) contFonteAtual = 24;
     setContFonte(contFonteAtual);
   };
 
@@ -58,73 +54,27 @@ function Mensagem({ mensagem }) {
 
   React.useEffect(() => {
     setBoletim(mensagem[contSemana - 1]);
+    const diaSemana = [
+      'Domingo',
+      'Segunda',
+      'Terça',
+      'Quarta',
+      'Quinta',
+      'Sexta',
+      'Sábado',
+    ];
+    const diaMensagem = new Date(mensagem[contSemana - 1].Data);
+    diaMensagem.setHours(diaMensagem.getHours() + 6);
+
+    const diaSm = Number(diaMensagem.getDay());
+    const diaBr = Number(diaMensagem.getDate());
+    let mesBr = Number(diaMensagem.getMonth() + 1);
+    if (mesBr < 10) mesBr = `0${mesBr}`;
+    const anoBr = Number(diaMensagem.getFullYear());
+    const dataBrTemp = `${diaSemana[diaSm]}  ${diaBr}/${mesBr}/${anoBr}`;
+
+    setDataBr(dataBrTemp);
   }, [contSemana]);
-
-  React.useEffect(() => {
-    toast(
-      (t) => (
-        <Box>
-          <Button
-            onClick={() => {
-              toast.info(t.id);
-              setOpenTutorial(true);
-            }}
-          >
-            Ver Tutorial dessa Tela{' '}
-          </Button>
-        </Box>
-      ),
-      {
-        icon: <MdOutlineOndemandVideo color="blue" size={35} />,
-      },
-    );
-  }, []);
-
-  const ponto = [];
-  const conteudo = [];
-  if (!ponto.length && boletim) {
-    if (boletim.ponto1) {
-      ponto[0] = boletim.ponto1;
-      conteudo[0] = boletim.conteudo1;
-    }
-    if (boletim.ponto1) {
-      ponto[1] = boletim.ponto2;
-      conteudo[1] = boletim.conteudo2;
-    }
-
-    if (boletim.ponto3) {
-      ponto[2] = boletim.ponto3;
-      conteudo[2] = boletim.conteudo3;
-    }
-    if (boletim.ponto4) {
-      ponto[3] = boletim.ponto4;
-      conteudo[3] = boletim.conteudo4;
-    }
-    if (boletim.ponto5) {
-      ponto[4] = boletim.ponto5;
-      conteudo[4] = boletim.conteudo5;
-    }
-    if (boletim.ponto6) {
-      ponto[5] = boletim.ponto6;
-      conteudo[5] = boletim.conteudo6;
-    }
-    if (boletim.ponto7) {
-      ponto[6] = boletim.ponto7;
-      conteudo[6] = boletim.conteudo7;
-    }
-    if (boletim.ponto8) {
-      ponto[7] = boletim.ponto8;
-      conteudo[7] = boletim.conteudo8;
-    }
-    if (boletim.ponto9) {
-      ponto[8] = boletim.ponto9;
-      conteudo[8] = boletim.conteudo9;
-    }
-    if (boletim.ponto10) {
-      ponto[9] = boletim.ponto10;
-      conteudo[9] = boletim.conteudo10;
-    }
-  }
 
   return (
     <Box
@@ -158,151 +108,156 @@ function Mensagem({ mensagem }) {
             backgroundSize: 'cover',
           }}
           display="flex"
+          flexDirection="column"
           height="15vh"
           minHeight={120}
+          width="100%"
         >
           <Box
-            style={{
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
-              backgroundImage: `url('/images/mensagem2.png')`,
-              backgroundPosition: 'center', // centraliza imagem
-              backgroundSize: 'cover',
-            }}
+            width="99%"
+            mt={5}
+            color="white"
+            fontSize="25px"
+            fontFamily="Fugaz One"
             display="flex"
-            flexDirection="column"
-            height="15vh"
-            width="100%"
-            minHeight={90}
+            justifyContent="center"
           >
-            <Box
-              ml={2}
-              height="70%"
-              width="50%"
-              alignItems="flex-end"
-              display="flex"
-              color="white"
-              fontSize="36px"
-              fontFamily="Fugaz One"
-              justifyContent="flex-start"
-            >
+            <Box width="86%" textAlign="center">
               MENSAGEM
             </Box>
-
             <Box
-              mt="1vw"
-              height="30%"
-              width="100%"
+              height="100%"
+              width="12%"
               display="flex"
               justifyContent="flex-end"
             >
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                width="100%"
-                height="100%"
-              >
+              <IconButton onClick={() => handleIncFonte()}>
                 <Box
-                  mt={0}
-                  ml="0vw"
                   style={{
                     color: 'white',
                     fontFamily: 'arial black',
-                    fontSize: '12px',
+                    fontSize: '16px',
                   }}
+                  display="flex"
+                  justifyContent="flex-end"
                   width="100%"
                 >
-                  <Box
-                    display="flex"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    width="100%"
-                    maxWidth={500}
-                    ml={-1}
-                    height="100%"
-                  >
-                    <MdOutlineArrowLeft
-                      cursor="pointer"
-                      size={55}
-                      color="white"
-                      onClick={() => handleDecSemana()}
-                    />
-                    <Box
-                      width="50%"
-                      display="flex"
-                      justifyContent="center"
-                      textAlign="center"
-                      fontFamily="Fugaz One"
-                      color="white"
-                      mt={0}
-                    >
-                      {boletim ? (
-                        <Box display="flex">
-                          Domingo
-                          <Box ml={1}>{boletim.ano} </Box>
-                        </Box>
-                      ) : (
-                        'Não encontrado'
-                      )}
-                    </Box>
-                    <MdOutlineArrowRight
-                      cursor="pointer"
-                      size={55}
-                      color="white"
-                      onClick={() => {
-                        handleIncSemana();
-                      }}
-                    />
-                  </Box>
+                  A+
                 </Box>
-                <Box height="100%" width="20%" display="flex">
+              </IconButton>
+            </Box>
+          </Box>
+
+          <Box
+            height="100%"
+            flexDirection="column"
+            width="100%"
+            display="flex"
+            justifyContent="flex-end"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="98%"
+              height="100%"
+            >
+              <Box
+                height="100%"
+                style={{
+                  color: 'white',
+                  fontFamily: 'arial black',
+                  fontSize: '12px',
+                }}
+                width="80%"
+              >
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  ml={2}
+                  height="100%"
+                >
                   <Box
-                    mt={0}
-                    ml="-2vw"
                     height="100%"
-                    width="30%"
+                    width="10%"
                     display="flex"
                     justifyContent="flex-end"
                   >
-                    <IconButton onClick={() => handleIncFonte()}>
+                    <IconButton onClick={() => handleDecSemana()}>
                       <Box
+                        mt={-1}
                         style={{
                           color: 'white',
                           fontFamily: 'arial black',
                           fontSize: '16px',
                         }}
                         display="flex"
-                        justifyContent="flex-end"
                         width="100%"
                       >
-                        A+
+                        <MdOutlineArrowLeft size={55} color="white" />
                       </Box>
                     </IconButton>
                   </Box>
-                  <Box ml={2} />
                   <Box
-                    mt={0}
+                    width="80%"
+                    fontFamily="Fugaz One"
+                    color="white"
+                    mt={-0.3}
+                    ml={-3}
+                    display="flex"
+                    justifyContent="center"
+                  >
+                    {dataBr ? `${dataBr}` : 'Não encontrado'}
+                  </Box>
+                  <Box
+                    width="10%"
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <IconButton onClick={() => handleDecFonte()}>
+                    <IconButton onClick={() => handleIncSemana()}>
                       <Box
+                        mt={-1}
                         style={{
                           color: 'white',
                           fontFamily: 'arial black',
-                          fontSize: '16px',
+                          fontSize: '14px',
                         }}
                         display="flex"
                         justifyContent="flex-end"
                         width="100%"
                       >
-                        A-
+                        <MdOutlineArrowRight size={55} color="white" />
                       </Box>
                     </IconButton>
                   </Box>
-                </Box>
+                </Box>{' '}
+              </Box>
+              <Box width="8%" />
+              <Box
+                height="100%"
+                width="12%"
+                display="flex"
+                justifyContent="flex-end"
+              >
+                <IconButton onClick={() => handleDecFonte()}>
+                  <Box
+                    ml={0}
+                    mr={0}
+                    style={{
+                      color: 'white',
+                      fontFamily: 'arial black',
+                      fontSize: '16px',
+                    }}
+                    display="flex"
+                    justifyContent="flex-end"
+                    width="100%"
+                  >
+                    A-
+                  </Box>
+                </IconButton>
               </Box>
             </Box>
           </Box>
@@ -331,98 +286,20 @@ function Mensagem({ mensagem }) {
                     <Box width="90%" color="black">
                       <Box width="100%">
                         <Box
-                          mt={2}
-                          mb={2}
-                          textAlign="center"
-                          style={{
-                            fontFamily: 'Fugaz One',
-                            fontSize: contFonte + 2,
-                            width: '100%',
-                          }}
-                        >
-                          {boletim && boletim.titulo}
-                        </Box>
-
-                        <Box
-                          fontSize={contFonte + 1}
-                          textAlign="center"
-                          mb={1}
-                          fontFamily="Fugaz One"
-                        >
-                          {boletim && 'INTRODUÇÃO'}
-                        </Box>
-                        <Box
                           mb={3}
                           fontFamily="Rubik"
                           fontSize={contFonte}
                           sx={{ textAlign: 'justify', textIndent: '30px' }}
                         >
-                          {boletim && boletim.introducao}
+                          <section
+                            className="not-found-controller"
+                            dangerouslySetInnerHTML={{
+                              __html: boletim.Mensagem,
+                            }}
+                          />
                         </Box>
 
                         <Box width="100%" height="100%">
-                          {ponto.length &&
-                            ponto.map((row, index) => (
-                              <Box key={index} mb={3} width="100%">
-                                <Box
-                                  ml={0}
-                                  sx={{
-                                    textAlign: 'justify',
-                                    textIndent: '0px',
-                                  }}
-                                  width="100%"
-                                  display="flex"
-                                  fontSize={contFonte}
-                                >
-                                  <Box ml={0}>
-                                    {ponto[index].substring(
-                                      0,
-                                      ponto[index].indexOf(' '),
-                                    )}{' '}
-                                  </Box>
-
-                                  <Box ml={1}>
-                                    {ponto[index]
-                                      .toUpperCase()
-                                      .substring(
-                                        ponto[index].indexOf(' '),
-                                      )}{' '}
-                                  </Box>
-                                </Box>
-                                <Box
-                                  fontFamily="Rubik"
-                                  fontSize={contFonte}
-                                  ml={0}
-                                  mt={1}
-                                  sx={{
-                                    textAlign: 'justify',
-                                    textIndent: '30px',
-                                  }}
-                                >
-                                  {row && conteudo[index]}
-                                </Box>
-                              </Box>
-                            ))}
-
-                          <Box
-                            fontSize={contFonte + 1}
-                            textAlign="center"
-                            mb={1}
-                            fontFamily="Fugaz One"
-                          >
-                            {boletim &&
-                              boletim &&
-                              boletim.conclusao &&
-                              'CONCLUSÃO'}
-                          </Box>
-                          <Box
-                            mb={3}
-                            fontFamily="Rubik"
-                            fontSize={contFonte}
-                            sx={{ textAlign: 'justify', textIndent: '30px' }}
-                          >
-                            {boletim && boletim.conclusao}
-                          </Box>
                           <Box
                             mt={0}
                             width="100%"
@@ -461,8 +338,6 @@ function Mensagem({ mensagem }) {
                                 display="flex"
                                 fontSize={contFonte}
                               >
-                                <Box ml={1}>1.</Box>
-
                                 <Box width="85%" ml={1}>
                                   Qual foi a afirmação ou versículo mais
                                   importante que você aprendeu com esta
@@ -508,20 +383,6 @@ function Mensagem({ mensagem }) {
           </Box>
         </TableContainer>
       </Box>
-      <Dialog fullScreen open={openTutorial} TransitionComponent={Transition}>
-        <VideosMensagem setOpenTutorial={setOpenTutorial} />
-      </Dialog>
-      <ToastContainer
-        position="top-center"
-        autoClose={10000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </Box>
   );
 }

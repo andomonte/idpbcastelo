@@ -95,8 +95,20 @@ export const getStaticProps = async () => {
   return {
     props: {
       celulas: JSON.parse(JSON.stringify(celulas)),
-      rolMembros: JSON.parse(JSON.stringify(rolMembros)),
-      lideranca: JSON.parse(JSON.stringify(lideranca)),
+      rolMembros: JSON.parse(
+        JSON.stringify(
+          rolMembros,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
+      lideranca: JSON.parse(
+        JSON.stringify(
+          lideranca,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
       visitantes: JSON.parse(JSON.stringify(visitantes)),
     }, // will be passed to the pperfilUser component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build

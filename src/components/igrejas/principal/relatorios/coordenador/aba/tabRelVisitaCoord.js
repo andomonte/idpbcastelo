@@ -10,19 +10,19 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import ConverteData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function TabCelula({
   setSendResumo,
   setDadosRelVisita,
-
   numeroSuper,
   Mes,
   Ano,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
+  console.log('oi');
   const [relEncontrado, setRelEncontrado] = React.useState([]);
   const [rel, setRel] = React.useState('nada');
 
@@ -41,9 +41,9 @@ export default function TabCelula({
       setRel(sem1);
       if (sem1 && sem1[0]) {
         const listaRelSuper = sem1.filter(
-          (val) => Number(val.Supervisao) === Number(numeroSuper),
+          (val) => Number(val.Coordenacao) === Number(numeroSuper),
         );
-
+        console.log('ola data', listaRelSuper, sem1);
         if (listaRelSuper && listaRelSuper.length) {
           const listaMinhaVisitas = listaRelSuper.sort((a, b) => {
             if (new Date(a.Data) > new Date(b.Data)) return 1;
@@ -165,7 +165,7 @@ export default function TabCelula({
                       }}
                     >
                       {relEncontrado[index].Data
-                        ? relEncontrado[index].Data
+                        ? ConverteData(relEncontrado[index].Data)
                         : '-'}
                     </Box>
                     <Box

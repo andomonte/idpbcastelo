@@ -15,6 +15,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-toastify/dist/ReactToastify.css';
 import useSWR, { mutate } from 'swr';
+import moment from 'moment';
+import FormatarData from 'src/utils/formatoData';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -216,7 +218,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
     dadosUser[0].Discipulador,
   );
   const [validarDiscipulador, setValidarDiscipulador] = React.useState('sim');
-  const [batismo, setBatismo] = React.useState(dadosUser[0].Batismo);
+  const [batismo, setBatismo] = React.useState('');
   const [validarBatismo, setValidarBatismo] = React.useState('sim');
   const [profissao, setProfissao] = React.useState(dadosUser[0].Profissao);
   const [validarProfissao, setValidarProfissao] = React.useState('sim');
@@ -242,8 +244,17 @@ function DadosGerais({ rolMembros, perfilUser }) {
       setNomeMae(data[0].Mae);
       setFormacaoAcademica(data[0].FormacaoAcademica);
       setProfissao(data[0].Profissao);
-      setConversao(data[0].Conversao);
-      setBatismo(data[0].Batismo);
+
+      setConversao(
+        data[0].Conversao
+          ? moment(data[0].Conversao.substring(0, 10)).format('DD/MM/YYYY')
+          : '',
+      );
+      setBatismo(
+        data[0].Batismo
+          ? moment(data[0].Batismo.substring(0, 10)).format('DD/MM/YYYY')
+          : '',
+      );
       setDiscipulador(data[0].Discipulador);
     }
     if (error) return <div>An error occured.</div>;
@@ -257,14 +268,15 @@ function DadosGerais({ rolMembros, perfilUser }) {
   //--------------------------------------------------------------------------
   const handleSalvar = () => {
     setLoading(true);
-
+    const novaConver = FormatarData(conversao);
+    const novoBatismo = FormatarData(batismo);
     api
       .post('/api/atualizarRolMembros', {
-        id: dadosUser[0].id,
+        RolMembro: dadosUser[0].RolMembro,
         Pai: nomePai,
         Mae: nomeMae,
-        Conversao: conversao,
-        Batismo: batismo,
+        Conversao: novaConver,
+        Batismo: novoBatismo,
         Discipulador: discipulador,
         Profissao: profissao,
         FormacaoAcademica: formacaoAcademica,
@@ -341,7 +353,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                     style: { textTransform: 'uppercase' },
                     shrink: true,
                   }}
-                  value={nomePai}
+                  value={nomePai || ''}
                   variant="outlined"
                   placeholder="Principalmente se for Criança"
                   size="small"
@@ -374,7 +386,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={nomeMae}
+                  value={nomeMae || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -406,7 +418,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={dataMask(conversao)}
+                  value={conversao ? dataMask(conversao) : ''}
                   variant="outlined"
                   placeholder="dd/mm/aaaa"
                   size="small"
@@ -439,7 +451,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                     style: { textTransform: 'uppercase' },
                     shrink: true,
                   }}
-                  value={dataMask(batismo)}
+                  value={batismo ? dataMask(batismo) : ''}
                   variant="outlined"
                   placeholder="dd/mm/aaaa"
                   size="small"
@@ -472,7 +484,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={formacaoAcademica}
+                  value={formacaoAcademica || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -504,7 +516,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                     shrink: true,
                   }}
                   inputRef={profissaoRef}
-                  value={profissao}
+                  value={profissao || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -536,7 +548,7 @@ function DadosGerais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={discipulador}
+                  value={discipulador || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"

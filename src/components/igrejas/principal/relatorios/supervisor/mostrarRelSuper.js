@@ -2,16 +2,51 @@ import { Box, Grid, Paper, Button, Typography } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
-import Progresso from 'src/utils/progressoCircular';
-import 'react-toastify/dist/ReactToastify.css';
-import api from 'src/components/services/api';
-import { ToastContainer, toast } from 'react-toastify';
-import { Oval } from 'react-loading-icons';
+import Select from 'react-select';
+import { MultiSelect } from 'react-multi-select-component';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+import ConvertData from 'src/utils/convData2';
+import DateFnsUtils from '@date-io/date-fns';
+
+import TextField from '@mui/material/TextField';
+
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    fontWeight: state.isSelected ? 'bold' : 'normal',
+    color: 'black',
+    backgroundColor: state.data.color,
+    fontSize: '14px',
+  }),
+  singleValue: (provided, state) => ({
+    ...provided,
+    color: state.data.color,
+    fontSize: '14px',
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+  }),
+  multiValue: (provided, state) => ({
+    ...provided,
+    color: state.data.color,
+    fontSize: '14px',
+    height: 30,
+    display: 'flex',
+    alignItems: 'center',
+  }),
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     justifyContent: 'center',
+  },
+  MultiSelect: {
+    height: 60,
   },
   novoBox: {
     flexGrow: 1,
@@ -49,79 +84,86 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function RelCelula({ dadosRelVisita, setSendResumo }) {
+function RelSuper({ dadosRelVisita, setSendResumo }) {
   const classes = useStyles();
   //= ================================================================
-  //  const InicialNCelula = { label: 'Escolha...', value: 0 };
-  const [necessidades, setNecessidades] = React.useState('');
-  const [obstaculos, setObstaculos] = React.useState('');
-  const [acoes, setAcoes] = React.useState('');
-  const [progresso, setProgresso] = React.useState(dadosRelVisita.Progresso);
-  const progressoInicial = Number(dadosRelVisita.Progresso);
-  const [loading, setLoading] = React.useState(false);
-  React.useEffect(() => {
-    if (dadosRelVisita) {
-      const obj = JSON.parse(dadosRelVisita.Necessidades);
-      let strNecessidade = '';
-      for (let i = 0; i < obj.length; i += 1) {
-        if (strNecessidade !== '')
-          strNecessidade = `${String(strNecessidade)}${obj[i]},`;
-        else strNecessidade = `${obj[i]}`;
-      }
-      setNecessidades(strNecessidade);
+  const numeroRelatorio = [
+    {
+      label: 'Ruim (abaixo de 30% Realizado)',
+      value: 0,
+    },
+    {
+      label: 'Regular (entre 30% e 60% Realizado)',
+      value: 0,
+    },
+    {
+      label: 'Bom (acima de 60% Realizado)',
+      value: 0,
+    },
+    {
+      label: 'Ótimo (100% Realizado)',
+      value: 0,
+    },
+  ];
 
-      const objObst = JSON.parse(dadosRelVisita.Obstaculos);
-      let strObst = '';
-      for (let i = 0; i < objObst.length; i += 1) {
-        if (strObst !== '') strObst = `${String(strObst)}${objObst[i]},`;
-        else strObst = `${objObst[i]}`;
-      }
-      setObstaculos(strObst);
+  const valorInicial = { label: 'Escolha entre as opções', value: 0 };
+  const timeElapsed2 = Date.now();
+  const dataAtual2 = new Date(timeElapsed2);
+  const selectedDate = dataAtual2;
+  const open = false;
+  const inputValue = ConvertData(dadosRelVisita.Data);
+  console.log('dadosRelVisita', dadosRelVisita);
+  const [numeroSuper, setNumeroSuper] = React.useState(
+    JSON.parse(dadosRelVisita.Presentes),
+  );
+  const [qytCelulasVisitadas, setQytCelulasVisitadas] = React.useState(
+    dadosRelVisita.CelulaVisitada,
+  );
+  const [qytMembrosVisitados, setQytMembrosVisitados] = React.useState(
+    dadosRelVisita.MembrosVisitados,
+  );
+  const listaSuper = valorInicial;
 
-      const objAcao = JSON.parse(dadosRelVisita.Acao);
-      let strAcao = '';
-      for (let i = 0; i < objAcao.length; i += 1) {
-        if (strAcao !== '') strAcao = `${String(strAcao)}${objAcao[i]},`;
-        else strAcao = `${objAcao[i]}`;
-      }
-      setAcoes(strAcao);
-    }
-  }, []);
+  const [corQytCelulas, setCorQytCelulas] = React.useState('white');
+  const [corQytLiderados, setCorQytLiderados] = React.useState('white');
+  const [corPresentes, setCorPresentes] = React.useState('white');
+  const [corAvalRelatorios, setCorAvalRelatorios] = React.useState('white');
+  const [corAvalPlanejamento, setCorAvalPlanejamento] = React.useState('white');
+  const [corAvalDiscipulado, setCorAvalDiscipulado] = React.useState('white');
 
-  const enviarRelatorio = () => {
-    setLoading(true);
-    api
-      .post('/api/criarRelSuper', {
-        Nome: dadosRelVisita.Nome,
-        Funcao: dadosRelVisita.Funcao,
-        CelulaVisitada: dadosRelVisita.CelulaVisitada,
-        Supervisao: dadosRelVisita.Supervisao,
-        Coordenacao: dadosRelVisita.Coordenacao,
-        Distrito: dadosRelVisita.Distrito,
-        Data: dadosRelVisita.Data,
-        Mes: dadosRelVisita.Mes,
-        Ano: dadosRelVisita.Ano,
-        Necessidades: dadosRelVisita.Necessidades,
-        Obstaculos: dadosRelVisita.Obstaculos,
-        Acao: dadosRelVisita.Acao,
-        Progresso: String(progresso),
-      })
-      .then((response) => {
-        if (response) {
-          setLoading(false);
-          toast.info('Dados Atualizados !', {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          setSendResumo(false);
-        }
-      })
-      .catch(() => {
-        toast.error('Erro ao Atualizar Dados!,tente Novamente', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        setLoading(false);
-      });
+  const [avaliacaoRelatorio, setAvaliacaoRelatorio] = React.useState({
+    label: JSON.parse(dadosRelVisita.Avaliacoes).relatorios,
+    value: 0,
+  });
+
+  const [avaliacaoDiscipulado, setAvaliacaoDiscipulado] = React.useState({
+    label: JSON.parse(dadosRelVisita.Avaliacoes).mentoriamentos,
+    value: 0,
+  });
+  const [avaliacaoPlanejamento, setAvaliacaoPlanejamento] = React.useState({
+    label: JSON.parse(dadosRelVisita.Avaliacoes).planejamentos,
+    value: 0,
+  });
+  const avaliacaoDiscipuladoRef = React.useRef();
+  const avaliacaoPlanejamentoRef = React.useRef();
+  const avaliacaoRelatoriosRef = React.useRef();
+  const nSuperRef = React.useRef();
+  const qytCelulasRef = React.useRef();
+  const qytLideradosRef = React.useRef();
+
+  //= ==================================================================
+
+  const getData = () => {
+    //  enviarData = inputValue;
+    //  enviarDia = Number(inputValue.slice(0, 2));
   };
+
+  // const jsonNecessidade = JSON.stringify(valorNecessidade);
+  //  const obj = JSON.parse(jsonNecessidade);
+  const handleNewField = (value) => ({
+    label: value,
+    value: value.toUpperCase(),
+  });
 
   return (
     <Box height="100%" minHeight={570} width="100%">
@@ -134,7 +176,16 @@ function RelCelula({ dadosRelVisita, setSendResumo }) {
         justifyContent="center"
         alignItems="center"
       >
-        <Box height="100%" width="100%" minWidth={300}>
+        <Box
+          width="96%"
+          height="97%"
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          borderRadius={16}
+          ml={0}
+          bgcolor={corIgreja.principal}
+        >
           <Box height="100%">
             <Box
               height="100%"
@@ -145,204 +196,324 @@ function RelCelula({ dadosRelVisita, setSendResumo }) {
               width="100%"
             >
               <Box width="94%">
-                <Box
-                  height={60}
-                  color="white"
-                  fontFamily="arial black"
-                  fontSize="16px"
-                  textAlign="center"
-                >
-                  RELATÓRIO DE SUPERVISÃO
-                </Box>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={12}>
+                    <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Data da Reunião
+                      </Typography>
+                    </Box>
+                    <Paper
+                      style={{
+                        background: '#fafafa',
+                        height: 45,
+                        marginTop: -5,
+                        width: '100%',
+                      }}
+                    >
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <Grid container justifyContent="center">
+                          <KeyboardDatePicker
+                            open={open}
+                            disabled
+                            disableToolbar
+                            variant="inline"
+                            format="dd/MM/yyyy"
+                            id="date-picker-inline"
+                            value={selectedDate}
+                            inputValue={inputValue}
+                            // onClick={handleDateClick}
+                            // onChange={handleDateChange}
+                            onClose={getData()}
+                            style={{
+                              marginLeft: 10,
+                              marginRight: 10,
+                              marginTop: 5,
+                              height: 36,
+                              background: '#fafafa',
+                            }}
+                            KeyboardButtonProps={{
+                              'aria-label': 'change date',
+                            }}
+                          />
+                        </Grid>
+                      </MuiPickersUtilsProvider>
+                    </Paper>
+                  </Grid>
+                </Grid>
                 <Grid container item xs={12} spacing={0}>
-                  <Grid item xs={6}>
-                    <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Grid item xs={12}>
+                    <Box
+                      mt={2}
+                      ml={1}
+                      color={corPresentes}
+                      sx={{ fontSize: 'bold' }}
+                    >
                       <Typography
                         variant="caption"
                         display="block"
                         gutterBottom
                       >
-                        Data de Início
+                        Células Presentes
                       </Typography>
                     </Box>
-                    <Paper
-                      style={{
-                        background: '#fafafa',
-                        height: 45,
-                        marginTop: -5,
-                        width: '100%',
-                      }}
-                    >
-                      <Box
-                        fontSize="16px"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        height={50}
-                      >
-                        {dadosRelVisita.Data}
-                      </Box>
-                    </Paper>
+                    <Box mt={-0.8} width="100%" ref={nSuperRef}>
+                      <MultiSelect
+                        disabled
+                        text="Please select your user."
+                        value={numeroSuper}
+                        overrideStrings={{
+                          allItemsAreSelected: 'Todos Presentes',
+                          clearSearch: 'Clear Search',
+                          clearSelected: 'Clear Selected',
+                          noOptions: 'No options',
+                          search: 'Search',
+                          selectAll: 'Select All',
+                          selectAllFiltered: 'Select All (Filtered)',
+                          selectSomeItems: 'Presentes na Reunião',
+                          create: 'Create',
+                        }}
+                        onChange={(e) => {
+                          setCorPresentes('white');
+                          setNumeroSuper(e);
+                          // necessidadeRef.current.focus();
+                        }}
+                        isCreatable
+                        onCreateOption={handleNewField}
+                        options={listaSuper}
+                      />
+                    </Box>
                   </Grid>
-                  <Grid item xs={1} />
+                </Grid>
+                <Box
+                  fontFamily="Rubik"
+                  fontWeight="bold"
+                  fontSize="14px"
+                  textAlign="center"
+                  color="white"
+                  mt="2vh"
+                >
+                  QUANTIDADE DE VISISTAS FEITA NO MÊS
+                </Box>
 
-                  <Grid item xs={5}>
-                    <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={6} md={6}>
+                    <Box
+                      mt={2}
+                      ml={2}
+                      color={corQytCelulas}
+                      sx={{ fontSize: 'bold' }}
+                    >
                       <Typography
                         variant="caption"
                         display="block"
                         gutterBottom
                       >
-                        Célula Visitada
+                        Às Células
                       </Typography>
                     </Box>
-                    <Paper
-                      style={{
-                        background: '#fafafa',
-                        height: 45,
-                        marginTop: -5,
-                        width: '100%',
-                      }}
+                    <Box mt={-0.5}>
+                      <TextField
+                        disabled
+                        className={classes.tf_m}
+                        inputRef={qytCelulasRef}
+                        inputProps={{
+                          style: {
+                            textAlign: 'center',
+                            height: 36,
+                            borderRadius: 5,
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="visCelulas"
+                        // label="Matricula"
+                        type="tel"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={qytCelulasVisitadas}
+                        variant="standard"
+                        placeholder="Quantidade"
+                        onChange={(e) => {
+                          setCorQytCelulas('white');
+
+                          setQytCelulasVisitadas(e.target.value);
+                        }}
+                        onFocus={(e) => {
+                          setQytCelulasVisitadas(e.target.value);
+                        }}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && e.target.value !== '') {
+                            qytLideradosRef.current.focus();
+                          }
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <Box
+                      mt={2}
+                      ml={2}
+                      color={corQytLiderados}
+                      sx={{ fontSize: 'bold' }}
                     >
-                      <Box mt={-0.8} width="100%">
-                        <Box
-                          fontSize="16px"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          height={50}
-                        >
-                          {dadosRelVisita.CelulaVisitada}
-                        </Box>
-                      </Box>
-                    </Paper>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Aos Liderados
+                      </Typography>
+                    </Box>
+                    <Box mt={-0.5}>
+                      <TextField
+                        disabled
+                        className={classes.tf_m}
+                        inputRef={qytLideradosRef}
+                        inputProps={{
+                          style: {
+                            textAlign: 'center',
+                            height: 36,
+                            borderRadius: 5,
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="visIrmaos"
+                        // label="Matricula"
+                        type="tel"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={qytMembrosVisitados}
+                        variant="standard"
+                        placeholder="Quantidade"
+                        onChange={(e) => {
+                          setCorQytLiderados('white');
+                          setQytMembrosVisitados(e.target.value);
+                        }}
+                        onFocus={(e) => {
+                          setQytMembrosVisitados(e.target.value);
+                        }}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && e.target.value !== '') {
+                            avaliacaoRelatoriosRef.current.focus();
+                          }
+                        }}
+                      />
+                    </Box>
                   </Grid>
                 </Grid>
-                <Box
-                  flexDirection="column"
-                  display="flex"
-                  justifyContent="center"
-                  width="100%"
-                >
-                  <Box mt="2vh" ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      Necessidades Encontradas
+
+                <Box width="100%">
+                  <Box color={corAvalRelatorios} mt="4vh" ml={2} width="90%">
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{ fontFamily: 'arial black', fontSize: '12px' }}
+                    >
+                      Avaliação semanal dos Relatórios
                     </Typography>
                   </Box>
-                  <Grid item xs={12}>
-                    <Paper
-                      style={{
-                        background: '#fafafa',
-                        height: 75,
-                        marginTop: -5,
-                        width: '100%',
-                      }}
-                    >
-                      <Box mt={-0.8} width="100%">
-                        <Box
-                          fontSize="16px"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          height={85}
-                          textAlign="center"
-                        >
-                          {necessidades}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                </Box>
-                <Box
-                  flexDirection="column"
-                  display="flex"
-                  justifyContent="center"
-                  width="100%"
-                >
-                  <Box mt="2vh" ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      Obstáculos Encontrados
-                    </Typography>
-                  </Box>
-                  <Grid item xs={12}>
-                    <Paper
-                      style={{
-                        background: '#fafafa',
-                        height: 75,
-                        marginTop: -5,
-                        width: '100%',
-                      }}
-                    >
-                      <Box mt={-0.8} width="100%">
-                        <Box
-                          fontSize="16px"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          height={85}
-                          textAlign="center"
-                        >
-                          {obstaculos}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                </Box>
-                <Box
-                  flexDirection="column"
-                  display="flex"
-                  justifyContent="center"
-                  width="100%"
-                >
-                  <Box mt="2vh" ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      Plano de Ação
-                    </Typography>
-                  </Box>
-                  <Grid item xs={12}>
-                    <Paper
-                      style={{
-                        background: '#fafafa',
-                        height: 75,
-                        marginTop: -5,
-                        width: '100%',
-                      }}
-                    >
-                      <Box mt={-0.8} width="100%">
-                        <Box
-                          fontSize="16px"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          height={85}
-                          textAlign="center"
-                        >
-                          {acoes}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                </Box>
-                <Grid item xs={11}>
                   <Box
-                    textAlign="center"
-                    mt="2vh"
-                    color="white"
-                    sx={{ fontSize: 'bold' }}
+                    mt={-0.5}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
                   >
-                    <Typography variant="caption" display="block" gutterBottom>
-                      {progresso}% de Desenvolvimento da Ação
+                    <Box height="100%" width="100%">
+                      <Select
+                        isDisabled
+                        styles={customStyles}
+                        defaultValue={avaliacaoRelatorio}
+                        menuPlacement="top"
+                        isSearchable={false}
+                        // value={avaliacaoRelatorio}
+                        onChange={(e) => {
+                          setCorAvalRelatorios('white');
+
+                          setAvaliacaoRelatorio(e);
+                          // estruturaRef.current.focus();
+                        }}
+                        ref={avaliacaoRelatoriosRef}
+                        options={numeroRelatorio}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+                <Box width="100%">
+                  <Box color={corAvalPlanejamento} mt="2vh" ml={2} width="90%">
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{ fontFamily: 'arial black', fontSize: '12px' }}
+                    >
+                      Planejamentos e Atividades do Mês
                     </Typography>
                   </Box>
-                  <Box ml={2} mt={-2}>
-                    <Progresso
-                      percentual={progressoInicial}
-                      setPercentual={setProgresso}
-                    />
+                  <Box
+                    mt={-0.5}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <Box height="100%" width="100%">
+                      <Select
+                        isDisabled
+                        styles={customStyles}
+                        menuPlacement="top"
+                        isSearchable={false}
+                        defaultValue={avaliacaoPlanejamento}
+                        onChange={(e) => {
+                          setCorAvalPlanejamento('white');
+
+                          setAvaliacaoPlanejamento(e);
+                          // estruturaRef.current.focus();
+                        }}
+                        ref={avaliacaoPlanejamentoRef}
+                        options={numeroRelatorio}
+                      />
+                    </Box>
                   </Box>
-                </Grid>
+                </Box>
+                <Box width="100%">
+                  <Box mt="2vh" ml={2} width="90%" color={corAvalDiscipulado}>
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{ fontFamily: 'arial black', fontSize: '12px' }}
+                    >
+                      Mentoriamento da Supervisão no Mês
+                    </Typography>
+                  </Box>
+                  <Box
+                    mt={-0.5}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <Box height="100%" width="100%">
+                      <Select
+                        isDisabled
+                        styles={customStyles}
+                        menuPlacement="top"
+                        isSearchable={false}
+                        defaultValue={avaliacaoDiscipulado}
+                        onChange={(e) => {
+                          setCorAvalDiscipulado('white');
+
+                          setAvaliacaoDiscipulado(e);
+                          // estruturaRef.current.focus();
+                        }}
+                        ref={avaliacaoDiscipuladoRef}
+                        options={numeroRelatorio}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+
                 <Grid item container xs={12}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <Box className={classes.novoBox} mt="3vh">
                       <Button
                         style={{
@@ -362,54 +533,14 @@ function RelCelula({ dadosRelVisita, setSendResumo }) {
                       </Button>
                     </Box>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Box className={classes.novoBox} mt="3vh">
-                      {!loading ? (
-                        <Button
-                          style={{
-                            color: 'white',
-                            background: 'green',
-                            fontFamily: 'arial black',
-                            borderRadius: '10px',
-                            width: '100%',
-                          }}
-                          onClick={enviarRelatorio}
-                          variant="contained"
-                          severity="success"
-                        >
-                          SALVAR
-                        </Button>
-                      ) : (
-                        <Button
-                          style={{ background: 'green', color: 'white' }}
-                          variant="contained"
-                          severity="success"
-                          endIcon={<Oval stroke="red" width={20} height={20} />}
-                        >
-                          SALVANDO...
-                        </Button>
-                      )}
-                    </Box>
-                  </Grid>
                 </Grid>
               </Box>
             </Box>
           </Box>
         </Box>
       </Box>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </Box>
   );
 }
 
-export default RelCelula;
+export default RelSuper;

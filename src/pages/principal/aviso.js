@@ -21,7 +21,7 @@ export const getStaticProps = async () => {
     .findMany({
       orderBy: [
         {
-          semana: 'asc',
+          Data: 'asc',
         },
       ],
     })

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import horarioMask from 'src/components/mascaras/horario';
-
+import ConvData1 from 'src/utils/convData1';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -71,7 +71,7 @@ export default function TabCelula({
 
   const nomesCel = lideranca.filter(
     (val) =>
-      val.supervisao === Number(perfilUser.supervisao) &&
+      val.Supervisao === Number(perfilUser.Supervisao) &&
       val.Distrito === Number(perfilUser.Distrito) &&
       (val.Funcao === 'Lider' || val.Funcao === 'Supervisor'),
   );
@@ -178,7 +178,7 @@ export default function TabCelula({
     const Dados = { Publico: '', Numero: '' };
     if (perfilUser.Funcao === 'Supervisor') {
       Dados.Publico = 'Supervisão';
-      Dados.Numero = perfilUser.supervisao;
+      Dados.Numero = perfilUser.Supervisao;
     }
     if (perfilUser.Funcao === 'Coordenador') {
       Dados.Publico = 'Coordeancão';
@@ -205,10 +205,10 @@ export default function TabCelula({
     ) {
       setCarregando(true);
       // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
-
+      const newDate = new Date(ConvData1(inputValue));
       api
         .post('/api/criarEventoGeral', {
-          Data: inputValue,
+          Data: newDate,
           Evento: nomeEvento,
           Local: valueAnfitriao,
           Objetivo: objetivo.label,
@@ -223,7 +223,7 @@ export default function TabCelula({
         .then((response) => {
           if (response) {
             // enviarPontuacao();
-            console.log(response);
+            //  console.log(response);
             setCarregando(false);
             zerarValues();
             setOpenNovoEventoGeral(false);
@@ -288,7 +288,7 @@ export default function TabCelula({
               color="white"
             >
               <Box color="#ffff8d" mr={2}>
-                EVENTO DO SETOR {perfilUser.supervisao}
+                EVENTO DO SETOR {perfilUser.Supervisao}
               </Box>
             </Box>
 
@@ -602,7 +602,7 @@ export default function TabCelula({
               >
                 <Box color="white" mr={2}>
                   {perfilUser.Funcao === 'Supervisor' && (
-                    <Box> EVENTO DA SUPERVISÃO {perfilUser.supervisao}</Box>
+                    <Box> EVENTO DA SUPERVISÃO {perfilUser.Supervisao}</Box>
                   )}
                   {perfilUser.Funcao === 'Coordenador' && (
                     <Box> EVENTO DA COORDENAÇÃO {perfilUser.Coordenacao}</Box>

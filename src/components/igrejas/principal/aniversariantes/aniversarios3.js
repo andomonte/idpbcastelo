@@ -21,7 +21,15 @@ function converteData(DataDDMMYY) {
 }
 
 function compare(a, b) {
-  if (converteData(a.Nascimento) < converteData(b.Nascimento)) return -1;
+  if (
+    converteData(
+      moment(a.Nascimento.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
+    ) <
+    converteData(
+      moment(b.Nascimento.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
+    )
+  )
+    return -1;
   return true;
 }
 
@@ -49,7 +57,7 @@ function nextSunday(date) {
   );
   return nextweek;
 }
-function BuscarAniversariantes({ rolMembros }) {
+function BuscarAniversariantes({ rolMembros, perfilUser }) {
   // const mes = Meses();
 
   //= ========================================================================
@@ -65,10 +73,18 @@ function BuscarAniversariantes({ rolMembros }) {
   const dataInicial = converteData(semanaAtual);
   const dataFinal = converteData(semanaSegunte);
 
-  const niverGeral = rolMembros.filter(
+  const niverGeralValido = rolMembros.filter(
+    (results) => results.Nascimento !== null && results.Nascimento.length > 8,
+  );
+
+  const niverGeral = niverGeralValido.filter(
     (results) =>
-      converteData(results.Nascimento) >= dataInicial &&
-      converteData(results.Nascimento) <= dataFinal,
+      converteData(
+        moment(results.Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
+      ) >= dataInicial &&
+      converteData(
+        moment(results.Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
+      ) <= dataFinal,
   );
 
   const handleIncSemana = () => {
@@ -225,6 +241,7 @@ function BuscarAniversariantes({ rolMembros }) {
                           <SearchListMes
                             semanaAtual={semanaAtual}
                             rolMembros={itens}
+                            perfilUser={perfilUser}
                           />
                         </Grid>
                       </Box>

@@ -211,10 +211,8 @@ function DadosEndereco({ rolMembros, perfilUser }) {
     dadosUser[0].Complemento,
   );
   const [bairro, setBairro] = React.useState(dadosUser[0].Bairro);
-  const [localizador, setLocalizador] = React.useState(
-    dadosUser[0].Localizador,
-  );
-  const [cidade, setCidade] = React.useState(dadosUser[0].Localidade);
+  const [nomeNucleo, setNomeNucleo] = React.useState(dadosUser[0].nomeNucleo);
+  const [cidade, setCidade] = React.useState(dadosUser[0].nomeNucleo);
   const [cep, setCEP] = React.useState(dadosUser[0].CEP);
   const [uf, setUF] = React.useState(dadosUser[0].UF);
 
@@ -251,7 +249,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
       setUF(data[0].UF);
       setCidade(data[0].Localidade);
       setComplemento(data[0].Complemento);
-      setLocalizador(data[0].Localizador);
+      setNomeNucleo(data[0].nomeNucleo);
     }
     if (error) return <div>An error occured.</div>;
     if (!data) return <div>Loading ...</div>;
@@ -264,12 +262,12 @@ function DadosEndereco({ rolMembros, perfilUser }) {
 
     api
       .post('/api/atualizarRolMembros', {
-        id: dadosUser[0].id,
+        RolMembro: dadosUser[0].RolMembro,
         Logradouro: logradouro,
         Numero: numero,
         Bairro: bairro,
         CEP: cep,
-        Localizador: localizador,
+        nomeNucleo,
         Complemento: complemento,
         Localidade: cidade,
         UF: uf,
@@ -367,7 +365,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={cep}
+                  value={cep || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -400,7 +398,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={logradouro}
+                  value={logradouro || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -432,7 +430,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={numero}
+                  value={numero || ''}
                   variant="outlined"
                   placeholder="xxx"
                   size="small"
@@ -465,7 +463,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                     style: { textTransform: 'uppercase' },
                     shrink: true,
                   }}
-                  value={bairro}
+                  value={bairro || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -498,7 +496,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={uf}
+                  value={uf || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -530,7 +528,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                     shrink: true,
                   }}
                   inputRef={localidadeRef}
-                  value={cidade}
+                  value={cidade || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -562,7 +560,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={complemento}
+                  value={complemento || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -581,31 +579,31 @@ function DadosEndereco({ rolMembros, perfilUser }) {
             <Grid item xs={12} md={12}>
               <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                 <Typography variant="caption" display="block" gutterBottom>
-                  LOCALIZADOR
+                  NÚCLEO (IGREJA)
                 </Typography>
               </Box>
               <Box className={classes.novoBox} mt={-2}>
                 <TextField
                   className={classes.tf_m}
-                  id="localizador"
+                  id="nomeNucleo"
                   // label="Cidade"
                   type="text"
                   InputLabelProps={{
                     shrink: true,
                   }}
                   inputRef={localizadorRef}
-                  value={localizador}
+                  value={nomeNucleo || ''}
                   variant="outlined"
-                  placeholder="Localizado - googleMap"
+                  placeholder="Núcleo que Frequenta"
                   size="small"
                   onBlur={
-                    localizador === ''
+                    nomeNucleo === ''
                       ? () => setValidarLocalizador('nao')
                       : () => setValidarLocalizador('sim')
                   }
-                  onChange={(e) => setLocalizador(e.target.value)}
+                  onChange={(e) => setNomeNucleo(e.target.value)}
                   error={validarLocalizador === 'nao'}
-                  onFocus={(e) => setLocalizador(e.target.value)}
+                  onFocus={(e) => setNomeNucleo(e.target.value)}
                 />
               </Box>
             </Grid>

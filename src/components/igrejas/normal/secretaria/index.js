@@ -16,7 +16,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Oval } from 'react-loading-icons';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
-import Login from '../../botaoLogin';
+import Login from 'src/components/botaoLogin';
 import Navbar from '../navBar_redesSociais';
 import TelaPadrao from './telaPadrao';
 // import Carrossel from '../carrossel';

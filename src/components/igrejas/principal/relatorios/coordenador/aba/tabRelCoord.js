@@ -10,6 +10,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import ConvertData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -24,7 +25,7 @@ export default function TabCelula({
 
   const [relEncontrado, setRelEncontrado] = React.useState([]);
   const [rel, setRel] = React.useState('nada');
-  const [necessidades, setNecessidades] = React.useState('');
+  const [presentes, setPresentes] = React.useState('');
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
 
@@ -68,14 +69,16 @@ export default function TabCelula({
 
   React.useEffect(() => {
     if (relEncontrado.length) {
-      const obj = JSON.parse(relEncontrado[0].Necessidades);
-      let strNecessidade = '';
+      const obj = JSON.parse(relEncontrado[0].Presentes);
+      let strPresentes = '';
       for (let i = 0; i < obj.length; i += 1) {
-        if (strNecessidade !== '')
-          strNecessidade = `${String(strNecessidade)}${obj[i]},`;
-        else strNecessidade = `${obj[i]}`;
+        if (strPresentes !== '')
+          strPresentes = `${String(strPresentes)}${obj[i].label}, `;
+        else if (i === 0) strPresentes = `${obj[i].label}, `;
+        else strPresentes = `${obj[i].label}`;
       }
-      setNecessidades(strNecessidade);
+
+      setPresentes(strPresentes);
     }
   }, [relEncontrado]);
   return (
@@ -103,7 +106,7 @@ export default function TabCelula({
           textAlign="center"
           width="25%"
         >
-          SUPER
+          DATA
         </Box>
 
         <Box
@@ -114,7 +117,7 @@ export default function TabCelula({
           textAlign="center"
           width="60%"
         >
-          NECESSIDADE
+          PRESENTES
         </Box>
         <Box textAlign="center" width="15%">
           VER
@@ -150,11 +153,12 @@ export default function TabCelula({
                       justifyContent="center"
                       alignItems="center"
                       height="100%"
+                      fontSize="12px"
                       textAlign="center"
                       width="25%"
                     >
                       {relEncontrado[index]
-                        ? relEncontrado[index].CelulaVisitada.slice(8, 11)
+                        ? ConvertData(relEncontrado[index].Data) // relEncontrado[index].CelulaVisitada.slice(8, 11)
                         : '-'}
                     </Box>
 
@@ -174,11 +178,7 @@ export default function TabCelula({
                       {relEncontrado[index] ? (
                         <Box color="blue" display="flex">
                           <Box>
-                            {necessidades !== '' ? (
-                              <Box> {necessidades}</Box>
-                            ) : (
-                              ''
-                            )}
+                            {presentes !== '' ? <Box> {presentes}</Box> : ''}
                           </Box>
                         </Box>
                       ) : (

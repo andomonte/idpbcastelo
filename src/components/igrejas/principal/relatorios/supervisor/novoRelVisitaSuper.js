@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import corIgreja from 'src/utils/coresIgreja';
 import api from 'src/components/services/api';
 import Select from 'react-select';
-
+import DataMMDDAAA from 'src/utils/dataMMDDAAAA';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -122,7 +122,7 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
   const descricaoRef = React.useRef();
   const celulaSetor = lideranca.filter(
     (results) =>
-      Number(results.supervisao) === Number(perfilUser.supervisao) &&
+      Number(results.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
       results.Funcao === 'Lider',
   );
@@ -142,15 +142,16 @@ function RelCelula({ perfilUser, setOpenNovoRelatorio, lideranca, Mes, Ano }) {
 
   const enviarRelatorio = () => {
     setLoading(true);
+    const Data = new Date(DataMMDDAAA(inputValue));
     api
       .post('/api/criarRelVisitaSuper', {
         Nome: perfilUser.Nome,
         Funcao: perfilUser.Funcao,
         CelulaVisitada: numeroCelulas.label,
-        Supervisao: Number(perfilUser.supervisao),
+        Supervisao: Number(perfilUser.Supervisao),
         Coordenacao: Number(perfilUser.Coordenacao),
         Distrito: Number(perfilUser.Distrito),
-        Data: inputValue,
+        Data,
         Recepcao: valorRecepcao.label,
         Etapas: valorEtapas.label,
         Estrutura: valorEstrutura.label,

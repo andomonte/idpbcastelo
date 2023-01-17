@@ -19,6 +19,8 @@ import corIgreja from 'src/utils/coresIgreja';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
+import moment from 'moment';
+import FormartaData from 'src/utils/formatoData';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
@@ -257,8 +259,9 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const [validarCelular, setValidarCelular] = React.useState('sim');
   const [estadoCivil, setEstadoCivil] = React.useState(valorInicialECivil);
   const [dataNascimento, setDataNascimento] = React.useState(
-    dadosUser[0].Nascimento,
+    moment(dadosUser[0].Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
   );
+
   const [validarDataNascimento, setValidarDataNascimento] =
     React.useState('sim');
   const [naturalidade, setNaturalidade] = React.useState(
@@ -281,13 +284,24 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
     if (data) {
+      const valorInicialSexo2 = {
+        label: data[0].Sexo,
+        value: data[0].Sexo,
+      };
+      const valorInicialECivil2 = {
+        label: data[0].EstadoCivil,
+        value: data[0].EstadoCivil,
+      };
       setNome(data[0].Nome);
       setCelular(data[0].TelCelular);
       setFone(data[0].TelFixo);
       setCPF(data[0].CPF);
       setRG(data[0].RG);
-      setSexo(data[0].Sexo);
-      setDataNascimento(data[0].Nascimento);
+      setSexo(valorInicialSexo2);
+      setEstadoCivil(valorInicialECivil2);
+      setDataNascimento(
+        moment(data[0].Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
+      );
       setNaturalidade(data[0].Naturalidade);
     }
 
@@ -303,16 +317,17 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const handleSalvar = () => {
     setLoading(true);
 
+    const novaData = FormartaData(dataNascimento);
     api
       .post('/api/atualizarRolMembros', {
-        id: dadosUser[0].id,
+        RolMembro: dadosUser[0].RolMembro,
         Nome: nome,
         TelCelular: celular,
         TelFixo: fone,
         CPF: cpf,
         RG: rg,
-        Sexo: sexo.label,
-        Nascimento: dataNascimento,
+        Sexo: sexo ? sexo.label : '',
+        Nascimento: novaData,
         Naturalidade: naturalidade,
         EstadoCivil: estadoCivil.label,
       })
@@ -422,7 +437,9 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={celularMask(celular).replace(/[\][)]/g, ') ')}
+                  value={
+                    celular ? celularMask(celular).replace(/[\][)]/g, ') ') : ''
+                  }
                   variant="outlined"
                   placeholder="(99) 9999-9999"
                   size="small"
@@ -453,7 +470,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={foneMask(fone).replace(/[\][)]/g, ') ')}
+                  value={fone ? foneMask(fone).replace(/[\][)]/g, ') ') : ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -485,7 +502,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={cpfMask(cpf)}
+                  value={cpf ? cpfMask(cpf) : ''}
                   variant="outlined"
                   placeholder="999.999.999-99"
                   size="small"
@@ -517,7 +534,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={rg}
+                  value={rg || ''}
                   variant="outlined"
                   placeholder=""
                   size="small"
@@ -542,7 +559,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
               <Box className={classes.novoBox} mt={-2}>
                 <Select
                   ref={sexoRef}
-                  defaultValue={sexo}
+                  defaultValue={sexo || ''}
                   onChange={(e) => {
                     setSexo(e);
                   }}
@@ -566,7 +583,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={dataMask(dataNascimento)}
+                  value={dataNascimento ? dataMask(dataNascimento) : ''}
                   variant="outlined"
                   placeholder=""
                   size="small"

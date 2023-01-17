@@ -10,6 +10,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import ConverteData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -40,7 +41,7 @@ export default function TabCelula({
       setRel(sem1);
       if (sem1 && sem1[0]) {
         const listaRelSuper = sem1.filter(
-          (val) => Number(val.Supervisao) === Number(perfilUser.supervisao),
+          (val) => Number(val.Supervisao) === Number(perfilUser.Supervisao),
         );
 
         if (listaRelSuper && listaRelSuper.length) {
@@ -170,7 +171,7 @@ export default function TabCelula({
                       }}
                     >
                       {relEncontrado[index].Data
-                        ? relEncontrado[index].Data
+                        ? ConverteData(relEncontrado[index].Data)
                         : '-'}
                     </Box>
                     <Box

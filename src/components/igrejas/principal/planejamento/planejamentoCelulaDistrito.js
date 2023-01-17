@@ -21,22 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ lab1, lab2 }) {
-  return (
-    <>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab1}
-        </Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box color="#fff" textAlign="center">
-          {lab2}
-        </Box>
-      </Grid>
-    </>
-  );
-}
 function PlanMembro({ perfilUser, lideranca }) {
   const classes = useStyles();
   //= ================================================================
@@ -134,8 +118,22 @@ function PlanMembro({ perfilUser, lideranca }) {
               <Box width="100%" ml={1} minWidth={300}>
                 <Grid container spacing={0}>
                   <Grid container item xs={12} spacing={1}>
-                    <Label lab1="Selecione o Mês" lab2="Selecione a Celula" />
-                    <Grid item xs={6}>
+                    <Grid item xs={7}>
+                      <Box textAlign="center" color="white">
+                        {' '}
+                        Selecione o Mês{' '}
+                      </Box>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Box textAlign="center" color="white">
+                        {' '}
+                        Selecione a Célula{' '}
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={7}>
                       <Paper width="100%" className={classes.paper}>
                         <Box width="100%" height={40} display="flex">
                           <Box
@@ -191,28 +189,22 @@ function PlanMembro({ perfilUser, lideranca }) {
                         </Box>
                       </Paper>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                       <Paper width="100%" className={classes.paper}>
                         <Box width="100%" display="flex" height={40}>
                           <Box
-                            width="20%"
+                            width="35%"
                             display="flex"
                             justifyContent="flex-end"
                             alignItems="center"
                           >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
+                            <BiCaretLeft
+                              color={corIgreja.principal2}
+                              size={35}
                               onClick={() => {
                                 handleDecCelula();
                               }}
-                            >
-                              <BiCaretLeft
-                                color={corIgreja.principal2}
-                                size={35}
-                              />
-                            </IconButton>
+                            />
                           </Box>
                           <Box
                             width="60%"
@@ -226,24 +218,18 @@ function PlanMembro({ perfilUser, lideranca }) {
                             {numeroCelulas[contNumeroCelula]}
                           </Box>
                           <Box
-                            width="20%"
+                            width="35%"
                             display="flex"
                             justifyContent="flex-end"
                             alignItems="center"
                           >
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
+                            <BiCaretRight
+                              color={corIgreja.principal2}
+                              size={35}
                               onClick={() => {
                                 handleIncCelula();
                               }}
-                            >
-                              <BiCaretRight
-                                color={corIgreja.principal2}
-                                size={35}
-                              />
-                            </IconButton>
+                            />
                           </Box>
                         </Box>
                       </Paper>

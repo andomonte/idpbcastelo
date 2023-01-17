@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import imageCompression from 'browser-image-compression';
 import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import CropImage from './cropEasy';
 
 const Input = styled('input')({
@@ -48,29 +48,27 @@ const nomeDistrito = [
 ];
 
 function meuPerfil({ secao, perfilUser }) {
-  const urlImagem = perfilUser
-    ? `https://arquivofiladelfia.s3.amazonaws.com/${perfilUser.RolMembro}`
-    : '';
+  const urlImagem = perfilUser ? perfilUser.foto : '';
   const [upLoadFile, setUpLoadFile] = React.useState('');
   const [imageSize, setImageSize] = React.useState('');
   const [urlImage, setUrlImage] = React.useState('');
 
   const [fileImage, setFileImage] = React.useState(urlImagem);
   const [openCrop, setOpenCrop] = React.useState('inicio');
-
+  const [fotoDeletar, setFotoDeletar] = React.useState(urlImagem);
   const fetcher = (url) => axios.get(url).then((res) => res.data);
   const url = `/api/consultaRolMembros2/${perfilUser.RolMembro}`;
   const { data: inscritos, error2 } = useSWR(url, fetcher);
   React.useEffect(async () => {
     if (inscritos && inscritos.length) {
       setFileImage(inscritos[0].foto);
+      setFotoDeletar(inscritos[0].foto);
     }
     if (error2) return <div>An error occured.</div>;
     if (!inscritos) return <div>Loading ...</div>;
 
     return 0;
   }, [inscritos]);
-  mutate(url);
 
   const process = async (selectedImage) => {
     try {
@@ -100,16 +98,22 @@ function meuPerfil({ secao, perfilUser }) {
 
         dataFile2.append('file', file, nomeFoto2);
 
+        const fotoDeletarFim = fotoDeletar.substr(
+          fotoDeletar.indexOf(perfilUser.RolMembro),
+          fotoDeletar.length,
+        );
+
         api
-          .post('/api/delFoto', { dados: nomeFoto })
+          .post('/api/delFoto', { dados: fotoDeletarFim })
           .then((responses) => {
             if (responses) {
-              console.log(responses);
+              // console.log('resposta deletar', responses);
             }
           })
           .catch((error) => {
             console.log(error);
           });
+
         api
           .post('/api/fotos', dataFile2)
           .then((responses) => {
@@ -122,7 +126,7 @@ function meuPerfil({ secao, perfilUser }) {
                 })
                 .then((response2) => {
                   if (response2) {
-                    //         console.log(response);
+                    // console.log(response2);
                   }
                 })
                 .catch((error) => {
@@ -375,7 +379,7 @@ function meuPerfil({ secao, perfilUser }) {
                                   fontSize: '12px',
                                 }}
                               >
-                                {perfilUser.supervisao}
+                                {perfilUser.Supervisao}
                               </Box>
                             </Box>
                           )}
@@ -470,7 +474,7 @@ function meuPerfil({ secao, perfilUser }) {
                               fontSize: '12px',
                             }}
                           >
-                            {perfilUser.supervisao}{' '}
+                            {perfilUser.Supervisao}{' '}
                           </Box>
                         </Box>
                         <Box

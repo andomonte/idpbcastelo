@@ -5,7 +5,8 @@ export default async function handle(req, res) {
   const {
     query: { semana, Ano },
   } = req;
-
+  const inicioAno = `${Ano}-01-01`;
+  const finalAno = `${Ano}-12-31`;
   // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
   const posts = await prisma.relatorioCelulas
@@ -31,10 +32,7 @@ export default async function handle(req, res) {
         ],
         AND: [
           {
-            Data: {
-              endsWith: String(Ano), // consulta termina em
-              //          contains: String(Ano), //consulta contem
-            },
+            Data: { lte: new Date(finalAno), gte: new Date(inicioAno) },
           },
         ],
       },

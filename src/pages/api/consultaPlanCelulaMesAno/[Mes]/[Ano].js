@@ -6,13 +6,14 @@ export default async function handle(req, res) {
     query: { Mes, Ano },
   } = req;
 
+  const inicioAno = `${Ano}-${Mes}-01`;
+  const finalAno = `${Ano}-${Mes}-31`;
+
   // const action = `${rel}.findMany`
   const posts = await prisma.plancelula
     .findMany({
       where: {
-        Data: {
-          endsWith: `${Mes}/${Ano}`,
-        },
+        Data: { lte: new Date(finalAno), gte: new Date(inicioAno) },
       },
     })
     .finally(async () => {

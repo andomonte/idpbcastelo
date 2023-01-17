@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import { MdCreateNewFolder } from 'react-icons/md';
 import NovoRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/novoRelVisitaSuper';
-import MostrarRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/mostrarRelVisitaSuper';
+import MostrarRelatorio from 'src/components/igrejas/principal/relatorios/supervisor/editarRelVisitaSuper';
 import Meses from 'src/utils/meses';
 import TamanhoJanela from 'src/utils/getSize';
 import TabRelSuperVisita from './supervisor/aba/tabRelVisita';
@@ -245,6 +245,7 @@ function PlanMembro({ perfilUser, lideranca }) {
               <MostrarRelatorio
                 dadosRelVisita={dadosRelVisita}
                 perfilUser={perfilUser}
+                lideranca={lideranca}
                 Mes={contMes}
                 Ano={contAno}
                 setSendResumo={setSendResumo}

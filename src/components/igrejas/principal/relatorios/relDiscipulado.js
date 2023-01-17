@@ -524,7 +524,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
         Semana: semana,
         Celula: Number(perfilUser.Celula),
         Distrito: Number(perfilUser.Distrito),
-        Supervisao: Number(perfilUser.supervisao),
+        Supervisao: Number(perfilUser.Supervisao),
         Ano: Number(AnoAtual),
         Pontuacao: pFinal,
         Total: pTotalAtual,

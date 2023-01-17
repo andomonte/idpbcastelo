@@ -2,6 +2,7 @@ import React from 'react';
 import { Perfil } from 'src/components/igrejas/principal/perfil';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
+import Espera from 'src/utils/espera';
 // import { useSession } from 'next-auth/client';
 
 function meuPerfil({ celulas, rolMembros, lideranca }) {
@@ -12,8 +13,8 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
   const [perfilUserF, setPerfilUserF] = React.useState('');
 
   React.useEffect(() => {
-    setPerfilUserF(perfilUserF);
     if (mudaDados === 'entra') {
+      setPerfilUserF(perfilUser);
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
@@ -49,25 +50,17 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
   // //console.log('valor dentro do meu perfil', perfilUserF, rolMembros);
   return (
     <div>
-      {perfilUser.id ? (
+      {perfilUserF ? (
         <Perfil
           celulas={celulas}
-          title="IDPB-CELULAS"
+          title="APP-IDPB"
           rolMembros={rolMembros}
           lideranca={lideranca}
-          perfilUser={perfilUser}
+          perfilUser={perfilUserF}
         />
       ) : (
         <div>
-          {perfilUserF && (
-            <Perfil
-              title="IDPB-CELULAS"
-              celulas={celulas}
-              rolMembros={rolMembros}
-              lideranca={lideranca}
-              perfilUser={perfilUserF}
-            />
-          )}
+          <Espera descricao="Buscando Perfil" />
         </div>
       )}
     </div>
@@ -99,8 +92,20 @@ export const getStaticProps = async () => {
   return {
     props: {
       celulas: JSON.parse(JSON.stringify(celulas)),
-      rolMembros: JSON.parse(JSON.stringify(rolMembros)),
-      lideranca: JSON.parse(JSON.stringify(lideranca)),
+      rolMembros: JSON.parse(
+        JSON.stringify(
+          rolMembros,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
+      lideranca: JSON.parse(
+        JSON.stringify(
+          lideranca,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
     }, // will be passed to the pperfilUser component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };

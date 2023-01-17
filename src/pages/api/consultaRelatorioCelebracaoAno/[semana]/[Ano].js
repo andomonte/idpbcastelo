@@ -8,6 +8,8 @@ export default async function handle(req, res) {
 
   // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
+  const inicioAno = `${Ano}-01-01`;
+  const finalAno = `${Ano}-12-31`;
   const posts = await prisma.relatorioCelebracao
     .findMany({
       where: {
@@ -31,10 +33,7 @@ export default async function handle(req, res) {
         ],
         AND: [
           {
-            Data: {
-              endsWith: String(Ano), // consulta termina em
-              //          contains: String(Ano), //consulta contem
-            },
+            Data: { lte: new Date(finalAno), gte: new Date(inicioAno) },
           },
         ],
       },

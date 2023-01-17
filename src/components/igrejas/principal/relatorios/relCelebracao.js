@@ -9,7 +9,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
+import ConverteData2 from 'src/utils/dataMMDDAAAA';
 import moment from 'moment';
 import { TiUserAdd } from 'react-icons/ti';
 import { IoIosSave, IoIosAddCircle, IoMdRemoveCircle } from 'react-icons/io';
@@ -22,6 +22,7 @@ import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
 import Erros from 'src/utils/erros';
 import Emojis from 'src/components/icones/emojis';
+import ConverteData from 'src/utils/convData2';
 import TabCelebracao from './abas/tabCelebracao';
 import TabVisitantes from './abas/tabVisitantes2';
 
@@ -133,8 +134,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   const [contConversoes, setContConversoes] = React.useState(0);
 
   const [observacoes, setObservacoes] = React.useState(0);
-  const [nomesVisitantes, setNomesVisitantes] =
-    React.useState(visitantesCelula);
+  const [nomesVisitantes, setNomesVisitantes] = React.useState(
+    visitantesCelula || [],
+  );
   const nomesCelulas = rolMembros.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
@@ -294,14 +296,16 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       setObservacoes('');
       setCheckRelatorio(false);
       setPodeEditar(true);
+
       if (members) setExisteRelatorio('sem');
       else setExisteRelatorio('inicio');
+
       if (members && members.length > 0) {
         const relatorio = members.filter(
           (val) =>
             val.Celula === Number(perfilUser.Celula) &&
             val.Distrito === Number(perfilUser.Distrito) &&
-            val.Distrito === Number(perfilUser.Distrito),
+            String(val.Data.slice(0, 4)) === String(AnoAtual),
         );
 
         if (relatorio && relatorio.length) {
@@ -313,17 +317,22 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           setExisteRelatorio(true); // avisa que tem relatório
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
-          const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-          const nVisitantes = relatorio[0].NomesVisitantes;
+          const nomesMembros = relatorio[0].NomesMembros
+            ? JSON.parse(relatorio[0].NomesMembros)
+            : [];
+          const nVisitantes = relatorio[0].NomesVisitantes
+            ? JSON.parse(relatorio[0].NomesVisitantes)
+            : [];
           const qtyPresentes = nomesMembros.filter(
             (val) => val.Presenca === 'igreja',
           );
           const qtyPresentesLive = nomesMembros.filter(
             (val) => val.Presenca === 'live',
           );
-          const qtyVisitants = nVisitantes.filter(
-            (val) => val.Presenca === true,
-          );
+          console.log('nvisi', Object.keys(nVisitantes).length);
+          const qtyVisitants = Object.keys(nVisitantes).length
+            ? nVisitantes.filter((val) => val.Presenca === true)
+            : [];
           setPresentes(qtyPresentes.length);
           setPresentesLive(qtyPresentesLive.length);
           setContConversoes(relatorio[0].Conversoes);
@@ -361,6 +370,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
     return 0;
   }, [semana]);
+
+  React.useEffect(() => {
+    mutate(url);
+    return 0;
+  }, [existeRelatorio]);
   React.useEffect(() => {
     ajusteRelatorio();
 
@@ -396,12 +410,14 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           (relPresentes[index].Presenca === 'igreja' ||
             relPresentes[index].Presenca === 'live'),
       );
-      console.log('oi', relPresentes);
+
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
       for (let i = 0; i < listaPresentes.length; i += 1) {
-        idade[i] = PegaIdade(listaPresentes[i].Nascimento);
+        idade[i] = listaPresentes[i].Nascimento
+          ? PegaIdade(ConverteData(listaPresentes[i].Nascimento))
+          : '';
         if (String(idade[i]) !== 'NaN')
           if (idade[i] > 11) {
             contAdultos += 1;
@@ -656,9 +672,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         Semana: semana,
         Celula: Number(perfilUser.Celula),
         Distrito: Number(perfilUser.Distrito),
-        Supervisao: Number(perfilUser.supervisao),
+        Supervisao: Number(perfilUser.Supervisao),
         Ano: Number(AnoAtual),
-        Pontuacao: pFinal,
+        Pontuacao: JSON.stringify(pFinal),
         Total: pTotalAtual,
         TotalRank: pTotalAtualRank,
         CriadoPor: perfilUser.Nome,
@@ -694,14 +710,14 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       createRelCelula(row.RolMembro, row.Nome, relPresentes[index].Presenca),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
-
+    const novaData = new Date(ConverteData2(inputValue));
     const RelCelebracaoFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
       Number(semana),
-      inputValue,
+      novaData,
       nomesCelulaFinal,
-      nomesVisitantes,
+      JSON.stringify(nomesVisitantes),
       Number(adultos),
       Number(criancas),
       Number(qtyVisitante),

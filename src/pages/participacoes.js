@@ -70,7 +70,13 @@ export const getStaticProps = async () => {
     });
   return {
     props: {
-      rolMembros: JSON.parse(JSON.stringify(rolMembros)),
+      rolMembros: JSON.parse(
+        JSON.stringify(
+          rolMembros,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
     }, // will be passed to the pperfilUser component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };

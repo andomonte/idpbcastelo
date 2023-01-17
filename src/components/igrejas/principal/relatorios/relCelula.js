@@ -22,9 +22,9 @@ import axios from 'axios';
 import PegaIdade from 'src/utils/getIdade';
 import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
-
+import ConverteData from 'src/utils/dataMMDDAAAA';
 import Emojis from 'src/components/icones/emojis';
-
+import ConverteData2 from 'src/utils/convData2';
 import TabCelula from './abas/tabCelula';
 import TabVisitantes from './abas/tabVisitantes';
 
@@ -129,14 +129,16 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
+  const [corData, setCorData] = React.useState('white');
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2);
   const [contConversoes, setContConversoes] = React.useState(0);
   const [contEventos, setContEventos] = React.useState(0);
   const [contVisitas, setContVisitas] = React.useState(0);
   const [observacoes, setObservacoes] = React.useState(0);
-  const [nomesVisitantes, setNomesVisitantes] =
-    React.useState(visitantesCelula);
+  const [nomesVisitantes, setNomesVisitantes] = React.useState(
+    visitantesCelula || [],
+  );
   const nomesCelulas = rolMembros.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
@@ -200,6 +202,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   //= ==========pegar semana apartir da data==============
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
+
     const Mes = dataEnviada.getMonth();
     const Dia = dataEnviada.getDate();
     const firstSun = new Date(2021, 0, 1);
@@ -285,15 +288,17 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       setObservacoes('');
       setCheckRelatorio(false);
       setPodeEditar(true);
-      if (!members) setExisteRelatorio('inicio');
+      if (members) setExisteRelatorio('sem');
+      else setExisteRelatorio('inicio');
       // if (members) setExisteRelatorio('sem');
       // else setExisteRelatorio('inicio');
+
       if (members && members.length > 0) {
         const relatorio = members.filter(
           (val) =>
             val.Celula === Number(perfilUser.Celula) &&
             val.Distrito === Number(perfilUser.Distrito) &&
-            val.Distrito === Number(perfilUser.Distrito),
+            String(val.Data.slice(0, 4)) === String(AnoAtual),
         );
 
         if (relatorio && relatorio.length) {
@@ -302,7 +307,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           if (semanaAgora - semana < 2) setPodeEditar(true);
           else setPodeEditar(false);
 
-          if (existeRelatorio !== true) setExisteRelatorio(true); // avisa que tem relatório
+          setExisteRelatorio(true); // avisa que tem relatório
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
           const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
@@ -311,7 +316,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           const qtyPresentes = nomesMembros.filter(
             (val) => val.Presenca === true,
           );
-          const qtyVisitants = nVisitantes.filter(
+          console.log('nvisi', nVisitantes);
+          const qtyVisitants = JSON.parse(nVisitantes).filter(
             (val) => val.Presenca === true,
           );
           setPresentes(qtyPresentes.length);
@@ -346,13 +352,17 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     }
     return 0;
   };
-
   React.useEffect(() => {
     if (semana !== 0) {
       ajusteRelatorio();
     }
     return 0;
   }, [semana]);
+
+  React.useEffect(() => {
+    mutate(url);
+    return 0;
+  }, [existeRelatorio]);
 
   React.useEffect(() => {
     if (deleteVis) {
@@ -379,7 +389,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       let visitantesPresentes = '';
 
       if (nomesVisitanteTab) {
-        visitantesPresentes = nomesVisitanteTab.filter(
+        visitantesPresentes = JSON.parse(nomesVisitanteTab).filter(
           (val) => val.Presenca === true,
         );
       }
@@ -409,6 +419,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   }, [novoVisitante, nomesVisitanteTab]);
 
   React.useEffect(() => {
+    console.log('acionou mutate');
     ajusteRelatorio();
 
     return 0;
@@ -416,9 +427,11 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
   React.useEffect(() => {
     //  contEffect += 1;
+
     setExisteRelatorio('inicio');
     if (selectedDate) {
       const checkAno = selectedDate.getFullYear();
+      console.log('checkAno', checkAno);
       setAnoAtual(checkAno);
       // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
       if (checkAno > 2020) {
@@ -451,7 +464,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       let contAdultos = 0;
       let contCriancas = 0;
       for (let i = 0; i < listaPresentes.length; i += 1) {
-        idade[i] = PegaIdade(listaPresentes[i].Nascimento);
+        idade[i] = listaPresentes[i].Nascimento
+          ? PegaIdade(ConverteData2(listaPresentes[i].Nascimento))
+          : '';
         if (String(idade[i]) !== 'NaN')
           if (idade[i] > 11) {
             contAdultos += 1;
@@ -479,46 +494,53 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     const CriadoEm = new Date();
 
     if (nomeVistante.length > 3) {
-      setCarregando(true);
+      if (nascimentoVisitante) {
+        setCarregando(true);
 
-      api
-        .post('/api/inserirVisitante', {
-          Nome: nomeVistante,
-          Celula: Number(perfilUser.Celula),
-          Distrito: Number(perfilUser.Distrito),
-          Contato: foneVisitante,
-          Nascimento: nascimentoVisitante,
-          CriadoPor: perfilUser.Nome,
-          CriadoEm,
-        })
-        .then((response) => {
-          if (response) {
+        const novaData = new Date(ConverteData(nascimentoVisitante));
+
+        api
+          .post('/api/inserirVisitante', {
+            Nome: nomeVistante,
+            Celula: Number(perfilUser.Celula),
+            Distrito: Number(perfilUser.Distrito),
+            Contato: foneVisitante,
+            Nascimento: novaData,
+            CriadoPor: perfilUser.Nome,
+            CriadoEm,
+          })
+          .then((response) => {
+            if (response) {
+              setCarregando(false);
+              setNomeVisitante('');
+              setNascimentoVisitante('');
+              setFoneVisitante('');
+
+              let dadosNovos = [];
+              dadosNovos = response.data;
+
+              const nomesVisitantesParcial = createRelVisitantes(
+                dadosNovos.id,
+                dadosNovos.Nome,
+                true,
+              );
+
+              const nomesNovos = [];
+              nomesNovos.push(nomesVisitantesParcial);
+
+              setNomesVisitantes((state) => [...state, nomesVisitantesParcial]);
+
+              // mutate(url4);
+            }
+          })
+          .catch(() => {
             setCarregando(false);
-            setNomeVisitante('');
-            setNascimentoVisitante('');
-            setFoneVisitante('');
-
-            let dadosNovos = [];
-            dadosNovos = response.data;
-
-            const nomesVisitantesParcial = createRelVisitantes(
-              dadosNovos.id,
-              dadosNovos.Nome,
-              true,
-            );
-
-            const nomesNovos = [];
-            nomesNovos.push(nomesVisitantesParcial);
-
-            setNomesVisitantes((state) => [...state, nomesVisitantesParcial]);
-
-            // mutate(url4);
-          }
-        })
-        .catch(() => {
-          setOpenErro(true);
-          // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
-        });
+            setOpenErro(true);
+            // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+          });
+      } else {
+        setCorData('yellow');
+      }
     } else {
       handleVisitantes();
       setOpenVisitantes(false);
@@ -715,9 +737,9 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         Semana: semana,
         Celula: Number(perfilUser.Celula),
         Distrito: Number(perfilUser.Distrito),
-        Supervisao: Number(perfilUser.supervisao),
+        Supervisao: Number(perfilUser.Supervisao),
         Ano: Number(AnoAtual),
-        Pontuacao: pFinal,
+        Pontuacao: JSON.stringify(pFinal),
         Total: pTotalAtual,
         TotalRank: pTotalAtualRank,
         CriadoPor: perfilUser.Nome,
@@ -749,14 +771,14 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       createRelCelula(row.RolMembro, row.Nome, relPresentes[index].Presenca),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
-
+    const novaData = new Date(ConverteData(inputValue));
     const RelCelulaFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
       Number(semana),
-      inputValue,
+      novaData,
       nomesCelulaFinal,
-      nomesVisitantes,
+      JSON.stringify(nomesVisitantes),
       Number(adultos),
       Number(criancas),
       Number(qtyVisitante),
@@ -781,6 +803,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       })
       .catch(() => {
         setOpenErro(true);
+        setCarregando(false);
         // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
@@ -788,8 +811,10 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     if (errorPontosSemana) return <div>An error occured.</div>;
     if (!PontosSemana) return <div>Loading ...</div>;
     if (PontosSemana) {
+      const pontosAnoAtual = PontosSemana.filter((val) => val.Ano === AnoAtual);
+
       setRankGeral(
-        PontosSemana.sort((a, b) => {
+        pontosAnoAtual.sort((a, b) => {
           if (Number(a.TotalRank) < Number(b.TotalRank)) return 1;
           if (Number(b.TotalRank) < Number(a.TotalRank)) return -1;
           return 0;
@@ -833,7 +858,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito) &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Ano === Number(anoAtual),
       );
       if (CelulaAtual.length) {
         const idCelula = CelulaAtual[0].id;
@@ -1077,7 +1102,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                   <Grid item xs={6} md={6} lg={6} xl={6}>
                     <Box width="100%" mt={2} textAlign="center">
                       <Box
-                        color="white"
+                        color={corData}
                         fontSize="14px"
                         textAlign="start"
                         ml={1}
@@ -1104,6 +1129,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                         variant="standard"
                         placeholder="dd/mm/aaaa"
                         onChange={(e) => {
+                          setCorData('white');
                           setNascimentoVisitante(e.target.value);
                         }}
                       />
@@ -1185,7 +1211,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                 mt={0.5}
                                 sx={{ fontFamily: 'arial black' }}
                               >
-                                <Oval stroke="red" width={20} height={20} />
+                                <Oval stroke="green" width={20} height={20} />
                                 <Box mt={-0.1} ml={0.8} mr={0}>
                                   Salvando
                                 </Box>
@@ -2245,7 +2271,11 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               >
                                 {loading ? (
                                   <Box>
-                                    <Oval stroke="red" width={20} height={20} />
+                                    <Oval
+                                      stroke="green"
+                                      width={20}
+                                      height={20}
+                                    />
                                   </Box>
                                 ) : (
                                   'FAZER RELATÓRIO'
@@ -2467,7 +2497,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                             }}
                                           >
                                             <Oval
-                                              stroke="red"
+                                              stroke="green"
                                               width={20}
                                               height={20}
                                             />
@@ -2513,7 +2543,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                         sx={{ fontFamily: 'arial black' }}
                                       >
                                         <Oval
-                                          stroke="red"
+                                          stroke="green"
                                           width={20}
                                           height={20}
                                         />

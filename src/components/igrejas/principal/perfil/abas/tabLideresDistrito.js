@@ -46,8 +46,8 @@ export default function TabCelula({
 
   if (Funcao === 'Supervisor') {
     lideresSetor = listaParcial.sort((a, b) => {
-      if (new Date(a.supervisao) > new Date(b.supervisao)) return 1;
-      if (new Date(b.supervisao) > new Date(a.supervisao)) return -1;
+      if (new Date(a.Supervisao) > new Date(b.Supervisao)) return 1;
+      if (new Date(b.Supervisao) > new Date(a.Supervisao)) return -1;
       return 0;
     });
   }
@@ -116,7 +116,7 @@ export default function TabCelula({
                       <Box ml={0.5}>Coordenação: </Box>
                       <Box ml={1}> {row.Coordenacao}</Box>
                       <Box ml={2}>Super.: </Box>
-                      <Box ml={1}> {row.supervisao}</Box>
+                      <Box ml={1}> {row.Supervisao}</Box>
                       <Box ml={2}>Célula: </Box>
                       <Box ml={1}> {row.Celula}</Box>
                     </Box>
@@ -215,7 +215,7 @@ export default function TabCelula({
                     }}
                   >
                     <Box ml={1.5}>Supervisão: </Box>
-                    <Box ml={1}> {row.supervisao}</Box>
+                    <Box ml={1}> {row.Supervisao}</Box>
                     <Box ml={2}>Célula: </Box>
                     <Box ml={1}> {row.Celula}</Box>
                   </Box>

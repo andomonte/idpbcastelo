@@ -8,7 +8,7 @@ import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import Meses from 'src/utils/mesesAbrev';
 import TamanhoJanela from 'src/utils/getSize';
 import NovoRelatorio from 'src/components/igrejas/principal/relatorios/coordenador/novoRelCoord';
-import MostrarRelatorio from 'src/components/igrejas/principal/relatorios/coordenador/mostrarRelCoord';
+import MostrarRelatorio from 'src/components/igrejas/principal/relatorios/coordenador/editarRelCoord';
 import TabRelCoordenador from './coordenador/aba/tabRelCoord';
 
 const janela = TamanhoJanela();
@@ -233,6 +233,7 @@ function PlanMembro({ perfilUser, lideranca }) {
                 Mes={contMes}
                 Ano={contAno}
                 setSendResumo={setSendResumo}
+                lideranca={lideranca}
               />
             </Box>
           )}

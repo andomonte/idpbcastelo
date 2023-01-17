@@ -23,24 +23,8 @@ function PlanMembro({ perfilUser, lideranca }) {
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosRelVisita, setDadosRelVisita] = React.useState(false);
 
-  const [contSuper, setContSuper] = React.useState(0);
-
   // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
   //= ===================================================================
-
-  const lideresParcial = lideranca.filter(
-    (val) =>
-      Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      val.Funcao === 'Coordenador',
-  );
-
-  const setor = lideresParcial.sort((a, b) => {
-    if (new Date(a.supervisao) > new Date(b.supervisao)) return 1;
-    if (new Date(b.supervisao) > new Date(a.supervisao)) return -1;
-    return 0;
-  });
-  const superParcial = setor.map((itens) => itens.Coordenacao);
-  const numeroCoord = [...new Set(superParcial)];
 
   const handleIncAno = () => {
     let contAnoAtual = contAno + 1;
@@ -74,23 +58,6 @@ function PlanMembro({ perfilUser, lideranca }) {
   };
 
   const tipo = ['Visita', 'Coordenação'];
-
-  const handleIncSuper = () => {
-    let contTipoAtual = contSuper + 1;
-
-    if (contTipoAtual >= numeroCoord.length) {
-      contTipoAtual = 0;
-    }
-    setContSuper(contTipoAtual);
-  };
-  const handleDecSuper = () => {
-    let contTipoAtual = contSuper - 1;
-
-    if (contTipoAtual < 0) {
-      contTipoAtual = numeroCoord.length - 1;
-    }
-    setContSuper(contTipoAtual);
-  };
 
   return (
     <Box
@@ -133,7 +100,7 @@ function PlanMembro({ perfilUser, lideranca }) {
               >
                 <Box width="96%" mt={-1} ml={1}>
                   <Grid container item xs={12} spacing={1}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                       <Box width="100%" height={40} display="flex">
                         <Box
                           width="20%"
@@ -175,61 +142,6 @@ function PlanMembro({ perfilUser, lideranca }) {
                             component="span"
                             onClick={() => {
                               handleIncMes();
-                            }}
-                          >
-                            <BiCaretRight size={35} color="white" />
-                          </IconButton>
-                        </Box>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box
-                        borderRadius={5}
-                        height={40}
-                        width="100%"
-                        display="flex"
-                        fontSize="16px"
-                      >
-                        <Box
-                          width="10%"
-                          display="flex"
-                          justifyContent="flex-start"
-                          alignItems="center"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              handleDecSuper();
-                            }}
-                          >
-                            <BiCaretLeft size={35} color="white" />
-                          </IconButton>
-                        </Box>
-                        <Box
-                          width="80%"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          fontSize="16px"
-                          color="white"
-                          sx={{ fontFamily: 'Fugaz One' }}
-                        >
-                          <Box mr={2}>Coord.</Box> {numeroCoord[contSuper]}
-                        </Box>
-                        <Box
-                          width="10%"
-                          display="flex"
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              handleIncSuper();
                             }}
                           >
                             <BiCaretRight size={35} color="white" />
@@ -284,7 +196,6 @@ function PlanMembro({ perfilUser, lideranca }) {
                     borderRadius={16}
                   >
                     <TabRelCoordGeral
-                      numeroCoord={numeroCoord[contSuper]}
                       Mes={contMes}
                       Ano={contAno}
                       perfilUser={perfilUser}

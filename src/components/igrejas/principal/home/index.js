@@ -3,14 +3,14 @@ import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import Box from '@material-ui/core/Box';
 // import HomeIcon from '@material-ui/icons/Home';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
+import Login from 'src/components/botaoLogin';
 import Home from './home';
-import Login from '../botaoLogin';
 
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -110,26 +110,26 @@ function TabPanel(props) {
 }
 function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
-  // const [session] = useSession();
+  const [session] = useSession();
   const theme = useTheme();
   const router = useRouter();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = React.useState(false);
-
   const handleDrawerClose = () => {
-    // //console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
   };
 
-  if (!perfilUser) {
-    router.push({
-      pathname: '/',
-    });
-  }
+  React.useEffect(() => {
+    if (!perfilUser || session === null) {
+      router.push({
+        pathname: '/',
+      });
+    }
+  }, [session, perfilUser]);
+
   return (
     <div
       style={{
@@ -172,11 +172,11 @@ function SistemaCelulas({ perfilUser, rolMembros, userIgrejas, title }) {
                 width="80%"
               >
                 <img
-                  src="/images/logo1.png"
+                  src={corIgreja.logo}
                   height={30}
                   width={120}
                   className={classes.logo}
-                  alt="bolo"
+                  alt="IDPB"
                 />
               </Box>
             </Box>

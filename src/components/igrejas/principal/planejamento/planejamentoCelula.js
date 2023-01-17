@@ -550,7 +550,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           Semana: semana,
           Data: inputValue,
           Celula: Number(perfilUser.Celula),
-          Supervisao: Number(perfilUser.supervisao),
+          Supervisao: Number(perfilUser.Supervisao),
           Coordenacao: Number(perfilUser.Coordenacao),
           Distrito: Number(perfilUser.Distrito),
           Fase: objetivo.label,

@@ -25,7 +25,7 @@ function Contribuir() {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/contribuicoes');
   }
-  console.log(perfilUserF);
+
   return (
     <div>
       {perfilUserF && (

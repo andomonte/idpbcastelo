@@ -304,7 +304,7 @@ export default function TabCelula({
                 >
                   {row.Celula}
                 </Box>
-                {console.log(row)}
+
                 <Box
                   display="flex"
                   justifyContent="center"

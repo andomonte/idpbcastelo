@@ -43,7 +43,7 @@ function RelCelula({ perfilUser, lideranca }) {
 
   const celulaSetor = lideresSetor.filter(
     (results) =>
-      Number(results.supervisao) === Number(perfilUser.supervisao) &&
+      Number(results.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
       results.Funcao === 'Lider',
   );

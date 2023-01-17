@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import 'react-toastify/dist/ReactToastify.css';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
+import ConvData2 from 'src/utils/convData2';
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -49,7 +50,7 @@ export default function TabCelula({ Mes, Ano }) {
   const handleShow = (index) => {
     const diaParcial = Number(eventoPlanejado[index].Dia);
     const diaMostrado = listaEventos.filter(
-      (val) => Number(val.Data.slice(0, 2)) === Number(diaParcial),
+      (val) => Number(val.Data.slice(8, 10)) === Number(diaParcial),
     );
     setOpenShowPlan(true);
     setMostrarEvento(diaMostrado);
@@ -181,7 +182,7 @@ export default function TabCelula({ Mes, Ano }) {
                         color="white"
                         fontSize="16px"
                       >
-                        {mostrarEvento[index].Data}
+                        {ConvData2(mostrarEvento[index].Data)}
                       </Box>
                     </Box>
                     <Box width="100%" mt={2} mr="8vw">
@@ -302,12 +303,12 @@ export default function TabCelula({ Mes, Ano }) {
 
   const primerioDia = new Date(Number(Ano), Number(Mes), 1).getDay();
   const ultimoDia = new Date(Number(Ano), Number(Mes) + 1, 0).getDate();
-  const diaAnterior = new Date(Number(Ano), Number(Mes), 0).getDate();
+  //  const diaAnterior = new Date(Number(Ano), Number(Mes), 0).getDate();
   calendario[primerioDia] = 1;
 
   // preenche tudo até o primeiro dia
   for (let i = 0; i < primerioDia; i += 1) {
-    calendario[primerioDia - i - 1] = diaAnterior - i;
+    calendario[primerioDia - i - 1] = '';
   }
   let contDias = primerioDia + 1;
 
@@ -320,7 +321,7 @@ export default function TabCelula({ Mes, Ano }) {
 
   for (let i = contDias; i < 35; i += 1) {
     if (contDias >= ultimoDia) contDias = 1;
-    calendario[i] = contDias;
+    calendario[i] = ''; // contDias;
     contDias += 1;
   }
   React.useEffect(() => {
@@ -347,7 +348,7 @@ export default function TabCelula({ Mes, Ano }) {
       const eventosParcial = eventoPlanejadoParcial;
       for (let i = 0; i < listaEventos.length; i += 1) {
         if (listaEventos && listaEventos[i]) {
-          diaP = listaEventos[i].Data;
+          diaP = listaEventos[i].Data.slice(8, 10);
           dia = Number(diaP.slice(0, 2));
         } else dia = '-';
 

@@ -17,7 +17,7 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
   //= ===================================================================
   const lideresSetor = lideranca.filter(
     (val) =>
-      Number(val.supervisao) === Number(perfilUser.supervisao) &&
+      Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       val.Funcao === 'Lider',
   );

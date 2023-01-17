@@ -10,13 +10,13 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop } from 'react-icons/md';
+import ConvertData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function TabCelula({
   setSendResumo,
   perfilUser,
-  numeroCoord,
   setDadosRelVisita,
   Mes,
   Ano,
@@ -25,13 +25,12 @@ export default function TabCelula({
 
   const [relEncontrado, setRelEncontrado] = React.useState([]);
   const [rel, setRel] = React.useState('nada');
-  const [necessidades, setNecessidades] = React.useState('');
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
 
   // para usar semanas
 
-  const url1 = `/api/consultaRelatorioCoordenacao/${Mes}/${Ano}`;
+  const url1 = `/api/consultaRelatorioSupervisao/${Mes}/${Ano}`;
 
   const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
 
@@ -40,12 +39,10 @@ export default function TabCelula({
     setRelEncontrado([]);
 
     if (sem1) {
-      console.log(sem1, numeroCoord);
       setRel(sem1);
       if (sem1 && sem1[0]) {
         const listaRelSuper = sem1.filter(
           (val) =>
-            Number(val.Coordenacao) === Number(numeroCoord) &&
             Number(val.Distrito) === Number(perfilUser.Distrito) &&
             val.Funcao === 'Coordenador',
         );
@@ -64,22 +61,10 @@ export default function TabCelula({
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1, numeroCoord]);
+  }, [sem1]);
 
   //= ==================================================================
 
-  React.useEffect(() => {
-    if (relEncontrado.length) {
-      const obj = JSON.parse(relEncontrado[0].Necessidades);
-      let strNecessidade = '';
-      for (let i = 0; i < obj.length; i += 1) {
-        if (strNecessidade !== '')
-          strNecessidade = `${String(strNecessidade)}${obj[i]},`;
-        else strNecessidade = `${obj[i]}`;
-      }
-      setNecessidades(strNecessidade);
-    }
-  }, [relEncontrado]);
   return (
     <Box height="100%">
       <Box
@@ -103,9 +88,9 @@ export default function TabCelula({
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="25%"
+          width="35%"
         >
-          SUPERVIS.
+          DATA
         </Box>
 
         <Box
@@ -114,11 +99,11 @@ export default function TabCelula({
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="60%"
+          width="45%"
         >
-          NECESSIDADE
+          COORDENAÇÃO
         </Box>
-        <Box textAlign="center" width="15%">
+        <Box textAlign="center" width="20%">
           VER
         </Box>
       </Box>
@@ -152,11 +137,12 @@ export default function TabCelula({
                       justifyContent="center"
                       alignItems="center"
                       height="100%"
+                      fontSize="12px"
                       textAlign="center"
-                      width="25%"
+                      width="35%"
                     >
                       {relEncontrado[index]
-                        ? relEncontrado[index].CelulaVisitada.slice(7, 11)
+                        ? ConvertData(relEncontrado[index].Data) // relEncontrado[index].CelulaVisitada.slice(8, 11)
                         : '-'}
                     </Box>
 
@@ -167,7 +153,7 @@ export default function TabCelula({
                       flexDirection="column"
                       height="100%"
                       textAlign="center"
-                      width="60%"
+                      width="45%"
                       sx={{
                         borderRight: '1px solid #000',
                         borderLeft: '1px solid #000',
@@ -176,8 +162,8 @@ export default function TabCelula({
                       {relEncontrado[index] ? (
                         <Box color="blue" display="flex">
                           <Box>
-                            {necessidades !== '' ? (
-                              <Box> {necessidades}</Box>
+                            {relEncontrado[index] !== '' ? (
+                              <Box> {relEncontrado[index].Coordenacao}</Box>
                             ) : (
                               ''
                             )}
@@ -200,7 +186,7 @@ export default function TabCelula({
                       justifyContent="center"
                       textAlign="center"
                       alignItems="center"
-                      width="15%"
+                      width="20%"
                     >
                       {relEncontrado[index].Data ? (
                         <IconButton

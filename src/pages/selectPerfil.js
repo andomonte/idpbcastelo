@@ -6,7 +6,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
-function selectPerfil({ userIgrejas, celulas }) {
+function selectPerfil({ userIgrejas, celulas, distritos }) {
   const [rolMembros, setRolMembros] = React.useState([]);
   const [lideranca, setLideranca] = React.useState([]);
   const url1 = `/api/consultaMembros`;
@@ -45,6 +45,7 @@ function selectPerfil({ userIgrejas, celulas }) {
           celulas={celulas}
           lideranca={lideranca}
           rolMembros={rolMembros}
+          distritos={distritos}
         />
       ) : (
         <Espera descricao="Buscando Perfil" />
@@ -60,10 +61,13 @@ export const getStaticProps = async () => {
   const celulas = await prisma.celulas.findMany().finally(async () => {
     await prisma.$disconnect();
   });
+  const distritos = await prisma.distrito.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       celulas: JSON.parse(JSON.stringify(celulas)),
-
+      distritos: JSON.parse(JSON.stringify(distritos)),
       userIgrejas: JSON.parse(JSON.stringify(userIgrejas)),
     }, // will be passed to the pperfilUser component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build

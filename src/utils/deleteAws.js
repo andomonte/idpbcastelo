@@ -21,11 +21,11 @@ aws.config.update({
 const s3 = new aws.S3({
   /* ... */
 });
-const deletar = s3.deleteBucket(bucketParams, (err, data) => {
+const deletar = s3.deleteBucket(bucketParams, (err) => {
   if (err) {
     console.log('Error', err);
   } else {
-    console.log('Success', data);
+    //    console.log('Success', data);
   }
 });
 
