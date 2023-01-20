@@ -3,10 +3,12 @@ import { SistemaCelulas } from 'src/components/igrejas/principal/home';
 import { Pagina } from 'src/components/igrejas/normal';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
   const router = useRouter();
+  const [session] = useSession();
   const perfilUser = router.query;
   let mudaDados = 'sai';
 
@@ -20,14 +22,21 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
 
-      if (!result) {
+      if (session) {
+        if (!result)
+          router.push(
+            {
+              pathname: '/selectPerfil',
+            },
+            '/selectPerfil',
+          );
+      } else
         router.push(
           {
-            pathname: '/selectPerfil',
+            pathname: '/',
           },
-          '/selectPerfil',
+          '/',
         );
-      }
       // resultado = result.id;
       setPerfilUserF(result);
     }
