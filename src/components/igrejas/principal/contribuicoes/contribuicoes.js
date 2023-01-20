@@ -14,7 +14,7 @@ import Meses from 'src/utils/meses';
 
 import TabContribuicoes from './tabContribuicoes';
 
-function RelCelula({ perfilUser }) {
+function RelCelula({ perfilUser, categorias }) {
   //= ================================================================
   const mes = Meses();
   const d = new Date();
@@ -22,6 +22,7 @@ function RelCelula({ perfilUser }) {
   const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
+
   /*
   let enviarDia;
   let enviarData;
@@ -252,6 +253,7 @@ function RelCelula({ perfilUser }) {
                   perfilUser={perfilUser}
                   Mes={contMes}
                   Ano={contAno}
+                  categorias={categorias}
                 />
               </Box>
             </Box>

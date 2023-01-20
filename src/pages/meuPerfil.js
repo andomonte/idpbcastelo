@@ -3,7 +3,7 @@ import { Perfil } from 'src/components/igrejas/principal/perfil';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 import Espera from 'src/utils/espera';
-// import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 
 function meuPerfil({ celulas, rolMembros, lideranca }) {
   const router = useRouter();
@@ -11,7 +11,7 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
-
+  const [session] = useSession();
   React.useEffect(() => {
     if (mudaDados === 'entra') {
       setPerfilUserF(perfilUser);
@@ -30,6 +30,11 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
 
+      if (session === null || !result) {
+        router.push({
+          pathname: '/',
+        });
+      }
       // resultado = result.id;
       setPerfilUserF(result);
     }

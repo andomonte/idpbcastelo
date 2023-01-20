@@ -13,8 +13,8 @@ function relatorios({ celulas, rolMembros, lideranca }) {
   const [perfilUserF, setPerfilUserF] = React.useState();
 
   React.useEffect(() => {
-    setPerfilUserF(perfilUserF);
     if (mudaDados === 'entra') {
+      setPerfilUserF(perfilUser);
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));

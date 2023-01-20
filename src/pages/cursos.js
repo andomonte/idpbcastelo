@@ -1,12 +1,22 @@
 import React from 'react';
 import Cursos from 'src/components/igrejas/principal/cursos';
-
+import { useSession } from 'next-auth/client';
 import prisma from 'src/lib/prisma';
+import { useRouter } from 'next/router';
 
 function FazerInscricoes({ rolMembros }) {
+  const [session] = useSession();
+  const router = useRouter();
   const [perfilUser, setPerfilUser] = React.useState('');
   React.useEffect(() => {
     const result = JSON.parse(sessionStorage.getItem('perfilUser'));
+
+    if (session === null || !result) {
+      router.push({
+        pathname: '/',
+      });
+    }
+
     setPerfilUser(result);
   }, []);
   if (typeof window !== 'undefined') {

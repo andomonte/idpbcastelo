@@ -2,6 +2,7 @@ import React from 'react';
 import CadastrarPessoas from 'src/components/igrejas/principal/cadastrarPessoas';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 function Atualizar({ rolMembros }) {
   const router = useRouter();
@@ -10,14 +11,18 @@ function Atualizar({ rolMembros }) {
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState();
-
+  const [session] = useSession();
   React.useEffect(() => {
-    setPerfilUserF(perfilUserF);
     if (mudaDados === 'entra') {
+      setPerfilUserF(perfilUser);
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-
+      if (session === null || !result) {
+        router.push({
+          pathname: '/',
+        });
+      }
       // resultado = result.id;
       setPerfilUserF(result);
     }

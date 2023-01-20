@@ -8,7 +8,7 @@ import ConverteData from 'src/utils/convData2';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function TabCelula({ Mes, Ano, perfilUser }) {
+export default function TabCelula({ Mes, Ano, perfilUser, categorias }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [entradas, setEntradas] = React.useState([]);
@@ -114,7 +114,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   borderRight: '1px solid #000',
                 }}
               >
-                <Box>{row.LANC_DESCRICAO ? row.LANC_DESCRICAO : '-'}</Box>
+                <Box>
+                  {row.LANC_DESCRICAO
+                    ? categorias.filter((val) => val.CAT_ID === row.CAT_ID)[0]
+                        .CAT_NOME
+                    : '-'}
+                </Box>
               </Box>
               <Box
                 height="100%"

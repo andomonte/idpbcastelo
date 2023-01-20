@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbFiladelfia({ title, perfilUser }) {
+function IdpbFiladelfia({ title, perfilUser, categorias }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -170,7 +170,7 @@ function IdpbFiladelfia({ title, perfilUser }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Contribuicoes perfilUser={perfilUser} />
+          <Contribuicoes perfilUser={perfilUser} categorias={categorias} />
         </main>
       </div>
     </div>

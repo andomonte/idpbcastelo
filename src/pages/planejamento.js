@@ -2,6 +2,7 @@ import React from 'react';
 import Planejamento from 'src/components/igrejas/principal/planejamento';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 function Planejar({ rolMembros, lideranca }) {
   const router = useRouter();
@@ -10,17 +11,22 @@ function Planejar({ rolMembros, lideranca }) {
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState();
+  const [session] = useSession();
 
   React.useEffect(() => {
-    setPerfilUserF(perfilUserF);
     if (mudaDados === 'entra') {
+      setPerfilUserF(perfilUser);
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-
-      // resultado = result.id;
+      if (session === null || !result) {
+        router.push({
+          pathname: '/',
+        });
+      }
       setPerfilUserF(result);
     }
+    // resultado = result.id;
   }, []);
 
   if (typeof window !== 'undefined') {
@@ -29,24 +35,13 @@ function Planejar({ rolMembros, lideranca }) {
 
   return (
     <div>
-      {perfilUser.id ? (
+      {perfilUserF && (
         <Planejamento
           title="IDPB-CELULAS"
           rolMembros={rolMembros}
           lideranca={lideranca}
-          perfilUser={perfilUser}
+          perfilUser={perfilUserF}
         />
-      ) : (
-        <div>
-          {perfilUserF && (
-            <Planejamento
-              title="IDPB-CELULAS"
-              rolMembros={rolMembros}
-              lideranca={lideranca}
-              perfilUser={perfilUserF}
-            />
-          )}
-        </div>
       )}
     </div>
   );
