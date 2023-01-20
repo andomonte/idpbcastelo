@@ -12,7 +12,7 @@ import {
 import moment from 'moment'; */
 import Meses from 'src/utils/meses';
 
-import TabCelula from './tabContribuicoes';
+import TabContribuicoes from './tabContribuicoes';
 
 function RelCelula({ perfilUser }) {
   //= ================================================================
@@ -95,7 +95,7 @@ function RelCelula({ perfilUser }) {
   const handleDecAno = () => {
     let contAnoAtual = contAno - 1;
 
-    if (contAnoAtual < 2022) contAnoAtual = 2022;
+    if (contAnoAtual < 2020) contAnoAtual = 2020;
     setContAno(contAnoAtual);
   };
 
@@ -248,7 +248,7 @@ function RelCelula({ perfilUser }) {
                 width="100%"
                 borderRadius={16}
               >
-                <TabCelula
+                <TabContribuicoes
                   perfilUser={perfilUser}
                   Mes={contMes}
                   Ano={contAno}
