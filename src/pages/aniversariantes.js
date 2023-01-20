@@ -2,11 +2,12 @@ import React from 'react';
 import Aniversariantes from 'src/components/igrejas/principal/aniversariantes';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 function Planejar({ rolMembros }) {
   const router = useRouter();
   const perfilUser = router.query;
-
+  const [session] = useSession();
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState();
@@ -18,6 +19,11 @@ function Planejar({ rolMembros }) {
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
 
+      if (session === null || !result) {
+        router.push({
+          pathname: '/',
+        });
+      }
       // resultado = result.id;
       setPerfilUserF(result);
     }

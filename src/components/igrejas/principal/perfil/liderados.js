@@ -10,6 +10,7 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
   const [buscarNome, setBuscarNome] = React.useState([]);
   const [openBuscar, setOpenBuscar] = React.useState(false);
   //= ===================================================================
+
   const membrosSetor = rolMembros.filter(
     (val) =>
       Number(val.Supervisao) === Number(perfilUser.Supervisao) &&

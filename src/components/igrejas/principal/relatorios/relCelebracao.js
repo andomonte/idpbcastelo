@@ -309,6 +309,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         );
 
         if (relatorio && relatorio.length) {
+          console.log('ola relatorio', relatorio);
           const dataAgora = new Date();
           const semanaAgora = semanaExata(dataAgora);
 
@@ -320,16 +321,17 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           const nomesMembros = relatorio[0].NomesMembros
             ? JSON.parse(relatorio[0].NomesMembros)
             : [];
-          const nVisitantes = relatorio[0].NomesVisitantes
-            ? JSON.parse(relatorio[0].NomesVisitantes)
-            : [];
+          const nVisitantes =
+            relatorio[0].NomesVisitantes !== null
+              ? JSON.parse(relatorio[0].NomesVisitantes)
+              : [];
           const qtyPresentes = nomesMembros.filter(
             (val) => val.Presenca === 'igreja',
           );
           const qtyPresentesLive = nomesMembros.filter(
             (val) => val.Presenca === 'live',
           );
-          console.log('nvisi', Object.keys(nVisitantes).length);
+          console.log('nvisi', relatorio[0].NomesVisitantes);
           const qtyVisitants = Object.keys(nVisitantes).length
             ? nVisitantes.filter((val) => val.Presenca === true)
             : [];

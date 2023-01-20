@@ -2,11 +2,12 @@ import React from 'react';
 import Participacoes from 'src/components/igrejas/principal/participacoes';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 function relatorios({ celulas, rolMembros, lideranca }) {
   const router = useRouter();
   const perfilUser = router.query;
-
+  const [session] = useSession();
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState();
@@ -20,6 +21,11 @@ function relatorios({ celulas, rolMembros, lideranca }) {
 
       // resultado = result.id;
       setPerfilUserF(result);
+      if (session === null || !result) {
+        router.push({
+          pathname: '/',
+        });
+      }
     }
   }, []);
 
@@ -29,7 +35,7 @@ function relatorios({ celulas, rolMembros, lideranca }) {
 
   return (
     <div>
-      {perfilUser.id ? (
+      {perfilUserF && (
         <Participacoes
           celulas={celulas}
           title="IDPB-CELULAS"
@@ -37,16 +43,6 @@ function relatorios({ celulas, rolMembros, lideranca }) {
           lideranca={lideranca}
           perfilUser={perfilUser}
         />
-      ) : (
-        <div>
-          {perfilUserF && (
-            <Participacoes
-              title="IDPB-CELULAS"
-              rolMembros={rolMembros}
-              perfilUser={perfilUserF}
-            />
-          )}
-        </div>
       )}
     </div>
   );

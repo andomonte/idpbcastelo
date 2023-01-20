@@ -581,6 +581,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                     rolMembros={rolMembros}
                   />
                 ) : null}
+
                 {perfilUser.Funcao === 'PastorDistrito' ? (
                   <LideradosDistrito
                     secao={session}

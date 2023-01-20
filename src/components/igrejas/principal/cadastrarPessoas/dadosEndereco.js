@@ -264,7 +264,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
       .post('/api/atualizarRolMembros', {
         id: dadosUser[0].id,
         Logradouro: logradouro,
-        Numero: numero,
+        Numero: Number(numero),
         Bairro: bairro,
         CEP: cep,
         nomeNucleo,

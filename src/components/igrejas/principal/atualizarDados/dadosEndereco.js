@@ -264,7 +264,7 @@ function DadosEndereco({ rolMembros, perfilUser }) {
       .post('/api/atualizarRolMembros', {
         RolMembro: dadosUser[0].RolMembro,
         Logradouro: logradouro,
-        Numero: numero,
+        Numero: Number(numero),
         Bairro: bairro,
         CEP: cep,
         nomeNucleo,
@@ -426,11 +426,11 @@ function DadosEndereco({ rolMembros, perfilUser }) {
                   id="Numero"
                   inputRef={numeroRef}
                   // label="Número"
-                  type="text"
+                  type="number"
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={numero || ''}
+                  value={numero || null}
                   variant="outlined"
                   placeholder="xxx"
                   size="small"

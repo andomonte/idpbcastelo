@@ -144,14 +144,17 @@ export default function TabCelula({
                       height: 50,
                     }}
                   >
-                    <Image
-                      src={row.foto}
-                      layout="fill"
-                      objectFit="contain"
-                      loading="eager"
-                      placeholder="blur"
-                      blurDataURL={bannerBlurHash}
-                    />
+                    {console.log('ola row.foto', row.foto.slice(0, 1))}
+                    {row.foto.slice(0, 1) === 'h' ? (
+                      <Image
+                        src={row.foto}
+                        layout="fill"
+                        objectFit="contain"
+                        loading="eager"
+                        placeholder="blur"
+                        blurDataURL={bannerBlurHash}
+                      />
+                    ) : null}
                   </Avatar>
                 ) : (
                   <Avatar
