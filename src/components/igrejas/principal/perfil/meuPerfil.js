@@ -333,128 +333,26 @@ function meuPerfil({ secao, perfilUser }) {
                         >
                           {secao.user.name.toUpperCase()}
                         </Box>
-                        <Box fontFamily="Rubik" fontSize="18px" color="white">
-                          {(perfilUser.Funcao === 'Lider' ||
-                            perfilUser.Funcao === 'Membro') && (
-                            <Box
-                              sx={{
-                                color: 'white',
-                                fontFamily: 'Rubik',
-
-                                fontSize: '12px',
-                              }}
-                              display="flex"
-                            >
-                              {perfilUser.Funcao}:
-                              <Box
-                                ml={1}
-                                sx={{
-                                  color: '#ffdd55',
-                                  fontFamily: 'Rubik',
-                                  fontWeight: 'bold',
-                                  fontSize: '12px',
-                                }}
-                              >
-                                Célula {perfilUser.Celula}
-                              </Box>
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'Supervisor' && (
-                            <Box
-                              sx={{
-                                color: 'white',
-                                fontFamily: 'Rubik',
-
-                                fontSize: '12px',
-                              }}
-                              display="flex"
-                            >
-                              {perfilUser.Funcao}:
-                              <Box
-                                ml={1}
-                                sx={{
-                                  color: '#ffdd55',
-                                  fontFamily: 'Rubik',
-                                  fontWeight: 'bold',
-                                  fontSize: '12px',
-                                }}
-                              >
-                                {perfilUser.Supervisao}
-                              </Box>
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'Coordenador' && (
-                            <Box
-                              sx={{
-                                color: 'white',
-                                fontFamily: 'Rubik',
-
-                                fontSize: '12px',
-                              }}
-                              display="flex"
-                            >
-                              {perfilUser.Funcao}:
-                              <Box
-                                ml={1}
-                                sx={{
-                                  color: '#ffdd55',
-                                  fontFamily: 'Rubik',
-                                  fontWeight: 'bold',
-                                  fontSize: '12px',
-                                }}
-                              >
-                                {perfilUser.Coordenacao}
-                              </Box>
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'Secretaria' && (
-                            <Box
-                              sx={{
-                                color: 'white',
-                                fontFamily: 'Rubik',
-
-                                fontSize: '12px',
-                              }}
-                              display="flex"
-                            >
-                              {perfilUser.Funcao}:
-                              <Box
-                                ml={1}
-                                sx={{
-                                  color: '#ffdd55',
-                                  fontFamily: 'Rubik',
-                                  fontWeight: 'bold',
-                                  fontSize: '12px',
-                                }}
-                              >
-                                Igreja - {perfilUser.Igreja}
-                              </Box>
-                            </Box>
-                          )}
-                          {perfilUser.Funcao === 'PastorDistrito' && (
-                            <Box
-                              sx={{
-                                color: 'white',
-                                fontFamily: 'Rubik',
-
-                                fontSize: '12px',
-                              }}
-                              display="flex"
-                            >
-                              {perfilUser.Funcao}:
-                              <Box
-                                ml={1}
-                                sx={{
-                                  color: '#ffdd55',
-                                  fontFamily: 'Rubik',
-                                  fontWeight: 'bold',
-                                  fontSize: '12px',
-                                }}
-                              >
-                                {nomeDistrito[perfilUser.Distrito - 1]}
-                              </Box>
-                            </Box>
-                          )}
+                        <Box
+                          display="flex"
+                          sx={{
+                            color: '#fff',
+                            fontFamily: 'Rubik',
+                            fontSize: '12px',
+                          }}
+                        >
+                          Célula:
+                          <Box
+                            ml={1}
+                            sx={{
+                              color: '#ffdd55',
+                              fontFamily: 'Rubik',
+                              fontWeight: 'bold',
+                              fontSize: '12px',
+                            }}
+                          >
+                            {perfilUser.Celula}{' '}
+                          </Box>
                         </Box>
                         <Box
                           display="flex"

@@ -491,6 +491,7 @@ model TB_LANCAMENTO {
   tipo_ofertante          Boolean
   plano_conta             String?   @db.VarChar(20)
   forma_pagamento         String?   @db.VarChar(50)
+  CAT_NOME                String    @db.VarChar(100)
 }
 
 model TB_LOGIN_DEVICE {
@@ -633,4 +634,13 @@ model TB_PLANO_CONTA {
   analitica  Boolean?
   patrimonio Boolean?
   natureza   String?  @db.VarChar(100)
+}
+
+model TB_MES_REFERENCIA {
+  mesReferencia        BigInt  @default(0)
+  anoReferencia        BigInt  @default(0)
+  mesAtivo             Boolean
+  mesExtensoReferencia String  @db.VarChar(50)
+
+  @@id([mesReferencia, anoReferencia])
 }

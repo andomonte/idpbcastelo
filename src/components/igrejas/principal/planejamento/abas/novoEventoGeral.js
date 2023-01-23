@@ -181,7 +181,7 @@ export default function TabCelula({
       Dados.Numero = perfilUser.Supervisao;
     }
     if (perfilUser.Funcao === 'Coordenador') {
-      Dados.Publico = 'Coordeancão';
+      Dados.Publico = 'Coordenação';
       Dados.Numero = perfilUser.Coordenacao;
     }
     if (perfilUser.Funcao === 'PastorDistrito') {

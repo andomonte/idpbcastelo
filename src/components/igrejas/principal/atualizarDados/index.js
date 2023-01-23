@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { TiArrowBack } from 'react-icons/ti';
 import Box from '@material-ui/core/Box';
 import { useRouter } from 'next/router';
-import Login from 'src/components/botaoLogin';
+
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 // import PerfilIcon from 'src/components/icones/perfil';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
     height: 56,
   },
@@ -234,7 +234,6 @@ function AtualizarDados({ title, rolMembros, perfilUser }) {
                 />
               </BottomNavigation>
             </Box>
-            <Login />
           </Toolbar>
         </AppBar>
 

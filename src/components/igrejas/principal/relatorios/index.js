@@ -12,7 +12,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { Oval } from 'react-loading-icons';
-import Login from 'src/components/botaoLogin';
+
 // import PerfilIcon from 'src/components/icones/perfil';
 
 import { useSession } from 'next-auth/client';
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
     height: 56,
   },
@@ -239,7 +239,7 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
-                    label="Discipul."
+                    label="Discipulado"
                     icon={
                       value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -470,8 +470,6 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 </BottomNavigation>
               </Box>
             )}
-
-            <Login />
           </Toolbar>
         </AppBar>
 

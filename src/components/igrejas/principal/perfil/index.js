@@ -12,7 +12,6 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { useRouter } from 'next/router';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
 import PersonIcon from '@material-ui/icons/Person';
 import { useSession } from 'next-auth/client';
@@ -22,8 +21,8 @@ import { Oval } from 'react-loading-icons';
 import { MdGroupWork, MdTipsAndUpdates } from 'react-icons/md';
 import { IoIosPeople, IoIosSchool } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
-
 import { HiUserGroup } from 'react-icons/hi';
+import BuscarNome from './abas/buscarNome';
 import NabarSecretaria from '../navBar/secretaria';
 import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
@@ -40,16 +39,16 @@ import MembrosIgreja from './membrosIgreja';
 import MembrosCelula from './membrosCelula';
 
 import MeuPerfil from './meuPerfil';
-import MeusCursos from './meusCursos';
 import Padrao from '../relatorios/lider/abas/telaPadrao';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
     height: 48,
+    marginRight: 0,
   },
   root: {
     backgroundColor: corIgreja.principal2,
@@ -216,7 +215,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Meu"
+                    label="Meu Perfil"
                     icon={
                       value === 0 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -254,7 +253,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
-                    label="Cursos"
+                    label="Participações"
                     icon={
                       value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -487,8 +486,6 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
                 </BottomNavigation>
               </Box>
             )}
-
-            <Login />
           </Toolbar>
         </AppBar>
 
@@ -604,11 +601,7 @@ function Perfil({ celulas, title, rolMembros, lideranca, perfilUser }) {
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
             {perfilUser.Funcao === 'Membro' ? (
-              <MeusCursos
-                perfilUser={perfilUser}
-                secao={session}
-                rolMembros={rolMembros}
-              />
+              <BuscarNome perfilUser={perfilUser} setOpenBuscar />
             ) : null}
             {perfilUser.Funcao === 'Lider' ? (
               <MembrosCelula

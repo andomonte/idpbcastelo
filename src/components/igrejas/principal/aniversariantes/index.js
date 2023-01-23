@@ -18,7 +18,7 @@ import { TiArrowBack } from 'react-icons/ti';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import { MdGroups } from 'react-icons/md';
-import Login from 'src/components/botaoLogin';
+
 import NabarMembro from '../navBar/membro';
 import NabarLider from '../navBar/lider';
 import NavbarSuper from '../navBar/supervisor';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
   },
   root: {
@@ -211,7 +211,7 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
                       ? { color: corIgreja.iconeOn, fontSize: '12px' }
                       : { color: '#eeeeee', fontSize: '12px' }
                   }
-                  label="Setor"
+                  label="Supervisão"
                   icon={
                     value === 1 ? (
                       <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -245,7 +245,6 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
                 />
               </BottomNavigation>
             </Box>
-            <Login />
           </Toolbar>
         </AppBar>
 

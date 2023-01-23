@@ -141,9 +141,12 @@ function Eventos({ perfilUser, rolMembros }) {
                             justifyContent="center"
                             flexDirection="column"
                             width="100%"
+                            bgcolor="black"
                             mt={5}
+                            borderRadius={16}
                           >
                             <Box
+                              mt={3}
                               display="flex"
                               alignItems="center"
                               justifyContent="center"
@@ -152,55 +155,78 @@ function Eventos({ perfilUser, rolMembros }) {
                               fontSize="20px"
                               color="black"
                             >
-                              <small
-                                style={{
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
-                                  color: 'blue',
-                                  marginTop: 5,
-                                }}
+                              <Box
+                                width="30%"
+                                height="100%"
+                                fontSize="14px"
+                                color="yellow"
+                                textAlign="end"
                               >
                                 Curso:
-                              </small>
-                              <Box ml={1}> {row.Curso}</Box>
+                              </Box>
+                              <Box
+                                textAlign="start"
+                                width="70%"
+                                height="100%"
+                                fontSize="14px"
+                                color="white"
+                                ml={1}
+                              >
+                                {' '}
+                                {row.Curso}
+                              </Box>
                             </Box>
                             <Box
+                              mt={3}
                               display="flex"
                               alignItems="center"
                               justifyContent="center"
                               width="100%"
                               height="50%"
                               fontSize="20px"
-                              color="black"
-                              mt={1}
                             >
-                              <small
-                                style={{
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
-                                  color: 'blue',
-                                  marginTop: 5,
-                                }}
+                              <Box
+                                width="30%"
+                                height="100%"
+                                fontSize="14px"
+                                color="yellow"
+                                textAlign="end"
                               >
-                                Data de Início:
-                              </small>
-
-                              <Box ml={1}>{ConverterData(row.DataCurso)}</Box>
-
-                              <small
-                                style={{
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
-                                  color: 'blue',
-                                  marginTop: 5,
-                                  marginLeft: 20,
-                                }}
+                                Início:
+                              </Box>
+                              <Box
+                                textAlign="start"
+                                width="30%"
+                                height="100%"
+                                fontSize="14px"
+                                color="white"
+                                ml={1}
+                              >
+                                {ConverterData(row.DataCurso)}
+                              </Box>
+                              <Box
+                                width="20%"
+                                height="100%"
+                                fontSize="14px"
+                                color="yellow"
+                                textAlign="end"
                               >
                                 Turma:
-                              </small>
-                              <Box ml={1}> {row.idTurma}</Box>
+                              </Box>
+                              <Box
+                                textAlign="start"
+                                width="20%"
+                                height="100%"
+                                fontSize="14px"
+                                color="white"
+                                ml={1}
+                              >
+                                {row.idTurma}
+                              </Box>
                             </Box>
                             <Box
+                              mt={3}
+                              mb={3}
                               display="flex"
                               alignItems="center"
                               justifyContent="center"
@@ -208,19 +234,31 @@ function Eventos({ perfilUser, rolMembros }) {
                               height="50%"
                               fontSize="20px"
                               color="black"
-                              mt={1}
                             >
-                              <small
-                                style={{
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
-                                  color: 'blue',
-                                  marginTop: 5,
-                                }}
+                              <Box
+                                width="30%"
+                                height="100%"
+                                fontSize="14px"
+                                color="yellow"
+                                textAlign="end"
                               >
-                                Professor:
-                              </small>
-                              <Box ml={1}> {row.Professor}</Box>
+                                Prof.:
+                              </Box>
+                              <Box
+                                textAlign="start"
+                                width="70%"
+                                height="100%"
+                                fontSize="14px"
+                                color="white"
+                                ml={1}
+                              >
+                                {row.Professor.length > 20
+                                  ? `${row.Professor.substring(
+                                      0,
+                                      row.Professor.lastIndexOf(' '),
+                                    )}...`
+                                  : row.Professor}
+                              </Box>
                             </Box>
                           </Box>
                           <Box

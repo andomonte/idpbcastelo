@@ -5,10 +5,16 @@ import Espera from 'src/utils/espera';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { MdDone, MdOutlineClose } from 'react-icons/md';
-
+import ConverteData from 'src/utils/convData2';
 import { Oval } from 'react-loading-icons';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
+
+function filterItems(array, query) {
+  return array.filter(
+    (el) => el.CAT_NOME.toLowerCase().indexOf(query.toLowerCase()) > -1,
+  );
+}
 
 export default function TabCelula({ Mes, Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
@@ -51,7 +57,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const url2 = `/api/consultaRelCelebracaoSemanas/${semana1}`;
   const url3 = `/api/consultaRelDiscipuladoSemanas/${semana1}`;
   const url4 = `/api/consultaInscritosCurso/${rolMembros}`;
-  const url5 = `/api/consultaContribuicoes/${Mes}/${rolMembros}`;
+  const url5 = `/api/consultaContribuicoes/${Ano}/${Mes}/${rolMembros}`;
 
   const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
   const { data: semCelebracao, errorSemCelebracao } = useSWR(url2, fetcher);
@@ -88,12 +94,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
   React.useEffect(() => {
     if (cursoFeito && cursoFeito.length) {
-      const listaMeuCursos = cursoFeito.sort((a, b) => {
-        if (new Date(a.DataCurso) > new Date(b.DataCurso)) return 1;
-        if (new Date(b.DataCurso) > new Date(a.DataCurso)) return -1;
-        return 0;
-      });
-      if (listaMeuCursos.length) setListaCursos(listaMeuCursos[0]);
+      setListaCursos(cursoFeito[0]);
     }
     if (errorCursoFeito) return <div>An error occured.</div>;
     if (!cursoFeito) return <Espera descricao="Buscando os Dados" />;
@@ -104,8 +105,9 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     setOferta(false);
     setDizimo(false);
     if (contribuicoes && contribuicoes.length) {
-      const ofertaP = contribuicoes.filter((val) => val.Tipo === 'OFERTA');
-      const dizimoP = contribuicoes.filter((val) => val.Tipo === 'DIZIMO');
+      const ofertaP = filterItems(contribuicoes, 'ferta');
+
+      const dizimoP = filterItems(contribuicoes, 'zimo');
       if (ofertaP.length) setOferta(true);
       if (dizimoP.length) setDizimo(true);
     }
@@ -127,7 +129,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           JSON.parse(presCelula1[Number(i)].NomesMembros),
         );
 
-        setDataSem1(presCelula1[0].Data);
+        setDataSem1(ConverteData(presCelula1[0].Data));
         const pSem1 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),
         );
@@ -145,7 +147,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           JSON.parse(presCelula2[Number(i)].NomesMembros),
         );
 
-        setDataSem2(presCelula2[0].Data);
+        setDataSem2(ConverteData(presCelula2[0].Data));
         const pSem1 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),
         );
@@ -164,7 +166,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           JSON.parse(presCelula3[Number(i)].NomesMembros),
         );
 
-        setDataSem3(presCelula3[0].Data);
+        setDataSem3(ConverteData(presCelula3[0].Data));
         const pSem1 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),
         );
@@ -183,7 +185,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           JSON.parse(presCelula4[Number(i)].NomesMembros),
         );
 
-        setDataSem4(presCelula4[0].Data);
+        setDataSem4(ConverteData(presCelula4[0].Data));
         const pSem1 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),
         );
@@ -202,7 +204,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           JSON.parse(presCelula5[Number(i)].NomesMembros),
         );
 
-        setDataSem5(presCelula5[0].Data);
+        setDataSem5(ConverteData(presCelula5[0].Data));
         const pSem1 = nomes[0].filter(
           (val) => val.Rol === Number(perfilUser.RolMembro),
         );
@@ -1380,8 +1382,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         >
           {Object.keys(listaCursos).length ? (
             <Box>
-              <Box mt={0}>{listaCursos.DataCurso}</Box>
-              <Box mt={0}>{listaCursos.NomeCurso}</Box>
+              <Box mt={0}>{ConverteData(listaCursos.Data)}</Box>
+              <Box mt={0}>{listaCursos.Curso}</Box>
             </Box>
           ) : (
             '-'

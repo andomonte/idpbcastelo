@@ -13,8 +13,6 @@ import { BiCalendar } from 'react-icons/bi';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
-import Login from 'src/components/botaoLogin';
-
 import { useSession } from 'next-auth/client';
 import { IoIosPeople } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
@@ -36,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
     height: 56,
   },
@@ -247,7 +245,6 @@ function AtualizarDados({ title, rolMembros, perfilUser, lideranca }) {
                 />
               </BottomNavigation>
             </Box>
-            <Login />
           </Toolbar>
         </AppBar>
 

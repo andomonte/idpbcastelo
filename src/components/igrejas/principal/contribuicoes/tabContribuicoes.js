@@ -5,10 +5,11 @@ import useSWR from 'swr';
 import axios from 'axios';
 // import { Oval } from 'react-loading-icons';
 import ConverteData from 'src/utils/convData2';
+import TableContainer from '@mui/material/TableContainer';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function TabCelula({ Mes, Ano, perfilUser, categorias }) {
+export default function TabCelula({ Mes, Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [entradas, setEntradas] = React.useState([]);
@@ -72,88 +73,92 @@ export default function TabCelula({ Mes, Ano, perfilUser, categorias }) {
           VALOR
         </Box>
       </Box>
-      {entradas && entradas.length ? (
-        <Box width="100%" height="100%">
-          {entradas.map((row, index) => (
-            <Box
-              key={index}
-              borderBottom={
-                index < entradas.length ? '1px solid #000' : '0px solid #000'
-              }
-              sx={{
-                fontFamily: 'arial black',
-              }}
-              height="17%"
-              width="100%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
+      <TableContainer sx={{ minHeight: 320, height: '88%' }}>
+        {entradas && entradas.length ? (
+          <Box width="100%" height="100%" fontSize="12px">
+            {entradas.map((row, index) => (
               <Box
+                key={index}
+                borderBottom={
+                  index < entradas.length ? '1px solid #000' : '0px solid #000'
+                }
+                sx={{
+                  fontFamily: 'arial black',
+                }}
+                height="17%"
+                width="100%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                height="100%"
-                textAlign="center"
-                width="30%"
-                sx={{
-                  borderLeft: '1px solid #000',
-                  borderRight: '1px solid #000',
-                }}
               >
-                {row.LANC_DATA ? ConverteData(row.LANC_DATA) : '-'}
-              </Box>
-              <Box
-                height="100%"
-                display="flex"
-                justifyContent="center"
-                textAlign="center"
-                alignItems="center"
-                width="45%"
-                sx={{
-                  borderRight: '1px solid #000',
-                }}
-              >
-                <Box>
-                  {row.LANC_DESCRICAO
-                    ? categorias.filter((val) => val.CAT_ID === row.CAT_ID)[0]
-                        .CAT_NOME
-                    : '-'}
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height="100%"
+                  textAlign="center"
+                  width="30%"
+                  sx={{
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
+                  }}
+                >
+                  {row.LANC_DATA ? ConverteData(row.LANC_DATA) : '-'}
+                </Box>
+                <Box
+                  height="100%"
+                  display="flex"
+                  justifyContent="center"
+                  textAlign="center"
+                  alignItems="center"
+                  width="45%"
+                  sx={{
+                    borderRight: '1px solid #000',
+                  }}
+                >
+                  <Box>{row.CAT_NOME ? row.CAT_NOME : '-'}</Box>
+                </Box>
+                <Box
+                  height="100%"
+                  display="flex"
+                  justifyContent="center"
+                  textAlign="center"
+                  alignItems="center"
+                  width="25%"
+                  sx={{
+                    borderRight: '1px solid #000',
+                  }}
+                >
+                  <Box>
+                    {row.LANC_VALOR ? (
+                      <Box>
+                        <Box>
+                          {Number(row.LANC_VALOR).toLocaleString('pt-br', {
+                            style: 'currency',
+                            currency: 'BRL',
+                          })}
+                        </Box>
+                        <Box>{row.forma_pagamento}</Box>
+                      </Box>
+                    ) : (
+                      '-'
+                    )}
+                  </Box>
                 </Box>
               </Box>
-              <Box
-                height="100%"
-                display="flex"
-                justifyContent="center"
-                textAlign="center"
-                alignItems="center"
-                width="25%"
-                sx={{
-                  borderRight: '1px solid #000',
-                }}
-              >
-                <Box>
-                  {row.LANC_VALOR
-                    ? Number(row.LANC_VALOR).toLocaleString('pt-br', {
-                        style: 'currency',
-                        currency: 'BRL',
-                      })
-                    : '-'}
-                </Box>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-      ) : (
-        <Box
-          height="40vh"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          Sem Registro da Secretaria
-        </Box>
-      )}
+            ))}
+          </Box>
+        ) : (
+          <Box
+            height="40vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            Sem Registro da Secretaria
+          </Box>
+        )}
+      </TableContainer>
     </Box>
   );
 }

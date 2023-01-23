@@ -1,28 +1,36 @@
 import React from 'react';
 import Head from 'next/head';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Oval } from 'react-loading-icons';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { TiArrowBack } from 'react-icons/ti';
 import Box from '@material-ui/core/Box';
-// import HomeIcon from '@material-ui/icons/Home';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
-import corIgreja from 'src/utils/coresIgreja';
 import Login from 'src/components/botaoLogin';
+
+import { IoIosSchool } from 'react-icons/io';
+
+import { BsPencilFill } from 'react-icons/bs';
+// import PerfilIcon from 'src/components/icones/perfil';
+import SvgIcon from '@mui/material/SvgIcon';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { Oval } from 'react-loading-icons';
+import { useSession } from 'next-auth/client';
+// import Eventos from './eventos';
+import corIgreja from 'src/utils/coresIgreja';
+
+// import NavbarCoord from '../navBar/coordenador';
 import Cursos from './cursos';
-
-// import Carrossel from '../carrossel';
-// import GoogleMaps from './googleMap';
-// import Pesquisar from './pesquisar';
-
+import MeusCursos from './meusCursos';
+// const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
     width: '70vw',
     minWidth: 80,
+    height: 56,
   },
   root: {
     backgroundColor: 'theme.palette.background.dark',
@@ -35,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: corIgreja.principal,
     boxShadow: 'none',
     zIndex: theme.zIndex.drawer + 1,
-    height: 56,
   },
   toolbar: {
     minHeight: 56,
@@ -46,10 +53,11 @@ const useStyles = makeStyles((theme) => ({
   hamburger: {
     cursor: 'pointer',
     height: 28,
+    color: '#fff',
   },
   logo: {
-    height: 35,
-    marginTop: 0,
+    height: 25,
+    marginLeft: theme.spacing(2),
   },
   avatar: {
     cursor: 'pointer',
@@ -68,7 +76,12 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-
+  contentShiftMain: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
@@ -99,22 +112,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CursosIndex({ title, perfilUser, rolMembros }) {
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={0}>{children}</Box>}
+    </div>
+  );
+}
+
+function CursosIndex({ title, rolMembros, perfilUser }) {
   const classes = useStyles();
-
-  const theme = useTheme();
-
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(0);
+  const [session] = useSession();
   const router = useRouter();
-  const handleDrawerClose = () => {
-    // //console.log(mobile);
-
-    if (mobile && open) {
-      setOpen(false);
-    }
-  };
 
   const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
@@ -125,13 +143,7 @@ function CursosIndex({ title, perfilUser, rolMembros }) {
     // window.location.reload();
   };
   return (
-    <div
-      style={{
-        minWidth: 300,
-        background: corIgreja.principal2,
-      }}
-      onLoad={handleDrawerClose}
-    >
+    <div translate="no">
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -153,14 +165,56 @@ function CursosIndex({ title, perfilUser, rolMembros }) {
               )}
             </Box>
 
-            <Box display="flex">
-              <img
-                src="/images/logo1.png"
-                height={30}
-                width={120}
-                className={classes.logo}
-                alt="bolo"
-              />
+            <Box display="flex" m={0}>
+              <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                fontSize="large"
+                showLabels
+                className={classes.rootTopbarIcon}
+              >
+                <BottomNavigationAction
+                  style={
+                    value === 0
+                      ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                      : { color: '#eeeeee', fontSize: '18px' }
+                  }
+                  label="Inscrições"
+                  icon={
+                    value === 0 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <BsPencilFill />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <BsPencilFill />
+                      </SvgIcon>
+                    )
+                  }
+                />
+
+                <BottomNavigationAction
+                  style={
+                    value === 1
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Meus Cursos"
+                  icon={
+                    value === 1 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <IoIosSchool />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <IoIosSchool />
+                      </SvgIcon>
+                    )
+                  }
+                />
+              </BottomNavigation>
             </Box>
             <Login />
           </Toolbar>
@@ -170,7 +224,16 @@ function CursosIndex({ title, perfilUser, rolMembros }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Cursos rolMembros={rolMembros} perfilUser={perfilUser} />
+          <TabPanel value={value} index={0}>
+            {session && (
+              <Cursos rolMembros={rolMembros} perfilUser={perfilUser} />
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            {session && (
+              <MeusCursos rolMembros={rolMembros} perfilUser={perfilUser} />
+            )}
+          </TabPanel>
         </main>
       </div>
     </div>

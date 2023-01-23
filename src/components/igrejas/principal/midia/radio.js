@@ -170,8 +170,9 @@ function Player({ radioIdpb }) {
             <Box borderRadius={16} height={120} width="90%" bgcolor="#f1f3f4">
               {/* autoPlay */}
               <Box display="flex" justifyContent="center">
+                {console.log('musica', musica)}
                 <ReactAudioPlayer
-                  src={musica.url}
+                  src={musica && musica.url ? musica.url : ''}
                   loop={repeat}
                   autoPlay
                   controls
@@ -208,7 +209,7 @@ function Player({ radioIdpb }) {
             justifyContent="center"
           >
             <Box fontSize="18px" fontFamily="Fugaz One" color="white">
-              {musica.label}
+              {musica && musica.label ? musica.label : ''}
             </Box>
           </Box>
           <Box
@@ -221,7 +222,7 @@ function Player({ radioIdpb }) {
             color="yellow"
           >
             <Box fontSize="18px" fontFamily="Fugaz One">
-              {musica.compositor}
+              {musica && musica.compositor ? musica.compositor : ''}
             </Box>
           </Box>
         </Box>

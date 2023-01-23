@@ -11,7 +11,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 import Login from 'src/components/botaoLogin';
-import Contribuicoes from './contribuicoes';
+import Cursos from './cursos';
 
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbFiladelfia({ title, perfilUser }) {
+function CursosIndex({ title, perfilUser, rolMembros }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -170,11 +170,10 @@ function IdpbFiladelfia({ title, perfilUser }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Contribuicoes perfilUser={perfilUser} />
+          <Cursos rolMembros={rolMembros} perfilUser={perfilUser} />
         </main>
       </div>
     </div>
   );
 }
-
-export default IdpbFiladelfia;
+export default CursosIndex;

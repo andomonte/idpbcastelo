@@ -16,7 +16,6 @@ import { Oval } from 'react-loading-icons';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import Login from 'src/components/botaoLogin';
 // import PerfilIcon from 'src/components/icones/perfil';
 
 import { useSession } from 'next-auth/client';
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
     height: 56,
   },
@@ -238,7 +237,7 @@ function Participacoes({ title, rolMembros, perfilUser }) {
                       ? { color: corIgreja.iconeOn, fontSize: '12px' }
                       : { color: '#eeeeee', fontSize: '12px' }
                   }
-                  label="Discipul."
+                  label="Discipulado"
                   icon={
                     value === 2 ? (
                       <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -253,7 +252,6 @@ function Participacoes({ title, rolMembros, perfilUser }) {
                 />
               </BottomNavigation>
             </Box>
-            <Login />
           </Toolbar>
         </AppBar>
 

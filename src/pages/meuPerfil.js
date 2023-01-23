@@ -80,6 +80,7 @@ export const getStaticProps = async () => {
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });
+
   const rolMembros = await prisma.membros
     .findMany({
       where: {

@@ -13,7 +13,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { useRouter } from 'next/router';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Login from 'src/components/botaoLogin';
+
 // import PerfilIcon from 'src/components/icones/perfil';
 // import Eventos from './eventos';
 import { TiArrowBack } from 'react-icons/ti';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
     height: 48,
   },
@@ -249,8 +249,6 @@ function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
                 />
               </BottomNavigation>
             </Box>
-
-            <Login />
           </Toolbar>
         </AppBar>
 

@@ -14,7 +14,7 @@ import Meses from 'src/utils/meses';
 
 import TabContribuicoes from './tabContribuicoes';
 
-function RelCelula({ perfilUser, categorias }) {
+function RelCelula({ perfilUser }) {
   //= ================================================================
   const mes = Meses();
   const d = new Date();
@@ -253,7 +253,6 @@ function RelCelula({ perfilUser, categorias }) {
                   perfilUser={perfilUser}
                   Mes={contMes}
                   Ano={contAno}
-                  categorias={categorias}
                 />
               </Box>
             </Box>

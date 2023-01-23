@@ -33,6 +33,7 @@ export const getStaticProps = async () => {
   });
   // PLlcqEGDzXrtm6EpKCDwfW1MDZXq6uaDSM -> filadelfia
   // PLDtfBveOri5nzfzk8Qehn5ey9EvAUEzzQ -> global
+
   const res = await fetch(
     `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=50&playlistId=PLyP9ItSzJZwGhMbaUg00R4shWmPy123Ew&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA`,
   );
