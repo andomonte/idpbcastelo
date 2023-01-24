@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
@@ -18,7 +18,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import Login from 'src/components/botaoLogin';
-import Navbar from '../navBar_redesSociais';
+
 import TelaPadrao from './telaPadrao';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
@@ -136,7 +136,7 @@ function TabPanel(props) {
   );
 }
 
-function QuemSomos({ userIgrejas, title, celulas }) {
+function QuemSomos({ title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -239,16 +239,6 @@ function QuemSomos({ userIgrejas, title, celulas }) {
           </Toolbar>
         </AppBar>
 
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={open}
-          className={classes.drawer}
-          classes={{ paper: classes.desktopDrawer }}
-        >
-          <Navbar userIgrejas={userIgrejas} />
-        </Drawer>
-
         <main
           className={clsx(classes.contentMain, {
             [classes.contentShiftMain]: open,
@@ -258,13 +248,7 @@ function QuemSomos({ userIgrejas, title, celulas }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <TelaPadrao userIgrejas={userIgrejas} />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <TelaPadrao userIgrejas={userIgrejas} />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <TelaPadrao celulas={celulas} />
+            <TelaPadrao />
           </TabPanel>
         </main>
       </div>

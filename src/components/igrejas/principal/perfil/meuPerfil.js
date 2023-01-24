@@ -40,7 +40,7 @@ function getDados(email, nome) {
   return data;
 } */
 const nomeDistrito = [
-  'Filadelfia',
+  'Castelo',
   'União da Vitória',
   'Campos Sales',
   'Bairro da Paz',

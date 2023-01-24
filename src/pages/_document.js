@@ -24,12 +24,12 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <link rel="icon" href="/images/filadelfia.ico" type="image/x-icon" />
+          <link rel="icon" href="/images/castelo.ico" type="image/x-icon" />
 
           <link rel="manifest" href="/images/manifest.json" />
           <link rel="apple-touch-icon" href="/images/apple-icon.png" />
 
-          <link rel="icon" href="/images/filadelfia.ico" />
+          <link rel="icon" href="/images/castelo.ico" />
         </Head>
         <body>
           <Main />

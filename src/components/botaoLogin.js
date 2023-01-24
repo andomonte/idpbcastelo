@@ -28,13 +28,15 @@ export default function BotaoLogin() {
   const [session] = useSession();
   const classes = useStyles();
   const [foto, setFoto] = React.useState('');
+
   React.useEffect(() => {
-    if (session === null)
+    if (session === null) {
       sessionStorage.setItem('perfilUser', JSON.stringify(''));
-    else {
+    } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
       if (result) setFoto(result);
     }
+
     return 0;
   }, [session]);
 

@@ -18,9 +18,8 @@ const nextConfig = {
   images: {
     domains: [
       'localhost',
-      'arquivofiladelfia.s3.amazonaws.com',
-      'approomservice.com.br',
-      'idpbfiladelfia.com.br',
+      'arquivocastelo.s3.amazonaws.com',
+      'idpbcastelo.com.br',
     ],
   },
 };

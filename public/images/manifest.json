@@ -1,13 +1,13 @@
 {
   "name": "IDPB-FILADELFIA",
-  "short_name": "Filadelfia",
-  "description": "Nosso sistema das Células IDPB",
+  "short_name": "IDPB-CB",
+  "description": "Nosso sistema das Igrejas IDPBs",
   "theme_color": "#304ffe",
   "background_color": "#121214",
   "display": "standalone",
   "lang": "pt-BR",
-
-  "start_url": "/",
+  "scope": "/selectPerfil",
+  "start_url": "/selectPerfil",
   "icons": [
     {
       "src": "icon-128x128.png",

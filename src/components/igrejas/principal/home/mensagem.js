@@ -159,7 +159,7 @@ function Mensagem({ setOpenMensagem }) {
           style={{
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            backgroundImage: `url('/images/filadelfia/mensagem.png')`,
+            backgroundImage: `url('/images/castelo/mensagem.png')`,
             backgroundPosition: 'center', // centraliza imagem
             backgroundSize: 'cover',
           }}

@@ -121,7 +121,7 @@ function Player({ radioIdpb }) {
             justifyContent="center"
             alignItems="center"
           >
-            <img src={corIgreja.logo} alt="Filadelfia" height={60} />
+            <img src={corIgreja.logo} alt="Castelo" height={60} />
           </Box>
           <Box display="flex" justifyContent="center" width="100%">
             <Box width="96%">

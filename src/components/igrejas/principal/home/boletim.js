@@ -66,7 +66,7 @@ const home = () => {
               justifyContent: 'center',
               alignItems: 'center',
 
-              backgroundImage: `url('/images/filadelfia/imgAvisos.png')`,
+              backgroundImage: `url('/images/castelo/imgAvisos.png')`,
               backgroundSize: '100% 100%',
               //  backgroundSize: 'cover',
             }}
@@ -84,7 +84,7 @@ const home = () => {
               justifyContent: 'center',
               alignItems: 'center',
 
-              backgroundImage: `url('/images/filadelfia/imgMensagem.png')`,
+              backgroundImage: `url('/images/castelo/imgMensagem.png')`,
               backgroundSize: '100% 100%',
               //  backgroundSize: 'cover',
             }}
@@ -101,7 +101,7 @@ const home = () => {
               justifyContent: 'center',
               alignItems: 'center',
 
-              backgroundImage: `url('/images/filadelfia/imgAniversariantes.png')`,
+              backgroundImage: `url('/images/castelo/imgAniversariantes.png')`,
               backgroundSize: '100% 100%',
               //  backgroundSize: 'cover',
             }}

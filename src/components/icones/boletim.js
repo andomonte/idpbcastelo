@@ -5,7 +5,7 @@ function LogoFiladelfia() {
   return (
     <Icon>
       <img
-        src="/images/filadelfia/boletim.png"
+        src="/images/castelo/boletim.png"
         height={20}
         width={50}
         alt="brasil"

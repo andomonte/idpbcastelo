@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
 import IconBrasil from 'src/components/icones/brasil';
 import IconMissoes from 'src/components/icones/missoes';
-import IconFiladelfia from 'src/components/icones/filadelfia';
+import IconFiladelfia from 'src/components/icones/castelo';
 import SchoolIcon from '@material-ui/icons/School';
 import FacebookIcon from 'src/components/icones/facebook';
 import YouTubeIcon from 'src/components/icones/youtube';

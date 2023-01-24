@@ -179,7 +179,10 @@ function Eventos({ perfilUser, rolMembros }) {
               alignItems="center"
               color="black"
             >
-              NENHUM EVENTO PREVISTO NESSE PERÍODO
+              <Box textAlign="center">
+                {' '}
+                NENHUM EVENTO PREVISTO NESSE PERÍODO
+              </Box>
             </Box>
           )}
         </Box>

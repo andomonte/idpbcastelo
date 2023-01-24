@@ -54,7 +54,7 @@ function Celula({ rolMembros, perfilUser }) {
                         height: 80,
                       }}
                       alt="Remy Sharp"
-                      src="images/filadelfia/filadelfia.png"
+                      src="images/castelo/castelo.png"
                     />
                   </Box>
 

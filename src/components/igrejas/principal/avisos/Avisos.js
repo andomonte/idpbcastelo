@@ -63,7 +63,9 @@ function Avisos({ dadosAvisos }) {
       'Sexta',
       'Sábado',
     ];
-    const diaMensagem = new Date(dadosAvisos[contSemana - 1].Data);
+    const diaMensagem = dadosAvisos.length
+      ? new Date(dadosAvisos[contSemana - 1].Data)
+      : new Date();
     diaMensagem.setHours(diaMensagem.getHours() + 6);
 
     const diaSm = Number(diaMensagem.getDay());

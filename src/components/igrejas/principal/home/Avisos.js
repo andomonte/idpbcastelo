@@ -164,7 +164,7 @@ function Avisos({ setOpenAviso }) {
             justifyContent: 'center',
             alignItems: 'center',
 
-            backgroundImage: `url('/images/filadelfia/imgAvisos.png')`,
+            backgroundImage: `url('/images/castelo/imgAvisos.png')`,
             backgroundSize: '100% 100%',
           }}
           display="flex"

@@ -63,7 +63,10 @@ function Mensagem({ mensagem }) {
       'Sexta',
       'Sábado',
     ];
-    const diaMensagem = new Date(mensagem[contSemana - 1].Data);
+
+    const diaMensagem = mensagem.length
+      ? new Date(mensagem[contSemana - 1].Data)
+      : new Date();
     diaMensagem.setHours(diaMensagem.getHours() + 6);
 
     const diaSm = Number(diaMensagem.getDay());
@@ -103,7 +106,7 @@ function Mensagem({ mensagem }) {
           style={{
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            backgroundImage: `url('/images/filadelfia/mensagem2.png')`,
+            backgroundImage: `url('/images/castelo/mensagem.png')`,
             backgroundPosition: 'center', // centraliza imagem
             backgroundSize: 'cover',
           }}

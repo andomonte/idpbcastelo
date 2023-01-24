@@ -31,7 +31,7 @@ export const getStaticProps = async () => {
   const radioIdpb = await prisma.radio.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  // PLlcqEGDzXrtm6EpKCDwfW1MDZXq6uaDSM -> filadelfia
+  // PLlcqEGDzXrtm6EpKCDwfW1MDZXq6uaDSM -> castelo
   // PLDtfBveOri5nzfzk8Qehn5ey9EvAUEzzQ -> global
 
   const res = await fetch(

@@ -4,16 +4,15 @@ import { colors } from '@material-ui/core';
 
 // Create a theme instance.
 const Cores = createTheme({
-  principal: '#1a237e',
-  principal2: '#5c6bc0', // '#3f50b5',
+  principal: '#800004',
+  principal2: '#B55E5E',
   secundaria: '#fafafa',
-  tercenaria: '#b91072',
-  button1: '#1b5e20',
-  button2: '#e65100',
-  iconeOn: '#ffff00',
+  tercenaria: '#3f51b5',
+  texto1: '#90a4ae',
+  texto2: '#ffff8d',
+  iconeOn: '#ffff8d',
   iconeOff: '#eeee',
-  logo: 'images/filadelfia/logo.png',
-  logo2: 'images/filadelfia/logo2.png',
+  logo: 'images/logo1.png',
   palette: {
     primary: {
       main: '#304ffe', // '#ff3d00',
@@ -22,7 +21,7 @@ const Cores = createTheme({
       main: '#000000',
     },
     danger: {
-      main: '#ff3d00',
+      main: '#ff3d0A',
     },
     default: {
       main: '#1a237e',

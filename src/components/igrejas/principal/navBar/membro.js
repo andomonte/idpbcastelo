@@ -26,7 +26,7 @@ import { usePWAInstall } from 'react-use-pwa-install';
 // import HomeIcon from '@material-ui/icons/Home';
 import { IoMdPerson } from 'react-icons/io';
 // import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
-import IconFiladelfia from 'src/components/icones/filadelfia';
+import IconFiladelfia from 'src/components/icones/castelo';
 import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
 
 const useStyles = makeStyles((theme) => ({

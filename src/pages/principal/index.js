@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-049');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
   const router = useRouter();
   const [session] = useSession();
   const perfilUser = router.query;

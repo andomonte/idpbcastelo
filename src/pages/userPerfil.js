@@ -46,7 +46,7 @@ function userPerfil({ celulas, rolMembros, lideranca }) {
       alignItems="center"
       justifyContent="center"
     >
-      <img src="/images/filadelfia/filadelfia.png" alt="" width="125" />
+      <img src="/images/castelo/castelo.png" alt="" width="125" />
     </Box>
   );
 }
