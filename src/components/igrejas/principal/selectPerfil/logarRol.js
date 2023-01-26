@@ -11,10 +11,6 @@ import { Pagina } from 'src/components/igrejas/normal';
 import Espera from 'src/utils/espera';
 import corIgreja from 'src/utils/coresIgreja';
 import '@fontsource/rubik';
-import axios from 'axios';
-import useSWR from 'swr';
-
-const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,188 +66,147 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
   const classes = useStyles();
 
   const [session] = useSession();
-
-  const ministroEncontrado = rolMembros.filter(
-    (val) => val.email === session.user.email,
-  );
-
   const [open, setOpen] = React.useState(false);
   const [start, setStart] = React.useState(true);
   const [openEspera, setOpenEspera] = React.useState(true);
   const [contagem, setContagem] = React.useState(false);
   const [perfilUser, setPerfilUser] = React.useState('');
   const [perfilSelect] = React.useState('0');
-  const [listaMembros, setListaMinistros] = React.useState(ministroEncontrado);
   const router = useRouter();
 
-  let secao = [{ email: '' }];
-  const url = `/api/consultaMembros`;
-  const { data, error } = useSWR(url, fetcher, { refreshInterval: 1000 });
-  React.useEffect(() => {
-    if (data) {
-      const ministroEncontrado2 = data.filter(
-        (val) => val.Email === session.user.email,
-      );
+  let secao = [{ rol: '' }];
 
-      if (ministroEncontrado2.length) {
-        setListaMinistros(ministroEncontrado2);
-        setStart(true);
-      } else {
-        setStart(false);
-        setOpenEspera(false);
-      }
-    }
-
-    if (error) return <div>An error occured.</div>;
-    if (!data || !perfilUser)
-      return <Espera descricao="Verificando sua Presença" />;
-    return 0;
-  }, [data, perfilUser]);
   React.useEffect(() => {
     if (
       userIgrejas.length &&
       lideranca.length &&
-      data.length &&
+      rolMembros.length &&
       celulas.length
     ) {
       setOpenEspera(false);
     }
     return 0;
-  }, [userIgrejas, lideranca, data, celulas]);
+  }, [userIgrejas, lideranca, rolMembros, celulas]);
 
   if (openEspera) return <Espera descricao="Buscando Seu Perfil" />;
 
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-073');
   let valorPerfil = {};
   let userMembro = {};
-
-  if (session && listaMembros.length) {
-    const membros = listaMembros.filter(
-      (val) => val.Email === session.user.email,
-    );
+  if (session) {
     if (lideranca.length) {
-      secao = lideranca.filter(
-        (val) => val.RolMembro === listaMembros[0].RolMembro,
-      );
-      if (secao)
-        valorPerfil = secao.map((items, index) => {
-          if (items.Funcao === 'Secretaria')
-            return {
-              Funcao: items.Funcao,
-              Descricao: `Secretaria da Igreja`,
-              id: index + 1,
-              numero: items.Distrito,
-              Celula: items.Celula,
-              Coordenacao: items.Coordenacao,
-              Distrito: items.Distrito,
-              Email: items.Email,
-              Igreja: items.Igreja,
-              Nascimento: items.Nascimento,
-              Nome: items.Nome,
-              RolMembro: items.RolMembro,
-              Supervisao: items.Supervisao,
-              foto: membros[0].foto,
-              login: 'google',
-            };
-          if (items.Funcao === 'Presidente')
-            return {
-              Funcao: items.Funcao,
-              Descricao: `Pastor Presidente`,
-              id: index + 1,
-              numero: items.Igreja,
-              Celula: items.Celula,
-              Coordenacao: items.Coordenacao,
-              Distrito: items.Distrito,
-              Email: items.Email,
-              Igreja: items.Igreja,
-              Nascimento: items.Nascimento,
-              Nome: items.Nome,
-              RolMembro: items.RolMembro,
-              Supervisao: items.Supervisao,
-              foto: membros[0].foto,
-              login: 'google',
-            };
-          if (items.Funcao === 'PastorDistrito')
-            return {
-              Funcao: items.Funcao,
-              Descricao: `Pastor (Distrito ${items.Distrito})`,
-              id: index + 1,
-              numero: items.Distrito,
-              Celula: items.Celula,
-              Coordenacao: items.Coordenacao,
-              Distrito: items.Distrito,
-              Email: items.Email,
-              Igreja: items.Igreja,
-              Nascimento: items.Nascimento,
-              Nome: items.Nome,
-              RolMembro: items.RolMembro,
-              Supervisao: items.Supervisao,
-              foto: membros[0].foto,
-              login: 'google',
-            };
+      secao = lideranca.filter((val) => val.rol === session.user.cpf);
 
-          if (items.Funcao === 'Coordenador')
-            return {
-              Funcao: items.Funcao,
-              Descricao: `Coordenador (Coordenação ${items.Coordenacao})`,
-              id: index + 1,
-              numero: items.Coordenacao,
-              Celula: items.Celula,
-              Coordenacao: items.Coordenacao,
-              Distrito: items.Distrito,
-              Email: items.Email,
-              Igreja: items.Igreja,
-              Nascimento: items.Nascimento,
-              Nome: items.Nome,
-              RolMembro: items.RolMembro,
-              Supervisao: items.Supervisao,
-              foto: membros[0].foto,
-              login: 'google',
-            };
-          if (items.Funcao === 'Supervisor')
-            return {
-              Funcao: items.Funcao,
-              Descricao: `Supervisor (Supervisao ${items.Supervisao})`,
-              id: index + 1,
-              numero: items.Supervisao,
-              Celula: items.Celula,
-              Coordenacao: items.Coordenacao,
-              Distrito: items.Distrito,
-              Email: items.Email,
-              Igreja: items.Igreja,
-              Nascimento: items.Nascimento,
-              Nome: items.Nome,
-              RolMembro: items.RolMembro,
-              Supervisao: items.Supervisao,
-              foto: membros[0].foto,
-              login: 'google',
-            };
+      valorPerfil = secao.map((items, index) => {
+        if (items.Funcao === 'Secretaria')
+          return {
+            Funcao: items.Funcao,
+            Descricao: `Secretaria da Igreja`,
+            id: index + 1,
+            numero: items.Distrito,
+            Celula: items.Celula,
+            Coordenacao: items.Coordenacao,
+            Distrito: items.Distrito,
+            Email: items.Email,
+            Igreja: items.Igreja,
+            Nascimento: items.Nascimento,
+            Nome: items.Nome,
+            RolMembro: items.RolMembro,
+            Supervisao: items.Supervisao,
+            foto: items.foto,
+          };
+        if (items.Funcao === 'Presidente')
+          return {
+            Funcao: items.Funcao,
+            Descricao: `Pastor Presidente`,
+            id: index + 1,
+            numero: items.Igreja,
+            Celula: items.Celula,
+            Coordenacao: items.Coordenacao,
+            Distrito: items.Distrito,
+            Email: items.Email,
+            Igreja: items.Igreja,
+            Nascimento: items.Nascimento,
+            Nome: items.Nome,
+            RolMembro: items.RolMembro,
+            Supervisao: items.Supervisao,
+            foto: items.foto,
+          };
+        if (items.Funcao === 'PastorDistrito')
+          return {
+            Funcao: items.Funcao,
+            Descricao: `Pastor (Distrito ${items.Distrito})`,
+            id: index + 1,
+            numero: items.Distrito,
+            Celula: items.Celula,
+            Coordenacao: items.Coordenacao,
+            Distrito: items.Distrito,
+            Email: items.Email,
+            Igreja: items.Igreja,
+            Nascimento: items.Nascimento,
+            Nome: items.Nome,
+            RolMembro: items.RolMembro,
+            Supervisao: items.Supervisao,
+            foto: items.foto,
+          };
 
-          if (items.Funcao === 'Lider')
-            return {
-              Funcao: items.Funcao,
-              Descricao: `Líder (Celula ${items.Celula})`,
-              id: index + 1,
-              numero: items.Celula,
-              Celula: items.Celula,
-              Coordenacao: items.Coordenacao,
-              Distrito: items.Distrito,
-              Email: items.Email,
-              Igreja: items.Igreja,
-              Nascimento: items.Nascimento,
-              Nome: items.Nome,
-              RolMembro: items.RolMembro,
-              Supervisao: items.Supervisao,
-              foto: membros[0].foto,
-              login: 'google',
-            };
+        if (items.Funcao === 'Coordenador')
+          return {
+            Funcao: items.Funcao,
+            Descricao: `Coordenador (Coordenação ${items.Coordenacao})`,
+            id: index + 1,
+            numero: items.Coordenacao,
+            Celula: items.Celula,
+            Coordenacao: items.Coordenacao,
+            Distrito: items.Distrito,
+            Email: items.Email,
+            Igreja: items.Igreja,
+            Nascimento: items.Nascimento,
+            Nome: items.Nome,
+            RolMembro: items.RolMembro,
+            Supervisao: items.Supervisao,
+            foto: items.foto,
+          };
+        if (items.Funcao === 'Supervisor')
+          return {
+            Funcao: items.Funcao,
+            Descricao: `Supervisor (Supervisao ${items.Supervisao})`,
+            id: index + 1,
+            numero: items.Supervisao,
+            Celula: items.Celula,
+            Coordenacao: items.Coordenacao,
+            Distrito: items.Distrito,
+            Email: items.Email,
+            Igreja: items.Igreja,
+            Nascimento: items.Nascimento,
+            Nome: items.Nome,
+            RolMembro: items.RolMembro,
+            Supervisao: items.Supervisao,
+            foto: items.foto,
+          };
 
-          return 0;
-        });
+        if (items.Funcao === 'Lider')
+          return {
+            Funcao: items.Funcao,
+            Descricao: `Líder (Celula ${items.Celula})`,
+            id: index + 1,
+            numero: items.Celula,
+            Celula: items.Celula,
+            Coordenacao: items.Coordenacao,
+            Distrito: items.Distrito,
+            Email: items.Email,
+            Igreja: items.Igreja,
+            Nascimento: items.Nascimento,
+            Nome: items.Nome,
+            RolMembro: items.RolMembro,
+            Supervisao: items.Supervisao,
+            foto: items.foto,
+          };
+
+        return 0;
+      });
     }
-    const membro = listaMembros.filter(
-      (val) => val.Email === session.user.email,
-    );
+    const membro = rolMembros.filter((val) => val.Email === session.user.email);
 
     if (membro.length > 0) {
       userMembro = {
@@ -268,9 +223,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
         id: secao.length + 1,
         Supervisao: membro[0].Supervisao,
         numero: membro[0].Celula,
-        login: 'google',
       };
-      //
     }
 
     valorPerfil.push(userMembro); // para objeto -> Object.assign(secao, userMembro);
@@ -351,7 +304,7 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
                               fontWeight: 'bold',
                             }}
                           >
-                            VOCÊ TEM {valorPerfil.length} PERFIS
+                            VOCÊ TEM{valorPerfil.length} PERFIS
                           </Box>
                         </Grid>
                         <Grid item container direction="column" xs={12}>
@@ -425,24 +378,15 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
           '/principal',
         );
       }
-
-      return (
-        <Box>
-          {open && start ? (
-            <Box minHeight={500}>{body}</Box>
-          ) : (
-            <Espera descricao="Atualizando Seu Perfil" />
-          )}{' '}
-        </Box>
-      );
+      return <Box>{open && start && <Box minHeight={500}>{body}</Box>} </Box>;
     }
   }
-  //  console.log('session', session, listaMembros.length, start);
+
   return (
     <Box display="flex" align="center" justifyContent="center">
       {!start ? (
         <Cadastro
-          title="APP-IDPB"
+          title="IDPB-LEÃO"
           lideranca={lideranca}
           rolMembros={rolMembros}
         />
@@ -450,11 +394,11 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
         <Box>
           <Pagina
             lideranca={lideranca}
-            rolMembros={listaMembros}
+            rolMembros={rolMembros}
             userIgrejas={dadosUser}
             celulas={celulas}
             perfilUser={perfilUser[0]}
-            title="APP-IDPB"
+            title="IDPB-LEÃO"
           />
         </Box>
       )}
