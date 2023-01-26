@@ -2,14 +2,8 @@ import React from 'react';
 import { useSession } from 'next-auth/client';
 import api from 'src/components/services/api';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Grid,
-  TextField,
-  Button,
-  Alert,
-  Typography,
-} from '@material-ui/core';
+import { Box, Grid, TextField, Button, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { MdVisibilityOff, MdVisibility } from 'react-icons/md';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@mui/material/IconButton';
