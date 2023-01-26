@@ -38,7 +38,7 @@ function Atualizar({ rolMembros }) {
         <CadastrarPessoas
           perfilUser={perfilUserF}
           rolMembros={rolMembros}
-          title="IDPB-FILADELFIA"
+          title="IDPB-CASTELO"
         />
       )}
     </div>

@@ -75,6 +75,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   }, [semana]);
 
   React.useEffect(() => {
+    console.log('semans', sem1);
     if (sem1 && sem1.length) {
       const presCelula = sem1.filter(
         (val) =>

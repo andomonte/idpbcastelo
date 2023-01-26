@@ -68,7 +68,7 @@ function Celula({ rolMembros, perfilUser }) {
                     }}
                     textAlign="center"
                   >
-                    IDPB - FILADELFIA{' '}
+                    IDPB - CASTELO{' '}
                   </Box>
                 </Box>
               </Box>

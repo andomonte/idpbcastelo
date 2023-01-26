@@ -17,7 +17,7 @@ function FazerInscricoes({ rolMembros }) {
       <Eventos
         rolMembros={rolMembros}
         perfilUser={perfilUser}
-        title="IDPB-FILADELFIA"
+        title="IDPB-CASTELO"
       />
     </div>
   );

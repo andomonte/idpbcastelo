@@ -11,7 +11,7 @@ function MidiaCelulas({ userIgrejas, data, radioIdpb }) {
     <div>
       <Midia
         dataYouTube={data}
-        title="IDPB-FILADELFIA"
+        title="IDPB-CASTELO"
         userIgrejas={userIgrejas}
         radioIdpb={radioIdpb}
       />
