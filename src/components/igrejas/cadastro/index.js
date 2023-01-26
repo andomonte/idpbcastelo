@@ -13,7 +13,7 @@ import Erros from 'src/utils/erros';
 import corIgreja from 'src/utils/coresIgreja';
 import Autocomplete from '@mui/material/Autocomplete';
 import '@fontsource/rubik';
-import moment from 'moment';
+import ConverteData from 'src/utils/convData2';
 
 const useStyles = makeStyles((theme) => ({
   button1: {
@@ -165,10 +165,10 @@ function Cadastro({ rolMembros }) {
 
         if (checarNome.length === 1) {
           setValidacaoNome(true);
-
-          const newDNascimento = moment(
-            checarNome[0].Nascimento.substring(0, 10),
-          ).format('DD/MM/YYYY');
+          console.log('ola data', checarNome[0].Nascimento);
+          const newDNascimento = checarNome[0].Nascimento
+            ? ConverteData(checarNome[0].Nascimento)
+            : '';
 
           if (String(newDNascimento) === String(nascimento)) {
             setValidacaoNascimento(true);
