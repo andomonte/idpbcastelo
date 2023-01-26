@@ -359,8 +359,8 @@ model relatorioCelebracao {
   Data            DateTime  @db.DateTime
   Celula          Int       @default(0)
   Distrito        Int       @default(0)
-  NomesMembros    String    @db.VarChar(4000)
-  NomesVisitantes String?   @db.VarChar(4000)
+  NomesMembros    String?   @db.NVarChar(Max)
+  NomesVisitantes String?   @db.NVarChar(Max)
   Adultos         Int?      @default(0)
   Criancas        Int?      @default(0)
   Visitantes      Int?      @default(0)
@@ -377,7 +377,7 @@ model relatorioCelulas {
   Distrito         Int       @default(0)
   Semana           Int       @default(0)
   Data             DateTime  @db.DateTime
-  NomesMembros     String    @db.VarChar(4000)
+  NomesMembros     String?   @db.NVarChar(Max)
   NomesVisitantes  String?   @db.NVarChar(Max)
   Adultos          Int?      @default(0)
   Criancas         Int?      @default(0)
@@ -435,10 +435,10 @@ model relSupervisao {
   Coordenacao      Int      @default(0)
   Distrito         Int      @default(0)
   Data             DateTime @db.DateTime
-  Avaliacoes       String   @db.VarChar(4000)
-  Presentes        String   @db.VarChar(4000)
   Mes              Int      @default(0)
   Ano              Int      @default(0)
+  Avaliacoes       String   @db.VarChar(4000)
+  Presentes        String   @db.VarChar(4000)
   MembrosVisitados Int      @default(0)
 }
 
@@ -580,14 +580,14 @@ model turma {
 }
 
 model visitantes {
-  id         Int      @id @default(autoincrement())
-  Celula     Int      @default(0)
-  Distrito   Int      @default(0)
-  Nome       String   @db.VarChar(255)
-  Contato    String   @db.VarChar(20)
-  Nascimento DateTime @db.Date
-  CriadoPor  String   @db.VarChar(150)
-  CriadoEm   DateTime @db.DateTime
+  id         Int       @id @default(autoincrement())
+  Celula     Int       @default(0)
+  Distrito   Int       @default(0)
+  Nome       String    @db.VarChar(255)
+  Contato    String?   @db.VarChar(20)
+  Nascimento DateTime? @db.Date
+  CriadoPor  String    @db.VarChar(150)
+  CriadoEm   DateTime  @db.DateTime
 }
 
 model supervisao {
@@ -614,9 +614,9 @@ model cursosConcluidos {
 }
 
 model Nucleos {
+  idNucleo   BigInt  @id
   nomeNucleo String  @db.VarChar(255)
   Endereco   String? @db.VarChar(250)
-  idNucleo   BigInt  @id
 }
 
 model agenda_igreja {
