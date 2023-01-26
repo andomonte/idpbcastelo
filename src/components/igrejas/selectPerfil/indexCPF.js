@@ -452,13 +452,13 @@ function SelectPerfil({ lideranca, rolMembros, celulas, userIgrejas }) {
                             <Button
                               style={{
                                 width: '100%',
-
                                 fontSize: '16px',
                                 height: 40,
                                 marginTop: 10,
                                 color: 'black',
                                 fontFamily: 'Fugaz One',
                               }}
+                              variant="outlined"
                               onClick={() => {
                                 setOpenPlan(true);
                               }}
