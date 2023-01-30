@@ -176,9 +176,9 @@ export default function Login({ providers2, rolMembros }) {
       if (user && user.length) {
         // encontrar a data
 
-        const getData = moment(user[0].Nascimento.substring(0, 10)).format(
-          'DD/MM/YYYY',
-        );
+        const getData = user[0].Nascimento
+          ? moment(user[0].Nascimento.substring(0, 10)).format('DD/MM/YYYY')
+          : '';
         if (dataNascimento.length === 10)
           if (getData === dataNascimento) {
             setLoading(1);
