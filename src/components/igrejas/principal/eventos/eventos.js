@@ -102,7 +102,7 @@ function Eventos({ perfilUser, rolMembros }) {
                           {row.LogoEvento && (
                             <img
                               style={{ borderRadius: '16px' }}
-                              src={`http://approomservice.com.br/idpbfiladelfia/${row.LogoEvento.slice(
+                              src={`http://approomservice.com.br/idpbIgreja/${row.LogoEvento.slice(
                                 row.LogoEvento.indexOf('Images'),
                               )}`}
                               width="auto"

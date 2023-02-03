@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbFiladelfia({ title, dadosAvisos }) {
+function IdpbIgreja({ title, dadosAvisos }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -177,4 +177,4 @@ function IdpbFiladelfia({ title, dadosAvisos }) {
   );
 }
 
-export default IdpbFiladelfia;
+export default IdpbIgreja;

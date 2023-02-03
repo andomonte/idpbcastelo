@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@material-ui/core';
 
-function LogoFiladelfia() {
+function LogoIgreja() {
   return (
     <Icon>
       <img
@@ -14,4 +14,4 @@ function LogoFiladelfia() {
   );
 }
 
-export default LogoFiladelfia;
+export default LogoIgreja;

@@ -97,11 +97,11 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   );
 
   const fases = [
-    { label: 'Integrar na Visão', value: 1 },
+    { label: 'Integração', value: 1 },
     { label: 'Comunhão', value: 2 },
     { label: 'Edificação', value: 3 },
-    { label: 'Evangelismo', value: 4 },
-    { label: 'multiplicacao', value: 5 },
+    { label: 'Evangelismo/Consolidação', value: 4 },
+    { label: 'Multiplicação', value: 5 },
   ];
 
   const valorInicialOjetivo = {

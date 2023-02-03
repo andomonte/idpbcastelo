@@ -264,11 +264,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   //--------------------------------------------------------------------------
 
   const fases = [
-    { label: 'Integrar na Visão', value: 1 },
+    { label: 'Integração', value: 1 },
     { label: 'Comunhão', value: 2 },
     { label: 'Edificação', value: 3 },
-    { label: 'Evangelismo', value: 4 },
-    { label: 'multiplicacao', value: 5 },
+    { label: 'Evangelismo/Consolidação', value: 4 },
+    { label: 'Multiplicação', value: 5 },
   ];
   const valorInicial = { label: 'Escolha um Responsável', value: 0 };
 
@@ -343,7 +343,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
 
-      if (formId === 'Multiplicacao') horarioRef.current.focus();
+      if (formId === 'Multiplicação') horarioRef.current.focus();
       if (formId === 'Horario') {
         if (horario.length < 5)
           toast.error('Horário incompleto !', {
