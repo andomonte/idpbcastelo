@@ -50,7 +50,7 @@ function RelCelula({ perfilUser, lideranca }) {
 
   const [numeroCelula] = React.useState(uniqueArr);
 
-  const tipo = ['Relatório das Celulas', 'Relatório Geral'];
+  const tipo = ['Relatório das Células', 'Relatório Geral'];
   const [contTipo, setContTipo] = React.useState(0);
   const handleIncTipo = () => {
     let contTipoAtual = contTipo + 1;

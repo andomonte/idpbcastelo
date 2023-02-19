@@ -52,7 +52,12 @@ function RelCelula({ dadosEvento, setSendResumo }) {
   //  const InicialNCelula = { label: 'Escolha...', value: 0 };
 
   return (
-    <Box height="100%" minHeight={570} width="100%">
+    <Box
+      bgcolor={corIgreja.principal}
+      height="100%"
+      minHeight={570}
+      width="100%"
+    >
       <Box
         height="100%"
         minWidth={300}

@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { useRouter } from 'next/router';
@@ -18,11 +18,6 @@ import { TiArrowBack } from 'react-icons/ti';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
 import { MdGroups } from 'react-icons/md';
-
-import NabarMembro from '../navBar/membro';
-import NabarLider from '../navBar/lider';
-import NavbarSuper from '../navBar/supervisor';
-import NavbarCoord from '../navBar/coordenador';
 
 import Aniversarios from './aniversarios';
 import Aniversarios2 from './aniversarios2';
@@ -247,31 +242,6 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
             </Box>
           </Toolbar>
         </AppBar>
-
-        <Drawer
-          variant="persistent"
-          anchor="left"
-          open={open}
-          className={classes.drawer}
-          classes={{ paper: classes.desktopDrawer }}
-        >
-          {perfilUser.Funcao === 'Membro' && (
-            <NabarMembro perfilUser={perfilUser} />
-          )}
-
-          {perfilUser.Funcao === 'Lider' && (
-            <NabarLider perfilUser={perfilUser} />
-          )}
-          {perfilUser.Funcao === 'Supervisor' && (
-            <NavbarSuper perfilUser={perfilUser} />
-          )}
-          {perfilUser.Funcao === 'Coordenador' && (
-            <NavbarCoord perfilUser={perfilUser} />
-          )}
-          {perfilUser.Funcao === 'PastorDistrito' && (
-            <NavbarCoord perfilUser={perfilUser} />
-          )}
-        </Drawer>
 
         <main
           className={clsx(classes.contentMain, {

@@ -101,7 +101,7 @@ export default function Login({ providers2, rolMembros }) {
             (val) =>
               val.CPF.replace(/\D/g, '') === authState.cpf.replace(/\D/g, ''),
           );
-          console.log('ola membros', user);
+
           if (user && user.length) {
             setPageState((old) => ({ ...old, processing: true, error: '' }));
             signIn('credentials', {

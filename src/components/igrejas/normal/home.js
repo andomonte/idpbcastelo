@@ -262,7 +262,8 @@ const home = () => {
                     <img
                       src="/images/quemSomos.png"
                       alt="quemSomos"
-                      width="60%"
+                      height={35}
+                      width={35}
                     />
                   </Box>
                   <Box

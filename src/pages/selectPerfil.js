@@ -44,7 +44,7 @@ function selectPerfil({ userIgrejas, celulas, distritos }) {
 
     return 0;
   }, [liders]);
-  console.log('ola aqui perfil', distritos);
+
   return (
     <div>
       {rolMembros.length && lideranca.length ? (

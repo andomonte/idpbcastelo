@@ -4,6 +4,7 @@ import { Pagina } from 'src/components/igrejas/normal';
 import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
+import validator from 'validator';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
@@ -11,7 +12,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const [session] = useSession();
   const perfilUser = router.query;
   let mudaDados = 'sai';
-  console.log(perfilUser);
+
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
 
@@ -23,12 +24,23 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
 
       if (session !== null) {
-        setPerfilUserF(result);
+        if (result) setPerfilUserF(result);
+        if (session)
+          if (validator.isEmail(session.user.email))
+            router.push({
+              pathname: '/selectPerfil',
+            });
+          else {
+            router.push({
+              pathname: '/selectPerfilCPF',
+              query: { cpf: session.user.email },
+            });
+          }
       } else setPerfilUserF('');
       // resultado = result.id;
     }
   }, [mudaDados]);
-  console.log('ola é aqui sim', session, perfilUser, userIgrejas);
+  console.log('perfilUser', perfilUserF);
   return (
     <div>
       {perfilUserF && perfilUserF.id ? (

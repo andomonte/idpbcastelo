@@ -18,7 +18,7 @@ import { Oval } from 'react-loading-icons';
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import corIgreja from 'src/utils/coresIgreja';
-// import NavbarCoord from '../navBar/coordenador';
+
 import DadosPessoais from './dadosPessoais';
 import DadosAdicionais from './dadosAdicionais';
 import DadosEndereco from './dadosEndereco';

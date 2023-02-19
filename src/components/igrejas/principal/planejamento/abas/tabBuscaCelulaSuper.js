@@ -10,7 +10,7 @@ import Espera from 'src/utils/espera';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 
-import { MdScreenSearchDesktop, MdCreateNewFolder } from 'react-icons/md';
+import { MdScreenSearchDesktop } from 'react-icons/md';
 
 import { Oval } from 'react-loading-icons';
 import corIgreja from 'src/utils/coresIgreja';
@@ -19,14 +19,20 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Slide from '@mui/material/Slide';
-import FazerPlanCelula from '../fazerPlanCelulas';
+import FazerPlanCelula from './mostrarPlanCelulas';
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
+export default function TabCelula({
+  Mes,
+  Ano,
+  perfilUser,
+  rolMembros,
+  numeroCelulas,
+}) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [openPlan, setOpenPlan] = React.useState(false);
@@ -111,7 +117,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
         </Box>
       </Box>
     ) : (
-      '-'
+      <Box>SEMANA SEGUINTE</Box>
     );
   const url0 = `/api/consultaPlanCelulasAno/${semana0}/${AnoPesquisado}`;
   const url1 = `/api/consultaPlanCelulasAno/${semana1}/${Ano}`;
@@ -139,13 +145,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     setDataSem3([]);
     setDataSem4([]);
     setDataSem5([]);
-  }, [semana, openPlan]);
+  }, [semana, openPlan, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem0 && sem0.length) {
       const presCelula = sem0.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 
@@ -156,13 +162,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     if (errorSem0) return <div>An error occured.</div>;
     if (!sem0) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem0, openPlan]);
+  }, [sem0, openPlan, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem1 && sem1.length) {
       const presCelula = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -173,13 +179,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1, openPlan]);
+  }, [sem1, openPlan, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem2 && sem2.length) {
       const presCelula = sem2.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -189,13 +195,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     if (errorSem2) return <div>An error occured.</div>;
     if (!sem2) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem2, openPlan]);
+  }, [sem2, openPlan, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem3 && sem3.length) {
       const presCelula = sem3.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -205,13 +211,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     if (errorSem3) return <div>An error occured.</div>;
     if (!sem3) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem3, openPlan]);
+  }, [sem3, openPlan, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem4 && sem4.length) {
       const presCelula = sem4.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 
@@ -222,13 +228,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     if (errorSem4) return <div>An error occured.</div>;
     if (!sem4) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem4, openPlan]);
+  }, [sem4, openPlan, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem5 && sem5.length) {
       const presCelula = sem5.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 
@@ -239,7 +245,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     if (errorSem5) return <div>An error occured.</div>;
     if (!sem5) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem5, openPlan]);
+  }, [sem5, openPlan, numeroCelulas]);
 
   //------------------
 
@@ -250,7 +256,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   //= ========================================================================
 
   return (
-    <Box height="100%" fontSize="13px">
+    <Box height="100%" fontSize="11px">
       <Box
         bgcolor="#c5e1a5"
         sx={{
@@ -290,7 +296,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
           DATA
         </Box>
         <Box textAlign="center" width="35%">
-          RELATÓRIO
+          VER
         </Box>
       </Box>
       <Box
@@ -385,21 +391,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </SvgIcon>
                     </IconButton>
                   ) : (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                      onClick={() => {
-                        setDadosSem(dataSem0);
-                        setAnoEnviado(AnoPesquisado);
-                        setOpenPlan(true);
-                        setSemanaEnviada(semana0);
-                      }}
-                    >
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <MdCreateNewFolder size={25} color="blue" />
-                      </SvgIcon>
-                    </IconButton>
+                    '-'
                   )}
                 </Box>
               </Box>
@@ -511,21 +503,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </SvgIcon>
                     </IconButton>
                   ) : (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                      onClick={() => {
-                        setDadosSem(dataSem1);
-                        setAnoEnviado(Ano);
-                        setOpenPlan(true);
-                        setSemanaEnviada(semana1);
-                      }}
-                    >
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <MdCreateNewFolder size={25} color="blue" />
-                      </SvgIcon>
-                    </IconButton>
+                    '-'
                   )}
                 </Box>
               </Box>
@@ -635,21 +613,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </SvgIcon>
                     </IconButton>
                   ) : (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                      onClick={() => {
-                        setDadosSem(dataSem2);
-                        setAnoEnviado(Ano);
-                        setOpenPlan(true);
-                        setSemanaEnviada(semana2);
-                      }}
-                    >
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <MdCreateNewFolder size={25} color="blue" />
-                      </SvgIcon>
-                    </IconButton>
+                    '-'
                   )}
                 </Box>
               </Box>
@@ -760,21 +724,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </SvgIcon>
                     </IconButton>
                   ) : (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                      onClick={() => {
-                        setDadosSem(dataSem3);
-                        setAnoEnviado(Ano);
-                        setOpenPlan(true);
-                        setSemanaEnviada(semana3);
-                      }}
-                    >
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <MdCreateNewFolder size={25} color="blue" />
-                      </SvgIcon>
-                    </IconButton>
+                    '-'
                   )}
                 </Box>
               </Box>
@@ -885,21 +835,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </SvgIcon>
                     </IconButton>
                   ) : (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                      onClick={() => {
-                        setDadosSem(dataSem4);
-                        setAnoEnviado(Ano);
-                        setOpenPlan(true);
-                        setSemanaEnviada(semana4);
-                      }}
-                    >
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <MdCreateNewFolder size={25} color="blue" />
-                      </SvgIcon>
-                    </IconButton>
+                    '-'
                   )}
                 </Box>
               </Box>
@@ -919,31 +855,71 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
         </Box>
       </Box>
 
-      {sem5Mes !== '-' && (
+      <Box
+        sx={{
+          fontFamily: 'arial black',
+          borderBottom: '1px solid #000',
+          borderBottomRightRadius: 16,
+          borderBottomLeftRadius: 16,
+        }}
+        bgcolor={mesSemana5 === Mes ? '#f0f4c3' : '#EAEAEA'}
+        height="14.66%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Box
-          sx={{
-            fontFamily: 'arial black',
-            borderBottom: '1px solid #000',
-            borderBottomRightRadius: 16,
-            borderBottomLeftRadius: 16,
-          }}
-          bgcolor="#f0f4c3"
-          height="14.66%"
-          width="100%"
           display="flex"
           justifyContent="center"
           alignItems="center"
+          height="100%"
+          textAlign="center"
+          width="30%"
         >
+          {sem5Mes || '-'}
+        </Box>
+        {sem1 ? (
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
             height="100%"
             textAlign="center"
-            width="30%"
+            width="35%"
+            sx={{
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
+            }}
           >
-            {sem5Mes || '-'}
+            <Box>
+              {dataSem5 && dataSem5.Data ? ConverteData2(dataSem5.Data) : '-'}
+            </Box>
           </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="35%"
+            sx={{
+              borderLeft: '1px solid #000',
+              borderRight: '1px solid #000',
+            }}
+          >
+            <Oval stroke="blue" width={20} height={20} />
+          </Box>
+        )}
+        <Box
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+          width="35%"
+        >
           {sem1 ? (
             <Box
               display="flex"
@@ -951,14 +927,31 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
               alignItems="center"
               height="100%"
               textAlign="center"
-              width="35%"
-              sx={{
-                borderLeft: '1px solid #000',
-                borderRight: '1px solid #000',
-              }}
+              width="100%"
             >
               <Box>
-                {dataSem5 && dataSem5.Data ? ConverteData2(dataSem5.Data) : '-'}
+                <Box>
+                  {dataSem5.id ? (
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                      onClick={() => {
+                        setDadosSem(dataSem5);
+                        setAnoEnviado(Ano);
+                        setOpenPlan(true);
+                        setSemanaEnviada(semana5);
+                      }}
+                    >
+                      {' '}
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <MdScreenSearchDesktop size={25} color="green" />
+                      </SvgIcon>
+                    </IconButton>
+                  ) : (
+                    '-'
+                  )}
+                </Box>
               </Box>
             </Box>
           ) : (
@@ -968,86 +961,14 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
               alignItems="center"
               height="100%"
               textAlign="center"
-              width="35%"
-              sx={{
-                borderLeft: '1px solid #000',
-                borderRight: '1px solid #000',
-              }}
+              width="100%"
             >
               <Oval stroke="blue" width={20} height={20} />
             </Box>
           )}
-          <Box
-            height="100%"
-            display="flex"
-            justifyContent="center"
-            textAlign="center"
-            alignItems="center"
-            width="35%"
-          >
-            {sem1 ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="100%"
-                textAlign="center"
-                width="100%"
-              >
-                <Box>
-                  <Box>
-                    {dataSem5.id ? (
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                        onClick={() => {
-                          setDadosSem(dataSem5);
-                          setAnoEnviado(Ano);
-                          setOpenPlan(true);
-                          setSemanaEnviada(semana5);
-                        }}
-                      >
-                        {' '}
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <MdScreenSearchDesktop size={25} color="green" />
-                        </SvgIcon>
-                      </IconButton>
-                    ) : (
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                        onClick={() => {
-                          setDadosSem(dataSem5);
-                          setAnoEnviado(Ano);
-                          setOpenPlan(true);
-                          setSemanaEnviada(semana5);
-                        }}
-                      >
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <MdCreateNewFolder size={25} color="blue" />
-                        </SvgIcon>
-                      </IconButton>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-            ) : (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="100%"
-                textAlign="center"
-                width="100%"
-              >
-                <Oval stroke="blue" width={20} height={20} />
-              </Box>
-            )}
-          </Box>
         </Box>
-      )}
+      </Box>
+
       <Dialog fullScreen open={openPlan} TransitionComponent={Transition}>
         <FazerPlanCelula
           rolMembros={rolMembros}

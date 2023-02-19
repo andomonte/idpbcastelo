@@ -84,13 +84,7 @@ function createListaMembros(value, label) {
     label,
   };
 }
-export default function TabCelula({
-  Mes,
-  Ano,
-  perfilUser,
-  rolMembros,
-  setAtualizarTela,
-}) {
+export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
   const classes = useStyles();
   const [openPlan, setOpenPlan] = React.useState(false);
@@ -167,7 +161,6 @@ export default function TabCelula({
 
   React.useEffect(() => {
     if (sem1 && sem1.length) {
-      console.log('sem tabEventos', sem1, carregando);
       const planEventosCelula = sem1.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
@@ -356,7 +349,7 @@ export default function TabCelula({
       .then((response) => {
         if (response) {
           // enviarPontuacao();
-          console.log(response);
+
           mutate(url1);
           setOpenPlan(false);
           setOpenShowPlan(false);
@@ -453,7 +446,7 @@ export default function TabCelula({
           justifyContent="center"
           alignItems="center"
         >
-          <img src={corIgreja.logo} alt="Castelo" height="60%" width="50%" />
+          <img src={corIgreja.logo} alt="Castelo" height="40%" width="50%" />
         </Box>
         <form style={{ height: '85%' }}>
           <Box height="100%">
@@ -867,7 +860,7 @@ export default function TabCelula({
           justifyContent="center"
           alignItems="center"
         >
-          <img src={corIgreja.logo} alt="Castelo" height="60%" width="50%" />
+          <img src={corIgreja.logo} alt="Castelo" height="40%" width="50%" />
         </Box>
         <form style={{ height: '85%' }}>
           <Box height="100%">
@@ -1342,6 +1335,7 @@ export default function TabCelula({
         sx={{
           fontFamily: 'arial black',
           borderBottom: '1px solid #000',
+          fontSize: '11px',
         }}
         height="16.66%"
         width="100%"

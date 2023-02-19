@@ -23,7 +23,7 @@ import Erros from 'src/utils/erros';
 import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
@@ -545,7 +545,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     valueAnfitriao,
     multiplicacao,
   ]);
-  console.log('semana', semana);
+
   const handleSalvar = () => {
     if (etapas === 'completo') {
       setCarregando(true);
@@ -573,7 +573,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
         .then((response) => {
           if (response) {
             // enviarPontuacao();
-            console.log('ola', response);
+
             setCarregando(false);
             mutate(url);
           }

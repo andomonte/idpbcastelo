@@ -39,7 +39,7 @@ export default function TabCelula({
     setRel('nada');
     setEventoEncontrado([]);
     let listaEveSuper = 0;
-    console.log('sem1 evento', sem1);
+
     if (sem1) {
       setRel(sem1);
       if (sem1 && sem1[0]) {
@@ -98,6 +98,7 @@ export default function TabCelula({
       <Box
         bgcolor="#80cbc4"
         sx={{
+          fontSize: '12px',
           fontFamily: 'arial black',
           borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
@@ -139,7 +140,7 @@ export default function TabCelula({
         </Box>
       </Box>
       {rel !== 'nada' ? (
-        <TableContainer sx={{ maxHeight: 290 }}>
+        <TableContainer sx={{ height: '80%' }}>
           {eventoEncontrado && Object.keys(eventoEncontrado).length > 0 ? (
             <Box>
               {eventoEncontrado.map((row, index) => (
@@ -238,12 +239,12 @@ export default function TabCelula({
             </Box>
           ) : (
             <Box
-              height="40vh"
+              height="100%"
               display="flex"
               justifyContent="center"
               alignItems="center"
             >
-              Sem relatório
+              Sem Eventos
             </Box>
           )}
         </TableContainer>
