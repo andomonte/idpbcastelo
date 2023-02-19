@@ -121,7 +121,13 @@ function createPontuacao(
   };
 }
 
-function RelCelula({ rolMembros, perfilUser, visitantes }) {
+function RelCelula({
+  rolMembros,
+  perfilUser,
+  visitantes,
+  dataEscolhida,
+  setDataEscolhida,
+}) {
   //  const classes = useStyles();
   // const router = useRouter();
   let visitantesCelula = visitantes.filter(
@@ -130,8 +136,14 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       val.Distrito === Number(perfilUser.Distrito),
   );
   const [corData, setCorData] = React.useState('white');
-  const timeElapsed2 = Date.now();
-  const dataAtual2 = new Date(timeElapsed2);
+  // const timeElapsed2 = Date.now();
+
+  const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
+  const [inputValue, setInputValue] = React.useState(
+    moment(dataEscolhida).format('DD/MM/YYYY'),
+  );
+  const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
+
   const [contConversoes, setContConversoes] = React.useState(0);
   const [contEventos, setContEventos] = React.useState(0);
   const [contVisitas, setContVisitas] = React.useState(0);
@@ -155,7 +167,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const [nomesVisitanteTab, setNomesVisitanteTab] = React.useState('');
   const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
   const [foneVisitante, setFoneVisitante] = React.useState('');
-  const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const [open, setIsPickerOpen] = React.useState(false);
   const [qtyVisitante, setQtyVisitante] = React.useState(0);
   const [presentes, setPresentes] = React.useState(0);
@@ -167,9 +178,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
   const [tela, setTela] = React.useState(0);
   const [carregando, setCarregando] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState(
-    moment(new Date()).format('DD/MM/YYYY'),
-  );
+
   const [loading, setLoading] = React.useState(true);
   const [pFinal, setPFinal] = React.useState({});
   const [pTotalAtualRank, setPTotalAtualRank] = React.useState(0);
@@ -186,6 +195,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     setInputValue(value);
     setSelectedDate(date);
     setIsPickerOpen(false);
+    setDataEscolhida(date);
   };
   //= ==================================================================
 
@@ -304,7 +314,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         if (relatorio && relatorio.length) {
           const dataAgora = new Date();
           const semanaAgora = semanaExata(dataAgora);
-          if (semanaAgora - semana < 2) setPodeEditar(true);
+          if (semanaAgora - semana < 3) setPodeEditar(true);
           else setPodeEditar(false);
 
           setExisteRelatorio(true); // avisa que tem relatório
@@ -316,7 +326,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
           const qtyPresentes = nomesMembros.filter(
             (val) => val.Presenca === true,
           );
-          console.log('nvisi', nVisitantes);
+
           const qtyVisitants = JSON.parse(nVisitantes).filter(
             (val) => val.Presenca === true,
           );
@@ -419,7 +429,6 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   }, [novoVisitante, nomesVisitanteTab]);
 
   React.useEffect(() => {
-    console.log('acionou mutate');
     ajusteRelatorio();
 
     return 0;
@@ -431,7 +440,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     setExisteRelatorio('inicio');
     if (selectedDate) {
       const checkAno = selectedDate.getFullYear();
-      console.log('checkAno', checkAno);
+
       setAnoAtual(checkAno);
       // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
       if (checkAno > 2020) {
@@ -457,7 +466,10 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   const handleTela2 = () => {
     if (nomesCelulas && nomesCelulas.length > 0) {
       const listaPresentes = nomesCelulas.filter(
-        (val, index) => val.Nome && relPresentes[index].Presenca === true,
+        (val, index) =>
+          val.Nome &&
+          relPresentes[index] &&
+          relPresentes[index].Presenca === true,
       );
 
       const idade = [];
@@ -559,7 +571,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     if (!pontos) return <div>Loading ...</div>;
     if (pontos) {
       const pontosSemanaAtual = pontos.filter(
-        (val) => val.Semana === Number(semana),
+        (val) => Number(val.Semana) === Number(semana),
       );
       const pontosSemanaAnterior = pontos.filter(
         (val) => val.Semana === Number(semana - 1),
@@ -596,9 +608,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
     let pontosTotalAtual = 0;
     let pontosTotalAnterior = 0;
     let pontosTotalAtualRank = 0;
-
     if (pontosAtual.length) {
-      pontuacaoAtual = pontosAtual[0].Pontuacao;
+      pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
       if (pontuacaoAtual !== '') {
         if (
@@ -714,9 +725,14 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
   }, [existeRelatorio]);
 
   React.useEffect(() => {
+    criarPontuacao();
+    return 0;
+  }, [pontosAtual]); // atualiza a pontuação
+
+  React.useEffect(() => {
     pegarPontuacao();
 
-    criarPontuacao();
+    // criarPontuacao();
 
     return 0;
   }, [
@@ -768,7 +784,11 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
 
     const criadoEm = new Date();
     const nomesCelulaParcial = nomesCelulas.map((row, index) =>
-      createRelCelula(row.RolMembro, row.Nome, relPresentes[index].Presenca),
+      createRelCelula(
+        row.RolMembro,
+        row.Nome,
+        relPresentes[index] ? relPresentes[index].Presenca : false,
+      ),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
     const novaData = new Date(ConverteData(inputValue));
@@ -873,14 +893,28 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
       const semanas = [];
       const semanasTotal = [];
       for (let index = 0; index < 4; index += 1) {
+        let novaSemana = Number(Number(semana) - index);
+        const datanova = new Date();
+        const Ano = datanova.getFullYear();
+        let novoAno = Ano;
+        //  console.log('ANO', novoAno);
+        //  console.log('semanaNOVA', novaSemana);
+
+        if (novaSemana < 1) {
+          novaSemana = 53 - index;
+          novoAno = Ano - 1;
+        }
         semanas[index] = pontos.filter(
-          (val) => val.Semana === Number(semana - index),
+          (val) => Number(val.Semana) === novaSemana && val.Ano === novoAno,
         );
       }
-
       let somaTotal = 0;
       let divisor = 0;
+      // console.log('semanas', semanas, semanas.length);
+
       for (let index = 0; index < semanas.length; index += 1) {
+        //   console.log('somaTotal', somaTotal, index);
+
         if (semanas[index] && semanas[index].length > 0) {
           semanasTotal[index] = semanas[index][0].Total;
           somaTotal += Number(semanasTotal[index]);
@@ -895,7 +929,10 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
         ).toFixed(2);
-
+        //   console.log('somaTotal', somaTotal);
+        //   console.log('divisor', divisor);
+        //   console.log('pTotalAtual', pTotalAtual);
+        //   console.log('mediaCrescimento', mediaCrescimento);
         if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
         else {
           if (pTotalAtual === somaTotal) {
@@ -2139,7 +2176,7 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                                   justifyContent="center"
                                   fontSize="14px"
                                 >
-                                  VISITAS
+                                  VISITAS DOS LIDER
                                 </Box>
                                 <Box
                                   width="40%"
@@ -2211,6 +2248,8 @@ function RelCelula({ rolMembros, perfilUser, visitantes }) {
                               height: 80,
                               borderRadius: 15,
                               border: '1px solid #000',
+                              resize: 'vertical',
+                              overflow: 'auto',
                             }}
                           />
                         </Box>

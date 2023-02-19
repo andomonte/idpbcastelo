@@ -16,7 +16,7 @@ import {
 import corIgreja from 'src/utils/coresIgreja';
 import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/client';
-import IconIgreja from 'src/components/icones/castelo';
+import IconCastelo from 'src/components/icones/castelo';
 // import IconEMT from 'src/components/icones/emt';
 import SchoolIcon from '@material-ui/icons/School';
 import change from 'src/components/icones/change';
@@ -155,7 +155,7 @@ const primaryMenu = [
     icon: CursoIcon,
   },
 
-  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconIgreja },
+  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconCastelo },
   {
     id: 5,
     label: 'Meu Perfil',

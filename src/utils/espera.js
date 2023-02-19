@@ -34,7 +34,11 @@ export default function Espere({ descricao }) {
         >
           <Box mt={-5}>
             <Box textAlign="center" mt={3} mb={2}>
-              <img src={corIgreja.logo} alt="logo" width={200} />
+              <img
+                src="/images/castelo/Castelo2.png"
+                alt="Castelo"
+                width={200}
+              />
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
               <Box

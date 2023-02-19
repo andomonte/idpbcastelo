@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@material-ui/core';
 
-function LogoIgreja() {
+function LogoCastelo() {
   return (
     <Icon>
       <img
@@ -14,4 +14,4 @@ function LogoIgreja() {
   );
 }
 
-export default LogoIgreja;
+export default LogoCastelo;

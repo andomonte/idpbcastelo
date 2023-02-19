@@ -4,13 +4,15 @@ import Avisos from 'src/components/igrejas/principal/avisos';
 import prisma from 'src/lib/prisma';
 
 function Aviso({ dadosAvisos }) {
+  let result = 'nenhum';
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/principal/aviso');
+    result = JSON.parse(sessionStorage.getItem('perfilUser'));
   }
 
   return (
     <div>
-      <Avisos dadosAvisos={dadosAvisos} />
+      <Avisos dadosAvisos={dadosAvisos} perfilUser={result} />
     </div>
   );
 }

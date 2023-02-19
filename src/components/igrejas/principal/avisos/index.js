@@ -10,8 +10,8 @@ import Box from '@material-ui/core/Box';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
-import Login from 'src/components/botaoLogin';
-import Avisos from './Avisos';
+
+import Avisos from './Avisos2';
 
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbIgreja({ title, dadosAvisos }) {
+function IdpbCastelo({ title, dadosAvisos, perfilUser }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -162,7 +162,6 @@ function IdpbIgreja({ title, dadosAvisos }) {
                 alt="bolo"
               />
             </Box>
-            <Login />
           </Toolbar>
         </AppBar>
 
@@ -170,11 +169,11 @@ function IdpbIgreja({ title, dadosAvisos }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Avisos dadosAvisos={dadosAvisos} />
+          <Avisos dadosAvisos={dadosAvisos} perfilUser={perfilUser} />
         </main>
       </div>
     </div>
   );
 }
 
-export default IdpbIgreja;
+export default IdpbCastelo;

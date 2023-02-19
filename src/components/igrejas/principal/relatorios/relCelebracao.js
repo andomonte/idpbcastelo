@@ -23,6 +23,7 @@ import Espera from 'src/utils/espera';
 import Erros from 'src/utils/erros';
 import Emojis from 'src/components/icones/emojis';
 import ConverteData from 'src/utils/convData2';
+
 import TabCelebracao from './abas/tabCelebracao';
 import TabVisitantes from './abas/tabVisitantes2';
 
@@ -116,7 +117,13 @@ function createPontuacao(
   };
 }
 
-function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
+function RelatorioCelebracao({
+  rolMembros,
+  perfilUser,
+  visitantes,
+  dataEscolhida,
+  setDataEscolhida,
+}) {
   //  const classes = useStyles();
   // const router = useRouter();
   const [openErro, setOpenErro] = React.useState(false);
@@ -126,8 +133,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
-  const timeElapsed2 = Date.now();
-  const dataAtual2 = new Date(timeElapsed2);
+  const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
+  const [inputValue, setInputValue] = React.useState(
+    moment(dataEscolhida).format('DD/MM/YYYY'),
+  );
+  const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const anoAtual = dataAtual2.getFullYear();
   const [AnoAtual, setAnoAtual] = React.useState(anoAtual);
 
@@ -150,7 +160,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   const [nomeVistante, setNomeVisitante] = React.useState('');
   const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
   const [foneVisitante, setFoneVisitante] = React.useState('');
-  const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const [open, setIsPickerOpen] = React.useState(false);
   const [qtyVisitante, setQtyVisitante] = React.useState(0);
   const [presentes, setPresentes] = React.useState(0);
@@ -162,9 +171,6 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
   const [tela, setTela] = React.useState(0);
   const [carregando, setCarregando] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState(
-    moment(new Date()).format('DD/MM/YYYY'),
-  );
   const [pFinal, setPFinal] = React.useState({});
   const [pTotalAtualRank, setPTotalAtualRank] = React.useState(0);
   const [pTotalAtual, setPTotalAtual] = React.useState(0);
@@ -179,6 +185,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     setInputValue(value);
     setSelectedDate(date);
     setIsPickerOpen(false);
+    setDataEscolhida(date);
   };
   //= ==================================================================
 
@@ -309,11 +316,10 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
         );
 
         if (relatorio && relatorio.length) {
-          console.log('ola relatorio', relatorio);
           const dataAgora = new Date();
           const semanaAgora = semanaExata(dataAgora);
 
-          if (semanaAgora - semana < 2) setPodeEditar(true);
+          if (semanaAgora - semana < 3) setPodeEditar(true);
           else setPodeEditar(false);
           setExisteRelatorio(true); // avisa que tem relatório
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
@@ -331,7 +337,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
           const qtyPresentesLive = nomesMembros.filter(
             (val) => val.Presenca === 'live',
           );
-          console.log('nvisi', relatorio[0].NomesVisitantes);
+
           const qtyVisitants = Object.keys(nVisitantes).length
             ? nVisitantes.filter((val) => val.Presenca === true)
             : [];
@@ -409,6 +415,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       const listaPresentes = listaPresentes1.filter(
         (val, index) =>
           val.Nome &&
+          relPresentes[index] &&
           (relPresentes[index].Presenca === 'igreja' ||
             relPresentes[index].Presenca === 'live'),
       );
@@ -416,6 +423,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
+
       for (let i = 0; i < listaPresentes.length; i += 1) {
         idade[i] = listaPresentes[i].Nascimento
           ? PegaIdade(ConverteData(listaPresentes[i].Nascimento))
@@ -538,7 +546,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     let pontosTotalAtualRank = 0;
 
     if (pontosAtual.length) {
-      pontuacaoAtual = pontosAtual[0].Pontuacao;
+      pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
       if (pontuacaoAtual !== '') {
         if (
@@ -645,11 +653,14 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     /*
      */
   };
-
+  React.useEffect(() => {
+    criarPontuacao();
+    return 0;
+  }, [pontosAtual]); // atualiza a pontuação
   React.useEffect(() => {
     pegarPontuacao();
 
-    criarPontuacao();
+    // criarPontuacao();
 
     return 0;
   }, [semana, presentes, qtyVisitante, contConversoes, pontos]);
@@ -709,7 +720,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
 
     const criadoEm = new Date();
     const nomesCelulaParcial = nomesCelulas.map((row, index) =>
-      createRelCelula(row.RolMembro, row.Nome, relPresentes[index].Presenca),
+      createRelCelula(
+        row.RolMembro,
+        row.Nome,
+        relPresentes[index] ? relPresentes[index].Presenca : false,
+      ),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
     const novaData = new Date(ConverteData2(inputValue));
@@ -779,36 +794,56 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
     }
   };
   const mediaCelula = () => {
-    if (pontos) {
+    if (pontos && pontos.length > 0) {
       const semanas = [];
       const semanasTotal = [];
       for (let index = 0; index < 4; index += 1) {
+        let novaSemana = Number(Number(semana) - index);
+        const datanova = new Date();
+        const Ano = datanova.getFullYear();
+        let novoAno = Ano;
+        //        console.log('ANO', novoAno);
+        //        console.log('semanaNOVA', novaSemana);
+
+        if (novaSemana < 1) {
+          novaSemana = 53 - index;
+          novoAno = Ano - 1;
+        }
         semanas[index] = pontos.filter(
-          (val) => val.Semana === Number(semana - index),
+          (val) => Number(val.Semana) === novaSemana && val.Ano === novoAno,
         );
       }
-
       let somaTotal = 0;
       let divisor = 0;
+      //    console.log('semanas', semanas, semanas.length);
+
       for (let index = 0; index < semanas.length; index += 1) {
+        //      console.log('somaTotal', somaTotal, index);
+
         if (semanas[index] && semanas[index].length > 0) {
           semanasTotal[index] = semanas[index][0].Total;
           somaTotal += Number(semanasTotal[index]);
           divisor += 1;
         }
       }
+
       if (divisor === 0) divisor = 1;
       somaTotal /= divisor;
+
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
         ).toFixed(2);
-
+        //    console.log('somaTotal', somaTotal);
+        //    console.log('divisor', divisor);
+        //    console.log('pTotalAtual', pTotalAtual);
+        //    console.log('mediaCrescimento', mediaCrescimento);
         if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
         else {
           if (pTotalAtual === somaTotal) {
             mediaCrescimento = 0;
           }
+
           setRankCelula(mediaCrescimento);
         }
       } else setRankCelula(0);
@@ -1797,6 +1832,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser, visitantes }) {
                               height: 80,
                               borderRadius: 15,
                               border: '1px solid #000',
+                              resize: 'vertical',
+                              overflow: 'auto',
                             }}
                           />
                         </Box>

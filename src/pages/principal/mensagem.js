@@ -3,13 +3,16 @@ import Mensagem from 'src/components/igrejas/principal/mensagem';
 import prisma from 'src/lib/prisma';
 
 function Mensagens({ mensagem }) {
+  // resultado = result.id;
+  let result = 'nenhum';
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/principal/mensagem');
+    result = JSON.parse(sessionStorage.getItem('perfilUser'));
   }
 
   return (
     <div>
-      <Mensagem mensagem={mensagem} />
+      <Mensagem mensagem={mensagem} perfilUser={result} />
     </div>
   );
 }

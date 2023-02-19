@@ -102,9 +102,7 @@ function Eventos({ perfilUser, rolMembros }) {
                           {row.LogoEvento && (
                             <img
                               style={{ borderRadius: '16px' }}
-                              src={`http://approomservice.com.br/idpbIgreja/${row.LogoEvento.slice(
-                                row.LogoEvento.indexOf('Images'),
-                              )}`}
+                              src={row.LogoEvento}
                               width="auto"
                               alt="imagem"
                             />
@@ -179,10 +177,7 @@ function Eventos({ perfilUser, rolMembros }) {
               alignItems="center"
               color="black"
             >
-              <Box textAlign="center">
-                {' '}
-                NENHUM EVENTO PREVISTO NESSE PERÍODO
-              </Box>
+              NENHUM EVENTO PREVISTO NESSE PERÍODO
             </Box>
           )}
         </Box>

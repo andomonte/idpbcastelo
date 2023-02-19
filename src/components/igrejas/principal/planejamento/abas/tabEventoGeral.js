@@ -38,15 +38,43 @@ export default function TabCelula({
   React.useEffect(() => {
     setRel('nada');
     setEventoEncontrado([]);
+    let listaEveSuper = 0;
+    console.log('sem1 evento', sem1);
     if (sem1) {
       setRel(sem1);
       if (sem1 && sem1[0]) {
-        const listaEveSuper = sem1.filter(
-          (val) =>
-            val.Funcao === perfilUser.Funcao &&
-            Number(val.Numero) === Number(perfilUser.Coordenacao),
-        );
-        console.log(sem1, perfilUser);
+        if (perfilUser.Funcao === 'Supervisor') {
+          listaEveSuper = sem1.filter(
+            (val) =>
+              val.Funcao === perfilUser.Funcao &&
+              Number(val.Numero) === Number(perfilUser.Supervisao),
+          );
+        }
+        if (perfilUser.Funcao === 'Coordenador') {
+          listaEveSuper = sem1.filter(
+            (val) =>
+              val.Funcao === perfilUser.Funcao &&
+              Number(val.Numero) === Number(perfilUser.Coordenacao),
+          );
+        }
+        if (perfilUser.Funcao === 'PastorDistrito') {
+          listaEveSuper = sem1.filter(
+            (val) =>
+              val.Funcao === perfilUser.Funcao &&
+              Number(val.Numero) === Number(perfilUser.Distrito),
+          );
+        }
+        if (
+          perfilUser.Funcao === 'Presidente' ||
+          perfilUser.Funcao === 'Secretaria'
+        ) {
+          listaEveSuper = sem1.filter(
+            (val) =>
+              val.Funcao === perfilUser.Funcao &&
+              Number(val.Numero) === Number(perfilUser.Igreja),
+          );
+        }
+
         if (listaEveSuper && listaEveSuper.length) {
           const listaEventosSetor = listaEveSuper.sort((a, b) => {
             if (new Date(a.Data) > new Date(b.Data)) return 1;
@@ -61,7 +89,7 @@ export default function TabCelula({
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1, Mes]);
+  }, [sem1, Mes, setSendResumo]);
 
   //= ==================================================================
 

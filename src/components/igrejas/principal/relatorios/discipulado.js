@@ -61,7 +61,7 @@ function Discipulado({ rolMembros, perfilUser }) {
                     }}
                     textAlign="center"
                   >
-                    IDPB - CASTELO{' '}
+                    IDPB - Castelo{' '}
                   </Box>
                 </Box>
               </Box>

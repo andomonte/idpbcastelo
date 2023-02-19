@@ -26,7 +26,7 @@ import { usePWAInstall } from 'react-use-pwa-install';
 // import HomeIcon from '@material-ui/icons/Home';
 import { IoMdPerson } from 'react-icons/io';
 // import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
-import IconIgreja from 'src/components/icones/castelo';
+import IconCastelo from 'src/components/icones/castelo';
 import { MdOutlineScreenSearchDesktop } from 'react-icons/md';
 
 const useStyles = makeStyles((theme) => ({
@@ -140,7 +140,7 @@ const primaryMenu = [
     icon: CursoIcon,
   },
 
-  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconIgreja },
+  { id: 4, label: 'Quem Somos', path: '/quemSomos', icon: IconCastelo },
   {
     id: 5,
     label: 'Meu Perfil',

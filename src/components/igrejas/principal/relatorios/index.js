@@ -149,6 +149,9 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
 
   const router = useRouter();
 
+  const dataAtual2 = new Date();
+  const [dataEscolhida, setDataEscolhida] = React.useState(dataAtual2);
+
   const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
     setLoading(true);
@@ -483,6 +486,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'Lider' ? (
                   <RelCelula
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     visitantes={visitantes}
@@ -493,6 +498,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <RelCelulaSup
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     lideranca={lideranca}
@@ -501,6 +508,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'Coordenador' ? (
                   <RelCelulaCoord
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     lideranca={lideranca}
@@ -509,6 +518,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'PastorDistrito' ? (
                   <RelCelulaDistrito
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     lideranca={lideranca}
@@ -524,6 +535,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'Lider' ? (
                   <RelCelebracao
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     visitantes={visitantes}
@@ -533,6 +546,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <RelSuper
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     lideranca={lideranca}
@@ -541,6 +556,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'Coordenador' ? (
                   <RelSuperCoord
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     lideranca={lideranca}
@@ -549,6 +566,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
                 {perfilUser.Funcao === 'PastorDistrito' ? (
                   <RelSuperDistrito
                     perfilUser={perfilUser}
+                    setDataEscolhida={setDataEscolhida}
+                    dataEscolhida={dataEscolhida}
                     secao={session}
                     rolMembros={rolMembros}
                     lideranca={lideranca}
@@ -564,6 +583,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             {perfilUser.Funcao === 'Lider' ? (
               <RelDiscipulado
                 perfilUser={perfilUser}
+                setDataEscolhida={setDataEscolhida}
+                dataEscolhida={dataEscolhida}
                 secao={session}
                 rolMembros={rolMembros}
                 visitantes={visitantes}
@@ -573,6 +594,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             {perfilUser.Funcao === 'Supervisor' ? (
               <RelVisitasSuper
                 perfilUser={perfilUser}
+                setDataEscolhida={setDataEscolhida}
+                dataEscolhida={dataEscolhida}
                 secao={session}
                 rolMembros={rolMembros}
                 lideranca={lideranca}
@@ -581,6 +604,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             {perfilUser.Funcao === 'Coordenador' ? (
               <RelCoord
                 perfilUser={perfilUser}
+                setDataEscolhida={setDataEscolhida}
+                dataEscolhida={dataEscolhida}
                 secao={session}
                 rolMembros={rolMembros}
                 lideranca={lideranca}
@@ -589,6 +614,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             {perfilUser.Funcao === 'PastorDistrito' ? (
               <RelDistrito
                 perfilUser={perfilUser}
+                setDataEscolhida={setDataEscolhida}
+                dataEscolhida={dataEscolhida}
                 secao={session}
                 rolMembros={rolMembros}
                 lideranca={lideranca}
@@ -597,6 +624,8 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             {perfilUser.Funcao === 'Presidente' ? (
               <RelCoord
                 perfilUser={perfilUser}
+                setDataEscolhida={setDataEscolhida}
+                dataEscolhida={dataEscolhida}
                 secao={session}
                 rolMembros={rolMembros}
                 lideranca={lideranca}

@@ -2,28 +2,114 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
-
+import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
 
-function Mensagem({ mensagem }) {
+function converteData(DataDDMMYY) {
+  const dataSplit = DataDDMMYY.split('/');
+
+  const novaData = new Date(
+    parseInt(2000, 10),
+    parseInt(dataSplit[1], 10) - 1,
+    parseInt(dataSplit[0], 10),
+  );
+
+  return novaData;
+}
+
+function compare(a, b) {
+  if (
+    converteData(
+      moment(a.Date.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
+    ) <
+    converteData(moment(b.Date.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'))
+  )
+    return -1;
+  return true;
+}
+
+function getPreviousMonday(date) {
+  const previousMonday = date;
+
+  previousMonday.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+
+  return previousMonday;
+}
+
+function getPreviousMonday2(date) {
+  const previousMonday = new Date();
+
+  previousMonday.setDate(previousMonday.getDate() - date);
+
+  return previousMonday;
+}
+function nextSunday(date) {
+  // const today = new Date();
+  const nextweek = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate() + 6,
+  );
+  return nextweek;
+}
+
+function Mensagem({ mensagem, perfilUser }) {
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
-  const d = new Date();
-  const anoAtual = Number(d.getFullYear());
+  // const d = new Date();
+  // const anoAtual = Number(d.getFullYear());
   const [contFonte, setContFonte] = React.useState(16);
   const [contSemana, setContSemana] = React.useState(mensagem.length);
-  const [contSemanaFix] = React.useState(mensagem.length);
-  const [contAno, setContAno] = React.useState(anoAtual);
+  // const [contSemanaFix] = React.useState(mensagem.length);
+  // const [contAno, setContAno] = React.useState(anoAtual);
+
+  //= ========================================================================
+  // data de inicio
+  //= ========================================================================
+  //  const [contSemana, setContSemana] = React.useState(0);
+  const semanaAtual2 = getPreviousMonday2(contSemana + 7);
+  const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
+    'DD/MM/YYYY 00:00:00',
+  );
+  const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
+
+  const dataInicial = converteData(semanaAtual);
+  const dataFinal = converteData(semanaSegunte);
+
+  const niverGeralValido = mensagem.filter(
+    (results) => results.Data !== null && results.Data.length > 8,
+  );
+
+  const niverGeral = niverGeralValido.filter(
+    (results) =>
+      converteData(
+        moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+      ) >= dataInicial &&
+      converteData(
+        moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+      ) <= dataFinal,
+  );
+
+  const handleIncSemana = () => {
+    const contSemanaAtual = contSemana - 7;
+
+    setContSemana(contSemanaAtual);
+  };
+  const handleDecSemana = () => {
+    const contSemanaAtual = contSemana + 7;
+
+    setContSemana(contSemanaAtual);
+  };
 
   // const diaBr = Number(d.getDate());
   // const mesBr = Number(d.getMonth());
   // const anoBr = Number(d.getFullYear());
   // const dataBr = `${diaBr}/${mesBr}/${anoBr}`;
 
-  const handleIncSemana = () => {
+  /* const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
     if (contSemanaAtual > contSemanaFix) {
       contSemanaAtual = contSemanaFix;
@@ -37,7 +123,7 @@ function Mensagem({ mensagem }) {
       setContAno(contAno - 1);
     }
     setContSemana(contSemanaAtual);
-  };
+  }; */
 
   const handleIncFonte = () => {
     let contFonteAtual = contFonte + 1;
@@ -53,7 +139,15 @@ function Mensagem({ mensagem }) {
   };
 
   React.useEffect(() => {
-    setBoletim(mensagem[contSemana - 1]);
+    const dataMens = niverGeral.sort(compare);
+    let dataMens2 = dataMens.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+    if (!dataMens2.length)
+      dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
+
+    setBoletim(dataMens[0]);
+
     const diaSemana = [
       'Domingo',
       'Segunda',
@@ -63,20 +157,54 @@ function Mensagem({ mensagem }) {
       'Sexta',
       'Sábado',
     ];
+    // console.log('diaMensagem', niverGeral.sort(compare));
 
-    const diaMensagem = mensagem.length
-      ? new Date(mensagem[contSemana - 1].Data)
-      : new Date();
-    diaMensagem.setHours(diaMensagem.getHours() + 6);
+    /* if (dataMens[contSemana].length) {
+      const diaMensagem = new Date(dataMens[contSemana].Data);
+      console.log('oi dia', diaMensagem);
+      diaMensagem.setHours(diaMensagem.getHours() + 6);
+      console.log('diaMensagem', diaMensagem);
+      const diaSm = Number(diaMensagem.getDay());
+      const diaBr = Number(diaMensagem.getDate());
+      let mesBr = Number(diaMensagem.getMonth() + 1);
+      if (mesBr < 10) mesBr = `0${mesBr}`;
+      const anoBr = Number(diaMensagem.getFullYear());
+      const dataBrTemp = `${diaSemana[diaSm]}  ${diaBr}/${mesBr}/${anoBr}`; 
+      
+      setDataBr(dataBrTemp);
+    } */
+    if (dataMens.length) {
+      const novaData1 = dataMens[0].Data; // nextSunday(semanaAtual2);
 
-    const diaSm = Number(diaMensagem.getDay());
-    const diaBr = Number(diaMensagem.getDate());
-    let mesBr = Number(diaMensagem.getMonth() + 1);
-    if (mesBr < 10) mesBr = `0${mesBr}`;
-    const anoBr = Number(diaMensagem.getFullYear());
-    const dataBrTemp = `${diaSemana[diaSm]}  ${diaBr}/${mesBr}/${anoBr}`;
+      const ano = novaData1.substring(0, 4);
+      const mes = novaData1.substring(5, 7);
+      const dia = novaData1.substring(8, 10);
+      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-    setDataBr(dataBrTemp);
+      const showData = ` ${
+        diaSemana[diaSemana2.getDay()]
+      } ${dia}/${mes}/${ano}`;
+
+      setDataBr(showData);
+    } else {
+      const novaData11 = nextSunday(semanaAtual2);
+      const dia =
+        novaData11.getDate() > 9
+          ? novaData11.getDate()
+          : `0${novaData11.getDate()}`;
+      const mes =
+        novaData11.getMonth() + 1 > 9
+          ? novaData11.getMonth() + 1
+          : `0${novaData11.getMonth() + 1}`;
+      const ano = novaData11.getFullYear();
+      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+
+      const showData = ` ${
+        diaSemana[diaSemana2.getDay()]
+      } ${dia}/${mes}/${ano}`;
+
+      setDataBr(showData);
+    }
   }, [contSemana]);
 
   return (
@@ -106,7 +234,7 @@ function Mensagem({ mensagem }) {
           style={{
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            backgroundImage: `url('/images/castelo/mensagem.png')`,
+            backgroundImage: `url('/images/castelo/mensagem2.png')`,
             backgroundPosition: 'center', // centraliza imagem
             backgroundSize: 'cover',
           }}
@@ -153,6 +281,7 @@ function Mensagem({ mensagem }) {
 
           <Box
             height="100%"
+            mt={-1}
             flexDirection="column"
             width="100%"
             display="flex"
@@ -206,6 +335,7 @@ function Mensagem({ mensagem }) {
                   <Box
                     width="80%"
                     fontFamily="Fugaz One"
+                    fontSize="18px"
                     color="white"
                     mt={-0.3}
                     ml={-3}

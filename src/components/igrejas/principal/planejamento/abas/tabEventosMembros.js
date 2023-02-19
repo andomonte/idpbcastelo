@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import horarioMask from 'src/components/mascaras/horario';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import DateFnsUtils from '@date-io/date-fns';
 import ConverteData from 'src/utils/dataMMDDAAAA';
@@ -10,14 +9,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import moment from 'moment';
-import {
-  Box,
-  Button,
-  Grid,
-  Typography,
-  TextField,
-  Paper,
-} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import { Box, Button, Grid, Typography, Paper } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import PegaSemana from 'src/utils/getSemana';
@@ -25,7 +18,10 @@ import Espera from 'src/utils/espera';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import api from 'src/components/services/api';
-
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
 import { MdScreenSearchDesktop } from 'react-icons/md';
 import Select from 'react-select';
 import { Oval } from 'react-loading-icons';
@@ -97,11 +93,11 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   );
 
   const fases = [
-    { label: 'Integração', value: 1 },
+    { label: 'Integrar na Visão', value: 1 },
     { label: 'Comunhão', value: 2 },
     { label: 'Edificação', value: 3 },
-    { label: 'Evangelismo/Consolidação', value: 4 },
-    { label: 'Multiplicação', value: 5 },
+    { label: 'Evangelismo', value: 4 },
+    { label: 'multiplicacao', value: 5 },
   ];
 
   const valorInicialOjetivo = {
@@ -113,8 +109,11 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   const [openShowPlan, setOpenShowPlan] = React.useState(false);
 
   const [dataSem1, setDataSem1] = React.useState('inicio');
+  const horarioAtual = moment(new Date()).format('MM/DD/YYYY');
 
-  const [horario, setHorario] = React.useState('');
+  const [horario, setHorario] = React.useState(
+    dayjs(new Date(`${horarioAtual} 19:30:00`)),
+  );
   const [nomeEvento, setNomeEvento] = React.useState('');
   const semana = PegaSemana(Mes, Ano);
 
@@ -170,7 +169,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     setInputValue(moment(new Date()).format('DD/MM/YYYY'));
     setObjetivo(valorInicialOjetivo);
 
-    setHorario('');
+    setHorario(dayjs(new Date(`${horarioAtual} 19:30:00`)));
     setNomeEvento('');
     setValueAnfitriao('');
     setObservacoes('');
@@ -418,34 +417,31 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </Typography>
                     </Box>
                     <Box className={classes.novoBox} mt={-2}>
-                      <TextField
-                        className={classes.tf_m}
-                        inputProps={{
-                          style: {
-                            textAlign: 'center',
-                            height: 28,
-                            borderRadius: 5,
-                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                          },
-                        }}
-                        id="Horario"
-                        // label="Matricula"
-                        type="tel"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={horarioMask(horario.replace(/(?<=^.{2})/, ':'))}
-                        variant="standard"
-                        placeholder="hh:mm"
-                        onChange={(e) => {
-                          setHorario(e.target.value);
-                        }}
-                        onFocus={(e) => {
-                          setHorario(e.target.value);
-                        }}
-                        onKeyDown={handleEnter}
-                        inputRef={horarioRef}
-                      />
+                      <Paper style={{ background: '#fafafa', height: 40 }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DesktopTimePicker
+                            ampm={false}
+                            inputRef={horarioRef}
+                            value={horario}
+                            variant="inline"
+                            onChange={(newValue) => {
+                              setHorario(newValue);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                style={{
+                                  marginLeft: 10,
+                                  marginRight: 10,
+                                  marginTop: 10,
+                                  height: 30,
+                                  background: '#fafafa',
+                                }}
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Paper>
                     </Box>
                   </Grid>
                   <Grid item xs={12} md={12}>
@@ -611,6 +607,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                           height: 80,
                           borderRadius: 15,
                           border: '1px solid #000',
+                          resize: 'vertical',
+                          overflow: 'auto',
                         }}
                       />
                     </Box>
@@ -770,34 +768,31 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                       </Typography>
                     </Box>
                     <Box className={classes.novoBox} mt={-2}>
-                      <TextField
-                        className={classes.tf_m}
-                        inputProps={{
-                          style: {
-                            textAlign: 'center',
-                            height: 28,
-                            borderRadius: 5,
-                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                          },
-                        }}
-                        id="Horario"
-                        // label="Matricula"
-                        type="tel"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={horarioMask(horario.replace(/(?<=^.{2})/, ':'))}
-                        variant="standard"
-                        placeholder="hh:mm"
-                        onChange={(e) => {
-                          setHorario(e.target.value);
-                        }}
-                        onFocus={(e) => {
-                          setHorario(e.target.value);
-                        }}
-                        onKeyDown={handleEnter}
-                        inputRef={horarioRef}
-                      />
+                      <Paper style={{ background: '#fafafa', height: 40 }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DesktopTimePicker
+                            ampm={false}
+                            inputRef={horarioRef}
+                            value={horario}
+                            variant="inline"
+                            onChange={(newValue) => {
+                              setHorario(newValue);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                style={{
+                                  marginLeft: 10,
+                                  marginRight: 10,
+                                  marginTop: 10,
+                                  height: 30,
+                                  background: '#fafafa',
+                                }}
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Paper>
                     </Box>
                   </Grid>
                   <Grid item xs={12} md={12}>
@@ -963,6 +958,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                           height: 80,
                           borderRadius: 15,
                           border: '1px solid #000',
+                          resize: 'vertical',
+                          overflow: 'auto',
                         }}
                       />
                     </Box>
@@ -1005,6 +1002,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
       value: 0,
     };
     setInputValue(dadosRecebidos.Data);
+
     setHorario(dadosRecebidos.Horario);
     setNomeEvento(dadosRecebidos.Evento);
     setValueAnfitriao(dadosRecebidos.Local);

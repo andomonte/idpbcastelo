@@ -18,7 +18,7 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
-import Login from './botaoLogin';
+import Login from 'src/components/botaoLogin';
 import Navbar from './navBarLogado';
 import PesquisaCelulas from './pesquisa/celulas';
 import Contato from './contato';

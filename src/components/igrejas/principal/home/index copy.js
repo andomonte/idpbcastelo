@@ -124,7 +124,7 @@ function TabPanel(props) {
   );
 }
 
-function IdpbIgreja({ perfilUser, rolMembros, userIgrejas, title }) {
+function IdpbCastelo({ perfilUser, rolMembros, userIgrejas, title }) {
   const classes = useStyles();
   const [value] = React.useState(0);
 
@@ -222,4 +222,4 @@ function IdpbIgreja({ perfilUser, rolMembros, userIgrejas, title }) {
   );
 }
 
-export { IdpbIgreja, TabPanel };
+export { IdpbCastelo, TabPanel };

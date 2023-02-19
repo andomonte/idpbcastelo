@@ -11,7 +11,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const [session] = useSession();
   const perfilUser = router.query;
   let mudaDados = 'sai';
-
+  console.log(perfilUser);
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState('');
 
@@ -22,26 +22,13 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
 
-      if (session) {
-        if (!result)
-          router.push(
-            {
-              pathname: '/selectPerfil',
-            },
-            '/selectPerfil',
-          );
-      } else
-        router.push(
-          {
-            pathname: '/',
-          },
-          '/',
-        );
+      if (session !== null) {
+        setPerfilUserF(result);
+      } else setPerfilUserF('');
       // resultado = result.id;
-      setPerfilUserF(result);
     }
   }, [mudaDados]);
-
+  console.log('ola é aqui sim', session, perfilUser, userIgrejas);
   return (
     <div>
       {perfilUserF && perfilUserF.id ? (

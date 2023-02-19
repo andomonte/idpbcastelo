@@ -6,7 +6,7 @@ import {
   csrfToken,
   useSession,
 } from 'next-auth/client';
-
+import validator from 'validator';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { MdVisibilityOff, MdVisibility } from 'react-icons/md';
@@ -65,18 +65,16 @@ export default function Login({ providers2, rolMembros }) {
   };
   React.useEffect(() => {
     if (session) {
-      if (
-        session.user.email.replace(/\D/g, '') ===
-        authState.cpf.replace(/\D/g, '')
-      )
-        router.push({
-          pathname: '/selectPerfilCPF',
-        });
-      else
+      if (validator.isEmail(session.user.email))
         router.push({
           pathname: '/selectPerfil',
+        });
+      else {
+        router.push({
+          pathname: '/selectPerfilCPF',
           query: { cpf: authState.cpf },
         });
+      }
     }
   }, [session]);
   const handleAuth = async (providers22) => {
@@ -103,7 +101,7 @@ export default function Login({ providers2, rolMembros }) {
             (val) =>
               val.CPF.replace(/\D/g, '') === authState.cpf.replace(/\D/g, ''),
           );
-
+          console.log('ola membros', user);
           if (user && user.length) {
             setPageState((old) => ({ ...old, processing: true, error: '' }));
             signIn('credentials', {
@@ -176,9 +174,9 @@ export default function Login({ providers2, rolMembros }) {
       if (user && user.length) {
         // encontrar a data
 
-        const getData = user[0].Nascimento
-          ? moment(user[0].Nascimento.substring(0, 10)).format('DD/MM/YYYY')
-          : '';
+        const getData = moment(user[0].Nascimento.substring(0, 10)).format(
+          'DD/MM/YYYY',
+        );
         if (dataNascimento.length === 10)
           if (getData === dataNascimento) {
             setLoading(1);

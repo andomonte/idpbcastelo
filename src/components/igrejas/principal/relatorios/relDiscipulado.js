@@ -2,6 +2,7 @@ import { Box, Grid, Paper, Button } from '@material-ui/core';
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 import ConverteData from 'src/utils/dataMMDDAAAA';
+import ConverteData2 from 'src/utils/convData2';
 // import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
@@ -103,15 +104,21 @@ function createPontuacao(
   };
 }
 
-function RelatorioCelebracao({ rolMembros, perfilUser }) {
+function RelatorioDiscipulado({
+  rolMembros,
+  perfilUser,
+  dataEscolhida,
+  setDataEscolhida,
+}) {
   //  const classes = useStyles();
   // const router = useRouter();
   const [openErro, setOpenErro] = React.useState(false);
   const [progress, setProgress] = React.useState(5);
-  const timeElapsed2 = Date.now();
-  const dataAtual2 = new Date(timeElapsed2);
   const [contBiblia, setContBiblia] = React.useState(0);
-
+  const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
+  const [inputValue, setInputValue] = React.useState(
+    moment(dataEscolhida).format('DD/MM/YYYY'),
+  );
   const [observacoes, setObservacoes] = React.useState(0);
 
   const nomesCelulas = rolMembros.filter(
@@ -135,9 +142,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
   const [tela, setTela] = React.useState(0);
   const [carregando, setCarregando] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState(
-    moment(new Date()).format('DD/MM/YYYY'),
-  );
+
   const [pFinal, setPFinal] = React.useState({});
   const [pTotalAtualRank, setPTotalAtualRank] = React.useState(0);
   const [pTotalAtual, setPTotalAtual] = React.useState(0);
@@ -154,6 +159,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     setInputValue(value);
     setSelectedDate(date);
     setIsPickerOpen(false);
+    setDataEscolhida(date);
   };
   //= ==================================================================
 
@@ -259,7 +265,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           const dataAgora = new Date();
           const semanaAgora = semanaExata(dataAgora);
 
-          if (semanaAgora - semana < 2) setPodeEditar(true);
+          if (semanaAgora - semana < 3) setPodeEditar(true);
           else setPodeEditar(false);
           setExisteRelatorio(true); // avisa que tem relatório
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
@@ -320,13 +326,21 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const handleTela2 = () => {
     if (nomesCelulas && nomesCelulas.length > 0) {
       const listaPresentes = nomesCelulas.filter(
-        (val, index) => val.Nome && relPresentes[index].Presenca === true,
+        (val, index) =>
+          val.Nome &&
+          relPresentes[index] &&
+          relPresentes[index].Presenca === true,
       );
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
       for (let i = 0; i < listaPresentes.length; i += 1) {
-        idade[i] = PegaIdade(listaPresentes[i].Nascimento);
+        /*  if (listaPresentes[i].Nascimento)
+          idade[i] = PegaIdade(listaPresentes[i].Nascimento);
+        else idade[i] = 'NaN'; */
+        idade[i] = listaPresentes[i].Nascimento
+          ? PegaIdade(ConverteData2(listaPresentes[i].Nascimento))
+          : '';
         if (String(idade[i]) !== 'NaN')
           if (idade[i] > 11) {
             contAdultos += 1;
@@ -382,7 +396,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     let pontosTotalAtualRank = 0;
 
     if (pontosAtual.length) {
-      pontuacaoAtual = pontosAtual[0].Pontuacao;
+      pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
       if (pontuacaoAtual !== '') {
         if (
@@ -447,6 +461,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
+
     if (pontosTotalAtualRank === 0)
       pontosTotalAtualRank = Number(
         pontosRelatorio +
@@ -460,7 +475,18 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
+    /* console.log('pontosTotalAtual', pontosTotalAtual);
+    console.log('pontosRelatorio', pontosRelatorio);
+    console.log('percPresentes', percPresentes);
+    console.log('pontosPontualidade', pontosPontualidade);
+    console.log('pontosVisitantesCelula', pontosVisitantesCelula);
+    console.log('pontosVisitas', pontosVisitas);
+    console.log('percCelebracaoIgreja', percCelebracaoIgreja);
+    console.log('percCelebracaoLive', percCelebracaoLive);
+    console.log('percDiscipulado', percDiscipulado);
+    console.log('percLeituraBiblica', percLeituraBiblica); */
     const TotalPercentual = pontosTotalAtual;
+    //   console.log('TotalPercentual', TotalPercentual);
 
     const PontuacaoFinal = createPontuacao(
       Number(pontosRelCelula),
@@ -484,11 +510,15 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     setPTotalAtual(TotalPercentual);
     setPTotalAtualRank(pontosTotalAtualRank);
   };
+  React.useEffect(() => {
+    criarPontuacao();
+    return 0;
+  }, [pontosAtual]); // atualiza a pontuação
 
   React.useEffect(() => {
     pegarPontuacao();
 
-    criarPontuacao();
+    //   criarPontuacao();
 
     return 0;
   }, [semana, presentes, contBiblia, pontos]);
@@ -559,7 +589,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
 
     const criadoEm = new Date();
     const nomesCelulaParcial = nomesCelulas.map((row, index) =>
-      createRelCelula(row.RolMembro, row.Nome, relPresentes[index].Presenca),
+      createRelCelula(
+        row.RolMembro,
+        row.Nome,
+        relPresentes[index] ? relPresentes[index].Presenca : false,
+      ),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
     const novaData = new Date(ConverteData(inputValue));
@@ -588,7 +622,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           enviarPontuacao();
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setOpenErro(true);
         setCarregando(false);
 
@@ -627,36 +662,56 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     }
   };
   const mediaCelula = () => {
-    if (pontos) {
+    if (pontos && pontos.length > 0) {
       const semanas = [];
       const semanasTotal = [];
       for (let index = 0; index < 4; index += 1) {
+        let novaSemana = Number(Number(semana) - index);
+        const datanova = new Date();
+        const Ano = datanova.getFullYear();
+        let novoAno = Ano;
+        //        console.log('ANO', novoAno);
+        //        console.log('semanaNOVA', novaSemana);
+
+        if (novaSemana < 1) {
+          novaSemana = 53 - index;
+          novoAno = Ano - 1;
+        }
         semanas[index] = pontos.filter(
-          (val) => val.Semana === Number(semana - index),
+          (val) => Number(val.Semana) === novaSemana && val.Ano === novoAno,
         );
       }
-
       let somaTotal = 0;
       let divisor = 0;
+      //    console.log('semanas', semanas, semanas.length);
+
       for (let index = 0; index < semanas.length; index += 1) {
+        //      console.log('somaTotal', somaTotal, index);
+
         if (semanas[index] && semanas[index].length > 0) {
           semanasTotal[index] = semanas[index][0].Total;
           somaTotal += Number(semanasTotal[index]);
           divisor += 1;
         }
       }
+
       if (divisor === 0) divisor = 1;
       somaTotal /= divisor;
+
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
         ).toFixed(2);
-
+        //    console.log('somaTotal', somaTotal);
+        //    console.log('divisor', divisor);
+        //    console.log('pTotalAtual', pTotalAtual);
+        //    console.log('mediaCrescimento', mediaCrescimento);
         if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
         else {
           if (pTotalAtual === somaTotal) {
             mediaCrescimento = 0;
           }
+
           setRankCelula(mediaCrescimento);
         }
       } else setRankCelula(0);
@@ -1408,6 +1463,8 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                             height: 80,
                             borderRadius: 15,
                             border: '1px solid #000',
+                            resize: 'vertical',
+                            overflow: 'auto',
                           }}
                         />
                       </Box>
@@ -1767,4 +1824,4 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   );
 }
 
-export default RelatorioCelebracao;
+export default RelatorioDiscipulado;

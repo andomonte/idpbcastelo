@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import horarioMask from 'src/components/mascaras/horario';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import DateFnsUtils from '@date-io/date-fns';
 import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
 import ConverteData from 'src/utils/dataMMDDAAAA';
 import ConverteData2 from 'src/utils/convData2';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
 
 import {
   MuiPickersUtilsProvider,
@@ -81,7 +84,13 @@ function createListaMembros(value, label) {
     label,
   };
 }
-export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
+export default function TabCelula({
+  Mes,
+  Ano,
+  perfilUser,
+  rolMembros,
+  setAtualizarTela,
+}) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
   const classes = useStyles();
   const [openPlan, setOpenPlan] = React.useState(false);
@@ -96,11 +105,11 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   );
 
   const fases = [
-    { label: 'Integração', value: 1 },
+    { label: 'Integrar na Visão', value: 1 },
     { label: 'Comunhão', value: 2 },
     { label: 'Edificação', value: 3 },
-    { label: 'Evangelismo/Consolidação', value: 4 },
-    { label: 'Multiplicação', value: 5 },
+    { label: 'Evangelismo', value: 4 },
+    { label: 'multiplicacao', value: 5 },
   ];
 
   const valorInicialOjetivo = {
@@ -110,17 +119,24 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   const [objetivo, setObjetivo] = React.useState(valorInicialOjetivo);
 
   const [openShowPlan, setOpenShowPlan] = React.useState(false);
+  const [openPergunta, setOpenPergunta] = React.useState(false);
 
   const [dataSem1, setDataSem1] = React.useState([]);
+  const horarioAtual = moment(new Date()).format('MM/DD/YYYY');
 
-  const [horario, setHorario] = React.useState('');
+  const [horario, setHorario] = React.useState(
+    dayjs(new Date(`${horarioAtual} 19:30:00`)),
+  );
   const [nomeEvento, setNomeEvento] = React.useState('');
+  const [idEvento, setIdEvento] = React.useState('');
+
   const semana = PegaSemana(Mes, Ano);
 
   // para usar semanas
 
   //  const dataEventoRef = React.useRef();
   const horarioRef = React.useRef();
+
   const nomeEventoRef = React.useRef();
   const objetivoRef = React.useRef();
   const observacoesRef = React.useRef();
@@ -140,7 +156,9 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   );
   const [isPickerOpen, setIsPickerOpen] = React.useState(false);
 
-  const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
+  const { data: sem1, errorSem1 } = useSWR(url1, fetcher, {
+    refreshInterval: 1000,
+  });
 
   React.useEffect(() => {
     mutate(url1);
@@ -149,6 +167,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
 
   React.useEffect(() => {
     if (sem1 && sem1.length) {
+      console.log('sem tabEventos', sem1, carregando);
       const planEventosCelula = sem1.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
@@ -169,7 +188,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
     setInputValue(moment(new Date()).format('DD/MM/YYYY'));
     setObjetivo(valorInicialOjetivo);
 
-    setHorario('');
+    setHorario(dayjs(new Date(`${horarioAtual} 19:30:00`)));
     setNomeEvento('');
     setValueAnfitriao('');
     setObservacoes('');
@@ -181,11 +200,13 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
 
       if (formId === 'DataEvento') horarioRef.current.focus();
       if (formId === 'Horario') {
-        if (horario.length < 5)
-          toast.error('Horário incompleto !', {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        else nomeEventoRef.current.focus();
+        if (horario)
+          if (String(horario.$H).length < 2 || String(horario.$m).length < 2)
+            toast.error('Horário incompleto !', {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          else nomeEventoRef.current.focus();
+        else horarioRef.current.focus();
       }
 
       if (formId === 'NomeEvento') anfitriaoRef.current.focus();
@@ -234,84 +255,177 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   //= ========================================================================
 
   const handleSalvar = () => {
-    if (
-      inputValue &&
-      horario.length &&
-      nomeEvento.length &&
-      valueAnfitriao.length &&
-      objetivo.label !== 'Qual o objetivo do evento?' &&
-      observacoes
-    ) {
-      setCarregando(true);
-      setOpenPlan(false);
-      // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
-      const CriadoEm = new Date();
-      const novaData = new Date(ConverteData(inputValue));
-      api
-        .post('/api/criarPlanejamentoEvento', {
-          Data: novaData,
-          Evento: nomeEvento,
-          Local: valueAnfitriao,
-          Objetivo: objetivo.label,
-          Descricao: observacoes,
-          Mes,
-          Ano,
-          Horario: horario,
-          Celula: Number(perfilUser.Celula),
-          Distrito: Number(perfilUser.Distrito),
-          CriadoEm,
-        })
-        .then((response) => {
-          if (response) {
-            // enviarPontuacao();
+    if (horario)
+      if (
+        inputValue &&
+        String(horario.$H).length === 2 &&
+        String(horario.$m).length === 2 &&
+        nomeEvento.length &&
+        valueAnfitriao.length &&
+        objetivo.label !== 'Qual o objetivo do evento?' &&
+        observacoes
+      ) {
+        const horaSalva = `${horario.$H}:${horario.$m}`;
+        setCarregando(true);
+
+        // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
+        const CriadoEm = new Date();
+        const novaData = new Date(ConverteData(inputValue));
+        api
+          .post('/api/criarPlanejamentoEvento', {
+            Data: novaData,
+            Evento: nomeEvento,
+            Local: valueAnfitriao,
+            Objetivo: objetivo.label,
+            Descricao: observacoes,
+            Mes,
+            Ano,
+            id: idEvento,
+            Horario: horaSalva,
+            Celula: Number(perfilUser.Celula),
+            Distrito: Number(perfilUser.Distrito),
+            CriadoEm,
+          })
+          .then((response) => {
+            if (response) {
+              // enviarPontuacao();
+
+              setCarregando(false);
+              setOpenPlan(false);
+              setOpenShowPlan(false);
+              zerarValues();
+              mutate(url1);
+            }
+          })
+          .catch(() => {
+            toast.error('Erro ao atualizar Dados !', {
+              position: toast.POSITION.TOP_CENTER,
+            });
 
             setCarregando(false);
-            zerarValues();
-            mutate(url1);
-          }
-        })
-        .catch(() => {
-          toast.error('Erro ao atualizar Dados !', {
+          });
+      } else {
+        if (!observacoes) {
+          toast.error('Descreta algo sobre o Evento !', {
             position: toast.POSITION.TOP_CENTER,
           });
+          observacoesRef.current.focus();
+        }
 
-          setCarregando(false);
-        });
-    } else {
-      if (!observacoes) {
-        toast.error('Descreta algo sobre o Evento !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        observacoesRef.current.focus();
-      }
+        if (objetivo.label === 'Qual o objetivo do evento?') {
+          toast.error('Escolha o Objetivo do Evento !', {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          objetivoRef.current.focus();
+        }
+        if (!valueAnfitriao.length) {
+          toast.error('Escolha o local do Evento !', {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          anfitriaoRef.current.focus();
+        }
 
-      if (objetivo.label === 'Qual o objetivo do evento?') {
-        toast.error('Escolha o Objetivo do Evento !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        objetivoRef.current.focus();
+        if (!nomeEvento.length) {
+          toast.error('Descreva o Nome do Evento !', {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          nomeEventoRef.current.focus();
+        }
+        if (String(horario.$H).length < 2 || String(horario.$m).length < 2) {
+          toast.error('Didige o Horário do Evento !', {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          horarioRef.current.focus();
+        }
       }
-      if (!valueAnfitriao.length) {
-        toast.error('Escolha o local do Evento !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        anfitriaoRef.current.focus();
-      }
-
-      if (!nomeEvento.length) {
-        toast.error('Descreva o Nome do Evento !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        nomeEventoRef.current.focus();
-      }
-      if (horario.length < 5) {
-        toast.error('Didige o Horário do Evento !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        horarioRef.current.focus();
-      }
+    else {
+      toast.error('Didige o Horário do Evento !', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      horarioRef.current.focus();
     }
   };
+
+  const handleDeletar = () => {
+    setCarregando(true);
+    setOpenPergunta(false);
+    api
+      .post('/api/deletarPlanejamentoEvento', {
+        id: idEvento,
+      })
+      .then((response) => {
+        if (response) {
+          // enviarPontuacao();
+          console.log(response);
+          mutate(url1);
+          setOpenPlan(false);
+          setOpenShowPlan(false);
+          zerarValues();
+          setCarregando(false);
+        }
+      })
+      .catch(() => {
+        toast.error('Erro ao atualizar Dados !', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+
+        setCarregando(false);
+      });
+  };
+
+  const pergunta = (
+    <Box
+      width="80vw"
+      height={200}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box>
+        <Box fontFamily="Fugaz One" fontSize="16px" textAlign="center">
+          QUER REALMENTE DELETAR?{' '}
+        </Box>
+        <Box display="flex" mt={2}>
+          <Box ml={1} width="45%">
+            <Button
+              style={{
+                background: 'red',
+                color: 'white',
+                fontFamily: 'arial black',
+                borderRadius: 15,
+                width: '100%',
+              }}
+              component="a"
+              variant="contained"
+              onClick={() => {
+                setOpenPergunta(false);
+              }}
+            >
+              NÃO
+            </Button>
+          </Box>
+
+          <Box ml={1} width="45%">
+            <Button
+              style={{
+                background: 'green',
+                color: 'white',
+                fontFamily: 'arial black',
+                borderRadius: 15,
+                width: '100%',
+              }}
+              component="a"
+              variant="contained"
+              onClick={handleDeletar}
+            >
+              SIM
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+
   const body = (
     <Box
       display="flex"
@@ -455,36 +569,31 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                           </Typography>
                         </Box>
                         <Box className={classes.novoBox} mt={-2}>
-                          <TextField
-                            className={classes.tf_m}
-                            inputProps={{
-                              style: {
-                                textAlign: 'center',
-                                height: 28,
-                                borderRadius: 5,
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Horario"
-                            // label="Matricula"
-                            type="tel"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={horarioMask(
-                              horario.replace(/(?<=^.{2})/, ':'),
-                            )}
-                            variant="standard"
-                            placeholder="hh:mm"
-                            onChange={(e) => {
-                              setHorario(e.target.value);
-                            }}
-                            onFocus={(e) => {
-                              setHorario(e.target.value);
-                            }}
-                            onKeyDown={handleEnter}
-                            inputRef={horarioRef}
-                          />
+                          <Paper style={{ background: '#fafafa', height: 40 }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DesktopTimePicker
+                                ampm={false}
+                                inputRef={horarioRef}
+                                value={horario}
+                                variant="inline"
+                                onChange={(newValue) => {
+                                  setHorario(newValue);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    style={{
+                                      marginLeft: 10,
+                                      marginRight: 10,
+                                      marginTop: 10,
+                                      height: 30,
+                                      background: '#fafafa',
+                                    }}
+                                  />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          </Paper>
                         </Box>
                       </Grid>
                       <Grid item xs={12} md={12}>
@@ -656,7 +765,6 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                           justifyContent="center"
                         >
                           <TextareaAutosize
-                            maxRows={4}
                             value={observacoes}
                             ref={observacoesRef}
                             aria-label="maximum height"
@@ -669,9 +777,11 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                               marginTop: -5,
                               textAlign: 'center',
                               width: '98%',
-                              height: 80,
+                              // height: 80,
                               borderRadius: 15,
                               border: '1px solid #000',
+                              resize: 'vertical',
+                              overflow: 'auto',
                             }}
                           />
                         </Box>
@@ -873,36 +983,31 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                           </Typography>
                         </Box>
                         <Box className={classes.novoBox} mt={-2}>
-                          <TextField
-                            className={classes.tf_m}
-                            inputProps={{
-                              style: {
-                                textAlign: 'center',
-                                height: 28,
-                                borderRadius: 5,
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Horario"
-                            // label="Matricula"
-                            type="tel"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={horarioMask(
-                              horario.replace(/(?<=^.{2})/, ':'),
-                            )}
-                            variant="standard"
-                            placeholder="hh:mm"
-                            onChange={(e) => {
-                              setHorario(e.target.value);
-                            }}
-                            onFocus={(e) => {
-                              setHorario(e.target.value);
-                            }}
-                            onKeyDown={handleEnter}
-                            inputRef={horarioRef}
-                          />
+                          <Paper style={{ background: '#fafafa', height: 40 }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DesktopTimePicker
+                                ampm={false}
+                                variant="inline"
+                                value={horario}
+                                inputRef={horarioRef}
+                                onChange={(newValue) => {
+                                  setHorario(newValue);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    style={{
+                                      marginLeft: 10,
+                                      marginRight: 10,
+                                      marginTop: 10,
+                                      height: 30,
+                                      background: '#fafafa',
+                                    }}
+                                  />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          </Paper>
                         </Box>
                       </Grid>
                       <Grid item xs={12} md={12}>
@@ -1090,6 +1195,8 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                               height: 80,
                               borderRadius: 15,
                               border: '1px solid #000',
+                              resize: 'vertical',
+                              overflow: 'auto',
                             }}
                           />
                         </Box>
@@ -1106,11 +1213,11 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
               justifyContent="center"
               alignItems="center"
             >
-              <Box width="43%" mr={1} mt={0}>
+              <Box width="25%" mr={1} mt={0}>
                 <Button
                   style={{
                     background: '#ff9e80',
-                    color: '#780810',
+                    color: 'white',
                     fontFamily: 'arial black',
                     borderRadius: 15,
                     width: '100%',
@@ -1125,11 +1232,29 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
                   VOLTAR
                 </Button>
               </Box>
-              <Box ml={1} width="43%">
+              <Box ml={1} width="25%">
                 <Button
                   style={{
-                    background: '#69f0ae',
-                    color: '#780810',
+                    background: 'red',
+                    color: 'white',
+                    fontFamily: 'arial black',
+                    borderRadius: 15,
+                    width: '100%',
+                  }}
+                  component="a"
+                  variant="contained"
+                  onClick={() => {
+                    setOpenPergunta(true);
+                  }}
+                >
+                  DELETAR
+                </Button>
+              </Box>
+              <Box ml={1} width="34%">
+                <Button
+                  style={{
+                    background: 'green',
+                    color: 'white',
                     fontFamily: 'arial black',
                     borderRadius: 15,
                     width: '100%',
@@ -1149,18 +1274,25 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
   );
 
   const atualizaDados = (dadosRecebidos) => {
-    const atualObjetivo = {
-      label: dadosRecebidos.Objetivo,
-      value: 0,
-    };
-    setInputValue(ConverteData2(dadosRecebidos.Data));
-    setHorario(dadosRecebidos.Horario);
-    setNomeEvento(dadosRecebidos.Evento);
-    setValueAnfitriao(dadosRecebidos.Local);
-    setObjetivo(atualObjetivo);
-    setObservacoes(dadosRecebidos.Descricao);
+    if (dadosRecebidos) {
+      const atualObjetivo = {
+        label: dadosRecebidos.Objetivo,
+        value: 0,
+      };
+      dayjs(new Date(`${horarioAtual} 19:30:00`));
+      const horarioNovo = dayjs(
+        new Date(`${horarioAtual} ${dadosRecebidos.Horario}:00`),
+      );
 
-    setOpenShowPlan(true);
+      setInputValue(ConverteData2(dadosRecebidos.Data));
+      setHorario(horarioNovo);
+      setNomeEvento(dadosRecebidos.Evento);
+      setValueAnfitriao(dadosRecebidos.Local);
+      setObjetivo(atualObjetivo);
+      setObservacoes(dadosRecebidos.Descricao);
+      setIdEvento(dadosRecebidos.id);
+      setOpenShowPlan(true);
+    }
   };
   return (
     <Box height="100%" fontSize="13px">
@@ -1678,6 +1810,10 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
       </Dialog>
       <Dialog fullScreen open={openShowPlan} TransitionComponent={Transition}>
         {bodyShowPlan}
+      </Dialog>
+
+      <Dialog open={openPergunta} TransitionComponent={Transition}>
+        {pergunta}
       </Dialog>
       <ToastContainer
         position="top-center"

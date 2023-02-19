@@ -7,11 +7,10 @@ import { useSession } from 'next-auth/client';
 function Planejar({ rolMembros, lideranca }) {
   const router = useRouter();
   const perfilUser = router.query;
-
+  const [session] = useSession();
   let mudaDados = 'sai';
   if (perfilUser.id) mudaDados = 'entra';
   const [perfilUserF, setPerfilUserF] = React.useState();
-  const [session] = useSession();
 
   React.useEffect(() => {
     if (mudaDados === 'entra') {
@@ -24,9 +23,9 @@ function Planejar({ rolMembros, lideranca }) {
           pathname: '/',
         });
       }
+      // resultado = result.id;
       setPerfilUserF(result);
     }
-    // resultado = result.id;
   }, []);
 
   if (typeof window !== 'undefined') {
@@ -49,9 +48,17 @@ function Planejar({ rolMembros, lideranca }) {
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
-  const lideranca = await prisma.lideranca.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const lideranca = await prisma.lideranca
+    .findMany({
+      orderBy: [
+        {
+          Celula: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   const rolMembros = await prisma.membros
     .findMany({
       where: {

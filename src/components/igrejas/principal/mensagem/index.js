@@ -99,9 +99,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbIgreja({ title, mensagem }) {
+function IdpbCastelo({ title, mensagem, perfilUser }) {
   const classes = useStyles();
-
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -188,11 +187,11 @@ function IdpbIgreja({ title, mensagem }) {
         <main>
           <div className={classes.drawerHeader} />
           {/* {children} */}
-          <Mensagem mensagem={mensagem} />
+          <Mensagem mensagem={mensagem} perfilUser={perfilUser} />
         </main>
       </div>
     </div>
   );
 }
 
-export default IdpbIgreja;
+export default IdpbCastelo;

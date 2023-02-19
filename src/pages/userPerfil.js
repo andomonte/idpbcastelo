@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 
 function userPerfil({ celulas, rolMembros, lideranca }) {
   const [session] = useSession();
-
+  console.log('userPerfil');
   //  const [open, setOpen] = React.useState(false);
   // const [perfilUser, setPerfilUser] = React.useState('');
   let secao = [{ email: '' }];

@@ -8,13 +8,15 @@ const Cores = createTheme({
   principal2: '#B55E5E',
   secundaria: '#fafafa',
   tercenaria: '#3f51b5',
-  button1: '#4a148c',
-  button2: '#2e7d32',
   texto1: '#90a4ae',
   texto2: '#ffff8d',
   iconeOn: '#ffff8d',
   iconeOff: '#eeee',
-  logo: 'images/logo1.png',
+  button1: '#1b5e20',
+  button2: '#e65100',
+
+  logo: 'images/castelo/logo.png',
+  logo2: 'images/castelo/logo2.png',
   palette: {
     primary: {
       main: '#304ffe', // '#ff3d00',
@@ -23,7 +25,7 @@ const Cores = createTheme({
       main: '#000000',
     },
     danger: {
-      main: '#ff3d0A',
+      main: '#ff3d00',
     },
     default: {
       main: '#1a237e',

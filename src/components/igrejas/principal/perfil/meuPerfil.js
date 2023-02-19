@@ -39,15 +39,9 @@ function getDados(email, nome) {
 
   return data;
 } */
-const nomeDistrito = [
-  'Castelo',
-  'União da Vitória',
-  'Campos Sales',
-  'Bairro da Paz',
-  'Calado',
-];
 
 function meuPerfil({ secao, perfilUser }) {
+  console.log('perfil', perfilUser);
   const urlImagem = perfilUser ? perfilUser.foto : '';
   const [upLoadFile, setUpLoadFile] = React.useState('');
   const [imageSize, setImageSize] = React.useState('');
@@ -55,14 +49,14 @@ function meuPerfil({ secao, perfilUser }) {
 
   const [fileImage, setFileImage] = React.useState(urlImagem);
   const [openCrop, setOpenCrop] = React.useState('inicio');
-  const [fotoDeletar, setFotoDeletar] = React.useState(urlImagem);
+  // const [fotoDeletar, setFotoDeletar] = React.useState(urlImagem);
   const fetcher = (url) => axios.get(url).then((res) => res.data);
   const url = `/api/consultaRolMembros2/${perfilUser.RolMembro}`;
   const { data: inscritos, error2 } = useSWR(url, fetcher);
   React.useEffect(async () => {
     if (inscritos && inscritos.length) {
       setFileImage(inscritos[0].foto);
-      setFotoDeletar(inscritos[0].foto);
+      //   setFotoDeletar(inscritos[0].foto);
     }
     if (error2) return <div>An error occured.</div>;
     if (!inscritos) return <div>Loading ...</div>;
@@ -98,12 +92,12 @@ function meuPerfil({ secao, perfilUser }) {
 
         dataFile2.append('file', file, nomeFoto2);
 
-        const fotoDeletarFim = fotoDeletar.substr(
+        /*  const fotoDeletarFim = fotoDeletar.substr(
           fotoDeletar.indexOf(perfilUser.RolMembro),
           fotoDeletar.length,
-        );
+        ); */
 
-        api
+        /*  api
           .post('/api/delFoto', { dados: fotoDeletarFim })
           .then((responses) => {
             if (responses) {
@@ -112,29 +106,30 @@ function meuPerfil({ secao, perfilUser }) {
           })
           .catch((error) => {
             console.log(error);
-          });
+          }); */
 
         api
-          .post('/api/fotos', dataFile2)
+          .post('/api/fotos', dataFile)
           .then((responses) => {
             if (responses) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://arquivocastelo.s3.amazonaws.com/${nomeFoto2}`,
+                  fileImage: `https://arquivoCastelo.s3.amazonaws.com/membros/${nomeFoto}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
                   if (response2) {
                     const valPerfil = {
                       ...perfilUser,
-                      foto: `https://arquivocastelo.s3.amazonaws.com/${nomeFoto2}`,
+                      foto: `https://arquivoCastelo.s3.amazonaws.com/membros/${nomeFoto}`,
                     };
 
                     sessionStorage.setItem(
                       'perfilUser',
                       JSON.stringify(valPerfil),
                     );
+                    window.location.reload(true);
 
                     // console.log(response2);
                   }
@@ -154,7 +149,7 @@ function meuPerfil({ secao, perfilUser }) {
       console.log(err);
     }
   };
-  console.log(perfilUser);
+
   const atualizarImagem = async () => {
     if (upLoadFile) {
       await process(fileImage);
@@ -277,13 +272,13 @@ function meuPerfil({ secao, perfilUser }) {
                           <Avatar
                             style={{ width: 150, height: 150 }}
                             alt="nome"
+                            ord="123456789?"
                             src={
                               fileImage !== '' && fileImage !== null
                                 ? fileImage
                                 : null
                             }
                           >
-                            {console.log('caminho imagem', fileImage)}
                             {fileImage === '' || fileImage === null ? (
                               <IconButton
                                 style={{ color: 'black' }}
@@ -426,7 +421,7 @@ function meuPerfil({ secao, perfilUser }) {
                               fontSize: '12px',
                             }}
                           >
-                            {nomeDistrito[perfilUser.Distrito - 1]}
+                            {perfilUser.nomeDistrito}
                           </Box>
                         </Box>
                       </Box>

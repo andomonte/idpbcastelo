@@ -4,7 +4,6 @@ import Stack from '@mui/material/Stack';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
 import dataMask from 'src/components/mascaras/datas';
-import horarioMask from 'src/components/mascaras/horario';
 import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
 import Select from 'react-select';
@@ -25,6 +24,9 @@ import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import Typography from '@mui/material/Typography';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -264,11 +266,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   //--------------------------------------------------------------------------
 
   const fases = [
-    { label: 'Integração', value: 1 },
+    { label: 'Integrar na Visão', value: 1 },
     { label: 'Comunhão', value: 2 },
     { label: 'Edificação', value: 3 },
-    { label: 'Evangelismo/Consolidação', value: 4 },
-    { label: 'Multiplicação', value: 5 },
+    { label: 'Evangelismo', value: 4 },
+    { label: 'multiplicacao', value: 5 },
   ];
   const valorInicial = { label: 'Escolha um Responsável', value: 0 };
 
@@ -287,7 +289,11 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
   const [multiplicacao, setMultiplicacao] = React.useState('');
 
   const [objetivo, setObjetivo] = React.useState(valorInicialOjetivo);
-  const [horario, setHorario] = React.useState('');
+  const horarioAtual = moment(new Date()).format('MM/DD/YYYY');
+  const [horario, setHorario] = React.useState(
+    dayjs(new Date(`${horarioAtual} 19:30:00`)),
+  );
+
   const multiplicacaoRef = React.useRef();
   const anfitriaoRef = React.useRef();
   const horarioRef = React.useRef();
@@ -318,7 +324,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     setLanche('');
     setObjetivo(valorInicialOjetivo);
     setMultiplicacao('');
-    setHorario('');
+    setHorario(dayjs(new Date(`${horarioAtual} 19:30:00`)));
     setValueAnfitriao('');
   };
 
@@ -343,7 +349,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
 
-      if (formId === 'Multiplicação') horarioRef.current.focus();
+      if (formId === 'Multiplicacao') horarioRef.current.focus();
       if (formId === 'Horario') {
         if (horario.length < 5)
           toast.error('Horário incompleto !', {
@@ -400,52 +406,58 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     }
   }, []);
 
-  const url = `/api/consultaPlanejamentoCelula/${semana}`;
+  const url = `/api/consultaPlanejamentoCelulas/${semana}`;
   const { data: members, error: errorMembers } = useSWR(url, fetcher);
 
   const carregaResponsaveis = (relatorio) => {
-    const newValues = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Encontro,
-    );
-    setEncontro(relatorio[0].Encontro);
-    setValues(newValues[0]);
+    if (relatorio) {
+      const newValues = nomesCelulaParcial.filter(
+        (val) => val.label === relatorio[0].Encontro,
+      );
+      setEncontro(relatorio[0].Encontro);
+      setValues(newValues[0]);
 
-    const newValues2 = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Exaltacao,
-    );
+      const newValues2 = nomesCelulaParcial.filter(
+        (val) => val.label === relatorio[0].Exaltacao,
+      );
 
-    setExaltacao(relatorio[0].Exaltacao);
-    setValues2(newValues2[0]);
-    setMultiplicacao(relatorio[0].Multiplicacao);
-    setHorario(relatorio[0].Horario);
-    const newAnfitriao = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Anfitriao,
-    );
+      setExaltacao(relatorio[0].Exaltacao);
+      setValues2(newValues2[0]);
+      setMultiplicacao(relatorio[0].Multiplicacao);
+      const horarioNovo = dayjs(
+        new Date(`${horarioAtual} ${relatorio[0].Horario}:00`),
+      );
 
-    if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0].label);
+      setHorario(horarioNovo);
 
-    const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
-    if (newFase.length) setObjetivo(newFase[0]);
+      const newAnfitriao = nomesCelulaParcial.filter(
+        (val) => val.label === relatorio[0].Anfitriao,
+      );
 
-    const newValues3 = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Edificacao,
-    );
-    setEdificacao(relatorio[0].Edificacao);
-    setValues3(newValues3[0]);
+      if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0].label);
 
-    const newValues4 = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Evangelismo,
-    );
-    setEvangelismo(relatorio[0].Evangelismo);
-    setValues4(newValues4[0]);
+      const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
+      if (newFase.length) setObjetivo(newFase[0]);
 
-    const newValues5 = nomesCelulaParcial.filter(
-      (val) => val.label === relatorio[0].Lanche,
-    );
-    setLanche(relatorio[0].Lanche);
-    setValues5(newValues5[0]);
+      const newValues3 = nomesCelulaParcial.filter(
+        (val) => val.label === relatorio[0].Edificacao,
+      );
+      setEdificacao(relatorio[0].Edificacao);
+      setValues3(newValues3[0]);
+
+      const newValues4 = nomesCelulaParcial.filter(
+        (val) => val.label === relatorio[0].Evangelismo,
+      );
+      setEvangelismo(relatorio[0].Evangelismo);
+      setValues4(newValues4[0]);
+
+      const newValues5 = nomesCelulaParcial.filter(
+        (val) => val.label === relatorio[0].Lanche,
+      );
+      setLanche(relatorio[0].Lanche);
+      setValues5(newValues5[0]);
+    }
   };
-
   const ajusteRelatorio = () => {
     setTela(1);
     setCarregando(false);
@@ -465,7 +477,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
         relExiste = 'sim';
         const dataAgora = new Date();
         const semanaAgora = semanaExata(dataAgora);
-        if (semanaAgora - semana < 2) setPodeEditar(true);
+        if (semanaAgora - semana < 3) setPodeEditar(true);
         else setPodeEditar(false);
 
         setExisteRelatorio(true); // avisa que tem relatório
@@ -532,13 +544,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
     objetivo,
     valueAnfitriao,
     multiplicacao,
-    horario,
   ]);
-
+  console.log('semana', semana);
   const handleSalvar = () => {
     if (etapas === 'completo') {
       setCarregando(true);
-
+      const horaSalva = `${horario.$H}:${horario.$m}`;
       // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
       const novaData = new Date(ConverteData(inputValue));
       api
@@ -557,12 +568,12 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
           Fase: objetivo.label,
           Anfitriao: valueAnfitriao,
           Multiplicacao: multiplicacao,
-          Horario: horario,
+          Horario: horaSalva,
         })
         .then((response) => {
           if (response) {
             // enviarPontuacao();
-
+            console.log('ola', response);
             setCarregando(false);
             mutate(url);
           }
@@ -925,37 +936,39 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                       </Typography>
                                     </Box>
                                     <Box width="100%" ml={1.4} mt={0}>
-                                      <Box width="99%">
-                                        <TextField
-                                          className={classes.tf_m}
-                                          inputProps={{
-                                            style: {
-                                              textAlign: 'center',
-
-                                              WebkitBoxShadow:
-                                                '0 0 0 1000px #fafafa  inset',
-                                            },
+                                      <Box width="90%">
+                                        <Paper
+                                          style={{
+                                            background: '#fafafa',
+                                            height: 32,
                                           }}
-                                          id="Horario"
-                                          // label="Matricula"
-                                          type="tel"
-                                          InputLabelProps={{
-                                            shrink: true,
-                                          }}
-                                          value={horarioMask(
-                                            horario.replace(/(?<=^.{2})/, ':'),
-                                          )}
-                                          variant="standard"
-                                          placeholder="hh:mm"
-                                          onChange={(e) => {
-                                            setHorario(e.target.value);
-                                          }}
-                                          onFocus={(e) => {
-                                            setHorario(e.target.value);
-                                          }}
-                                          onKeyDown={handleEnter}
-                                          inputRef={horarioRef}
-                                        />
+                                        >
+                                          <LocalizationProvider
+                                            dateAdapter={AdapterDayjs}
+                                          >
+                                            <DesktopTimePicker
+                                              ampm={false}
+                                              inputRef={horarioRef}
+                                              value={horario}
+                                              variant="inline"
+                                              onChange={(newValue) => {
+                                                setHorario(newValue);
+                                              }}
+                                              renderInput={(params) => (
+                                                <TextField
+                                                  {...params}
+                                                  style={{
+                                                    marginLeft: 10,
+                                                    marginRight: 10,
+                                                    marginTop: 0,
+                                                    height: 30,
+                                                    background: '#fafafa',
+                                                  }}
+                                                />
+                                              )}
+                                            />
+                                          </LocalizationProvider>
+                                        </Paper>
                                       </Box>
                                     </Box>
                                   </Grid>
@@ -1130,7 +1143,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        Oração
+                                        Edificação
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
@@ -1156,7 +1169,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        Compartilhamento
+                                        Compartilhando a Visão
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
@@ -1318,7 +1331,9 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                       }}
                                     >
                                       {multiplicacao.length > 9 &&
-                                      horario.length >= 5 &&
+                                      horario &&
+                                      String(horario.$H).length === 2 &&
+                                      String(horario.$m).length === 2 &&
                                       valueAnfitriao.length > 2 &&
                                       objetivo.label !==
                                         'Qual a fase atual da Célula?' ? (
