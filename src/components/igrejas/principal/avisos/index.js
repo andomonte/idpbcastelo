@@ -11,7 +11,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 
-import Avisos from './avisos';
+import Avisos from './avisosSemana';
 
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
