@@ -319,7 +319,7 @@ function RelatorioCelebracao({
           const dataAgora = new Date();
           const semanaAgora = semanaExata(dataAgora);
 
-          if (semanaAgora - semana < 3) setPodeEditar(true);
+          if (semanaAgora - semana < 8) setPodeEditar(true);
           else setPodeEditar(false);
           setExisteRelatorio(true); // avisa que tem relatório
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
