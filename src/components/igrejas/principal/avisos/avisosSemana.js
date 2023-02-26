@@ -57,7 +57,6 @@ function nextSunday(date) {
 }
 
 function Mensagem({ dadosAvisos, perfilUser }) {
-  console.log('GERAL');
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
   // const d = new Date();
@@ -93,7 +92,6 @@ function Mensagem({ dadosAvisos, perfilUser }) {
         moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
       ) <= dataFinal,
   );
-  console.log('GERAL', niverGeral);
   const handleIncSemana = () => {
     const contSemanaAtual = contSemana - 7;
 

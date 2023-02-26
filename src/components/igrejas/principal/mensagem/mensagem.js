@@ -1,12 +1,14 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 
+import { BsSearch } from 'react-icons/bs';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
+import Autocomplete from '@mui/material/Autocomplete';
 
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
@@ -59,25 +61,28 @@ function nextSunday(date) {
 function Mensagem({ mensagem, perfilUser }) {
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
+
+  const nomeRef = React.useRef();
   // const d = new Date();
   // const anoAtual = Number(d.getFullYear());
+  const valorInicialTitulo = {
+    label: 'Título da Mensagem',
+    value: 0,
+  };
+  const [titulo, setTitulo] = React.useState(valorInicialTitulo);
+  const [inputValor, setInputValor] = React.useState('');
+
+  const [openPesquisa, setOpenPesquisa] = React.useState(false);
   const [contFonte, setContFonte] = React.useState(16);
   const [contSemana, setContSemana] = React.useState(mensagem.length);
-  // const [contSemanaFix] = React.useState(mensagem.length);
-  // const [contAno, setContAno] = React.useState(anoAtual);
-
-  //= ========================================================================
-  // data de inicio
-  //= ========================================================================
-  //  const [contSemana, setContSemana] = React.useState(0);
   const semanaAtual2 = getPreviousMonday2(contSemana + 7);
   const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
     'DD/MM/YYYY 00:00:00',
   );
   const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
-
   const dataInicial = converteData(semanaAtual);
   const dataFinal = converteData(semanaSegunte);
+  const listaNomes = mensagem.map((nomes) => nomes.titulo);
 
   const niverGeralValido = mensagem.filter(
     (results) => results.Data !== null && results.Data.length > 8,
@@ -207,6 +212,75 @@ function Mensagem({ mensagem, perfilUser }) {
     }
   }, [contSemana]);
 
+  React.useEffect(() => {
+    const dataMens2 = mensagem.filter((val) => val.titulo === titulo);
+
+    setBoletim(dataMens2[0]);
+
+    const diaSemana = [
+      'Domingo',
+      'Segunda',
+      'Terça',
+      'Quarta',
+      'Quinta',
+      'Sexta',
+      'Sábado',
+    ];
+    // console.log('diaMensagem', niverGeral.sort(compare));
+
+    /* if (dataMens[contSemana].length) {
+      const diaMensagem = new Date(dataMens[contSemana].Data);
+      console.log('oi dia', diaMensagem);
+      diaMensagem.setHours(diaMensagem.getHours() + 6);
+      console.log('diaMensagem', diaMensagem);
+      const diaSm = Number(diaMensagem.getDay());
+      const diaBr = Number(diaMensagem.getDate());
+      let mesBr = Number(diaMensagem.getMonth() + 1);
+      if (mesBr < 10) mesBr = `0${mesBr}`;
+      const anoBr = Number(diaMensagem.getFullYear());
+      const dataBrTemp = `${diaSemana[diaSm]}  ${diaBr}/${mesBr}/${anoBr}`; 
+      
+      setDataBr(dataBrTemp);
+    } */
+    if (dataMens2.length) {
+      const novaData1 = dataMens2[0].Data; // nextSunday(semanaAtual2);
+
+      const ano = novaData1.substring(0, 4);
+      const mes = novaData1.substring(5, 7);
+      const dia = novaData1.substring(8, 10);
+      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+
+      const showData = ` ${
+        diaSemana[diaSemana2.getDay()]
+      } ${dia}/${mes}/${ano}`;
+
+      setDataBr(showData);
+    } else {
+      const novaData11 = nextSunday(semanaAtual2);
+      const dia =
+        novaData11.getDate() > 9
+          ? novaData11.getDate()
+          : `0${novaData11.getDate()}`;
+      const mes =
+        novaData11.getMonth() + 1 > 9
+          ? novaData11.getMonth() + 1
+          : `0${novaData11.getMonth() + 1}`;
+      const ano = novaData11.getFullYear();
+      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+
+      const showData = ` ${
+        diaSemana[diaSemana2.getDay()]
+      } ${dia}/${mes}/${ano}`;
+
+      setDataBr(showData);
+    }
+  }, [titulo]);
+  const handleEnter = (event) => {
+    if (event.key.toLowerCase() === 'enter') {
+      // const form = event.target.id;
+      //  if (form === 'Nascimento') handleCheckDadosMembro();
+    }
+  };
   return (
     <Box
       display="flex"
@@ -245,8 +319,65 @@ function Mensagem({ mensagem, perfilUser }) {
           width="100%"
         >
           <Box
+            mt={2}
+            ml={2}
+            width="90%"
+            display="flex"
+            alignItems="start"
+            justifyContent="start"
+          >
+            <Box
+              onClick={() => {
+                setOpenPesquisa(!openPesquisa);
+                setTitulo('');
+              }}
+            >
+              <BsSearch size={25} color="white" />
+            </Box>
+            <Box ml={2} width="100%" display={openPesquisa ? 'flex' : 'none'}>
+              <Autocomplete
+                sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                  background: 'white',
+                }}
+                id="Nome"
+                freeSolo
+                value={titulo}
+                onChange={(_, newValue) => {
+                  setOpenPesquisa(false);
+                  if (inputValor && newValue) setTitulo(newValue);
+                  else setTitulo('');
+                }}
+                onBlur={() => {
+                  if (inputValor.length > 0) {
+                    setTitulo(inputValor);
+                  }
+                }}
+                selectOnFocus
+                inputValue={inputValor}
+                onInputChange={(_, newInputValue) => {
+                  if (newInputValue !== '')
+                    setInputValor(newInputValue.toUpperCase());
+                  else setInputValor('');
+                }}
+                options={listaNomes}
+                renderInput={(params) => (
+                  <TextField
+                    autoComplete="off"
+                    inputRef={nomeRef}
+                    {...params}
+                    onKeyDown={handleEnter}
+                    placeholder="  Digite o titulo"
+                  />
+                )}
+              />
+            </Box>
+          </Box>
+
+          <Box
             width="99%"
-            mt={5}
+            mt={0}
             color="white"
             fontSize="25px"
             fontFamily="Fugaz One"
@@ -278,7 +409,6 @@ function Mensagem({ mensagem, perfilUser }) {
               </IconButton>
             </Box>
           </Box>
-
           <Box
             height="100%"
             mt={-1}

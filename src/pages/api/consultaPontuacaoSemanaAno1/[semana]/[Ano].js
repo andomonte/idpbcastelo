@@ -3,15 +3,28 @@ import prisma from 'src/lib/prisma';
 export default async function handle(req, res) {
   // id = req;
   const {
-    query: { semana },
+    query: { semana, Ano },
   } = req;
+
   // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
+
   try {
-    const posts = await prisma.relatorioCelulas
+    const posts = await prisma.pontuacao
       .findMany({
         where: {
-          Semana: Number(semana),
+          OR: [
+            {
+              Semana: Number(semana),
+            },
+          ],
+          AND: {
+            OR: [
+              {
+                Ano: Number(Ano),
+              },
+            ],
+          },
         },
       })
       .finally(async () => {
@@ -21,8 +34,8 @@ export default async function handle(req, res) {
     res.statuCode = 200;
     res.setHeader('Content-Type', 'aplication/json');
     res.json(posts);
-  } catch (err) {
-    console.log('errros', err);
-    res.json(err);
-  } // Get route's catch handler, if it exists
+  } catch (errors) {
+    console.log(errors);
+    res.json('erro');
+  }
 }

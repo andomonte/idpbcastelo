@@ -1,20 +1,19 @@
-import { Box, Grid, Paper, Button } from '@material-ui/core';
+import { Box, Grid, Paper, Button, TextField } from '@material-ui/core';
 import React from 'react';
 import useSWR, { mutate } from 'swr';
-import ConverteData from 'src/utils/dataMMDDAAAA';
-import ConverteData2 from 'src/utils/convData2';
 // import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
-import Dialog from '@mui/material/Dialog';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
+import Erros from 'src/utils/erros';
+import dataMask from 'src/components/mascaras/datas';
+import celularMask from 'src/components/mascaras/celular';
 import moment from 'moment';
-
+import { TiUserAdd } from 'react-icons/ti';
 import { IoIosSave, IoIosAddCircle, IoMdRemoveCircle } from 'react-icons/io';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
@@ -23,19 +22,52 @@ import axios from 'axios';
 import PegaIdade from 'src/utils/getIdade';
 import { Oval } from 'react-loading-icons';
 import Espera from 'src/utils/espera';
-import Erros from 'src/utils/erros';
-import Emojis from 'src/components/icones/emojis';
-import Slide from '@mui/material/Slide';
-import TabDiscipulado from './abas/tabDiscipulado';
+import ConverteData from 'src/utils/dataMMDDAAAA';
+import PegaData from 'src/utils/getDataQuarta';
+import ConverteData2 from 'src/utils/convData2';
+import FormatoData from 'src/utils/formatoData';
 
-const Transition = React.forwardRef((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
+import TabCelebracao from './tabCelebracao';
+import TabVisitantes from './tabVisitantes2';
+
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
 
 function createData(Nome, Presenca) {
   return { Nome, Presenca };
+}
+
+function createCelebracao(
+  Celula,
+  Distrito,
+  Semana,
+  Data,
+  NomesMembros,
+  NomesVisitantes,
+  Adultos,
+  Criancas,
+  Visitantes,
+
+  Conversoes,
+  Observacoes,
+  CriadoPor,
+  CriadoEm,
+) {
+  return {
+    Celula,
+    Distrito,
+    Semana,
+    Data,
+    NomesMembros,
+    NomesVisitantes,
+    Adultos,
+    Criancas,
+    Visitantes,
+    Conversoes,
+    Observacoes,
+    CriadoPor,
+    CriadoEm,
+  };
 }
 function createRelCelula(Rol, Nome, Presenca) {
   return {
@@ -44,32 +76,11 @@ function createRelCelula(Rol, Nome, Presenca) {
     Presenca,
   };
 }
-
-function createEstatistico(
-  Celula,
-  Distrito,
-  Semana,
-  Data,
-  NomesMembros,
-  LeituraBiblica,
-  Observacoes,
-  CriadoPor,
-  CriadoEm,
-  Adultos,
-  Criancas,
-) {
+function createRelVisitantes(Rol, Nome, Presenca) {
   return {
-    Celula,
-    Distrito,
-    Semana,
-    Data,
-    NomesMembros,
-    LeituraBiblica,
-    Observacoes,
-    CriadoPor,
-    CriadoEm,
-    Adultos,
-    Criancas,
+    Rol,
+    Nome,
+    Presenca,
   };
 }
 
@@ -109,41 +120,74 @@ function createPontuacao(
   };
 }
 
-function RelatorioDiscipulado({
+function RelCelula({
   rolMembros,
   perfilUser,
-  dataEscolhida,
-  setDataEscolhida,
+  visitantes,
+  semanaEnviada,
+  anoEnviado,
+  dadosSem,
+  openPlanCelebracao,
+  setOpenPlan,
+  dataEnviada,
 }) {
-  //  const classes = useStyles();
-  // const router = useRouter();
-  const [openErro, setOpenErro] = React.useState(false);
-  const [progress, setProgress] = React.useState(5);
-  const [contBiblia, setContBiblia] = React.useState(0);
-  const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
-  const [inputValue, setInputValue] = React.useState(
-    moment(dataEscolhida).format('DD/MM/YYYY'),
-  );
-  const [observacoes, setObservacoes] = React.useState(0);
-
   const nomesCelulas = rolMembros.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
-  const dadosCelula = nomesCelulas.map((row) => createData(row.Nome, false));
-  const [checkRelatorio, setCheckRelatorio] = React.useState(false);
+  const dataEscolhida2 = PegaData(semanaEnviada, anoEnviado);
+  const dataFinal =
+    dataEnviada !== '-' ? FormatoData(dataEnviada) : dataEscolhida2;
 
-  // let enviarDia;
-  // let enviarData;
+  const [dataEscolhida, setDataEscolhida] = React.useState(dataFinal);
+  const [contagem, setContagem] = React.useState(false);
+  const [checkInicio, setCheckInicio] = React.useState('sim');
+  let visitantesCelula = visitantes.filter(
+    (val) =>
+      val.Celula === Number(perfilUser.Celula) &&
+      val.Distrito === Number(perfilUser.Distrito),
+  );
+  const [corData, setCorData] = React.useState('white');
+  // const timeElapsed2 = Date.now();
+
+  const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
+  const [inputValue, setInputValue] = React.useState(
+    moment(dataEscolhida).format('DD/MM/YYYY'),
+  );
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
+
+  const [contConversoes, setContConversoes] = React.useState(0);
+  const [contEventos, setContEventos] = React.useState(0);
+  const [contVisitas, setContVisitas] = React.useState(0);
+  const [observacoes, setObservacoes] = React.useState(0);
+  const [nomesVisitantes, setNomesVisitantes] = React.useState(
+    visitantesCelula || [],
+  );
+  const [dadosCelula] = React.useState(
+    dadosSem && dadosSem.id
+      ? JSON.parse(dadosSem.NomesMembros)
+      : nomesCelulas.map((row) => createData(row.Nome, false)),
+  );
+
+  const qtyPresIni = dadosCelula.filter((val) => val.Presenca === 'igreja');
+  const qtyPresLiveIni = dadosCelula.filter((val) => val.Presenca === 'live');
+
+  const [openErro, setOpenErro] = React.useState(false);
+
+  const [nomeVistante, setNomeVisitante] = React.useState('');
+  const [nomesVisitanteTab, setNomesVisitanteTab] = React.useState('');
+  const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
+  const [foneVisitante, setFoneVisitante] = React.useState('');
   const [open, setIsPickerOpen] = React.useState(false);
-  const [openPontuacao, setOpenPontuacao] = React.useState(false);
-  const [presentes, setPresentes] = React.useState(0);
-  const [rankCelula, setRankCelula] = React.useState([]);
-  const [rankGeral, setRankGeral] = React.useState(0);
+  const [qtyVisitante, setQtyVisitante] = React.useState(0);
+  const [presentes, setPresentes] = React.useState(qtyPresIni.length);
+  const [presentesLive, setPresentesLive] = React.useState(
+    qtyPresLiveIni.length,
+  );
+
   const [pontosAtual, setPontosAtual] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+
   const [relPresentes, setRelPresentes] = React.useState(dadosCelula);
   const [tela, setTela] = React.useState(0);
   const [carregando, setCarregando] = React.useState(false);
@@ -154,11 +198,9 @@ function RelatorioDiscipulado({
 
   const [adultos, setAdultos] = React.useState(0);
   const [criancas, setCriancas] = React.useState(0);
+  const [openVisitantes, setOpenVisitantes] = React.useState(false);
 
-  const [rank, setRank] = React.useState(0);
-  const anoAtual = dataAtual2.getFullYear();
-  const [AnoAtual, setAnoAtual] = React.useState(anoAtual);
-
+  const [AnoAtual, setAnoAtual] = React.useState(anoEnviado);
   //= ==============================================================
   const handleDateChange = (date, value) => {
     setInputValue(value);
@@ -179,10 +221,11 @@ function RelatorioDiscipulado({
   };
 
   //= ==========pegar semana apartir da data==============
-  const semanaExata = (dataEnviada) => {
-    const Ano = dataEnviada.getFullYear();
-    const Mes = dataEnviada.getMonth();
-    const Dia = dataEnviada.getDate();
+  const semanaExata = (dataEnviada2) => {
+    const Ano = dataEnviada2.getFullYear();
+
+    const Mes = dataEnviada2.getMonth();
+    const Dia = dataEnviada2.getDate();
     const firstSun = new Date(2021, 0, 1);
     const lastSun = new Date(Ano, Mes, Dia);
     while (firstSun.getDay() !== 2) {
@@ -203,149 +246,362 @@ function RelatorioDiscipulado({
   };
   //= =================================================================
   const [startShow, setStartShow] = React.useState(false);
-  const [semana, setSemana] = React.useState(0);
+  const [semana, setSemana] = React.useState(semanaEnviada);
   const [existeRelatorio, setExisteRelatorio] = React.useState('inicio');
   const [podeEditar, setPodeEditar] = React.useState(true);
+  const [deleteVis, setDeleteVis] = React.useState(false);
 
   React.useEffect(() => {
-    const timeElapsed = Date.now();
-    const dataAtual = new Date(timeElapsed);
-
-    if (dataAtual) {
-      setSemana(semanaExata(dataAtual));
+    if (semanaEnviada) {
+      setSemana(semanaEnviada);
+    }
+    if (nomesVisitantes.length) {
+      const nomesVisitantesParcial = nomesVisitantes.map((row) =>
+        createRelVisitantes(row.id, row.Nome, false),
+      );
+      setNomesVisitantes(nomesVisitantesParcial);
     }
   }, []);
 
   const handleIncConversoes = () => {
-    let contAtual = contBiblia;
+    let contAtual = contConversoes;
     if (podeEditar) contAtual += 1;
 
     if (contAtual > 999) contAtual = 0;
-    setContBiblia(contAtual);
+    setContConversoes(contAtual);
   };
   const handleDecConversoes = () => {
-    let contAtual = contBiblia;
+    let contAtual = contConversoes;
     if (podeEditar) contAtual -= 1;
 
     if (contAtual < 0) contAtual = 0;
-    setContBiblia(contAtual);
+    setContConversoes(contAtual);
   };
 
-  const url = `/api/consultaRelatorioDiscipulado/${semana}`;
+  const url = `/api/consultaRelatorioCelebracao/${semana}`;
   const { data: members, error: errorMembers } = useSWR(url, fetcher);
   const url2 = `/api/consultaPontuacao/${perfilUser.Distrito}/${perfilUser.Celula}`;
   const { data: pontos, error: errorPontos } = useSWR(url2, fetcher);
-  const url3 = `/api/consultaPontuacaoSemana/${semana}`;
-  const { data: PontosSemana, error: errorPontosSemana } = useSWR(
-    url3,
-    fetcher,
-  );
+
+  const url4 = `/api/consultaVisitantes`;
+  const { data: novoVisitante, error: errorVisitante } = useSWR(url4, fetcher);
 
   const ajusteRelatorio = () => {
-    if (tela === 0) {
-      const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
-      // const qtyVis = visitantes.filter((val) => val.Presenca === true);
-      setTela(0);
+    if (contagem) {
+      setTela(1);
       setCarregando(false);
-      setPresentes(qtyPres.length);
-
-      setContBiblia(0);
+      setQtyVisitante(0);
+      setContConversoes(0);
+      setContVisitas(0);
+      setContEventos(0);
       setRelPresentes(dadosCelula);
       setObservacoes('');
-      setCheckRelatorio(false);
-      setPodeEditar(true);
-      let relExiste = 'inicio';
-      if (members) relExiste = 'sem'; // setExisteRelatorio('sem');
 
-      setExisteRelatorio(relExiste);
+      setPodeEditar(true);
+      console.log('agora menbers', members);
+      if (members) setExisteRelatorio('sem');
+      else setExisteRelatorio('inicio');
+      // if (members) setExisteRelatorio('sem');
+      // else setExisteRelatorio('inicio');
+
       if (members && members.length > 0) {
         const relatorio = members.filter(
           (val) =>
             val.Celula === Number(perfilUser.Celula) &&
             val.Distrito === Number(perfilUser.Distrito) &&
-            val.Distrito === Number(perfilUser.Distrito),
+            String(val.Data.slice(0, 4)) === String(AnoAtual),
         );
-
         if (relatorio && relatorio.length) {
           const dataAgora = new Date();
-          const semanaAgora = semanaExata(dataAgora);
 
-          if (semanaAgora - semana < 8) setPodeEditar(true);
+          /*  if (semanaAgora - semana < 9) setPodeEditar(true);
+          else setPodeEditar(false); */
+          const date1 = moment(dataAgora);
+          const date2 = moment(selectedDate);
+          const diff = date2.diff(date1, 'seconds') + 3600;
+
+          if (diff > -5576889) {
+            setPodeEditar(true);
+          }
+          // 7 dia =-650637
           else setPodeEditar(false);
           setExisteRelatorio(true); // avisa que tem relatório
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
           const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
 
-          const qtyPresentes = nomesMembros.filter(
+          const nVisitantes = relatorio[0].NomesVisitantes;
+
+          const qtyPres = nomesMembros.filter(
+            (val) => val.Presenca === 'igreja',
+          );
+          const qtyPresLive = nomesMembros.filter(
+            (val) => val.Presenca === 'live',
+          );
+
+          const qtyVisitants = JSON.parse(nVisitantes).filter(
             (val) => val.Presenca === true,
           );
 
-          setPresentes(qtyPresentes.length);
-
-          setContBiblia(relatorio[0].LeituraBiblica);
-
+          setPresentes(qtyPres.length);
+          setPresentesLive(qtyPresLive.length);
+          setQtyVisitante(qtyVisitants.length);
+          setContConversoes(relatorio[0].Conversoes);
+          setContVisitas(relatorio[0].Visitas);
+          setContEventos(relatorio[0].PresentesEventos);
           setRelPresentes(nomesMembros);
-
           setObservacoes(relatorio[0].Observacoes);
+
+          setNomesVisitanteTab(nVisitantes);
           setStartShow(!startShow);
-          // setRelCelula(relatorio);
+
+          setContagem(false);
         } else {
-          setExisteRelatorio('sem'); // avisa que tem relatório
+          const qtyVisitanteNovo = visitantesCelula.filter(
+            (val) => val.Presenca === true,
+          );
+
+          setRelPresentes(
+            dadosCelula.sort((a, b) => {
+              if (a.Nome > b.Nome) return 1;
+              if (b.Nome > a.Nome) return -1;
+              return 0;
+            }),
+          );
+          setContagem(false);
+          setQtyVisitante(qtyVisitanteNovo.length);
+          setExisteRelatorio('sem');
           setStartShow(!startShow);
         }
       } else {
-        //
+        const qtyVisitanteNovo = visitantesCelula.filter(
+          (val) => val.Presenca === true,
+        );
+        setQtyVisitante(qtyVisitanteNovo.length);
+
         setStartShow(!startShow);
       }
+
       if (errorMembers) return <div>An error occured.</div>;
       if (!members) return <div>Loading ...</div>;
     }
     return 0;
   };
 
+  const ajusteRelatorio2 = () => {
+    if (dadosCelula) {
+      // const qtyVis = visitantes.filter((val) => val.Presenca === true);
+
+      setTela(1);
+      setCarregando(false);
+
+      setQtyVisitante(0);
+      setContConversoes(0);
+      setContVisitas(0);
+      setContEventos(0);
+      setRelPresentes(dadosCelula);
+      setObservacoes('');
+
+      setPodeEditar(true);
+      if (!dadosSem) setExisteRelatorio('sem');
+      else setExisteRelatorio('inicio');
+      // if (members) setExisteRelatorio('sem');
+      // else setExisteRelatorio('inicio');
+
+      if (dadosSem && dadosSem.id) {
+        const relatorio = [];
+        relatorio[0] = dadosSem;
+
+        if (relatorio && relatorio.length) {
+          const dataAgora = new Date();
+
+          const date1 = moment(dataAgora);
+          const date2 = moment(selectedDate);
+          const diff = date2.diff(date1, 'seconds') + 3600;
+
+          if (diff > -5576889) {
+            setPodeEditar(true);
+          }
+          // 7 dia =-650637
+          else {
+            setPodeEditar(false);
+          }
+
+          setExisteRelatorio(true); // avisa que tem relatório
+          // setCheckRelatorio(true); // avisa que tem relatório nessa data
+
+          const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
+
+          const nVisitantes = relatorio[0].NomesVisitantes;
+
+          const qtyPres = nomesMembros.filter(
+            (val) => val.Presenca === 'igreja',
+          );
+          const qtyPresLive = nomesMembros.filter(
+            (val) => val.Presenca === 'live',
+          );
+
+          const qtyVisitants = JSON.parse(nVisitantes).filter(
+            (val) => val.Presenca === true,
+          );
+
+          setPresentes(qtyPres.length);
+          setPresentesLive(qtyPresLive.length);
+          setQtyVisitante(qtyVisitants.length);
+          setContConversoes(relatorio[0].Conversoes);
+          setContVisitas(relatorio[0].Visitas);
+          setContEventos(relatorio[0].PresentesEventos);
+          setRelPresentes(nomesMembros);
+          setObservacoes(relatorio[0].Observacoes);
+
+          setNomesVisitanteTab(nVisitantes);
+          setStartShow(!startShow);
+          setTela(1);
+          setCheckInicio('não');
+        } else {
+          const qtyVisitanteNovo = visitantesCelula.filter(
+            (val) => val.Presenca === true,
+          );
+          setQtyVisitante(qtyVisitanteNovo.length);
+          setExisteRelatorio('sem');
+          setStartShow(!startShow);
+        }
+      } else {
+        const qtyVisitanteNovo = visitantesCelula.filter(
+          (val) => val.Presenca === true,
+        );
+        setQtyVisitante(qtyVisitanteNovo.length);
+
+        setStartShow(!startShow);
+      }
+    } else setContagem(true);
+    if (errorMembers) return <div>An error occured.</div>;
+    if (!members) return <div>Loading ...</div>;
+    return 0;
+  };
+
   React.useEffect(() => {
-    if (semana !== 0) {
-      ajusteRelatorio();
+    if (dadosSem && dadosSem.id) ajusteRelatorio2();
+    else {
+      setContagem(true);
     }
     return 0;
-  }, [semana]);
+  }, [openPlanCelebracao, dadosSem, semanaEnviada]);
+
   React.useEffect(() => {
-    ajusteRelatorio();
-
+    mutate(url);
     return 0;
-  }, [members]);
+  }, [existeRelatorio]);
 
-  /* React.useEffect(() => {
-    setRelPresentes(
-      relPresentes.sort((a, b) => {
-        if (a.Nome > b.Nome) return 1;
-        if (b.Nome > a.Nome) return -1;
-        return 0;
-      }),
-    );
-  }, [relPresentes]); */
+  React.useEffect(() => {
+    if (deleteVis) {
+      mutate(url4);
+      setDeleteVis(false);
+    }
+    return 0;
+  }, [deleteVis]);
+
+  React.useEffect(() => {
+    if (errorVisitante) return <div>An error occured.</div>;
+    if (!novoVisitante) return <div>Loading ...</div>;
+
+    if (novoVisitante) {
+      // se teve relatório nomesVisitantes tras a lista
+
+      const visitantesCelula2 = novoVisitante.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito),
+      );
+      // filtrou apenas os visitantes da célula
+
+      let visitantesPresentes = '';
+
+      if (nomesVisitanteTab) {
+        visitantesPresentes = JSON.parse(nomesVisitanteTab).filter(
+          (val) => val.Presenca === true,
+        );
+      }
+
+      // filtrou apenas os visitantes da célula presentes
+
+      if (visitantesCelula2.length) {
+        const nomesVisitantesParcial = visitantesCelula2.map((row) =>
+          createRelVisitantes(row.id, row.Nome, false),
+        );
+        // atribuiu falta a todos visitantes da célula
+
+        for (let i = 0; i < nomesVisitantesParcial.length; i += 1) {
+          for (let j = 0; j < visitantesPresentes.length; j += 1) {
+            if (nomesVisitantesParcial[i].Rol === visitantesPresentes[j].Rol)
+              nomesVisitantesParcial[i].Presenca = true;
+          }
+        }
+
+        visitantesCelula = nomesVisitantesParcial;
+        setNomesVisitantes(nomesVisitantesParcial);
+      } else {
+        setNomesVisitantes(visitantesCelula2);
+      }
+    }
+    return 0;
+  }, [novoVisitante, nomesVisitanteTab]);
+
+  React.useEffect(() => {
+    //  contEffect += 1;
+    mutate(url);
+    //  setExisteRelatorio('inicio');
+    if (selectedDate && checkInicio !== 'sim') {
+      setContagem(true);
+      const checkAno = selectedDate.getFullYear();
+
+      setAnoAtual(checkAno);
+      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
+      if (checkAno > 2020) {
+        setSemana(semanaExata(selectedDate));
+      }
+    }
+  }, [selectedDate]);
+
+  React.useEffect(() => {
+    if (checkInicio === 'sim')
+      setRelPresentes(
+        dadosCelula.sort((a, b) => {
+          if (a.Nome > b.Nome) return 1;
+          if (b.Nome > a.Nome) return -1;
+          return 0;
+        }),
+      );
+  }, [dadosCelula]);
+
+  React.useEffect(() => {
+    if (contagem) {
+      ajusteRelatorio();
+    }
+  }, [contagem, members]);
 
   //= ========================calcular adulto e crianca========================
 
   const handleTela2 = () => {
     if (nomesCelulas && nomesCelulas.length > 0) {
-      const listaPresentes = nomesCelulas.filter(
+      const listaPresentes1 = nomesCelulas.filter((val) => val.Nome);
+      const listaPresentes = listaPresentes1.filter(
         (val, index) =>
           val.Nome &&
           relPresentes[index] &&
-          relPresentes[index].Presenca === true,
+          (relPresentes[index].Presenca === 'igreja' ||
+            relPresentes[index].Presenca === 'live'),
       );
+
       const idade = [];
       let contAdultos = 0;
       let contCriancas = 0;
+
       for (let i = 0; i < listaPresentes.length; i += 1) {
-        /*  if (listaPresentes[i].Nascimento)
-          idade[i] = PegaIdade(listaPresentes[i].Nascimento);
-        else idade[i] = 'NaN'; */
         idade[i] = listaPresentes[i].Nascimento
           ? PegaIdade(ConverteData2(listaPresentes[i].Nascimento))
           : '';
+
         if (String(idade[i]) !== 'NaN')
           if (idade[i] > 11) {
             contAdultos += 1;
@@ -360,12 +616,84 @@ function RelatorioDiscipulado({
     setTela(2);
   };
 
+  const handleVisitantes = () => {
+    setOpenVisitantes(true);
+    // setVisBackUp(nomesVisitantes);
+    // setQtyVisitanteBackUp(qtyVisitante);
+  };
+  //= =========================================
+  const handleSalvarVisitante = () => {
+    //    const { dataVisitante, errorVisitante } = useSWR(url2, fetcher);
+    // if(dataVisitante,)
+
+    const CriadoEm = new Date();
+
+    if (nomeVistante.length > 3) {
+      if (nascimentoVisitante) {
+        setCarregando(true);
+
+        const novaData = new Date(ConverteData(nascimentoVisitante));
+
+        api
+          .post('/api/inserirVisitante', {
+            Nome: nomeVistante,
+            Celula: Number(perfilUser.Celula),
+            Distrito: Number(perfilUser.Distrito),
+            Contato: foneVisitante,
+            Nascimento: novaData,
+            CriadoPor: perfilUser.Nome,
+            CriadoEm,
+          })
+          .then((response) => {
+            if (response) {
+              setCarregando(false);
+              setNomeVisitante('');
+              setNascimentoVisitante('');
+              setFoneVisitante('');
+
+              let dadosNovos = [];
+              dadosNovos = response.data;
+
+              const nomesVisitantesParcial = createRelVisitantes(
+                dadosNovos.id,
+                dadosNovos.Nome,
+                true,
+              );
+
+              const nomesNovos = [];
+              nomesNovos.push(nomesVisitantesParcial);
+
+              setNomesVisitantes((state) => [...state, nomesVisitantesParcial]);
+
+              // mutate(url4);
+            }
+          })
+          .catch(() => {
+            setCarregando(false);
+            setOpenErro(true);
+          });
+      } else {
+        setCorData('yellow');
+      }
+    } else {
+      handleVisitantes();
+      setOpenVisitantes(false);
+    }
+  };
+  //= ============================================================
+
+  const handleCancelaVisitante = () => {
+    // setNomesVisitantes(visBackUp);
+    //  setQtyVisitante(qtyVisitanteBackUp);
+    setOpenVisitantes(false);
+  };
+
   const pegarPontuacao = () => {
     if (errorPontos) return <div>An error occured.</div>;
     if (!pontos) return <div>Loading ...</div>;
     if (pontos) {
       const pontosSemanaAtual = pontos.filter(
-        (val) => val.Semana === Number(semana),
+        (val) => Number(val.Semana) === Number(semana),
       );
 
       setPontosAtual(pontosSemanaAtual);
@@ -376,6 +704,7 @@ function RelatorioDiscipulado({
 
   const criarPontuacao = () => {
     const criadoEm = new Date();
+
     // const dataRel = getDataPontos(selectedDate);
     const semanaPontuacao = semanaExata(criadoEm);
     let pontuacaoAtual = [];
@@ -387,33 +716,34 @@ function RelatorioDiscipulado({
     let pontosNovoMembro = 0;
     let pontosVisitas = 0;
     let pontosRelCelula = 0;
-    let pontosRelCelebracao = 0;
-    let pontosCelebracaoIgreja = 0;
-    let pontosCelebracaoLive = 0;
-    let pontosVisitantesCelebracao = 0;
+    const pontosRelCelebracao = 1;
+    const pontosCelebracaoIgreja = presentes;
+    const pontosCelebracaoLive = presentesLive;
+    const pontosVisitantesCelebracao = qtyVisitante;
 
-    const pontosRelDiscipulado = 1;
-    const pontosDiscipulado = presentes;
-    const pontosLeituraBiblia = contBiblia;
-
+    let pontosRelDiscipulado = 0;
+    let pontosDiscipulado = 0;
+    let pontosLeituraBiblia = 0;
     let pontosTotalAtual = 0;
-
     let pontosTotalAtualRank = 0;
 
     if (pontosAtual.length) {
       pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
       if (pontuacaoAtual !== '') {
-        if (
-          semanaPontuacao === semana &&
-          pontuacaoAtual.RelCelulaFeito === 1 &&
-          pontuacaoAtual.RelCelebracao === 1
-        )
-          pontosPontualidade = 1;
+        pontosPontualidade = pontuacaoAtual.Pontualidade;
+        if (Number(pontuacaoAtual.Pontualidade) === 0)
+          if (
+            semanaPontuacao === semanaEnviada &&
+            Number(pontuacaoAtual.RelCelulaFeito) === 1 &&
+            Number(pontuacaoAtual.RelDiscipulado) === 1
+          )
+            pontosPontualidade = 1;
       }
+
       if (
         pontuacaoAtual.RelCelulaFeito === 1 &&
-        pontuacaoAtual.RelCelebracao === 1
+        pontuacaoAtual.RelDiscipulado === 1
       )
         pontosRelatorio = 1;
       if (pontuacaoAtual.RelCelulaFeito === 1) {
@@ -426,11 +756,10 @@ function RelatorioDiscipulado({
         //        pontosCelebracaoIgreja = pontuacaoAtual.CelebracaoIgreja;
         //        pontosCelebracaoLive = pontuacaoAtual.CelebracaoLive;
       }
-      if (pontuacaoAtual.RelCelebracao === 1) {
-        pontosRelCelebracao = pontuacaoAtual.RelCelebracao;
-        pontosCelebracaoIgreja = pontuacaoAtual.CelebracaoIgreja;
-        pontosCelebracaoLive = pontuacaoAtual.CelebracaoLive;
-        pontosVisitantesCelebracao = pontuacaoAtual.VisitantesCelebracao;
+      if (pontuacaoAtual.RelDiscipulado === 1) {
+        pontosRelDiscipulado = pontuacaoAtual.RelDiscipulado;
+        pontosDiscipulado = pontuacaoAtual.Discipulados;
+        pontosLeituraBiblia = pontuacaoAtual.LeituraBiblica;
       }
     }
 
@@ -445,6 +774,7 @@ function RelatorioDiscipulado({
       Number((pontosCelebracaoLive * 100) / relPresentes.length).toFixed(2) /
         20,
     ).toFixed(2);
+
     const percDiscipulado = Number(
       Number((pontosDiscipulado * 100) / relPresentes.length).toFixed(2) / 10,
     ).toFixed(2);
@@ -452,7 +782,7 @@ function RelatorioDiscipulado({
     const percLeituraBiblica = Number(
       Number((pontosLeituraBiblia * 100) / relPresentes.length).toFixed(2) / 10,
     ).toFixed(2);
-    // toal rank conta os eventos mas o total não coloquei nem sempre tem eventos e pode
+    // toal rank conta os eventos mas o total não pois nem sempre tem eventos e pode
     // causar erros no percentual de crescimento.
     if (pontosTotalAtual === 0)
       pontosTotalAtual = Number(
@@ -490,18 +820,8 @@ function RelatorioDiscipulado({
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
-    /* console.log('pontosTotalAtual', pontosTotalAtual);
-    console.log('pontosRelatorio', pontosRelatorio);
-    console.log('percPresentes', percPresentes);
-    console.log('pontosPontualidade', pontosPontualidade);
-    console.log('pontosVisitantesCelula', pontosVisitantesCelula);
-    console.log('pontosVisitas', pontosVisitas);
-    console.log('percCelebracaoIgreja', percCelebracaoIgreja);
-    console.log('percCelebracaoLive', percCelebracaoLive);
-    console.log('percDiscipulado', percDiscipulado);
-    console.log('percLeituraBiblica', percLeituraBiblica); */
+
     const TotalPercentual = pontosTotalAtual;
-    //   console.log('TotalPercentual', TotalPercentual);
 
     const PontuacaoFinal = createPontuacao(
       Number(pontosRelCelula),
@@ -524,7 +844,16 @@ function RelatorioDiscipulado({
     setPFinal(PontuacaoFinal);
     setPTotalAtual(TotalPercentual);
     setPTotalAtualRank(pontosTotalAtualRank);
+    //  setPTotalAnterior(pontosTotalAnterior);
+
+    // const nomesMembros = JSON.parse(RelCelulaFinal.NomesMembros);
   };
+  React.useEffect(() => {
+    pegarPontuacao();
+
+    return 0;
+  }, [existeRelatorio]);
+
   React.useEffect(() => {
     criarPontuacao();
     return 0;
@@ -533,41 +862,25 @@ function RelatorioDiscipulado({
   React.useEffect(() => {
     pegarPontuacao();
 
-    //   criarPontuacao();
+    // criarPontuacao();
 
     return 0;
-  }, [semana, presentes, contBiblia, pontos]);
+  }, [
+    semana,
+    presentes,
+    qtyVisitante,
+    contConversoes,
+    contEventos,
+    contVisitas,
+    pontos,
+  ]);
 
-  React.useEffect(() => {
-    //  contEffect += 1;
-
-    setExisteRelatorio('inicio');
-    if (selectedDate) {
-      const checkAno = selectedDate.getFullYear();
-      setAnoAtual(checkAno);
-      // selectedDate.setTime(selectedDate.getTime() + 1000 * 60);
-      if (checkAno > 2020) {
-        setSemana(semanaExata(selectedDate));
-      }
-      ajusteRelatorio();
-    }
-  }, [selectedDate]);
-
-  React.useEffect(() => {
-    pegarPontuacao();
-    return 0;
-  }, [existeRelatorio]);
-  React.useEffect(() => {
-    criarPontuacao();
-
-    return 0;
-  }, [pontosAtual]);
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
 
     api
       .post('/api/criarPontuacao', {
-        Semana: semana,
+        Semana: semanaEnviada,
         Celula: Number(perfilUser.Celula),
         Distrito: Number(perfilUser.Distrito),
         Supervisao: Number(perfilUser.Supervisao),
@@ -584,11 +897,57 @@ function RelatorioDiscipulado({
           setCheckRelatorio(false);
           ajusteRelatorio();
           setTela(1);
-*/ setTela(0);
+*/ setOpenPlan(false);
           mutate(url);
           mutate(url2);
-          mutate(url3);
+
           //    router.reload(window.location.pathname);
+        }
+      })
+      .catch(() => {
+        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+      });
+  };
+
+  const handleSalvar = () => {
+    setCarregando(true);
+    criarPontuacao();
+
+    const criadoEm = new Date();
+    const nomesCelulaParcial = dadosCelula.map((row, index) =>
+      createRelCelula(
+        row.RolMembro,
+        row.Nome,
+        relPresentes[index] ? relPresentes[index].Presenca : false,
+      ),
+    );
+    const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
+    const novaData = new Date(ConverteData(inputValue));
+    const RelCelebracaoFinal = createCelebracao(
+      Number(perfilUser.Celula),
+      Number(perfilUser.Distrito),
+      Number(semanaEnviada),
+      novaData,
+      nomesCelulaFinal,
+      JSON.stringify(nomesVisitantes),
+      Number(adultos),
+      Number(criancas),
+      Number(qtyVisitante),
+      Number(contConversoes),
+      String(observacoes),
+      perfilUser.Nome,
+      criadoEm,
+    );
+
+    // const nomesMembros = JSON.parse(RelCelebracaoFinal.NomesMembros);
+
+    api
+      .post('/api/criarRelCelebracao', {
+        relatorio: RelCelebracaoFinal,
+      })
+      .then((response) => {
+        if (response) {
+          enviarPontuacao();
         }
       })
       .catch(() => {
@@ -598,183 +957,6 @@ function RelatorioDiscipulado({
         // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
-  const handleSalvar = () => {
-    setCarregando(true);
-    criarPontuacao();
-
-    const criadoEm = new Date();
-    const nomesCelulaParcial = nomesCelulas.map((row, index) =>
-      createRelCelula(
-        row.RolMembro,
-        row.Nome,
-        relPresentes[index] ? relPresentes[index].Presenca : false,
-      ),
-    );
-    const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
-    const novaData = new Date(ConverteData(inputValue));
-    const RelDiscipuladoFinal = createEstatistico(
-      Number(perfilUser.Celula),
-      Number(perfilUser.Distrito),
-      Number(semana),
-      novaData,
-      nomesCelulaFinal,
-      Number(contBiblia),
-      String(observacoes),
-      perfilUser.Nome,
-      criadoEm,
-      Number(adultos),
-      Number(criancas),
-    );
-
-    // const nomesMembros = JSON.parse(RelDiscipuladoFinal.NomesMembros);
-
-    api
-      .post('/api/criarRelDiscipulado', {
-        relatorio: RelDiscipuladoFinal,
-      })
-      .then((response) => {
-        if (response) {
-          enviarPontuacao();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setOpenErro(true);
-        setCarregando(false);
-
-        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
-      });
-  };
-  const pegaRankSemana = () => {
-    if (errorPontosSemana) return <div>An error occured.</div>;
-    if (!PontosSemana) return <div>Loading ...</div>;
-    if (PontosSemana) {
-      setRankGeral(
-        PontosSemana.sort((a, b) => {
-          if (Number(a.TotalRank) < Number(b.TotalRank)) return 1;
-          if (Number(b.TotalRank) < Number(a.TotalRank)) return -1;
-          return 0;
-        }),
-      );
-    }
-
-    return 0;
-  };
-  const posicao = () => {
-    if (rankGeral.length > 0) {
-      const CelulaAtual = rankGeral.filter(
-        (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          val.Distrito === Number(perfilUser.Distrito) &&
-          val.Distrito === Number(perfilUser.Distrito),
-      );
-      if (CelulaAtual.length) {
-        const idCelula = CelulaAtual[0].id;
-        const index = rankGeral.map((e) => e.id).indexOf(idCelula);
-
-        setRank(index + 1);
-      }
-    }
-  };
-  const mediaCelula = () => {
-    if (pontos && pontos.length > 0) {
-      const semanas = [];
-      const semanasTotal = [];
-      for (let index = 0; index < 4; index += 1) {
-        let novaSemana = Number(Number(semana) - index);
-        const datanova = new Date();
-        const Ano = datanova.getFullYear();
-        let novoAno = Ano;
-        //        console.log('ANO', novoAno);
-        //        console.log('semanaNOVA', novaSemana);
-
-        if (novaSemana < 1) {
-          novaSemana = 53 - index;
-          novoAno = Ano - 1;
-        }
-        semanas[index] = pontos.filter(
-          (val) => Number(val.Semana) === novaSemana && val.Ano === novoAno,
-        );
-      }
-      let somaTotal = 0;
-      let divisor = 0;
-      //    console.log('semanas', semanas, semanas.length);
-
-      for (let index = 0; index < semanas.length; index += 1) {
-        if (semanas[index] && semanas[index].length > 0) {
-          semanasTotal[index] = parseFloat(semanas[index][0].Total);
-          somaTotal += parseFloat(semanasTotal[index]);
-          divisor += 1;
-        }
-      }
-
-      if (divisor === 0) divisor = 1;
-      somaTotal = (parseFloat(somaTotal) / Number(divisor)).toFixed(2);
-
-      if (somaTotal !== 0) {
-        let mediaCrescimento = parseFloat(
-          (100 * (pTotalAtual - somaTotal)) / somaTotal,
-        ).toFixed(2);
-        //    console.log('somaTotal', somaTotal);
-        //    console.log('divisor', divisor);
-        //    console.log('pTotalAtual', pTotalAtual);
-        //    console.log('mediaCrescimento', mediaCrescimento);
-        if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
-        else {
-          if (pTotalAtual === somaTotal) {
-            mediaCrescimento = 0;
-          }
-
-          setRankCelula(mediaCrescimento);
-        }
-      } else setRankCelula(0);
-    }
-  };
-
-  React.useEffect(() => 0, [pontos]);
-  React.useEffect(() => {
-    pegaRankSemana();
-    posicao();
-    mediaCelula();
-
-    return 0;
-  }, [members, pTotalAtual]);
-  React.useEffect(() => {
-    ajusteRelatorio();
-    pegaRankSemana();
-    posicao();
-    mediaCelula();
-    return 0;
-  }, [PontosSemana]);
-
-  React.useEffect(() => {
-    let timer;
-
-    if (progress === 4) setLoading(false);
-    if (loading) {
-      let prevProgress = 5;
-      timer = setInterval(() => {
-        prevProgress -= 1;
-
-        if (prevProgress < 0) {
-          prevProgress = 0;
-          //   router.reload(window.location.pathname);
-          /*  router.push({
-          pathname: '/Perfil',
-          //      query: { idCompra, qrCode, qrCodeCopy },
-        }); */
-        }
-
-        if (prevProgress === 0) setLoading(false);
-        setProgress(prevProgress);
-      }, 800);
-    }
-    return () => {
-      clearInterval(timer);
-    };
-  }, [selectedDate]);
-
-  //
 
   return (
     <Box
@@ -785,83 +967,423 @@ function RelatorioDiscipulado({
       minHeight={570}
       minWidth={300}
       bgcolor={corIgreja.principal2}
-      height="calc(100vh - 56px)"
+      height="calc(100vh)"
     >
-      <Box
-        width="96%"
-        height="97%"
-        minHeight={550}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        borderRadius={16}
-        bgcolor={corIgreja.principal} // cor principal tela inteira
-      >
-        <Box height="100%" width="100%">
+      {openVisitantes ? (
+        <Box
+          bgcolor={corIgreja.principal}
+          width="96%"
+          height="97%"
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          borderRadius={16}
+          ml={0}
+        >
           <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="15%"
             width="100%"
+            height="10%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
           >
-            <Paper style={{ background: '#fafafa', height: 40, width: '65%' }}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justifyContent="center">
-                  <KeyboardDatePicker
-                    open={open}
-                    disableToolbar
-                    variant="inline"
-                    format="dd/MM/yyyy"
-                    id="date-picker-inline"
-                    value={selectedDate}
-                    inputValue={inputValue}
-                    onClick={handleDateClick}
-                    onChange={handleDateChange}
-                    onClose={getData()}
-                    style={{
-                      marginLeft: 1,
-                      marginRight: 1,
-                      marginTop: 5,
-                      height: 30,
-                      background: '#fafafa',
-                    }}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
-            </Paper>
+            <Box
+              color="white"
+              fontSize="18px"
+              fontFamily="arial black"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="90%"
+            >
+              LISTA DE VISITANTES
+            </Box>
           </Box>
 
           <Box
+            height="48%"
             display="flex"
-            alignItems="center"
             justifyContent="center"
-            height="13%"
-            borderTop="2px solid #fff"
-            borderBottom="2px solid #fff"
+            alignItems="center"
             width="100%"
           >
+            <TabVisitantes
+              nomesVisitantes={nomesVisitantes}
+              setQtyVisitante={setQtyVisitante}
+              setNomesVisitantes={setNomesVisitantes}
+              podeEditar={podeEditar}
+              setDeleteVis={setDeleteVis}
+            />
+          </Box>
+          <Box
+            height="30%"
+            width="100%"
+            minHeight={120}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor={corIgreja.principal}
+          >
+            <Box ml={1}>
+              <Grid container spacing={0}>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={12} md={12} lg={12} xl={12}>
+                    <Box width="100%" mt={2} textAlign="center">
+                      <Box
+                        color="white"
+                        fontSize="14px"
+                        textAlign="start"
+                        ml={1}
+                      >
+                        Nome do Visitante
+                      </Box>
+                      <TextField
+                        inputProps={{
+                          style: {
+                            width: '90vw',
+                            height: 30,
+                            borderRadius: 6,
+                            textAlign: 'center',
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="Nome"
+                        // label="Matricula"
+                        type="text"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={nomeVistante}
+                        variant="standard"
+                        placeholder="Nome completo"
+                        onChange={(e) => {
+                          setNomeVisitante(e.target.value);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid container spacing={0}>
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                    <Box width="100%" mt={2} textAlign="center">
+                      <Box
+                        color="white"
+                        fontSize="14px"
+                        textAlign="start"
+                        ml={1}
+                      >
+                        Celular
+                      </Box>
+                      <TextField
+                        inputProps={{
+                          style: {
+                            width: '100%',
+                            height: 30,
+                            borderRadius: 6,
+                            textAlign: 'center',
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="Fone"
+                        // label="Matricula"
+                        type="tel"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={celularMask(foneVisitante)}
+                        variant="standard"
+                        placeholder="telefone"
+                        onChange={(e) => {
+                          setFoneVisitante(e.target.value);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6} xl={6}>
+                    <Box width="100%" mt={2} textAlign="center">
+                      <Box
+                        color={corData}
+                        fontSize="14px"
+                        textAlign="start"
+                        ml={1}
+                      >
+                        Data de Nascimento
+                      </Box>
+                      <TextField
+                        inputProps={{
+                          style: {
+                            width: '100%',
+                            height: 30,
+                            borderRadius: 6,
+                            textAlign: 'center',
+                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                          },
+                        }}
+                        id="Nascimento"
+                        // label="Matricula"
+                        type="tel"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={dataMask(nascimentoVisitante)}
+                        variant="standard"
+                        placeholder="dd/mm/aaaa"
+                        onChange={(e) => {
+                          setCorData('white');
+                          setNascimentoVisitante(e.target.value);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+          <Box
+            width="100%"
+            height="12%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="94%"
               height="100%"
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={6} md={6} lg={6} xl={9}>
+                  <Paper
+                    style={{
+                      borderRadius: 16,
+                      textAlign: 'center',
+                      background: '#ffffaa',
+                      height: 40,
+                    }}
+                  >
+                    <Button
+                      style={{ width: '100%' }}
+                      startIcon={<IoArrowUndoSharp color="blue" />}
+                      onClick={() => {
+                        handleCancelaVisitante();
+                      }}
+                    >
+                      <Box
+                        mr={2}
+                        ml={2}
+                        mt={0.3}
+                        sx={{ fontFamily: 'arial black' }}
+                      >
+                        VOLTAR
+                      </Box>
+                    </Button>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6} md={6} lg={6} xl={9}>
+                  <Paper
+                    style={{
+                      borderRadius: 16,
+                      textAlign: 'center',
+                      background: podeEditar ? '#b39ddb' : 'gray',
+
+                      height: 40,
+                    }}
+                  >
+                    {podeEditar ? (
+                      <Box>
+                        <Box>
+                          {!carregando ? (
+                            <Button
+                              style={{ width: '100%' }}
+                              onClick={handleSalvarVisitante}
+                              startIcon={<IoIosSave color="blue" />}
+                            >
+                              <Box mt={0.3} sx={{ fontFamily: 'arial black' }}>
+                                <Box>Salvar</Box>
+                              </Box>
+                            </Button>
+                          ) : (
+                            <Button style={{ width: '100%' }}>
+                              <Box
+                                display="flex"
+                                mt={0.5}
+                                sx={{ fontFamily: 'arial black' }}
+                              >
+                                <Oval stroke="green" width={20} height={20} />
+                                <Box mt={-0.1} ml={0.8} mr={0}>
+                                  Salvando
+                                </Box>
+                              </Box>
+                            </Button>
+                          )}
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Button style={{ width: '100%' }}>
+                        <Box
+                          mr={0}
+                          ml={0}
+                          mt={0.3}
+                          color="#fff"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          CONSOLIDADO
+                        </Box>
+                      </Button>
+                    )}
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
+      ) : (
+        <Box
+          width="96%"
+          height="97%"
+          minHeight={550}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius={16}
+          bgcolor={corIgreja.principal} // cor principal tela inteira
+        >
+          <Box height="100%" width="100%">
+            <Box
+              display="flex"
+              alignItems="end"
+              justifyContent="center"
+              height="10%"
               width="100%"
+              fontSize="16px"
+              fontFamily="Fugaz One"
+              color="white"
+            >
+              <Box>
+                <Box
+                  display="flex"
+                  alignItems="end"
+                  justifyContent="center"
+                  height="100%"
+                  width="100%"
+                  fontSize="16px"
+                  fontFamily="Fugaz One"
+                  color="white"
+                >
+                  RELATÓRIO DE CELEBRAÇÃO
+                </Box>
+                <Box
+                  display="flex"
+                  alignItems="end"
+                  justifyContent="center"
+                  height="100%"
+                  width="100%"
+                  fontSize="16px"
+                  fontFamily="Fugaz One"
+                  color="white"
+                >
+                  CÉLULA - {dadosSem.Celula}
+                </Box>
+              </Box>
+            </Box>
+            <Box
               display="flex"
               alignItems="center"
               justifyContent="center"
-              sx={{
-                color: '#fff',
-                fontFamily: 'Fugaz One',
-                fontSize: '20px',
-              }}
+              height="10%"
+              width="100%"
+            >
+              <Paper
+                style={{ background: '#fafafa', height: 40, width: '45%' }}
+              >
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justifyContent="center">
+                    <KeyboardDatePicker
+                      open={open}
+                      disableToolbar
+                      variant="inline"
+                      format="dd/MM/yyyy"
+                      id="date-picker-inline"
+                      value={selectedDate}
+                      inputValue={inputValue}
+                      onClick={handleDateClick}
+                      onChange={handleDateChange}
+                      onClose={getData()}
+                      style={{
+                        marginLeft: 10,
+                        marginRight: 10,
+                        marginTop: 5,
+                        height: 30,
+                        background: '#fafafa',
+                      }}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+              </Paper>
+              <Paper
+                style={{
+                  textAlign: 'center',
+                  background: '#fafafa',
+                  height: 40,
+                  width: '45%',
+                  marginLeft: 10,
+                }}
+              >
+                <Button
+                  style={{ width: '100%' }}
+                  onClick={handleVisitantes}
+                  startIcon={<TiUserAdd color="red" />}
+                >
+                  <Box
+                    display="flex"
+                    mt={0.8}
+                    sx={{
+                      fontSize: '12px',
+                      fontFamily: 'arial black',
+                    }}
+                  >
+                    <Box mt={-0.2}> VISITANTES: </Box>
+                    <Box
+                      color="blue"
+                      fontFamily="arial black"
+                      fontSize="16px"
+                      mt={-0.8}
+                      ml={1}
+                    >
+                      {qtyVisitante}
+                    </Box>
+                  </Box>
+                </Button>
+              </Paper>
+            </Box>
+
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="8%"
+              borderTop="2px solid #fff"
+              borderBottom="2px solid #fff"
+              width="100%"
             >
               <Box
+                height="100%"
+                width="100%"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                width="100%"
-                height="100%"
+                sx={{
+                  color: '#fff',
+                  fontFamily: 'Fugaz One',
+                  fontSize: '20px',
+                }}
               >
                 <Box
                   display="flex"
@@ -871,391 +1393,110 @@ function RelatorioDiscipulado({
                   height="100%"
                 >
                   <Box
-                    sx={{ fontSize: '16px' }}
                     display="flex"
-                    flexDirection="column"
                     alignItems="center"
                     justifyContent="center"
+                    width="100%"
                     height="100%"
-                    borderRight="2px solid #fff"
-                    width="50%"
                   >
                     <Box
+                      sx={{ fontSize: '16px' }}
                       display="flex"
+                      flexDirection="column"
                       alignItems="center"
+                      borderRight="2px solid #fff"
                       justifyContent="center"
+                      height="100%"
+                      width="50%"
                     >
-                      {!checkRelatorio ? 'CÉLULA' : 'DICÍPULOS'}
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        MEMBROS
+                      </Box>
+                      <Box
+                        fontFamily="arial black"
+                        color="white"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        {relPresentes.length}
+                      </Box>
                     </Box>
                     <Box
-                      fontFamily="arial black"
-                      color="white"
+                      sx={{ fontSize: '16px' }}
                       display="flex"
+                      flexDirection="column"
                       alignItems="center"
                       justifyContent="center"
+                      height="100%"
+                      borderRight="2px solid #fff"
+                      width="50%"
                     >
-                      {!checkRelatorio ? perfilUser.Celula : presentes}
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        LIVE
+                      </Box>
+                      <Box
+                        fontFamily="arial black"
+                        color="white"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        {presentesLive}
+                      </Box>
                     </Box>
-                  </Box>
-                  <Box
-                    sx={{ fontSize: '16px' }}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    height="100%"
-                    width="50%"
-                  >
                     <Box
+                      sx={{ fontSize: '16px' }}
                       display="flex"
+                      flexDirection="column"
                       alignItems="center"
                       justifyContent="center"
+                      height="100%"
+                      width="50%"
                     >
-                      MEMBROS
-                    </Box>
-                    <Box
-                      fontFamily="arial black"
-                      color="white"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      {relPresentes.length}
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        IGREJA
+                      </Box>
+                      <Box
+                        fontFamily="arial black"
+                        color="white"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        {presentes}
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="60%"
-            width="100%"
-          >
-            {!checkRelatorio ? (
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                height="100%"
-                width="100%"
-              >
-                {existeRelatorio === 'sem' && (
-                  <Box height="100%">
-                    <Box
-                      height="100%"
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                      alignItems="center"
-                      width="100%"
-                      color={corIgreja.iconeOn}
-                      fontFamily="arial black"
-                      fontSize="20px"
-                    >
-                      <Box>RELATÓRIO DE DICIPULADO</Box>
-                      <Box
-                        color={corIgreja.texto1}
-                        fontFamily="arial black"
-                        fontSize="20px"
-                        mt={1}
-                      >
-                        SEMANA - {semana}
-                      </Box>
-
-                      {!loading ? (
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          width="100%"
-                          color="#fff"
-                          fontFamily="arial"
-                          fontSize="16px"
-                        >
-                          <Box mt={2}>Ainda não foi registrado</Box>
-                          <Box>nenhum relatório nessa semana</Box>
-                        </Box>
-                      ) : (
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          width="100%"
-                          color="#fff"
-                          fontFamily="arial"
-                          fontSize="16px"
-                        >
-                          <Box mt={2}>Buscando Relatório</Box>
-                          <Box>aguarde {progress} segundos... </Box>
-                        </Box>
-                      )}
-                      <Box
-                        mt={5}
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        width="100%"
-                        color="#fff"
-                        fontFamily="arial"
-                        fontSize="14px"
-                      >
-                        <Box
-                          color={corIgreja.iconeOn}
-                          fontFamily="arial black"
-                          fontSize="14px"
-                        >
-                          PARA CRIAR UM NOVO:
-                        </Box>
-                        <Box>Selecione a data desejada e click</Box>
-                        <Box> no botão FAZER RELATÓRIO</Box>
-                      </Box>
-                    </Box>
-                  </Box>
-                )}
-                {existeRelatorio === true && (
-                  <Box height="100%" width="100%">
-                    <Box
-                      height="100%"
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                      alignItems="center"
-                      width="100%"
-                      color={corIgreja.iconeOn}
-                      fontFamily="arial black"
-                      fontSize="20px"
-                    >
-                      <Box
-                        height="100%"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        width="100%"
-                        fontFamily="arial black"
-                        fontSize="16px"
-                      >
-                        <Box
-                          mt={2}
-                          mb={2}
-                          display="flex"
-                          fontFamily="Fugaz One"
-                          color="#fff"
-                        >
-                          SEMANA <Box ml={2}>{semana}</Box>
-                        </Box>
-                        <Box mt={2} color={corIgreja.iconeOn}>
-                          RANKING ENTRE {rankGeral.length} CÉLULAS
-                        </Box>
-
-                        <Box
-                          mt={0}
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          width="100%"
-                          color="blue"
-                          fontFamily="arial black"
-                          fontSize="16px"
-                        >
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            width="90%"
-                            bgcolor="#e5e6b8"
-                            height="100%"
-                            border="2px solid orange"
-                          >
-                            <Box
-                              sx={{ fontSize: '14px' }}
-                              display="flex"
-                              flexDirection="column"
-                              alignItems="center"
-                              justifyContent="center"
-                              height={80}
-                              width="50%"
-                            >
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                width="100%"
-                                height={30}
-                                borderBottom="2px solid orange"
-                              >
-                                PONTOS
-                              </Box>
-                              <Box
-                                fontSize="20px"
-                                fontFamily="arial black"
-                                color="#000"
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                width="100%"
-                                height={50}
-                              >
-                                {pTotalAtualRank && pTotalAtualRank}
-                              </Box>
-                            </Box>
-                            <Box
-                              sx={{ fontSize: '14px' }}
-                              display="flex"
-                              flexDirection="column"
-                              alignItems="center"
-                              justifyContent="center"
-                              height={80}
-                              borderLeft="2px solid orange"
-                              width="50%"
-                            >
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                borderBottom="2px solid orange"
-                                justifyContent="center"
-                                width="100%"
-                                fontFamily="arial black"
-                                height={30}
-                              >
-                                POSIÇÃO
-                              </Box>
-                              <Box
-                                fontFamily="arial black"
-                                color="#000"
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                width="100%"
-                                height={50}
-                                fontSize="20px"
-                              >
-                                {rank}º
-                              </Box>
-                            </Box>
-                          </Box>
-                        </Box>
-
-                        <Box mt={5} color={corIgreja.iconeOn}>
-                          MEU CRESCIMENTO
-                        </Box>
-
-                        <Box
-                          mt={0}
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          width="100%"
-                          color="blue"
-                          fontFamily="arial black"
-                          fontSize="16px"
-                        >
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            width="90%"
-                            bgcolor="#e5e6b8"
-                            height="100%"
-                            border="2px solid orange"
-                          >
-                            <Box
-                              sx={{ fontSize: '14px' }}
-                              display="flex"
-                              flexDirection="column"
-                              alignItems="center"
-                              justifyContent="center"
-                              height={80}
-                              width="50%"
-                            >
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                width="100%"
-                                height={30}
-                                borderBottom="2px solid orange"
-                              >
-                                PERCENTUAL
-                              </Box>
-                              <Box
-                                fontFamily="arial black"
-                                color="#000"
-                                display="flex"
-                                fontSize="22px"
-                                alignItems="center"
-                                justifyContent="center"
-                                width="100%"
-                                height={50}
-                              >
-                                {rankCelula && rankCelula} %
-                              </Box>
-                            </Box>
-                            <Box
-                              sx={{ fontSize: '14px' }}
-                              display="flex"
-                              flexDirection="column"
-                              alignItems="center"
-                              justifyContent="center"
-                              height={80}
-                              borderLeft="2px solid orange"
-                              width="50%"
-                            >
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                borderBottom="2px solid orange"
-                                justifyContent="center"
-                                width="100%"
-                                fontFamily="arial black"
-                                height={30}
-                              >
-                                STATUS
-                              </Box>
-                              <Box
-                                fontFamily="arial black"
-                                color="#000"
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                width="100%"
-                                height={50}
-                              >
-                                {rankCelula && rankCelula > 0 ? (
-                                  <Emojis tipo="alegre" />
-                                ) : (
-                                  <Box>
-                                    {!rankCelula ? (
-                                      <Emojis tipo="igual" />
-                                    ) : (
-                                      <Emojis tipo="triste" />
-                                    )}
-                                  </Box>
-                                )}
-                              </Box>
-                            </Box>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            ) : (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="60%"
+              width="100%"
+            >
               <Box display="flex" alignItems="end" height="100%" width="96%">
                 {tela === 1 && (
-                  <TabDiscipulado
+                  <TabCelebracao
                     nomesCelulas={relPresentes}
                     setPresentes={setPresentes}
-                    setRelCelula={setRelPresentes}
+                    setPresentesLive={setPresentesLive}
+                    setRelPresentes={setRelPresentes}
                     podeEditar={podeEditar}
                   />
                 )}
@@ -1278,7 +1519,7 @@ function RelatorioDiscipulado({
                               justifyContent="center"
                               alignItems="center"
                               height={40}
-                              bgcolor="white"
+                              bgcolor="#fafafa"
                               sx={{
                                 fontSize: '14px',
                                 fontFamily: 'arial black',
@@ -1316,7 +1557,7 @@ function RelatorioDiscipulado({
                               justifyContent="center"
                               alignItems="center"
                               height={40}
-                              bgcolor="white"
+                              bgcolor="#fafafa"
                               sx={{
                                 fontSize: '14px',
                                 fontFamily: 'arial black',
@@ -1366,7 +1607,6 @@ function RelatorioDiscipulado({
                           background: '#fafafa',
                           height: 40,
                           borderRadius: 15,
-                          border: '1px solid #000',
                         }}
                       >
                         <Box
@@ -1396,14 +1636,14 @@ function RelatorioDiscipulado({
                           >
                             <Box width="100%" display="flex" textAlign="center">
                               <Box
-                                ml={2}
-                                width="70%"
+                                ml={1}
+                                width="60%"
                                 mt={0.5}
                                 display="flex"
                                 justifyContent="center"
                                 fontSize="14px"
                               >
-                                LEITURA BÍBLICA
+                                CONVERSÕES
                               </Box>
                               <Box
                                 width="40%"
@@ -1433,7 +1673,7 @@ function RelatorioDiscipulado({
                                   fontSize="16px"
                                   fontFamily="arial black "
                                 >
-                                  {contBiblia}
+                                  {contConversoes}
                                 </Box>
                               </Box>
                             </Box>
@@ -1485,141 +1725,14 @@ function RelatorioDiscipulado({
                   </Box>
                 )}
               </Box>
-            )}
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="12%"
-            width="100%"
-          >
-            {!checkRelatorio ? (
-              <Box
-                height="100%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                width="100%"
-              >
-                {existeRelatorio !== true ? (
-                  <Box
-                    height="100%"
-                    width="90%"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} md={12} lg={12} xl={12}>
-                        <Paper
-                          style={{
-                            borderRadius: 16,
-                            textAlign: 'center',
-                            background: '#faffaf',
-                            height: 40,
-                          }}
-                        >
-                          <Button
-                            style={{ width: '100%' }}
-                            onClick={() => {
-                              if (existeRelatorio !== 'inicio' && !loading) {
-                                setCheckRelatorio(true);
-                                setTela(1);
-                              }
-                            }}
-                          >
-                            <Box
-                              mr={2}
-                              ml={2}
-                              mt={0.3}
-                              color="blue"
-                              sx={{ fontFamily: 'arial black' }}
-                            >
-                              {loading ? (
-                                <Box>
-                                  <Oval stroke="red" width={20} height={20} />
-                                </Box>
-                              ) : (
-                                'FAZER RELATÓRIO'
-                              )}
-                            </Box>
-                          </Button>
-                        </Paper>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                ) : (
-                  <Box
-                    height="100%"
-                    width="90%"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} md={12} lg={12} xl={12}>
-                        {podeEditar ? (
-                          <Paper
-                            style={{
-                              borderRadius: 16,
-                              textAlign: 'center',
-                              background: 'white',
-                              height: 40,
-                            }}
-                          >
-                            <Button
-                              style={{ width: '100%' }}
-                              onClick={() => {
-                                setCheckRelatorio(true);
-                                setTela(1);
-                              }}
-                            >
-                              <Box
-                                mr={2}
-                                ml={2}
-                                mt={0.3}
-                                color="black"
-                                sx={{ fontFamily: 'arial black' }}
-                              >
-                                EDITAR RELATÓRIO
-                              </Box>
-                            </Button>
-                          </Paper>
-                        ) : (
-                          <Paper
-                            style={{
-                              borderRadius: 16,
-                              textAlign: 'center',
-                              background: 'white',
-                              height: 40,
-                            }}
-                          >
-                            <Button
-                              style={{ width: '100%' }}
-                              onClick={() => {
-                                setCheckRelatorio(true);
-                                setTela(1);
-                              }}
-                            >
-                              <Box
-                                mr={2}
-                                ml={2}
-                                mt={0.3}
-                                color="black"
-                                sx={{ fontFamily: 'arial black' }}
-                              >
-                                VER RELATÓRIO CONSOLIDADO
-                              </Box>
-                            </Button>
-                          </Paper>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </Box>
-                )}
-              </Box>
-            ) : (
+            </Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="12%"
+              width="100%"
+            >
               <Box
                 display="flex"
                 alignItems="center"
@@ -1643,9 +1756,7 @@ function RelatorioDiscipulado({
                             <Button
                               style={{ width: '100%' }}
                               onClick={() => {
-                                setCheckRelatorio(false);
-                                ajusteRelatorio();
-                                setTela(0);
+                                setOpenPlan(false);
                               }}
                               startIcon={<IoArrowUndoSharp color="blue" />}
                             >
@@ -1757,7 +1868,7 @@ function RelatorioDiscipulado({
                                           }}
                                         >
                                           <Oval
-                                            stroke="red"
+                                            stroke="green"
                                             width={20}
                                             height={20}
                                           />
@@ -1803,7 +1914,7 @@ function RelatorioDiscipulado({
                                       sx={{ fontFamily: 'arial black' }}
                                     >
                                       <Oval
-                                        stroke="red"
+                                        stroke="green"
                                         width={20}
                                         height={20}
                                       />
@@ -1822,34 +1933,19 @@ function RelatorioDiscipulado({
                   </Grid>
                 </Box>
               </Box>
-            )}
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Dialog fullScreen open={openPontuacao} TransitionComponent={Transition}>
-        <Box>
-          ola pontuação
-          <Box bgcolor="blue">
-            <Button
-              style={{ width: '100%' }}
-              onClick={() => setOpenPontuacao(false)}
-              startIcon={<IoIosSave color="blue" />}
-            >
-              <Box mt={0.3} sx={{ fontFamily: 'arial black' }}>
-                <Box>FECHAR</Box>
-              </Box>
-            </Button>
-          </Box>
-        </Box>
-      </Dialog>
+      )}
       {openErro && (
         <Erros
           descricao="banco"
           setOpenErro={(openErros) => setOpenErro(openErros)}
         />
       )}
+      {contagem && <Espera descricao="Buscando o Relatório" />}
     </Box>
   );
 }
 
-export default RelatorioDiscipulado;
+export default RelCelula;

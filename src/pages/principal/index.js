@@ -40,7 +40,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       // resultado = result.id;
     }
   }, [mudaDados]);
-  console.log('perfilUser', perfilUserF);
+
   return (
     <div>
       {perfilUserF && perfilUserF.id ? (

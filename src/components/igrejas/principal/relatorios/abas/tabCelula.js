@@ -14,8 +14,9 @@ export default function TabCelula({
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [respostas, setRespostas] = React.useState({});
-  let dados = [{ Nome: 'Sem nomes registrados', Presenca: false }];
-  if (nomesCelulas) dados = nomesCelulas;
+  const dados = nomesCelulas || [
+    { Nome: 'Sem nomes registrados', Presenca: false },
+  ];
 
   const handleRegistro = (index) => {
     let cor;
@@ -56,7 +57,7 @@ export default function TabCelula({
         ...updatedValue,
       }));
     }
-  }, []);
+  }, [dados]);
   React.useEffect(() => {
     for (let index = 0; index < dados.length; index += 1) {
       let cor;

@@ -549,13 +549,16 @@ function RelatorioCelebracao({
       pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
       if (pontuacaoAtual !== '') {
-        if (
-          semanaPontuacao === semana &&
-          pontuacaoAtual.RelCelulaFeito === 1 &&
-          pontuacaoAtual.RelDiscipulado === 1
-        )
-          pontosPontualidade = 1;
+        // pontosPontualidade = pontuacaoAtual.Pontualidade;
+        if (Number(pontuacaoAtual.Pontualidade) === 0)
+          if (
+            semanaPontuacao === semana &&
+            Number(pontuacaoAtual.RelCelulaFeito) === 1 &&
+            Number(pontuacaoAtual.RelDiscipulado) === 1
+          )
+            pontosPontualidade = 1;
       }
+
       if (
         pontuacaoAtual.RelCelulaFeito === 1 &&
         pontuacaoAtual.RelDiscipulado === 1
@@ -600,26 +603,37 @@ function RelatorioCelebracao({
     // causar erros no percentual de crescimento.
     if (pontosTotalAtual === 0)
       pontosTotalAtual = Number(
-        pontosRelatorio +
+        pontosRelCelula +
+          Number(pontosRelatorio) +
           Number(percPresentes) +
           Number(pontosPontualidade) +
           pontosVisitantesCelula +
           pontosVisitas +
+          pontosRelCelebracao +
           Number(percCelebracaoIgreja) +
           Number(percCelebracaoLive) +
+          pontosVisitantesCelebracao +
+          pontosRelDiscipulado +
+          Number(pontosNovoMembro) +
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
+
     if (pontosTotalAtualRank === 0)
       pontosTotalAtualRank = Number(
-        pontosRelatorio +
+        pontosRelCelula +
+          Number(pontosRelatorio) +
           Number(percPresentes) +
           Number(pontosPontualidade) +
           pontosVisitantesCelula +
           pontosVisitas +
           pontosEventos +
+          pontosRelCelebracao +
           Number(percCelebracaoIgreja) +
           Number(percCelebracaoLive) +
+          Number(pontosNovoMembro) +
+          pontosVisitantesCelebracao +
+          pontosRelDiscipulado +
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
@@ -818,17 +832,15 @@ function RelatorioCelebracao({
       //    console.log('semanas', semanas, semanas.length);
 
       for (let index = 0; index < semanas.length; index += 1) {
-        //      console.log('somaTotal', somaTotal, index);
-
         if (semanas[index] && semanas[index].length > 0) {
-          semanasTotal[index] = semanas[index][0].Total;
-          somaTotal += Number(semanasTotal[index]);
+          semanasTotal[index] = parseFloat(semanas[index][0].Total);
+          somaTotal += parseFloat(semanasTotal[index]);
           divisor += 1;
         }
       }
 
       if (divisor === 0) divisor = 1;
-      somaTotal /= divisor;
+      somaTotal = (parseFloat(somaTotal) / Number(divisor)).toFixed(2);
 
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
@@ -843,7 +855,12 @@ function RelatorioCelebracao({
           if (pTotalAtual === somaTotal) {
             mediaCrescimento = 0;
           }
-
+          console.log(
+            'mdCrescimetno',
+            mediaCrescimento,
+            pTotalAtual,
+            somaTotal,
+          );
           setRankCelula(mediaCrescimento);
         }
       } else setRankCelula(0);

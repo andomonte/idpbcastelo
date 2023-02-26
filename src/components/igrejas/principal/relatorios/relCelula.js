@@ -170,6 +170,8 @@ function RelCelula({
   const [open, setIsPickerOpen] = React.useState(false);
   const [qtyVisitante, setQtyVisitante] = React.useState(0);
   const [presentes, setPresentes] = React.useState(0);
+  const [membrosCelula, setMembrosCelula] = React.useState(0);
+  const [membrosCelulaHj, setMembrosCelulaHj] = React.useState(0);
   const [rankCelula, setRankCelula] = React.useState([]);
   const [rankGeral, setRankGeral] = React.useState(0);
   const [pontosAtual, setPontosAtual] = React.useState([]);
@@ -269,7 +271,11 @@ function RelCelula({
     if (contAtual < 0) contAtual = 0;
     setContConversoes(contAtual);
   };
-
+  const url0 = `/api/consultaRelatorioCelulas/${semana - 1}`;
+  const { data: celulaPassada, error: errorCelulaPassada } = useSWR(
+    url0,
+    fetcher,
+  );
   const url = `/api/consultaRelatorioCelulas/${semana}`;
   const { data: members, error: errorMembers } = useSWR(url, fetcher);
   const url2 = `/api/consultaPontuacao/${perfilUser.Distrito}/${perfilUser.Celula}`;
@@ -321,6 +327,7 @@ function RelCelula({
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
           const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
+          setMembrosCelulaHj(nomesMembros.length);
           const nVisitantes = relatorio[0].NomesVisitantes;
 
           const qtyPresentes = nomesMembros.filter(
@@ -433,6 +440,27 @@ function RelCelula({
 
     return 0;
   }, [members]);
+
+  React.useEffect(() => {
+    if (celulaPassada) {
+      const relatorio = celulaPassada.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
+          String(val.Data.slice(0, 4)) === String(AnoAtual),
+      );
+
+      if (relatorio && relatorio.length) {
+        const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
+
+        setMembrosCelula(nomesMembros.length);
+      }
+    }
+    if (errorCelulaPassada) return <div>An error occured.</div>;
+    if (!celulaPassada) return <div>Loading ...</div>;
+
+    return 0;
+  }, [celulaPassada]);
 
   React.useEffect(() => {
     //  contEffect += 1;
@@ -586,16 +614,17 @@ function RelCelula({
 
   const criarPontuacao = () => {
     const criadoEm = new Date();
+
     // const dataRel = getDataPontos(selectedDate);
     const semanaPontuacao = semanaExata(criadoEm);
     let pontuacaoAtual = [];
     const pontosRelCelula = 1;
     let pontosRelatorio = 0;
-    let pontosPontualidade = 0;
+
     const pontosPresentes = presentes;
     const pontosVisitantesCelula = qtyVisitante;
     const pontosEventos = contEventos;
-    const pontosNovoMembro = 0;
+    let pontosNovoMembro = 0;
     const pontosVisitas = contVisitas;
 
     let pontosRelCelebracao = 0;
@@ -608,16 +637,23 @@ function RelCelula({
     let pontosTotalAtual = 0;
     let pontosTotalAnterior = 0;
     let pontosTotalAtualRank = 0;
+    let pontosPontualidade = 0;
+    if (membrosCelula > 0 && membrosCelulaHj > 0) {
+      if (membrosCelula > membrosCelulaHj) pontosNovoMembro = -5; // SE PERDERU PERDE 5 PONTOS
+      if (membrosCelula < membrosCelulaHj) pontosNovoMembro = 5; // SE PERDERU PERDE 5 PONTOS
+    }
     if (pontosAtual.length) {
       pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
       if (pontuacaoAtual !== '') {
-        if (
-          semanaPontuacao === semana &&
-          pontuacaoAtual.RelCelebracao === 1 &&
-          pontuacaoAtual.RelDiscipulado === 1
-        )
-          pontosPontualidade = 1;
+        // pontosPontualidade = pontuacaoAtual.Pontualidade;
+        if (Number(pontuacaoAtual.Pontualidade) === 0)
+          if (
+            semanaPontuacao === semana &&
+            Number(pontuacaoAtual.RelCelebracao) === 1 &&
+            Number(pontuacaoAtual.RelDiscipulado) === 1
+          )
+            pontosPontualidade = 1;
       }
       if (pontuacaoAtual.RelCelebracao === 1) {
         pontosRelCelebracao = pontuacaoAtual.RelCelebracao;
@@ -664,29 +700,41 @@ function RelCelula({
     // causar erros no percentual de crescimento.
     if (pontosTotalAtual === 0)
       pontosTotalAtual = Number(
-        pontosRelatorio +
+        pontosRelCelula +
+          Number(pontosRelatorio) +
           Number(percPresentes) +
           Number(pontosPontualidade) +
           pontosVisitantesCelula +
           pontosVisitas +
+          pontosRelCelebracao +
           Number(percCelebracaoIgreja) +
           Number(percCelebracaoLive) +
+          pontosVisitantesCelebracao +
+          pontosRelDiscipulado +
+          Number(pontosNovoMembro) +
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
+
     if (pontosTotalAtualRank === 0)
       pontosTotalAtualRank = Number(
-        pontosRelatorio +
+        pontosRelCelula +
+          Number(pontosRelatorio) +
           Number(percPresentes) +
           Number(pontosPontualidade) +
           pontosVisitantesCelula +
           pontosVisitas +
           pontosEventos +
+          pontosRelCelebracao +
           Number(percCelebracaoIgreja) +
           Number(percCelebracaoLive) +
+          Number(pontosNovoMembro) +
+          pontosVisitantesCelebracao +
+          pontosRelDiscipulado +
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
+
     const TotalPercentual = pontosTotalAtual;
     if (pontosTotalAnterior === 0)
       pontosTotalAnterior = parseFloat(TotalPercentual).toFixed(2);
@@ -731,8 +779,6 @@ function RelCelula({
 
   React.useEffect(() => {
     pegarPontuacao();
-
-    // criarPontuacao();
 
     return 0;
   }, [
@@ -913,31 +959,32 @@ function RelCelula({
       // console.log('semanas', semanas, semanas.length);
 
       for (let index = 0; index < semanas.length; index += 1) {
-        //   console.log('somaTotal', somaTotal, index);
-
         if (semanas[index] && semanas[index].length > 0) {
-          semanasTotal[index] = semanas[index][0].Total;
-          somaTotal += Number(semanasTotal[index]);
+          semanasTotal[index] = parseFloat(semanas[index][0].Total);
+          somaTotal += parseFloat(semanasTotal[index]);
           divisor += 1;
         }
       }
 
       if (divisor === 0) divisor = 1;
-      somaTotal /= divisor;
+      somaTotal = (parseFloat(somaTotal) / Number(divisor)).toFixed(2);
 
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
           (100 * (pTotalAtual - somaTotal)) / somaTotal,
         ).toFixed(2);
-        //   console.log('somaTotal', somaTotal);
-        //   console.log('divisor', divisor);
-        //   console.log('pTotalAtual', pTotalAtual);
-        //   console.log('mediaCrescimento', mediaCrescimento);
+
         if (mediaCrescimento === Number(0).toFixed(2)) setRankCelula(0);
         else {
           if (pTotalAtual === somaTotal) {
             mediaCrescimento = 0;
           }
+          console.log(
+            'mdCrescimetno',
+            mediaCrescimento,
+            pTotalAtual,
+            somaTotal,
+          );
 
           setRankCelula(mediaCrescimento);
         }
@@ -2176,7 +2223,7 @@ function RelCelula({
                                   justifyContent="center"
                                   fontSize="14px"
                                 >
-                                  VISITAS DOS LIDER
+                                  VISITAS DO LIDER
                                 </Box>
                                 <Box
                                   width="40%"

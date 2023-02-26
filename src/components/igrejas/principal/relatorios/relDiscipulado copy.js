@@ -456,37 +456,27 @@ function RelatorioDiscipulado({
     // causar erros no percentual de crescimento.
     if (pontosTotalAtual === 0)
       pontosTotalAtual = Number(
-        pontosRelCelula +
-          Number(pontosRelatorio) +
+        pontosRelatorio +
           Number(percPresentes) +
           Number(pontosPontualidade) +
           pontosVisitantesCelula +
           pontosVisitas +
-          pontosRelCelebracao +
           Number(percCelebracaoIgreja) +
           Number(percCelebracaoLive) +
-          pontosVisitantesCelebracao +
-          pontosRelDiscipulado +
-          Number(pontosNovoMembro) +
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
 
     if (pontosTotalAtualRank === 0)
       pontosTotalAtualRank = Number(
-        pontosRelCelula +
-          Number(pontosRelatorio) +
+        pontosRelatorio +
           Number(percPresentes) +
           Number(pontosPontualidade) +
           pontosVisitantesCelula +
           pontosVisitas +
           pontosEventos +
-          pontosRelCelebracao +
           Number(percCelebracaoIgreja) +
           Number(percCelebracaoLive) +
-          Number(pontosNovoMembro) +
-          pontosVisitantesCelebracao +
-          pontosRelDiscipulado +
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
@@ -709,7 +699,7 @@ function RelatorioDiscipulado({
       }
 
       if (divisor === 0) divisor = 1;
-      somaTotal = (parseFloat(somaTotal) / Number(divisor)).toFixed(2);
+      somaTotal /= divisor;
 
       if (somaTotal !== 0) {
         let mediaCrescimento = parseFloat(
@@ -1142,7 +1132,49 @@ function RelatorioDiscipulado({
                             </Box>
                           </Box>
                         </Box>
-
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          width="90%"
+                          height="15%"
+                        >
+                          <Box
+                            height="100%"
+                            width="90%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Grid container spacing={2}>
+                              <Grid item xs={12} md={12} lg={12} xl={12}>
+                                <Paper
+                                  style={{
+                                    borderRadius: 16,
+                                    textAlign: 'center',
+                                    background: '#fafafa',
+                                    height: 40,
+                                  }}
+                                >
+                                  <Button
+                                    style={{ width: '100%' }}
+                                    onClick={() => setOpenPontuacao(true)}
+                                  >
+                                    <Box
+                                      mr={2}
+                                      ml={2}
+                                      mt={0.3}
+                                      color="blue"
+                                      sx={{ fontFamily: 'arial black' }}
+                                    >
+                                      VER PONTUAÇÃO
+                                    </Box>
+                                  </Button>
+                                </Paper>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Box>
                         <Box mt={5} color={corIgreja.iconeOn}>
                           MEU CRESCIMENTO
                         </Box>
@@ -1827,20 +1859,7 @@ function RelatorioDiscipulado({
         </Box>
       </Box>
       <Dialog fullScreen open={openPontuacao} TransitionComponent={Transition}>
-        <Box>
-          ola pontuação
-          <Box bgcolor="blue">
-            <Button
-              style={{ width: '100%' }}
-              onClick={() => setOpenPontuacao(false)}
-              startIcon={<IoIosSave color="blue" />}
-            >
-              <Box mt={0.3} sx={{ fontFamily: 'arial black' }}>
-                <Box>FECHAR</Box>
-              </Box>
-            </Button>
-          </Box>
-        </Box>
+        <Box>ola pontuação</Box>
       </Dialog>
       {openErro && (
         <Erros

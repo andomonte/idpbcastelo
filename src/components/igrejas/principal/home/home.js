@@ -153,7 +153,7 @@ const home = ({ perfilUser }) => {
 
   const handleMudarPerfil = () => {
     setLoadingMudar(true);
-    console.log('oi perfilUser', perfilUser);
+
     if (perfilUser.login === 'google')
       router.push({
         pathname: '/selectPerfil',

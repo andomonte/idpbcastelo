@@ -11,6 +11,7 @@ export default function TabCelula({
   setQtyVisitante,
   podeEditar,
 }) {
+  console.log('aqui no tabVisi2', nomesVisitantes);
   // const dados = nomesVisitantes.map((row) => createData(row.Nome, true));
 
   const [respostas, setRespostas] = React.useState({});
