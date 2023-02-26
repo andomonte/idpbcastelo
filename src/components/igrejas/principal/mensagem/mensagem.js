@@ -330,6 +330,7 @@ function Mensagem({ mensagem, perfilUser }) {
               onClick={() => {
                 setOpenPesquisa(!openPesquisa);
                 setTitulo('');
+                nomeRef.current.focus();
               }}
             >
               <BsSearch size={25} color="white" />

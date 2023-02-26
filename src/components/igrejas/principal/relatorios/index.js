@@ -22,7 +22,7 @@ import { CgFileDocument } from 'react-icons/cg';
 
 import corIgreja from 'src/utils/coresIgreja';
 
-import RelCelula from './RelCelula';
+import RelCelula from './relCelula';
 import RelVisitasSuper from './relVisitaSuper';
 import RelCoord from './relCoord';
 import RelDistrito from './relDistrito';
