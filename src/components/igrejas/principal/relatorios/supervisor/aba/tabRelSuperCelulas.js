@@ -6,27 +6,68 @@ import useSWR from 'swr';
 import axios from 'axios';
 import TableContainer from '@mui/material/TableContainer';
 import { Oval } from 'react-loading-icons';
-import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
-import SvgIcon from '@mui/material/SvgIcon';
-import { MdScreenSearchDesktop } from 'react-icons/md';
 import ConverteData from 'src/utils/convData2';
+import { AiOutlineFileSearch } from 'react-icons/ai';
+
+import Dialog from '@mui/material/Dialog';
+import 'react-toastify/dist/ReactToastify.css';
+import Slide from '@mui/material/Slide';
+import CalcularPontuacao from 'src/components/igrejas/principal/relatorios/abas/calcularPontuacao';
+import MostrarRelatorioCelula from './mostrarRelatorioCelula';
+import MostrarRelatorioCelebracao from './mostrarRelatorioCelebracao';
+import MostrarRelatorioDiscipulado from './mostrarRelatorioDiscipulado';
+
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
-
+function createPontuacaoFinal(
+  Celula,
+  Distrito,
+  Semana,
+  relCelula,
+  relCelebracao,
+  relDiscipulado,
+  Posicao,
+  TotalRank,
+  Pontuacao,
+  Ano,
+  Total,
+) {
+  return {
+    Celula,
+    Distrito,
+    Semana,
+    relCelula,
+    relCelebracao,
+    relDiscipulado,
+    Posicao,
+    TotalRank,
+    Pontuacao,
+    Ano,
+    Total,
+  };
+}
 export default function TabCelula({
   Ano,
   perfilUser,
   contSemana,
   numeroCelula,
-  setSendResumo,
-  setDadosCelulaSend,
-  setValorIndexSend,
-  setIndexTabela,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [presSem1, setPresSem1] = React.useState([]);
+  const [presCelebracao, setPresCelebracao] = React.useState([]);
+  const [presDisc, setPresDisc] = React.useState([]);
+
+  const [openPontuacao, setOpenPontuacao] = React.useState(false);
+  const [openPlan, setOpenPlan] = React.useState(false);
+  const [openCeleb, setOpenCeleb] = React.useState(false);
+  const [openDisc, setOpenDisc] = React.useState(false);
+  const [pontosF, setPontosF] = React.useState([]);
+  const [celula, setCelula] = React.useState([]);
 
   //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
 
@@ -35,18 +76,22 @@ export default function TabCelula({
 
   const [rankGeral, setRankGeral] = React.useState(0);
 
-  const [posicaoRank, setPosicaoRank] = React.useState(0);
   const [posicaoFinal, setPosicaoFinal] = React.useState(0);
+  const [posicao1, setPosicao1] = React.useState(0);
+  const [posicao2, setPosicao2] = React.useState(0);
 
   const url1 = `/api/consultaRelatorioCelulas/${contSemana2}`;
   const url2 = `/api/consultaPontuacaoSemana/${contSemana2}`;
-
+  const url3 = `/api/consultaRelatorioCelebracao/${contSemana2}`;
+  const url4 = `/api/consultaRelatorioDiscipulado/${contSemana2}`;
   const { data: sem1, errorSem1 } = useSWR(url1, fetcher);
   const { data: pontos, errorPontos } = useSWR(url2, fetcher);
+  const { data: celebracao, errorCelebracao } = useSWR(url3, fetcher);
+  const { data: discipulado, errorDiscipulado } = useSWR(url4, fetcher);
 
   React.useEffect(() => {
     setPresSem1([]);
-
+    setPosicaoFinal([]);
     setContSemana2(contSemana);
   }, [contSemana]);
 
@@ -85,6 +130,77 @@ export default function TabCelula({
   }, [sem1]);
 
   React.useEffect(() => {
+    setPresCelebracao([]);
+    if (celebracao) {
+      if (celebracao && celebracao[0]) {
+        for (let i = 0; i < numeroCelula.length; i += 1) {
+          const presCeleb = celebracao.filter(
+            (val) =>
+              val.Celula === Number(numeroCelula[i]) &&
+              val.Distrito === Number(perfilUser.Distrito) &&
+              Number(val.Data.slice(0, 4)) === Number(Ano),
+          );
+
+          if (presCeleb && presCeleb[0]) {
+            setPresCelebracao((presSemAtual) => [
+              ...presSemAtual,
+              presCeleb[0],
+            ]);
+          } else {
+            const semRel = { Celula: numeroCelula[i] };
+
+            setPresCelebracao((presSemAtual) => [...presSemAtual, semRel]);
+          }
+        }
+      } else
+        for (let i = 0; i < numeroCelula.length; i += 1) {
+          const semRel = { Celula: numeroCelula[i] };
+
+          setPresCelebracao((presSemAtual) => [...presSemAtual, semRel]);
+        }
+    }
+
+    if (errorCelebracao) return <div>An error occured.</div>;
+
+    if (!celebracao) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [celebracao]);
+
+  React.useEffect(() => {
+    setPresDisc([]);
+    if (discipulado) {
+      if (discipulado && discipulado[0]) {
+        for (let i = 0; i < numeroCelula.length; i += 1) {
+          const presCelula = discipulado.filter(
+            (val) =>
+              val.Celula === Number(numeroCelula[i]) &&
+              val.Distrito === Number(perfilUser.Distrito) &&
+              Number(val.Data.slice(0, 4)) === Number(Ano),
+          );
+
+          if (presCelula && presCelula[0]) {
+            setPresDisc((presSemAtual) => [...presSemAtual, presCelula[0]]);
+          } else {
+            const semRel = { Celula: numeroCelula[i] };
+
+            setPresDisc((presSemAtual) => [...presSemAtual, semRel]);
+          }
+        }
+      } else
+        for (let i = 0; i < numeroCelula.length; i += 1) {
+          const semRel = { Celula: numeroCelula[i] };
+
+          setPresDisc((presSemAtual) => [...presSemAtual, semRel]);
+        }
+    }
+
+    if (errorDiscipulado) return <div>An error occured.</div>;
+
+    if (!discipulado) return <Espera descricao="Buscando os Dados" />;
+    return 0;
+  }, [discipulado]);
+
+  React.useEffect(() => {
     if (pontos) {
       if (pontos.length) {
         setRankGeral(
@@ -112,57 +228,146 @@ export default function TabCelula({
 
     setRank(index + 1);
   } */
-  React.useEffect(() => {
-    const listaPosicao = [];
-    let contaPosicao = 0;
-    if (Object.keys(rankGeral).length > 0) {
-      for (let i = 0; i < numeroCelula.length; i += 1) {
-        for (let j = 0; j < Object.keys(rankGeral).length; j += 1) {
-          if (Number(numeroCelula[i]) === Number(rankGeral[j].Celula)) {
-            listaPosicao[contaPosicao] = {
-              Celula: numeroCelula[i],
-              Posicao: j + 1,
-            };
-
-            contaPosicao += 1;
-          }
-        }
-      }
-    }
-
-    setPosicaoRank(listaPosicao);
-  }, [rankGeral]);
 
   React.useEffect(() => {
-    const listaPosicao = [];
-    let contaPosicao = 0;
-    if (Object.keys(posicaoRank).length > 0) {
-      for (let i = 0; i < numeroCelula.length; i += 1) {
-        let contaPreenchimento = 0;
+    const valFinal = [];
 
-        for (let j = 0; j < Object.keys(posicaoRank).length; j += 1) {
-          if (Number(numeroCelula[i]) === Number(posicaoRank[j].Celula)) {
-            listaPosicao[contaPosicao] = {
-              Celula: numeroCelula[i],
-              Posicao: posicaoRank[j].Posicao,
-            };
-            contaPreenchimento += 1;
-            contaPosicao += 1;
-          }
-        }
-        if (contaPreenchimento === 0) {
-          listaPosicao[contaPosicao] = {
-            Celula: numeroCelula[i],
-            Posicao: '',
-          };
+    if (Object.keys(presSem1).length > 0) {
+      presSem1.map((row, i) => {
+        if (Object.keys(rankGeral).length > 0) {
+          rankGeral.map((rol, index) => {
+            if (row.Adultos) {
+              if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+                valFinal[i] = createPontuacaoFinal(
+                  rol.Celula,
+                  rol.Distrito,
+                  rol.Semana,
+                  row,
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  index + 1,
+                  rol.TotalRank,
+                  rol.Pontuacao,
+                  Ano,
+                  rol.Total,
+                );
+              }
+            } else if (row.Celula === rol.Celula) {
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                rol.Distrito ? rol.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
+            }
 
-          contaPosicao += 1;
+            setPosicao1(valFinal);
+            return 0;
+          });
         }
-      }
+        return 0;
+      });
     }
+  }, [rankGeral, presSem1]);
 
-    setPosicaoFinal(listaPosicao);
-  }, [posicaoRank]);
+  React.useEffect(() => {
+    const valFinal = [];
+    if (Object.keys(presCelebracao).length > 0) {
+      presCelebracao.map((row, i) => {
+        if (Object.keys(posicao1).length > 0) {
+          posicao1.map((rol) => {
+            if (row.Adultos) {
+              if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  row.Distrito,
+                  row.Semana,
+                  rol.relCelula ? rol.relCelula : '',
+                  row,
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  rol.Posicao,
+                  rol.TotalRank,
+                  rol.Pontuacao,
+                  Ano,
+                  rol.Total,
+                );
+              }
+            } else if (row.Celula === rol.Celula) {
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                rol.Distrito ? rol.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
+            }
+            setPosicao2(valFinal);
+            return 0;
+          });
+        }
+        return 0;
+      });
+    }
+  }, [posicao1, presCelebracao]);
+
+  React.useEffect(() => {
+    const valFinal = [];
+    if (Object.keys(presDisc).length > 0) {
+      presDisc.map((row, i) => {
+        if (Object.keys(posicao1).length > 0) {
+          posicao2.map((rol) => {
+            if (row.Adultos) {
+              if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  row.Distrito,
+                  row.Semana,
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  row,
+                  rol.Posicao,
+                  rol.TotalRank,
+                  rol.Pontuacao,
+                  Ano,
+                  rol.Total,
+                );
+              }
+            } else if (row.Celula === rol.Celula) {
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                rol.Distrito ? rol.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
+            }
+            setPosicaoFinal(valFinal);
+            return 0;
+          });
+        }
+        return 0;
+      });
+    }
+  }, [posicao2, presDisc]);
 
   //= ==================================================================
 
@@ -174,12 +379,12 @@ export default function TabCelula({
         bgcolor="#80cbc4"
         sx={{
           fontFamily: 'arial black',
-          fontSize: '13px',
+          fontSize: '11px',
           borderBottom: '1px solid #000',
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
-        height={60}
+        height={80}
         width="100%"
         display="flex"
         justifyContent="center"
@@ -191,23 +396,21 @@ export default function TabCelula({
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="25%"
+          width="18%"
         >
-          CÉLULA
+          Nº CÉLULA
         </Box>
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
+          width="16%"
           height="100%"
-          textAlign="center"
-          width="30%"
           sx={{
             borderLeft: '1px solid #000',
-            borderRight: '1px solid #000',
           }}
         >
-          DATA
+          RANK
         </Box>
         <Box
           display="flex"
@@ -215,23 +418,79 @@ export default function TabCelula({
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="25%"
+          width="66%"
           sx={{
-            borderRight: '1px solid #000',
+            borderLeft: '1px solid #000',
           }}
         >
-          RANKING
-        </Box>
-        <Box textAlign="center" width="20%">
-          VER
+          <Box height="100%" width="100%">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="50%"
+              width="100%"
+              sx={{
+                borderBottom: '1px solid #000',
+              }}
+            >
+              RELATÓRIOS
+            </Box>
+
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="50%"
+              textAlign="center"
+              width="100%"
+            >
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="33%"
+                sx={{
+                  borderRight: '1px solid #000',
+                }}
+              >
+                CÉLULA
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="33%"
+                sx={{
+                  borderRight: '1px solid #000',
+                }}
+              >
+                CELEBR.
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+                textAlign="center"
+                width="34%"
+              >
+                DISCIP.
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
 
-      {Object.keys(presSem1).length ? (
+      {Object.keys(posicaoFinal).length ? (
         <TableContainer
           sx={{ height: '100%', minHeight: 335, maxHeight: '61vh' }}
         >
-          {presSem1.map((row, index) => (
+          {posicaoFinal.map((row, index) => (
             <Box
               mt={0}
               display="flex"
@@ -243,6 +502,7 @@ export default function TabCelula({
                 sx={{
                   fontFamily: 'arial black',
                 }}
+                fontSize="12px"
                 borderBottom="1px solid #000"
                 height="100%"
                 width="100%"
@@ -256,36 +516,19 @@ export default function TabCelula({
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="25%"
+                  width="18%"
                 >
-                  {presSem1[index] ? presSem1[index].Celula : '-'}
+                  {posicaoFinal[index] ? posicaoFinal[index].Celula : '-'}
                 </Box>
-
                 <Box
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="30%"
+                  width="16%"
                   sx={{
                     borderLeft: '1px solid #000',
-                    borderRight: '1px solid #000',
-                  }}
-                >
-                  {presSem1[index].Data
-                    ? ConverteData(presSem1[index].Data)
-                    : '-'}
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  textAlign="center"
-                  width="25%"
-                  sx={{
-                    borderRight: '1px solid #000',
                   }}
                 >
                   {posicaoFinal[index] ? (
@@ -297,7 +540,36 @@ export default function TabCelula({
                       display="flex"
                     >
                       <Box height="100%">
-                        {posicaoFinal[index].Posicao ? (
+                        {posicaoFinal[index] && posicaoFinal[index].Posicao ? (
+                          <Box
+                            height="100%"
+                            onClick={() => {
+                              setOpenPontuacao(true);
+                              setCelula(posicaoFinal[index].relCelula);
+                              setPontosF(posicaoFinal[index]);
+                            }}
+                          >
+                            <Box
+                              height="60%"
+                              fontSize="12px"
+                              alignItems="end"
+                              justifyContent="center"
+                              display="flex"
+                            >
+                              <AiOutlineFileSearch color="#780210" size={25} />
+                            </Box>
+                            <Box
+                              height="40%"
+                              color="black"
+                              fontSize="12px"
+                              alignItems="center"
+                              justifyContent="center"
+                              display="flex"
+                            >
+                              {posicaoFinal[index].Posicao}º
+                            </Box>
+                          </Box>
+                        ) : (
                           <Box
                             height="100%"
                             color="blue"
@@ -305,10 +577,8 @@ export default function TabCelula({
                             justifyContent="center"
                             display="flex"
                           >
-                            {posicaoFinal[index].Posicao} º
+                            -
                           </Box>
-                        ) : (
-                          ''
                         )}
                       </Box>
                     </Box>
@@ -317,29 +587,167 @@ export default function TabCelula({
                   )}
                 </Box>
                 <Box
-                  height="100%"
                   display="flex"
                   justifyContent="center"
-                  textAlign="center"
                   alignItems="center"
-                  width="20%"
+                  height="100%"
+                  textAlign="center"
+                  width="22.0%"
+                  sx={{
+                    borderLeft: '1px solid #000',
+                  }}
                 >
-                  {presSem1[index].Data ? (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                      onClick={() => {
-                        setValorIndexSend(presSem1[index].Celula);
-                        setIndexTabela(index);
-                        setDadosCelulaSend(presSem1[index]);
-                        setSendResumo(true);
-                      }}
+                  {posicaoFinal[index].relCelula ? (
+                    <Box
+                      height="100%"
+                      display="flex"
+                      justifyContent="center"
+                      textAlign="center"
+                      alignItems="center"
+                      width="100%"
                     >
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <MdScreenSearchDesktop size={25} color="green" />
-                      </SvgIcon>
-                    </IconButton>
+                      <Box>
+                        <Box
+                          height="100%"
+                          display="flex"
+                          justifyContent="center"
+                          textAlign="center"
+                          alignItems="center"
+                          width="100%"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              /*  setValorIndexSend(posicaoFinal[index].Celula);
+                              setIndexTabela(index);
+                              setDadosCelulaSend(posicaoFinal[index]);
+                              setSendResumo(true); */
+                              setOpenPlan(true);
+                              setCelula(posicaoFinal[index].relCelula);
+                            }}
+                          >
+                            <AiOutlineFileSearch color="#4caf50" size={25} />
+                          </IconButton>
+                        </Box>
+                        {ConverteData(posicaoFinal[index].relCelula.Data).slice(
+                          0,
+                          5,
+                        )}
+                      </Box>
+                    </Box>
+                  ) : (
+                    '-'
+                  )}
+                </Box>
+
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height="100%"
+                  textAlign="center"
+                  width="22.0%"
+                  sx={{
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
+                  }}
+                >
+                  {posicaoFinal[index].relCelebracao ? (
+                    <Box
+                      height="100%"
+                      display="flex"
+                      justifyContent="center"
+                      textAlign="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      <Box>
+                        <Box
+                          height="100%"
+                          display="flex"
+                          justifyContent="center"
+                          textAlign="center"
+                          alignItems="center"
+                          width="100%"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              /*  setValorIndexSend(posicaoFinal[index].Celula);
+                              setIndexTabela(index);
+                              setDadosCelulaSend(posicaoFinal[index]);
+                              setSendResumo(true); */
+                              setOpenCeleb(true);
+                              setCelula(posicaoFinal[index].relCelebracao);
+                            }}
+                          >
+                            <AiOutlineFileSearch color="#aa00ff" size={25} />
+                          </IconButton>
+                        </Box>
+                        {ConverteData(
+                          posicaoFinal[index].relCelebracao.Data,
+                        ).slice(0, 5)}
+                      </Box>
+                    </Box>
+                  ) : (
+                    '-'
+                  )}
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height="100%"
+                  textAlign="center"
+                  width="22.0%"
+                  sx={{
+                    borderLeft: '1px solid #000',
+                    borderRight: '1px solid #000',
+                  }}
+                >
+                  {posicaoFinal[index].relDiscipulado ? (
+                    <Box
+                      height="100%"
+                      display="flex"
+                      justifyContent="center"
+                      textAlign="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      <Box>
+                        <Box
+                          height="100%"
+                          display="flex"
+                          justifyContent="center"
+                          textAlign="center"
+                          alignItems="center"
+                          width="100%"
+                        >
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                            onClick={() => {
+                              /*  setValorIndexSend(posicaoFinal[index].Celula);
+                              setIndexTabela(index);
+                              setDadosCelulaSend(posicaoFinal[index]);
+                              setSendResumo(true); */
+                              setOpenDisc(true);
+                              setCelula(posicaoFinal[index].relDiscipulado);
+                            }}
+                          >
+                            <AiOutlineFileSearch color="#2196f3" size={25} />
+                          </IconButton>
+                        </Box>
+                        {ConverteData(
+                          posicaoFinal[index].relDiscipulado.Data,
+                        ).slice(0, 5)}
+                      </Box>
+                    </Box>
                   ) : (
                     '-'
                   )}
@@ -371,6 +779,30 @@ export default function TabCelula({
           </Box>
         </Box>
       )}
+
+      <Dialog fullScreen open={openPlan} TransitionComponent={Transition}>
+        <MostrarRelatorioCelula celula={celula} setOpenPlan={setOpenPlan} />
+      </Dialog>
+      <Dialog fullScreen open={openCeleb} TransitionComponent={Transition}>
+        <MostrarRelatorioCelebracao
+          celula={celula}
+          setOpenCeleb={setOpenCeleb}
+        />
+      </Dialog>
+      <Dialog fullScreen open={openDisc} TransitionComponent={Transition}>
+        <MostrarRelatorioDiscipulado
+          celula={celula}
+          setOpenDisc={setOpenDisc}
+        />
+      </Dialog>
+      <Dialog fullScreen open={openPontuacao} TransitionComponent={Transition}>
+        <CalcularPontuacao
+          pontos={pontosF}
+          celula={celula}
+          setOpenPontuacao={setOpenPontuacao}
+          perfilUser={perfilUser}
+        />
+      </Dialog>
     </Box>
   );
 }

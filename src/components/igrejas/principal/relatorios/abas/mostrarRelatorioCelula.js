@@ -3,12 +3,10 @@ import React from 'react';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
-import DateFnsUtils from '@date-io/date-fns';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Erros from 'src/utils/erros';
 import dataMask from 'src/components/mascaras/datas';
 import celularMask from 'src/components/mascaras/celular';
@@ -26,10 +24,16 @@ import ConverteData from 'src/utils/dataMMDDAAAA';
 import PegaData from 'src/utils/getDataQuarta';
 import ConverteData2 from 'src/utils/convData2';
 import FormatoData from 'src/utils/formatoData';
-import { GiConsoleController } from 'react-icons/gi';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
 import TabCelula from './tabCelula';
 import TabVisitantes from './tabVisitantes';
 
+import 'react-toastify/dist/ReactToastify.css';
+
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="left" ref={ref} {...props} />
+));
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
 
@@ -156,9 +160,7 @@ function RelCelula({
   // const timeElapsed2 = Date.now();
 
   const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
-  const [inputValue, setInputValue] = React.useState(
-    moment(dataEscolhida).format('DD/MM/YYYY'),
-  );
+
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
 
   const [contConversoes, setContConversoes] = React.useState(0);
@@ -182,7 +184,7 @@ function RelCelula({
   const [nomesVisitanteTab, setNomesVisitanteTab] = React.useState('');
   const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
   const [foneVisitante, setFoneVisitante] = React.useState('');
-  const [open, setIsPickerOpen] = React.useState(false);
+
   const [qtyVisitante, setQtyVisitante] = React.useState(0);
   const [presentes, setPresentes] = React.useState(0);
   const [membrosCelula, setMembrosCelula] = React.useState(0);
@@ -205,10 +207,8 @@ function RelCelula({
 
   const [AnoAtual, setAnoAtual] = React.useState(anoEnviado);
   //= ==============================================================
-  const handleDateChange = (date, value) => {
-    setInputValue(value);
+  const handleDateChange = (date) => {
     setSelectedDate(date);
-    setIsPickerOpen(false);
     setDataEscolhida(date);
   };
   //= ==================================================================
@@ -216,11 +216,6 @@ function RelCelula({
   const getData = () => {
     //  enviarData = inputValue;
     //  enviarDia = Number(inputValue.slice(0, 2));
-  };
-
-  const handleDateClick = () => {
-    //   setSelectedDate();
-    setIsPickerOpen(true);
   };
 
   //= ==========pegar semana apartir da data==============
@@ -957,7 +952,7 @@ function RelCelula({
       ),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
-    const novaData = new Date(ConverteData(inputValue));
+    const novaData = selectedDate;
     const RelCelulaFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
@@ -1033,396 +1028,125 @@ function RelCelula({
       bgcolor={corIgreja.principal2}
       height="calc(100vh)"
     >
-      {openVisitantes ? (
-        <Box
-          bgcolor={corIgreja.principal}
-          width="96%"
-          height="97%"
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
-          borderRadius={16}
-          ml={0}
-        >
+      <Box
+        width="96%"
+        height="97%"
+        minHeight={550}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        borderRadius={16}
+        bgcolor={corIgreja.principal} // cor principal tela inteira
+      >
+        <Box height="100%" width="100%">
           <Box
-            width="100%"
-            height="10%"
             display="flex"
+            alignItems="end"
             justifyContent="center"
-            alignItems="center"
+            height="5%"
+            width="100%"
+            fontSize="18px"
+            fontFamily="Fugaz One"
+            color="white"
           >
-            <Box
-              color="white"
-              fontSize="18px"
-              fontFamily="arial black"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="90%"
-            >
-              LISTA DE VISITANTES
-            </Box>
+            RELATÓRIO DA CÉLULA - {dadosSem.Celula}
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="8%"
+            width="100%"
+          >
+            <Paper style={{ background: '#fafafa', height: 40, width: '90%' }}>
+              <Grid container justifyContent="center">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    inputFormat="DD/MM/YYYY"
+                    id="date-picker-inline"
+                    value={selectedDate}
+                    onClose={getData()}
+                    onChange={(newValue) => {
+                      handleDateChange(newValue.$d);
+                    }}
+                    renderInput={(props) => <TextField {...props} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
+            </Paper>
           </Box>
 
           <Box
-            height="48%"
             display="flex"
-            justifyContent="center"
             alignItems="center"
+            justifyContent="center"
+            height="8%"
             width="100%"
           >
-            <TabVisitantes
-              nomesVisitantes={nomesVisitantes}
-              setQtyVisitante={setQtyVisitante}
-              setNomesVisitantes={setNomesVisitantes}
-              podeEditar={podeEditar}
-              setDeleteVis={setDeleteVis}
-            />
-          </Box>
-          <Box
-            height="30%"
-            width="100%"
-            minHeight={120}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            bgcolor={corIgreja.principal}
-          >
-            <Box ml={1}>
-              <Grid container spacing={0}>
-                <Grid container item xs={12} spacing={1}>
-                  <Grid item xs={12} md={12} lg={12} xl={12}>
-                    <Box width="100%" mt={2} textAlign="center">
-                      <Box
-                        color="white"
-                        fontSize="14px"
-                        textAlign="start"
-                        ml={1}
-                      >
-                        Nome do Visitante
-                      </Box>
-                      <TextField
-                        inputProps={{
-                          style: {
-                            width: '90vw',
-                            height: 30,
-                            borderRadius: 6,
-                            textAlign: 'center',
-                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                          },
-                        }}
-                        id="Nome"
-                        // label="Matricula"
-                        type="text"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={nomeVistante}
-                        variant="standard"
-                        placeholder="Nome completo"
-                        onChange={(e) => {
-                          setNomeVisitante(e.target.value);
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid container spacing={0}>
-                <Grid container item xs={12} spacing={1}>
-                  <Grid item xs={6} md={6} lg={6} xl={6}>
-                    <Box width="100%" mt={2} textAlign="center">
-                      <Box
-                        color="white"
-                        fontSize="14px"
-                        textAlign="start"
-                        ml={1}
-                      >
-                        Celular
-                      </Box>
-                      <TextField
-                        inputProps={{
-                          style: {
-                            width: '100%',
-                            height: 30,
-                            borderRadius: 6,
-                            textAlign: 'center',
-                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                          },
-                        }}
-                        id="Fone"
-                        // label="Matricula"
-                        type="tel"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={celularMask(foneVisitante)}
-                        variant="standard"
-                        placeholder="telefone"
-                        onChange={(e) => {
-                          setFoneVisitante(e.target.value);
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={6} md={6} lg={6} xl={6}>
-                    <Box width="100%" mt={2} textAlign="center">
-                      <Box
-                        color={corData}
-                        fontSize="14px"
-                        textAlign="start"
-                        ml={1}
-                      >
-                        Data de Nascimento
-                      </Box>
-                      <TextField
-                        inputProps={{
-                          style: {
-                            width: '100%',
-                            height: 30,
-                            borderRadius: 6,
-                            textAlign: 'center',
-                            WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                          },
-                        }}
-                        id="Nascimento"
-                        // label="Matricula"
-                        type="tel"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={dataMask(nascimentoVisitante)}
-                        variant="standard"
-                        placeholder="dd/mm/aaaa"
-                        onChange={(e) => {
-                          setCorData('white');
-                          setNascimentoVisitante(e.target.value);
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-          <Box
-            width="100%"
-            height="12%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="94%"
-              height="100%"
+            <Paper
+              style={{
+                textAlign: 'center',
+                background: '#fafafa',
+                height: 40,
+                width: '90%',
+                marginLeft: 10,
+              }}
             >
-              <Grid container spacing={2}>
-                <Grid item xs={6} md={6} lg={6} xl={9}>
-                  <Paper
-                    style={{
-                      borderRadius: 16,
-                      textAlign: 'center',
-                      background: '#ffffaa',
-                      height: 40,
-                    }}
-                  >
-                    <Button
-                      style={{ width: '100%' }}
-                      startIcon={<IoArrowUndoSharp color="blue" />}
-                      onClick={() => {
-                        handleCancelaVisitante();
-                      }}
-                    >
-                      <Box
-                        mr={2}
-                        ml={2}
-                        mt={0.3}
-                        sx={{ fontFamily: 'arial black' }}
-                      >
-                        VOLTAR
-                      </Box>
-                    </Button>
-                  </Paper>
-                </Grid>
-                <Grid item xs={6} md={6} lg={6} xl={9}>
-                  <Paper
-                    style={{
-                      borderRadius: 16,
-                      textAlign: 'center',
-                      background: podeEditar ? '#b39ddb' : 'gray',
-
-                      height: 40,
-                    }}
-                  >
-                    {podeEditar ? (
-                      <Box>
-                        <Box>
-                          {!carregando ? (
-                            <Button
-                              style={{ width: '100%' }}
-                              onClick={handleSalvarVisitante}
-                              startIcon={<IoIosSave color="blue" />}
-                            >
-                              <Box mt={0.3} sx={{ fontFamily: 'arial black' }}>
-                                <Box>Salvar</Box>
-                              </Box>
-                            </Button>
-                          ) : (
-                            <Button style={{ width: '100%' }}>
-                              <Box
-                                display="flex"
-                                mt={0.5}
-                                sx={{ fontFamily: 'arial black' }}
-                              >
-                                <Oval stroke="green" width={20} height={20} />
-                                <Box mt={-0.1} ml={0.8} mr={0}>
-                                  Salvando
-                                </Box>
-                              </Box>
-                            </Button>
-                          )}
-                        </Box>
-                      </Box>
-                    ) : (
-                      <Button style={{ width: '100%' }}>
-                        <Box
-                          mr={0}
-                          ml={0}
-                          mt={0.3}
-                          color="#fff"
-                          sx={{ fontFamily: 'arial black' }}
-                        >
-                          CONSOLIDADO
-                        </Box>
-                      </Button>
-                    )}
-                  </Paper>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-        </Box>
-      ) : (
-        <Box
-          width="96%"
-          height="97%"
-          minHeight={550}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius={16}
-          bgcolor={corIgreja.principal} // cor principal tela inteira
-        >
-          <Box height="100%" width="100%">
-            <Box
-              display="flex"
-              alignItems="end"
-              justifyContent="center"
-              height="5%"
-              width="100%"
-              fontSize="18px"
-              fontFamily="Fugaz One"
-              color="white"
-            >
-              RELATÓRIO DA CÉLULA - {dadosSem.Celula}
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              height="15%"
-              width="100%"
-            >
-              <Paper
-                style={{ background: '#fafafa', height: 40, width: '45%' }}
+              <Button
+                style={{ width: '100%' }}
+                onClick={handleVisitantes}
+                startIcon={<TiUserAdd color="red" />}
               >
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container justifyContent="center">
-                    <KeyboardDatePicker
-                      open={open}
-                      disableToolbar
-                      variant="inline"
-                      format="dd/MM/yyyy"
-                      id="date-picker-inline"
-                      value={selectedDate}
-                      inputValue={inputValue}
-                      onClick={handleDateClick}
-                      onChange={handleDateChange}
-                      onClose={getData()}
-                      style={{
-                        marginLeft: 10,
-                        marginRight: 10,
-                        marginTop: 5,
-                        height: 30,
-                        background: '#fafafa',
-                      }}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-              </Paper>
-              <Paper
-                style={{
-                  textAlign: 'center',
-                  background: '#fafafa',
-                  height: 40,
-                  width: '45%',
-                  marginLeft: 10,
-                }}
-              >
-                <Button
-                  style={{ width: '100%' }}
-                  onClick={handleVisitantes}
-                  startIcon={<TiUserAdd color="red" />}
+                <Box
+                  display="flex"
+                  mt={0.8}
+                  sx={{
+                    fontSize: '12px',
+                    fontFamily: 'arial black',
+                  }}
                 >
+                  <Box mt={-0.2}>INFORME OS VISITANTES: </Box>
                   <Box
-                    display="flex"
-                    mt={0.8}
-                    sx={{
-                      fontSize: '12px',
-                      fontFamily: 'arial black',
-                    }}
+                    color="blue"
+                    fontFamily="arial black"
+                    fontSize="16px"
+                    mt={-0.8}
+                    ml={1}
                   >
-                    <Box mt={-0.2}> VISITANTES: </Box>
-                    <Box
-                      color="blue"
-                      fontFamily="arial black"
-                      fontSize="16px"
-                      mt={-0.8}
-                      ml={1}
-                    >
-                      {qtyVisitante}
-                    </Box>
+                    {qtyVisitante}
                   </Box>
-                </Button>
-              </Paper>
-            </Box>
+                </Box>
+              </Button>
+            </Paper>
+          </Box>
 
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="8%"
+            borderTop="2px solid #fff"
+            borderBottom="2px solid #fff"
+            width="100%"
+          >
             <Box
+              height="100%"
+              width="100%"
               display="flex"
               alignItems="center"
               justifyContent="center"
-              height="8%"
-              borderTop="2px solid #fff"
-              borderBottom="2px solid #fff"
-              width="100%"
+              sx={{
+                color: '#fff',
+                fontFamily: 'Fugaz One',
+                fontSize: '20px',
+              }}
             >
               <Box
-                height="100%"
-                width="100%"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                sx={{
-                  color: '#fff',
-                  fontFamily: 'Fugaz One',
-                  fontSize: '20px',
-                }}
+                width="100%"
+                height="100%"
               >
                 <Box
                   display="flex"
@@ -1432,715 +1156,1016 @@ function RelCelula({
                   height="100%"
                 >
                   <Box
+                    sx={{ fontSize: '16px' }}
                     display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    width="100%"
-                    height="100%"
-                  >
-                    <Box
-                      sx={{ fontSize: '16px' }}
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                      justifyContent="center"
-                      height="100%"
-                      borderRight="2px solid #fff"
-                      width="50%"
-                    >
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        PRESENTES
-                      </Box>
-                      <Box
-                        fontFamily="arial black"
-                        color="white"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        {presentes}
-                      </Box>
-                    </Box>
-                    <Box
-                      sx={{ fontSize: '16px' }}
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                      justifyContent="center"
-                      height="100%"
-                      width="50%"
-                    >
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        MEMBROS
-                      </Box>
-                      <Box
-                        fontFamily="arial black"
-                        color="white"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        {relPresentes.length}
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              height="60%"
-              width="100%"
-            >
-              <Box display="flex" alignItems="end" height="100%" width="96%">
-                {tela === 1 && (
-                  <TabCelula
-                    nomesCelulas={relPresentes}
-                    setPresentes={setPresentes}
-                    setRelCelula={setRelPresentes}
-                    podeEditar={podeEditar}
-                  />
-                )}
-                {tela === 2 && (
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    width="100%"
                     flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
                     height="100%"
-                    mt={1}
+                    borderRight="2px solid #fff"
+                    width="50%"
                   >
-                    <Box display="flex" justifyContent="center" width="100%">
-                      <Box width="90%" ml={1}>
-                        <Grid container item xs={12} spacing={1}>
-                          <Grid item xs={6} md={6} lg={6} xl={6}>
-                            <Box
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                              height={40}
-                              bgcolor="#fafafa"
-                              sx={{
-                                fontSize: '14px',
-                                fontFamily: 'arial black',
-                                borderRadius: 15,
-                              }}
-                            >
-                              <Box display="flex" mt={-0.2}>
-                                ADULTOS
-                                <Box
-                                  mt={0.3}
-                                  ml={1}
-                                  mr={0}
-                                  display="flex"
-                                  color="#000"
-                                  fontSize="16px"
-                                  fontFamily="arial "
-                                >
-                                  <FaLongArrowAltRight />
-                                </Box>
-                              </Box>
-                              <Box
-                                color="blue"
-                                fontFamily="arial black"
-                                fontSize="16px"
-                                mt={-0.2}
-                                ml={1}
-                              >
-                                {adultos}
-                              </Box>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6} md={6} lg={6} xl={6}>
-                            <Box
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                              height={40}
-                              bgcolor="#fafafa"
-                              sx={{
-                                fontSize: '14px',
-                                fontFamily: 'arial black',
-                                borderRadius: 15,
-                              }}
-                            >
-                              <Box display="flex" mt={-0.2}>
-                                CRIANÇAS
-                                <Box
-                                  mt={0.3}
-                                  ml={1}
-                                  mr={0}
-                                  display="flex"
-                                  color="#000"
-                                  fontSize="16px"
-                                  fontFamily="arial "
-                                >
-                                  <FaLongArrowAltRight />
-                                </Box>
-                              </Box>
-                              <Box
-                                color="blue"
-                                fontFamily="arial black"
-                                fontSize="16px"
-                                mt={-0.2}
-                                ml={1}
-                              >
-                                {criancas}
-                              </Box>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                    </Box>
                     <Box
                       display="flex"
+                      alignItems="center"
                       justifyContent="center"
-                      width="100%"
-                      mt={2}
-                      mb={2}
                     >
-                      <Paper
-                        style={{
-                          marginTop: 10,
-                          width: '90%',
-                          textAlign: 'center',
-                          background: '#fafafa',
-                          height: 40,
-                          borderRadius: 15,
-                        }}
-                      >
-                        <Box
-                          width="100%"
-                          height="100%"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Box
-                            width="15%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            onClick={() => {
-                              handleIncConversoes();
-                            }}
-                          >
-                            <IoIosAddCircle color="green" size={30} />
-                          </Box>
-                          <Box
-                            width="70%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
-                          >
-                            <Box width="100%" display="flex" textAlign="center">
-                              <Box
-                                ml={1}
-                                width="60%"
-                                mt={0.5}
-                                display="flex"
-                                justifyContent="center"
-                                fontSize="14px"
-                              >
-                                CONVERSÕES
-                              </Box>
-                              <Box
-                                width="40%"
-                                mt={0}
-                                ml={-2}
-                                display="flex"
-                                color="blue"
-                                textAlign="center"
-                                fontSize="16px"
-                                fontFamily="arial black"
-                              >
-                                <Box
-                                  mt={0.9}
-                                  ml={2}
-                                  mr={2}
-                                  display="flex"
-                                  color="#000"
-                                  fontSize="16px"
-                                  fontFamily="arial "
-                                >
-                                  <FaLongArrowAltRight />
-                                </Box>
-                                <Box
-                                  mt={0.5}
-                                  display="flex"
-                                  color="blue"
-                                  fontSize="16px"
-                                  fontFamily="arial black "
-                                >
-                                  {contConversoes}
-                                </Box>
-                              </Box>
-                            </Box>
-                          </Box>
-                          <Box
-                            width="15%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            onClick={() => {
-                              handleDecConversoes();
-                            }}
-                          >
-                            <IoMdRemoveCircle color="red" size={30} />
-                          </Box>
-                        </Box>
-                      </Paper>
-                    </Box>
-                    <Box display="flex" justifyContent="center" width="100%">
-                      <Paper
-                        style={{
-                          marginTop: 10,
-                          width: '90%',
-                          textAlign: 'center',
-                          background: '#fafafa',
-                          height: 40,
-                          borderRadius: 15,
-                          border: '1px solid #000',
-                        }}
-                      >
-                        <Box
-                          width="100%"
-                          height="100%"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Box
-                            width="15%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            onClick={() => {
-                              handleIncEventos();
-                            }}
-                          >
-                            <IoIosAddCircle color="green" size={30} />
-                          </Box>
-                          <Box
-                            width="70%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
-                          >
-                            <Box width="100%" display="flex" textAlign="center">
-                              <Box
-                                ml={2}
-                                width="60%"
-                                mt={0.5}
-                                display="flex"
-                                justifyContent="center"
-                                fontSize="14px"
-                              >
-                                EVENTOS
-                              </Box>
-                              <Box
-                                width="40%"
-                                mt={0}
-                                ml={-3}
-                                display="flex"
-                                color="blue"
-                                fontSize="20px"
-                                fontFamily="arial black"
-                              >
-                                <Box
-                                  mt={0.9}
-                                  ml={2}
-                                  mr={2}
-                                  display="flex"
-                                  color="#000"
-                                  fontSize="16px"
-                                  fontFamily="arial "
-                                >
-                                  <FaLongArrowAltRight />
-                                </Box>
-                                <Box
-                                  mt={0.5}
-                                  display="flex"
-                                  color="blue"
-                                  fontSize="16px"
-                                  fontFamily="arial black "
-                                >
-                                  {contEventos}
-                                </Box>
-                              </Box>
-                            </Box>
-                          </Box>
-                          <Box
-                            width="15%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            onClick={() => {
-                              handleDecEventos();
-                            }}
-                          >
-                            <IoMdRemoveCircle color="red" size={30} />
-                          </Box>
-                        </Box>
-                      </Paper>
+                      PRESENTES
                     </Box>
                     <Box
+                      fontFamily="arial black"
+                      color="white"
                       display="flex"
+                      alignItems="center"
                       justifyContent="center"
-                      width="100%"
-                      mt={2}
                     >
-                      <Paper
-                        style={{
-                          marginTop: 10,
-                          width: '90%',
-                          textAlign: 'center',
-                          background: '#fafafa',
-                          height: 40,
-                          borderRadius: 15,
-                          border: '1px solid #000',
-                        }}
-                      >
-                        <Box
-                          width="100%"
-                          height="100%"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Box
-                            width="15%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            onClick={() => {
-                              handleIncVisitas();
-                            }}
-                          >
-                            <IoIosAddCircle color="green" size={30} />
-                          </Box>
-                          <Box
-                            width="70%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            sx={{ fontFamily: 'arial black' }}
-                          >
-                            <Box width="100%" display="flex" textAlign="center">
-                              <Box
-                                ml={2}
-                                width="60%"
-                                mt={0.5}
-                                display="flex"
-                                justifyContent="center"
-                                fontSize="14px"
-                              >
-                                VISITAS DO LIDER
-                              </Box>
-                              <Box
-                                width="40%"
-                                mt={0}
-                                ml={-3}
-                                display="flex"
-                                color="blue"
-                                textAlign="center"
-                                fontSize="20px"
-                                fontFamily="arial black"
-                              >
-                                <Box
-                                  mt={0.9}
-                                  ml={2}
-                                  mr={2}
-                                  display="flex"
-                                  color="#000"
-                                  fontSize="16px"
-                                  fontFamily="arial "
-                                >
-                                  <FaLongArrowAltRight />
-                                </Box>
-                                <Box
-                                  mt={0.5}
-                                  display="flex"
-                                  color="blue"
-                                  fontSize="16px"
-                                  fontFamily="arial black "
-                                >
-                                  {contVisitas}
-                                </Box>
-                              </Box>
-                            </Box>
-                          </Box>
-                          <Box
-                            width="15%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            onClick={() => {
-                              handleDecVisitas();
-                            }}
-                          >
-                            <IoMdRemoveCircle color="red" size={30} />
-                          </Box>
-                        </Box>
-                      </Paper>
-                    </Box>
-                    <Box display="flex" justifyContent="center" width="100%">
-                      <Box
-                        width="100%"
-                        mt={0}
-                        display="flex"
-                        justifyContent="center"
-                      >
-                        <TextareaAutosize
-                          maxRows={4}
-                          value={observacoes}
-                          aria-label="maximum height"
-                          placeholder="Observações"
-                          onChange={(e) => {
-                            setObservacoes(e.target.value);
-                          }}
-                          style={{
-                            display: 'flex',
-                            marginTop: 20,
-                            textAlign: 'center',
-                            width: '90%',
-                            height: 80,
-                            borderRadius: 15,
-                            border: '1px solid #000',
-                            resize: 'vertical',
-                            overflow: 'auto',
-                          }}
-                        />
-                      </Box>
+                      {presentes}
                     </Box>
                   </Box>
-                )}
-              </Box>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              height="12%"
-              width="100%"
-            >
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                width="100%"
-                height="100%"
-              >
-                <Box width="90%">
-                  <Grid container spacing={2}>
-                    {tela === 1 && (
-                      <Grid container spacing={2}>
-                        <Grid item xs={6} md={6} lg={6} xl={6}>
-                          <Paper
-                            style={{
-                              borderRadius: 16,
-                              textAlign: 'center',
-                              background: '#ffffaa',
-                              height: 40,
-                            }}
-                          >
-                            <Button
-                              style={{ width: '100%' }}
-                              onClick={() => {
-                                setOpenPlan(false);
-                              }}
-                              startIcon={<IoArrowUndoSharp color="blue" />}
-                            >
-                              <Box
-                                mr={2}
-                                ml={2}
-                                mt={0.3}
-                                sx={{ fontFamily: 'arial black' }}
-                              >
-                                VOLTAR
-                              </Box>
-                            </Button>
-                          </Paper>
-                        </Grid>
-                        <Grid item xs={6} md={6} lg={6} xl={6}>
-                          <Paper
-                            style={{
-                              borderRadius: 16,
-                              textAlign: 'center',
-                              background: '#feeffa',
-                              height: 40,
-                            }}
-                          >
-                            <Button
-                              style={{ width: '100%' }}
-                              onClick={() => {
-                                handleTela2();
-                              }}
-                              endIcon={<IoArrowRedoSharp color="blue" />}
-                            >
-                              <Box
-                                mr={2}
-                                ml={2}
-                                mt={0.3}
-                                sx={{ fontFamily: 'arial black' }}
-                              >
-                                Próxima
-                              </Box>
-                            </Button>
-                          </Paper>
-                        </Grid>
-                      </Grid>
-                    )}
-                    {tela === 2 && (
-                      <Grid container spacing={2}>
-                        <Grid item xs={6} md={6} lg={6} xl={6}>
-                          <Paper
-                            style={{
-                              borderRadius: 16,
-                              textAlign: 'center',
-                              background: '#ffeeee',
-                              height: 40,
-                            }}
-                          >
-                            <Button
-                              style={{ width: '100%' }}
-                              onClick={() => {
-                                setTela(1);
-                              }}
-                              startIcon={<IoArrowUndoSharp color="blue" />}
-                            >
-                              <Box mt={0.3} sx={{ fontFamily: 'arial black' }}>
-                                ANTERIOR
-                              </Box>
-                            </Button>
-                          </Paper>
-                        </Grid>
-
-                        <Grid item xs={6} md={6} lg={6} xl={6}>
-                          <Paper
-                            style={{
-                              borderRadius: 16,
-                              textAlign: 'center',
-                              background: podeEditar ? '#ffffaa' : 'gray',
-                              height: 40,
-                            }}
-                          >
-                            {!podeEditar ? (
-                              <Box>
-                                {podeEditar ? (
-                                  <Box>
-                                    {carregando && (
-                                      <Box>
-                                        <Espera descricao="Gerando o Relatório" />
-                                      </Box>
-                                    )}
-                                    {!carregando ? (
-                                      <Button
-                                        style={{ width: '100%' }}
-                                        onClick={handleSalvar}
-                                        startIcon={<IoIosSave color="blue" />}
-                                      >
-                                        <Box
-                                          mt={0.3}
-                                          sx={{
-                                            fontFamily: 'arial black',
-                                          }}
-                                        >
-                                          <Box>Atualizar</Box>
-                                        </Box>
-                                      </Button>
-                                    ) : (
-                                      <Button style={{ width: '100%' }}>
-                                        <Box
-                                          display="flex"
-                                          mt={0.5}
-                                          sx={{
-                                            fontFamily: 'arial black',
-                                          }}
-                                        >
-                                          <Oval
-                                            stroke="green"
-                                            width={20}
-                                            height={20}
-                                          />
-                                          <Box mt={-0.1} ml={0.8} mr={0}>
-                                            Atualizando
-                                          </Box>
-                                        </Box>
-                                      </Button>
-                                    )}
-                                  </Box>
-                                ) : (
-                                  <Button style={{ width: '100%' }}>
-                                    <Box
-                                      color="#fff"
-                                      mt={0.3}
-                                      sx={{ fontFamily: 'arial black' }}
-                                    >
-                                      Consolidado
-                                    </Box>
-                                  </Button>
-                                )}
-                              </Box>
-                            ) : (
-                              <Box>
-                                {!carregando ? (
-                                  <Button
-                                    style={{ width: '100%' }}
-                                    onClick={handleSalvar}
-                                    startIcon={<IoIosSave color="blue" />}
-                                  >
-                                    <Box
-                                      mt={0.3}
-                                      sx={{ fontFamily: 'arial black' }}
-                                    >
-                                      <Box>Salvar</Box>
-                                    </Box>
-                                  </Button>
-                                ) : (
-                                  <Button style={{ width: '100%' }}>
-                                    <Box
-                                      display="flex"
-                                      mt={0.5}
-                                      sx={{ fontFamily: 'arial black' }}
-                                    >
-                                      <Oval
-                                        stroke="green"
-                                        width={20}
-                                        height={20}
-                                      />
-                                      <Box mt={-0.1} ml={0.8} mr={0}>
-                                        Salvando
-                                      </Box>
-                                    </Box>
-                                  </Button>
-                                )}
-                              </Box>
-                            )}
-                          </Paper>
-                        </Grid>
-                      </Grid>
-                    )}
-                  </Grid>
+                  <Box
+                    sx={{ fontSize: '16px' }}
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    height="100%"
+                    width="50%"
+                  >
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      MEMBROS
+                    </Box>
+                    <Box
+                      fontFamily="arial black"
+                      color="white"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {relPresentes.length}
+                    </Box>
+                  </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="60%"
+            width="100%"
+          >
+            <Box display="flex" alignItems="end" height="100%" width="96%">
+              {tela === 1 && (
+                <TabCelula
+                  nomesCelulas={relPresentes}
+                  setPresentes={setPresentes}
+                  setRelCelula={setRelPresentes}
+                  podeEditar={podeEditar}
+                />
+              )}
+              {tela === 2 && (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  flexDirection="column"
+                  height="100%"
+                  mt={1}
+                >
+                  <Box display="flex" justifyContent="center" width="100%">
+                    <Box width="90%" ml={1}>
+                      <Grid container item xs={12} spacing={1}>
+                        <Grid item xs={6} md={6} lg={6} xl={6}>
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            height={40}
+                            bgcolor="#fafafa"
+                            sx={{
+                              fontSize: '14px',
+                              fontFamily: 'arial black',
+                              borderRadius: 15,
+                            }}
+                          >
+                            <Box display="flex" mt={-0.2}>
+                              ADULTOS
+                              <Box
+                                mt={0.3}
+                                ml={1}
+                                mr={0}
+                                display="flex"
+                                color="#000"
+                                fontSize="16px"
+                                fontFamily="arial "
+                              >
+                                <FaLongArrowAltRight />
+                              </Box>
+                            </Box>
+                            <Box
+                              color="blue"
+                              fontFamily="arial black"
+                              fontSize="16px"
+                              mt={-0.2}
+                              ml={1}
+                            >
+                              {adultos}
+                            </Box>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={6} md={6} lg={6} xl={6}>
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            height={40}
+                            bgcolor="#fafafa"
+                            sx={{
+                              fontSize: '14px',
+                              fontFamily: 'arial black',
+                              borderRadius: 15,
+                            }}
+                          >
+                            <Box display="flex" mt={-0.2}>
+                              CRIANÇAS
+                              <Box
+                                mt={0.3}
+                                ml={1}
+                                mr={0}
+                                display="flex"
+                                color="#000"
+                                fontSize="16px"
+                                fontFamily="arial "
+                              >
+                                <FaLongArrowAltRight />
+                              </Box>
+                            </Box>
+                            <Box
+                              color="blue"
+                              fontFamily="arial black"
+                              fontSize="16px"
+                              mt={-0.2}
+                              ml={1}
+                            >
+                              {criancas}
+                            </Box>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={2}
+                    mb={2}
+                  >
+                    <Paper
+                      style={{
+                        marginTop: 10,
+                        width: '90%',
+                        textAlign: 'center',
+                        background: '#fafafa',
+                        height: 40,
+                        borderRadius: 15,
+                      }}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Box
+                          width="15%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          onClick={() => {
+                            handleIncConversoes();
+                          }}
+                        >
+                          <IoIosAddCircle color="green" size={30} />
+                        </Box>
+                        <Box
+                          width="70%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          <Box width="100%" display="flex" textAlign="center">
+                            <Box
+                              ml={1}
+                              width="60%"
+                              mt={0.5}
+                              display="flex"
+                              justifyContent="center"
+                              fontSize="12px"
+                            >
+                              CONVERSÕES
+                            </Box>
+                            <Box
+                              width="40%"
+                              mt={0}
+                              ml={-2}
+                              display="flex"
+                              color="blue"
+                              textAlign="center"
+                              fontSize="16px"
+                              fontFamily="arial black"
+                            >
+                              <Box
+                                mt={0.9}
+                                ml={2}
+                                mr={2}
+                                display="flex"
+                                color="#000"
+                                fontSize="16px"
+                                fontFamily="arial "
+                              >
+                                <FaLongArrowAltRight />
+                              </Box>
+                              <Box
+                                mt={0.5}
+                                display="flex"
+                                color="blue"
+                                fontSize="16px"
+                                fontFamily="arial black "
+                              >
+                                {contConversoes}
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Box
+                          width="15%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          onClick={() => {
+                            handleDecConversoes();
+                          }}
+                        >
+                          <IoMdRemoveCircle color="red" size={30} />
+                        </Box>
+                      </Box>
+                    </Paper>
+                  </Box>
+                  <Box display="flex" justifyContent="center" width="100%">
+                    <Paper
+                      style={{
+                        marginTop: 10,
+                        width: '90%',
+                        textAlign: 'center',
+                        background: '#fafafa',
+                        height: 40,
+                        borderRadius: 15,
+                        border: '1px solid #000',
+                      }}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Box
+                          width="15%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          onClick={() => {
+                            handleIncEventos();
+                          }}
+                        >
+                          <IoIosAddCircle color="green" size={30} />
+                        </Box>
+                        <Box
+                          width="70%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          <Box width="100%" display="flex" textAlign="center">
+                            <Box ml={2} width="60%">
+                              <Box
+                                width="100%"
+                                mt={0}
+                                display="flex"
+                                justifyContent="center"
+                                fontSize="12px"
+                              >
+                                EVENTOS DA
+                              </Box>
+                              <Box
+                                width="100%"
+                                mt={0}
+                                display="flex"
+                                justifyContent="center"
+                                fontSize="12px"
+                              >
+                                IGREJA
+                              </Box>
+                            </Box>
+                            <Box
+                              width="40%"
+                              mt={0}
+                              ml={-3}
+                              display="flex"
+                              color="blue"
+                              fontSize="20px"
+                              fontFamily="arial black"
+                            >
+                              <Box
+                                mt={0.9}
+                                ml={2}
+                                mr={2}
+                                display="flex"
+                                color="#000"
+                                fontSize="16px"
+                                fontFamily="arial "
+                              >
+                                <FaLongArrowAltRight />
+                              </Box>
+                              <Box
+                                mt={0.5}
+                                display="flex"
+                                color="blue"
+                                fontSize="16px"
+                                fontFamily="arial black "
+                              >
+                                {contEventos}
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Box
+                          width="15%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          onClick={() => {
+                            handleDecEventos();
+                          }}
+                        >
+                          <IoMdRemoveCircle color="red" size={30} />
+                        </Box>
+                      </Box>
+                    </Paper>
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={2}
+                  >
+                    <Paper
+                      style={{
+                        marginTop: 10,
+                        width: '90%',
+                        textAlign: 'center',
+                        background: '#fafafa',
+                        height: 40,
+                        borderRadius: 15,
+                        border: '1px solid #000',
+                      }}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Box
+                          width="15%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          onClick={() => {
+                            handleIncVisitas();
+                          }}
+                        >
+                          <IoIosAddCircle color="green" size={30} />
+                        </Box>
+                        <Box
+                          width="70%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          <Box width="100%" display="flex" textAlign="center">
+                            <Box ml={2} width="60%">
+                              <Box
+                                width="100%"
+                                mt={0}
+                                display="flex"
+                                justifyContent="center"
+                                fontSize="12px"
+                              >
+                                VISITAS DO
+                              </Box>
+                              <Box
+                                width="100%"
+                                mt={0}
+                                display="flex"
+                                justifyContent="center"
+                                fontSize="12px"
+                              >
+                                LIDER
+                              </Box>
+                            </Box>
+                            <Box
+                              width="40%"
+                              mt={0}
+                              ml={-3}
+                              display="flex"
+                              color="blue"
+                              textAlign="center"
+                              fontSize="20px"
+                              fontFamily="arial black"
+                            >
+                              <Box
+                                mt={0.9}
+                                ml={2}
+                                mr={2}
+                                display="flex"
+                                color="#000"
+                                fontSize="16px"
+                                fontFamily="arial "
+                              >
+                                <FaLongArrowAltRight />
+                              </Box>
+                              <Box
+                                mt={0.5}
+                                display="flex"
+                                color="blue"
+                                fontSize="16px"
+                                fontFamily="arial black "
+                              >
+                                {contVisitas}
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Box
+                          width="15%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          onClick={() => {
+                            handleDecVisitas();
+                          }}
+                        >
+                          <IoMdRemoveCircle color="red" size={30} />
+                        </Box>
+                      </Box>
+                    </Paper>
+                  </Box>
+                  <Box display="flex" justifyContent="center" width="100%">
+                    <Box
+                      width="100%"
+                      mt={0}
+                      display="flex"
+                      justifyContent="center"
+                    >
+                      <TextareaAutosize
+                        maxRows={4}
+                        value={observacoes}
+                        aria-label="maximum height"
+                        placeholder="Observações"
+                        onChange={(e) => {
+                          setObservacoes(e.target.value);
+                        }}
+                        style={{
+                          display: 'flex',
+                          marginTop: 20,
+                          textAlign: 'center',
+                          width: '90%',
+                          height: 80,
+                          borderRadius: 15,
+                          border: '1px solid #000',
+                          resize: 'vertical',
+                          overflow: 'auto',
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="12%"
+            width="100%"
+          >
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="100%"
+              height="100%"
+            >
+              <Box width="90%">
+                <Grid container spacing={2}>
+                  {tela === 1 && (
+                    <Grid container spacing={2}>
+                      <Grid item xs={6} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            borderRadius: 16,
+                            textAlign: 'center',
+                            background: '#ffffaa',
+                            height: 40,
+                          }}
+                        >
+                          <Button
+                            style={{ width: '100%' }}
+                            onClick={() => {
+                              setOpenPlan(false);
+                            }}
+                            startIcon={<IoArrowUndoSharp color="blue" />}
+                          >
+                            <Box
+                              mr={2}
+                              ml={2}
+                              mt={0.3}
+                              sx={{ fontFamily: 'arial black' }}
+                            >
+                              VOLTAR
+                            </Box>
+                          </Button>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={6} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            borderRadius: 16,
+                            textAlign: 'center',
+                            background: '#feeffa',
+                            height: 40,
+                          }}
+                        >
+                          <Button
+                            style={{ width: '100%' }}
+                            onClick={() => {
+                              handleTela2();
+                            }}
+                            endIcon={<IoArrowRedoSharp color="blue" />}
+                          >
+                            <Box
+                              mr={2}
+                              ml={2}
+                              mt={0.3}
+                              sx={{ fontFamily: 'arial black' }}
+                            >
+                              Próxima
+                            </Box>
+                          </Button>
+                        </Paper>
+                      </Grid>
+                    </Grid>
+                  )}
+                  {tela === 2 && (
+                    <Grid container spacing={2}>
+                      <Grid item xs={6} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            borderRadius: 16,
+                            textAlign: 'center',
+                            background: '#ffeeee',
+                            height: 40,
+                          }}
+                        >
+                          <Button
+                            style={{ width: '100%' }}
+                            onClick={() => {
+                              setTela(1);
+                            }}
+                            startIcon={<IoArrowUndoSharp color="blue" />}
+                          >
+                            <Box mt={0.3} sx={{ fontFamily: 'arial black' }}>
+                              ANTERIOR
+                            </Box>
+                          </Button>
+                        </Paper>
+                      </Grid>
+
+                      <Grid item xs={6} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            borderRadius: 16,
+                            textAlign: 'center',
+                            background: podeEditar ? '#ffffaa' : 'gray',
+                            height: 40,
+                          }}
+                        >
+                          {!podeEditar ? (
+                            <Box>
+                              {podeEditar ? (
+                                <Box>
+                                  {carregando && (
+                                    <Box>
+                                      <Espera descricao="Gerando o Relatório" />
+                                    </Box>
+                                  )}
+                                  {!carregando ? (
+                                    <Button
+                                      style={{ width: '100%' }}
+                                      onClick={handleSalvar}
+                                      startIcon={<IoIosSave color="blue" />}
+                                    >
+                                      <Box
+                                        mt={0.3}
+                                        sx={{
+                                          fontFamily: 'arial black',
+                                        }}
+                                      >
+                                        <Box>Atualizar</Box>
+                                      </Box>
+                                    </Button>
+                                  ) : (
+                                    <Button style={{ width: '100%' }}>
+                                      <Box
+                                        display="flex"
+                                        mt={0.5}
+                                        sx={{
+                                          fontFamily: 'arial black',
+                                        }}
+                                      >
+                                        <Oval
+                                          stroke="green"
+                                          width={20}
+                                          height={20}
+                                        />
+                                        <Box mt={-0.1} ml={0.8} mr={0}>
+                                          Atualizando
+                                        </Box>
+                                      </Box>
+                                    </Button>
+                                  )}
+                                </Box>
+                              ) : (
+                                <Button style={{ width: '100%' }}>
+                                  <Box
+                                    color="#fff"
+                                    mt={0.3}
+                                    sx={{ fontFamily: 'arial black' }}
+                                  >
+                                    Consolidado
+                                  </Box>
+                                </Button>
+                              )}
+                            </Box>
+                          ) : (
+                            <Box>
+                              {!carregando ? (
+                                <Button
+                                  style={{ width: '100%' }}
+                                  onClick={handleSalvar}
+                                  startIcon={<IoIosSave color="blue" />}
+                                >
+                                  <Box
+                                    mt={0.3}
+                                    sx={{ fontFamily: 'arial black' }}
+                                  >
+                                    <Box>Salvar</Box>
+                                  </Box>
+                                </Button>
+                              ) : (
+                                <Button style={{ width: '100%' }}>
+                                  <Box
+                                    display="flex"
+                                    mt={0.5}
+                                    sx={{ fontFamily: 'arial black' }}
+                                  >
+                                    <Oval
+                                      stroke="green"
+                                      width={20}
+                                      height={20}
+                                    />
+                                    <Box mt={-0.1} ml={0.8} mr={0}>
+                                      Salvando
+                                    </Box>
+                                  </Box>
+                                </Button>
+                              )}
+                            </Box>
+                          )}
+                        </Paper>
+                      </Grid>
+                    </Grid>
+                  )}
+                </Grid>
+              </Box>
+            </Box>
+          </Box>
         </Box>
-      )}
+      </Box>
+
+      <Dialog fullScreen open={openVisitantes} TransitionComponent={Transition}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100vw"
+          minHeight={570}
+          minWidth={300}
+          bgcolor={corIgreja.principal2}
+          height="calc(100vh)"
+        >
+          <Box
+            bgcolor={corIgreja.principal}
+            width="96%"
+            height="97%"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            borderRadius={16}
+            ml={0}
+          >
+            <Box
+              width="100%"
+              height="10%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Box
+                color="white"
+                fontSize="18px"
+                fontFamily="arial black"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                width="90%"
+              >
+                LISTA DE VISITANTES
+              </Box>
+            </Box>
+
+            <Box
+              height="48%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="100%"
+            >
+              <TabVisitantes
+                nomesVisitantes={nomesVisitantes}
+                setQtyVisitante={setQtyVisitante}
+                setNomesVisitantes={setNomesVisitantes}
+                podeEditar={podeEditar}
+                setDeleteVis={setDeleteVis}
+              />
+            </Box>
+            <Box
+              height="30%"
+              width="100%"
+              minHeight={120}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              bgcolor={corIgreja.principal}
+            >
+              <Box ml={1}>
+                <Grid container spacing={0}>
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={12} md={12} lg={12} xl={12}>
+                      <Box width="100%" mt={2} textAlign="center">
+                        <Box
+                          color="white"
+                          fontSize="14px"
+                          textAlign="start"
+                          ml={1}
+                        >
+                          Nome do Visitante
+                        </Box>
+                        <TextField
+                          inputProps={{
+                            style: {
+                              width: '90vw',
+                              height: 30,
+                              borderRadius: 6,
+                              textAlign: 'center',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            },
+                          }}
+                          id="Nome"
+                          // label="Matricula"
+                          type="text"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={nomeVistante}
+                          variant="standard"
+                          placeholder="Nome completo"
+                          onChange={(e) => {
+                            setNomeVisitante(e.target.value);
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={0}>
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={6} md={6} lg={6} xl={6}>
+                      <Box width="100%" mt={2} textAlign="center">
+                        <Box
+                          color="white"
+                          fontSize="14px"
+                          textAlign="start"
+                          ml={1}
+                        >
+                          Celular
+                        </Box>
+                        <TextField
+                          inputProps={{
+                            style: {
+                              width: '100%',
+                              height: 30,
+                              borderRadius: 6,
+                              textAlign: 'center',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            },
+                          }}
+                          id="Fone"
+                          // label="Matricula"
+                          type="tel"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={celularMask(foneVisitante)}
+                          variant="standard"
+                          placeholder="telefone"
+                          onChange={(e) => {
+                            setFoneVisitante(e.target.value);
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6} md={6} lg={6} xl={6}>
+                      <Box width="100%" mt={2} textAlign="center">
+                        <Box
+                          color={corData}
+                          fontSize="14px"
+                          textAlign="start"
+                          ml={1}
+                        >
+                          Data de Nascimento
+                        </Box>
+                        <TextField
+                          inputProps={{
+                            style: {
+                              width: '100%',
+                              height: 30,
+                              borderRadius: 6,
+                              textAlign: 'center',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            },
+                          }}
+                          id="Nascimento"
+                          // label="Matricula"
+                          type="tel"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={dataMask(nascimentoVisitante)}
+                          variant="standard"
+                          placeholder="dd/mm/aaaa"
+                          onChange={(e) => {
+                            setCorData('white');
+                            setNascimentoVisitante(e.target.value);
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <Box
+              width="100%"
+              height="12%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                width="94%"
+                height="100%"
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={6} md={6} lg={6} xl={9}>
+                    <Paper
+                      style={{
+                        borderRadius: 16,
+                        textAlign: 'center',
+                        background: '#ffffaa',
+                        height: 40,
+                      }}
+                    >
+                      <Button
+                        style={{ width: '100%' }}
+                        startIcon={<IoArrowUndoSharp color="blue" />}
+                        onClick={() => {
+                          handleCancelaVisitante();
+                        }}
+                      >
+                        <Box
+                          mr={2}
+                          ml={2}
+                          mt={0.3}
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          VOLTAR
+                        </Box>
+                      </Button>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6} xl={9}>
+                    <Paper
+                      style={{
+                        borderRadius: 16,
+                        textAlign: 'center',
+                        background: podeEditar ? '#b39ddb' : 'gray',
+
+                        height: 40,
+                      }}
+                    >
+                      {podeEditar ? (
+                        <Box>
+                          <Box>
+                            {!carregando ? (
+                              <Button
+                                style={{ width: '100%' }}
+                                onClick={handleSalvarVisitante}
+                                startIcon={<IoIosSave color="blue" />}
+                              >
+                                <Box
+                                  mt={0.3}
+                                  sx={{ fontFamily: 'arial black' }}
+                                >
+                                  <Box>Salvar</Box>
+                                </Box>
+                              </Button>
+                            ) : (
+                              <Button style={{ width: '100%' }}>
+                                <Box
+                                  display="flex"
+                                  mt={0.5}
+                                  sx={{ fontFamily: 'arial black' }}
+                                >
+                                  <Oval stroke="green" width={20} height={20} />
+                                  <Box mt={-0.1} ml={0.8} mr={0}>
+                                    Salvando
+                                  </Box>
+                                </Box>
+                              </Button>
+                            )}
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Button style={{ width: '100%' }}>
+                          <Box
+                            mr={0}
+                            ml={0}
+                            mt={0.3}
+                            color="#fff"
+                            sx={{ fontFamily: 'arial black' }}
+                          >
+                            CONSOLIDADO
+                          </Box>
+                        </Button>
+                      )}
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Dialog>
+
       {openErro && (
         <Erros
           descricao="banco"

@@ -25,13 +25,38 @@ function converteData(DataDDMMYY) {
 function compare(a, b) {
   if (
     converteData(
-      moment(a.Date.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
-    ) <
-    converteData(moment(b.Date.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'))
+      moment(a.Data.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'),
+    ) >
+    converteData(moment(b.Data.substring(0, 10)).format('DD/MM/YYYY hh:mm:ss'))
   )
     return -1;
   return true;
 }
+
+function semanaExata(dataEnviada) {
+  const Ano = dataEnviada.getFullYear();
+  const Mes = dataEnviada.getMonth();
+  const Dia = dataEnviada.getDate();
+  const firstSun = new Date(2021, 0, 1);
+  const lastSun = new Date(Ano, Mes, Dia);
+  while (firstSun.getDay() !== 2) {
+    firstSun.setDate(firstSun.getDate() + 1);
+  }
+  while (lastSun.getDay() !== 2) {
+    lastSun.setDate(lastSun.getDate() + 1);
+  }
+
+  let result = 0;
+  for (let i = result + 1; lastSun - firstSun > 0; i += 1) {
+    lastSun.setDate(lastSun.getDate() - 7);
+    if (i > 52) i = 1;
+    result = i;
+  }
+
+  return result;
+}
+
+//= =================================================================
 
 function getPreviousMonday(date) {
   const previousMonday = date;
@@ -59,6 +84,9 @@ function nextSunday(date) {
 }
 
 function Mensagem({ mensagem, perfilUser }) {
+  const dataAgora = new Date();
+  const novaDataSemana = semanaExata(dataAgora);
+  console.log('dataAgora', novaDataSemana);
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
 
@@ -74,11 +102,14 @@ function Mensagem({ mensagem, perfilUser }) {
 
   const [openPesquisa, setOpenPesquisa] = React.useState(false);
   const [contFonte, setContFonte] = React.useState(16);
-  const [contSemana, setContSemana] = React.useState(mensagem.length);
+  // const [dadosMensagem, setDadosMensagem] = React.useState(0);
+  const [contSemana, setContSemana] = React.useState(novaDataSemana - 7);
   const semanaAtual2 = getPreviousMonday2(contSemana + 7);
   const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
     'DD/MM/YYYY 00:00:00',
   );
+
+  // const semanaAgora = moment(getPreviousMonday(dataAgora)).format('DD/MM/YYYY');
   const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
   const dataInicial = converteData(semanaAtual);
   const dataFinal = converteData(semanaSegunte);
@@ -150,7 +181,7 @@ function Mensagem({ mensagem, perfilUser }) {
     );
     if (!dataMens2.length)
       dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
-
+    console.log(dataMens2);
     setBoletim(dataMens[0]);
 
     const diaSemana = [
@@ -210,7 +241,7 @@ function Mensagem({ mensagem, perfilUser }) {
 
       setDataBr(showData);
     }
-  }, [contSemana]);
+  }, [contSemana, dataFinal]);
 
   React.useEffect(() => {
     const dataMens2 = mensagem.filter((val) => val.titulo === titulo);

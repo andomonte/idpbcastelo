@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { useRouter } from 'next/router';
 import Box from '@material-ui/core/Box';
 import SvgIcon from '@mui/material/SvgIcon';
-import { FaHome, FaPeopleCarry } from 'react-icons/fa';
+import { FaPeopleCarry } from 'react-icons/fa';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
@@ -22,7 +22,7 @@ import { CgFileDocument } from 'react-icons/cg';
 
 import corIgreja from 'src/utils/coresIgreja';
 
-import RelCelula from './relCelula';
+import RelCelula from './RelatorioCelulas';
 import RelVisitasSuper from './relVisitaSuper';
 import RelCoord from './relCoord';
 import RelDistrito from './relDistrito';
@@ -188,74 +188,15 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
             </Box>
 
             {perfilUser.Funcao === 'Lider' && (
-              <Box display="flex" m={0}>
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  fontSize="large"
-                  showLabels
-                  className={classes.rootTopbarIcon}
-                >
-                  <BottomNavigationAction
-                    style={
-                      value === 0
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Celula"
-                    icon={
-                      value === 0 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <IoIosPeople />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <IoIosPeople />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 1
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Celebração"
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaHome />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FaHome />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 2
-                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
-                        : { color: '#eeeeee', fontSize: '12px' }
-                    }
-                    label="Discipulado"
-                    icon={
-                      value === 2 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaPeopleCarry />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FaPeopleCarry />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                </BottomNavigation>
+              <Box
+                fontFamily="Fugaz One"
+                color="white"
+                width="100%"
+                justifyContent="center"
+                display="flex"
+                m={0}
+              >
+                CÉLULA {perfilUser.Celula}
               </Box>
             )}
 

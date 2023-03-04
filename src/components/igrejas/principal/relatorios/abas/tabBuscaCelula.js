@@ -98,13 +98,6 @@ export default function TabCelula({
   const [dataSem4Discipulado, setDataSem4Discipulado] = React.useState([]);
   const [dataSem5Discipulado, setDataSem5Discipulado] = React.useState([]);
 
-  const [dataPSem0, setDataPSem0] = React.useState([]);
-  const [dataPSem1, setDataPSem1] = React.useState([]);
-  const [dataPSem2, setDataPSem2] = React.useState([]);
-  const [dataPSem3, setDataPSem3] = React.useState([]);
-  const [dataPSem4, setDataPSem4] = React.useState([]);
-  const [dataPSem5, setDataPSem5] = React.useState([]);
-
   const [dataRSem0, setDataRSem0] = React.useState([]);
   const [dataRSem1, setDataRSem1] = React.useState([]);
   const [dataRSem2, setDataRSem2] = React.useState([]);
@@ -206,14 +199,6 @@ export default function TabCelula({
     setDataSem4([]);
     setDataSem5([]);
 
-    setDataPSem0([]);
-    setDataPSem1([]);
-    setDataPSem2([]);
-    setDataPSem3([]);
-    setDataPSem4([]);
-    setDataPSem5([]);
-    setDataPSem0([]);
-
     setDataRSem0([]);
     setDataRSem1([]);
     setDataRSem2([]);
@@ -233,14 +218,6 @@ export default function TabCelula({
     setDataSem3Celebracao([]);
     setDataSem4Celebracao([]);
     setDataSem5Celebracao([]);
-
-    setDataPSem0([]);
-    setDataPSem1([]);
-    setDataPSem2([]);
-    setDataPSem3([]);
-    setDataPSem4([]);
-    setDataPSem5([]);
-    setDataPSem0([]);
 
     setDataRSem0([]);
     setDataRSem1([]);
@@ -262,14 +239,6 @@ export default function TabCelula({
     setDataSem3Discipulado([]);
     setDataSem4Discipulado([]);
     setDataSem5Discipulado([]);
-
-    setDataPSem0([]);
-    setDataPSem1([]);
-    setDataPSem2([]);
-    setDataPSem3([]);
-    setDataPSem4([]);
-    setDataPSem5([]);
-    setDataPSem0([]);
 
     setDataRSem0([]);
     setDataRSem1([]);
@@ -397,11 +366,6 @@ export default function TabCelula({
 
   React.useEffect(() => {
     if (pontos2 && pontos2.length) {
-      const presCelula = pontos2.filter(
-        (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          val.Distrito === Number(perfilUser.Distrito),
-      );
       const rSem0 = [];
       const rSem1 = [];
       const rSem2 = [];
@@ -628,35 +592,6 @@ export default function TabCelula({
       );
 
       //= ===========================================================
-
-      if (presCelula.length) {
-        setDataPSem0(presCelula.filter((val) => val.Semana === semana0));
-
-        /* presCelula.map((val) => {
-          const pegaAtual = PegaSemanaAtual(val.Data);
-
-          let mesSem0 = PegaMes(semana0, AnoPesquisado);
-          if (mesSem0 + 1 === 12) mesSem0 = 1;
-
-          if (Mes === 0) {
-            setDataPSem0('-');
-          
-          }
-          if (pegaAtual === PegaSemana(Mes, Ano)) setDataPSem1(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 1) setDataPSem2(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 2) setDataPSem3(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 3) setDataPSem4(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 4) setDataPSem5(val);
-          return 0;
-        }); */
-      }
-      /* 
-
-      
-
-      if (presCelula.length) {
-        
-      } */
     }
     if (errorPontos2) return <div>An error occured.</div>;
     if (!pontos2) return <Espera descricao="Buscando os Dados" />;
@@ -888,7 +823,7 @@ export default function TabCelula({
                               setOpenPlan(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
-                                dataSem0.Data
+                                dataSem0 && dataSem0.Data
                                   ? ConverteData2(dataSem0.Data)
                                   : '-',
                               );
@@ -982,7 +917,7 @@ export default function TabCelula({
                               setOpenPlanCelebracao(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
-                                dataSem0Celebracao.Data
+                                dataSem0Celebracao && dataSem0Celebracao.Data
                                   ? ConverteData2(dataSem0Celebracao.Data)
                                   : '-',
                               );
@@ -1004,7 +939,7 @@ export default function TabCelula({
                               setOpenPlanCelebracao(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
-                                dataSem0Celebracao.Data
+                                dataSem0Celebracao && dataSem0Celebracao.Data
                                   ? ConverteData2(dataSem0Celebracao.Data)
                                   : '-',
                               );
@@ -1094,7 +1029,7 @@ export default function TabCelula({
                               setOpenPlanDiscipulado(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
-                                dataSem0Discipulado.Data
+                                dataSem0Discipulado && dataSem0Discipulado.Data
                                   ? ConverteData2(dataSem0Discipulado.Data)
                                   : '-',
                               );
@@ -1116,7 +1051,7 @@ export default function TabCelula({
                               setOpenPlanDiscipulado(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
-                                dataSem0Discipulado.Data
+                                dataSem0Discipulado && dataSem0Discipulado.Data
                                   ? ConverteData2(dataSem0Discipulado.Data)
                                   : '-',
                               );
@@ -1144,9 +1079,9 @@ export default function TabCelula({
                 )}
               </Box>
               <Box>
-                {dataSem0 && dataSem0.Data
+                {dataSem0Discipulado && dataSem0Discipulado.Data
                   ? ConverteData2(dataSem0Discipulado.Data).slice(0, 5)
-                  : ''}
+                  : '-'}
               </Box>
             </Box>
           </Box>
@@ -1569,7 +1504,7 @@ export default function TabCelula({
                 )}
               </Box>
               <Box>
-                {dataSem1 && dataSem1.Data
+                {dataSem1Discipulado && dataSem1Discipulado.Data
                   ? ConverteData2(dataSem1Discipulado.Data).slice(0, 5)
                   : ''}
               </Box>
@@ -1994,7 +1929,7 @@ export default function TabCelula({
                 )}
               </Box>
               <Box>
-                {dataSem2 && dataSem2.Data
+                {dataSem2Discipulado && dataSem2Discipulado.Data
                   ? ConverteData2(dataSem2Discipulado.Data).slice(0, 5)
                   : ''}
               </Box>
@@ -2419,7 +2354,7 @@ export default function TabCelula({
                 )}
               </Box>
               <Box>
-                {dataSem3 && dataSem3.Data
+                {dataSem3Discipulado && dataSem3Discipulado.Data
                   ? ConverteData2(dataSem3Discipulado.Data).slice(0, 5)
                   : ''}
               </Box>
@@ -2844,7 +2779,7 @@ export default function TabCelula({
                 )}
               </Box>
               <Box>
-                {dataSem4 && dataSem4.Data
+                {dataSem4Discipulado && dataSem4Discipulado.Data
                   ? ConverteData2(dataSem4Discipulado.Data).slice(0, 5)
                   : ''}
               </Box>
@@ -3226,7 +3161,6 @@ export default function TabCelula({
                               );
                             }}
                           >
-                            {' '}
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                               <MdScreenSearchDesktop size={25} color="green" />
                             </SvgIcon>
@@ -3270,7 +3204,7 @@ export default function TabCelula({
                 )}
               </Box>
               <Box>
-                {dataSem5 && dataSem5.Data
+                {dataSem5Discipulado && dataSem5Discipulado.Data
                   ? ConverteData2(dataSem5Discipulado.Data).slice(0, 5)
                   : ''}
               </Box>

@@ -16,7 +16,7 @@ export default function TabCelula({
   perfilUser,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
+  console.log('dados', pontos, celula, perfilUser);
   let semanaAnterior = pontos.Semana;
   let anoAnterior = pontos.Ano;
   for (let i = 1; i < 5; i += 1) {
@@ -56,8 +56,8 @@ export default function TabCelula({
     if (pontosAnt) {
       const pontosCelula = pontosAnt.filter(
         (val) =>
-          Number(val.Celula) === Number(perfilUser.Celula) &&
-          Number(val.Distrito) === Number(perfilUser.Distrito),
+          Number(val.Celula) === Number(celula.Celula) &&
+          Number(val.Distrito) === Number(celula.Distrito),
       );
 
       //  const pontosTotal = pontosCelula.reduce((prev) => prev.TotalRank);
@@ -65,7 +65,7 @@ export default function TabCelula({
         pontosCelula.reduce((a, b) => Number(a) + Number(b.Total), 0) /
           pontosCelula.length,
       ).toFixed(2);
-      console.log(pontos);
+      console.log('PONTOS', pontosAnt);
       const mediaCrescimento = parseFloat(
         (100 * (pontos.Total - total)) / total,
       ).toFixed(2);
@@ -125,8 +125,8 @@ export default function TabCelula({
               color="green"
               width="100%"
             >
-              <Box> PONTUAÇÃO DA SEMANA -</Box>{' '}
-              <Box ml={1}>{pontos.TotalRank}</Box>
+              <Box> PONTUAÇÃO DA</Box>{' '}
+              <Box ml={1}>CÉLULA - {celula.Celula}</Box>
             </Box>
             <Box mt={2} width="100%" fontSize="13px" color="black">
               <TableContainer sx={{ width: '100%', height: '42vh' }}>
