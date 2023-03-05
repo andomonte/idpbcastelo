@@ -1081,7 +1081,7 @@ export default function TabCelula({
               <Box>
                 {dataSem0Discipulado && dataSem0Discipulado.Data
                   ? ConverteData2(dataSem0Discipulado.Data).slice(0, 5)
-                  : '-'}
+                  : ''}
               </Box>
             </Box>
           </Box>
@@ -3248,8 +3248,7 @@ export default function TabCelula({
           anoEnviado={anoEnviado}
           rolMembros={rolMembros}
           dadosSem={dadosSem}
-          openPlanCelebracao={openPlanCelebracao}
-          setOpenPlan={setOpenPlanCelebracao}
+          setOpenPlanCelebracao={setOpenPlanCelebracao}
           dataEnviada={dataEnviada}
         />
       </Dialog>

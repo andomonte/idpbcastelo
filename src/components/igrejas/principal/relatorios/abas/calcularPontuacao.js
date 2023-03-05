@@ -16,7 +16,7 @@ export default function TabCelula({
   perfilUser,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-  console.log('dados', pontos, celula, perfilUser);
+
   let semanaAnterior = pontos.Semana;
   let anoAnterior = pontos.Ano;
   for (let i = 1; i < 5; i += 1) {
@@ -65,7 +65,7 @@ export default function TabCelula({
         pontosCelula.reduce((a, b) => Number(a) + Number(b.Total), 0) /
           pontosCelula.length,
       ).toFixed(2);
-      console.log('PONTOS', pontosAnt);
+
       const mediaCrescimento = parseFloat(
         (100 * (pontos.Total - total)) / total,
       ).toFixed(2);

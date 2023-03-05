@@ -127,8 +127,7 @@ function RelCelula({
   semanaEnviada,
   anoEnviado,
   dadosSem,
-  openPlanCelebracao,
-  setOpenPlan,
+  setOpenPlanCelebracao,
   dataEnviada,
 }) {
   const nomesCelulas = rolMembros.filter(
@@ -298,7 +297,7 @@ function RelCelula({
       setObservacoes('');
 
       setPodeEditar(true);
-      console.log('agora menbers', members);
+
       if (members) setExisteRelatorio('sem');
       else setExisteRelatorio('inicio');
       // if (members) setExisteRelatorio('sem');
@@ -378,7 +377,7 @@ function RelCelula({
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
-
+        setContagem(false);
         setStartShow(!startShow);
       }
 
@@ -486,7 +485,7 @@ function RelCelula({
       setContagem(true);
     }
     return 0;
-  }, [openPlanCelebracao, dadosSem, semanaEnviada]);
+  }, [dadosSem, semanaEnviada]);
 
   React.useEffect(() => {
     mutate(url);
@@ -897,7 +896,7 @@ function RelCelula({
           setCheckRelatorio(false);
           ajusteRelatorio();
           setTela(1);
-*/ setOpenPlan(false);
+*/ setOpenPlanCelebracao(false);
           mutate(url);
           mutate(url2);
 
@@ -1286,7 +1285,7 @@ function RelCelula({
                   fontFamily="Fugaz One"
                   color="white"
                 >
-                  CÉLULA - {dadosSem.Celula}
+                  CÉLULA - {perfilUser.Celula}
                 </Box>
               </Box>
             </Box>
@@ -1756,7 +1755,7 @@ function RelCelula({
                             <Button
                               style={{ width: '100%' }}
                               onClick={() => {
-                                setOpenPlan(false);
+                                setOpenPlanCelebracao(false);
                               }}
                               startIcon={<IoArrowUndoSharp color="blue" />}
                             >

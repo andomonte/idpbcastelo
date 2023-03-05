@@ -115,7 +115,7 @@ function RelCelula({
 }) {
   //  const classes = useStyles();
   // const router = useRouter();
-  console.log('dataEnviada', dataEnviada);
+
   const nomesCelulas = rolMembros.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
@@ -304,6 +304,7 @@ function RelCelula({
       } else {
         //
         setStartShow(!startShow);
+        setContagem(false);
       }
       if (errorMembers) return <div>An error occured.</div>;
       if (!members) return <div>Loading ...</div>;
@@ -585,16 +586,7 @@ function RelCelula({
           Number(percDiscipulado) +
           Number(percLeituraBiblica),
       ).toFixed(2);
-    console.log('pontosTotalAtual', pontosTotalAtual);
-    console.log('pontosRelatorio', pontosRelatorio);
-    console.log('percPresentes', percPresentes);
-    console.log('pontosPontualidade', pontosPontualidade);
-    console.log('pontosVisitantesCelula', pontosVisitantesCelula);
-    console.log('pontosVisitas', pontosVisitas);
-    console.log('percCelebracaoIgreja', percCelebracaoIgreja);
-    console.log('percCelebracaoLive', percCelebracaoLive);
-    console.log('percDiscipulado', percDiscipulado);
-    console.log('percLeituraBiblica', percLeituraBiblica);
+
     const TotalPercentual = pontosTotalAtual;
     //   console.log('TotalPercentual', TotalPercentual);
 
@@ -619,7 +611,6 @@ function RelCelula({
     setPFinal(PontuacaoFinal);
     setPTotalAtual(TotalPercentual);
     setPTotalAtualRank(pontosTotalAtualRank);
-    console.log(pontosTotalAtual, pontosTotalAtualRank);
   };
   React.useEffect(() => {
     pegarPontuacao();
@@ -772,7 +763,7 @@ function RelCelula({
             fontFamily="Fugaz One"
             color="white"
           >
-            CÉLULA - {dadosSem.Celula}
+            CÉLULA - {perfilUser.Celula}
           </Box>
           <Box
             display="flex"

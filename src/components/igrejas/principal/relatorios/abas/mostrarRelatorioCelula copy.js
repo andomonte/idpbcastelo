@@ -3,13 +3,10 @@ import React from 'react';
 import useSWR, { mutate } from 'swr';
 // import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
-import DateFnsUtils from '@date-io/date-fns';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Erros from 'src/utils/erros';
 import dataMask from 'src/components/mascaras/datas';
 import celularMask from 'src/components/mascaras/celular';
@@ -37,7 +34,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="left" ref={ref} {...props} />
 ));
-
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
 
@@ -164,9 +160,7 @@ function RelCelula({
   // const timeElapsed2 = Date.now();
 
   const dataAtual2 = dataEscolhida; // new Date(timeElapsed2);
-  const [inputValue, setInputValue] = React.useState(
-    moment(dataEscolhida).format('DD/MM/YYYY'),
-  );
+
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
 
   const [contConversoes, setContConversoes] = React.useState(0);
@@ -190,7 +184,7 @@ function RelCelula({
   const [nomesVisitanteTab, setNomesVisitanteTab] = React.useState('');
   const [nascimentoVisitante, setNascimentoVisitante] = React.useState('');
   const [foneVisitante, setFoneVisitante] = React.useState('');
-  const [open, setIsPickerOpen] = React.useState(false);
+
   const [qtyVisitante, setQtyVisitante] = React.useState(0);
   const [presentes, setPresentes] = React.useState(0);
   const [membrosCelula, setMembrosCelula] = React.useState(0);
@@ -213,10 +207,8 @@ function RelCelula({
 
   const [AnoAtual, setAnoAtual] = React.useState(anoEnviado);
   //= ==============================================================
-  const handleDateChange = (date, value) => {
-    setInputValue(value);
+  const handleDateChange = (date) => {
     setSelectedDate(date);
-    setIsPickerOpen(false);
     setDataEscolhida(date);
   };
   //= ==================================================================
@@ -224,11 +216,6 @@ function RelCelula({
   const getData = () => {
     //  enviarData = inputValue;
     //  enviarDia = Number(inputValue.slice(0, 2));
-  };
-
-  const handleDateClick = () => {
-    //   setSelectedDate();
-    setIsPickerOpen(true);
   };
 
   //= ==========pegar semana apartir da data==============
@@ -303,6 +290,7 @@ function RelCelula({
 
   const ajusteRelatorio = () => {
     if (contagem) {
+      console.log('ola contabem', contagem, members, semana, dataEnviada);
       const qtyPres = dadosCelula.filter((val) => val.Presenca === true);
       setTela(1);
       setCarregando(false);
@@ -388,7 +376,7 @@ function RelCelula({
           (val) => val.Presenca === true,
         );
         setQtyVisitante(qtyVisitanteNovo.length);
-        setContagem(false);
+
         setStartShow(!startShow);
       }
 
@@ -964,7 +952,7 @@ function RelCelula({
       ),
     );
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
-    const novaData = new Date(ConverteData(inputValue));
+    const novaData = selectedDate;
     const RelCelulaFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
@@ -1061,46 +1049,46 @@ function RelCelula({
             fontFamily="Fugaz One"
             color="white"
           >
-            RELATÓRIO DA CÉLULA - {perfilUser.Celula}
+            RELATÓRIO DA CÉLULA - {dadosSem.Celula}
           </Box>
           <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
-            height="15%"
+            height="8%"
             width="100%"
           >
-            <Paper style={{ background: '#fafafa', height: 40, width: '45%' }}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justifyContent="center">
-                  <KeyboardDatePicker
-                    open={open}
-                    disableToolbar
-                    variant="inline"
-                    format="dd/MM/yyyy"
+            <Paper style={{ background: '#fafafa', height: 40, width: '80%' }}>
+              <Grid container justifyContent="center">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    inputFormat="DD/MM/YYYY"
                     id="date-picker-inline"
                     value={selectedDate}
-                    inputValue={inputValue}
-                    onClick={handleDateClick}
-                    onChange={handleDateChange}
                     onClose={getData()}
-                    style={{
-                      marginLeft: 10,
-                      marginRight: 10,
-                      marginTop: 5,
-                      height: 30,
-                      background: '#fafafa',
+                    onChange={(newValue) => {
+                      handleDateChange(newValue.$d);
                     }}
+                    renderInput={(props) => <TextField {...props} />}
                   />
-                </Grid>
-              </MuiPickersUtilsProvider>
+                </LocalizationProvider>
+              </Grid>
             </Paper>
+          </Box>
+
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="8%"
+            width="100%"
+          >
             <Paper
               style={{
                 textAlign: 'center',
                 background: '#fafafa',
                 height: 40,
-                width: '45%',
+                width: '80%',
                 marginLeft: 10,
               }}
             >
@@ -1117,7 +1105,7 @@ function RelCelula({
                     fontFamily: 'arial black',
                   }}
                 >
-                  <Box mt={-0.2}> VISITANTES: </Box>
+                  <Box mt={-0.2}> INSERIR OS VISITANTES: </Box>
                   <Box
                     color="blue"
                     fontFamily="arial black"
@@ -1878,302 +1866,295 @@ function RelCelula({
             </Box>
           </Box>
         </Box>
-        <Dialog
-          fullScreen
-          open={openVisitantes}
-          TransitionComponent={Transition}
+      </Box>
+
+      <Dialog fullScreen open={openVisitantes} TransitionComponent={Transition}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100vw"
+          minHeight={570}
+          minWidth={300}
+          bgcolor={corIgreja.principal2}
+          height="calc(100vh)"
         >
           <Box
+            bgcolor={corIgreja.principal}
+            width="96%"
+            height="97%"
             display="flex"
             justifyContent="center"
-            alignItems="center"
-            width="100vw"
-            minHeight={570}
-            minWidth={300}
-            bgcolor={corIgreja.principal2}
-            height="calc(100vh)"
+            flexDirection="column"
+            borderRadius={16}
+            ml={0}
           >
             <Box
-              bgcolor={corIgreja.principal}
-              width="96%"
-              height="97%"
+              width="100%"
+              height="10%"
               display="flex"
               justifyContent="center"
-              flexDirection="column"
-              borderRadius={16}
-              ml={0}
+              alignItems="center"
             >
               <Box
-                width="100%"
-                height="10%"
+                color="white"
+                fontSize="18px"
+                fontFamily="arial black"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
+                width="90%"
               >
-                <Box
-                  color="white"
-                  fontSize="18px"
-                  fontFamily="arial black"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  width="90%"
-                >
-                  LISTA DE VISITANTES
-                </Box>
+                LISTA DE VISITANTES
               </Box>
+            </Box>
 
-              <Box
-                height="48%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                width="100%"
-              >
-                <TabVisitantes
-                  nomesVisitantes={nomesVisitantes}
-                  setQtyVisitante={setQtyVisitante}
-                  setNomesVisitantes={setNomesVisitantes}
-                  podeEditar={podeEditar}
-                  setDeleteVis={setDeleteVis}
-                />
-              </Box>
-              <Box
-                height="30%"
-                width="100%"
-                minHeight={120}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                bgcolor={corIgreja.principal}
-              >
-                <Box ml={1}>
-                  <Grid container spacing={0}>
-                    <Grid container item xs={12} spacing={1}>
-                      <Grid item xs={12} md={12} lg={12} xl={12}>
-                        <Box width="100%" mt={2} textAlign="center">
-                          <Box
-                            color="white"
-                            fontSize="14px"
-                            textAlign="start"
-                            ml={1}
-                          >
-                            Nome do Visitante
-                          </Box>
-                          <TextField
-                            inputProps={{
-                              style: {
-                                width: '90vw',
-                                height: 30,
-                                borderRadius: 6,
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Nome"
-                            // label="Matricula"
-                            type="text"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={nomeVistante}
-                            variant="standard"
-                            placeholder="Nome completo"
-                            onChange={(e) => {
-                              setNomeVisitante(e.target.value);
-                            }}
-                          />
+            <Box
+              height="48%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="100%"
+            >
+              <TabVisitantes
+                nomesVisitantes={nomesVisitantes}
+                setQtyVisitante={setQtyVisitante}
+                setNomesVisitantes={setNomesVisitantes}
+                podeEditar={podeEditar}
+                setDeleteVis={setDeleteVis}
+              />
+            </Box>
+            <Box
+              height="30%"
+              width="100%"
+              minHeight={120}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              bgcolor={corIgreja.principal}
+            >
+              <Box ml={1}>
+                <Grid container spacing={0}>
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={12} md={12} lg={12} xl={12}>
+                      <Box width="100%" mt={2} textAlign="center">
+                        <Box
+                          color="white"
+                          fontSize="14px"
+                          textAlign="start"
+                          ml={1}
+                        >
+                          Nome do Visitante
                         </Box>
-                      </Grid>
+                        <TextField
+                          inputProps={{
+                            style: {
+                              width: '90vw',
+                              height: 30,
+                              borderRadius: 6,
+                              textAlign: 'center',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            },
+                          }}
+                          id="Nome"
+                          // label="Matricula"
+                          type="text"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={nomeVistante}
+                          variant="standard"
+                          placeholder="Nome completo"
+                          onChange={(e) => {
+                            setNomeVisitante(e.target.value);
+                          }}
+                        />
+                      </Box>
                     </Grid>
                   </Grid>
-                  <Grid container spacing={0}>
-                    <Grid container item xs={12} spacing={1}>
-                      <Grid item xs={6} md={6} lg={6} xl={6}>
-                        <Box width="100%" mt={2} textAlign="center">
-                          <Box
-                            color="white"
-                            fontSize="14px"
-                            textAlign="start"
-                            ml={1}
-                          >
-                            Celular
-                          </Box>
-                          <TextField
-                            inputProps={{
-                              style: {
-                                width: '100%',
-                                height: 30,
-                                borderRadius: 6,
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Fone"
-                            // label="Matricula"
-                            type="tel"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={celularMask(foneVisitante)}
-                            variant="standard"
-                            placeholder="telefone"
-                            onChange={(e) => {
-                              setFoneVisitante(e.target.value);
-                            }}
-                          />
+                </Grid>
+                <Grid container spacing={0}>
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={6} md={6} lg={6} xl={6}>
+                      <Box width="100%" mt={2} textAlign="center">
+                        <Box
+                          color="white"
+                          fontSize="14px"
+                          textAlign="start"
+                          ml={1}
+                        >
+                          Celular
                         </Box>
-                      </Grid>
-                      <Grid item xs={6} md={6} lg={6} xl={6}>
-                        <Box width="100%" mt={2} textAlign="center">
-                          <Box
-                            color={corData}
-                            fontSize="14px"
-                            textAlign="start"
-                            ml={1}
-                          >
-                            Data de Nascimento
-                          </Box>
-                          <TextField
-                            inputProps={{
-                              style: {
-                                width: '100%',
-                                height: 30,
-                                borderRadius: 6,
-                                textAlign: 'center',
-                                WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
-                              },
-                            }}
-                            id="Nascimento"
-                            // label="Matricula"
-                            type="tel"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={dataMask(nascimentoVisitante)}
-                            variant="standard"
-                            placeholder="dd/mm/aaaa"
-                            onChange={(e) => {
-                              setCorData('white');
-                              setNascimentoVisitante(e.target.value);
-                            }}
-                          />
+                        <TextField
+                          inputProps={{
+                            style: {
+                              width: '100%',
+                              height: 30,
+                              borderRadius: 6,
+                              textAlign: 'center',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            },
+                          }}
+                          id="Fone"
+                          // label="Matricula"
+                          type="tel"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={celularMask(foneVisitante)}
+                          variant="standard"
+                          placeholder="telefone"
+                          onChange={(e) => {
+                            setFoneVisitante(e.target.value);
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6} md={6} lg={6} xl={6}>
+                      <Box width="100%" mt={2} textAlign="center">
+                        <Box
+                          color={corData}
+                          fontSize="14px"
+                          textAlign="start"
+                          ml={1}
+                        >
+                          Data de Nascimento
                         </Box>
-                      </Grid>
+                        <TextField
+                          inputProps={{
+                            style: {
+                              width: '100%',
+                              height: 30,
+                              borderRadius: 6,
+                              textAlign: 'center',
+                              WebkitBoxShadow: '0 0 0 1000px #fafafa  inset',
+                            },
+                          }}
+                          id="Nascimento"
+                          // label="Matricula"
+                          type="tel"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={dataMask(nascimentoVisitante)}
+                          variant="standard"
+                          placeholder="dd/mm/aaaa"
+                          onChange={(e) => {
+                            setCorData('white');
+                            setNascimentoVisitante(e.target.value);
+                          }}
+                        />
+                      </Box>
                     </Grid>
                   </Grid>
-                </Box>
+                </Grid>
               </Box>
+            </Box>
+            <Box
+              width="100%"
+              height="12%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Box
-                width="100%"
-                height="12%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
+                width="94%"
+                height="100%"
               >
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  width="94%"
-                  height="100%"
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={6} md={6} lg={6} xl={9}>
-                      <Paper
-                        style={{
-                          borderRadius: 16,
-                          textAlign: 'center',
-                          background: '#ffffaa',
-                          height: 40,
+                <Grid container spacing={2}>
+                  <Grid item xs={6} md={6} lg={6} xl={9}>
+                    <Paper
+                      style={{
+                        borderRadius: 16,
+                        textAlign: 'center',
+                        background: '#ffffaa',
+                        height: 40,
+                      }}
+                    >
+                      <Button
+                        style={{ width: '100%' }}
+                        startIcon={<IoArrowUndoSharp color="blue" />}
+                        onClick={() => {
+                          handleCancelaVisitante();
                         }}
                       >
-                        <Button
-                          style={{ width: '100%' }}
-                          startIcon={<IoArrowUndoSharp color="blue" />}
-                          onClick={() => {
-                            handleCancelaVisitante();
-                          }}
+                        <Box
+                          mr={2}
+                          ml={2}
+                          mt={0.3}
+                          sx={{ fontFamily: 'arial black' }}
                         >
+                          VOLTAR
+                        </Box>
+                      </Button>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={6} xl={9}>
+                    <Paper
+                      style={{
+                        borderRadius: 16,
+                        textAlign: 'center',
+                        background: podeEditar ? '#b39ddb' : 'gray',
+
+                        height: 40,
+                      }}
+                    >
+                      {podeEditar ? (
+                        <Box>
+                          <Box>
+                            {!carregando ? (
+                              <Button
+                                style={{ width: '100%' }}
+                                onClick={handleSalvarVisitante}
+                                startIcon={<IoIosSave color="blue" />}
+                              >
+                                <Box
+                                  mt={0.3}
+                                  sx={{ fontFamily: 'arial black' }}
+                                >
+                                  <Box>Salvar</Box>
+                                </Box>
+                              </Button>
+                            ) : (
+                              <Button style={{ width: '100%' }}>
+                                <Box
+                                  display="flex"
+                                  mt={0.5}
+                                  sx={{ fontFamily: 'arial black' }}
+                                >
+                                  <Oval stroke="green" width={20} height={20} />
+                                  <Box mt={-0.1} ml={0.8} mr={0}>
+                                    Salvando
+                                  </Box>
+                                </Box>
+                              </Button>
+                            )}
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Button style={{ width: '100%' }}>
                           <Box
-                            mr={2}
-                            ml={2}
+                            mr={0}
+                            ml={0}
                             mt={0.3}
+                            color="#fff"
                             sx={{ fontFamily: 'arial black' }}
                           >
-                            VOLTAR
+                            CONSOLIDADO
                           </Box>
                         </Button>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={6} md={6} lg={6} xl={9}>
-                      <Paper
-                        style={{
-                          borderRadius: 16,
-                          textAlign: 'center',
-                          background: podeEditar ? '#b39ddb' : 'gray',
-
-                          height: 40,
-                        }}
-                      >
-                        {podeEditar ? (
-                          <Box>
-                            <Box>
-                              {!carregando ? (
-                                <Button
-                                  style={{ width: '100%' }}
-                                  onClick={handleSalvarVisitante}
-                                  startIcon={<IoIosSave color="blue" />}
-                                >
-                                  <Box
-                                    mt={0.3}
-                                    sx={{ fontFamily: 'arial black' }}
-                                  >
-                                    <Box>Salvar</Box>
-                                  </Box>
-                                </Button>
-                              ) : (
-                                <Button style={{ width: '100%' }}>
-                                  <Box
-                                    display="flex"
-                                    mt={0.5}
-                                    sx={{ fontFamily: 'arial black' }}
-                                  >
-                                    <Oval
-                                      stroke="green"
-                                      width={20}
-                                      height={20}
-                                    />
-                                    <Box mt={-0.1} ml={0.8} mr={0}>
-                                      Salvando
-                                    </Box>
-                                  </Box>
-                                </Button>
-                              )}
-                            </Box>
-                          </Box>
-                        ) : (
-                          <Button style={{ width: '100%' }}>
-                            <Box
-                              mr={0}
-                              ml={0}
-                              mt={0.3}
-                              color="#fff"
-                              sx={{ fontFamily: 'arial black' }}
-                            >
-                              CONSOLIDADO
-                            </Box>
-                          </Button>
-                        )}
-                      </Paper>
-                    </Grid>
+                      )}
+                    </Paper>
                   </Grid>
-                </Box>
+                </Grid>
               </Box>
             </Box>
           </Box>
-        </Dialog>
-      </Box>
+        </Box>
+      </Dialog>
 
       {openErro && (
         <Erros
