@@ -77,6 +77,7 @@ export default function TabCelula({
   const [rankGeral, setRankGeral] = React.useState(0);
 
   const [posicaoFinal, setPosicaoFinal] = React.useState(0);
+  const [posicao0, setPosicao0] = React.useState(0);
   const [posicao1, setPosicao1] = React.useState(0);
   const [posicao2, setPosicao2] = React.useState(0);
   const [posicao3, setPosicao3] = React.useState(0);
@@ -232,32 +233,67 @@ export default function TabCelula({
 
   React.useEffect(() => {
     const valFinal = [];
-    for (let i = 0; i < numeroCelula.length; i += 1) {
-      valFinal[i] = createPontuacaoFinal(
-        numeroCelula[i],
-        perfilUser.Distrito ? perfilUser.Distrito : '',
-        contSemana,
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        Ano,
-        '',
-      );
-    }
-  }, []);
 
+    if (numeroCelula.length > 0) {
+      numeroCelula.map((row, i) => {
+        if (Object.keys(rankGeral).length > 0) {
+          let check = 0;
+          rankGeral.map((rol, index) => {
+            if (row) {
+              if (
+                row === rol.Celula &&
+                Number(perfilUser.Distrito) === Number(rol.Distrito)
+              ) {
+                check = 1;
+                valFinal[i] = createPontuacaoFinal(
+                  rol.Celula,
+                  rol.Distrito,
+                  rol.Semana,
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  index + 1,
+                  rol.TotalRank,
+                  rol.Pontuacao,
+                  Ano,
+                  rol.Total,
+                );
+              } else if (check === 0) {
+                valFinal[i] = createPontuacaoFinal(
+                  numeroCelula[i],
+                  perfilUser.Distrito ? perfilUser.Distrito : '',
+                  contSemana,
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  Ano,
+                  '',
+                );
+              }
+            }
+            setPosicao0(valFinal);
+            return 0;
+          });
+        }
+        return 0;
+      });
+    }
+  }, [rankGeral]);
   React.useEffect(() => {
     const valFinal = [];
 
     if (Object.keys(presSem1).length > 0) {
+      let check = 0;
       presSem1.map((row, i) => {
-        if (Object.keys(rankGeral).length > 0) {
-          rankGeral.map((rol, index) => {
+        let check2 = 0;
+        if (Object.keys(posicao0).length > 0) {
+          posicao0.map((rol, index) => {
             if (row.Adultos) {
               if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+                check = 1;
                 valFinal[i] = createPontuacaoFinal(
                   rol.Celula,
                   rol.Distrito,
@@ -271,8 +307,41 @@ export default function TabCelula({
                   Ano,
                   rol.Total,
                 );
+              } else if (check === 0) {
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  perfilUser.Distrito ? perfilUser.Distrito : '',
+                  rol.Semana ? rol.Semana : '',
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  rol.Posicao ? rol.Posicao : '',
+                  rol.TotalRank ? rol.TotalRank : '',
+                  rol.Pontuacao ? rol.Pontuacao : '',
+                  Ano,
+                  rol.Total ? rol.Total : '',
+                );
               }
-            } else if (row.Celula === rol.Celula) {
+            } else if (
+              row.Celula === rol.Celula &&
+              rol.Distrito === perfilUser.Distrito
+            ) {
+              console.log('oi disc esle if 1 ->', row.Celula);
+              check2 = 1;
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                perfilUser.Distrito ? perfilUser.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
+            } else if (check2 === 0) {
               valFinal[i] = createPontuacaoFinal(
                 row.Celula,
                 perfilUser.Distrito ? perfilUser.Distrito : '',
@@ -295,31 +364,66 @@ export default function TabCelula({
         return 0;
       });
     }
-  }, [rankGeral, presSem1]);
+  }, [posicao0, presSem1]);
 
   React.useEffect(() => {
     const valFinal = [];
     if (Object.keys(presCelebracao).length > 0) {
+      let check = 0;
       presCelebracao.map((row, i) => {
+        let check2 = 0;
         if (Object.keys(posicao1).length > 0) {
-          posicao1.map((rol) => {
+          posicao1.map((rol, index) => {
             if (row.Adultos) {
               if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+                check = 1;
                 valFinal[i] = createPontuacaoFinal(
-                  row.Celula,
-                  row.Distrito,
-                  row.Semana,
+                  rol.Celula,
+                  rol.Distrito,
+                  rol.Semana,
                   rol.relCelula ? rol.relCelula : '',
                   row,
                   rol.relDiscipulado ? rol.relDiscipulado : '',
-                  rol.Posicao,
+                  index + 1,
                   rol.TotalRank,
                   rol.Pontuacao,
                   Ano,
                   rol.Total,
                 );
+              } else if (check === 0) {
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  perfilUser.Distrito ? perfilUser.Distrito : '',
+                  rol.Semana ? rol.Semana : '',
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  rol.Posicao ? rol.Posicao : '',
+                  rol.TotalRank ? rol.TotalRank : '',
+                  rol.Pontuacao ? rol.Pontuacao : '',
+                  Ano,
+                  rol.Total ? rol.Total : '',
+                );
               }
-            } else if (row.Celula === rol.Celula) {
+            } else if (
+              row.Celula === rol.Celula &&
+              rol.Distrito === perfilUser.Distrito
+            ) {
+              check2 = 1;
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                perfilUser.Distrito ? perfilUser.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
+            } else if (check2 === 0) {
               valFinal[i] = createPontuacaoFinal(
                 row.Celula,
                 perfilUser.Distrito ? perfilUser.Distrito : '',
@@ -334,6 +438,7 @@ export default function TabCelula({
                 rol.Total ? rol.Total : '',
               );
             }
+
             setPosicao2(valFinal);
             return 0;
           });
@@ -346,43 +451,83 @@ export default function TabCelula({
   React.useEffect(() => {
     const valFinal = [];
     if (Object.keys(presDisc).length > 0) {
+      let check = 0;
       presDisc.map((row, i) => {
+        let check2 = 0;
         if (Object.keys(posicao2).length > 0) {
-          console.log('verdade posicao2', posicao2);
-          posicao2.map((rol) => {
+          posicao2.map((rol, index) => {
             if (row.Adultos) {
               if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+                console.log('entro disc if-2', row);
+                check = 1;
                 valFinal[i] = createPontuacaoFinal(
-                  row.Celula,
-                  row.Distrito,
-                  row.Semana,
+                  rol.Celula,
+                  rol.Distrito,
+                  rol.Semana,
                   rol.relCelula ? rol.relCelula : '',
                   rol.relCelebracao ? rol.relCelebracao : '',
                   row,
-                  rol.Posicao,
+                  index + 1,
                   rol.TotalRank,
                   rol.Pontuacao,
                   Ano,
                   rol.Total,
                 );
+              } else if (check === 0) {
+                console.log('entro disc else-do if2', row.Celula);
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  perfilUser.Distrito ? perfilUser.Distrito : '',
+                  rol.Semana ? rol.Semana : '',
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  rol.Posicao ? rol.Posicao : '',
+                  rol.TotalRank ? rol.TotalRank : '',
+                  rol.Pontuacao ? rol.Pontuacao : '',
+                  Ano,
+                  rol.Total ? rol.Total : '',
+                );
               }
-            } else if (row.Celula === rol.Celula) {
-              console.log('valFinal 2', valFinal);
-              valFinal[i] = createPontuacaoFinal(
-                row.Celula,
-                perfilUser.Distrito ? perfilUser.Distrito : '',
-                rol.Semana ? rol.Semana : '',
-                rol.relCelula ? rol.relCelula : '',
-                rol.relCelebracao ? rol.relCelebracao : '',
-                rol.relDiscipulado ? rol.relDiscipulado : '',
-                rol.Posicao ? rol.Posicao : '',
-                rol.TotalRank ? rol.TotalRank : '',
-                rol.Pontuacao ? rol.Pontuacao : '',
-                Ano,
-                rol.Total ? rol.Total : '',
-              );
+            } else {
+              console.log('oi disc esle if 1 ->', row.Celula, check2, i);
+              if (
+                row.Celula === rol.Celula &&
+                rol.Distrito === perfilUser.Distrito
+              ) {
+                check2 = 1;
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  perfilUser.Distrito ? perfilUser.Distrito : '',
+                  rol.Semana ? rol.Semana : '',
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  rol.Posicao ? rol.Posicao : '',
+                  rol.TotalRank ? rol.TotalRank : '',
+                  rol.Pontuacao ? rol.Pontuacao : '',
+                  Ano,
+                  rol.Total ? rol.Total : '',
+                );
+              } else if (check2 === 0) {
+                console.log('oi disc esle if 3 ->', row.Celula, check2, i);
+                valFinal[i] = createPontuacaoFinal(
+                  row.Celula,
+                  perfilUser.Distrito ? perfilUser.Distrito : '',
+                  rol.Semana ? rol.Semana : '',
+                  rol.relCelula ? rol.relCelula : '',
+                  rol.relCelebracao ? rol.relCelebracao : '',
+                  rol.relDiscipulado ? rol.relDiscipulado : '',
+                  rol.Posicao ? rol.Posicao : '',
+                  rol.TotalRank ? rol.TotalRank : '',
+                  rol.Pontuacao ? rol.Pontuacao : '',
+                  Ano,
+                  rol.Total ? rol.Total : '',
+                );
+              }
             }
-            setPosicao3(valFinal);
+            console.log('aqui agora', valFinal);
+            setPosicaoFinal(valFinal);
             return 0;
           });
         }
@@ -390,49 +535,8 @@ export default function TabCelula({
       });
     }
   }, [posicao2, presDisc]);
+  console.log('aqui posicao 2', posicao2, 'posicão final', posicaoFinal);
 
-  //= ==================================================================
-  React.useEffect(() => {
-    const valFinal = [];
-
-    if (Object.keys(posicao3).length > 0) {
-      console.log('ola posicao3', posicao3, posicao1, posicao2);
-      posicao3.map((rol, i) => {
-        if (!rol.relCelula && !rol.relCelebracao && !rol.relDiscipulado) {
-          valFinal[i] = createPontuacaoFinal(
-            rol.Celula,
-            perfilUser.Distrito ? perfilUser.Distrito : '',
-            rol.Semana ? rol.Semana : '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            Ano,
-            '',
-          );
-        } else {
-          valFinal[i] = createPontuacaoFinal(
-            rol.Celula,
-            rol.Distrito,
-            rol.Semana,
-            rol.relCelula ? rol.relCelula : '',
-            rol.relCelebracao ? rol.relCelebracao : '',
-            rol.relDiscipulado ? rol.relDiscipulado : '',
-            rol.Posicao,
-            rol.TotalRank,
-            rol.Pontuacao,
-            Ano,
-            rol.Total,
-          );
-        }
-        return 0;
-      });
-      console.log('ola nFinal22', valFinal);
-      setPosicaoFinal(valFinal);
-    }
-  }, [posicao3]);
   //= ==================================================================
 
   return (

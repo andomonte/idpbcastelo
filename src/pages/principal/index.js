@@ -22,10 +22,11 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-
+      console.log('oi session', session, result);
       if (session !== null) {
         if (result) setPerfilUserF(result);
-        if (session)
+        if (session) {
+          console.log('ai entrou session');
           if (validator.isEmail(session.user.email))
             router.push({
               pathname: '/selectPerfil',
@@ -36,6 +37,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
               query: { cpf: session.user.email },
             });
           }
+        }
       } else setPerfilUserF('');
       // resultado = result.id;
     }
