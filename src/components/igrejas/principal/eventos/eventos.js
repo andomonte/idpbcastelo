@@ -38,13 +38,17 @@ function Eventos({ perfilUser, rolMembros }) {
           Number(dataAtual) >= Number(new Date(results.DataIni).getTime()) &&
           Number(dataAtual) <= Number(new Date(results.DataFim).getTime()),
       );
-
-      const evento = eventoAtivo.filter(
-        (val) =>
-          Number(val.Distrito) === Number(perfilUser.Distrito) ||
-          Number(val.Distrito) === 0,
-      );
-
+      let evento;
+      if (perfilUser)
+        evento = eventoAtivo.filter(
+          (val) =>
+            Number(val.Distrito) === Number(perfilUser.Distrito) ||
+            Number(val.Distrito) === 0,
+        );
+      else
+        evento = eventoAtivo.filter(
+          (val) => Number(val.Distrito) === 0 || Number(val.Distrito) === 1,
+        );
       setTodos(evento);
     }
     if (error) return <div>An error occured.</div>;
