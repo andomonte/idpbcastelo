@@ -79,6 +79,7 @@ export default function TabCelula({
   const [posicaoFinal, setPosicaoFinal] = React.useState(0);
   const [posicao1, setPosicao1] = React.useState(0);
   const [posicao2, setPosicao2] = React.useState(0);
+  const [posicao3, setPosicao3] = React.useState(0);
 
   const url1 = `/api/consultaRelatorioCelulas/${contSemana2}`;
   const url2 = `/api/consultaPontuacaoSemana/${contSemana2}`;
@@ -231,6 +232,25 @@ export default function TabCelula({
 
   React.useEffect(() => {
     const valFinal = [];
+    for (let i = 0; i < numeroCelula.length; i += 1) {
+      valFinal[i] = createPontuacaoFinal(
+        numeroCelula[i],
+        perfilUser.Distrito ? perfilUser.Distrito : '',
+        contSemana,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        Ano,
+        '',
+      );
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const valFinal = [];
 
     if (Object.keys(presSem1).length > 0) {
       presSem1.map((row, i) => {
@@ -255,7 +275,7 @@ export default function TabCelula({
             } else if (row.Celula === rol.Celula) {
               valFinal[i] = createPontuacaoFinal(
                 row.Celula,
-                rol.Distrito ? rol.Distrito : '',
+                perfilUser.Distrito ? perfilUser.Distrito : '',
                 rol.Semana ? rol.Semana : '',
                 rol.relCelula ? rol.relCelula : '',
                 rol.relCelebracao ? rol.relCelebracao : '',
@@ -302,7 +322,7 @@ export default function TabCelula({
             } else if (row.Celula === rol.Celula) {
               valFinal[i] = createPontuacaoFinal(
                 row.Celula,
-                rol.Distrito ? rol.Distrito : '',
+                perfilUser.Distrito ? perfilUser.Distrito : '',
                 rol.Semana ? rol.Semana : '',
                 rol.relCelula ? rol.relCelula : '',
                 rol.relCelebracao ? rol.relCelebracao : '',
@@ -327,7 +347,8 @@ export default function TabCelula({
     const valFinal = [];
     if (Object.keys(presDisc).length > 0) {
       presDisc.map((row, i) => {
-        if (Object.keys(posicao1).length > 0) {
+        if (Object.keys(posicao2).length > 0) {
+          console.log('verdade posicao2', posicao2);
           posicao2.map((rol) => {
             if (row.Adultos) {
               if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
@@ -346,9 +367,10 @@ export default function TabCelula({
                 );
               }
             } else if (row.Celula === rol.Celula) {
+              console.log('valFinal 2', valFinal);
               valFinal[i] = createPontuacaoFinal(
                 row.Celula,
-                rol.Distrito ? rol.Distrito : '',
+                perfilUser.Distrito ? perfilUser.Distrito : '',
                 rol.Semana ? rol.Semana : '',
                 rol.relCelula ? rol.relCelula : '',
                 rol.relCelebracao ? rol.relCelebracao : '',
@@ -360,7 +382,7 @@ export default function TabCelula({
                 rol.Total ? rol.Total : '',
               );
             }
-            setPosicaoFinal(valFinal);
+            setPosicao3(valFinal);
             return 0;
           });
         }
@@ -370,7 +392,47 @@ export default function TabCelula({
   }, [posicao2, presDisc]);
 
   //= ==================================================================
+  React.useEffect(() => {
+    const valFinal = [];
 
+    if (Object.keys(posicao3).length > 0) {
+      console.log('ola posicao3', posicao3, posicao1, posicao2);
+      posicao3.map((rol, i) => {
+        if (!rol.relCelula && !rol.relCelebracao && !rol.relDiscipulado) {
+          valFinal[i] = createPontuacaoFinal(
+            rol.Celula,
+            perfilUser.Distrito ? perfilUser.Distrito : '',
+            rol.Semana ? rol.Semana : '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            Ano,
+            '',
+          );
+        } else {
+          valFinal[i] = createPontuacaoFinal(
+            rol.Celula,
+            rol.Distrito,
+            rol.Semana,
+            rol.relCelula ? rol.relCelula : '',
+            rol.relCelebracao ? rol.relCelebracao : '',
+            rol.relDiscipulado ? rol.relDiscipulado : '',
+            rol.Posicao,
+            rol.TotalRank,
+            rol.Pontuacao,
+            Ano,
+            rol.Total,
+          );
+        }
+        return 0;
+      });
+      console.log('ola nFinal22', valFinal);
+      setPosicaoFinal(valFinal);
+    }
+  }, [posicao3]);
   //= ==================================================================
 
   return (
@@ -516,7 +578,7 @@ export default function TabCelula({
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="18%"
+                  width="18.1%"
                 >
                   {posicaoFinal[index] ? posicaoFinal[index].Celula : '-'}
                 </Box>
@@ -526,7 +588,7 @@ export default function TabCelula({
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="16%"
+                  width="16.1%"
                   sx={{
                     borderLeft: '1px solid #000',
                   }}
@@ -592,7 +654,7 @@ export default function TabCelula({
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="22.0%"
+                  width="21.9%"
                   sx={{
                     borderLeft: '1px solid #000',
                   }}
@@ -703,11 +765,7 @@ export default function TabCelula({
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="22.0%"
-                  sx={{
-                    borderLeft: '1px solid #000',
-                    borderRight: '1px solid #000',
-                  }}
+                  width="22.5%"
                 >
                   {posicaoFinal[index].relDiscipulado ? (
                     <Box
