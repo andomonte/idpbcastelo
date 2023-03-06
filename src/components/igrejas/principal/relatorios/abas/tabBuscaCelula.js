@@ -109,7 +109,7 @@ export default function TabCelula({
   // para usar semanas
   let semana0 = semana - 1;
   let AnoPesquisado = Ano;
-  if (semana - 1 < 1) {
+  if (semana0 < 1) {
     semana0 = 52;
     AnoPesquisado = Ano - 1;
   }
@@ -256,7 +256,7 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito),
       );
 
-      if (presCelula.length) {
+      if (presCelula.length && presCelula[0].Semana === semana0) {
         setDataSem0(presCelula[0]);
       }
 
@@ -292,7 +292,7 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito),
       );
 
-      if (presCelula.length) {
+      if (presCelula.length && presCelula[0].Semana === semana0) {
         setDataSem0Celebracao(presCelula[0]);
       }
 
@@ -323,7 +323,7 @@ export default function TabCelula({
     if (!sem0Celebracao) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem0Celebracao, openPlanCelebracao, semana]);
-
+  console.log('semdata0', dataSem0, dataSem1);
   React.useEffect(() => {
     if (sem0Discipulado && sem0Discipulado.length) {
       const presCelula = sem0Discipulado.filter(
@@ -332,7 +332,7 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito),
       );
 
-      if (presCelula.length) {
+      if (presCelula.length && presCelula[0].Semana === semana0) {
         setDataSem0Discipulado(presCelula[0]);
       }
 
@@ -731,7 +731,7 @@ export default function TabCelula({
                       fontFamily="Fugaz One"
                       alignItems="center"
                     >
-                      <FcSearch size={25} />
+                      <FcSearch size={20} />
                     </Box>
                   </Box>
                 </Box>
@@ -1156,7 +1156,7 @@ export default function TabCelula({
                       fontFamily="Fugaz One"
                       alignItems="center"
                     >
-                      <FcSearch size={25} />
+                      <FcSearch size={20} />
                     </Box>
                   </Box>
                 </Box>
@@ -1581,7 +1581,7 @@ export default function TabCelula({
                       fontFamily="Fugaz One"
                       alignItems="center"
                     >
-                      <FcSearch size={25} />
+                      <FcSearch size={20} />
                     </Box>
                   </Box>
                 </Box>
@@ -2006,7 +2006,7 @@ export default function TabCelula({
                       fontFamily="Fugaz One"
                       alignItems="center"
                     >
-                      <FcSearch size={25} />
+                      <FcSearch size={20} />
                     </Box>
                   </Box>
                 </Box>
@@ -2431,7 +2431,7 @@ export default function TabCelula({
                       fontFamily="Fugaz One"
                       alignItems="center"
                     >
-                      <FcSearch size={25} />
+                      <FcSearch size={20} />
                     </Box>
                   </Box>
                 </Box>
@@ -2857,7 +2857,7 @@ export default function TabCelula({
                       fontFamily="Fugaz One"
                       alignItems="center"
                     >
-                      <FcSearch size={25} />
+                      <FcSearch size={20} />
                     </Box>
                   </Box>
                 </Box>
