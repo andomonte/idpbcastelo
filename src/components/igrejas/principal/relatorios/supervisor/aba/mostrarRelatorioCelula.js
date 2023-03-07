@@ -25,9 +25,11 @@ function RelCelula({ celula, setOpenPlan }) {
   const [openObs, setOpenObs] = React.useState(false);
   const [qtyVisitantesCriancas, setQtyVisitantesCriancas] = React.useState(0);
 
-  if (Number.isInteger(Number(celula.NomesVisitantes))) {
-    setQtyVisitantesCriancas(Number(celula.NomesVisitantes));
-  }
+  React.useEffect(() => {
+    if (Number.isInteger(Number(celula.NomesVisitantes))) {
+      setQtyVisitantesCriancas(Number(celula.NomesVisitantes));
+    }
+  }, []);
   // let enviarDia;
   // let enviarData;
 

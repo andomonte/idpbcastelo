@@ -29,9 +29,12 @@ function RelCelebracao({ celula, setOpenCeleb }) {
   // const timeElapsed2 = Date.now();
   const [qtyVisitantesCriancas, setQtyVisitantesCriancas] = React.useState(0);
   const [openObs, setOpenObs] = React.useState(false);
-  if (Number.isInteger(Number(celula.NomesVisitantes))) {
-    setQtyVisitantesCriancas(Number(celula.NomesVisitantes));
-  }
+
+  React.useEffect(() => {
+    if (Number.isInteger(Number(celula.NomesVisitantes))) {
+      setQtyVisitantesCriancas(Number(celula.NomesVisitantes));
+    }
+  }, []);
 
   const [openErro, setOpenErro] = React.useState(false);
 

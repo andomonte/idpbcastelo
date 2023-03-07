@@ -791,6 +791,7 @@ export default function TabCelula({
                               setIndexTabela(index);
                               setDadosCelulaSend(posicaoFinal[index]);
                               setSendResumo(true); */
+
                               setOpenPlan(true);
                               setCelula(posicaoFinal[index].relCelula);
                             }}
