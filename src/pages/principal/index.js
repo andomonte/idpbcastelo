@@ -5,6 +5,7 @@ import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 import validator from 'validator';
+import Espere from 'src/utils/espera';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
@@ -43,6 +44,24 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
     }
   }, [mudaDados]);
 
+  React.useEffect(() => {
+    console.log('oi session', session);
+    if (perfilUserF.id) {
+      if (session !== null && session !== undefined) {
+        if (validator.isEmail(session.user.email))
+          router.push({
+            pathname: '/selectPerfil',
+          });
+        else {
+          router.push({
+            pathname: '/selectPerfilCPF',
+            query: { cpf: session.user.email },
+          });
+        }
+      }
+    }
+  }, [session]);
+
   return (
     <div>
       {perfilUserF && perfilUserF.id ? (
@@ -58,8 +77,10 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
         </div>
       ) : (
         <div>
-          {!perfilUserF && !perfilUser && (
+          {!perfilUserF && !perfilUser ? (
             <Pagina userIgrejas={dadosUser} title="IDPB-CELULAS" />
+          ) : (
+            <Espere descricao="Buscando Conexão..." />
           )}
         </div>
       )}

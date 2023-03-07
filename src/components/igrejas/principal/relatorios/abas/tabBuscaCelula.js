@@ -108,6 +108,7 @@ export default function TabCelula({
   const [anoEnviado, setAnoEnviado] = React.useState(Ano);
   // para usar semanas
   let semana0 = semana - 1;
+
   let AnoPesquisado = Ano;
   if (semana0 < 1) {
     semana0 = 52;
@@ -170,6 +171,7 @@ export default function TabCelula({
     ) : (
       <Box>SEMANA SEGUINTE</Box>
     );
+  const semanaHoje = PegaSemanaAtual(new Date());
 
   const url0 = `/api/consultaRelatorioCelulasAno2/${semana0}/${AnoPesquisado}`;
   const { data: sem0, errorSem0 } = useSWR(url0, fetcher);
@@ -256,8 +258,15 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito),
       );
 
-      if (presCelula.length && presCelula[0].Semana === semana0) {
-        setDataSem0(presCelula[0]);
+      const presCelulaSem0 = sem0.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
+          val.Semana === semana0,
+      );
+
+      if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
+        setDataSem0(presCelulaSem0[0]);
       }
 
       if (presCelula.length) {
@@ -291,9 +300,15 @@ export default function TabCelula({
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
+      const presCelulaSem0 = sem0Celebracao.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
+          val.Semana === semana0,
+      );
 
-      if (presCelula.length && presCelula[0].Semana === semana0) {
-        setDataSem0Celebracao(presCelula[0]);
+      if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
+        setDataSem0Celebracao(presCelulaSem0[0]);
       }
 
       if (presCelula.length) {
@@ -323,7 +338,7 @@ export default function TabCelula({
     if (!sem0Celebracao) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem0Celebracao, openPlanCelebracao, semana]);
-  console.log('semdata0', dataSem0, dataSem1);
+
   React.useEffect(() => {
     if (sem0Discipulado && sem0Discipulado.length) {
       const presCelula = sem0Discipulado.filter(
@@ -332,8 +347,15 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito),
       );
 
-      if (presCelula.length && presCelula[0].Semana === semana0) {
-        setDataSem0Discipulado(presCelula[0]);
+      const presCelulaSem0 = sem0Discipulado.filter(
+        (val) =>
+          val.Celula === Number(perfilUser.Celula) &&
+          val.Distrito === Number(perfilUser.Distrito) &&
+          val.Semana === semana0,
+      );
+
+      if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
+        setDataSem0Discipulado(presCelulaSem0[0]);
       }
 
       if (presCelula.length) {
@@ -711,11 +733,24 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                setCelula(dataSem0);
+                console.log(
+                  'aqui',
+                  dataSem0,
+                  dataSem0Celebracao,
+                  dataSem0Discipulado,
+                );
+                if (dataSem0.CriadoPor) setCelula(dataSem0);
+                if (dataSem0Celebracao.CriadoPor) setCelula(dataSem0Celebracao);
+                if (dataSem0Discipulado.CriadoPor)
+                  setCelula(dataSem0Discipulado);
                 setPontos(dataRSem0[0]);
               }}
             >
-              {dataSem0 !== '-' && dataRSem0.length && dataRSem0[0].Posicao ? (
+              {(dataSem0.CriadoPor ||
+                dataSem0Celebracao.CriadoPor ||
+                dataSem0Discipulado.CriadoPor) &&
+              dataRSem0.length &&
+              dataRSem0[0].Posicao ? (
                 <Box>
                   <Box fontSize="16px" color="blue" mt={1}>
                     {dataRSem0.length && dataRSem0[0]
@@ -818,19 +853,34 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem0);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlan(true);
-                              setSemanaEnviada(semana0);
-                              setDataEnviada(
-                                dataSem0 && dataSem0.Data
-                                  ? ConverteData2(dataSem0.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana0 +
+                                  AnoPesquisado * 100 +
+                                  AnoPesquisado * 100 <=
+                                Ano * 100 + Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem0);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlan(true);
+                                setSemanaEnviada(semana0);
+                                setDataEnviada(
+                                  dataSem0 && dataSem0.Data
+                                    ? ConverteData2(dataSem0.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana0 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -923,7 +973,6 @@ export default function TabCelula({
                               );
                             }}
                           >
-                            {' '}
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                               <MdScreenSearchDesktop size={25} color="green" />
                             </SvgIcon>
@@ -934,19 +983,36 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem0Celebracao);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanCelebracao(true);
-                              setSemanaEnviada(semana0);
-                              setDataEnviada(
-                                dataSem0Celebracao && dataSem0Celebracao.Data
-                                  ? ConverteData2(dataSem0Celebracao.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana0 +
+                                  AnoPesquisado * 100 +
+                                  AnoPesquisado * 100 <=
+                                Ano * 100 + Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem0Celebracao);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanCelebracao(true);
+                                setSemanaEnviada(semana0);
+                                setDataEnviada(
+                                  dataSem0Celebracao && dataSem0Celebracao.Data
+                                    ? ConverteData2(dataSem0Celebracao.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana0 +
+                                    AnoPesquisado * 100 +
+                                    AnoPesquisado * 100 <=
+                                  Ano * 100 + Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1046,19 +1112,33 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem0Discipulado);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanDiscipulado(true);
-                              setSemanaEnviada(semana0);
-                              setDataEnviada(
-                                dataSem0Discipulado && dataSem0Discipulado.Data
-                                  ? ConverteData2(dataSem0Discipulado.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana0 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem0Discipulado);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanDiscipulado(true);
+                                setSemanaEnviada(semana0);
+                                setDataEnviada(
+                                  dataSem0Discipulado &&
+                                    dataSem0Discipulado.Data
+                                    ? ConverteData2(dataSem0Discipulado.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana0 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1136,11 +1216,19 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                setCelula(dataSem1);
+                if (dataSem1.CriadoPor) setCelula(dataSem1);
+                if (dataSem1Celebracao.CriadoPor) setCelula(dataSem1Celebracao);
+                if (dataSem1Discipulado.CriadoPor)
+                  setCelula(dataSem1Discipulado);
+
                 setPontos(dataRSem1[0]);
               }}
             >
-              {dataSem1 !== '-' && dataRSem1.length && dataRSem1[0].Posicao ? (
+              {(dataSem1.CriadoPor ||
+                dataSem1Celebracao.CriadoPor ||
+                dataSem1Discipulado.CriadoPor) &&
+              dataRSem1.length &&
+              dataRSem1[0].Posicao ? (
                 <Box>
                   <Box fontSize="16px" color="blue" mt={1}>
                     {dataRSem1.length && dataRSem1[0]
@@ -1243,19 +1331,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem1);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlan(true);
-                              setSemanaEnviada(semana1);
-                              setDataEnviada(
-                                dataSem1.Data
-                                  ? ConverteData2(dataSem1.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana1 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem1);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlan(true);
+                                setSemanaEnviada(semana1);
+                                setDataEnviada(
+                                  dataSem1.Data
+                                    ? ConverteData2(dataSem1.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana1 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1359,19 +1460,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem1Celebracao);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanCelebracao(true);
-                              setSemanaEnviada(semana1);
-                              setDataEnviada(
-                                dataSem1Celebracao.Data
-                                  ? ConverteData2(dataSem1Celebracao.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana1 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem1Celebracao);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanCelebracao(true);
+                                setSemanaEnviada(semana1);
+                                setDataEnviada(
+                                  dataSem1Celebracao.Data
+                                    ? ConverteData2(dataSem1Celebracao.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana1 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1471,19 +1585,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem1Discipulado);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanDiscipulado(true);
-                              setSemanaEnviada(semana1);
-                              setDataEnviada(
-                                dataSem1Discipulado.Data
-                                  ? ConverteData2(dataSem1Discipulado.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana1 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem1Discipulado);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanDiscipulado(true);
+                                setSemanaEnviada(semana1);
+                                setDataEnviada(
+                                  dataSem1Discipulado.Data
+                                    ? ConverteData2(dataSem1Discipulado.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana1 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1561,11 +1688,19 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                setCelula(dataSem2);
+                if (dataSem2.CriadoPor) setCelula(dataSem2);
+                if (dataSem2Celebracao.CriadoPor) setCelula(dataSem2Celebracao);
+                if (dataSem2Discipulado.CriadoPor)
+                  setCelula(dataSem2Discipulado);
+
                 setPontos(dataRSem2[0]);
               }}
             >
-              {dataSem2 !== '-' && dataRSem2.length && dataRSem2[0].Posicao ? (
+              {(dataSem2.CriadoPor ||
+                dataSem2Celebracao.CriadoPor ||
+                dataSem2Discipulado.CriadoPor) &&
+              dataRSem2.length &&
+              dataRSem2[0].Posicao ? (
                 <Box>
                   <Box fontSize="16px" color="blue" mt={1}>
                     {dataRSem2.length && dataRSem2[0]
@@ -1668,19 +1803,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem2);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlan(true);
-                              setSemanaEnviada(semana2);
-                              setDataEnviada(
-                                dataSem2.Data
-                                  ? ConverteData2(dataSem2.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana2 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem2);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlan(true);
+                                setSemanaEnviada(semana2);
+                                setDataEnviada(
+                                  dataSem2.Data
+                                    ? ConverteData2(dataSem2.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana2 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1784,19 +1932,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem2Celebracao);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanCelebracao(true);
-                              setSemanaEnviada(semana2);
-                              setDataEnviada(
-                                dataSem2Celebracao.Data
-                                  ? ConverteData2(dataSem2Celebracao.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana2 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem2Celebracao);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanCelebracao(true);
+                                setSemanaEnviada(semana2);
+                                setDataEnviada(
+                                  dataSem2Celebracao.Data
+                                    ? ConverteData2(dataSem2Celebracao.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana2 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1896,19 +2057,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem2Discipulado);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanDiscipulado(true);
-                              setSemanaEnviada(semana2);
-                              setDataEnviada(
-                                dataSem2Discipulado.Data
-                                  ? ConverteData2(dataSem2Discipulado.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana2 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem2Discipulado);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanDiscipulado(true);
+                                setSemanaEnviada(semana2);
+                                setDataEnviada(
+                                  dataSem2Discipulado.Data
+                                    ? ConverteData2(dataSem2Discipulado.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana2 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -1986,11 +2160,19 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                setCelula(dataSem3);
+                if (dataSem3.CriadoPor) setCelula(dataSem3);
+                if (dataSem3Celebracao.CriadoPor) setCelula(dataSem3Celebracao);
+                if (dataSem3Discipulado.CriadoPor)
+                  setCelula(dataSem3Discipulado);
+
                 setPontos(dataRSem3[0]);
               }}
             >
-              {dataSem3 !== '-' && dataRSem3.length && dataRSem3[0].Posicao ? (
+              {(dataSem3.CriadoPor ||
+                dataSem3Celebracao.CriadoPor ||
+                dataSem3Discipulado.CriadoPor) &&
+              dataRSem3.length &&
+              dataRSem3[0].Posicao ? (
                 <Box>
                   <Box fontSize="16px" color="blue" mt={1}>
                     {dataRSem3.length && dataRSem3[0]
@@ -2093,19 +2275,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem3);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlan(true);
-                              setSemanaEnviada(semana3);
-                              setDataEnviada(
-                                dataSem3.Data
-                                  ? ConverteData2(dataSem3.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana3 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem3);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlan(true);
+                                setSemanaEnviada(semana3);
+                                setDataEnviada(
+                                  dataSem3.Data
+                                    ? ConverteData2(dataSem3.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana3 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -2209,19 +2404,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem3Celebracao);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanCelebracao(true);
-                              setSemanaEnviada(semana3);
-                              setDataEnviada(
-                                dataSem3Celebracao.Data
-                                  ? ConverteData2(dataSem3Celebracao.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana3 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem3Celebracao);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanCelebracao(true);
+                                setSemanaEnviada(semana3);
+                                setDataEnviada(
+                                  dataSem3Celebracao.Data
+                                    ? ConverteData2(dataSem3Celebracao.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana3 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -2321,19 +2529,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem3Discipulado);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanDiscipulado(true);
-                              setSemanaEnviada(semana3);
-                              setDataEnviada(
-                                dataSem3Discipulado.Data
-                                  ? ConverteData2(dataSem3Discipulado.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana3 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem3Discipulado);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanDiscipulado(true);
+                                setSemanaEnviada(semana3);
+                                setDataEnviada(
+                                  dataSem3Discipulado.Data
+                                    ? ConverteData2(dataSem3Discipulado.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana3 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -2411,11 +2632,19 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                setCelula(dataSem4);
+                if (dataSem4.CriadoPor) setCelula(dataSem4);
+                if (dataSem4Celebracao.CriadoPor) setCelula(dataSem4Celebracao);
+                if (dataSem4Discipulado.CriadoPor)
+                  setCelula(dataSem4Discipulado);
+
                 setPontos(dataRSem4[0]);
               }}
             >
-              {dataSem4 !== '-' && dataRSem4.length && dataRSem4[0].Posicao ? (
+              {(dataSem4.CriadoPor ||
+                dataSem4Celebracao.CriadoPor ||
+                dataSem4Discipulado.CriadoPor) &&
+              dataRSem4.length &&
+              dataRSem4[0].Posicao ? (
                 <Box>
                   <Box fontSize="16px" color="blue" mt={1}>
                     {dataRSem4.length && dataRSem4[0]
@@ -2518,19 +2747,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem4);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlan(true);
-                              setSemanaEnviada(semana4);
-                              setDataEnviada(
-                                dataSem4.Data
-                                  ? ConverteData2(dataSem4.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana4 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem4);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlan(true);
+                                setSemanaEnviada(semana4);
+                                setDataEnviada(
+                                  dataSem4.Data
+                                    ? ConverteData2(dataSem4.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana4 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -2634,19 +2876,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem4Celebracao);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanCelebracao(true);
-                              setSemanaEnviada(semana4);
-                              setDataEnviada(
-                                dataSem4Celebracao.Data
-                                  ? ConverteData2(dataSem4Celebracao.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana4 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem4Celebracao);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanCelebracao(true);
+                                setSemanaEnviada(semana4);
+                                setDataEnviada(
+                                  dataSem4Celebracao.Data
+                                    ? ConverteData2(dataSem4Celebracao.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana4 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -2746,19 +3001,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem4Discipulado);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanDiscipulado(true);
-                              setSemanaEnviada(semana4);
-                              setDataEnviada(
-                                dataSem4Discipulado.Data
-                                  ? ConverteData2(dataSem4Discipulado.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana4 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem4Discipulado);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanDiscipulado(true);
+                                setSemanaEnviada(semana4);
+                                setDataEnviada(
+                                  dataSem4Discipulado.Data
+                                    ? ConverteData2(dataSem4Discipulado.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana4 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -2837,11 +3105,19 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                setCelula(dataSem5);
+                if (dataSem5.CriadoPor) setCelula(dataSem5);
+                if (dataSem5Celebracao.CriadoPor) setCelula(dataSem5Celebracao);
+                if (dataSem5Discipulado.CriadoPor)
+                  setCelula(dataSem5Discipulado);
+
                 setPontos(dataRSem5[0]);
               }}
             >
-              {dataSem5 !== '-' && dataRSem5.length && dataRSem5[0].Posicao ? (
+              {(dataSem5.CriadoPor ||
+                dataSem5Celebracao.CriadoPor ||
+                dataSem5Discipulado.CriadoPor) &&
+              dataRSem5.length &&
+              dataRSem5[0].Posicao ? (
                 <Box>
                   <Box fontSize="16px" color="blue" mt={1}>
                     {dataRSem5.length && dataRSem5[0]
@@ -2944,19 +3220,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem5);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlan(true);
-                              setSemanaEnviada(semana5);
-                              setDataEnviada(
-                                dataSem5.Data
-                                  ? ConverteData2(dataSem5.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana5 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem5);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlan(true);
+                                setSemanaEnviada(semana5);
+                                setDataEnviada(
+                                  dataSem5.Data
+                                    ? ConverteData2(dataSem5.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana5 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -3060,19 +3349,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem5Celebracao);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanCelebracao(true);
-                              setSemanaEnviada(semana5);
-                              setDataEnviada(
-                                dataSem5Celebracao.Data
-                                  ? ConverteData2(dataSem5Celebracao.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana5 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem5Celebracao);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanCelebracao(true);
+                                setSemanaEnviada(semana5);
+                                setDataEnviada(
+                                  dataSem5Celebracao.Data
+                                    ? ConverteData2(dataSem5Celebracao.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana5 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}
@@ -3171,19 +3473,32 @@ export default function TabCelula({
                             aria-label="upload picture"
                             component="span"
                             onClick={() => {
-                              setDadosSem(dataSem5Discipulado);
-                              setAnoEnviado(AnoPesquisado);
-                              setOpenPlanDiscipulado(true);
-                              setSemanaEnviada(semana5);
-                              setDataEnviada(
-                                dataSem5Discipulado.Data
-                                  ? ConverteData2(dataSem5Discipulado.Data)
-                                  : '-',
-                              );
+                              if (
+                                semana5 + AnoPesquisado * 100 <=
+                                Ano * 100 + semanaHoje
+                              ) {
+                                setDadosSem(dataSem5Discipulado);
+                                setAnoEnviado(AnoPesquisado);
+                                setOpenPlanDiscipulado(true);
+                                setSemanaEnviada(semana5);
+                                setDataEnviada(
+                                  dataSem5Discipulado.Data
+                                    ? ConverteData2(dataSem5Discipulado.Data)
+                                    : '-',
+                                );
+                              }
                             }}
                           >
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdCreateNewFolder size={25} color="blue" />
+                              <MdCreateNewFolder
+                                size={25}
+                                color={
+                                  semana5 + AnoPesquisado * 100 <=
+                                  Ano * 100 + semanaHoje
+                                    ? 'blue'
+                                    : 'gray'
+                                }
+                              />
                             </SvgIcon>
                           </IconButton>
                         )}

@@ -26,6 +26,7 @@ export default function TabCelula({
       anoAnterior = Number(pontos.Ano) - 1;
     }
   }
+  console.log('celula', celula);
   const [qytCelulas, setQytCelulas] = React.useState([]);
   const [percentualPontos, setPercentualPontos] = React.useState([]);
   const qytMembros = JSON.parse(celula.NomesMembros).length;

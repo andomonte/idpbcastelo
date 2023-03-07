@@ -3,26 +3,12 @@ import React from 'react';
 // import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import ConverteData from 'src/utils/convData2';
 import Erros from 'src/utils/erros';
-
-import { TiUserAdd } from 'react-icons/ti';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
-import Dialog from '@mui/material/Dialog';
-import Slide from '@mui/material/Slide';
 import TabCelula from './tabCelula';
-import TabVisitantes from './tabVisitantes';
-
 import 'react-toastify/dist/ReactToastify.css';
-
-const Transition = React.forwardRef((props, ref) => (
-  <Slide direction="left" ref={ref} {...props} />
-));
 
 function RelCelebracao({ celula, setOpenCeleb }) {
   //  const classes = useStyles();
@@ -35,47 +21,24 @@ function RelCelebracao({ celula, setOpenCeleb }) {
     (val) => val.Presenca === 'igreja',
   ).length;
 
-  const visitantesCelula = JSON.parse(celula.NomesVisitantes);
   // const timeElapsed2 = Date.now();
-  const [selectedDate, setSelectedDate] = React.useState(celula.Data);
-  const [nomesVisitantes, setNomesVisitantes] = React.useState(
-    visitantesCelula || [],
-  );
+  const [qtyVisitantesCriancas, setQtyVisitantesCriancas] = React.useState(0);
+
+  if (Number.isInteger(Number(celula.NomesVisitantes))) {
+    setQtyVisitantesCriancas(Number(celula.NomesVisitantes));
+  }
 
   const [openErro, setOpenErro] = React.useState(false);
 
   // let enviarDia;
   // let enviarData;
-  const [qtyVisitante, setQtyVisitante] = React.useState(celula.Visitantes);
 
   const [tela, setTela] = React.useState(1);
-
-  const [openVisitantes, setOpenVisitantes] = React.useState(false);
-
-  //= ==============================================================
-
-  //= =================================================================
-
-  //= ========================calcular adulto e crianca========================
 
   const handleTela2 = () => {
     setTela(2);
   };
 
-  const handleVisitantes = () => {
-    setOpenVisitantes(true);
-    // setVisBackUp(nomesVisitantes);
-    // setQtyVisitanteBackUp(qtyVisitante);
-  };
-  //= =========================================
-
-  //= ============================================================
-
-  const handleCancelaVisitante = () => {
-    // setNomesVisitantes(visBackUp);
-    //  setQtyVisitante(qtyVisitanteBackUp);
-    setOpenVisitantes(false);
-  };
   return (
     <Box
       display="flex"
@@ -114,57 +77,104 @@ function RelCelebracao({ celula, setOpenCeleb }) {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            height="15%"
+            height="8%"
             width="100%"
           >
-            <Paper style={{ background: '#fafafa', height: 40, width: '45%' }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                  value={selectedDate}
-                  minDate={dayjs('2017-01-01')}
-                  onChange={(newValue) => {
-                    setSelectedDate(newValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} size="small" />
-                  )}
-                />
-              </LocalizationProvider>
+            <Paper style={{ background: '#fafafa', height: 40, width: '90%' }}>
+              <Box
+                fontFamily="arial"
+                fontSize="18px"
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+                display="flex"
+                height="100%"
+              >
+                {' '}
+                {ConverteData(celula.Data)}
+              </Box>
             </Paper>
+          </Box>
+          <Box mt={2} mb={-2} width="100%" display="flex" height={10}>
+            <Box
+              ml={0}
+              width="50%"
+              height="100%"
+              display="flex"
+              alignItems="end"
+              justifyContent="center"
+              color="white"
+              fontFamily="Fugaz one"
+            >
+              VISITANTES ADULTOS
+            </Box>
+            <Box
+              ml={0}
+              width="50%"
+              height="100%"
+              display="flex"
+              alignItems="end"
+              justifyContent="center"
+              color="white"
+              fontFamily="Fugaz one"
+            >
+              VISITANTES CRIANÇAS
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="8%"
+            width="100%"
+            mb={2}
+          >
             <Paper
               style={{
+                marginTop: 20,
+                width: '40%',
                 textAlign: 'center',
                 background: '#fafafa',
                 height: 40,
-                width: '45%',
-                marginLeft: 10,
+                borderRadius: 15,
+                border: '1px solid #000',
               }}
             >
-              <Button
-                style={{ width: '100%' }}
-                onClick={handleVisitantes}
-                startIcon={<TiUserAdd color="red" />}
+              <Box
+                width="100%"
+                height="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                fontSize="16px"
+                fontFamily="arial black "
               >
-                <Box
-                  display="flex"
-                  mt={0.8}
-                  sx={{
-                    fontSize: '12px',
-                    fontFamily: 'arial black',
-                  }}
-                >
-                  <Box mt={-0.2}> VISITANTES: </Box>
-                  <Box
-                    color="blue"
-                    fontFamily="arial black"
-                    fontSize="16px"
-                    mt={-0.8}
-                    ml={1}
-                  >
-                    {qtyVisitante}
-                  </Box>
-                </Box>
-              </Button>
+                {celula.Visitantes}
+              </Box>
+            </Paper>
+            <Box width="10%" />
+            <Paper
+              style={{
+                marginTop: 20,
+                width: '40%',
+                textAlign: 'center',
+                background: '#fafafa',
+                height: 40,
+                borderRadius: 15,
+                border: '1px solid #000',
+              }}
+            >
+              <Box
+                width="100%"
+                height="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                fontSize="16px"
+                fontFamily="arial black "
+              >
+                {qtyVisitantesCriancas}
+              </Box>
             </Paper>
           </Box>
 
@@ -291,7 +301,7 @@ function RelCelebracao({ celula, setOpenCeleb }) {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            height="60%"
+            height="56%"
             width="100%"
           >
             <Box display="flex" alignItems="end" height="100%" width="96%">
@@ -642,104 +652,6 @@ function RelCelebracao({ celula, setOpenCeleb }) {
           setOpenErro={(openErros) => setOpenErro(openErros)}
         />
       )}
-      <Dialog fullScreen open={openVisitantes} TransitionComponent={Transition}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="100vw"
-          minHeight={570}
-          minWidth={300}
-          bgcolor={corIgreja.principal2}
-          height="calc(100vh)"
-        >
-          <Box
-            bgcolor={corIgreja.principal}
-            width="96%"
-            height="97%"
-            display="flex"
-            justifyContent="center"
-            flexDirection="column"
-            borderRadius={16}
-            ml={0}
-          >
-            <Box
-              width="100%"
-              height="10%"
-              display="flex"
-              justifyContent="center"
-              alignItems="end"
-            >
-              <Box
-                color="white"
-                fontSize="18px"
-                fontFamily="arial black"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                width="90%"
-              >
-                LISTA DE VISITANTES
-              </Box>
-            </Box>
-
-            <Box
-              height="80%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-            >
-              <Box height="100%" width="96%">
-                <TabVisitantes
-                  nomesVisitantes={nomesVisitantes}
-                  setQtyVisitante={setQtyVisitante}
-                  setNomesVisitantes={setNomesVisitantes}
-                />
-              </Box>
-            </Box>
-
-            <Box
-              width="100%"
-              height="12%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                width="94%"
-                height="100%"
-              >
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={12} lg={12} xl={12}>
-                    <Paper
-                      style={{
-                        borderRadius: 16,
-                        textAlign: 'center',
-                        background: '#ffffaa',
-                        height: 40,
-                      }}
-                    >
-                      <Button
-                        style={{ width: '100%' }}
-                        startIcon={<IoArrowUndoSharp color="blue" />}
-                        onClick={() => {
-                          handleCancelaVisitante();
-                        }}
-                      >
-                        <Box sx={{ fontFamily: 'arial black' }}>VOLTAR</Box>
-                      </Button>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Dialog>
     </Box>
   );
 }

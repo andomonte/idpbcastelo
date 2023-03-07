@@ -13,8 +13,10 @@ import Meses from 'src/utils/mesesAbrev';
 
 import TamanhoJanela from 'src/utils/getSize';
 import TabCelula from './supervisor/aba/tabRelSuperCelulas';
-import TabSetor from './coordenador/aba/tabRelCoordTotal';
+import TabSetor from './supervisor/aba/tabRelSuperTotal';
 import TabResumo from './supervisor/aba/tabResumo';
+
+// semana do Mes
 
 //------------------------------------------
 const janela = TamanhoJanela();
@@ -45,84 +47,31 @@ function RelCelula({ perfilUser, lideranca }) {
     if (new Date(b.Celula) > new Date(a.Celula)) return -1;
     return 0;
   });
-  const celulaSetorIni = lideresSetor.filter(
+
+  const celulaSetor = lideresSetor.filter(
     (results) =>
+      Number(results.Supervisao) === Number(perfilUser.Supervisao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
-      results.Funcao === 'Lider' &&
-      Number(results.Coordenacao) === Number(perfilUser.Coordenacao),
+      results.Funcao === 'Lider',
   );
-
-  const listaSetor = lideresSetor.sort((a, b) => {
-    if (new Date(a.Supervisao) > new Date(b.Supervisao)) return 1;
-    if (new Date(b.Supervisao) > new Date(a.Supervisao)) return -1;
-    return 0;
-  });
-
-  const numberCelulas = celulaSetorIni.map((itens) => itens.Celula);
+  const numberCelulas = celulaSetor.map((itens) => itens.Celula);
   const uniqueArr = [...new Set(numberCelulas)];
-  const numeroCelula = uniqueArr;
 
-  const numberSuper = listaSetor.map((itens) => itens.Supervisao);
-  const uniqueArrSuper = [...new Set(numberSuper)];
-  const numeroSupervisao = uniqueArrSuper;
+  const [numeroCelula] = React.useState(uniqueArr);
 
-  const [contSetor, setContSetor] = React.useState(0);
-  const numeroSetorIni = numeroSupervisao.map((val) => val);
-  numeroSetorIni.unshift('TODAS AS SUPERVIÕES');
-  const numeroSetor = numeroSetorIni;
-  const [celulaSetor, setCelulaSetor] = React.useState(numeroCelula);
-
-  console.log('numeroSetor', numeroSetor);
   const tipo = ['Relatório das Células', 'Relatório Geral'];
   const [contTipo, setContTipo] = React.useState(0);
 
-  React.useEffect(() => {}, []);
-
-  React.useEffect(() => {
-    console.log('contSetor', contSetor);
-    if (contSetor !== 0) {
-      const novaLista = lideresSetor.filter(
-        (results) =>
-          Number(results.Distrito) === Number(perfilUser.Distrito) &&
-          Number(results.Coordenacao) === Number(perfilUser.Coordenacao) &&
-          results.Funcao === 'Lider' &&
-          Number(results.Supervisao) === Number(numeroSetor[contSetor]),
-      );
-      console.log('novaLista', novaLista);
-      const numberCelulasF = novaLista.map((itens) => itens.Celula);
-      const uniqueArrF = [...new Set(numberCelulasF)];
-      const numeroCelulaF = uniqueArrF;
-      setCelulaSetor(numeroCelulaF);
-    } else {
-      const novaLista = lideresSetor.filter(
-        (results) =>
-          Number(results.Distrito) === Number(perfilUser.Distrito) &&
-          results.Funcao === 'Lider' &&
-          Number(results.Coordenacao) === Number(perfilUser.Coordenacao),
-      );
-      const numberCelulasF = novaLista.map((itens) => itens.Celula);
-      const uniqueArrF = [...new Set(numberCelulasF)];
-      const numeroCelulaF = uniqueArrF;
-      setCelulaSetor(numeroCelulaF);
+  /*  React.useEffect(() => {
+    if (semanaMes === 0) {
+      let mesFinal = mesAtual - 1;
+      if (mesFinal < 0) {
+        mesFinal = 52;
+        setContAno(anoAtual - 1);
+      }
+      setContMes(mesAtual - 1);
     }
-  }, [contSetor]);
-  console.log('numeroCelulaF', celulaSetor);
-  const handleIncSetor = () => {
-    let contTipoAtual = contSetor + 1;
-    if (contTipoAtual > numeroSetor.length - 1) {
-      contTipoAtual = 0;
-    }
-
-    setContSetor(contTipoAtual);
-  };
-  const handleDecSetor = () => {
-    let contTipoAtual = contSetor - 1;
-
-    if (contTipoAtual < 0) {
-      contTipoAtual = numeroSetor.length - 1;
-    }
-    setContSetor(contTipoAtual);
-  };
+  }, [semanaMes]); */
 
   const handleIncTipo = () => {
     let contTipoAtual = contTipo + 1;
@@ -177,7 +126,7 @@ function RelCelula({ perfilUser, lideranca }) {
     setContMes(mesAgora);
     setContSemana(contSemanaAtual);
   };
-
+  React.useEffect(() => {}, [contMes]);
   return (
     <Box
       display="flex"
@@ -216,7 +165,7 @@ function RelCelula({ perfilUser, lideranca }) {
                 alignItems="center"
                 flexDirection="column"
               >
-                <Box bgcolor="gray" width="96%" mt={-1} ml={1}>
+                <Box width="96%" mt={-1} ml={1}>
                   <Grid container item xs={12} spacing={1}>
                     <Grid item xs={12}>
                       <Box height={40} width="100%" display="flex">
@@ -276,70 +225,6 @@ function RelCelula({ perfilUser, lideranca }) {
                             }}
                           >
                             <BiCaretRight size={35} color="white" />
-                          </IconButton>
-                        </Box>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Box>
-                <Box mt={1} width="96%" ml={1}>
-                  <Grid container item xs={12} spacing={1}>
-                    <Grid item xs={12}>
-                      <Box
-                        borderRadius={5}
-                        height={40}
-                        bgcolor="#e1bee7"
-                        width="100%"
-                        display="flex"
-                      >
-                        <Box
-                          width="20%"
-                          display="flex"
-                          justifyContent="flex-start"
-                          alignItems="center"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              handleDecSetor();
-                            }}
-                          >
-                            <BiCaretLeft
-                              size={35}
-                              color={corIgreja.principal2}
-                            />
-                          </IconButton>
-                        </Box>
-                        <Box
-                          width="100%"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          sx={{ fontSize: '14px', fontFamily: 'arial black' }}
-                        >
-                          {console.log('no box', numeroSetor, contSetor)}
-                          {numeroSetor[contSetor]}
-                        </Box>
-                        <Box
-                          width="10%"
-                          display="flex"
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              handleIncSetor();
-                            }}
-                          >
-                            <BiCaretRight
-                              size={35}
-                              color={corIgreja.principal2}
-                            />
                           </IconButton>
                         </Box>
                       </Box>
@@ -436,7 +321,7 @@ function RelCelula({ perfilUser, lideranca }) {
                         Mes={contMes}
                         Ano={contAno}
                         contSemana={contSemana}
-                        numeroCelula={celulaSetor}
+                        numeroCelula={numeroCelula}
                         setSendResumo={setSendResumo}
                         setDadosCelulaSend={setDadosCelulaSend}
                         setValorIndexSend={setValorIndexSend}
@@ -448,7 +333,7 @@ function RelCelula({ perfilUser, lideranca }) {
                         Mes={contMes}
                         Ano={contAno}
                         contSemana={contSemana}
-                        numeroCelula={celulaSetor}
+                        numeroCelula={numeroCelula}
                         setSendResumo={setSendResumo}
                         setDadosCelulaSend={setDadosCelulaSend}
                         setValorIndexSend={setValorIndexSend}
@@ -467,7 +352,7 @@ function RelCelula({ perfilUser, lideranca }) {
               Mes={contMes}
               Ano={contAno}
               contSemana={contSemana}
-              numeroCelula={celulaSetor}
+              numeroCelula={numeroCelula}
               setSendResumo={setSendResumo}
               dadosCelulaSend={dadosCelulaSend}
               valorIndexSend={valorIndexSend}

@@ -80,7 +80,6 @@ export default function TabCelula({
   const [posicao0, setPosicao0] = React.useState(0);
   const [posicao1, setPosicao1] = React.useState(0);
   const [posicao2, setPosicao2] = React.useState(0);
-  const [posicao3, setPosicao3] = React.useState(0);
 
   const url1 = `/api/consultaRelatorioCelulas/${contSemana2}`;
   const url2 = `/api/consultaPontuacaoSemana/${contSemana2}`;
@@ -129,7 +128,7 @@ export default function TabCelula({
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1]);
+  }, [sem1, numeroCelula]);
 
   React.useEffect(() => {
     setPresCelebracao([]);
@@ -166,7 +165,7 @@ export default function TabCelula({
 
     if (!celebracao) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [celebracao]);
+  }, [celebracao, numeroCelula]);
 
   React.useEffect(() => {
     setPresDisc([]);
@@ -200,7 +199,7 @@ export default function TabCelula({
 
     if (!discipulado) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [discipulado]);
+  }, [discipulado, numeroCelula]);
 
   React.useEffect(() => {
     if (pontos) {
@@ -281,7 +280,7 @@ export default function TabCelula({
         return 0;
       });
     }
-  }, [rankGeral]);
+  }, [rankGeral, numeroCelula]);
   React.useEffect(() => {
     const valFinal = [];
 
@@ -290,9 +289,12 @@ export default function TabCelula({
       presSem1.map((row, i) => {
         let check2 = 0;
         if (Object.keys(posicao0).length > 0) {
-          posicao0.map((rol, index) => {
-            if (row.Adultos) {
-              if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+          posicao0.map((rol) => {
+            if (row.CriadoPor) {
+              if (
+                row.Celula === rol.Celula &&
+                Number(row.Distrito) === Number(rol.Distrito)
+              ) {
                 check = 1;
                 valFinal[i] = createPontuacaoFinal(
                   rol.Celula,
@@ -301,7 +303,7 @@ export default function TabCelula({
                   row,
                   rol.relCelebracao ? rol.relCelebracao : '',
                   rol.relDiscipulado ? rol.relDiscipulado : '',
-                  index + 1,
+                  rol.Posicao,
                   rol.TotalRank,
                   rol.Pontuacao,
                   Ano,
@@ -324,9 +326,8 @@ export default function TabCelula({
               }
             } else if (
               row.Celula === rol.Celula &&
-              rol.Distrito === perfilUser.Distrito
+              Number(rol.Distrito) === Number(perfilUser.Distrito)
             ) {
-              console.log('oi disc esle if 1 ->', row.Celula);
               check2 = 1;
               valFinal[i] = createPontuacaoFinal(
                 row.Celula,
@@ -373,9 +374,12 @@ export default function TabCelula({
       presCelebracao.map((row, i) => {
         let check2 = 0;
         if (Object.keys(posicao1).length > 0) {
-          posicao1.map((rol, index) => {
-            if (row.Adultos) {
-              if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
+          posicao1.map((rol) => {
+            if (row.CriadoPor) {
+              if (
+                row.Celula === rol.Celula &&
+                Number(row.Distrito) === Number(rol.Distrito)
+              ) {
                 check = 1;
                 valFinal[i] = createPontuacaoFinal(
                   rol.Celula,
@@ -384,7 +388,7 @@ export default function TabCelula({
                   rol.relCelula ? rol.relCelula : '',
                   row,
                   rol.relDiscipulado ? rol.relDiscipulado : '',
-                  index + 1,
+                  rol.Posicao,
                   rol.TotalRank,
                   rol.Pontuacao,
                   Ano,
@@ -407,7 +411,7 @@ export default function TabCelula({
               }
             } else if (
               row.Celula === rol.Celula &&
-              rol.Distrito === perfilUser.Distrito
+              Number(rol.Distrito) === Number(perfilUser.Distrito)
             ) {
               check2 = 1;
               valFinal[i] = createPontuacaoFinal(
@@ -452,13 +456,17 @@ export default function TabCelula({
     const valFinal = [];
     if (Object.keys(presDisc).length > 0) {
       let check = 0;
+
       presDisc.map((row, i) => {
         let check2 = 0;
+
         if (Object.keys(posicao2).length > 0) {
-          posicao2.map((rol, index) => {
-            if (row.Adultos) {
-              if (row.Celula === rol.Celula && row.Distrito === rol.Distrito) {
-                console.log('entro disc if-2', row);
+          posicao2.map((rol) => {
+            if (row.CriadoPor) {
+              if (
+                row.Celula === rol.Celula &&
+                Number(row.Distrito) === Number(rol.Distrito)
+              ) {
                 check = 1;
                 valFinal[i] = createPontuacaoFinal(
                   rol.Celula,
@@ -467,14 +475,13 @@ export default function TabCelula({
                   rol.relCelula ? rol.relCelula : '',
                   rol.relCelebracao ? rol.relCelebracao : '',
                   row,
-                  index + 1,
+                  rol.Posicao,
                   rol.TotalRank,
                   rol.Pontuacao,
                   Ano,
                   rol.Total,
                 );
               } else if (check === 0) {
-                console.log('entro disc else-do if2', row.Celula);
                 valFinal[i] = createPontuacaoFinal(
                   row.Celula,
                   perfilUser.Distrito ? perfilUser.Distrito : '',
@@ -489,44 +496,40 @@ export default function TabCelula({
                   rol.Total ? rol.Total : '',
                 );
               }
-            } else {
-              console.log('oi disc esle if 1 ->', row.Celula, check2, i);
-              if (
-                row.Celula === rol.Celula &&
-                rol.Distrito === perfilUser.Distrito
-              ) {
-                check2 = 1;
-                valFinal[i] = createPontuacaoFinal(
-                  row.Celula,
-                  perfilUser.Distrito ? perfilUser.Distrito : '',
-                  rol.Semana ? rol.Semana : '',
-                  rol.relCelula ? rol.relCelula : '',
-                  rol.relCelebracao ? rol.relCelebracao : '',
-                  rol.relDiscipulado ? rol.relDiscipulado : '',
-                  rol.Posicao ? rol.Posicao : '',
-                  rol.TotalRank ? rol.TotalRank : '',
-                  rol.Pontuacao ? rol.Pontuacao : '',
-                  Ano,
-                  rol.Total ? rol.Total : '',
-                );
-              } else if (check2 === 0) {
-                console.log('oi disc esle if 3 ->', row.Celula, check2, i);
-                valFinal[i] = createPontuacaoFinal(
-                  row.Celula,
-                  perfilUser.Distrito ? perfilUser.Distrito : '',
-                  rol.Semana ? rol.Semana : '',
-                  rol.relCelula ? rol.relCelula : '',
-                  rol.relCelebracao ? rol.relCelebracao : '',
-                  rol.relDiscipulado ? rol.relDiscipulado : '',
-                  rol.Posicao ? rol.Posicao : '',
-                  rol.TotalRank ? rol.TotalRank : '',
-                  rol.Pontuacao ? rol.Pontuacao : '',
-                  Ano,
-                  rol.Total ? rol.Total : '',
-                );
-              }
+            } else if (
+              row.Celula === rol.Celula &&
+              Number(rol.Distrito) === Number(perfilUser.Distrito)
+            ) {
+              check2 = 1;
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                perfilUser.Distrito ? perfilUser.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
+            } else if (check2 === 0) {
+              valFinal[i] = createPontuacaoFinal(
+                row.Celula,
+                perfilUser.Distrito ? perfilUser.Distrito : '',
+                rol.Semana ? rol.Semana : '',
+                rol.relCelula ? rol.relCelula : '',
+                rol.relCelebracao ? rol.relCelebracao : '',
+                rol.relDiscipulado ? rol.relDiscipulado : '',
+                rol.Posicao ? rol.Posicao : '',
+                rol.TotalRank ? rol.TotalRank : '',
+                rol.Pontuacao ? rol.Pontuacao : '',
+                Ano,
+                rol.Total ? rol.Total : '',
+              );
             }
-            console.log('aqui agora', valFinal);
+
             setPosicaoFinal(valFinal);
             return 0;
           });
@@ -535,7 +538,6 @@ export default function TabCelula({
       });
     }
   }, [posicao2, presDisc]);
-  console.log('aqui posicao 2', posicao2, 'posicão final', posicaoFinal);
 
   //= ==================================================================
 
@@ -653,16 +655,15 @@ export default function TabCelula({
       </Box>
 
       {Object.keys(posicaoFinal).length ? (
-        <TableContainer
-          sx={{ height: '100%', minHeight: 335, maxHeight: '61vh' }}
-        >
+        <TableContainer sx={{ minHeight: 335, height: '57vh' }}>
           {posicaoFinal.map((row, index) => (
             <Box
               mt={0}
               display="flex"
               alignItems="center"
               key={row.Celula}
-              height="9vh"
+              height="8vh"
+              minHeight={60}
             >
               <Box
                 sx={{
