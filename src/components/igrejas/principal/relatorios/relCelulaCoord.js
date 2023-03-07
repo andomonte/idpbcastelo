@@ -72,14 +72,12 @@ function RelCelula({ perfilUser, lideranca }) {
   const numeroSetor = numeroSetorIni;
   const [celulaSetor, setCelulaSetor] = React.useState(numeroCelula);
 
-  console.log('numeroSetor', numeroSetor);
   const tipo = ['Relatório das Células', 'Relatório Geral'];
   const [contTipo, setContTipo] = React.useState(0);
 
   React.useEffect(() => {}, []);
 
   React.useEffect(() => {
-    console.log('contSetor', contSetor);
     if (contSetor !== 0) {
       const novaLista = lideresSetor.filter(
         (results) =>
@@ -88,7 +86,7 @@ function RelCelula({ perfilUser, lideranca }) {
           results.Funcao === 'Lider' &&
           Number(results.Supervisao) === Number(numeroSetor[contSetor]),
       );
-      console.log('novaLista', novaLista);
+
       const numberCelulasF = novaLista.map((itens) => itens.Celula);
       const uniqueArrF = [...new Set(numberCelulasF)];
       const numeroCelulaF = uniqueArrF;
@@ -103,10 +101,17 @@ function RelCelula({ perfilUser, lideranca }) {
       const numberCelulasF = novaLista.map((itens) => itens.Celula);
       const uniqueArrF = [...new Set(numberCelulasF)];
       const numeroCelulaF = uniqueArrF;
-      setCelulaSetor(numeroCelulaF);
+
+      const lideresSetor2 = numeroCelulaF.sort((a, b) => {
+        if (new Date(a) > new Date(b)) return 1;
+        if (new Date(b) > new Date(a)) return -1;
+        return 0;
+      });
+
+      setCelulaSetor(lideresSetor2);
     }
   }, [contSetor]);
-  console.log('numeroCelulaF', celulaSetor);
+
   const handleIncSetor = () => {
     let contTipoAtual = contSetor + 1;
     if (contTipoAtual > numeroSetor.length - 1) {
@@ -319,7 +324,6 @@ function RelCelula({ perfilUser, lideranca }) {
                           alignItems="center"
                           sx={{ fontSize: '14px', fontFamily: 'arial black' }}
                         >
-                          {console.log('no box', numeroSetor, contSetor)}
                           {numeroSetor[contSetor]}
                         </Box>
                         <Box

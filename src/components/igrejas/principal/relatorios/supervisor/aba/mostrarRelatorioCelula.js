@@ -2,14 +2,19 @@ import { Box, Grid, Paper, Button } from '@material-ui/core';
 import React from 'react';
 // import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Erros from 'src/utils/erros';
 import ConverteData from 'src/utils/convData2';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { IoArrowUndoSharp, IoArrowRedoSharp } from 'react-icons/io5';
-import TabCelula from './tabCelula';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
+import TabCelula from './tabCelula';
+
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="left" ref={ref} {...props} />
+));
 
 function RelCelula({ celula, setOpenPlan }) {
   //  const classes = useStyles();
@@ -17,7 +22,7 @@ function RelCelula({ celula, setOpenPlan }) {
 
   const nomesCelulas = JSON.parse(celula.NomesMembros);
   const [openErro, setOpenErro] = React.useState(false);
-
+  const [openObs, setOpenObs] = React.useState(false);
   const [qtyVisitantesCriancas, setQtyVisitantesCriancas] = React.useState(0);
 
   if (Number.isInteger(Number(celula.NomesVisitantes))) {
@@ -598,32 +603,104 @@ function RelCelula({ celula, setOpenPlan }) {
                       </Box>
                     </Paper>
                   </Box>
-                  <Box display="flex" justifyContent="center" width="100%">
+                  <Box
+                    mt={5}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    height="2.5vh"
+                    minHeight={10}
+                    bgcolor="#fafafa"
+                  >
+                    {celula.Observacoes ? (
+                      <Button
+                        style={{
+                          background: 'white',
+                          color: 'blue',
+                          fontFamily: 'arial black',
+                          width: '100%',
+                        }}
+                        component="a"
+                        variant="contained"
+                        onClick={() => {
+                          setOpenObs(true);
+                        }}
+                      >
+                        VER OBSERVAÇÕES
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{
+                          background: 'white',
+                          color: 'gray',
+                          fontFamily: 'arial black',
+                          width: '100%',
+                        }}
+                        component="a"
+                        variant="contained"
+                      >
+                        SEM OBSERVAÇÕES
+                      </Button>
+                    )}
+                  </Box>
+                  <Dialog
+                    fullScreen
+                    open={openObs}
+                    TransitionComponent={Transition}
+                  >
                     <Box
-                      width="100%"
                       mt={0}
                       display="flex"
+                      alignItems="center"
                       justifyContent="center"
+                      height="95%"
+                      color="black"
+                      bgcolor="#fafafa"
                     >
-                      <TextareaAutosize
-                        maxRows={4}
-                        value={celula.Observacoes}
-                        aria-label="maximum height"
-                        placeholder="Observações"
-                        style={{
-                          display: 'flex',
-                          marginTop: 20,
-                          textAlign: 'center',
-                          width: '90%',
-                          height: 80,
-                          borderRadius: 15,
-                          border: '1px solid #000',
-                          resize: 'vertical',
-                          overflow: 'auto',
-                        }}
-                      />
+                      <Box
+                        mt={-1}
+                        height="100%"
+                        width="94%"
+                        display="flex"
+                        fontSize="18px"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        {celula.Observacoes !== undefined &&
+                        celula.Observacoes !== null ? (
+                          <Box textAlign="justify"> {celula.Observacoes}</Box>
+                        ) : (
+                          'Sem Observações'
+                        )}
+                      </Box>
                     </Box>
-                  </Box>
+                    <Box
+                      mb={2}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      height="5%"
+                      minHeight={10}
+                      bgcolor="#fafafa"
+                    >
+                      <Button
+                        style={{
+                          background: 'orange',
+                          color: 'black',
+                          fontFamily: 'arial black',
+                          fontSize: '16px',
+                          width: '90%',
+                        }}
+                        component="a"
+                        variant="contained"
+                        onClick={() => {
+                          setOpenObs(false);
+                        }}
+                      >
+                        FECHAR OBSERVAÇÕES
+                      </Button>
+                    </Box>
+                  </Dialog>
                 </Box>
               )}
             </Box>

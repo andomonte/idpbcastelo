@@ -152,7 +152,7 @@ export default function TabCelula({
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1]);
+  }, [sem1, numeroCelula]);
 
   React.useEffect(() => {
     setPresCeleb([]);
@@ -230,7 +230,7 @@ export default function TabCelula({
 
     if (!culto) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [culto]);
+  }, [culto, numeroCelula]);
 
   React.useEffect(() => {
     setPresDisc([]);
@@ -304,7 +304,7 @@ export default function TabCelula({
 
     if (!discipular) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [discipular]);
+  }, [discipular, numeroCelula]);
 
   React.useEffect(() => {
     if (presSem1.length) {

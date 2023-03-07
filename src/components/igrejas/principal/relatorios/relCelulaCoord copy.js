@@ -1,45 +1,36 @@
 import { Box, Grid } from '@material-ui/core';
 import React from 'react';
-import PegaSemanaMes from 'src/utils/getSemanaMes';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
+import TamanhoJanela from 'src/utils/getSize';
 
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
-
 import PegaMes from 'src/utils/getMes';
 
 import Meses from 'src/utils/mesesAbrev';
 
-import TamanhoJanela from 'src/utils/getSize';
 import TabCelula from './supervisor/aba/tabRelSuperCelulas';
-import TabSetor from './supervisor/aba/tabRelSuperTotal';
+import TabSetor from './coordenador/aba/tabRelCoordTotal';
 import TabResumo from './supervisor/aba/tabResumo';
 
-// semana do Mes
-
-//------------------------------------------
-const janela = TamanhoJanela();
 function RelCelula({ perfilUser, lideranca }) {
+  const janela = TamanhoJanela();
   //= ================================================================
   const mes = Meses();
-  const dataAtual = new Date();
-  const mesAtual = Number(dataAtual.getMonth());
-  const anoAtual = Number(dataAtual.getFullYear());
+  const d = new Date();
+  const mesAtual = Number(d.getMonth());
+  const anoAtual = Number(d.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
   const [contAno, setContAno] = React.useState(anoAtual);
 
+  const dataAtual = Date.now();
   const semanaAtual = PegaSemanaAtual(dataAtual);
-
-  // const mesSemana = PegaMes(semanaAtual, anoAtual);
-  const semanaMes = PegaSemanaMes(dataAtual); // pega a semana certa do mes
-  const [contSemanaMes, setSemanaMes] = React.useState(semanaMes);
 
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
   const [valorIndexSend, setValorIndexSend] = React.useState([]);
   const [indexTabela, setIndexTabela] = React.useState([]);
-
   const [contSemana, setContSemana] = React.useState(semanaAtual);
 
   const lideresSetor = lideranca.sort((a, b) => {
@@ -50,7 +41,7 @@ function RelCelula({ perfilUser, lideranca }) {
 
   const celulaSetor = lideresSetor.filter(
     (results) =>
-      Number(results.Supervisao) === Number(perfilUser.Supervisao) &&
+      Number(results.Coordenacao) === Number(perfilUser.Coordenacao) &&
       Number(results.Distrito) === Number(perfilUser.Distrito) &&
       results.Funcao === 'Lider',
   );
@@ -61,18 +52,6 @@ function RelCelula({ perfilUser, lideranca }) {
 
   const tipo = ['Relatório das Células', 'Relatório Geral'];
   const [contTipo, setContTipo] = React.useState(0);
-
-  /*  React.useEffect(() => {
-    if (semanaMes === 0) {
-      let mesFinal = mesAtual - 1;
-      if (mesFinal < 0) {
-        mesFinal = 52;
-        setContAno(anoAtual - 1);
-      }
-      setContMes(mesAtual - 1);
-    }
-  }, [semanaMes]); */
-
   const handleIncTipo = () => {
     let contTipoAtual = contTipo + 1;
 
@@ -92,38 +71,24 @@ function RelCelula({ perfilUser, lideranca }) {
 
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
-    let ano2 = contAno;
     if (contSemanaAtual > semanaAtual && contAno === anoAtual) {
       contSemanaAtual = semanaAtual;
     }
     if (contSemanaAtual > 52) {
       contSemanaAtual = 1;
-      ano2 = contAno + 1;
       setContAno(contAno + 1);
-    }
-    const simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
-    const mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
-    setSemanaMes(simple);
-
-    setContMes(mesAgora);
-
-    setContSemana(contSemanaAtual);
-  };
-
-  const handleDecSemana = () => {
-    let ano2 = contAno;
-    let contSemanaAtual = contSemana - 1;
-    if (contSemanaAtual < 1) {
-      contSemanaAtual = 52;
-      ano2 = contAno - 1;
-      setContAno(contAno - 1);
     }
     setContMes(PegaMes(contSemanaAtual, anoAtual));
 
-    const simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
-    setSemanaMes(simple);
-    const mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
-    setContMes(mesAgora);
+    setContSemana(contSemanaAtual);
+  };
+  const handleDecSemana = () => {
+    let contSemanaAtual = contSemana - 1;
+    if (contSemanaAtual < 1) {
+      contSemanaAtual = 52;
+      setContAno(contAno - 1);
+    }
+    setContMes(PegaMes(contSemanaAtual, anoAtual));
     setContSemana(contSemanaAtual);
   };
   React.useEffect(() => {}, [contMes]);
@@ -155,6 +120,7 @@ function RelCelula({ perfilUser, lideranca }) {
             }}
             height="100%"
             width="100%"
+            bgcolor={corIgreja.principal}
           >
             <Box height="100%">
               <Box
@@ -196,7 +162,7 @@ function RelCelula({ perfilUser, lideranca }) {
                           color="white"
                           sx={{ fontFamily: 'Fugaz One' }}
                         >
-                          {contSemanaMes}° SEM
+                          SEM - {contSemana}
                           <Box
                             ml={4}
                             color="white"
