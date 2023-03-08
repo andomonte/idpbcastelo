@@ -492,7 +492,7 @@ export default function Todos({
       setNome(dadosUser[0].Nome);
       setCelular(dadosUser[0].TelCelular);
       setCPF(perfilUser.RolMembro);
-
+      console.log(ConvData1(dadosUser[0].Nascimento));
       setDataNascimento(ConvData1(dadosUser[0].Nascimento));
       setEmail(dadosUser[0].Email);
       setIgreja(dadosUser[0].Igreja);
