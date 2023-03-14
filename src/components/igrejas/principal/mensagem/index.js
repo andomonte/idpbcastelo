@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbCastelo({ title, mensagem, perfilUser }) {
+function IdpbCastelo({ titulo, title, mensagem, perfilUser }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -187,7 +187,12 @@ function IdpbCastelo({ title, mensagem, perfilUser }) {
         <main>
           <div className={classes.drawerHeader} />
           {/* {children} */}
-          <Mensagem mensagem={mensagem} perfilUser={perfilUser} />
+
+          <Mensagem
+            titulo2={titulo}
+            mensagem={mensagem}
+            perfilUser={perfilUser}
+          />
         </main>
       </div>
     </div>

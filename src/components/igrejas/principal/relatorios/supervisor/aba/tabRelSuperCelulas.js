@@ -93,6 +93,10 @@ export default function TabCelula({
   React.useEffect(() => {
     setPresSem1([]);
     setPosicaoFinal([]);
+    setRankGeral(contSemana);
+    setPosicao0([]);
+    setPosicao1([]);
+    setPosicao2([]);
     setContSemana2(contSemana);
   }, [contSemana]);
 
@@ -202,16 +206,21 @@ export default function TabCelula({
   }, [discipulado, numeroCelula]);
 
   React.useEffect(() => {
-    if (pontos) {
-      if (pontos.length) {
+    if (pontos && pontos.length) {
+      const pontosFinal = pontos.filter(
+        (rol) => Number(perfilUser.Distrito) === Number(rol.Distrito),
+      );
+      if (pontosFinal.length) {
         setRankGeral(
-          pontos.sort((a, b) => {
+          pontosFinal.sort((a, b) => {
             if (Number(a.TotalRank) < Number(b.TotalRank)) return 1;
             if (Number(b.TotalRank) < Number(a.TotalRank)) return -1;
             return 0;
           }),
         );
       }
+    } else {
+      setRankGeral(contSemana);
     }
     if (errorPontos) return <div>An error occured.</div>;
 
@@ -366,7 +375,6 @@ export default function TabCelula({
       });
     }
   }, [posicao0, presSem1]);
-
   React.useEffect(() => {
     const valFinal = [];
     if (Object.keys(presCelebracao).length > 0) {
@@ -542,7 +550,7 @@ export default function TabCelula({
   //= ==================================================================
 
   return (
-    <Box>
+    <Box height="100%">
       <Box
         bgcolor="#80cbc4"
         sx={{
@@ -552,7 +560,7 @@ export default function TabCelula({
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
         }}
-        height={80}
+        height="15%"
         width="100%"
         display="flex"
         justifyContent="center"
@@ -653,297 +661,306 @@ export default function TabCelula({
           </Box>
         </Box>
       </Box>
-
-      {Object.keys(posicaoFinal).length ? (
-        <TableContainer sx={{ minHeight: 335, height: '57vh' }}>
-          {posicaoFinal.map((row, index) => (
-            <Box
-              mt={0}
-              display="flex"
-              alignItems="center"
-              key={row.Celula}
-              height="8vh"
-              minHeight={60}
-            >
+      <Box height="85%">
+        {Object.keys(posicaoFinal).length ? (
+          <TableContainer sx={{ minHeight: 335, height: '100%' }}>
+            {posicaoFinal.map((row, index) => (
               <Box
-                sx={{
-                  fontFamily: 'arial black',
-                }}
-                fontSize="12px"
-                borderBottom="1px solid #000"
-                height="100%"
-                width="100%"
+                mt={0}
                 display="flex"
-                justifyContent="center"
                 alignItems="center"
+                key={row.Celula}
+                height="8vh"
+                minHeight={60}
               >
                 <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  textAlign="center"
-                  width="18.1%"
-                >
-                  {posicaoFinal[index] ? posicaoFinal[index].Celula : '-'}
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  textAlign="center"
-                  width="16.1%"
                   sx={{
-                    borderLeft: '1px solid #000',
+                    fontFamily: 'arial black',
                   }}
+                  fontSize="12px"
+                  borderBottom="1px solid #000"
+                  height="100%"
+                  width="100%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
                 >
-                  {posicaoFinal[index] ? (
-                    <Box
-                      height="100%"
-                      color="blue"
-                      alignItems="center"
-                      justifyContent="center"
-                      display="flex"
-                    >
-                      <Box height="100%">
-                        {posicaoFinal[index] && posicaoFinal[index].Posicao ? (
-                          <Box
-                            height="100%"
-                            onClick={() => {
-                              setOpenPontuacao(true);
-                              setCelula(posicaoFinal[index].relCelula);
-                              setPontosF(posicaoFinal[index]);
-                            }}
-                          >
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100%"
+                    textAlign="center"
+                    width="18.1%"
+                  >
+                    {posicaoFinal[index] ? posicaoFinal[index].Celula : '-'}
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100%"
+                    textAlign="center"
+                    width="16.1%"
+                    sx={{
+                      borderLeft: '1px solid #000',
+                    }}
+                  >
+                    {posicaoFinal[index] ? (
+                      <Box
+                        height="100%"
+                        color="blue"
+                        alignItems="center"
+                        justifyContent="center"
+                        display="flex"
+                      >
+                        <Box height="100%">
+                          {posicaoFinal[index] &&
+                          posicaoFinal[index].Posicao ? (
                             <Box
-                              height="60%"
-                              fontSize="12px"
-                              alignItems="end"
-                              justifyContent="center"
-                              display="flex"
+                              height="100%"
+                              onClick={() => {
+                                setOpenPontuacao(true);
+
+                                if (posicaoFinal[index].relCelula) {
+                                  setCelula(posicaoFinal[index].relCelula);
+                                } else if (posicaoFinal[index].relCelebracao) {
+                                  setCelula(posicaoFinal[index].relCelebracao);
+                                } else
+                                  setCelula(posicaoFinal[index].relDiscipulado);
+                                setPontosF(posicaoFinal[index]);
+                              }}
                             >
-                              <AiOutlineFileSearch color="#780210" size={25} />
+                              <Box
+                                height="60%"
+                                fontSize="12px"
+                                alignItems="end"
+                                justifyContent="center"
+                                display="flex"
+                              >
+                                <AiOutlineFileSearch
+                                  color="#780210"
+                                  size={25}
+                                />
+                              </Box>
+                              <Box
+                                height="40%"
+                                color="black"
+                                fontSize="12px"
+                                alignItems="center"
+                                justifyContent="center"
+                                display="flex"
+                              >
+                                {posicaoFinal[index].Posicao}º
+                              </Box>
                             </Box>
+                          ) : (
                             <Box
-                              height="40%"
-                              color="black"
-                              fontSize="12px"
+                              height="100%"
+                              color="blue"
                               alignItems="center"
                               justifyContent="center"
                               display="flex"
                             >
-                              {posicaoFinal[index].Posicao}º
+                              -
                             </Box>
-                          </Box>
-                        ) : (
+                          )}
+                        </Box>
+                      </Box>
+                    ) : (
+                      ''
+                    )}
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100%"
+                    textAlign="center"
+                    width="21.9%"
+                    sx={{
+                      borderLeft: '1px solid #000',
+                    }}
+                  >
+                    {posicaoFinal[index].relCelula ? (
+                      <Box
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        textAlign="center"
+                        alignItems="center"
+                        width="100%"
+                      >
+                        <Box>
                           <Box
                             height="100%"
-                            color="blue"
-                            alignItems="center"
-                            justifyContent="center"
                             display="flex"
+                            justifyContent="center"
+                            textAlign="center"
+                            alignItems="center"
+                            width="100%"
                           >
-                            -
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                              onClick={() => {
+                                /*  setValorIndexSend(posicaoFinal[index].Celula);
+                              setIndexTabela(index);
+                              setDadosCelulaSend(posicaoFinal[index]);
+                              setSendResumo(true); */
+
+                                setOpenPlan(true);
+                                setCelula(posicaoFinal[index].relCelula);
+                              }}
+                            >
+                              <AiOutlineFileSearch color="#4caf50" size={25} />
+                            </IconButton>
                           </Box>
-                        )}
+                          {ConverteData(
+                            posicaoFinal[index].relCelula.Data,
+                          ).slice(0, 5)}
+                        </Box>
                       </Box>
-                    </Box>
-                  ) : (
-                    ''
-                  )}
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  textAlign="center"
-                  width="21.9%"
-                  sx={{
-                    borderLeft: '1px solid #000',
-                  }}
-                >
-                  {posicaoFinal[index].relCelula ? (
-                    <Box
-                      height="100%"
-                      display="flex"
-                      justifyContent="center"
-                      textAlign="center"
-                      alignItems="center"
-                      width="100%"
-                    >
-                      <Box>
-                        <Box
-                          height="100%"
-                          display="flex"
-                          justifyContent="center"
-                          textAlign="center"
-                          alignItems="center"
-                          width="100%"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              /*  setValorIndexSend(posicaoFinal[index].Celula);
-                              setIndexTabela(index);
-                              setDadosCelulaSend(posicaoFinal[index]);
-                              setSendResumo(true); */
+                    ) : (
+                      '-'
+                    )}
+                  </Box>
 
-                              setOpenPlan(true);
-                              setCelula(posicaoFinal[index].relCelula);
-                            }}
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100%"
+                    textAlign="center"
+                    width="22.0%"
+                    sx={{
+                      borderLeft: '1px solid #000',
+                      borderRight: '1px solid #000',
+                    }}
+                  >
+                    {posicaoFinal[index].relCelebracao ? (
+                      <Box
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        textAlign="center"
+                        alignItems="center"
+                        width="100%"
+                      >
+                        <Box>
+                          <Box
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            textAlign="center"
+                            alignItems="center"
+                            width="100%"
                           >
-                            <AiOutlineFileSearch color="#4caf50" size={25} />
-                          </IconButton>
-                        </Box>
-                        {ConverteData(posicaoFinal[index].relCelula.Data).slice(
-                          0,
-                          5,
-                        )}
-                      </Box>
-                    </Box>
-                  ) : (
-                    '-'
-                  )}
-                </Box>
-
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  textAlign="center"
-                  width="22.0%"
-                  sx={{
-                    borderLeft: '1px solid #000',
-                    borderRight: '1px solid #000',
-                  }}
-                >
-                  {posicaoFinal[index].relCelebracao ? (
-                    <Box
-                      height="100%"
-                      display="flex"
-                      justifyContent="center"
-                      textAlign="center"
-                      alignItems="center"
-                      width="100%"
-                    >
-                      <Box>
-                        <Box
-                          height="100%"
-                          display="flex"
-                          justifyContent="center"
-                          textAlign="center"
-                          alignItems="center"
-                          width="100%"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              /*  setValorIndexSend(posicaoFinal[index].Celula);
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                              onClick={() => {
+                                /*  setValorIndexSend(posicaoFinal[index].Celula);
                               setIndexTabela(index);
                               setDadosCelulaSend(posicaoFinal[index]);
                               setSendResumo(true); */
-                              setOpenCeleb(true);
-                              setCelula(posicaoFinal[index].relCelebracao);
-                            }}
-                          >
-                            <AiOutlineFileSearch color="#aa00ff" size={25} />
-                          </IconButton>
+                                setOpenCeleb(true);
+                                setCelula(posicaoFinal[index].relCelebracao);
+                              }}
+                            >
+                              <AiOutlineFileSearch color="#aa00ff" size={25} />
+                            </IconButton>
+                          </Box>
+                          {ConverteData(
+                            posicaoFinal[index].relCelebracao.Data,
+                          ).slice(0, 5)}
                         </Box>
-                        {ConverteData(
-                          posicaoFinal[index].relCelebracao.Data,
-                        ).slice(0, 5)}
                       </Box>
-                    </Box>
-                  ) : (
-                    '-'
-                  )}
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  textAlign="center"
-                  width="22.5%"
-                >
-                  {posicaoFinal[index].relDiscipulado ? (
-                    <Box
-                      height="100%"
-                      display="flex"
-                      justifyContent="center"
-                      textAlign="center"
-                      alignItems="center"
-                      width="100%"
-                    >
-                      <Box>
-                        <Box
-                          height="100%"
-                          display="flex"
-                          justifyContent="center"
-                          textAlign="center"
-                          alignItems="center"
-                          width="100%"
-                        >
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                            onClick={() => {
-                              /*  setValorIndexSend(posicaoFinal[index].Celula);
+                    ) : (
+                      '-'
+                    )}
+                  </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100%"
+                    textAlign="center"
+                    width="22.5%"
+                  >
+                    {posicaoFinal[index].relDiscipulado ? (
+                      <Box
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        textAlign="center"
+                        alignItems="center"
+                        width="100%"
+                      >
+                        <Box>
+                          <Box
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            textAlign="center"
+                            alignItems="center"
+                            width="100%"
+                          >
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                              onClick={() => {
+                                /*  setValorIndexSend(posicaoFinal[index].Celula);
                               setIndexTabela(index);
                               setDadosCelulaSend(posicaoFinal[index]);
                               setSendResumo(true); */
-                              setOpenDisc(true);
-                              setCelula(posicaoFinal[index].relDiscipulado);
-                            }}
-                          >
-                            <AiOutlineFileSearch color="#2196f3" size={25} />
-                          </IconButton>
+                                setOpenDisc(true);
+                                setCelula(posicaoFinal[index].relDiscipulado);
+                              }}
+                            >
+                              <AiOutlineFileSearch color="#2196f3" size={25} />
+                            </IconButton>
+                          </Box>
+                          {ConverteData(
+                            posicaoFinal[index].relDiscipulado.Data,
+                          ).slice(0, 5)}
                         </Box>
-                        {ConverteData(
-                          posicaoFinal[index].relDiscipulado.Data,
-                        ).slice(0, 5)}
                       </Box>
-                    </Box>
-                  ) : (
-                    '-'
-                  )}
+                    ) : (
+                      '-'
+                    )}
+                  </Box>
                 </Box>
               </Box>
+            ))}
+          </TableContainer>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="100%"
+          >
+            <Box>
+              <Box
+                fontSize="16px"
+                fontFamily="arial black"
+                mb={5}
+                mt={-2}
+                textAlign="center"
+              >
+                Buscando Dados
+              </Box>
+              <Oval stroke="blue" width={50} height={50} />
             </Box>
-          ))}
-        </TableContainer>
-      ) : (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="50vh"
-          textAlign="center"
-          width="100%"
-        >
-          <Box>
-            <Box
-              fontSize="16px"
-              fontFamily="arial black"
-              mb={5}
-              mt={-2}
-              textAlign="center"
-            >
-              Buscando Dados
-            </Box>
-            <Oval stroke="blue" width={50} height={50} />
           </Box>
-        </Box>
-      )}
-
+        )}
+      </Box>
       <Dialog fullScreen open={openPlan} TransitionComponent={Transition}>
         <MostrarRelatorioCelula celula={celula} setOpenPlan={setOpenPlan} />
       </Dialog>

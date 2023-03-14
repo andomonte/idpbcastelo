@@ -604,7 +604,7 @@ function RelCelula({
     const pontosEventos = contEventos;
     let pontosNovoMembro = 0;
     const pontosVisitas = contVisitas;
-    console.log('oi aqui final', pontosVisitantesCelula);
+
     let pontosRelCelebracao = 0;
     let pontosCelebracaoIgreja = 0;
     let pontosCelebracaoLive = 0;

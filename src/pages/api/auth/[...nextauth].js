@@ -38,13 +38,21 @@ const options = {
           const user = await prisma.membros
             .findMany({
               where: {
-                CPF: credentials.cpf,
+                OR: [
+                  {
+                    CPF: credentials.cpf,
+                  },
+
+                  {
+                    CPF: credentials.cpf.replace(/\D/g, ''),
+                  },
+                ],
               },
             })
             .finally(async () => {
               await prisma.$disconnect();
             });
-
+          console.log('user do banco', user);
           if (user && user.length) {
             let getSenha = user[0].senha;
             const ano = user[0].Nascimento.getFullYear();
@@ -56,6 +64,7 @@ const options = {
               user[0].Nascimento.getDate() + 1 > 9
                 ? user[0].Nascimento.getDate() + 1
                 : `0${user[0].Nascimento.getDate() + 1}`;
+            console.log('senha', getSenha);
             if (getSenha === undefined || getSenha === null) {
               getSenha = `${dia}${mes}${ano}`;
               if (getSenha === credentials.password) {

@@ -41,7 +41,7 @@ function relatorios({ celulas, rolMembros, lideranca }) {
           title="IDPB-CELULAS"
           rolMembros={rolMembros}
           lideranca={lideranca}
-          perfilUser={perfilUser}
+          perfilUser={perfilUserF}
         />
       )}
     </div>

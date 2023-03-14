@@ -733,12 +733,7 @@ export default function TabCelula({
             <Box
               onClick={() => {
                 setOpenPontuacao(true);
-                console.log(
-                  'aqui',
-                  dataSem0,
-                  dataSem0Celebracao,
-                  dataSem0Discipulado,
-                );
+
                 if (dataSem0.CriadoPor) setCelula(dataSem0);
                 if (dataSem0Celebracao.CriadoPor) setCelula(dataSem0Celebracao);
                 if (dataSem0Discipulado.CriadoPor)

@@ -101,12 +101,13 @@ function Eventos({ perfilUser, rolMembros }) {
                         width: '100%',
                       }}
                     >
-                      <Box height="96%" width="100%">
+                      <Box height="96%" width="100%" maxWidth={500}>
                         <Box height="100%" width="100%">
                           {row.LogoEvento && (
                             <img
                               style={{ borderRadius: '16px' }}
                               src={row.LogoEvento}
+                              height="auto"
                               width="auto"
                               alt="imagem"
                             />

@@ -21,7 +21,7 @@ const janela = TamanhoJanela();
 function RelCelula({ perfilUser, lideranca }) {
   //= ================================================================
   const mes = Meses();
-  const dataAtual = new Date();
+  const dataAtual = new Date('2023-03-12T23:50:21.817Z'); // new Date();
   const mesAtual = Number(dataAtual.getMonth());
   const anoAtual = Number(dataAtual.getFullYear());
   const [contMes, setContMes] = React.useState(mesAtual);
@@ -179,6 +179,11 @@ function RelCelula({ perfilUser, lideranca }) {
     setContMes(mesAgora);
     setContSemana(contSemanaAtual);
   };
+  React.useEffect(() => {
+    const diaSemana = dataAtual.getDay();
+
+    if (diaSemana !== 1 && diaSemana !== 2) handleDecSemana();
+  }, []);
 
   return (
     <Box

@@ -83,6 +83,7 @@ function SelectPerfil({
   const classes = useStyles();
 
   const [session] = useSession();
+  const [mudouPerfil, setMudouPerfil] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [start, setStart] = React.useState(true);
   const [rolMembro, setRolMembro] = React.useState(true);
@@ -346,6 +347,7 @@ function SelectPerfil({
 
       const handleChange = (event) => {
         setContagem(true);
+        setMudouPerfil(true);
         const indexPerfil = Number(event.target.value - 1);
         setPerfilUser(() => [valorPerfil[indexPerfil]]);
       };
@@ -896,11 +898,13 @@ function SelectPerfil({
       );
 
       if (start) {
+        console.log('valorPerfil', valorPerfil);
         if (valorPerfil.length === 1 && perfilUser === '')
           setPerfilUser(valorPerfil);
         if (valorPerfil.length > 0 && !open && perfilUser === '') setOpen(true);
 
-        if (perfilUser !== '') {
+        if (perfilUser !== '' && mudouPerfil) {
+          console.log('aqui chg', perfilUser);
           router.push(
             {
               pathname: '/principal',

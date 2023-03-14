@@ -32,8 +32,6 @@ import RelSuperDistrito from './relSuperDistrito';
 import RelCelulaSup from './relCelulaSup';
 import RelCelulaCoord from './relCelulaCoord';
 import RelCelulaDistrito from './relCelulaDistrito';
-import RelCelebracao from './relCelebracao';
-import RelDiscipulado from './relDiscipulado';
 import Padrao from './abas/telaPadrao';
 
 // const drawerWidth = 240;
@@ -473,16 +471,6 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
           <TabPanel value={value} index={1}>
             {session && (
               <Box>
-                {perfilUser.Funcao === 'Lider' ? (
-                  <RelCelebracao
-                    perfilUser={perfilUser}
-                    setDataEscolhida={setDataEscolhida}
-                    dataEscolhida={dataEscolhida}
-                    secao={session}
-                    rolMembros={rolMembros}
-                    visitantes={visitantes}
-                  />
-                ) : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <RelSuper
@@ -521,16 +509,6 @@ function Relatorios({ title, rolMembros, lideranca, perfilUser, visitantes }) {
           <TabPanel value={value} index={2}>
             {/*  <Eventos item={item} /> */}
 
-            {perfilUser.Funcao === 'Lider' ? (
-              <RelDiscipulado
-                perfilUser={perfilUser}
-                setDataEscolhida={setDataEscolhida}
-                dataEscolhida={dataEscolhida}
-                secao={session}
-                rolMembros={rolMembros}
-                visitantes={visitantes}
-              />
-            ) : null}
             {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
             {perfilUser.Funcao === 'Supervisor' ? (
               <RelVisitasSuper

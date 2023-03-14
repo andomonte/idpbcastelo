@@ -8,10 +8,11 @@ import validator from 'validator';
 import Espere from 'src/utils/espera';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-025');
   const router = useRouter();
   const [session] = useSession();
   const perfilUser = router.query;
+
   let mudaDados = 'sai';
 
   if (perfilUser.id) mudaDados = 'entra';
@@ -23,31 +24,24 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
       const result = JSON.parse(sessionStorage.getItem('perfilUser'));
-      console.log('oi session', session, result);
-      if (session !== null) {
-        if (result) setPerfilUserF(result);
-        if (session) {
-          console.log('ai entrou session');
-          if (validator.isEmail(session.user.email))
-            router.push({
-              pathname: '/selectPerfil',
-            });
-          else {
-            router.push({
-              pathname: '/selectPerfilCPF',
-              query: { cpf: session.user.email },
-            });
-          }
-        }
-      } else setPerfilUserF('');
+
+      setPerfilUserF(result);
       // resultado = result.id;
     }
   }, [mudaDados]);
 
   React.useEffect(() => {
-    console.log('oi session', session);
-    if (perfilUserF.id) {
-      if (session !== null && session !== undefined) {
+    if (
+      (perfilUserF === null || perfilUserF === '') &&
+      (perfilUser.length === null || !perfilUser.length)
+    ) {
+      const result = JSON.parse(sessionStorage.getItem('perfilUser'));
+
+      if (
+        session !== null &&
+        session !== undefined &&
+        (result === '' || result === null)
+      ) {
         if (validator.isEmail(session.user.email))
           router.push({
             pathname: '/selectPerfil',
@@ -64,7 +58,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
 
   return (
     <div>
-      {perfilUserF && perfilUserF.id ? (
+      {perfilUser && perfilUserF && perfilUserF && perfilUserF.id ? (
         <div>
           <SistemaCelulas
             celulas={celulas}
@@ -77,7 +71,9 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
         </div>
       ) : (
         <div>
-          {!perfilUserF && !perfilUser ? (
+          {(session === null || session === undefined) &&
+          (perfilUserF === null || perfilUserF === '') &&
+          (perfilUser.length === null || !perfilUser.length) ? (
             <Pagina userIgrejas={dadosUser} title="IDPB-CELULAS" />
           ) : (
             <Espere descricao="Buscando Conexão..." />

@@ -143,7 +143,7 @@ function SelectPerfil({
       const newDistrito = distritos.filter(
         (val) => Number(val.Distrito) === Number(membros[0].Distrito),
       );
-      console.log('aquei o distrito', newDistrito);
+
       if (lideranca.length) {
         secao = lideranca.filter(
           (val) => val.RolMembro === listaMembros[0].RolMembro,

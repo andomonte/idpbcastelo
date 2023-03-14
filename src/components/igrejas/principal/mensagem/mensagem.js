@@ -4,11 +4,16 @@ import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
-
+import { AiFillPrinter } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
+import { useRouter } from 'next/router';
+import { IoLogoWhatsapp } from 'react-icons/io';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
 import Autocomplete from '@mui/material/Autocomplete';
+import PegaDataPelaSemana from 'src/utils/getData';
+import { useReactToPrint } from 'react-to-print';
+import { getYear } from 'date-fns';
 
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
@@ -67,9 +72,15 @@ function getPreviousMonday(date) {
 }
 
 function getPreviousMonday2(date) {
-  const previousMonday = new Date();
+  const getAno = new Date().getFullYear();
+  const getDia = new Date().getDay();
+  let dataFinal = date;
+  if (getDia < 3) dataFinal = date + 1;
+  const nova = PegaDataPelaSemana(dataFinal, getAno);
 
-  previousMonday.setDate(previousMonday.getDate() - date);
+  const previousMonday = nova;
+
+  previousMonday.setDate(previousMonday.getDate() - 7);
 
   return previousMonday;
 }
@@ -83,36 +94,45 @@ function nextSunday(date) {
   return nextweek;
 }
 
-function Mensagem({ mensagem, perfilUser }) {
+function Mensagem({ mensagem, perfilUser, titulo2 }) {
+  const router = useRouter();
   const dataAgora = new Date();
   const novaDataSemana = semanaExata(dataAgora);
-  console.log('dataAgora', novaDataSemana);
+
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
 
   const nomeRef = React.useRef();
   // const d = new Date();
   // const anoAtual = Number(d.getFullYear());
-  const valorInicialTitulo = {
+  let valorInicialTitulo = {
     label: 'Título da Mensagem',
-    value: 0,
+    value: 1,
   };
+  if (titulo2 && titulo2.length) valorInicialTitulo = titulo2;
+
+  const [action, setAction] = React.useState('');
+  const ref3 = React.useRef();
+
   const [titulo, setTitulo] = React.useState(valorInicialTitulo);
+  const [pesquisaTitulo, setPesquisaTitulo] = React.useState(false);
   const [inputValor, setInputValor] = React.useState('');
 
   const [openPesquisa, setOpenPesquisa] = React.useState(false);
   const [contFonte, setContFonte] = React.useState(16);
-  // const [dadosMensagem, setDadosMensagem] = React.useState(0);
-  const [contSemana, setContSemana] = React.useState(novaDataSemana - 7);
-  const semanaAtual2 = getPreviousMonday2(contSemana + 7);
+
+  const [contSemana, setContSemana] = React.useState(novaDataSemana);
+  const semanaAtual2 = getPreviousMonday2(contSemana);
+
   const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
     'DD/MM/YYYY 00:00:00',
   );
 
-  // const semanaAgora = moment(getPreviousMonday(dataAgora)).format('DD/MM/YYYY');
   const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
+
   const dataInicial = converteData(semanaAtual);
   const dataFinal = converteData(semanaSegunte);
+
   const listaNomes = mensagem.map((nomes) => nomes.titulo);
 
   const niverGeralValido = mensagem.filter(
@@ -130,40 +150,21 @@ function Mensagem({ mensagem, perfilUser }) {
   );
 
   const handleIncSemana = () => {
-    const contSemanaAtual = contSemana - 7;
-
-    setContSemana(contSemanaAtual);
-  };
-  const handleDecSemana = () => {
-    const contSemanaAtual = contSemana + 7;
-
-    setContSemana(contSemanaAtual);
-  };
-
-  // const diaBr = Number(d.getDate());
-  // const mesBr = Number(d.getMonth());
-  // const anoBr = Number(d.getFullYear());
-  // const dataBr = `${diaBr}/${mesBr}/${anoBr}`;
-
-  /* const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
-    if (contSemanaAtual > contSemanaFix) {
-      contSemanaAtual = contSemanaFix;
-    }
+
+    if (contSemanaAtual > novaDataSemana) contSemanaAtual = contSemana;
+    setPesquisaTitulo(false);
     setContSemana(contSemanaAtual);
   };
   const handleDecSemana = () => {
-    let contSemanaAtual = contSemana - 1;
-    if (contSemanaAtual < 1) {
-      contSemanaAtual = 1;
-      setContAno(contAno - 1);
-    }
+    const contSemanaAtual = contSemana - 1;
+    setPesquisaTitulo(false);
     setContSemana(contSemanaAtual);
-  }; */
+  };
 
   const handleIncFonte = () => {
     let contFonteAtual = contFonte + 1;
-    if (contFonteAtual > 24) contFonteAtual = 24;
+    if (contFonteAtual > 124) contFonteAtual = 124;
     setContFonte(contFonteAtual);
   };
 
@@ -175,135 +176,124 @@ function Mensagem({ mensagem, perfilUser }) {
   };
 
   React.useEffect(() => {
-    const dataMens = niverGeral.sort(compare);
-    let dataMens2 = dataMens.filter(
-      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
-    );
-    if (!dataMens2.length)
-      dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
-    console.log(dataMens2);
-    setBoletim(dataMens[0]);
+    if (!pesquisaTitulo) {
+      const dataMens = niverGeral.sort(compare);
 
-    const diaSemana = [
-      'Domingo',
-      'Segunda',
-      'Terça',
-      'Quarta',
-      'Quinta',
-      'Sexta',
-      'Sábado',
-    ];
-    // console.log('diaMensagem', niverGeral.sort(compare));
+      let dataMens2 = dataMens.filter(
+        (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+      );
+      if (dataMens2.length) {
+        setBoletim(dataMens2[0]);
+      } else {
+        dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
+        setBoletim(dataMens2[0]);
+      }
 
-    /* if (dataMens[contSemana].length) {
-      const diaMensagem = new Date(dataMens[contSemana].Data);
-      console.log('oi dia', diaMensagem);
-      diaMensagem.setHours(diaMensagem.getHours() + 6);
-      console.log('diaMensagem', diaMensagem);
-      const diaSm = Number(diaMensagem.getDay());
-      const diaBr = Number(diaMensagem.getDate());
-      let mesBr = Number(diaMensagem.getMonth() + 1);
-      if (mesBr < 10) mesBr = `0${mesBr}`;
-      const anoBr = Number(diaMensagem.getFullYear());
-      const dataBrTemp = `${diaSemana[diaSm]}  ${diaBr}/${mesBr}/${anoBr}`; 
-      
-      setDataBr(dataBrTemp);
-    } */
-    if (dataMens.length) {
-      const novaData1 = dataMens[0].Data; // nextSunday(semanaAtual2);
+      const diaSemana = [
+        'Domingo',
+        'Segunda',
+        'Terça',
+        'Quarta',
+        'Quinta',
+        'Sexta',
+        'Sábado',
+      ];
 
-      const ano = novaData1.substring(0, 4);
-      const mes = novaData1.substring(5, 7);
-      const dia = novaData1.substring(8, 10);
-      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+      if (dataMens2.length) {
+        const novaData1 = dataMens2[0].Data; // nextSunday(semanaAtual2);
 
-      const showData = ` ${
-        diaSemana[diaSemana2.getDay()]
-      } ${dia}/${mes}/${ano}`;
+        const ano = novaData1.substring(0, 4);
+        const mes = novaData1.substring(5, 7);
+        const dia = novaData1.substring(8, 10);
+        const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-      setDataBr(showData);
-    } else {
-      const novaData11 = nextSunday(semanaAtual2);
-      const dia =
-        novaData11.getDate() > 9
-          ? novaData11.getDate()
-          : `0${novaData11.getDate()}`;
-      const mes =
-        novaData11.getMonth() + 1 > 9
-          ? novaData11.getMonth() + 1
-          : `0${novaData11.getMonth() + 1}`;
-      const ano = novaData11.getFullYear();
-      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+        const showData = ` ${
+          diaSemana[diaSemana2.getDay()]
+        } ${dia}/${mes}/${ano}`;
 
-      const showData = ` ${
-        diaSemana[diaSemana2.getDay()]
-      } ${dia}/${mes}/${ano}`;
+        setDataBr(showData);
+      } else {
+        const novaData11 = nextSunday(semanaAtual2);
+        const dia =
+          novaData11.getDate() > 9
+            ? novaData11.getDate()
+            : `0${novaData11.getDate()}`;
+        const mes =
+          novaData11.getMonth() + 1 > 9
+            ? novaData11.getMonth() + 1
+            : `0${novaData11.getMonth() + 1}`;
+        const ano = novaData11.getFullYear();
+        const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-      setDataBr(showData);
+        const showData = ` ${
+          diaSemana[diaSemana2.getDay()]
+        } ${dia}/${mes}/${ano}`;
+
+        setDataBr(showData);
+      }
     }
   }, [contSemana, dataFinal]);
 
   React.useEffect(() => {
-    const dataMens2 = mensagem.filter((val) => val.titulo === titulo);
+    console.log('oi agora', titulo, titulo2);
+    if (titulo2) {
+      setTitulo(titulo2);
+    }
+  }, [titulo2]);
 
-    setBoletim(dataMens2[0]);
+  React.useEffect(() => {
+    if (titulo && titulo.length) {
+      const dataMens2 = mensagem.filter(
+        (val) => val.titulo.toLowerCase().indexOf(titulo.toLowerCase()) !== -1,
+      );
 
-    const diaSemana = [
-      'Domingo',
-      'Segunda',
-      'Terça',
-      'Quarta',
-      'Quinta',
-      'Sexta',
-      'Sábado',
-    ];
-    // console.log('diaMensagem', niverGeral.sort(compare));
+      if (dataMens2.length) {
+        setBoletim(dataMens2[0]);
+        setPesquisaTitulo(true);
+      }
 
-    /* if (dataMens[contSemana].length) {
-      const diaMensagem = new Date(dataMens[contSemana].Data);
-      console.log('oi dia', diaMensagem);
-      diaMensagem.setHours(diaMensagem.getHours() + 6);
-      console.log('diaMensagem', diaMensagem);
-      const diaSm = Number(diaMensagem.getDay());
-      const diaBr = Number(diaMensagem.getDate());
-      let mesBr = Number(diaMensagem.getMonth() + 1);
-      if (mesBr < 10) mesBr = `0${mesBr}`;
-      const anoBr = Number(diaMensagem.getFullYear());
-      const dataBrTemp = `${diaSemana[diaSm]}  ${diaBr}/${mesBr}/${anoBr}`; 
-      
-      setDataBr(dataBrTemp);
-    } */
-    if (dataMens2.length) {
-      const novaData1 = dataMens2[0].Data; // nextSunday(semanaAtual2);
+      const diaSemana = [
+        'Domingo',
+        'Segunda',
+        'Terça',
+        'Quarta',
+        'Quinta',
+        'Sexta',
+        'Sábado',
+      ];
 
-      const ano = novaData1.substring(0, 4);
-      const mes = novaData1.substring(5, 7);
-      const dia = novaData1.substring(8, 10);
-      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+      if (dataMens2.length) {
+        const novaData1 = dataMens2[0].Data; // nextSunday(semanaAtual2);
 
-      const showData = ` ${
-        diaSemana[diaSemana2.getDay()]
-      } ${dia}/${mes}/${ano}`;
+        const ano = novaData1.substring(0, 4);
+        const mes = novaData1.substring(5, 7);
+        const dia = novaData1.substring(8, 10);
+        const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-      setDataBr(showData);
-    } else {
-      const novaData11 = nextSunday(semanaAtual2);
-      const dia =
-        novaData11.getDate() > 9
-          ? novaData11.getDate()
-          : `0${novaData11.getDate()}`;
-      const mes =
-        novaData11.getMonth() + 1 > 9
-          ? novaData11.getMonth() + 1
-          : `0${novaData11.getMonth() + 1}`;
-      const ano = novaData11.getFullYear();
-      const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+        const showData = ` ${
+          diaSemana[diaSemana2.getDay()]
+        } ${dia}/${mes}/${ano}`;
 
-      const showData = ` ${
-        diaSemana[diaSemana2.getDay()]
-      } ${dia}/${mes}/${ano}`;
+        setDataBr(showData);
+      } else {
+        const novaData11 = nextSunday(semanaAtual2);
+        const dia =
+          novaData11.getDate() > 9
+            ? novaData11.getDate()
+            : `0${novaData11.getDate()}`;
+        const mes =
+          novaData11.getMonth() + 1 > 9
+            ? novaData11.getMonth() + 1
+            : `0${novaData11.getMonth() + 1}`;
+        const ano = novaData11.getFullYear();
+        const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-      setDataBr(showData);
+        const showData = ` ${
+          diaSemana[diaSemana2.getDay()]
+        } ${dia}/${mes}/${ano}`;
+
+        setDataBr(showData);
+      }
     }
   }, [titulo]);
   const handleEnter = (event) => {
@@ -312,6 +302,17 @@ function Mensagem({ mensagem, perfilUser }) {
       //  if (form === 'Nascimento') handleCheckDadosMembro();
     }
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => ref3.current,
+  });
+  const handleActive = (acao) => {
+    console.log(router);
+    if (acao === 'zap') console.log('oi zap');
+  };
+  React.useEffect(() => {
+    if (action === 'print') handlePrint();
+  }, [action]);
   return (
     <Box
       display="flex"
@@ -326,7 +327,7 @@ function Mensagem({ mensagem, perfilUser }) {
       <Box
         width="96%"
         // maxWidth={450}
-
+        ref={ref3}
         bgcolor={corIgreja.secundaria}
         height="97%"
         display="flex"
@@ -339,7 +340,7 @@ function Mensagem({ mensagem, perfilUser }) {
           style={{
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
-            backgroundImage: `url('/images/castelo/mensagem2.png')`,
+            backgroundImage: `url('/images/mensagem2.png')`,
             backgroundPosition: 'center', // centraliza imagem
             backgroundSize: 'cover',
           }}
@@ -352,71 +353,127 @@ function Mensagem({ mensagem, perfilUser }) {
           <Box
             mt={2}
             ml={2}
-            width="90%"
+            height="100%"
+            width="96%"
             display="flex"
             alignItems="start"
             justifyContent="start"
           >
             <Box
-              onClick={() => {
-                setOpenPesquisa(!openPesquisa);
-                setTitulo('');
-                nomeRef.current.focus();
-              }}
+              width="99%"
+              height="100%"
+              mt={-1}
+              color="white"
+              fontSize="25px"
+              fontFamily="Fugaz One"
+              display="flex"
+              justifyContent="center"
             >
-              <BsSearch size={25} color="white" />
-            </Box>
-            <Box ml={2} width="100%" display={openPesquisa ? 'flex' : 'none'}>
-              <Autocomplete
-                sx={{
-                  width: '100%',
-                  textAlign: 'center',
-                  background: 'white',
-                }}
-                id="Nome"
-                freeSolo
-                value={titulo}
-                onChange={(_, newValue) => {
-                  setOpenPesquisa(false);
-                  if (inputValor && newValue) setTitulo(newValue);
-                  else setTitulo('');
-                }}
-                onBlur={() => {
-                  if (inputValor.length > 0) {
-                    setTitulo(inputValor);
-                  }
-                }}
-                selectOnFocus
-                inputValue={inputValor}
-                onInputChange={(_, newInputValue) => {
-                  if (newInputValue !== '')
-                    setInputValor(newInputValue.toUpperCase());
-                  else setInputValor('');
-                }}
-                options={listaNomes}
-                renderInput={(params) => (
-                  <TextField
-                    autoComplete="off"
-                    inputRef={nomeRef}
-                    {...params}
-                    onKeyDown={handleEnter}
-                    placeholder="  Digite o titulo"
+              <Box
+                width="86%"
+                height="auto"
+                display="flex"
+                justifyContent="start"
+              >
+                <Box
+                  height="100%"
+                  onClick={() => {
+                    setOpenPesquisa(!openPesquisa);
+                    setTitulo('');
+                    nomeRef.current.focus();
+                  }}
+                >
+                  <BsSearch size={25} color="white" />
+                </Box>
+                <Box
+                  ml={2}
+                  width="100%"
+                  display={openPesquisa ? 'flex' : 'none'}
+                >
+                  <Autocomplete
+                    sx={{
+                      width: '100%',
+                      textAlign: 'center',
+                      background: 'white',
+                    }}
+                    id="Nome"
+                    freeSolo
+                    value={titulo}
+                    onChange={(_, newValue) => {
+                      setOpenPesquisa(false);
+                      if (inputValor && newValue) setTitulo(newValue);
+                      else setTitulo('');
+                    }}
+                    onBlur={() => {
+                      if (inputValor.length > 0) {
+                        setTitulo(inputValor);
+                      }
+                    }}
+                    selectOnFocus
+                    inputValue={inputValor}
+                    onInputChange={(_, newInputValue) => {
+                      if (newInputValue !== '')
+                        setInputValor(newInputValue.toUpperCase());
+                      else setInputValor('');
+                    }}
+                    options={listaNomes}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        inputRef={nomeRef}
+                        {...params}
+                        onKeyDown={handleEnter}
+                        placeholder="  Digite o titulo"
+                      />
+                    )}
                   />
-                )}
-              />
+                </Box>
+              </Box>
+              <Box
+                height="100%"
+                width="12%"
+                display="flex"
+                justifyContent="flex-end"
+              >
+                <IconButton onClick={() => handleIncFonte()}>
+                  <Box
+                    style={{
+                      color: 'white',
+                      fontFamily: 'arial black',
+                      fontSize: '16px',
+                    }}
+                    display="flex"
+                    justifyContent="flex-end"
+                    width="100%"
+                  >
+                    <Box
+                      borderRadius={20}
+                      width="auto"
+                      height="auto"
+                      bgcolor="white"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      onClick={handleActive('zap')}
+                    >
+                      <IoLogoWhatsapp size={25} color="green" />
+                    </Box>
+                  </Box>
+                </IconButton>
+              </Box>
             </Box>
           </Box>
 
           <Box
             width="99%"
-            mt={0}
+            mt={-1}
             color="white"
             fontSize="25px"
             fontFamily="Fugaz One"
             display="flex"
             justifyContent="center"
           >
-            <Box width="86%" textAlign="center">
+            <Box width="86%" display="flex" justifyContent="center">
               MENSAGEM
             </Box>
             <Box
@@ -443,7 +500,7 @@ function Mensagem({ mensagem, perfilUser }) {
           </Box>
           <Box
             height="100%"
-            mt={-1}
+            mt={-1.5}
             flexDirection="column"
             width="100%"
             display="flex"
