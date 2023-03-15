@@ -134,7 +134,6 @@ function RelCelula({
   const dataEscolhida2 = PegaData(semanaEnviada, anoEnviado);
   const dataFinal =
     dataEnviada !== '-' ? FormatoData(dataEnviada) : dataEscolhida2;
-
   const [dataEscolhida, setDataEscolhida] = React.useState(dataFinal);
   const [contagem, setContagem] = React.useState(false);
   const [checkInicio, setCheckInicio] = React.useState('sim');
@@ -306,7 +305,7 @@ function RelCelula({
           const date2 = moment(selectedDate);
           const diff = date2.diff(date1, 'seconds') + 3600;
 
-          if (diff > -5576889) {
+          if (diff > -92948 * 15) {
             setPodeEditar(true);
           }
           // 7 dia =-650637
@@ -315,13 +314,6 @@ function RelCelula({
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
           const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-
-          const qtyPres = nomesMembros.filter(
-            (val) => val.Presenca === 'igreja',
-          );
-          const qtyPresLive = nomesMembros.filter(
-            (val) => val.Presenca === 'live',
-          );
 
           let qtyVisCriancas = 0;
           let qtyVisitants = 0;
@@ -337,12 +329,12 @@ function RelCelula({
 
           setContVisAdultos(qtyVisitants);
           setContVisCriancas(qtyVisCriancas);
+          const qtyPresentes = nomesMembros.filter(
+            (val) => val.Presenca === true,
+          );
 
+          setPresentes(qtyPresentes.length);
           setQtyVisitante(Number(qtyVisitants) + Number(qtyVisCriancas));
-
-          setPresentes(qtyPres.length);
-          setPresentesLive(qtyPresLive.length);
-          setQtyVisitante(qtyVisitants.length);
           setContConversoes(relatorio[0].Conversoes);
           setContVisitas(relatorio[0].Visitas);
           setContEventos(relatorio[0].PresentesEventos);
@@ -353,10 +345,6 @@ function RelCelula({
 
           setContagem(false);
         } else {
-          const qtyVisitanteNovo = visitantesCelula.filter(
-            (val) => val.Presenca === true,
-          );
-
           setRelPresentes(
             dadosCelula.sort((a, b) => {
               if (a.Nome > b.Nome) return 1;
@@ -365,15 +353,12 @@ function RelCelula({
             }),
           );
           setContagem(false);
-          setQtyVisitante(qtyVisitanteNovo.length);
+          setQtyVisitante(Number(contVisAdultos) + Number(contVisCriancas));
           setExisteRelatorio('sem');
           setStartShow(!startShow);
         }
       } else {
-        const qtyVisitanteNovo = visitantesCelula.filter(
-          (val) => val.Presenca === true,
-        );
-        setQtyVisitante(qtyVisitanteNovo.length);
+        setQtyVisitante(Number(contVisAdultos) + Number(contVisCriancas));
         setContagem(false);
         setStartShow(!startShow);
       }
@@ -415,7 +400,7 @@ function RelCelula({
           const date2 = moment(selectedDate);
           const diff = date2.diff(date1, 'seconds') + 3600;
 
-          if (diff > -5576889) {
+          if (diff > -92948 * 15) {
             setPodeEditar(true);
           }
           // 7 dia =-650637
@@ -454,7 +439,7 @@ function RelCelula({
 
           setPresentes(qtyPres.length);
           setPresentesLive(qtyPresLive.length);
-          setQtyVisitante(qtyVisitants.length);
+
           setContConversoes(relatorio[0].Conversoes);
           setContVisitas(relatorio[0].Visitas);
           setContEventos(relatorio[0].PresentesEventos);
@@ -612,7 +597,6 @@ function RelCelula({
 
   const criarPontuacao = () => {
     const criadoEm = new Date();
-
     // const dataRel = getDataPontos(selectedDate);
     const semanaPontuacao = semanaExata(criadoEm);
     let pontuacaoAtual = [];

@@ -317,7 +317,7 @@ function RelCelula({
           const date2 = moment(selectedDate);
           const diff = date2.diff(date1, 'seconds') + 3600;
 
-          if (diff > -5576889) {
+          if (diff > -92948 * 15) {
             setPodeEditar(true);
           }
           // 7 dia =-650637
@@ -410,10 +410,10 @@ function RelCelula({
           const date1 = moment(dataAgora);
           const date2 = moment(selectedDate);
           const diff = date2.diff(date1, 'seconds') + 3600;
-
-          if (diff > -5576889) {
+          if (diff > -92948 * 15) {
             setPodeEditar(true);
           }
+
           // 7 dia =-650637
           else {
             setPodeEditar(false);

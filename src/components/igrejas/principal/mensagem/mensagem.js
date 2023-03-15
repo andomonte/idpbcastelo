@@ -13,7 +13,6 @@ import TableContainer from '@mui/material/TableContainer';
 import Autocomplete from '@mui/material/Autocomplete';
 import PegaDataPelaSemana from 'src/utils/getData';
 import { useReactToPrint } from 'react-to-print';
-import { getYear } from 'date-fns';
 
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
