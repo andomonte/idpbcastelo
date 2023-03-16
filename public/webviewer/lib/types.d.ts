@@ -38359,8 +38359,7 @@ declare namespace UI {
      *         includeAnnotations: false,
      *       });
      *
-     *       console.log('Downloaded the first time!')
-     *
+     *     
      *       // download pdf with all annotations flattened
      *       await instance.UI.downloadPdf({
      *         includeAnnotations: true,
