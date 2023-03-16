@@ -50,6 +50,7 @@ function createPontuacaoFinal(
     Total,
   };
 }
+
 export default function TabCelula({
   Ano,
   perfilUser,
@@ -61,7 +62,7 @@ export default function TabCelula({
   const [presSem1, setPresSem1] = React.useState([]);
   const [presCelebracao, setPresCelebracao] = React.useState([]);
   const [presDisc, setPresDisc] = React.useState([]);
-
+  const [ordem, setOrdem] = React.useState('Celula');
   const [openPontuacao, setOpenPontuacao] = React.useState(false);
   const [openPlan, setOpenPlan] = React.useState(false);
   const [openCeleb, setOpenCeleb] = React.useState(false);
@@ -80,6 +81,7 @@ export default function TabCelula({
   const [posicao0, setPosicao0] = React.useState(0);
   const [posicao1, setPosicao1] = React.useState(0);
   const [posicao2, setPosicao2] = React.useState(0);
+  const [posicao3, setPosicao3] = React.useState(0);
 
   const url1 = `/api/consultaRelatorioCelulas/${contSemana2}`;
   const url2 = `/api/consultaPontuacaoSemana/${contSemana2}`;
@@ -537,15 +539,32 @@ export default function TabCelula({
                 rol.Total ? rol.Total : '',
               );
             }
+            setPosicao3(valFinal);
 
-            setPosicaoFinal(valFinal);
             return 0;
           });
         }
         return 0;
       });
     }
-  }, [posicao2, presDisc]);
+  }, [posicao2, presDisc, ordem]);
+  React.useEffect(() => {
+    let novaOrdem = [];
+    if (posicao3) {
+      if (ordem === 'Celula') {
+        novaOrdem = posicao3.sort((a, b) => a.Celula - b.Celula);
+      } else novaOrdem = posicao3.sort((a, b) => a.Posicao - b.Posicao);
+
+      setPosicaoFinal(novaOrdem);
+    }
+  }, [ordem, posicao3]);
+  const handleOrdCelula = () => {
+    setOrdem('Celula');
+  };
+
+  const handleOrdRank = () => {
+    setOrdem('Rank');
+  };
 
   //= ==================================================================
 
@@ -573,6 +592,7 @@ export default function TabCelula({
           height="100%"
           textAlign="center"
           width="18%"
+          onClick={handleOrdCelula}
         >
           Nº CÉLULA
         </Box>
@@ -582,6 +602,7 @@ export default function TabCelula({
           alignItems="center"
           width="16%"
           height="100%"
+          onClick={handleOrdRank}
           sx={{
             borderLeft: '1px solid #000',
           }}

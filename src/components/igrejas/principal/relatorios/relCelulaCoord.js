@@ -31,7 +31,7 @@ function RelCelula({ perfilUser, lideranca }) {
 
   // const mesSemana = PegaMes(semanaAtual, anoAtual);
   const semanaMes = PegaSemanaMes(dataAtual); // pega a semana certa do mes
-  const [contSemanaMes, setSemanaMes] = React.useState(semanaMes);
+  const [contSemanaMes, setContSemanaMes] = React.useState(semanaMes);
 
   const [sendResumo, setSendResumo] = React.useState(false);
   const [dadosCelulaSend, setDadosCelulaSend] = React.useState([]);
@@ -41,8 +41,8 @@ function RelCelula({ perfilUser, lideranca }) {
   const [contSemana, setContSemana] = React.useState(semanaAtual);
 
   const lideresSetor = lideranca.sort((a, b) => {
-    if (new Date(a.Celula) > new Date(b.Celula)) return 1;
-    if (new Date(b.Celula) > new Date(a.Celula)) return -1;
+    if (Number(a.Celula) > Number(b.Celula)) return 1;
+    if (Number(b.Celula) > Number(a.Celula)) return -1;
     return 0;
   });
   const celulaSetorIni = lideresSetor.filter(
@@ -53,8 +53,8 @@ function RelCelula({ perfilUser, lideranca }) {
   );
 
   const listaSetor = lideresSetor.sort((a, b) => {
-    if (new Date(a.Supervisao) > new Date(b.Supervisao)) return 1;
-    if (new Date(b.Supervisao) > new Date(a.Supervisao)) return -1;
+    if (Number(a.Supervisao) > Number(b.Supervisao)) return 1;
+    if (Number(b.Supervisao) > Number(a.Supervisao)) return -1;
     return 0;
   });
 
@@ -159,7 +159,7 @@ function RelCelula({ perfilUser, lideranca }) {
     }
     const simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
     const mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
-    setSemanaMes(simple);
+    setContSemanaMes(simple);
 
     setContMes(mesAgora);
 
@@ -177,12 +177,16 @@ function RelCelula({ perfilUser, lideranca }) {
     setContMes(PegaMes(contSemanaAtual, anoAtual));
 
     const simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
-    setSemanaMes(simple);
+    setContSemanaMes(simple);
     const mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
     setContMes(mesAgora);
     setContSemana(contSemanaAtual);
   };
+  React.useEffect(() => {
+    const diaSemana = dataAtual.getDay();
 
+    if (diaSemana !== 1 && diaSemana !== 2) handleDecSemana();
+  }, []);
   return (
     <Box
       display="flex"
@@ -252,7 +256,7 @@ function RelCelula({ perfilUser, lideranca }) {
                           color="white"
                           sx={{ fontFamily: 'Fugaz One' }}
                         >
-                          {contSemanaMes}° SEM
+                          {contSemanaMes}ª SEM
                           <Box
                             ml={4}
                             color="white"

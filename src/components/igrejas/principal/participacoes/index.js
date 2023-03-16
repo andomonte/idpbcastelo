@@ -25,7 +25,7 @@ import corIgreja from 'src/utils/coresIgreja';
 
 import Celula from './celebracao';
 import Equipe from './discipulado';
-import RelCelula from './relCelula';
+import RelCelula from './relatorioCelulas';
 
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({

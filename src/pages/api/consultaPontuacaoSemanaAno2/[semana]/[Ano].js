@@ -9,7 +9,7 @@ export default async function handle(req, res) {
   // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
   const semana0 = semana;
-  console.log('semana0', semana0);
+
   let semana1 = Number(semana0) + 1;
   let ano = Ano;
   const AnoInicio = Ano;

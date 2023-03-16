@@ -87,7 +87,7 @@ export default function Login({ providers2, rolMembros }) {
     if (providers22 === 'credentials') {
       let vCPF = ValidaCPF(authState.cpf.replace(/\D/g, ''));
       if (authState.cpf.replace(/\D/g, '').length < 10) vCPF = false;
-      console.log(authState);
+
       if (authState.password.length < 3) {
         setAuthState((old) => ({ ...old, password: '' }));
         setValSenha(true);
@@ -98,11 +98,15 @@ export default function Login({ providers2, rolMembros }) {
       }
       if (vCPF && authState.password.length > 3) {
         try {
-          const user = rolMembros.filter(
-            (val) =>
-              String(val.CPF.replace(/\D/g, '')) ===
-              String(authState.cpf.replace(/\D/g, '')),
-          );
+          const user = rolMembros.filter((val) => {
+            if (val.CPF) {
+              return (
+                String(val.CPF.replace(/\D/g, '')) ===
+                String(authState.cpf.replace(/\D/g, ''))
+              );
+            }
+            return 0;
+          });
 
           if (user && user.length) {
             setPageState((old) => ({ ...old, processing: true, error: '' }));

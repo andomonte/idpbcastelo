@@ -42,7 +42,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const { data: sem3, errorSem3 } = useSWR(url3, fetcher);
   const { data: sem4, errorSem4 } = useSWR(url4, fetcher);
   const { data: sem5, errorSem5 } = useSWR(url5, fetcher);
-  console.log('sem1', sem1);
+
   React.useEffect(() => {
     mutate(url1);
     mutate(url2);
