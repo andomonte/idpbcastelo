@@ -52,7 +52,7 @@ const options = {
             .finally(async () => {
               await prisma.$disconnect();
             });
-          console.log('user do banco', user);
+
           if (user && user.length) {
             let getSenha = user[0].senha;
             const ano = user[0].Nascimento.getFullYear();
@@ -64,7 +64,7 @@ const options = {
               user[0].Nascimento.getDate() + 1 > 9
                 ? user[0].Nascimento.getDate() + 1
                 : `0${user[0].Nascimento.getDate() + 1}`;
-            console.log('senha', getSenha);
+
             if (getSenha === undefined || getSenha === null) {
               getSenha = `${dia}${mes}${ano}`;
               if (getSenha === credentials.password) {
@@ -79,6 +79,7 @@ const options = {
             }
 
             const bytes = CryptoJS.AES.decrypt(getSenha, 'secret key lea123');
+
             const originalText = bytes.toString(CryptoJS.enc.Utf8);
 
             if (originalText === credentials.password) {

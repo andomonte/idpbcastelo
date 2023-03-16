@@ -76,6 +76,20 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const [preSem4, setPreSem4] = React.useState('-');
   const [preSem5, setPreSem5] = React.useState('-');
 
+  const [preSem0C, setPreSem0C] = React.useState('-');
+  const [preSem1C, setPreSem1C] = React.useState('-');
+  const [preSem2C, setPreSem2C] = React.useState('-');
+  const [preSem3C, setPreSem3C] = React.useState('-');
+  const [preSem4C, setPreSem4C] = React.useState('-');
+  const [preSem5C, setPreSem5C] = React.useState('-');
+
+  const [preSem0D, setPreSem0D] = React.useState('-');
+  const [preSem1D, setPreSem1D] = React.useState('-');
+  const [preSem2D, setPreSem2D] = React.useState('-');
+  const [preSem3D, setPreSem3D] = React.useState('-');
+  const [preSem4D, setPreSem4D] = React.useState('-');
+  const [preSem5D, setPreSem5D] = React.useState('-');
+
   const [dataSem0Celebracao, setDataSem0Celebracao] = React.useState([]);
   const [dataSem1Celebracao, setDataSem1Celebracao] = React.useState([]);
   const [dataSem2Celebracao, setDataSem2Celebracao] = React.useState([]);
@@ -162,7 +176,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     ) : (
       <Box>SEMANA SEGUINTE</Box>
     );
-  const semanaHoje = PegaSemanaAtual(new Date());
 
   const url0 = `/api/consultaRelatorioCelulasAno2/${semana0}/${AnoPesquisado}`;
   const { data: sem0, errorSem0 } = useSWR(url0, fetcher);
@@ -233,6 +246,27 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     setDataSem4Discipulado([]);
     setDataSem5Discipulado([]);
 
+    setPreSem0('-');
+    setPreSem1('-');
+    setPreSem2('-');
+    setPreSem3('-');
+    setPreSem4('-');
+    setPreSem5('-');
+
+    setPreSem0C('-');
+    setPreSem1C('-');
+    setPreSem2C('-');
+    setPreSem3C('-');
+    setPreSem4C('-');
+    setPreSem5C('-');
+
+    setPreSem0D('-');
+    setPreSem1D('-');
+    setPreSem2D('-');
+    setPreSem3D('-');
+    setPreSem4D('-');
+    setPreSem5D('-');
+
     setDataRSem0([]);
     setDataRSem1([]);
     setDataRSem2([]);
@@ -257,6 +291,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
         setDataSem0(presCelulaSem0[0]);
+        const nomes = JSON.parse(presCelulaSem0[0].NomesMembros);
+        const nome = nomes.filter((valor) => valor.Nome === perfilUser.Nome);
+
+        if (nome.length) {
+          setPreSem0(nome[0].Presenca);
+        } else setPreSem0('-');
       }
 
       if (presCelula.length) {
@@ -268,6 +308,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
           if (Mes === 0) {
             setDataSem0('-');
+            setPreSem0('-');
           }
           if (pegaAtual === PegaSemana(Mes, Ano)) {
             setDataSem1(val);
@@ -276,14 +317,55 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               (valor) => valor.Nome === perfilUser.Nome,
             );
 
-            if (nome) setPreSem1(nome[0].Presenca);
-            else setPreSem1('-');
-          } else setPreSem1('-');
-          if (pegaAtual === PegaSemana(Mes, Ano) + 1) setDataSem2(val);
-          else setPreSem2('-');
-          if (pegaAtual === PegaSemana(Mes, Ano) + 2) setDataSem3(val);
+            if (nome.length) {
+              setPreSem1(nome[0].Presenca);
+            } else setPreSem1('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 1) {
+            setDataSem2(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem2(nome[0].Presenca);
+            } else setPreSem2('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 2) {
+            setDataSem3(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem3(nome[0].Presenca);
+            } else setPreSem3('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 3) {
+            setDataSem4(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem4(nome[0].Presenca);
+            } else setPreSem4('-');
+          }
           if (pegaAtual === PegaSemana(Mes, Ano) + 3) setDataSem4(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 4) setDataSem5(val);
+          if (pegaAtual === PegaSemana(Mes, Ano) + 4) {
+            setDataSem5(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem5(nome[0].Presenca);
+            } else setPreSem5('-');
+          }
           return 0;
         });
       }
@@ -309,6 +391,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
         setDataSem0Celebracao(presCelulaSem0[0]);
+        const nomes = JSON.parse(presCelulaSem0[0].NomesMembros);
+        const nome = nomes.filter((valor) => valor.Nome === perfilUser.Nome);
+
+        if (nome.length) {
+          setPreSem0C(nome[0].Presenca);
+        } else setPreSem0C('-');
       }
 
       if (presCelula.length) {
@@ -319,17 +407,66 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           if (mesSem0 + 1 === 12) mesSem0 = 1;
 
           if (Mes === 0) {
+            setPreSem0C('-');
             setDataSem0Celebracao('-');
           }
-          if (pegaAtual === PegaSemana(Mes, Ano)) setDataSem1Celebracao(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 1)
+
+          if (pegaAtual === PegaSemana(Mes, Ano)) {
+            setDataSem1Celebracao(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem1C(nome[0].Presenca);
+            } else setPreSem1C('-');
+          }
+
+          if (pegaAtual === PegaSemana(Mes, Ano) + 1) {
             setDataSem2Celebracao(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 2)
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem2C(nome[0].Presenca);
+            } else setPreSem2C('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 2) {
             setDataSem3Celebracao(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 3)
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem3C(nome[0].Presenca);
+            } else setPreSem3C('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 3) {
             setDataSem4Celebracao(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 4)
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem4C(nome[0].Presenca);
+            } else setPreSem4C('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 4) {
             setDataSem5Celebracao(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem5C(nome[0].Presenca);
+            } else setPreSem5C('-');
+          }
           return 0;
         });
       }
@@ -356,6 +493,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
         setDataSem0Discipulado(presCelulaSem0[0]);
+        const nomes = JSON.parse(presCelulaSem0[0].NomesMembros);
+        const nome = nomes.filter((valor) => valor.Nome === perfilUser.Nome);
+
+        if (nome.length) {
+          setPreSem0D(nome[0].Presenca);
+        } else setPreSem0D('-');
       }
 
       if (presCelula.length) {
@@ -366,17 +509,66 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           if (mesSem0 + 1 === 12) mesSem0 = 1;
 
           if (Mes === 0) {
+            setPreSem0D('-');
             setDataSem0Discipulado('-');
           }
-          if (pegaAtual === PegaSemana(Mes, Ano)) setDataSem1Discipulado(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 1)
+
+          if (pegaAtual === PegaSemana(Mes, Ano)) {
+            setDataSem1Discipulado(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem1D(nome[0].Presenca);
+            } else setPreSem1D('-');
+          }
+
+          if (pegaAtual === PegaSemana(Mes, Ano) + 1) {
             setDataSem2Discipulado(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 2)
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem2D(nome[0].Presenca);
+            } else setPreSem2D('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 2) {
             setDataSem3Discipulado(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 3)
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem3D(nome[0].Presenca);
+            } else setPreSem3D('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 3) {
             setDataSem4Discipulado(val);
-          if (pegaAtual === PegaSemana(Mes, Ano) + 4)
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem4D(nome[0].Presenca);
+            } else setPreSem4D('-');
+          }
+          if (pegaAtual === PegaSemana(Mes, Ano) + 4) {
             setDataSem5Discipulado(val);
+            const nomes = JSON.parse(val.NomesMembros);
+            const nome = nomes.filter(
+              (valor) => valor.Nome === perfilUser.Nome,
+            );
+
+            if (nome.length) {
+              setPreSem5D(nome[0].Presenca);
+            } else setPreSem5D('-');
+          }
           return 0;
         });
       }
@@ -821,7 +1013,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     >
                       {preSem0 !== '-' ? (
                         <Box width="100%">
-                          {!preSem1 ? (
+                          {preSem0 ? (
                             <IconButton
                               color="primary"
                               aria-label="upload picture"
@@ -916,40 +1108,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem0Celebracao.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana0 +
-                                    AnoPesquisado * 100 +
-                                    AnoPesquisado * 100 <=
-                                  Ano * 100 + Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem0C !== '-' ? (
+                        <Box width="100%">
+                          {preSem0C ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -1015,39 +1207,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem0Discipulado.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana0 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem0D !== '-' ? (
+                        <Box width="100%">
+                          {preSem0D ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -1209,7 +1402,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     >
                       {preSem1 !== '-' ? (
                         <Box width="100%">
-                          {!preSem1 ? (
+                          {preSem1 ? (
                             <IconButton
                               color="primary"
                               aria-label="upload picture"
@@ -1304,39 +1497,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem1Celebracao.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana1 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem1C !== '-' ? (
+                        <Box width="100%">
+                          {preSem1C ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -1402,39 +1596,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem1Discipulado.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana1 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem1D !== '-' ? (
+                        <Box width="100%">
+                          {preSem1D ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -1602,7 +1797,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       >
                         {preSem2 !== '-' ? (
                           <Box width="100%">
-                            {!preSem1 ? (
+                            {preSem2 ? (
                               <IconButton
                                 color="primary"
                                 aria-label="upload picture"
@@ -1698,39 +1893,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem2Celebracao.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana2 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem2C !== '-' ? (
+                        <Box width="100%">
+                          {preSem2C ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -1796,39 +1992,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem2Discipulado.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana2 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem2D !== '-' ? (
+                        <Box width="100%">
+                          {preSem2D ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -1996,7 +2193,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       >
                         {preSem3 !== '-' ? (
                           <Box width="100%">
-                            {!preSem1 ? (
+                            {preSem3 ? (
                               <IconButton
                                 color="primary"
                                 aria-label="upload picture"
@@ -2092,39 +2289,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem3Celebracao.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana3 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem3C !== '-' ? (
+                        <Box width="100%">
+                          {preSem3C ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -2190,39 +2388,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem3Discipulado.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana3 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem3D !== '-' ? (
+                        <Box width="100%">
+                          {preSem3D ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -2390,7 +2589,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       >
                         {preSem4 !== '-' ? (
                           <Box width="100%">
-                            {!preSem1 ? (
+                            {preSem4 ? (
                               <IconButton
                                 color="primary"
                                 aria-label="upload picture"
@@ -2486,39 +2685,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem4Celebracao.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana4 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem4C !== '-' ? (
+                        <Box width="100%">
+                          {preSem4C ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -2584,39 +2784,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem4Discipulado.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana4 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem4D !== '-' ? (
+                        <Box width="100%">
+                          {preSem4D ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -2785,7 +2986,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       >
                         {preSem5 !== '-' ? (
                           <Box width="100%">
-                            {!preSem1 ? (
+                            {preSem5 ? (
                               <IconButton
                                 color="primary"
                                 aria-label="upload picture"
@@ -2881,39 +3082,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem5Celebracao.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            {' '}
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana5 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem5C !== '-' ? (
+                        <Box width="100%">
+                          {preSem5C ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
@@ -2979,38 +3181,40 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     textAlign="center"
                     width="100%"
                   >
-                    <Box width="100%">
-                      <Box>
-                        {dataSem5Discipulado.id ? (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdOutlineCheck size={25} color="green" />
-                            </SvgIcon>
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                              <MdClose
-                                size={25}
-                                color={
-                                  semana5 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              />
-                            </SvgIcon>
-                          </IconButton>
-                        )}
-                      </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {preSem5D !== '-' ? (
+                        <Box width="100%">
+                          {preSem5D ? (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              {' '}
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdOutlineCheck size={25} color="green" />
+                              </SvgIcon>
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                <MdClose size={25} color="red" />
+                              </SvgIcon>
+                            </IconButton>
+                          )}
+                        </Box>
+                      ) : (
+                        '-'
+                      )}
                     </Box>
                   </Box>
                 ) : (
