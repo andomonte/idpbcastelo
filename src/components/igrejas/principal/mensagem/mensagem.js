@@ -306,7 +306,6 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
     content: () => ref3.current,
   });
   const handleActive = (acao) => {
-    console.log(router);
     if (acao === 'zap') console.log('oi zap');
   };
   React.useEffect(() => {
