@@ -362,7 +362,7 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
               justifyContent="center"
             >
               <Box
-                width="86%"
+                width="90%"
                 height="auto"
                 display="flex"
                 justifyContent="start"
@@ -423,9 +423,9 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
               </Box>
               <Box
                 height="100%"
-                width="100%"
+                width="10%"
                 display="flex"
-                justifyContent="flex-end"
+                justifyContent="flex-start"
               >
                 <Box
                   style={{
@@ -434,7 +434,7 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
                     fontSize: '16px',
                   }}
                   display="flex"
-                  justifyContent="flex-end"
+                  justifyContent="center"
                   width="100%"
                 >
                   {console.log('oi', shareUrl)}
