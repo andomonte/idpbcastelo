@@ -184,11 +184,13 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
 
       if (dataMens2.length) {
         setBoletim(dataMens2[0]);
+        setTitulo(dataMens2[0].titulo);
       } else {
         dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
         setBoletim(dataMens2[0]);
+        setTitulo(dataMens2[0].titulo);
       }
-
+      console.log('aqui', dataMens2[0]);
       const diaSemana = [
         'Domingo',
         'Segunda',
@@ -301,10 +303,6 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
       // const form = event.target.id;
       //  if (form === 'Nascimento') handleCheckDadosMembro();
     }
-  };
-
-  const handleActive = (acao) => {
-    if (acao === 'zap') console.log('oi zap');
   };
 
   return (
