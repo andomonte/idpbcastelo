@@ -1,12 +1,16 @@
 import React from 'react';
-import { Box, TextField } from '@material-ui/core';
+import { Box, TextField, Button } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import { AiFillPrinter } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
-import { useRouter } from 'next/router';
+import {
+  TelegramShareButton,
+  WhatsappShareButton,
+  WhatsappIcon,
+} from 'react-share';
 import { IoLogoWhatsapp } from 'react-icons/io';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
@@ -94,10 +98,10 @@ function nextSunday(date) {
 }
 
 function Mensagem({ mensagem, perfilUser, titulo2 }) {
-  const router = useRouter();
   const dataAgora = new Date();
   const novaDataSemana = semanaExata(dataAgora);
 
+  const [shareUrl, setShareUrl] = React.useState('');
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
 
@@ -110,7 +114,6 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
   };
   if (titulo2 && titulo2.length) valorInicialTitulo = titulo2;
 
-  const [action, setAction] = React.useState('');
   const ref3 = React.useRef();
 
   const [titulo, setTitulo] = React.useState(valorInicialTitulo);
@@ -177,10 +180,8 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
   React.useEffect(() => {
     if (!pesquisaTitulo) {
       const dataMens = niverGeral.sort(compare);
+      let dataMens2 = dataMens;
 
-      let dataMens2 = dataMens.filter(
-        (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
-      );
       if (dataMens2.length) {
         setBoletim(dataMens2[0]);
       } else {
@@ -234,7 +235,6 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
   }, [contSemana, dataFinal]);
 
   React.useEffect(() => {
-    console.log('oi agora', titulo, titulo2);
     if (titulo2) {
       setTitulo(titulo2);
     }
@@ -250,7 +250,8 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
         setBoletim(dataMens2[0]);
         setPesquisaTitulo(true);
       }
-
+      const urltiluto = `https://www.idpbcastelo.com.br/principal/mensagem?titulo=${titulo}`;
+      setShareUrl(urltiluto);
       const diaSemana = [
         'Domingo',
         'Segunda',
@@ -302,15 +303,10 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
     }
   };
 
-  const handlePrint = useReactToPrint({
-    content: () => ref3.current,
-  });
   const handleActive = (acao) => {
     if (acao === 'zap') console.log('oi zap');
   };
-  React.useEffect(() => {
-    if (action === 'print') handlePrint();
-  }, [action]);
+
   return (
     <Box
       display="flex"
@@ -429,35 +425,30 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
               </Box>
               <Box
                 height="100%"
-                width="12%"
+                width="100%"
                 display="flex"
                 justifyContent="flex-end"
               >
-                <IconButton onClick={() => handleIncFonte()}>
-                  <Box
-                    style={{
-                      color: 'white',
-                      fontFamily: 'arial black',
-                      fontSize: '16px',
-                    }}
-                    display="flex"
-                    justifyContent="flex-end"
-                    width="100%"
+                <Box
+                  style={{
+                    color: 'white',
+                    fontFamily: 'arial black',
+                    fontSize: '16px',
+                  }}
+                  display="flex"
+                  justifyContent="flex-end"
+                  width="100%"
+                >
+                  {console.log('oi', shareUrl)}
+                  <WhatsappShareButton
+                    url={shareUrl}
+                    title="title"
+                    separator=":: "
+                    className="Demo__some-network__share-button"
                   >
-                    <Box
-                      borderRadius={20}
-                      width="auto"
-                      height="auto"
-                      bgcolor="white"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      onClick={handleActive('zap')}
-                    >
-                      <IoLogoWhatsapp size={25} color="green" />
-                    </Box>
-                  </Box>
-                </IconButton>
+                    <WhatsappIcon size={25} round />
+                  </WhatsappShareButton>
+                </Box>
               </Box>
             </Box>
           </Box>
