@@ -17,7 +17,7 @@ import { IoIosPerson } from 'react-icons/io';
 import cpfMask from 'src/components/mascaras/cpf';
 import { FcGoogle } from 'react-icons/fc';
 import ValidaCPF from 'src/utils/validarCPF';
-import prisma from 'src/lib/prisma';
+
 import Espera from 'src/utils/espera';
 import { Oval } from 'react-loading-icons';
 import Dialog from '@mui/material/Dialog';
@@ -26,13 +26,19 @@ import dataMask from 'src/components/mascaras/datas';
 import moment from 'moment';
 import api from 'src/components/services/api';
 import Erros from 'src/utils/erros';
+import axios from 'axios';
+import useSWR from 'swr';
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
 
-export default function Login({ providers2, rolMembros }) {
+export default function Login({ providers2, rolMembros2 }) {
   const router = useRouter();
+  const perfil = router.query;
+  const [rolMembros, setRolMembros] = React.useState(rolMembros2);
   const [showPassword, setShowPassword] = useState(false);
   const [valSenha, setValSenha] = useState(false);
   const [valorCPF, setValorCPF] = useState(false);
@@ -47,10 +53,14 @@ export default function Login({ providers2, rolMembros }) {
     cpf: '',
     password: '',
   });
+  console.log('perfil', perfil, authState);
+
   const [pageState, setPageState] = useState({
     error: '',
     processing: false,
   });
+  const url1 = `/api/consultaMembros`;
+  const { data: members, errorMembers } = useSWR(url1, fetcher);
 
   const handleFieldChange = (e) => {
     const valorCPF2 = e.target.value.slice(0, 14);
@@ -89,6 +99,7 @@ export default function Login({ providers2, rolMembros }) {
       if (authState.cpf.replace(/\D/g, '').length < 10) vCPF = false;
 
       if (authState.password.length < 3) {
+        console.log('veio aqui');
         setAuthState((old) => ({ ...old, password: '' }));
         setValSenha(true);
       }
@@ -217,6 +228,55 @@ export default function Login({ providers2, rolMembros }) {
     } else setLoading(0);
   };
 
+  React.useEffect(() => {
+    console.log('perfil2', perfil, members);
+    if (members) {
+      setRolMembros(members);
+    }
+    if (perfil && perfil.cpf && perfil.password) {
+      setLoading(1);
+
+      const user = members.filter((val) => {
+        if (val.CPF) {
+          return (
+            String(val.CPF.replace(/\D/g, '')) ===
+            String(perfil.cpf.replace(/\D/g, ''))
+          );
+        }
+        return 0;
+      });
+
+      if (user && user.length) {
+        setPageState((old) => ({ ...old, processing: true, error: '' }));
+        signIn('credentials', {
+          ...perfil,
+          redirect: false,
+        })
+          .then((response) => {
+            console.log('resposta', response);
+            if (response.ok && response.erro === null) {
+              // Authenticate user
+
+              router.push({
+                pathname: '/selectPerfilCPF',
+                query: { cpf: perfil.cpf },
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }
+    if (errorMembers) return <div>An error occured.</div>;
+    if (!members) return <div>Loading ...</div>;
+
+    return 0;
+  }, [members, perfil]);
+
+  if (typeof window !== 'undefined') {
+    window.history.replaceState(null, '', '/login');
+  }
   return (
     <Box
       display="flex"
@@ -240,7 +300,7 @@ export default function Login({ providers2, rolMembros }) {
               justifyContent="center"
               maxWidth={400}
             >
-              <img src={corIgreja.logo} alt="" width="35%" height="40%" />
+              <img src={corIgreja.logo} alt="" width="35%" height="45%" />
             </Box>
             <Box
               display="flex"
@@ -505,7 +565,7 @@ export default function Login({ providers2, rolMembros }) {
               justifyContent="center"
               maxWidth={400}
             >
-              <img src={corIgreja.logo} alt="" width="35%" height="40%" />
+              <img src={corIgreja.logo} alt="" width="35%" height="45%" />
             </Box>
             {openErro && (
               <Erros
@@ -731,7 +791,7 @@ export default function Login({ providers2, rolMembros }) {
               justifyContent="center"
               maxWidth={400}
             >
-              <img src={corIgreja.logo} alt="" width="35%" height="40%" />
+              <img src={corIgreja.logo} alt="" width="45%" height="40%" />
             </Box>
             <Box
               display="flex"
@@ -836,20 +896,6 @@ export default function Login({ providers2, rolMembros }) {
 export async function getStaticProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-  const rolMembros = await prisma.membros
-    .findMany({
-      where: {
-        Situacao: 'ATIVO',
-      },
-      orderBy: [
-        {
-          Nome: 'asc',
-        },
-      ],
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
 
   if (session) {
     return {
@@ -861,13 +907,6 @@ export async function getStaticProps(context) {
     props: {
       providers2: await providers(context),
       csrfToken: await csrfToken(context),
-      rolMembros: JSON.parse(
-        JSON.stringify(
-          rolMembros,
-          (key, value) =>
-            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
-        ),
-      ),
     },
     revalidate: 5,
   };

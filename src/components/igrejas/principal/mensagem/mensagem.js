@@ -1,22 +1,15 @@
 import React from 'react';
-import { Box, TextField, Button } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
-import { AiFillPrinter } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
-import {
-  TelegramShareButton,
-  WhatsappShareButton,
-  WhatsappIcon,
-} from 'react-share';
-import { IoLogoWhatsapp } from 'react-icons/io';
+import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
 import Autocomplete from '@mui/material/Autocomplete';
 import PegaDataPelaSemana from 'src/utils/getData';
-import { useReactToPrint } from 'react-to-print';
 
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
@@ -97,7 +90,7 @@ function nextSunday(date) {
   return nextweek;
 }
 
-function Mensagem({ mensagem, perfilUser, titulo2 }) {
+function Mensagem({ mensagem, titulo2 }) {
   const dataAgora = new Date();
   const novaDataSemana = semanaExata(dataAgora);
 
@@ -188,9 +181,7 @@ function Mensagem({ mensagem, perfilUser, titulo2 }) {
       } else {
         dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
         setBoletim(dataMens2[0]);
-        setTitulo(dataMens2[0].titulo);
       }
-      console.log('aqui', dataMens2[0]);
       const diaSemana = [
         'Domingo',
         'Segunda',

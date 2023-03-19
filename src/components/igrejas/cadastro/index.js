@@ -471,8 +471,10 @@ function Cadastro({ rolMembros }) {
                             variant="standard"
                             placeholder="dd/mm/aaaa"
                             onChange={(e) => {
-                              setNascimento(e.target.value);
-                              handleValidacaoClose();
+                              if (e.target.value.length <= 10) {
+                                setNascimento(e.target.value);
+                                handleValidacaoClose();
+                              }
                             }}
                             onFocus={(e) => {
                               setNascimento(e.target.value);

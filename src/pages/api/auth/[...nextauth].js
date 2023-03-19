@@ -52,18 +52,17 @@ const options = {
             .finally(async () => {
               await prisma.$disconnect();
             });
-
           if (user && user.length) {
             let getSenha = user[0].senha;
-            const ano = user[0].Nascimento.getFullYear();
+            const ano = user[0].Nascimento.getUTCFullYear();
             const mes =
-              user[0].Nascimento.getMonth() + 1 > 9
-                ? user[0].Nascimento.getMonth() + 1
-                : `0${user[0].Nascimento.getMonth() + 1}`;
+              user[0].Nascimento.getUTCMonth() + 1 > 9
+                ? user[0].Nascimento.getUTCMonth() + 1
+                : `0${user[0].Nascimento.getUTCMonth() + 1}`;
             const dia =
-              user[0].Nascimento.getDate() + 1 > 9
-                ? user[0].Nascimento.getDate() + 1
-                : `0${user[0].Nascimento.getDate() + 1}`;
+              user[0].Nascimento.getUTCDate() > 9
+                ? user[0].Nascimento.getUTCDate()
+                : `0${user[0].Nascimento.getUTCDate()}`;
 
             if (getSenha === undefined || getSenha === null) {
               getSenha = `${dia}${mes}${ano}`;
