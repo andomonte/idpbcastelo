@@ -62,7 +62,14 @@ export const getStaticProps = async () => {
   const rolMembros = await prisma.membros
     .findMany({
       where: {
-        Situacao: 'ATIVO',
+        OR: [
+          {
+            Situacao: 'ATIVO',
+          },
+          {
+            Situacao: 'NOVO',
+          },
+        ],
       },
       orderBy: [
         {

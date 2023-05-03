@@ -898,13 +898,11 @@ function SelectPerfil({
       );
 
       if (start) {
-        console.log('valorPerfil', valorPerfil);
         if (valorPerfil.length === 1 && perfilUser === '')
           setPerfilUser(valorPerfil);
         if (valorPerfil.length > 0 && !open && perfilUser === '') setOpen(true);
 
         if (perfilUser !== '' && mudouPerfil) {
-          console.log('aqui chg', perfilUser);
           router.push(
             {
               pathname: '/principal',

@@ -10,7 +10,7 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
 
   const [respostas, setRespostas] = React.useState({});
   const dados = nomesCelulas || [
-    { Nome: 'Sem nomes registrados', Presenca: false },
+    { Nome: 'Sem nomes registrados', Presenca: false, Situacao: 'MEMBRO' },
   ];
 
   const handleRegistro = (index) => {
@@ -89,6 +89,7 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
             sx={{ borderBottom: '1px solid #00a' }}
           >
             <Box display="flex" width="100%">
+              {console.log('ola nome', row)}
               <Box width="100%" display="flex" alignItems="center" ml={1}>
                 {row.Nome.length > 30
                   ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))

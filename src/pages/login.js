@@ -53,7 +53,6 @@ export default function Login({ providers2, rolMembros2 }) {
     cpf: '',
     password: '',
   });
-  console.log('perfil', perfil, authState);
 
   const [pageState, setPageState] = useState({
     error: '',
@@ -99,7 +98,6 @@ export default function Login({ providers2, rolMembros2 }) {
       if (authState.cpf.replace(/\D/g, '').length < 10) vCPF = false;
 
       if (authState.password.length < 3) {
-        console.log('veio aqui');
         setAuthState((old) => ({ ...old, password: '' }));
         setValSenha(true);
       }
@@ -229,7 +227,6 @@ export default function Login({ providers2, rolMembros2 }) {
   };
 
   React.useEffect(() => {
-    console.log('perfil2', perfil, members);
     if (members) {
       setRolMembros(members);
     }
@@ -253,7 +250,6 @@ export default function Login({ providers2, rolMembros2 }) {
           redirect: false,
         })
           .then((response) => {
-            console.log('resposta', response);
             if (response.ok && response.erro === null) {
               // Authenticate user
 

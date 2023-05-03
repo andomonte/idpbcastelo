@@ -6,13 +6,11 @@ import { useRouter } from 'next/router';
 function Mensagens({ mensagem }) {
   const router = useRouter();
   const { titulo } = router.query;
-  console.log('titulo', titulo);
 
   // resultado = result.id;
   let result = 'nenhum';
   if (typeof window !== 'undefined') {
     if (titulo) {
-      console.log('aqui titulo', titulo);
       window.history.replaceState(null, '', '/principal/mensagem');
     }
     result = JSON.parse(sessionStorage.getItem('perfilUser'));

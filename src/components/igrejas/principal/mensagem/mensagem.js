@@ -428,7 +428,6 @@ function Mensagem({ mensagem, titulo2 }) {
                   justifyContent="center"
                   width="100%"
                 >
-                  {console.log('oi', shareUrl)}
                   <WhatsappShareButton
                     url={shareUrl}
                     title="title"
@@ -621,8 +620,9 @@ function Mensagem({ mensagem, titulo2 }) {
                           fontSize={contFonte}
                           sx={{ textAlign: 'justify', textIndent: '30px' }}
                         >
-                          <section
-                            className="not-found-controller"
+                          <div
+                            style={{ fontSize: contFonte }}
+                            className="mensagem"
                             dangerouslySetInnerHTML={{
                               __html: boletim.Mensagem,
                             }}

@@ -91,7 +91,7 @@ else nomeLider = nomes;
                         marginLeft: 10,
                         fontFamily: 'Fugaz One',
                         fontSize: '14px',
-                        color: '#000',
+                        color: row.Situacao === 'NOVO' ? 'blue' : '#000',
                       }}
                       onClick={() => {
                         setBuscarNome(membroCelula[index]);

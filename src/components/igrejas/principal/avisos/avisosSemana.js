@@ -160,9 +160,9 @@ function Mensagem({ dadosAvisos, perfilUser }) {
 
     /* if (dataMens[contSemana].length) {
       const diaMensagem = new Date(dataMens[contSemana].Data);
-      console.log('oi dia', diaMensagem);
+     
       diaMensagem.setHours(diaMensagem.getHours() + 6);
-      console.log('diaMensagem', diaMensagem);
+      
       const diaSm = Number(diaMensagem.getDay());
       const diaBr = Number(diaMensagem.getDate());
       let mesBr = Number(diaMensagem.getMonth() + 1);

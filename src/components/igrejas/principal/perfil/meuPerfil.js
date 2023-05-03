@@ -41,7 +41,6 @@ function getDados(email, nome) {
 } */
 
 function meuPerfil({ secao, perfilUser }) {
-  console.log('perfil', perfilUser);
   const urlImagem = perfilUser ? perfilUser.foto : '';
   const [upLoadFile, setUpLoadFile] = React.useState('');
   const [imageSize, setImageSize] = React.useState('');

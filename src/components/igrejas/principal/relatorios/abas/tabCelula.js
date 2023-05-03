@@ -101,6 +101,7 @@ export default function TabCelula({
             height={40}
             sx={{ borderBottom: '1px solid #00a' }}
           >
+            {console.log('ola nome', row)}
             <Box display="flex" width="100%">
               <Box width="100%" display="flex" alignItems="center" ml={1}>
                 {row.Nome.length > 30
