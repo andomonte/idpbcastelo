@@ -73,7 +73,7 @@ function getPreviousMonday2(date) {
   let dataFinal = date;
   if (getDia < 3) dataFinal = date + 1;
   const nova = PegaDataPelaSemana(dataFinal, getAno);
-
+  console.log('nova', nova);
   const previousMonday = nova;
 
   previousMonday.setDate(previousMonday.getDate() - 7);

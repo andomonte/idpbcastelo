@@ -3,6 +3,7 @@ import Providers from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from 'src/lib/prisma';
 import CryptoJS from 'crypto-js';
+import moment from 'moment';
 // import useSWR from 'swr';
 // import fetch from 'unfetch';
 
@@ -52,21 +53,33 @@ const options = {
             .finally(async () => {
               await prisma.$disconnect();
             });
+
           if (user && user.length) {
             let getSenha = user[0].senha;
-            const ano = user[0].Nascimento.getUTCFullYear();
-            const mes =
-              user[0].Nascimento.getUTCMonth() + 1 > 9
-                ? user[0].Nascimento.getUTCMonth() + 1
-                : `0${user[0].Nascimento.getUTCMonth() + 1}`;
+            const nascimento = moment
+              .utc(user[0].Nascimento)
+              .format('DD/MM/YYYY');
+            const nascimento2 = moment(user[0].Nascimento).format('DD/MM/YYYY');
+            console.log('DIAF1', nascimento, nascimento2);
+            const ano = nascimento.substring(6, 10);
+            console.log('ano', ano);
+            const mes = nascimento.substring(3, 5);
+            const dia = nascimento.substring(0, 2);
+            console.log('DIAF', nascimento, dia, mes, ano);
+            /* const ano = user[0].Nascimento.getFullYear();
+           const mes =
+              user[0].Nascimento.getMonth() + 1 > 9
+                ? user[0].Nascimento.getMonth() + 1
+                : `0${user[0].Nascimento.getMonth() + 1}`;
             const dia =
-              user[0].Nascimento.getUTCDate() > 9
-                ? user[0].Nascimento.getUTCDate()
-                : `0${user[0].Nascimento.getUTCDate()}`;
+              user[0].Nascimento.getDate() + 1 > 9
+                ? user[0].Nascimento.getDate() + 1
+                : `0${user[0].Nascimento.getDate() + 1}`; */
 
             if (getSenha === undefined || getSenha === null) {
               getSenha = `${dia}${mes}${ano}`;
-              if (getSenha === credentials.password) {
+
+              if (String(getSenha) === String(credentials.password)) {
                 return {
                   // retorna para JWS os dados do usuario do banco
                   name: user[0].Nome,
@@ -78,7 +91,6 @@ const options = {
             }
 
             const bytes = CryptoJS.AES.decrypt(getSenha, 'secret key lea123');
-
             const originalText = bytes.toString(CryptoJS.enc.Utf8);
 
             if (originalText === credentials.password) {
@@ -141,11 +153,9 @@ const options = {
       return false;
     },
   },
-
   session: {
     jwt: true,
   },
-
   jwt: {
     secret: process.env.JWT_SECRET,
   },

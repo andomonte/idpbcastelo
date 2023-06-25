@@ -286,34 +286,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const naturalidadeRef = React.useRef();
   const estadoCivilRef = React.useRef();
 
-  const [logradouro, setLogradouro] = React.useState(dadosUser[0].Logradouro);
-  const [numero, setNumero] = React.useState(dadosUser[0].Numero);
-  const [complemento, setComplemento] = React.useState(
-    dadosUser[0].Complemento,
-  );
-  const [bairro, setBairro] = React.useState(dadosUser[0].Bairro);
-  const [nomeNucleo, setNomeNucleo] = React.useState(dadosUser[0].nomeNucleo);
-  const [cidade, setCidade] = React.useState(dadosUser[0].nomeNucleo);
-  const [cep, setCEP] = React.useState(dadosUser[0].CEP);
-  const [uf, setUF] = React.useState(dadosUser[0].UF);
-
-  const [validarLogradouro, setValidarLogradouro] = React.useState('sim');
-  const [validarNumero, setValidarNumero] = React.useState('sim');
-  const [validarComplemento, setValidarComplemento] = React.useState('sim');
-  const [validarBairro, setValidarBairro] = React.useState('sim');
-  const [validarLocalizador, setValidarLocalizador] = React.useState('sim');
-  const [validarCidade, setValidarCidade] = React.useState('sim');
-  const [validarCEP] = React.useState('sim');
-  const [validarUF, setValidarUF] = React.useState('sim');
-
-  const cepRef = React.useRef();
-  const logradouroRef = React.useRef();
-  const localidadeRef = React.useRef();
-  const ufRef = React.useRef();
-  const complementoRef = React.useRef();
-  const numeroRef = React.useRef();
-  const bairroRef = React.useRef();
-  const localizadorRef = React.useRef();
   const url = `/api/consultaRolMembros/${dadosUser[0].id}`;
   const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
@@ -338,14 +310,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
         data[0].Nascimento ? ConverteData(data[0].Nascimento) : '',
       );
       setNaturalidade(data[0].Naturalidade);
-      setCEP(data[0].CEP);
-      setLogradouro(data[0].Logradouro);
-      setNumero(data[0].Numero);
-      setBairro(data[0].Bairro);
-      setUF(data[0].UF);
-      setCidade(data[0].Localidade);
-      setComplemento(data[0].Complemento);
-      setNomeNucleo(data[0].nomeNucleo);
     }
 
     if (error) return <div>An error occured.</div>;
@@ -402,14 +366,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
           Nascimento: novaData,
           Naturalidade: naturalidade,
           EstadoCivil: estadoCivil.label,
-          Logradouro: logradouro,
-          Numero: Number(numero),
-          Bairro: bairro,
-          CEP: cep,
-          nomeNucleo,
-          Complemento: complemento,
-          Localidade: cidade,
-          UF: uf,
         })
         .then((response) => {
           if (response) {
@@ -429,25 +385,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
     }
   };
   //--------------------------------------------------------------------------
-  const getInformacoes = () => {
-    api
-      .post('/api/pegaCep', {
-        cep,
-      })
-      .then((response) => {
-        if (response) {
-          setLogradouro(response.data.street);
-          setBairro(response.data.neighborhood);
-          setCidade(response.data.city);
-          setUF(response.data.state);
-        }
-      })
-      .catch(() => {
-        toast.error('CEP INVÁLIDO !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      });
-  };
+
   const handleEnter = (event) => {
     if (event.key.toLowerCase() === 'enter') {
       const formId = event.target.id;
@@ -460,14 +398,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       if (formId === 'Sexo') nascimentoRef.current.focus();
       if (formId === 'DataNascimento') naturalidadeRef.current.focus();
       if (formId === 'Naturalidade') estadoCivilRef.current.focus();
-      if (formId === 'estadoCivil') estadoCivilRef.current.focus();
-      if (formId === 'CEP') logradouroRef.current.focus();
-      if (formId === 'Logradouro') numeroRef.current.focus();
-      if (formId === 'Numero') bairroRef.current.focus();
-      if (formId === 'Bairro') ufRef.current.focus();
-      if (formId === 'UF') localidadeRef.current.focus();
-      if (formId === 'Cidade') complementoRef.current.focus();
-      if (formId === 'Complemento') localizadorRef.current.focus();
     }
   };
 
@@ -482,10 +412,9 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       minHeight={570}
       minWidth={300}
       bgcolor={corIgreja.principal2}
-      height="calc(100% - 56px)"
+      height="calc(100vh - 56px)"
     >
       <Box
-        mt={2}
         height="97%"
         width="100%"
         bgcolor={corIgreja.principal}
@@ -805,264 +734,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                   }}
                   onKeyDown={handleEnter}
                   inputRef={emailRef}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  CEP
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="CEP"
-                  inputRef={cepRef}
-                  // label="CEP"
-                  type="tel"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={cep || ''}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={getInformacoes} /* {
-                                cep === ''
-                                  ? () => setValidarCEP('nao')
-                                  : () => setValidarCEP('sim')
-                              } */
-                  onChange={(e) => setCEP(e.target.value)}
-                  error={validarCEP === 'nao'}
-                  onFocus={(e) => setCEP(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} md={8}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Logradouro
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="Logradouro"
-                  inputRef={logradouroRef}
-                  // label="Logradouro"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={logradouro || ''}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    logradouro === ''
-                      ? () => setValidarLogradouro('nao')
-                      : () => setValidarLogradouro('sim')
-                  }
-                  onChange={(e) => setLogradouro(e.target.value)}
-                  error={validarLogradouro === 'nao'}
-                  onFocus={(e) => setLogradouro(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4} md={4}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  NÚMERO
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="Numero"
-                  inputRef={numeroRef}
-                  // label="Número"
-                  type="number"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={numero || null}
-                  variant="outlined"
-                  placeholder="xxx"
-                  size="small"
-                  onBlur={
-                    numero === ''
-                      ? () => setValidarNumero('nao')
-                      : () => setValidarNumero('sim')
-                  }
-                  onChange={(e) => setNumero(e.target.value)}
-                  error={validarNumero === 'nao'}
-                  onFocus={(e) => setNumero(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={8} md={8}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Bairro
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="Bairro"
-                  inputRef={bairroRef}
-                  // label="Bairro"
-                  type="text"
-                  InputLabelProps={{
-                    style: { textTransform: 'uppercase' },
-                    shrink: true,
-                  }}
-                  value={bairro || ''}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    bairro === ''
-                      ? () => setValidarBairro('nao')
-                      : () => setValidarBairro('sim')
-                  }
-                  onChange={(e) => setBairro(e.target.value)}
-                  error={validarBairro === 'nao'}
-                  onFocus={(e) => setBairro(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-
-            <Grid item xs={4} md={4}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  UF
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="UF"
-                  inputRef={ufRef}
-                  // label="Cidade"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={uf || ''}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    uf === ''
-                      ? () => setValidarUF('nao')
-                      : () => setValidarUF('sim')
-                  }
-                  onChange={(e) => setUF(e.target.value)}
-                  error={validarUF === 'nao'}
-                  onFocus={(e) => setUF(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={8} md={8}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  CIDADE
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="Cidade"
-                  // label="Cidade"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputRef={localidadeRef}
-                  value={cidade || ''}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    cidade === ''
-                      ? () => setValidarCidade('nao')
-                      : () => setValidarCidade('sim')
-                  }
-                  onChange={(e) => setCidade(e.target.value)}
-                  error={validarCidade === 'nao'}
-                  onFocus={(e) => setCidade(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={12}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  COMPLEMENTO
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="Complemento"
-                  // label="Cidade"
-                  type="text"
-                  inputRef={complementoRef}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={complemento || ''}
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onBlur={
-                    complemento === ''
-                      ? () => setValidarComplemento('nao')
-                      : () => setValidarComplemento('sim')
-                  }
-                  onChange={(e) => setComplemento(e.target.value)}
-                  error={validarComplemento === 'nao'}
-                  onFocus={(e) => setComplemento(e.target.value)}
-                  onKeyDown={handleEnter}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={12}>
-              <Box mt={0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
-                <Typography variant="caption" display="block" gutterBottom>
-                  NÚCLEO (IGREJA)
-                </Typography>
-              </Box>
-              <Box className={classes.novoBox} mt={-2}>
-                <TextField
-                  className={classes.tf_m}
-                  id="nomeNucleo"
-                  // label="Cidade"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputRef={localizadorRef}
-                  value={nomeNucleo || ''}
-                  variant="outlined"
-                  placeholder="Núcleo que Frequenta"
-                  size="small"
-                  onBlur={
-                    nomeNucleo === ''
-                      ? () => setValidarLocalizador('nao')
-                      : () => setValidarLocalizador('sim')
-                  }
-                  onChange={(e) => setNomeNucleo(e.target.value)}
-                  error={validarLocalizador === 'nao'}
-                  onFocus={(e) => setNomeNucleo(e.target.value)}
                 />
               </Box>
             </Grid>

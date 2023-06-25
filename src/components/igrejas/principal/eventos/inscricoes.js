@@ -12,7 +12,7 @@ import celularMask from 'src/components/mascaras/celular';
 import 'react-image-crop/dist/ReactCrop.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { Oval } from 'react-loading-icons';
-
+import { useSession } from 'next-auth/client';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -293,7 +293,12 @@ const quem = [
     label: 'Um Convidado',
   },
 ];
-
+const quemLogOut = [
+  {
+    value: 'outro',
+    label: 'Um Convidado',
+  },
+];
 function createListaNome(value, label) {
   return {
     value,
@@ -308,6 +313,7 @@ export default function Todos({
   rolMembros,
 }) {
   const classes = useStyles();
+  const [session] = useSession();
   const dadosUser = perfilUser
     ? rolMembros.filter((val) => val.RolMembro === Number(perfilUser.RolMembro))
     : '';
@@ -328,7 +334,9 @@ export default function Todos({
     createListaNome(rol.RolMembro, rol.Nome),
   );
   const [info, setInfo] = React.useState('');
-  const [inscrito, setInscrito] = React.useState(valorInicialInscrito);
+  const [inscrito, setInscrito] = React.useState(
+    session !== null ? valorInicialInscrito : quemLogOut[0],
+  );
   const [openInfo, setOpenInfo] = React.useState(false);
   const [nome, setNome] = React.useState('');
   const [nomeMembros, setNomeMembros] = React.useState(valorInicialMembro);
@@ -492,7 +500,7 @@ export default function Todos({
       setNome(dadosUser[0].Nome);
       setCelular(dadosUser[0].TelCelular);
       setCPF(perfilUser.RolMembro);
-      console.log(ConvData1(dadosUser[0].Nascimento));
+
       setDataNascimento(ConvData1(dadosUser[0].Nascimento));
       setEmail(dadosUser[0].Email);
       setIgreja(dadosUser[0].Igreja);
@@ -537,7 +545,7 @@ export default function Todos({
     setOpenPlan(false);
     setOpenInfo(false);
   };
-
+  console.log('session', session);
   return (
     <Box
       display="flex"
@@ -591,7 +599,7 @@ export default function Todos({
                           nome2Ref.current.focus();
                         } else nomeRef.current.focus();
                       }}
-                      options={quem}
+                      options={session != null ? quem : quemLogOut}
                     />
                   </Box>
                 </Grid>
@@ -824,7 +832,8 @@ export default function Todos({
                         display="block"
                         gutterBottom
                       >
-                        {inscrito.value !== 'outro' || !dadosUser
+                        {console.log(inscrito, dadosUser.length)}
+                        {inscrito.value !== 'outro' || dadosUser.length
                           ? 'RolMembro'
                           : 'CPF'}
                       </Typography>
@@ -846,7 +855,9 @@ export default function Todos({
                             //                            textAlign: 'center',
                           },
                         }}
-                        disabled={inscrito.value !== 'outro' || !dadosUser}
+                        disabled={
+                          !!(inscrito.value !== 'outro' || dadosUser.length)
+                        }
                         value={cpf}
                         variant="outlined"
                         placeholder="999.999.999-99"
