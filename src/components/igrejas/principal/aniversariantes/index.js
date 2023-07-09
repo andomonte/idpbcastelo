@@ -123,7 +123,7 @@ function TabPanel(props) {
   );
 }
 
-function Aniversariantes({ rolMembros, title, perfilUser }) {
+function Aniversariantes({ distritos, rolMembros, title, perfilUser }) {
   const classes = useStyles();
   const router = useRouter();
   const [value, setValue] = React.useState(0);
@@ -252,13 +252,25 @@ function Aniversariantes({ rolMembros, title, perfilUser }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <Aniversarios3 rolMembros={rolMembros} perfilUser={perfilUser} />
+            <Aniversarios3
+              distritos={distritos}
+              rolMembros={rolMembros}
+              perfilUser={perfilUser}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Aniversarios2 rolMembros={rolMembros} perfilUser={perfilUser} />
+            <Aniversarios2
+              distritos={distritos}
+              rolMembros={rolMembros}
+              perfilUser={perfilUser}
+            />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Aniversarios rolMembros={rolMembros} perfilUser={perfilUser} />
+            <Aniversarios
+              distritos={distritos}
+              rolMembros={rolMembros}
+              perfilUser={perfilUser}
+            />
           </TabPanel>
         </main>
       </div>

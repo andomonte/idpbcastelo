@@ -73,7 +73,7 @@ function getPreviousMonday2(date) {
   let dataFinal = date;
   if (getDia < 3) dataFinal = date + 1;
   const nova = PegaDataPelaSemana(dataFinal, getAno);
-  console.log('nova', nova);
+
   const previousMonday = nova;
 
   previousMonday.setDate(previousMonday.getDate() - 7);
@@ -122,7 +122,7 @@ function Mensagem({ mensagem, titulo2 }) {
   const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
     'DD/MM/YYYY 00:00:00',
   );
-
+  const AnoAtual = new Date().getFullYear();
   const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
 
   const dataInicial = converteData(semanaAtual);
@@ -130,11 +130,19 @@ function Mensagem({ mensagem, titulo2 }) {
 
   const listaNomes = mensagem.map((nomes) => nomes.titulo);
 
-  const niverGeralValido = mensagem.filter(
-    (results) => results.Data !== null && results.Data.length > 8,
+  const mensGeralValido = mensagem.filter(
+    (results) =>
+      results.Data !== null &&
+      results.Data.length > 8 &&
+      Number(results.Data.substring(0, 4)) === AnoAtual,
   );
-
-  const niverGeral = niverGeralValido.filter(
+  console.log(
+    'mensagem',
+    mensGeralValido,
+    mensagem[0].Data.substring(0, 4),
+    AnoAtual,
+  );
+  const mensGeral = mensGeralValido.filter(
     (results) =>
       converteData(
         moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
@@ -172,7 +180,7 @@ function Mensagem({ mensagem, titulo2 }) {
 
   React.useEffect(() => {
     if (!pesquisaTitulo) {
-      const dataMens = niverGeral.sort(compare);
+      const dataMens = mensGeral.sort(compare);
       let dataMens2 = dataMens;
 
       if (dataMens2.length) {
