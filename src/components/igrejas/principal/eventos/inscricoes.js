@@ -20,6 +20,9 @@ import DialogActions from '@mui/material/DialogActions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConvData1 from 'src/utils/convData2';
+import ValidaCPF from 'src/utils/validarCPF';
+import validator from 'validator';
+import ValidaData from 'src/utils/validarData';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -272,11 +275,11 @@ const customStyles2 = {
 const tipos = [
   {
     value: 'Participante',
-    label: 'Participar do Evento',
+    label: 'Ouvinte do Evento',
   },
   {
     value: 'Apoio',
-    label: 'Apoiar ao Evento',
+    label: 'Equipe de apoio do Evento',
   },
 ];
 const quem = [
@@ -368,8 +371,8 @@ export default function Todos({
   const handleSalvar = () => {
     let send = true;
 
-    if (nome === '') {
-      toast.error('Preencha o Nome!', {
+    if (nome.length < 6) {
+      toast.error('Preencha o Nome e Sobrenome!', {
         position: toast.POSITION.TOP_CENTER,
       });
       send = false;
@@ -404,6 +407,12 @@ export default function Todos({
       });
       send = false;
       cpfRef.current.focus();
+    } else if (!ValidaCPF(cpf)) {
+      toast.error('CPF inválido', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      send = false;
+      cpfRef.current.focus();
     }
 
     if (dataNascimento === '') {
@@ -412,9 +421,22 @@ export default function Todos({
       });
       send = false;
       nascimentoRef.current.focus();
+    } else if (!ValidaData(dataNascimento)) {
+      toast.error('data digitada é inválida!', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      send = false;
+      nascimentoRef.current.focus();
     }
+
     if (email === '') {
       toast.error('Informe o Email!', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      send = false;
+      emailRef.current.focus();
+    } else if (!validator.isEmail(email)) {
+      toast.error('email inválido!', {
         position: toast.POSITION.TOP_CENTER,
       });
       send = false;
@@ -431,19 +453,26 @@ export default function Todos({
       setLoading(true);
 
       const dataInscicao = new Date();
-      const dateObject = moment(dataNascimento).format('DD/MM/YYYY 00:00:00');
-      const newDateNacimento = new Date(dateObject);
+
+      const dia = dataNascimento.substring(0, 2);
+      const mes = dataNascimento.substring(3, 5);
+      const ano = dataNascimento.substring(6, 10);
+      const AAAAMMDD = `${ano}-${mes}-${dia} 00:00:00`;
+      //     const dateObject = moment(dataNascimento).format('YYYY-DD-MM 00:00:00');
+
+      const newDateNacimento = new Date(AAAAMMDD);
       const newValorParticipante =
         inscrito.value === 'eu' || inscrito.value === 'membro'
           ? 'Membro'
           : 'Outros';
 
       const newValorDocumento =
-        inscrito.value === 'eu' || inscrito.value === 'membro'
-          ? '0'
+        inscrito.value === 'eu'
+          ? Number(perfilUser.RolMembro)
           : cpf.replace(/([^0-9])/g, '');
+
       let newValorRolMembro = 0;
-      if (inscrito.value === 'membro') newValorRolMembro = Number(cpf);
+
       if (inscrito.value === 'eu')
         newValorRolMembro = Number(perfilUser.RolMembro);
 
@@ -469,7 +498,7 @@ export default function Todos({
           dados: DadosInscritos,
         })
         .then((response) => {
-          console.log('resposta', response);
+          console.log('response', response);
           if (response) {
             setLoading(false);
             setOpenInfo(true);
@@ -477,7 +506,7 @@ export default function Todos({
             if (response.data === 'atualizado')
               setInfo('Inscrição atualizada com Sucesso');
             else setInfo('Inscrição realizada com Sucesso');
-          }
+          } else console.log('deu erro no banco');
         })
         .catch(() => {
           setLoading(false);
@@ -546,7 +575,7 @@ export default function Todos({
     setOpenPlan(false);
     setOpenInfo(false);
   };
-  console.log('session', session);
+
   return (
     <Box
       display="flex"
@@ -613,14 +642,14 @@ export default function Todos({
             >
               <Box width="90%">
                 <Grid container spacing={2}>
-                  <Grid item xs={12} md={3}>
+                  <Grid item xs={12} md={12}>
                     <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                       <Typography
                         variant="caption"
                         display="block"
                         gutterBottom
                       >
-                        Tipo de Inscrição
+                        Função no Evento
                       </Typography>
                     </Box>
                     <Box className={classes.novoBox} mt={-2} mb="2vh">
@@ -833,7 +862,6 @@ export default function Todos({
                         display="block"
                         gutterBottom
                       >
-                        {console.log(inscrito, dadosUser.length)}
                         {inscrito.value !== 'outro' || dadosUser.length
                           ? 'RolMembro'
                           : 'CPF'}
@@ -1021,7 +1049,6 @@ export default function Todos({
                   borderRadius: 15,
                   width: '100%',
                 }}
-                onClick={handleSalvar}
                 variant="contained"
                 severity="success"
                 endIcon={<Oval stroke="white" width={20} height={25} />}
