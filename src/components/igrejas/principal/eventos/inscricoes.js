@@ -407,7 +407,7 @@ export default function Todos({
       });
       send = false;
       cpfRef.current.focus();
-    } else if (!ValidaCPF(cpf)) {
+    } else if (!ValidaCPF(cpf) && !perfilUser) {
       toast.error('CPF inválido', {
         position: toast.POSITION.TOP_CENTER,
       });
