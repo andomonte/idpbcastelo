@@ -467,14 +467,14 @@ export default function Todos({
           : 'Outros';
 
       const newValorDocumento =
-        inscrito.value === 'eu'
-          ? Number(perfilUser.RolMembro)
+        inscrito.value === 'eu' || inscrito.value === 'membro'
+          ? cpf
           : cpf.replace(/([^0-9])/g, '');
 
       let newValorRolMembro = 0;
-
-      if (inscrito.value === 'eu')
-        newValorRolMembro = Number(perfilUser.RolMembro);
+      console.log('inscrito', cpf);
+      if (inscrito.value === 'eu' || inscrito.value === 'membro')
+        newValorRolMembro = Number(cpf); // na verdade é o rol do membro inscrito
 
       const DadosInscritos = {
         idEvento: Number(eventoEscolhido[0].id),
