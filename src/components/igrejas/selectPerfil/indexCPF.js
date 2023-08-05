@@ -136,7 +136,7 @@ function SelectPerfil({
 
   if (openEspera) return <Espera descricao="Buscando Seu Perfil" />;
 
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-073');
+  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
   let valorPerfil = {};
   let userMembro = {};
   const handleClick = () => {

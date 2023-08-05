@@ -37,7 +37,7 @@ function Planejar({ rolMembros, distritos }) {
     <div>
       {perfilUserF && (
         <Aniversariantes
-          title="IDPB-CASTELO"
+          title="APP-CÉLULAS"
           rolMembros={rolMembros}
           perfilUser={perfilUserF}
           distritos={distritos}

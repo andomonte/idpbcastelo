@@ -127,8 +127,6 @@ function BuscarAniversariantes({ distritos, rolMembros, perfilUser }) {
             justifyContent="center"
             alignItems="center"
             style={{
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',

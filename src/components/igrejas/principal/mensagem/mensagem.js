@@ -136,12 +136,7 @@ function Mensagem({ mensagem, titulo2 }) {
       results.Data.length > 8 &&
       Number(results.Data.substring(0, 4)) === AnoAtual,
   );
-  console.log(
-    'mensagem',
-    mensGeralValido,
-    mensagem[0].Data.substring(0, 4),
-    AnoAtual,
-  );
+
   const mensGeral = mensGeralValido.filter(
     (results) =>
       converteData(
@@ -451,14 +446,37 @@ function Mensagem({ mensagem, titulo2 }) {
 
           <Box
             width="99%"
-            mt={-1}
+            mt={0}
             color="white"
             fontSize="25px"
             fontFamily="Fugaz One"
             display="flex"
             justifyContent="center"
           >
-            <Box width="86%" display="flex" justifyContent="center">
+            <Box
+              mt={0.5}
+              height="100%"
+              width="12%"
+              display="flex"
+              justifyContent="flex-start"
+            >
+              <Box
+                ml={0}
+                mr={0}
+                style={{
+                  color: 'white',
+                  fontFamily: 'arial black',
+                  fontSize: '16px',
+                }}
+                display="flex"
+                justifyContent="flex-start"
+                width="100%"
+                onClick={() => handleDecFonte()}
+              >
+                A -
+              </Box>
+            </Box>
+            <Box width="200px" display="flex" justifyContent="center">
               MENSAGEM
             </Box>
             <Box
@@ -466,26 +484,26 @@ function Mensagem({ mensagem, titulo2 }) {
               width="12%"
               display="flex"
               justifyContent="flex-end"
+              mt={0.5}
             >
-              <IconButton onClick={() => handleIncFonte()}>
-                <Box
-                  style={{
-                    color: 'white',
-                    fontFamily: 'arial black',
-                    fontSize: '16px',
-                  }}
-                  display="flex"
-                  justifyContent="flex-end"
-                  width="100%"
-                >
-                  A+
-                </Box>
-              </IconButton>
+              <Box
+                style={{
+                  color: 'white',
+                  fontFamily: 'arial black',
+                  fontSize: '16px',
+                }}
+                display="flex"
+                justifyContent="flex-end"
+                width="100%"
+                onClick={() => handleIncFonte()}
+              >
+                A +
+              </Box>
             </Box>
           </Box>
           <Box
             height="100%"
-            mt={-1.5}
+            mt={-0.5}
             flexDirection="column"
             width="100%"
             display="flex"
@@ -573,29 +591,6 @@ function Mensagem({ mensagem, titulo2 }) {
                 </Box>{' '}
               </Box>
               <Box width="8%" />
-              <Box
-                height="100%"
-                width="12%"
-                display="flex"
-                justifyContent="flex-end"
-              >
-                <IconButton onClick={() => handleDecFonte()}>
-                  <Box
-                    ml={0}
-                    mr={0}
-                    style={{
-                      color: 'white',
-                      fontFamily: 'arial black',
-                      fontSize: '16px',
-                    }}
-                    display="flex"
-                    justifyContent="flex-end"
-                    width="100%"
-                  >
-                    A-
-                  </Box>
-                </IconButton>
-              </Box>
             </Box>
           </Box>
         </Box>

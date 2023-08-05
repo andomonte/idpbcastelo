@@ -128,8 +128,6 @@ function BuscarAniversariantes({ distritos, rolMembros, perfilUser }) {
             justifyContent="center"
             alignItems="center"
             style={{
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -143,7 +141,7 @@ function BuscarAniversariantes({ distritos, rolMembros, perfilUser }) {
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
-              fontSize="20px"
+              fontSize="16px"
               color="white"
               sx={{ fontFamily: 'Fugaz One' }}
             >

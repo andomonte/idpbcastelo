@@ -460,15 +460,16 @@ export default function Todos({
         participante: newValorParticipante,
         RolMembro: newValorRolMembro,
         Documento: newValorDocumento,
-        Distrito: Number(perfilUser.Distrito),
+        Distrito: perfilUser ? Number(perfilUser.Distrito) : 0,
         CreatedAt: dataInscicao,
       };
-
+      console.log('dados do inscrito', DadosInscritos);
       api
         .post('/api/inserirInscritos', {
           dados: DadosInscritos,
         })
         .then((response) => {
+          console.log('resposta', response);
           if (response) {
             setLoading(false);
             setOpenInfo(true);

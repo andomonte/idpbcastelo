@@ -34,7 +34,6 @@ const home = ({ perfilUser }) => {
   const [loadingPlan, setLoadingPlan] = React.useState(false);
   const [loadingAtual, setLoadingAtual] = React.useState(false);
   const [loadingMidia, setLoadingMidia] = React.useState(false);
-  // const [loadingJogos, setLoadingJogos] = React.useState(false);
   const [loadingCursos, setLoadingCursos] = React.useState(false);
   const [loadingMudar, setLoadingMudar] = React.useState(false);
 
