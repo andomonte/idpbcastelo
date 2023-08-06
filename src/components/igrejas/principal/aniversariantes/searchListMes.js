@@ -19,8 +19,9 @@ dayjs.extend(relativeTime);
 
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
+  const ano = new Date().getFullYear();
   const novaData = new Date(
-    parseInt(dataSplit[2], 10),
+    ano,
     parseInt(dataSplit[1], 10) - 1,
     parseInt(dataSplit[0], 10),
   );
@@ -107,9 +108,25 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
       'DD/MM/YYYY hh:mm:ss',
     ),
   ).getDate();
+
+  const diaDaSemana = converteData(
+    moment(rolMembros.Nascimento.substring(0, 10)).format(
+      'DD/MM/YYYY hh:mm:ss',
+    ),
+  ).getDay();
+
   // const mesAniversario = converteData(rolMembros.Nascimento).getMonth();
   const dia = converteData(semanaAtual).getDate();
-
+  console.log(
+    'diaAniversario',
+    converteData(
+      moment(rolMembros.Nascimento.substring(0, 10)).format(
+        'DD/MM/YYYY hh:mm:ss',
+      ),
+    ),
+    diaAniversario,
+    diaDaSemana,
+  );
   return (
     <Box sx={{ maxHeight: 310, minWidth: 280 }} className={classes.dadosBox}>
       <TableContainer sx={{ maxHeight: 310 }}>
@@ -155,7 +172,8 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
                     <Box display="flex" color={corIgreja.principal}>
                       Dia:
                       <Box color="black" ml={1}>
-                        {diaSemana[diaAniversario - dia]} {diaAniversario}
+                        {console.log('o dia ', diaAniversario - dia)}
+                        {diaSemana[diaDaSemana]} {diaAniversario}
                       </Box>
                     </Box>
                   </Box>
