@@ -10,7 +10,10 @@ import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
 import Autocomplete from '@mui/material/Autocomplete';
 import PegaDataPelaSemana from 'src/utils/getData';
+import axios from 'axios';
+import useSWR from 'swr';
 
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
 
@@ -106,9 +109,10 @@ function Mensagem({ mensagem, titulo2 }) {
     value: 1,
   };
   if (titulo2 && titulo2.length) valorInicialTitulo = titulo2;
+  const url1 = `/api/consultaMensagem`;
+  const { data: mensage, errorMensage } = useSWR(url1, fetcher);
 
   const ref3 = React.useRef();
-
   const [titulo, setTitulo] = React.useState(valorInicialTitulo);
   const [pesquisaTitulo, setPesquisaTitulo] = React.useState(false);
   const [inputValor, setInputValor] = React.useState('');
@@ -118,26 +122,23 @@ function Mensagem({ mensagem, titulo2 }) {
 
   const [contSemana, setContSemana] = React.useState(novaDataSemana);
   const semanaAtual2 = getPreviousMonday2(contSemana);
-
   const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
     'DD/MM/YYYY 00:00:00',
   );
-  const AnoAtual = new Date().getFullYear();
   const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
 
   const dataInicial = converteData(semanaAtual);
   const dataFinal = converteData(semanaSegunte);
-
-  const listaNomes = mensagem.map((nomes) => nomes.titulo);
-
-  const mensGeralValido = mensagem.filter(
+  let listaNomes = mensagem.map((nomes) => nomes.titulo);
+  const AnoAtual = new Date().getFullYear();
+  const mensGeralValidoIni = mensagem.filter(
     (results) =>
       results.Data !== null &&
       results.Data.length > 8 &&
       Number(results.Data.substring(0, 4)) === AnoAtual,
   );
 
-  const mensGeral = mensGeralValido.filter(
+  const mensGeralIni = mensGeralValidoIni.filter(
     (results) =>
       converteData(
         moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
@@ -146,6 +147,37 @@ function Mensagem({ mensagem, titulo2 }) {
         moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
       ) <= dataFinal,
   );
+  const [mensGeral, setMensGeral] = React.useState(mensGeralIni);
+
+  React.useEffect(() => {
+    if (mensage && mensage.length) {
+      console.log('ola mensage', mensage);
+      listaNomes = mensage.map((nomes) => nomes.titulo);
+
+      const mensGeralValido = mensage.filter(
+        (results) =>
+          results.Data !== null &&
+          results.Data.length > 8 &&
+          Number(results.Data.substring(0, 4)) === AnoAtual,
+      );
+
+      const mensGeral2 = mensGeralValido.filter(
+        (results) =>
+          converteData(
+            moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+          ) >= dataInicial &&
+          converteData(
+            moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+          ) <= dataFinal,
+      );
+      setMensGeral(mensGeral2);
+    }
+
+    if (errorMensage) return <div>An error occured.</div>;
+    if (!mensage) return <div>Loading ...</div>;
+
+    return 0;
+  }, [mensage]);
 
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
