@@ -400,20 +400,21 @@ export default function Todos({
       send = false;
       celularRef.current.focus();
     }
-
-    if (cpf === '') {
-      toast.error('Informe seu CPF!', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      send = false;
-      cpfRef.current.focus();
-    } else if (!ValidaCPF(cpf) && !perfilUser) {
-      toast.error('CPF inválido', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      send = false;
-      cpfRef.current.focus();
-    }
+    console.log('aqui cpf', cpf);
+    if (inscrito.value === 'outro')
+      if (cpf === '') {
+        toast.error('Informe seu CPF!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        send = false;
+        cpfRef.current.focus();
+      } else if (!ValidaCPF(cpf) && !perfilUser) {
+        toast.error('CPF inválido', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        send = false;
+        cpfRef.current.focus();
+      }
 
     if (dataNascimento === '') {
       toast.error('Informe a data de Nascimento!', {
@@ -468,11 +469,11 @@ export default function Todos({
 
       const newValorDocumento =
         inscrito.value === 'eu' || inscrito.value === 'membro'
-          ? cpf
+          ? '0'
           : cpf.replace(/([^0-9])/g, '');
 
       let newValorRolMembro = 0;
-      console.log('inscrito', cpf);
+
       if (inscrito.value === 'eu' || inscrito.value === 'membro')
         newValorRolMembro = Number(cpf); // na verdade é o rol do membro inscrito
 
@@ -498,7 +499,6 @@ export default function Todos({
           dados: DadosInscritos,
         })
         .then((response) => {
-          console.log('response', response);
           if (response) {
             setLoading(false);
             setOpenInfo(true);
@@ -538,8 +538,8 @@ export default function Todos({
       setCelular(dadosUser2[0].TelCelular ? dadosUser2[0].TelCelular : '');
       setCPF(dadosUser2[0].RolMembro);
       setDataNascimento(
-        moment(dadosUser2[0].Nascimento).format('DD/MM/YYYY')
-          ? moment(dadosUser2[0].Nascimento).format('DD/MM/YYYY')
+        ConvData1(dadosUser2[0].Nascimento)
+          ? ConvData1(dadosUser2[0].Nascimento)
           : '',
       );
       setEmail(dadosUser2[0].Email ? dadosUser2[0].Email : '');
@@ -862,9 +862,8 @@ export default function Todos({
                         display="block"
                         gutterBottom
                       >
-                        {inscrito.value !== 'outro' || dadosUser.length
-                          ? 'RolMembro'
-                          : 'CPF'}
+                        {console.log('dadosUser', inscrito)}
+                        {inscrito.value === 'outro' ? 'CPF' : 'RolMembro'}
                       </Typography>
                     </Box>
                     <Box mb="2vh" className={classes.novoBox} mt={-2}>
@@ -884,9 +883,7 @@ export default function Todos({
                             //                            textAlign: 'center',
                           },
                         }}
-                        disabled={
-                          !!(inscrito.value !== 'outro' || dadosUser.length)
-                        }
+                        disabled={!(inscrito.value === 'outro')}
                         value={cpf}
                         variant="outlined"
                         placeholder="999.999.999-99"

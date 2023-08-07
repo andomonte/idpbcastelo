@@ -16,10 +16,9 @@ import useSWR from 'swr';
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
-  const ano = dataSplit[2].split(' ');
-  console.log('dataAno', ano);
+
   const novaData = new Date(
-    parseInt(ano[0], 10),
+    parseInt(2000, 10),
     parseInt(dataSplit[1], 10) - 1,
     parseInt(dataSplit[0], 10),
   );
@@ -38,7 +37,38 @@ function compare(a, b) {
   return true;
 }
 
+function semanaExata(dataEnviada) {
+  const Ano = dataEnviada.getFullYear();
+  const Mes = dataEnviada.getMonth();
+  const Dia = dataEnviada.getDate();
+  const firstSun = new Date(2021, 0, 1);
+  const lastSun = new Date(Ano, Mes, Dia);
+  while (firstSun.getDay() !== 2) {
+    firstSun.setDate(firstSun.getDate() + 1);
+  }
+  while (lastSun.getDay() !== 2) {
+    lastSun.setDate(lastSun.getDate() + 1);
+  }
+
+  let result = 0;
+  for (let i = result + 1; lastSun - firstSun > 0; i += 1) {
+    lastSun.setDate(lastSun.getDate() - 7);
+    if (i > 52) i = 1;
+    result = i;
+  }
+
+  return result;
+}
+
 //= =================================================================
+
+function getPreviousMonday(date) {
+  const previousMonday = date;
+
+  previousMonday.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+
+  return previousMonday;
+}
 
 function getPreviousMonday2(date) {
   const getAno = new Date().getFullYear();
@@ -64,6 +94,9 @@ function nextSunday(date) {
 }
 
 function Mensagem({ mensagem, titulo2 }) {
+  const dataAgora = new Date();
+  const novaDataSemana = semanaExata(dataAgora);
+
   const [shareUrl, setShareUrl] = React.useState('');
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
@@ -87,19 +120,57 @@ function Mensagem({ mensagem, titulo2 }) {
   const [openPesquisa, setOpenPesquisa] = React.useState(false);
   const [contFonte, setContFonte] = React.useState(16);
 
-  const [contSemana, setContSemana] = React.useState(mensagem.length);
+  const [contSemana, setContSemana] = React.useState(novaDataSemana);
   const semanaAtual2 = getPreviousMonday2(contSemana);
+  const semanaAtual = moment(getPreviousMonday(semanaAtual2)).format(
+    'DD/MM/YYYY 00:00:00',
+  );
+  const semanaSegunte = moment(nextSunday(semanaAtual2)).format('DD/MM/YYYY');
 
+  const dataInicial = converteData(semanaAtual);
+  const dataFinal = converteData(semanaSegunte);
   let listaNomes = mensagem.map((nomes) => nomes.titulo);
+  const AnoAtual = new Date().getFullYear();
+  const mensGeralValidoIni = mensagem.filter(
+    (results) =>
+      results.Data !== null &&
+      results.Data.length > 8 &&
+      Number(results.Data.substring(0, 4)) === AnoAtual,
+  );
 
-  const [mensGeral, setMensGeral] = React.useState(mensagem);
+  const mensGeralIni = mensGeralValidoIni.filter(
+    (results) =>
+      converteData(
+        moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+      ) >= dataInicial &&
+      converteData(
+        moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+      ) <= dataFinal,
+  );
+  const [mensGeral, setMensGeral] = React.useState(mensGeralIni);
 
   React.useEffect(() => {
     if (mensage && mensage.length) {
+      console.log('ola mensage', mensage);
       listaNomes = mensage.map((nomes) => nomes.titulo);
 
-      setMensGeral(mensage);
-      setContSemana(mensage.length);
+      const mensGeralValido = mensage.filter(
+        (results) =>
+          results.Data !== null &&
+          results.Data.length > 8 &&
+          Number(results.Data.substring(0, 4)) === AnoAtual,
+      );
+
+      const mensGeral2 = mensGeralValido.filter(
+        (results) =>
+          converteData(
+            moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+          ) >= dataInicial &&
+          converteData(
+            moment(results.Data.substring(0, 10)).format('DD/MM/YYYY 00:00:00'),
+          ) <= dataFinal,
+      );
+      setMensGeral(mensGeral2);
     }
 
     if (errorMensage) return <div>An error occured.</div>;
@@ -111,14 +182,15 @@ function Mensagem({ mensagem, titulo2 }) {
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
 
-    if (contSemanaAtual > mensGeral.length) contSemanaAtual = contSemana;
+    if (contSemanaAtual > novaDataSemana) contSemanaAtual = contSemana;
     setPesquisaTitulo(false);
     setContSemana(contSemanaAtual);
   };
   const handleDecSemana = () => {
     let contSemanaAtual = contSemana - 1;
-    if (contSemanaAtual < 0) contSemanaAtual = contSemana;
+    if (contSemanaAtual > 0) contSemanaAtual = contSemana;
     setPesquisaTitulo(false);
+
     setContSemana(contSemanaAtual);
   };
 
@@ -136,10 +208,18 @@ function Mensagem({ mensagem, titulo2 }) {
   };
 
   React.useEffect(() => {
+    console.log('chegou aqui ');
     if (!pesquisaTitulo) {
       const dataMens = mensGeral.sort(compare);
-      const dataMens2 = dataMens;
-      console.log('ola mensage', dataMens2);
+      let dataMens2 = dataMens;
+      console.log('olha os dataMens ', dataMens, mensGeral);
+      if (dataMens2.length) {
+        setBoletim(dataMens2[0]);
+        setTitulo(dataMens2[0].titulo);
+      } else {
+        dataMens2 = dataMens.filter((val) => Number(val.Distrito) === 0);
+        setBoletim(dataMens2[0]);
+      }
       const diaSemana = [
         'Domingo',
         'Segunda',
@@ -151,9 +231,13 @@ function Mensagem({ mensagem, titulo2 }) {
       ];
 
       if (dataMens2.length) {
-        const novaData1 = dataMens2[dataMens2.length - contSemana].Data; // nextSunday(semanaAtual2);
-        setBoletim(dataMens2[dataMens2.length - contSemana]);
-        setTitulo(dataMens2[dataMens2.length - contSemana].titulo);
+        console.log(
+          'esta funcionando',
+          contSemana - dataMens2.length,
+          dataMens2,
+        );
+        const novaData1 = dataMens2[contSemana - dataMens2.length].Data; // nextSunday(semanaAtual2);
+
         const ano = novaData1.substring(0, 4);
         const mes = novaData1.substring(5, 7);
         const dia = novaData1.substring(8, 10);
@@ -164,9 +248,27 @@ function Mensagem({ mensagem, titulo2 }) {
         } ${dia}/${mes}/${ano}`;
 
         setDataBr(showData);
+      } else {
+        const novaData11 = nextSunday(semanaAtual2);
+        const dia =
+          novaData11.getDate() > 9
+            ? novaData11.getDate()
+            : `0${novaData11.getDate()}`;
+        const mes =
+          novaData11.getMonth() + 1 > 9
+            ? novaData11.getMonth() + 1
+            : `0${novaData11.getMonth() + 1}`;
+        const ano = novaData11.getFullYear();
+        const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
+
+        const showData = ` ${
+          diaSemana[diaSemana2.getDay()]
+        } ${dia}/${mes}/${ano}`;
+
+        setDataBr(showData);
       }
     }
-  }, [contSemana]);
+  }, [contSemana, dataFinal]);
 
   React.useEffect(() => {
     if (titulo2) {
