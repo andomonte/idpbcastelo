@@ -6,7 +6,7 @@ import Select from 'react-select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@mui/material/Typography';
 import api from 'src/components/services/api';
-import moment from 'moment';
+
 import dataMask from 'src/components/mascaras/datas';
 import celularMask from 'src/components/mascaras/celular';
 import 'react-image-crop/dist/ReactCrop.css';

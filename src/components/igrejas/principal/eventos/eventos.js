@@ -72,11 +72,12 @@ function Eventos({ perfilUser, rolMembros }) {
       minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
+      color={corIgreja.texto1}
     >
       <Box
         height="97%"
         width="100%"
-        bgcolor="white"
+        bgcolor={corIgreja.principal}
         ml={1.2}
         mr={1.2}
         display="flex"
@@ -92,7 +93,7 @@ function Eventos({ perfilUser, rolMembros }) {
                   <Box key={row.id} height="90vh" width="100%" mt={0}>
                     <TableContainer
                       style={{
-                        height: '100%',
+                        height: '88%',
                         minHeight: 200,
                         marginTop: 0,
                         display: 'flex',
@@ -105,10 +106,13 @@ function Eventos({ perfilUser, rolMembros }) {
                         <Box height="100%" width="100%">
                           {row.LogoEvento && (
                             <img
-                              style={{ borderRadius: '16px' }}
+                              style={{
+                                borderRadius: '16px',
+                                width: '100%',
+                                height: 'auto',
+                                maxHeight: row.Evento ? '44vh' : 'auto',
+                              }}
                               src={row.LogoEvento}
-                              height="auto"
-                              width="auto"
                               alt="imagem"
                             />
                           )}
@@ -137,36 +141,39 @@ function Eventos({ perfilUser, rolMembros }) {
                               </Box>
                             </Box>
                           </Box>
-
-                          <Box
-                            display={row.inscricao ? 'display' : 'none'}
-                            mt="1vh"
-                            width="100%"
-                            height="13%"
-                          >
-                            <Button
-                              style={{
-                                background: corIgreja.principal,
-                                color: 'white',
-                                fontFamily: 'Fugaz One',
-                                fontSize: '18px',
-                                width: '90%',
-                                maxWidth: 300,
-                                height: '70%',
-                                borderRadius: 16,
-                              }}
-                              component="a"
-                              variant="contained"
-                              onClick={() => {
-                                handleIncricao(row.id);
-                              }}
-                            >
-                              FAZER INSCRIÇÃO
-                            </Button>
-                          </Box>
                         </Box>
                       </Box>
                     </TableContainer>
+                    <Box
+                      display={row.inscricao ? 'display' : 'none'}
+                      width="100%"
+                      height="9%"
+                    >
+                      <Button
+                        style={{
+                          background: corIgreja.tercenaria,
+                          color: corIgreja.texto2,
+                          fontFamily: 'Fugaz One',
+                          fontSize: '18px',
+                          width: '90%',
+                          maxWidth: 300,
+                          height: '70%',
+                          borderRadius: 16,
+                        }}
+                        component="a"
+                        variant="contained"
+                        onClick={() => {
+                          handleIncricao(row.id);
+                        }}
+                      >
+                        FAZER INSCRIÇÃO
+                      </Button>
+                    </Box>
+                    <Box
+                      display={row.inscricao ? 'display' : 'none'}
+                      width="100%"
+                      height="3%"
+                    />
                   </Box>
                 ))}
               </Carousel>
@@ -177,10 +184,8 @@ function Eventos({ perfilUser, rolMembros }) {
               height="80%"
               fontFamily="Fugaz One"
               fontSize="18px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              color="black"
+              textAlign="center"
+              color={corIgreja.texto1}
             >
               NENHUM EVENTO PREVISTO NESSE PERÍODO
             </Box>
