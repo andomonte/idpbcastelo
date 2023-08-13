@@ -355,7 +355,7 @@ function Mensagem({ mensagem, titulo2 }) {
               </Box>
               <Box
                 height="100%"
-                width="10%"
+                width="30%"
                 display="flex"
                 justifyContent="flex-start"
               >

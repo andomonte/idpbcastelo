@@ -6,7 +6,7 @@ function MidiaCelulas({ userIgrejas, data, radioIdpb }) {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/midia');
   }
-  console.log('data', data);
+
   return (
     <div>
       <Midia
@@ -20,7 +20,7 @@ function MidiaCelulas({ userIgrejas, data, radioIdpb }) {
 }
 
 const YOUTUBE_PLAYLIST_ITEMS_API =
-  'https://www.googleapis.com/youtube/v3/search';
+  'https://www.googleapis.com/youtube/v3/playlistItems';
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
@@ -33,9 +33,9 @@ export const getStaticProps = async () => {
   });
   // PLlcqEGDzXrtm6EpKCDwfW1MDZXq6uaDSM -> castelo
   // PLDtfBveOri5nzfzk8Qehn5ey9EvAUEzzQ -> global
-  const musica = 'eu não preciso ver sinais';
+
   const res = await fetch(
-    `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=50&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA&type=video&q=${musica}`,
+    `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=50&playlistId=PLyP9ItSzJZwGhMbaUg00R4shWmPy123Ew&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA`,
   );
   const data = await res.json();
   return {

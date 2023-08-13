@@ -259,7 +259,7 @@ function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
         >
           <div className={classes.drawerHeader} />
           <TabPanel value={value} index={0}>
-            <Radio radioIdpb={radioIdpb} />
+            <Radio radioIdpb={radioIdpb} dataYouTube={dataYouTube} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Videos dataYouTube={dataYouTube} userIgrejas={userIgrejas} />

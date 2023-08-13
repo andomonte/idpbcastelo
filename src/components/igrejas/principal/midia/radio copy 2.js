@@ -1,13 +1,14 @@
 import React from 'react';
-import ReactPlayer from 'react-player';
+
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
-
-import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
+import ReactPlayer from 'react-player';
+import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
+
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 
 function Player({ radioIdpb }) {
   const musics = radioIdpb;
@@ -15,7 +16,6 @@ function Player({ radioIdpb }) {
     label: 'Buscando uma Musica...',
     value: -1,
   };
-  const filter = createFilterOptions();
 
   const [numberMusic, setNumberMusic] = React.useState(0);
   const [selMusica, setSelMusica] = React.useState('');
@@ -25,8 +25,32 @@ function Player({ radioIdpb }) {
   const [video, setVideo] = React.useState('video incial');
   const [numberVideo, setNumberVideo] = React.useState(0);
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    setNumberVideo(0);
+    setVideo(
+      `https://www.youtube.com/watch?v=${dataYouTube.items[0].id.videoId}`,
+    );
+  }, []);
 
+  const handleIncVideo = () => {
+    let newVideo = numberVideo + 1;
+    if (newVideo >= dataYouTube.items.length) newVideo = 0;
+    setVideo(
+      `https://www.youtube.com/watch?v=${dataYouTube.items[numberVideo].id.videoId}`,
+    );
+    setNumberVideo(newVideo);
+  };
+  const handleDecVideo = () => {
+    let newVideo = numberVideo - 1;
+    if (newVideo < 0) newVideo = 5;
+    setVideo(
+      `https://www.youtube.com/watch?v=${dataYouTube.items[numberVideo].id.videoId}`,
+    );
+    setNumberVideo(newVideo);
+  };
+  const handleRepVideo = () => {
+    setRepeat(!repeat);
+  };
   const handleMudar = () => {
     if (!novaLista.length) {
       let newMusic = Math.floor(Math.random() * musics.length);
@@ -95,23 +119,6 @@ function Player({ radioIdpb }) {
     setRepeat(!repeat);
   };
 
-  React.useEffect(async () => {
-    if (musica && musica.label) {
-      const musicaF = `${musica.label} ${musica.compositor}`;
-      const YOUTUBE_PLAYLIST_ITEMS_API =
-        'https://www.googleapis.com/youtube/v3/search';
-
-      const res = await fetch(
-        `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=2&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA&type=video&q=${musicaF}`,
-      );
-      const data = await res.json();
-      console.log('numberVideo', numberVideo, data);
-      setVideo(
-        `https://www.youtube.com/watch?v=${data.items[numberVideo].id.videoId}`,
-      );
-    }
-  }, [musica, numberVideo]);
-  // const [value, setValue] = React.useState(null);
   return (
     <Box
       display="flex"
@@ -135,10 +142,18 @@ function Player({ radioIdpb }) {
         borderRadius={16}
         ml={0}
       >
-        <Box width="100%" mb="2vh">
-          <Box height="97%" display="flex" justifyContent="center" width="100%">
-            <Box width="90%" maxWidth={500}>
-              {console.log('valor selMusica', selMusica)}
+        <Box width="100%" mb="10vh">
+          <Box
+            height={180}
+            mb="2vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <img src={corIgreja.logo} alt="Castelo" height={60} />
+          </Box>
+          <Box display="flex" justifyContent="center" width="100%">
+            <Box width="96%">
               <Autocomplete
                 multiple
                 id="tags-filled"
@@ -174,31 +189,19 @@ function Player({ radioIdpb }) {
           </Box>
           <Box
             width="100%"
-            mt={2}
+            mt={10}
             color="white"
             flexDirection="column"
             display="flex"
             alignItems="center"
             justifyContent="center"
-            height="60vh"
           >
-            <Box borderRadius={16} height="100%" width="100%">
+            <Box borderRadius={16} height={120} width="90%" bgcolor="#f1f3f4">
               {/* autoPlay */}
-              <Box height="90%" display="flex" justifyContent="center">
-                <ReactPlayer
-                  playing
-                  controls={false}
-                  width="auto"
-                  height="auto"
-                  url={video}
-                  onEnded={handleMudar}
-                  onError={(e) => {
-                    setNumberVideo(numberVideo + 1);
-                    console.log('erro aqui', e);
-                  }}
-                />
+              <Box display="flex" justifyContent="center">
+                <ReactPlayer controls width="100%" height="100%" url={video} />
               </Box>
-              <Box height="10%" mt={2} display="flex" justifyContent="center">
+              <Box mt={2} display="flex" justifyContent="center">
                 <FaCaretLeft
                   onClick={handleDecMusica}
                   size={25}
@@ -221,25 +224,24 @@ function Player({ radioIdpb }) {
             </Box>
           </Box>
           <Box
-            mt={2}
+            mt={5}
             width="100%"
             display="flex"
             alignItems="center"
             justifyContent="center"
-            height="6%"
           >
             <Box fontSize="18px" fontFamily="Fugaz One" color="white">
               {musica && musica.label ? musica.label : ''}
             </Box>
           </Box>
           <Box
+            mt={2}
             width="100%"
             display="flex"
             alignItems="center"
             justifyContent="center"
             fontFamily="Rubik"
             color="yellow"
-            height="6%"
           >
             <Box fontSize="18px" fontFamily="Fugaz One">
               {musica && musica.compositor ? musica.compositor : ''}
