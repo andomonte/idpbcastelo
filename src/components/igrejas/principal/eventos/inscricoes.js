@@ -400,7 +400,7 @@ export default function Todos({
       send = false;
       celularRef.current.focus();
     }
-    console.log('aqui cpf', cpf);
+
     if (inscrito.value === 'outro')
       if (cpf === '') {
         toast.error('Informe seu CPF!', {
@@ -493,7 +493,7 @@ export default function Todos({
         Distrito: perfilUser ? Number(perfilUser.Distrito) : 0,
         CreatedAt: dataInscicao,
       };
-      console.log('dados do inscrito', DadosInscritos);
+
       api
         .post('/api/inserirInscritos', {
           dados: DadosInscritos,

@@ -117,16 +117,7 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
 
   // const mesAniversario = converteData(rolMembros.Nascimento).getMonth();
   const dia = converteData(semanaAtual).getDate();
-  console.log(
-    'diaAniversario',
-    converteData(
-      moment(rolMembros.Nascimento.substring(0, 10)).format(
-        'DD/MM/YYYY hh:mm:ss',
-      ),
-    ),
-    diaAniversario,
-    diaDaSemana,
-  );
+  
   return (
     <Box sx={{ maxHeight: 310, minWidth: 280 }} className={classes.dadosBox}>
       <TableContainer sx={{ maxHeight: 310 }}>
@@ -172,7 +163,7 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
                     <Box display="flex" color={corIgreja.principal}>
                       Dia:
                       <Box color="black" ml={1}>
-                        {console.log('o dia ', diaAniversario - dia)}
+                      
                         {diaSemana[diaDaSemana]} {diaAniversario}
                       </Box>
                     </Box>

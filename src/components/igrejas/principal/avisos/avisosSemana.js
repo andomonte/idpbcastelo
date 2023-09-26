@@ -14,9 +14,7 @@ function Mensagem({ dadosAvisos, perfilUser }) {
   const [contFonte, setContFonte] = React.useState(16);
 
   React.useEffect(() => {
-    console.log('o avisos', boletim);
     if (boletim) {
-      console.log('o avisos', boletim);
       setAvisoF(boletim.conteudo.replace(/font-size/g, 'font-sizes'));
     }
   }, [boletim]);
@@ -35,7 +33,6 @@ function Mensagem({ dadosAvisos, perfilUser }) {
   };
 
   React.useEffect(() => {
-    console.log('dadosAvisos1', dadosAvisos);
     if (dadosAvisos) {
       let dataMens2 = dadosAvisos.filter(
         (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
@@ -44,7 +41,7 @@ function Mensagem({ dadosAvisos, perfilUser }) {
         dataMens2 = dadosAvisos.filter(
           (val) => Number(val.Distrito) === 0 || Number(val.Distrito) === 1,
         );
-      console.log('dadosAvisos', dataMens2, perfilUser);
+
       setBoletim(dataMens2[dataMens2.length - 1]);
     }
   }, [dadosAvisos]);
