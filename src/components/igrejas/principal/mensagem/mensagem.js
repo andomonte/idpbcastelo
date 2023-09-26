@@ -17,7 +17,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 function converteData(DataDDMMYY) {
   const dataSplit = DataDDMMYY.split('/');
   const ano = dataSplit[2].split(' ');
-  console.log('dataAno', ano);
+
   const novaData = new Date(
     parseInt(ano[0], 10),
     parseInt(dataSplit[1], 10) - 1,
@@ -67,7 +67,7 @@ function Mensagem({ mensagem, titulo2 }) {
   const [shareUrl, setShareUrl] = React.useState('');
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
-
+  const [diaSem, setDiaSem] = React.useState('');
   const nomeRef = React.useRef();
   // const d = new Date();
   // const anoAtual = Number(d.getFullYear());
@@ -93,7 +93,7 @@ function Mensagem({ mensagem, titulo2 }) {
   let listaNomes = mensagem.map((nomes) => nomes.titulo);
 
   const [mensGeral, setMensGeral] = React.useState(mensagem);
-
+  const [mensagemF, setMensagemF] = React.useState('');
   React.useEffect(() => {
     if (mensage && mensage.length) {
       listaNomes = mensage.map((nomes) => nomes.titulo);
@@ -159,21 +159,27 @@ function Mensagem({ mensagem, titulo2 }) {
         const dia = novaData1.substring(8, 10);
         const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-        const showData = ` ${
-          diaSemana[diaSemana2.getDay()]
-        } ${dia}/${mes}/${ano}`;
-
+        const showData = `${dia}/${mes}/${ano}`;
+        setDiaSem(` ${diaSemana[diaSemana2.getDay()]}`);
         setDataBr(showData);
       }
     }
-  }, [contSemana]);
+  }, [contSemana, mensGeral]);
 
   React.useEffect(() => {
     if (titulo2) {
       setTitulo(titulo2);
     }
   }, [titulo2]);
-
+  React.useEffect(() => {
+    if (boletim) {
+      setMensagemF(boletim.Mensagem.replace(/font-size/g, 'font-sizes'));
+      console.log(
+        'boletim',
+        boletim.Mensagem.replace(/font-size/g, 'font-sizes'),
+      );
+    }
+  }, [boletim]);
   React.useEffect(() => {
     if (titulo && titulo.length) {
       const dataMens2 = mensagem.filter(
@@ -204,10 +210,8 @@ function Mensagem({ mensagem, titulo2 }) {
         const dia = novaData1.substring(8, 10);
         const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-        const showData = ` ${
-          diaSemana[diaSemana2.getDay()]
-        } ${dia}/${mes}/${ano}`;
-
+        const showData = `${dia}/${mes}/${ano}`;
+        setDiaSem(` ${diaSemana[diaSemana2.getDay()]}`);
         setDataBr(showData);
       } else {
         const novaData11 = nextSunday(semanaAtual2);
@@ -222,10 +226,8 @@ function Mensagem({ mensagem, titulo2 }) {
         const ano = novaData11.getFullYear();
         const diaSemana2 = new Date(`${mes}/${dia}/${ano}`);
 
-        const showData = ` ${
-          diaSemana[diaSemana2.getDay()]
-        } ${dia}/${mes}/${ano}`;
-
+        const showData = `${dia}/${mes}/${ano}`;
+        setDiaSem(` ${diaSemana[diaSemana2.getDay()]}`);
         setDataBr(showData);
       }
     }
@@ -392,7 +394,7 @@ function Mensagem({ mensagem, titulo2 }) {
             justifyContent="center"
           >
             <Box
-              mt={0.5}
+              mt={0}
               height="100%"
               width="12%"
               display="flex"
@@ -411,7 +413,15 @@ function Mensagem({ mensagem, titulo2 }) {
                 width="100%"
                 onClick={() => handleDecFonte()}
               >
-                A -
+                <IconButton
+                  style={{
+                    color: 'white',
+                    fontFamily: 'arial black',
+                    fontSize: '16px',
+                  }}
+                >
+                  A -
+                </IconButton>
               </Box>
             </Box>
             <Box width="200px" display="flex" justifyContent="center">
@@ -422,7 +432,7 @@ function Mensagem({ mensagem, titulo2 }) {
               width="12%"
               display="flex"
               justifyContent="flex-end"
-              mt={0.5}
+              mt={0}
             >
               <Box
                 style={{
@@ -435,7 +445,16 @@ function Mensagem({ mensagem, titulo2 }) {
                 width="100%"
                 onClick={() => handleIncFonte()}
               >
-                A +
+                {' '}
+                <IconButton
+                  style={{
+                    color: 'white',
+                    fontFamily: 'arial black',
+                    fontSize: '16px',
+                  }}
+                >
+                  A +
+                </IconButton>
               </Box>
             </Box>
           </Box>
@@ -499,14 +518,44 @@ function Mensagem({ mensagem, titulo2 }) {
                   <Box
                     width="80%"
                     fontFamily="Fugaz One"
-                    fontSize="18px"
+                    fontSize="14px"
                     color="white"
                     mt={-0.3}
                     ml={-3}
                     display="flex"
                     justifyContent="center"
                   >
-                    {dataBr ? `${dataBr}` : 'Não encontrado'}
+                    <Box
+                      fontFamily="Fugaz One"
+                      fontSize="14px"
+                      color="white"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      {diaSem ? `${diaSem.toLocaleUpperCase()}` : ''}
+                    </Box>
+                    <Box
+                      fontFamily="Fugaz One"
+                      fontSize="14px"
+                      color="white"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      ml={1}
+                    >
+                      {diaSem ? '-' : ''}
+                    </Box>
+                    <Box
+                      ml={1}
+                      fontFamily="Fugaz One"
+                      fontSize="16px"
+                      color="white"
+                      display="flex"
+                      justifyContent="center"
+                    >
+                      {dataBr ? `${dataBr}` : 'Não encontrado'}
+                    </Box>
                   </Box>
                   <Box
                     width="10%"
@@ -556,7 +605,7 @@ function Mensagem({ mensagem, titulo2 }) {
                   fontFamily="Fugaz One"
                   sx={{ textAlign: 'justify' }}
                 >
-                  {boletim ? (
+                  {boletim && mensagemF ? (
                     <Box width="90%" color="black">
                       <Box width="100%">
                         <Box
@@ -569,7 +618,7 @@ function Mensagem({ mensagem, titulo2 }) {
                             style={{ fontSize: contFonte }}
                             className="mensagem"
                             dangerouslySetInnerHTML={{
-                              __html: boletim.Mensagem,
+                              __html: mensagemF,
                             }}
                           />
                         </Box>

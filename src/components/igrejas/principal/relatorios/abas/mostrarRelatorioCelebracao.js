@@ -638,7 +638,7 @@ function RelCelula({
         pontuacaoAtual.RelDiscipulado === 1
       )
         pontosRelatorio = 1;
-      console.log('valor pontosNovoMembro');
+
       if (pontuacaoAtual.RelCelulaFeito === 1) {
         pontosRelCelula = pontuacaoAtual.RelCelulaFeito;
         pontosPresentes = pontuacaoAtual.PresentesCelula;

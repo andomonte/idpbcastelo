@@ -7,7 +7,7 @@ import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 
 function Player({ radioIdpb }) {
   const musics = radioIdpb;
@@ -15,7 +15,6 @@ function Player({ radioIdpb }) {
     label: 'Buscando uma Musica...',
     value: -1,
   };
-  const filter = createFilterOptions();
 
   const [numberMusic, setNumberMusic] = React.useState(0);
   const [selMusica, setSelMusica] = React.useState('');

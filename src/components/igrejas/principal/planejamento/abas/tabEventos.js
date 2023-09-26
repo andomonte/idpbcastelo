@@ -446,7 +446,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
           justifyContent="center"
           alignItems="center"
         >
-          <img src={corIgreja.logo} alt="Castelo" height="40%" width="50%" />
+          <img src={corIgreja.logo} alt="logo" height="40%" width="50%" />
         </Box>
         <form style={{ height: '85%' }}>
           <Box height="100%">
@@ -860,7 +860,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, rolMembros }) {
           justifyContent="center"
           alignItems="center"
         >
-          <img src={corIgreja.logo} alt="Castelo" height="40%" width="50%" />
+          <img src={corIgreja.logo} alt="logo" height="40%" width="50%" />
         </Box>
         <form style={{ height: '85%' }}>
           <Box height="100%">

@@ -264,6 +264,7 @@ function RelatorioCelebracao({
   const dadosUser = rolMembros.filter(
     (val) => val.RolMembro === Number(perfilUser.RolMembro),
   );
+
   const [Encontro, setEncontro] = React.useState(dadosUser[0].Encontro);
   const [Exaltacao, setExaltacao] = React.useState(dadosUser[0].Exaltacao);
   const [Evangelismo, setEvangelismo] = React.useState(
@@ -430,11 +431,12 @@ function RelatorioCelebracao({
 
       setHorario(horarioNovo);
 
-      const newAnfitriao = nomesCelulaParcial.filter(
-        (val) => val.label === relatorio[0].Anfitriao,
-      );
+      const newAnfitriao = {
+        label: relatorio[0].Anfitriao,
+        value: 0,
+      };
 
-      if (newAnfitriao.length) setValueAnfitriao(newAnfitriao[0].label);
+      setValueAnfitriao(newAnfitriao.label);
 
       const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
 

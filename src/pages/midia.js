@@ -19,12 +19,12 @@ function MidiaCelulas({ userIgrejas, data, radioIdpb }) {
   );
 }
 
-const YOUTUBE_PLAYLIST_ITEMS_API =
-  'https://www.googleapis.com/youtube/v3/search';
+
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
-
+  const YOUTUBE_PLAYLIST_ITEMS_API =
+  'https://www.googleapis.com/youtube/v3/search';
   const userIgrejas = await prisma.igreja.findMany().finally(async () => {
     await prisma.$disconnect();
   });

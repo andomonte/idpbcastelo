@@ -237,7 +237,9 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
                 }}
               >
                 <Box className={classes.caption}>
-                  {distritos[Number(rolMembros.Distrito) - 1].Distrito_Nome}
+                  {distritos &&
+                    distritos.length &&
+                    distritos[Number(rolMembros.Distrito) - 1].Distrito_Nome}
                 </Box>
               </Typography>
             </Box>

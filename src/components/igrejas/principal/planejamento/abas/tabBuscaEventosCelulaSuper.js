@@ -156,7 +156,7 @@ export default function TabCelula({
   React.useEffect(() => {
     if (sem1 && sem1.length) {
       // const semanaAgora = PegaSemana(sem1.Data);
-
+      // console.log('SEMANA AGORA', semanaAgora);
       const presCelula = sem1.filter(
         (val) =>
           val.Celula === Number(numeroCelulas) &&

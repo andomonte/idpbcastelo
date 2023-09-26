@@ -444,7 +444,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
               <Grid container spacing={2}>
                 <Grid container item xs={12}>
                   <Box ml={1} width="100%" color="white" fontSize="12px">
-                    Lanche
+                    LANCHE
                   </Box>
                 </Grid>
               </Grid>

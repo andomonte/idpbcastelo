@@ -129,8 +129,13 @@ function SelectPerfil({
           val.Email === session.user.email,
       );
 
-      if (membro && membro.length) setRolMembro(membro[0].RolMembro);
-      else setRolMembro('');
+      if (membro && membro.length) {
+        setStart(true);
+        setRolMembro(membro[0].RolMembro);
+      } else {
+        setRolMembro('');
+        setStart(false);
+      }
     }
   }, [session]);
 
