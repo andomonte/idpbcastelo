@@ -2,7 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
-
+import api from 'src/components/services/api';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
 import Chip from '@mui/material/Chip';
@@ -95,21 +95,26 @@ function Player({ radioIdpb }) {
   };
 
   React.useEffect(async () => {
-    if (musica && musica.label) {
-      const musicaF = `${musica.label} ${musica.compositor}`;
-      const YOUTUBE_PLAYLIST_ITEMS_API =
-        'https://www.googleapis.com/youtube/v3/search';
+    if (musica && musica.label && musica.compositor) {
+      const musicas = `${musica.label} ${musica.compositor}`;
+      api
+        .post('/api/consultaYouTube', {
+          musicas,
+        })
+        .then((response) => {
+          if (response) {
+            setVideo(
+              `https://www.youtube.com/watch?v=${response.data.items[numberVideo].id.videoId}`,
+            );
+          }
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
 
-      const res = await fetch(
-        `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=2&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA&type=video&q=${musicaF}`,
-      );
-      const data = await res.json();
-      console.log('numberVideo', numberVideo, data);
-      setVideo(
-        `https://www.youtube.com/watch?v=${data.items[numberVideo].id.videoId}`,
-      );
+      //  console.log('numberVideo', numberVideo, data);
     }
-  }, [musica, numberVideo]);
+  }, [musica]);
   // const [value, setValue] = React.useState(null);
   return (
     <Box
@@ -137,7 +142,6 @@ function Player({ radioIdpb }) {
         <Box width="100%" mb="2vh">
           <Box height="97%" display="flex" justifyContent="center" width="100%">
             <Box width="90%" maxWidth={500}>
-              {console.log('valor selMusica', selMusica)}
               <Autocomplete
                 multiple
                 id="tags-filled"
@@ -191,9 +195,8 @@ function Player({ radioIdpb }) {
                   height="auto"
                   url={video}
                   onEnded={handleMudar}
-                  onError={(e) => {
+                  onError={() => {
                     setNumberVideo(numberVideo + 1);
-                    console.log('erro aqui', e);
                   }}
                 />
               </Box>

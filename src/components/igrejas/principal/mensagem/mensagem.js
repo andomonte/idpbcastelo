@@ -86,11 +86,13 @@ function Mensagem({ mensagem, titulo2 }) {
 
   const [openPesquisa, setOpenPesquisa] = React.useState(false);
   const [contFonte, setContFonte] = React.useState(16);
-
-  const [contSemana, setContSemana] = React.useState(mensagem.length);
+  let newCont = 0;
+  if (mensagem && mensagem.length) newCont = mensagem.length;
+  const [contSemana, setContSemana] = React.useState(newCont);
   const semanaAtual2 = getPreviousMonday2(contSemana);
 
-  let listaNomes = mensagem.map((nomes) => nomes.titulo);
+  let listaNomes = '';
+  if (mensagem) listaNomes = mensagem.map((nomes) => nomes.titulo);
 
   const [mensGeral, setMensGeral] = React.useState(mensagem);
   const [mensagemF, setMensagemF] = React.useState('');
@@ -136,7 +138,7 @@ function Mensagem({ mensagem, titulo2 }) {
   };
 
   React.useEffect(() => {
-    if (!pesquisaTitulo) {
+    if (!pesquisaTitulo && mensGeral) {
       const dataMens = mensGeral.sort(compare);
       const dataMens2 = dataMens;
       console.log('ola mensage', dataMens2);
@@ -174,14 +176,10 @@ function Mensagem({ mensagem, titulo2 }) {
   React.useEffect(() => {
     if (boletim) {
       setMensagemF(boletim.Mensagem.replace(/font-size/g, 'font-sizes'));
-      console.log(
-        'boletim',
-        boletim.Mensagem.replace(/font-size/g, 'font-sizes'),
-      );
     }
   }, [boletim]);
   React.useEffect(() => {
-    if (titulo && titulo.length) {
+    if (titulo && titulo.length && mensagem) {
       const dataMens2 = mensagem.filter(
         (val) => val.titulo.toLowerCase().indexOf(titulo.toLowerCase()) !== -1,
       );
