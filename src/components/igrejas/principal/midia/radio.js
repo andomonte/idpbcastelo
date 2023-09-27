@@ -33,13 +33,22 @@ function Player({ radioIdpb }) {
       if (newMusic < 0) newMusic = musics.length - 1;
       setMusica(musics[newMusic]);
       setNumberMusic(newMusic);
-    } else {
+    } else if (novaLista.length && novaLista[0].label) {
       let newMusic = numberMusic + 1;
       if (numberMusic > novaLista.length) newMusic = novaLista.length - 1;
       if (newMusic > novaLista.length - 1) newMusic = 0;
 
       setMusica(novaLista[newMusic]);
       setNumberMusic(newMusic);
+    } else {
+      const musicaInicial = {
+        label: novaLista[0],
+        value: -1,
+        compositor: 'gospel (Áudio oficial)',
+      };
+
+      setMusica(musicaInicial);
+      setNumberMusic(0);
     }
   };
 
@@ -48,12 +57,19 @@ function Player({ radioIdpb }) {
 
     if (selMusica) {
       for (let i = 0; i < selMusica.length; i += 1) {
-        for (let j = 0; j < musics.length; j += 1) {
-          if (musics[j].label === selMusica[i]) newLista[i] = musics[j];
+        const filterMusic = musics.filter((val) => val.label === selMusica[i]);
+        
+        if (filterMusic && filterMusic.length) newLista[i] = filterMusic[0];
+        else {
+          newLista[i] = {
+            label: selMusica[i],
+            compositor: 'gospel (Áudio oficial)',
+          };
         }
       }
-
-      setNovaLista(newLista);
+      console.log('vamos ver newLista', newLista);
+      if (newLista && newLista.length) setNovaLista(newLista);
+      else setNovaLista(selMusica);
       setNumberMusic(1);
     }
   }, [selMusica]);
@@ -97,12 +113,14 @@ function Player({ radioIdpb }) {
   React.useEffect(async () => {
     if (musica && musica.label && musica.compositor) {
       const musicas = `${musica.label} ${musica.compositor}`;
+      console.log('musicas', musicas);
       api
         .post('/api/consultaYouTube', {
           musicas,
         })
         .then((response) => {
           if (response) {
+            console.log(response.data, numberVideo);
             setVideo(
               `https://www.youtube.com/watch?v=${response.data.items[numberVideo].id.videoId}`,
             );
@@ -152,7 +170,10 @@ function Player({ radioIdpb }) {
                   borderRadius: 2,
                 }}
                 onChange={(_, newValue) => {
-                  if (newValue) setSelMusica(newValue);
+                  if (newValue) {
+                    console.log('vamo', newValue);
+                    setSelMusica(newValue);
+                  }
                 }}
                 options={musics.map((option) => option.label)}
                 freeSolo
@@ -195,8 +216,9 @@ function Player({ radioIdpb }) {
                   height="auto"
                   url={video}
                   onEnded={handleMudar}
-                  onError={() => {
+                  onError={(e) => {
                     setNumberVideo(numberVideo + 1);
+                    console.log('erro aqui', e, video);
                   }}
                 />
               </Box>

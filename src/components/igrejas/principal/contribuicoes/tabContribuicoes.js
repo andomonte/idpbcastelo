@@ -116,7 +116,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     borderRight: '1px solid #000',
                   }}
                 >
-                  {console.log('Recursos de Terceiros', row)}
+            
                   <Box>
                     {row.CAT_NOME !== 'Recursos de Terceiros'
                       ? row.CAT_NOME

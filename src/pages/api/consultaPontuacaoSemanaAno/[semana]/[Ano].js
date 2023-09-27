@@ -41,7 +41,7 @@ export default async function handle(req, res) {
     semana5 = 1;
     ano = Number(Ano) + 1;
   }
-  console.log(semana0, semana5);
+
   try {
     const posts = await prisma.pontuacao
       .findMany({

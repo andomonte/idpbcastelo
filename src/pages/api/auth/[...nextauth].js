@@ -60,12 +60,12 @@ const options = {
               .utc(user[0].Nascimento)
               .format('DD/MM/YYYY');
             const nascimento2 = moment(user[0].Nascimento).format('DD/MM/YYYY');
-            console.log('DIAF1', nascimento, nascimento2);
+          
             const ano = nascimento.substring(6, 10);
-            console.log('ano', ano);
+      
             const mes = nascimento.substring(3, 5);
             const dia = nascimento.substring(0, 2);
-            console.log('DIAF', nascimento, dia, mes, ano);
+   
             /* const ano = user[0].Nascimento.getFullYear();
            const mes =
               user[0].Nascimento.getMonth() + 1 > 9

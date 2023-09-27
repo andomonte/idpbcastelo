@@ -9,7 +9,7 @@ function Aviso({ dadosAvisos, rolMembros, mensagem, distritos }) {
     window.history.replaceState(null, '', '/principal/aviso');
     result = JSON.parse(sessionStorage.getItem('perfilUser'));
   }
-  console.log('oi mensagem', mensagem);
+
   return (
     <div>
       <Avisos

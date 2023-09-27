@@ -25,7 +25,7 @@ export default async function handle(req, res) {
       (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
     ),
   );
-  console.log(newPosts);
+
   res.statuCode = 200;
   res.setHeader('Content-Type', 'aplication/json');
   res.json(newPosts);
