@@ -24,9 +24,17 @@ export const getStaticProps = async () => {
   const userIgrejas = await prisma.igreja.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-  const radioIdpb = await prisma.radio.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const radioIdpb = await prisma.radio
+    .findMany({
+      orderBy: [
+        {
+          label: 'asc',
+        },
+      ],
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   // PLlcqEGDzXrtm6EpKCDwfW1MDZXq6uaDSM -> castelo
   // PLDtfBveOri5nzfzk8Qehn5ey9EvAUEzzQ -> global
 

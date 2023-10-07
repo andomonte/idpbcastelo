@@ -3,14 +3,18 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
 
   const { musicas } = req.body;
+  const hora = new Date().getHours();
 
+  let chave = process.env.YOUTUBE_API_KEY3;
+  if (hora >= 0 && hora < 12) chave = process.env.YOUTUBE_API_KEY2;
+  if (hora > 11 && hora < 18) chave = process.env.YOUTUBE_API_KEY;
   if (musicas) {
     try {
       const YOUTUBE_PLAYLIST_ITEMS_API =
         'https://www.googleapis.com/youtube/v3/search';
 
       const result = await fetch(
-        `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=2&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA&type=video&q=${musicas}`,
+        `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=2&index=1&key=${chave}&type=video&q=${musicas}`,
       );
       const data = await result.json();
       res.status(200).send(data);

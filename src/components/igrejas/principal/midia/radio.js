@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactPlayer from 'react-player';
+
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import api from 'src/components/services/api';
@@ -8,6 +8,7 @@ import { MdLoop } from 'react-icons/md';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Videos from './compVideo';
 
 function Player({ radioIdpb }) {
   const musics = radioIdpb;
@@ -21,36 +22,43 @@ function Player({ radioIdpb }) {
   const [musica, setMusica] = React.useState(musicaInicial);
   const [novaLista, setNovaLista] = React.useState('');
   const [repeat, setRepeat] = React.useState(false);
-  const [video, setVideo] = React.useState('video incial');
-  const [numberVideo, setNumberVideo] = React.useState(0);
+  const [video, setVideo] = React.useState('video inicial');
+
+  const [fimPlay, setFimPlay] = React.useState(false);
 
   React.useEffect(() => {}, []);
 
-  const handleMudar = () => {
-    if (!novaLista.length) {
-      let newMusic = Math.floor(Math.random() * musics.length);
-      if (newMusic === numberMusic) newMusic -= 1;
-      if (newMusic < 0) newMusic = musics.length - 1;
-      setMusica(musics[newMusic]);
-      setNumberMusic(newMusic);
-    } else if (novaLista.length && novaLista[0].label) {
-      let newMusic = numberMusic + 1;
-      if (numberMusic > novaLista.length) newMusic = novaLista.length - 1;
-      if (newMusic > novaLista.length - 1) newMusic = 0;
+  React.useEffect(() => {
+    console.log('veio ao fim1', fimPlay, numberMusic);
+    if (fimPlay === 'fim') {
+      console.log('veio ao fim', novaLista, numberMusic + 1);
+      if (!novaLista.length) {
+        let newMusic = Math.floor(Math.random() * musics.length);
+        if (newMusic === numberMusic) newMusic -= 1;
+        if (newMusic < 0) newMusic = musics.length - 1;
+        setMusica(musics[newMusic]);
+        setNumberMusic(newMusic);
+      } else if (novaLista.length && novaLista[0].label) {
+        let newMusic = numberMusic + 1;
+        console.log('valor newMusic', newMusic, numberMusic, novaLista.length);
+        if (numberMusic > novaLista.length) newMusic = novaLista.length - 1;
+        if (newMusic > novaLista.length - 1) newMusic = 0;
 
-      setMusica(novaLista[newMusic]);
-      setNumberMusic(newMusic);
-    } else {
-      const musicaInicial = {
-        label: novaLista[0],
-        value: -1,
-        compositor: 'gospel (Áudio oficial)',
-      };
+        setMusica(novaLista[newMusic]);
+        setNumberMusic(newMusic);
+      } else {
+        const musicaInicials = {
+          label: novaLista[0],
+          value: -1,
+          compositor: 'gospel (Áudio oficial)',
+        };
 
-      setMusica(musicaInicial);
-      setNumberMusic(0);
+        setMusica(musicaInicials);
+        setNumberMusic(0);
+      }
+      setFimPlay(false);
     }
-  };
+  }, [fimPlay]);
 
   React.useEffect(() => {
     const newLista = [];
@@ -58,29 +66,34 @@ function Player({ radioIdpb }) {
     if (selMusica) {
       for (let i = 0; i < selMusica.length; i += 1) {
         const filterMusic = musics.filter((val) => val.label === selMusica[i]);
-        
-        if (filterMusic && filterMusic.length) newLista[i] = filterMusic[0];
-        else {
+
+        if (filterMusic && filterMusic.length) {
+          const valUnicoMusica = filterMusic[0];
+          newLista[i] = valUnicoMusica;
+        } else {
           newLista[i] = {
             label: selMusica[i],
             compositor: 'gospel (Áudio oficial)',
           };
         }
       }
-      console.log('vamos ver newLista', newLista);
+
       if (newLista && newLista.length) setNovaLista(newLista);
       else setNovaLista(selMusica);
+      console.log('veio aqui no selMusica');
       setNumberMusic(1);
     }
   }, [selMusica]);
 
   React.useEffect(() => {
-    const newMusic = Math.floor(Math.random() * musics.length);
-    setNumberMusic(newMusic);
-    handleMudar();
+    if (!novaLista.length) {
+      const newMusic = Math.floor(Math.random() * musics.length);
+      setNumberMusic(newMusic);
+      setFimPlay('fim');
+    }
   }, []);
   React.useEffect(() => {
-    handleMudar();
+    setFimPlay('fim');
   }, [novaLista]);
   const handleIncMusica = () => {
     let newMusic = numberMusic + 1;
@@ -120,9 +133,9 @@ function Player({ radioIdpb }) {
         })
         .then((response) => {
           if (response) {
-            console.log(response.data, numberVideo);
+            console.log('response', response);
             setVideo(
-              `https://www.youtube.com/watch?v=${response.data.items[numberVideo].id.videoId}`,
+              `https://www.youtube.com/embed/${response.data.items[0].id.videoId}`,
             );
           }
         })
@@ -171,7 +184,6 @@ function Player({ radioIdpb }) {
                 }}
                 onChange={(_, newValue) => {
                   if (newValue) {
-                    console.log('vamo', newValue);
                     setSelMusica(newValue);
                   }
                 }}
@@ -209,7 +221,7 @@ function Player({ radioIdpb }) {
             <Box borderRadius={16} height="100%" width="100%">
               {/* autoPlay */}
               <Box height="90%" display="flex" justifyContent="center">
-                <ReactPlayer
+                {/* <ReactPlayer
                   playing
                   controls={false}
                   width="auto"
@@ -220,7 +232,10 @@ function Player({ radioIdpb }) {
                     setNumberVideo(numberVideo + 1);
                     console.log('erro aqui', e, video);
                   }}
-                />
+                /> */}
+                {video !== 'video inicial' && (
+                  <Videos setFimPlay={setFimPlay} linkVideo={video} />
+                )}
               </Box>
               <Box height="10%" mt={2} display="flex" justifyContent="center">
                 <FaCaretLeft

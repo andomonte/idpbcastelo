@@ -20,9 +20,8 @@ import { TiArrowBack } from 'react-icons/ti';
 
 import corIgreja from 'src/utils/coresIgreja';
 
-import TelaPadrao from './telaPadrao';
 import Radio from './radio';
-import Videos from './videos';
+import Videos from './telaPadrao'; // './videos';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -265,7 +264,7 @@ function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
             <Videos dataYouTube={dataYouTube} userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <TelaPadrao />
+            <Videos />
           </TabPanel>
         </main>
       </div>
