@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import Select from 'react-select';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
+import TableContainer from '@mui/material/TableContainer';
 import api from 'src/components/services/api';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
@@ -378,43 +379,50 @@ function Player({ radioIdpb }) {
       >
         <Box width="100%" mb="2vh">
           <Box height="97%" display="flex" justifyContent="center" width="100%">
-            <Box width="90%" maxWidth={500}>
-              {console.log('musics', musics)}
+            <TableContainer
+              sx={{
+                maxHeight: 100,
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Box width="90%" maxWidth={500}>
+                <Autocomplete
+                  multiple
+                  id="tags-filled"
+                  sx={{
+                    background: 'white',
+                    color: 'black',
 
-              <Autocomplete
-                multiple
-                id="tags-filled"
-                sx={{
-                  background: 'white',
-                  color: 'black',
-
-                  borderRadius: 2,
-                }}
-                onChange={(_, newValue) => {
-                  if (newValue) {
-                    setSelMusica(newValue);
+                    borderRadius: 2,
+                  }}
+                  onChange={(_, newValue) => {
+                    if (newValue) {
+                      setSelMusica(newValue);
+                    }
+                  }}
+                  options={musics.map((option) => option.label)}
+                  freeSolo
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        variant="outlined"
+                        label={option}
+                        {...getTagProps({ index })}
+                      />
+                    ))
                   }
-                }}
-                options={musics.map((option) => option.label)}
-                freeSolo
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      variant="outlined"
-                      label={option}
-                      {...getTagProps({ index })}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      //                    inputRef={necessidadeRef}
+                      placeholder="Escolha suas Músicas"
                     />
-                  ))
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    //                    inputRef={necessidadeRef}
-                    placeholder="Escolha suas Músicas"
-                  />
-                )}
-              />
-            </Box>
+                  )}
+                />
+              </Box>
+            </TableContainer>
           </Box>
           <Box
             width="100%"

@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
 }));
-function SearchList({ distritos, rolMembros, semanaAtual }) {
+function SearchList({ distritos, rolMembros }) {
   const classes = useStyles();
   const [openModal, setOpenModal] = React.useState(false);
   const [imagem, setImagem] = React.useState('');
@@ -116,8 +116,8 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
   ).getDay();
 
   // const mesAniversario = converteData(rolMembros.Nascimento).getMonth();
-  const dia = converteData(semanaAtual).getDate();
-  
+  // const dia = converteData(semanaAtual).getDate();
+
   return (
     <Box sx={{ maxHeight: 310, minWidth: 280 }} className={classes.dadosBox}>
       <TableContainer sx={{ maxHeight: 310 }}>
@@ -163,7 +163,6 @@ function SearchList({ distritos, rolMembros, semanaAtual }) {
                     <Box display="flex" color={corIgreja.principal}>
                       Dia:
                       <Box color="black" ml={1}>
-                      
                         {diaSemana[diaDaSemana]} {diaAniversario}
                       </Box>
                     </Box>
