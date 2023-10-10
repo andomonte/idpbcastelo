@@ -36,10 +36,10 @@ function App({ linkVideo, setFimPlay }) {
 
   const currentTime = videoPlayerRef.current
     ? videoPlayerRef.current.getCurrentTime()
-    : '00:00';
+    : 0;
   const duration = videoPlayerRef.current
     ? videoPlayerRef.current.getDuration()
-    : '00:00';
+    : 0;
 
   const formatCurrentTime = formatTime(currentTime);
   const formatDuration = formatTime(duration);
@@ -108,7 +108,6 @@ function App({ linkVideo, setFimPlay }) {
     setVideoState({ ...videoState, muted: !videoState.muted });
   };
   const handleMudar = () => {
-    console.log('era para vim aqui');
     setFimPlay('fim');
   };
   const onSeekMouseDownHandler = () => {
@@ -129,6 +128,14 @@ function App({ linkVideo, setFimPlay }) {
     setVideoState({ ...videoState, buffer: false });
   };
 
+  const [tempoMusica, setTempoMusica] = React.useState(0);
+  React.useEffect(async () => {
+    if (duration !== 0 && tempoMusica === 0) {
+      setTempoMusica(duration);
+      playPauseHandler();
+      console.log('duration', duration);
+    }
+  }, [duration]);
   return (
     <FullScreen handle={handle}>
       <div ref={telaRef} className={styles.video_container}>
@@ -144,8 +151,8 @@ function App({ linkVideo, setFimPlay }) {
               sytles={{ pointerEvents: 'none' }}
               ref={videoPlayerRef}
               url={linkVideo || ''}
-              width={zoomVideo ? '100vw' : '60vw'}
-              height={zoomVideo ? '100vh' : '40vh'}
+              width={zoomVideo ? '100vw' : '90vw'}
+              height={zoomVideo ? '100vh' : '50vh'}
               playing={playing}
               volume={volume}
               muted={muted}

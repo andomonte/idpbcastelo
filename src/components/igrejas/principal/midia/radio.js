@@ -29,9 +29,7 @@ function Player({ radioIdpb }) {
   React.useEffect(() => {}, []);
 
   React.useEffect(() => {
-    console.log('veio ao fim1', fimPlay, numberMusic);
     if (fimPlay === 'fim') {
-      console.log('veio ao fim', novaLista, numberMusic + 1);
       if (!novaLista.length) {
         let newMusic = Math.floor(Math.random() * musics.length);
         if (newMusic === numberMusic) newMusic -= 1;
@@ -40,7 +38,7 @@ function Player({ radioIdpb }) {
         setNumberMusic(newMusic);
       } else if (novaLista.length && novaLista[0].label) {
         let newMusic = numberMusic + 1;
-        console.log('valor newMusic', newMusic, numberMusic, novaLista.length);
+
         if (numberMusic > novaLista.length) newMusic = novaLista.length - 1;
         if (newMusic > novaLista.length - 1) newMusic = 0;
 
