@@ -17,10 +17,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   alturaRodape: {
-    marginTop: 50,
+    marginTop: 60,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: -18,
+      marginTop: -40,
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: -10,
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: 5,
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: 20,
     },
   },
 
@@ -28,7 +37,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -120,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: -0,
+      marginTop: 10,
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: -120,
     },
   },
   bottomIcons: {
@@ -98,7 +110,7 @@ function Control({
 
   return (
     <Box
-      style={{ marginTop: zoomVideo ? '-100vh' : '-51vh' }}
+      style={{ marginTop: zoomVideo ? '-100vh' : '-45vh' }}
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -118,7 +130,7 @@ function Control({
           height="20%"
           width="100%"
           bgcolor="black"
-          mt={1}
+          mt={3}
         >
           <Box ml={2} />
         </Box>

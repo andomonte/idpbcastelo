@@ -13,6 +13,7 @@ function App({ linkVideo, setFimPlay }) {
   const controlRef = useRef(null);
   const telaRef = useRef(null);
   const [zoomVideo, setZoomVideo] = React.useState(false);
+  const [videoCarregado, setVideoCarregado] = React.useState(false);
   const [videoState, setVideoState] = useState({
     playing: false,
     muted: false,
@@ -46,6 +47,7 @@ function App({ linkVideo, setFimPlay }) {
 
   const playPauseHandler = () => {
     // plays and pause the video (toggling)
+    console.log('oi veio aqui agora', videoState.playing);
     setVideoState({ ...videoState, playing: !videoState.playing });
   };
 
@@ -119,6 +121,10 @@ function App({ linkVideo, setFimPlay }) {
     telaRef.current.style.cursor = 'inherit';
     count = 0;
   };
+  const [tempoMusica, setTempoMusica] = React.useState(0);
+  const handleStartPlay = () => {
+    setVideoCarregado(true);
+  };
 
   const bufferStartHandler = () => {
     setVideoState({ ...videoState, buffer: true });
@@ -127,15 +133,21 @@ function App({ linkVideo, setFimPlay }) {
   const bufferEndHandler = () => {
     setVideoState({ ...videoState, buffer: false });
   };
-
-  const [tempoMusica, setTempoMusica] = React.useState(0);
   React.useEffect(async () => {
-    if (duration !== 0 && tempoMusica === 0) {
+    if (videoCarregado) {
+      console.log('tempoMusicaFinal', tempoMusica);
       setTempoMusica(duration);
-      playPauseHandler();
-      console.log('duration', duration);
     }
-  }, [duration]);
+  }, [videoCarregado]);
+
+  React.useEffect(async () => {
+    console.log('tempoMusicaF', tempoMusica);
+    if (tempoMusica !== 0) {
+      console.log('tempoMusica2', tempoMusica);
+      playPauseHandler();
+    }
+  }, [tempoMusica]);
+
   return (
     <FullScreen handle={handle}>
       <div ref={telaRef} className={styles.video_container}>
@@ -161,6 +173,7 @@ function App({ linkVideo, setFimPlay }) {
               onProgress={progressHandler}
               onBuffer={bufferStartHandler}
               onBufferEnd={bufferEndHandler}
+              onReady={handleStartPlay}
               config={{
                 youtube: {
                   playerVars: { showinfo: 1 },
