@@ -75,7 +75,13 @@ export const getStaticProps = async () => {
     props: {
       distritos: JSON.parse(JSON.stringify(distritos)),
 
-      mensagem: JSON.parse(JSON.stringify(mensagem)),
+      mensagem: JSON.parse(
+        JSON.stringify(
+          mensagem,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
       rolMembros: JSON.parse(
         JSON.stringify(
           rolMembros,
@@ -83,7 +89,13 @@ export const getStaticProps = async () => {
             typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
         ),
       ),
-      dadosAvisos: JSON.parse(JSON.stringify(dadosAvisos)),
+      dadosAvisos: JSON.parse(
+        JSON.stringify(
+          dadosAvisos,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
     }, // will be passed to the page component as props
     revalidate: 15, // faz atualizar a pagina de 15 em 15 segundo sem fazer build
   };
