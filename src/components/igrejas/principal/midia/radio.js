@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import api from 'src/components/services/api';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
-import Chip from '@mui/material/Chip';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+
 import ReactPlayer from 'react-player';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import TableContainer from '@mui/material/TableContainer';
@@ -16,6 +15,34 @@ import Control from './compVideo/Components/control';
 import formatTime from './compVideo/format';
 
 let count = 0;
+const customStyles2 = {
+  control: (provided, state) => ({
+    ...provided,
+    background: '#fff',
+    borderColor: '#9e9e9e',
+    maxHeight: '100px',
+    boxShadow: state.isFocused ? null : null,
+  }),
+
+  valueContainer: (provided) => ({
+    ...provided,
+
+    maxHeight: '90px',
+    padding: '0 6px',
+  }),
+
+  input: (provided) => ({
+    ...provided,
+    margin: '0px',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: '30px',
+  }),
+};
 const customStyles = {
   option: (provided, state) => ({
     ...provided,
@@ -34,6 +61,14 @@ const customStyles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  }),
+  multiValue: (provided, state) => ({
+    ...provided,
+    color: state.data.color,
+    fontSize: '14px',
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
   }),
 };
 function createListaCategoria(value, label) {
@@ -67,15 +102,22 @@ function Player({ radioIdpb }) {
       label: 'Todos os Tipos',
     },
   ];
+
   const [musics, setMusics] = React.useState(radioIdpb);
+  const [opMusics, setOpMusics] = React.useState(
+    radioIdpb.map((rol, index) => createListaCategoria(index, rol.label)),
+  );
   const [numberMusic, setNumberMusic] = React.useState(0);
+  const [musicaValor, setMusicaValor] = React.useState('');
   const [selMusica, setSelMusica] = React.useState('');
   const [musica, setMusica] = React.useState(musicaInicial);
   const [categoria, setCategoria] = React.useState(categoriaInicial[0]);
 
   const opcCategoria = categoriaInicial;
-
-  listaCategoria.map((val) => {
+  const listaCategoriaInicial = listaCategoria.map((val, index) =>
+    createListaCategoria(index, val.categoria),
+  );
+  listaCategoriaInicial.map((val) => {
     opcCategoria.push(val);
     return 0;
   });
@@ -268,7 +310,17 @@ function Player({ radioIdpb }) {
         (val) => val.categoria === categoria.label,
       );
       setMusics(listaFiltrada);
-    } else setMusics(radioIdpb);
+      setOpMusics(
+        listaFiltrada.map((rol, index) =>
+          createListaCategoria(index, rol.label),
+        ),
+      );
+    } else {
+      setMusics(radioIdpb);
+      setOpMusics(
+        radioIdpb.map((rol, index) => createListaCategoria(index, rol.label)),
+      );
+    }
 
     if (!novaLista.length) {
       const newMusic = Math.floor(Math.random() * musics.length);
@@ -278,7 +330,7 @@ function Player({ radioIdpb }) {
   }, [categoria]);
   React.useEffect(() => {
     const newLista = [];
-
+    console.log('oi sel', selMusica);
     if (selMusica) {
       for (let i = 0; i < selMusica.length; i += 1) {
         const filterMusic = musics.filter((val) => val.label === selMusica[i]);
@@ -376,52 +428,31 @@ function Player({ radioIdpb }) {
         borderRadius={16}
         ml={0}
       >
-        <Box width="100%" mb="2vh">
-          <Box height="97%" display="flex" justifyContent="center" width="100%">
-            <TableContainer
-              sx={{
-                maxHeight: 310,
-                display: 'flex',
-                justifyContent: 'center',
-                width: '100%',
-              }}
-            >
-              <Box width="90%" maxWidth={500}>
-                <Autocomplete
-                  multiple
-                  id="tags-filled"
-                  sx={{
-                    background: 'white',
-                    color: 'black',
+        <Box width="100%">
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box mb="2vh" height="97%" width="90%" maxWidth={500}>
+              <CreatableSelect
+                isMulti
+                options={opMusics}
+                styles={customStyles2}
+                value={musicaValor}
+                onChange={(e) => {
+                  setMusicaValor(e);
+                  setSelMusica(e.map((val) => val.label));
 
-                    borderRadius: 2,
-                  }}
-                  onChange={(_, newValue) => {
-                    if (newValue) {
-                      setSelMusica(newValue);
-                    }
-                  }}
-                  options={musics.map((option) => option.label)}
-                  freeSolo
-                  renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                      <Chip
-                        variant="outlined"
-                        label={option}
-                        {...getTagProps({ index })}
-                      />
-                    ))
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      //                    inputRef={necessidadeRef}
-                      placeholder="Escolha suas Músicas"
-                    />
-                  )}
-                />
-              </Box>
-            </TableContainer>
+                  // setCategoria(e);
+                }}
+                placeholder={<div>Escolha ou digite a música e o autor</div>}
+              >
+                {' '}
+                {opMusics}
+              </CreatableSelect>{' '}
+            </Box>
           </Box>
           <Box
             width="100%"
