@@ -6,7 +6,8 @@ const handler = async (req, res) => {
   const hora = new Date().getHours();
 
   let chave = process.env.YOUTUBE_API_KEY3;
-  if (hora >= 0 && hora < 12) chave = process.env.YOUTUBE_API_KEY;
+  if (hora >= 0 && hora < 6) chave = process.env.YOUTUBE_API_KEY4;
+  if (hora >= 6 && hora < 12) chave = process.env.YOUTUBE_API_KEY3;
   if (hora > 11 && hora < 18) chave = process.env.YOUTUBE_API_KEY2;
   if (musicas) {
     console.log('chave', hora);
