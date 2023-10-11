@@ -129,7 +129,7 @@ function TabPanel(props) {
   );
 }
 
-function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
+function Midia({ title, userIgrejas, musicasSend, dataYouTube, radioIdpb }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -258,7 +258,11 @@ function Midia({ title, userIgrejas, dataYouTube, radioIdpb }) {
         >
           <div className={classes.drawerHeader} />
           <TabPanel value={value} index={0}>
-            <Radio radioIdpb={radioIdpb} dataYouTube={dataYouTube} />
+            <Radio
+              musicasSend={musicasSend}
+              radioIdpb={radioIdpb}
+              dataYouTube={dataYouTube}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Videos dataYouTube={dataYouTube} userIgrejas={userIgrejas} />

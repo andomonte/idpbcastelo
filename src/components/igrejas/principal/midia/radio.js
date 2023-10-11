@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import Select from 'react-select';
 import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
-import TableContainer from '@mui/material/TableContainer';
 import api from 'src/components/services/api';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import { MdLoop } from 'react-icons/md';
@@ -11,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import ReactPlayer from 'react-player';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-
+import TableContainer from '@mui/material/TableContainer';
 import styles from './compVideo/App.module.css';
 import Control from './compVideo/Components/control';
 import formatTime from './compVideo/format';
@@ -381,10 +380,10 @@ function Player({ radioIdpb }) {
           <Box height="97%" display="flex" justifyContent="center" width="100%">
             <TableContainer
               sx={{
-                maxHeight: 100,
-                width: '100%',
+                maxHeight: 310,
                 display: 'flex',
                 justifyContent: 'center',
+                width: '100%',
               }}
             >
               <Box width="90%" maxWidth={500}>

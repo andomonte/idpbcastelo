@@ -1,11 +1,12 @@
 import React from 'react';
 import Midia from 'src/components/igrejas/principal/midia';
 import prisma from 'src/lib/prisma';
+import { useRouter } from 'next/router';
 
 function MidiaCelulas({ userIgrejas, radioIdpb }) {
-  if (typeof window !== 'undefined') {
-    window.history.replaceState(null, '', '/midia');
-  }
+  const router = useRouter();
+  const { musicas } = router.query;
+  console.log('musicas', musicas);
 
   return (
     <div>
@@ -13,6 +14,7 @@ function MidiaCelulas({ userIgrejas, radioIdpb }) {
         title="IDPB-CASTELO"
         userIgrejas={userIgrejas}
         radioIdpb={radioIdpb}
+        musicasSend={musicas}
       />
     </div>
   );

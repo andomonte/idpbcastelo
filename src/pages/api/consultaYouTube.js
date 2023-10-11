@@ -6,9 +6,10 @@ const handler = async (req, res) => {
   const hora = new Date().getHours();
 
   let chave = process.env.YOUTUBE_API_KEY3;
-  if (hora >= 0 && hora < 12) chave = process.env.YOUTUBE_API_KEY2;
-  if (hora > 11 && hora < 18) chave = process.env.YOUTUBE_API_KEY;
+  if (hora >= 0 && hora < 12) chave = process.env.YOUTUBE_API_KEY;
+  if (hora > 11 && hora < 18) chave = process.env.YOUTUBE_API_KEY2;
   if (musicas) {
+    console.log('chave', hora);
     try {
       const YOUTUBE_PLAYLIST_ITEMS_API =
         'https://www.googleapis.com/youtube/v3/search';
