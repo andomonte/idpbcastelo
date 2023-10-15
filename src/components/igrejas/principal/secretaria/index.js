@@ -16,18 +16,18 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Oval } from 'react-loading-icons';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
-import Login from 'src/components/botaoLogin';
 
 import TelaPadrao from './telaPadrao';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
-// import Pesquisar from './pesquisar';
+import Pontuacao from './pontuacao';
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
   },
   root: {
@@ -134,7 +134,7 @@ function TabPanel(props) {
   );
 }
 
-function Secretaria({ userIgrejas, title, celulas }) {
+function Secretaria({ perfilUser, userIgrejas, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -181,55 +181,126 @@ function Secretaria({ userIgrejas, title, celulas }) {
                 )}
               </Box>
             </Box>
+            {perfilUser.Funcao !== 'PastorDistrito' && (
+              <Box display="flex">
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    icon={
+                      value === 0 ? (
+                        <HomeIcon sx={{ color: corIgreja.iconeOn }} />
+                      ) : (
+                        <HomeIcon sx={{ color: corIgreja.iconeOff }} />
+                      )
+                    }
+                  />
 
-            <Box display="flex">
-              <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                showLabels
-                className={classes.rootTopbarIcon}
-              >
-                <BottomNavigationAction
-                  icon={
-                    value === 0 ? (
-                      <HomeIcon sx={{ color: corIgreja.iconeOn }} />
-                    ) : (
-                      <HomeIcon sx={{ color: corIgreja.iconeOff }} />
-                    )
-                  }
-                />
-
-                <BottomNavigationAction
-                  icon={
-                    value === 1 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <CallIcon />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                        <CallIcon />
-                      </SvgIcon>
-                    )
-                  }
-                />
-                <BottomNavigationAction
-                  icon={
-                    value === 2 ? (
-                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                        <LocationOnIcon />
-                      </SvgIcon>
-                    ) : (
-                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
-                        <LocationOnIcon />
-                      </SvgIcon>
-                    )
-                  }
-                />
-              </BottomNavigation>
-            </Box>
-            <Login />
+                  <BottomNavigationAction
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <CallIcon />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <CallIcon />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <LocationOnIcon />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <LocationOnIcon />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
+            {perfilUser.Funcao === 'PastorDistrito' && (
+              <Box display="flex" m={0}>
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  fontSize="large"
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="Contatos"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <HomeIcon sx={{ color: corIgreja.iconeOn }} />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <HomeIcon sx={{ color: corIgreja.iconeOff }} />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
+                        : { color: '#eeeeee', fontSize: '18px' }
+                    }
+                    label="liberar"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <HomeIcon sx={{ color: corIgreja.iconeOn }} />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <HomeIcon sx={{ color: corIgreja.iconeOff }} />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Pontuacao"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <HomeIcon sx={{ color: corIgreja.iconeOn }} />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <HomeIcon sx={{ color: corIgreja.iconeOff }} />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            )}
           </Toolbar>
         </AppBar>
 
@@ -248,7 +319,9 @@ function Secretaria({ userIgrejas, title, celulas }) {
             <TelaPadrao userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <TelaPadrao celulas={celulas} />
+            {perfilUser.Funcao === 'PastorDistrito' ? (
+              <Pontuacao perfilUser={perfilUser} />
+            ) : null}
           </TabPanel>
         </main>
       </div>

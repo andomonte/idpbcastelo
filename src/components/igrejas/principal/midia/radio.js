@@ -9,7 +9,7 @@ import { MdLoop } from 'react-icons/md';
 
 import ReactPlayer from 'react-player';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import TableContainer from '@mui/material/TableContainer';
+
 import styles from './compVideo/App.module.css';
 import Control from './compVideo/Components/control';
 import formatTime from './compVideo/format';
@@ -405,6 +405,11 @@ function Player({ radioIdpb }) {
     }
   }, [musica]);
   // const [value, setValue] = React.useState(null);
+  const valueRef = React.useRef();
+  const onBlurValue = () => {
+    console.log(valueRef.current);
+  };
+
   return (
     <Box
       display="flex"
@@ -441,6 +446,7 @@ function Player({ radioIdpb }) {
                 options={opMusics}
                 styles={customStyles2}
                 value={musicaValor}
+                onBlur={onBlurValue}
                 onChange={(e) => {
                   setMusicaValor(e);
                   setSelMusica(e.map((val) => val.label));
