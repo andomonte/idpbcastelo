@@ -3,6 +3,9 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
+import { IoClose } from 'react-icons/io5';
+import Avatar from '@material-ui/core/Avatar';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,18 +14,61 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import useSWR from 'swr';
-import axios from 'axios';
+import api from 'src/components/services/api';
+import Slide from '@mui/material/Slide';
+import Dialog from '@mui/material/Dialog';
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
-function createListaNome(Celula, Lider, Pontos) {
+const Transition = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
+function createListaNome(Celula, Lider, Pontos, semanas) {
   return {
     Celula,
     Lider,
     Pontos,
+    semanas,
   };
 }
-export default function NestedGrid() {
+function createCelulaSelecionada(
+  Celula,
+  semanas,
+  CelebracaoIgreja,
+  CelebracaoLive,
+  Discipulados,
+  Eventos,
+  LeituraBiblica,
+  NovoMembro,
+  Pontualidade,
+  PresentesCelula,
+  RelCelebracao,
+  RelCelulaFeito,
+  RelDiscipulado,
+  Relatorio,
+  VisitantesCelebracao,
+  VisitantesCelula,
+  Visitas,
+) {
+  return {
+    Celula,
+    semanas,
+    CelebracaoIgreja,
+    CelebracaoLive,
+    Discipulados,
+    Eventos,
+    LeituraBiblica,
+    NovoMembro,
+    Pontualidade,
+    PresentesCelula,
+    RelCelebracao,
+    RelCelulaFeito,
+    RelDiscipulado,
+    Relatorio,
+    VisitantesCelebracao,
+    VisitantesCelula,
+    Visitas,
+  };
+}
+export default function Pontuacao({ perfilUser }) {
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
@@ -47,9 +93,10 @@ export default function NestedGrid() {
   };
   //= =================================================================
   const [listaFinal, setListaFinal] = React.useState('');
+  const [openDialog1, setOpenDialog1] = React.useState(false);
   const [semana, setSemana] = React.useState(0);
   const [semanaF, setSemanaF] = React.useState(0);
-
+  const [pontosCelulas, setPontosCelulas] = React.useState(0);
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2 - 60 * 60 * 1000 * 24 * 7);
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
@@ -89,64 +136,146 @@ export default function NestedGrid() {
 
     // setSemana(semanaExata(dataAtual));
   };
+  const verPontos = () => {
+    api
+      .post('/api/consultaPontuacao', {
+        semanaI: semana,
+        semanaF,
+        anoI,
+        anoF,
+      })
+      .then((response) => {
+        if (response) {
+          const pontuacao = [];
+          const members = response.data;
+          const distrito = members.filter(
+            (val) => val.Distrito === Number(perfilUser.Distrito),
+          );
 
+          setPontosCelulas(distrito);
+          const setPerson = new Set();
+          const listaCelulas = distrito.filter((person) => {
+            const duplicatedPerson = setPerson.has(person.Celula);
+            setPerson.add(person.Celula);
+            return !duplicatedPerson;
+          });
+
+          for (let i = 0; i < listaCelulas.length; i += 1) {
+            let pontosAgora = 0;
+            let liderAgora = 'Sem';
+            let celulaAgora = 0;
+            distrito.map((val) => {
+              if (val.Celula === listaCelulas[i].Celula) {
+                pontosAgora += Number(val.TotalRank);
+                celulaAgora = val.Celula;
+                liderAgora = val.CriadoPor ? val.CriadoPor : 'Sem';
+              }
+
+              return 0;
+            });
+
+            pontuacao[i] = createListaNome(
+              celulaAgora,
+              liderAgora,
+              pontosAgora.toFixed(),
+              semanaF - semana + 1,
+            );
+          }
+
+          setListaFinal(pontuacao.sort((a, b) => b.Pontos - a.Pontos));
+        }
+      })
+      .catch((erro) => {
+        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+      });
+  };
   React.useEffect(() => {
     if (selectedDate) {
       setSemana(semanaExata(selectedDate));
     }
-    if (selectedDate) {
+    if (selectedDate2) {
       setSemanaF(semanaExata(selectedDate2));
     }
   }, [selectedDate2, selectedDate]);
+  React.useEffect(() => {
+    if (semana !== 0 && semanaF !== 0) {
+      verPontos();
+    }
 
+    verPontos();
+  }, [semana, semanaF]);
   const handleDateClick2 = () => {
     //   setSelectedDate();
     setIsPickerOpen2(true);
   };
-  const url = `/api/consultaPontosSemAno/${semana}/${semanaF}/${anoI}/${anoF}/`;
-  const { data: members, error: errorMembers } = useSWR(url, fetcher);
 
-  React.useEffect(() => {
-    if (members) {
-      const pontuacao = [];
-      const distrito = members.filter((val) => val.Distrito === 1);
+  const [PontosCelulaSelecionada, setPontosCelulaSelecionada] =
+    React.useState('');
 
-      const setPerson = new Set();
-      const listaCelulas = distrito.filter((person) => {
-        const duplicatedPerson = setPerson.has(person.Celula);
-        setPerson.add(person.Celula);
-        return !duplicatedPerson;
+  const handleCheckCelula = (celulaSelecionada) => {
+    const celulaFiltrada = pontosCelulas.filter(
+      (val) => val.Celula === celulaSelecionada.Celula,
+    );
+    const detalhesPontos = [];
+    if (celulaFiltrada.length) {
+      celulaFiltrada.map((val, index) => {
+        detalhesPontos[index] = JSON.parse(val.Pontuacao);
+
+        return 0;
       });
-
-      for (let i = 0; i <= listaCelulas.length; i += 1) {
-        let pontosAgora = 0;
-        let liderAgora = 'Sem';
-        distrito.map((val) => {
-          if (val.Celula === i + 1) {
-            pontosAgora += Number(val.TotalRank);
-            liderAgora = val.CriadoPor ? val.CriadoPor : 'Sem';
-          }
-
-          return 0;
-        });
-
-        pontuacao[i] = createListaNome(
-          i + 1,
-          liderAgora,
-          pontosAgora.toFixed(),
+    }
+    const parametrosPontuacao = [
+      'CelebracaoIgreja',
+      'CelebracaoLive',
+      'Discipulados',
+      'Eventos',
+      'LeituraBiblica',
+      'NovoMembro',
+      'Pontualidade',
+      'PresentesCelula',
+      'RelCelebracao',
+      'RelCelulaFeito',
+      'RelDiscipulado',
+      'Relatorio',
+      'VisitantesCelebracao',
+      'VisitantesCelula',
+      'Visitas',
+    ];
+    if (detalhesPontos.length) {
+      const arrayTeste = [];
+      for (let i = 0; i < parametrosPontuacao.length; i += 1) {
+        arrayTeste[i] = detalhesPontos.reduce(
+          (accumulator, currentValue) =>
+            accumulator + currentValue[parametrosPontuacao[i]],
+          0,
+          {},
         );
       }
-      console.log(
-        'members',
 
-        pontuacao.sort((a, b) => b.Pontos - a.Pontos),
+      setPontosCelulaSelecionada(
+        createCelulaSelecionada(
+          celulaSelecionada.Celula,
+          celulaSelecionada.semanas,
+          arrayTeste[0],
+          arrayTeste[1],
+          arrayTeste[2],
+          arrayTeste[3],
+          arrayTeste[4],
+          arrayTeste[5],
+          arrayTeste[6],
+          arrayTeste[7],
+          arrayTeste[8],
+          arrayTeste[9],
+          arrayTeste[10],
+          arrayTeste[11],
+          arrayTeste[12],
+          arrayTeste[13],
+          arrayTeste[14],
+        ),
       );
-      setListaFinal(pontuacao.sort((a, b) => b.Pontos - a.Pontos));
+      setOpenDialog1(true);
     }
-    if (errorMembers) return <div>An error occured.</div>;
-    if (!members) return <div>Loading ...</div>;
-    return 0;
-  }, [members]);
+  };
   return (
     <Box
       display="flex"
@@ -168,7 +297,7 @@ export default function NestedGrid() {
         ml={0}
         bgcolor={corIgreja.principal}
       >
-        <Box mb={2} width="100%" height={40} display="flex">
+        <Box width="100%" height="10%" display="flex" alignItems="center">
           <Paper style={{ marginLeft: 10, background: '#fafafa', height: 40 }}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container justifyContent="center">
@@ -225,64 +354,267 @@ export default function NestedGrid() {
             </MuiPickersUtilsProvider>
           </Paper>
         </Box>
-        <TableContainer sx={{ maxHeight: '85%' }}>
-          <List sx={{ width: '100%', maxWidth: 360 }}>
-            {listaFinal &&
-              listaFinal.length &&
-              listaFinal.map((row, index) => (
-                <ListItem key={index} alignItems="flex-start">
-                  <Box
-                  /* onClick={() => {
-                  setOpenModal2(true);
-                }} */
+        {semanaF >= semana ? (
+          <TableContainer sx={{ height: '90%' }}>
+            {listaFinal && listaFinal.length ? (
+              <List sx={{ width: '100%', maxWidth: 360 }}>
+                {listaFinal.map((row, index) => (
+                  <ListItem
+                    onClick={() => {
+                      console.log('row', row);
+                      handleCheckCelula(row);
+                    }}
+                    key={index}
+                    alignItems="flex-start"
                   >
-                    <ListItemText style={{ marginTop: 8 }}>
-                      <Box
+                    <ListItemAvatar>
+                      <Avatar
+                        src=""
+                        alt="User"
                         style={{
-                          display: 'flex',
-                          marginLeft: 10,
-                          fontFamily: 'Fugaz One',
-                          fontSize: '16px',
-                          color: '#FFFF',
+                          width: 50,
+                          height: 50,
+                          background: '#aed581',
+                          color: 'black',
+                          fontSize: '18px',
+                          fontWeight: 'bold',
                         }}
                       >
-                        {console.log('oi lider', row)}
-                        {row.Lider && row.Lider.length > 30
-                          ? row.Lider.substring(
-                              0,
-                              row.Lider.lastIndexOf(' '),
-                            ).toUpperCase()
-                          : row.Lider.toUpperCase()}
-                      </Box>
-                    </ListItemText>
-                    <ListItemText style={{ marginTop: -5 }}>
-                      <Box
-                        style={{
-                          display: 'flex',
-                          marginLeft: 0,
-                          fontFamily: 'Rubik',
-                          fontSize: '14px',
-                          color: '#FFFF',
-                        }}
-                      >
-                        <Box ml={2}>Célula: </Box>
-                        <Box color="yellow" ml={1}>
-                          {' '}
-                          {row.Celula}
+                        {index + 1}º
+                      </Avatar>
+                    </ListItemAvatar>
+                    <Box>
+                      <ListItemText style={{ marginTop: 12 }}>
+                        <Box
+                          style={{
+                            display: 'flex',
+                            marginLeft: 10,
+                            fontFamily: 'Fugaz One',
+                            fontSize: '16px',
+                            color: '#FFFF',
+                          }}
+                        >
+                          {row.Lider && row.Lider.length > 25
+                            ? row.Lider.substring(0, 25).toUpperCase()
+                            : row.Lider.toUpperCase()}
                         </Box>
-                        <Box ml={2}>Pontos: </Box>
-                        <Box color="yellow" ml={1}>
-                          {' '}
-                          {row.Pontos}
+                      </ListItemText>
+                      <ListItemText style={{ marginTop: -5 }}>
+                        <Box
+                          style={{
+                            display: 'flex',
+                            marginLeft: 0,
+                            fontFamily: 'Rubik',
+                            fontSize: '14px',
+                            color: '#FFFF',
+                          }}
+                        >
+                          <Box ml={2}>Célula: </Box>
+                          <Box color="yellow" ml={1}>
+                            {' '}
+                            {row.Celula}
+                          </Box>
+                          <Box ml={2}>Pontos: </Box>
+                          <Box color="yellow" ml={1}>
+                            {' '}
+                            {row.Pontos}
+                          </Box>
                         </Box>
-                      </Box>
-                    </ListItemText>
-                  </Box>
-                </ListItem>
-              ))}
-          </List>
-        </TableContainer>
+                      </ListItemText>
+                    </Box>
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <Box
+                height="100%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                fontFamily="Fugaz one"
+                fontSize="22px"
+                color="white"
+              >
+                BUSCANDO DADOS...
+              </Box>
+            )}
+          </TableContainer>
+        ) : (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="90%"
+            fontFamily="Fugaz one"
+            fontSize="22px"
+            color="white"
+          >
+            PERÍODO INVÁLIDO
+          </Box>
+        )}
       </Box>
+      <Dialog fullScreen open={openDialog1} TransitionComponent={Transition}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100vw"
+          minHeight={570}
+          minWidth={300}
+          bgcolor={corIgreja.principal2}
+          height="calc(100vh )"
+        >
+          <Box
+            width="96%"
+            height="97%"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            borderRadius={16}
+            ml={0}
+            bgcolor={corIgreja.principal}
+          >
+            <Box ml={2} height="5%" display="flex" alignItems="start">
+              <Box
+                display="flex"
+                alignItems="center"
+                onClick={() => {
+                  setOpenDialog1(false);
+                }}
+              >
+                <IoClose size={25} color="white" />
+              </Box>
+            </Box>
+            <TableContainer sx={{ height: '90%' }}>
+              <List
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                {PontosCelulaSelecionada && (
+                  <Box width="100%">
+                    {console.log(
+                      'PontosCelulaSelecionada',
+                      PontosCelulaSelecionada,
+                    )}
+                    <ListItem>
+                      <Box width="100%">
+                        <ListItemText style={{ marginTop: -5 }}>
+                          <Box
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '18px',
+                              color: '#FFFF',
+                            }}
+                          >
+                            <Box display="flex">
+                              CÉLULA{' '}
+                              <Box ml={2} color="yellow">
+                                {' '}
+                                {PontosCelulaSelecionada.Celula}{' '}
+                              </Box>{' '}
+                            </Box>
+                          </Box>
+                        </ListItemText>
+                      </Box>
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <Box>
+                        <ListItemText style={{ marginTop: -5 }}>
+                          {/* 'CelebracaoIgreja',
+      'CelebracaoLive',
+      'Discipulados',
+      'Eventos',
+      'LeituraBiblica',
+      'NovoMembro',
+      'Pontualidade',
+      'PresentesCelula',
+      'RelCelebracao',
+      'RelCelulaFeito',
+      'RelDiscipulado',
+      'Relatorio',
+      'VisitantesCelebracao',
+      'VisitantesCelula',
+      'Visitas', */}
+                          <Box
+                            mt={1}
+                            style={{
+                              display: 'flex',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '16px',
+                              color: '#FFFF',
+                            }}
+                          >
+                            <Box ml={2} display="flex">
+                              PONTOS POR RELATÓRIOS:
+                              <Box ml={2} mr={2} color="yellow">
+                                {PontosCelulaSelecionada.Relatorio +
+                                  PontosCelulaSelecionada.RelCelebracao +
+                                  PontosCelulaSelecionada.RelCelulaFeito +
+                                  PontosCelulaSelecionada.RelDiscipulado +
+                                  PontosCelulaSelecionada.Pontualidade}
+                              </Box>
+                              de
+                              <Box ml={2} color="yellow">
+                                {PontosCelulaSelecionada.semanas * 5}
+                              </Box>
+                            </Box>
+                          </Box>
+                          <Box
+                            mt={1}
+                            style={{
+                              display: 'flex',
+                              marginLeft: 0,
+                              fontFamily: 'Rubik',
+                              fontSize: '16px',
+                              color: '#FFFF',
+                            }}
+                          >
+                            <Box ml={2}>Preencher todos os Relatórios: </Box>
+                            <Box color="yellow" ml={1} mr={2}>
+                              {PontosCelulaSelecionada.Relatorio}
+                            </Box>
+                            de
+                            <Box ml={2} color="yellow">
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                          <Box
+                            mt={1}
+                            style={{
+                              display: 'flex',
+                              marginLeft: 0,
+                              fontFamily: 'Rubik',
+                              fontSize: '16px',
+                              color: '#FFFF',
+                            }}
+                          >
+                            <Box ml={2}>Relatório da Célula: </Box>
+                            <Box color="yellow" ml={1} mr={2}>
+                              {PontosCelulaSelecionada.RelCelulaFeito}
+                            </Box>
+                            de
+                            <Box ml={2} color="yellow">
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                        </ListItemText>
+                      </Box>
+                    </ListItem>
+                  </Box>
+                )}
+              </List>
+            </TableContainer>
+          </Box>{' '}
+        </Box>
+      </Dialog>
     </Box>
   );
 }

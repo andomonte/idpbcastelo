@@ -1,10 +1,7 @@
 import prisma from 'src/lib/prisma';
 
 export default async function handle(req, res) {
-  // id = req;
-  const {
-    query: { semanaI, semanaF, AnoI, AnoF },
-  } = req;
+  const dados = req.body;
 
   // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
@@ -13,15 +10,15 @@ export default async function handle(req, res) {
     const posts = await prisma.pontuacao
       .findMany({
         where: {
-          Semana: { gt: Number(semanaI - 1) },
+          Semana: { gt: Number(dados.semanaI - 1) },
           AND: {
-            Semana: { lt: Number(semanaF + 1) },
+            Semana: { lt: Number(dados.semanaF + 1) },
             OR: [
               {
-                Ano: Number(AnoI),
+                Ano: Number(dados.anoI),
               },
               {
-                Ano: Number(AnoF),
+                Ano: Number(dados.anoF),
               },
             ],
           },
