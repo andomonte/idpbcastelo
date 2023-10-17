@@ -210,8 +210,11 @@ export default function TabCelula({
   React.useEffect(() => {
     if (pontos && pontos.length) {
       const pontosFinal = pontos.filter(
-        (rol) => Number(perfilUser.Distrito) === Number(rol.Distrito),
+        (rol) =>
+          rol.Ano === Ano &&
+          Number(perfilUser.Distrito) === Number(rol.Distrito),
       );
+      console.log('pontos', pontos);
       if (pontosFinal.length) {
         setRankGeral(
           pontosFinal.sort((a, b) => {
@@ -248,6 +251,7 @@ export default function TabCelula({
       numeroCelula.map((row, i) => {
         if (Object.keys(rankGeral).length > 0) {
           let check = 0;
+          console.log('rankGeral', rankGeral);
           rankGeral.map((rol, index) => {
             if (row) {
               if (
@@ -297,6 +301,7 @@ export default function TabCelula({
 
     if (Object.keys(presSem1).length > 0) {
       let check = 0;
+
       presSem1.map((row, i) => {
         let check2 = 0;
         if (Object.keys(posicao0).length > 0) {
@@ -683,6 +688,7 @@ export default function TabCelula({
         </Box>
       </Box>
       <Box height="85%">
+        {console.log('posicaoFinal', posicaoFinal)}
         {Object.keys(posicaoFinal).length ? (
           <TableContainer sx={{ minHeight: 335, height: '100%' }}>
             {posicaoFinal.map((row, index) => (
