@@ -101,6 +101,11 @@ function createPontuacao(
   Eventos, // participação nos eventos vale 1 ponto por membro
   LeituraBiblica, // vale 2 pontos cada membro
   VisitantesCelebracao,
+  percPresentes,
+  percCelebracaoIgreja,
+  percCelebracaoLive,
+  percDiscipulado,
+  percLeituraBiblica,
 ) {
   return {
     RelCelulaFeito, // indeca que houve célula
@@ -118,6 +123,11 @@ function createPontuacao(
     Eventos, // participação nos eventos vale 1 ponto por membro
     LeituraBiblica, // vale 2 pontos cada membro
     VisitantesCelebracao,
+    percPresentes,
+    percCelebracaoIgreja,
+    percCelebracaoLive,
+    percDiscipulado,
+    percLeituraBiblica,
   };
 }
 
@@ -674,6 +684,7 @@ function RelCelula({
     const percLeituraBiblica = Number(
       Number((pontosLeituraBiblia * 100) / relPresentes.length).toFixed(2) / 10,
     ).toFixed(2);
+
     // toal rank conta os eventos mas o total não pois nem sempre tem eventos e pode
     // causar erros no percentual de crescimento.
     if (pontosTotalAtual === 0)
@@ -733,6 +744,11 @@ function RelCelula({
       Number(pontosEventos),
       Number(pontosLeituraBiblia),
       Number(pontosVisitantesCelebracao),
+      Number(percPresentes),
+      Number(percCelebracaoIgreja),
+      Number(percCelebracaoLive),
+      Number(percDiscipulado),
+      Number(percLeituraBiblica),
     );
 
     setPFinal(PontuacaoFinal);

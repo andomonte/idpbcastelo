@@ -96,6 +96,11 @@ function createPontuacao(
   Eventos, // participação nos eventos vale 1 ponto por membro
   LeituraBiblica, // vale 2 pontos cada membro
   VisitantesCelebracao,
+  percPresentes,
+  percCelebracaoIgreja,
+  percCelebracaoLive,
+  percDiscipulado,
+  percLeituraBiblica,
 ) {
   return {
     RelCelulaFeito, // indeca que houve célula
@@ -113,6 +118,11 @@ function createPontuacao(
     Eventos, // participação nos eventos vale 1 ponto por membro
     LeituraBiblica, // vale 2 pontos cada membro
     VisitantesCelebracao,
+    percPresentes,
+    percCelebracaoIgreja,
+    percCelebracaoLive,
+    percDiscipulado,
+    percLeituraBiblica,
   };
 }
 
@@ -732,6 +742,11 @@ function RelCelula({
       Number(pontosEventos),
       Number(pontosLeituraBiblia),
       Number(pontosVisitantesCelebracao),
+      Number(percPresentes),
+      Number(percCelebracaoIgreja),
+      Number(percCelebracaoLive),
+      Number(percDiscipulado),
+      Number(percLeituraBiblica),
     );
 
     setPFinal(PontuacaoFinal);

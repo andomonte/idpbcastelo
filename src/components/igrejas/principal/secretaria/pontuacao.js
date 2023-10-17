@@ -47,6 +47,11 @@ function createCelulaSelecionada(
   VisitantesCelebracao,
   VisitantesCelula,
   Visitas,
+  percCelebracaoIgreja,
+  percCelebracaoLive,
+  percDiscipulado,
+  percLeituraBiblica,
+  percPresentes,
 ) {
   return {
     Celula,
@@ -66,6 +71,11 @@ function createCelulaSelecionada(
     VisitantesCelebracao,
     VisitantesCelula,
     Visitas,
+    percCelebracaoIgreja,
+    percCelebracaoLive,
+    percDiscipulado,
+    percLeituraBiblica,
+    percPresentes,
   };
 }
 export default function Pontuacao({ perfilUser }) {
@@ -212,7 +222,7 @@ export default function Pontuacao({ perfilUser }) {
   const [PontosCelulaSelecionada, setPontosCelulaSelecionada] =
     React.useState('');
 
-  const handleCheckCelula = (celulaSelecionada) => {
+  const handleCheckCelula = async (celulaSelecionada) => {
     const celulaFiltrada = pontosCelulas.filter(
       (val) => val.Celula === celulaSelecionada.Celula,
     );
@@ -224,6 +234,7 @@ export default function Pontuacao({ perfilUser }) {
         return 0;
       });
     }
+
     const parametrosPontuacao = [
       'CelebracaoIgreja',
       'CelebracaoLive',
@@ -240,6 +251,11 @@ export default function Pontuacao({ perfilUser }) {
       'VisitantesCelebracao',
       'VisitantesCelula',
       'Visitas',
+      'percCelebracaoIgreja',
+      'percCelebracaoLive',
+      'percDiscipulado',
+      'percLeituraBiblica',
+      'percPresentes',
     ];
     if (detalhesPontos.length) {
       const arrayTeste = [];
@@ -271,6 +287,11 @@ export default function Pontuacao({ perfilUser }) {
           arrayTeste[12],
           arrayTeste[13],
           arrayTeste[14],
+          arrayTeste[15],
+          arrayTeste[16],
+          arrayTeste[17],
+          arrayTeste[18],
+          arrayTeste[19],
         ),
       );
       setOpenDialog1(true);
@@ -297,7 +318,13 @@ export default function Pontuacao({ perfilUser }) {
         ml={0}
         bgcolor={corIgreja.principal}
       >
-        <Box width="100%" height="10%" display="flex" alignItems="center">
+        <Box
+          width="100%"
+          height="10%"
+          justifyContent="center"
+          display="flex"
+          alignItems="center"
+        >
           <Paper style={{ marginLeft: 10, background: '#fafafa', height: 40 }}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container justifyContent="center">
@@ -361,7 +388,6 @@ export default function Pontuacao({ perfilUser }) {
                 {listaFinal.map((row, index) => (
                   <ListItem
                     onClick={() => {
-                      console.log('row', row);
                       handleCheckCelula(row);
                     }}
                     key={index}
@@ -390,8 +416,9 @@ export default function Pontuacao({ perfilUser }) {
                             display: 'flex',
                             marginLeft: 10,
                             fontFamily: 'Fugaz One',
-                            fontSize: '16px',
+                            fontSize: '12px',
                             color: '#FFFF',
+                            cursor: 'pointer',
                           }}
                         >
                           {row.Lider && row.Lider.length > 25
@@ -405,7 +432,7 @@ export default function Pontuacao({ perfilUser }) {
                             display: 'flex',
                             marginLeft: 0,
                             fontFamily: 'Rubik',
-                            fontSize: '14px',
+                            fontSize: '12px',
                             color: '#FFFF',
                           }}
                         >
@@ -484,8 +511,39 @@ export default function Pontuacao({ perfilUser }) {
               >
                 <IoClose size={25} color="white" />
               </Box>
+              <ListItem
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box width="100%">
+                  <ListItemText style={{ marginTop: -5 }}>
+                    <Box
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginLeft: 0,
+                        fontFamily: 'Fugaz One',
+                        fontSize: '18px',
+                        color: '#FFFF',
+                      }}
+                    >
+                      <Box display="flex">
+                        CÉLULA{' '}
+                        <Box ml={2} color="yellow">
+                          {' '}
+                          {PontosCelulaSelecionada.Celula}{' '}
+                        </Box>{' '}
+                      </Box>
+                    </Box>
+                  </ListItemText>
+                </Box>
+              </ListItem>
             </Box>
-            <TableContainer sx={{ height: '90%' }}>
+            <TableContainer sx={{ width: '100%', height: '90%' }}>
               <List
                 sx={{
                   width: '100%',
@@ -495,121 +553,785 @@ export default function Pontuacao({ perfilUser }) {
               >
                 {PontosCelulaSelecionada && (
                   <Box width="100%">
-                    {console.log(
-                      'PontosCelulaSelecionada',
-                      PontosCelulaSelecionada,
-                    )}
-                    <ListItem>
-                      <Box width="100%">
-                        <ListItemText style={{ marginTop: -5 }}>
+                    <Box
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <Box width="98%">
+                        <ListItemText style={{ width: '100%', marginTop: -5 }}>
                           <Box
+                            mt={1}
+                            height={40}
                             style={{
-                              width: '100%',
+                              border: '1px solid #a1887f',
                               display: 'flex',
-                              justifyContent: 'center',
+                              alignItems: 'center',
                               marginLeft: 0,
                               fontFamily: 'Fugaz One',
-                              fontSize: '18px',
-                              color: '#FFFF',
+                              fontSize: '12px',
+                              color: 'black',
+                              width: '100%',
+                              background: '#c5e1a5',
                             }}
                           >
-                            <Box display="flex">
-                              CÉLULA{' '}
-                              <Box ml={2} color="yellow">
-                                {' '}
-                                {PontosCelulaSelecionada.Celula}{' '}
-                              </Box>{' '}
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PONTUAÇÃO POR RELATÓRIOS
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              REAIS
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              POSSÍVEIS
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#e3f2fd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PREENCHER TODOS OS RELATÓRIOS
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.Relatorio >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.Relatorio}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#f0f0f0',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              RELATÓRIO DA CÉLULA
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.RelCelulaFeito >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.RelCelulaFeito}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#e3f2fd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              RELATÓRIO DA CELEBRAÇÃO
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.RelCelebracao >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.RelCelebracao}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#f0f0f0',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              RELATÓRIO DE DISCIPULADO
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.RelDiscipulado >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.RelDiscipulado}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#e3f2fd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PONTUALIDADE NA ENTREGA
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.Pontualidade >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.Pontualidade}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#bdbdbd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PONTUAÇÃO DOS RELATÓRIOS
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.Relatorio +
+                                  PontosCelulaSelecionada.RelCelulaFeito +
+                                  PontosCelulaSelecionada.RelCelebracao +
+                                  PontosCelulaSelecionada.RelDiscipulado +
+                                  PontosCelulaSelecionada.Pontualidade >=
+                                PontosCelulaSelecionada.semanas * 5
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.Relatorio +
+                                PontosCelulaSelecionada.RelCelulaFeito +
+                                PontosCelulaSelecionada.RelCelebracao +
+                                PontosCelulaSelecionada.RelDiscipulado +
+                                PontosCelulaSelecionada.Pontualidade}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 5}
                             </Box>
                           </Box>
                         </ListItemText>
                       </Box>
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <Box>
-                        <ListItemText style={{ marginTop: -5 }}>
-                          {/* 'CelebracaoIgreja',
-      'CelebracaoLive',
+                    </Box>
+                    <Box
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <Box width="98%">
+                        <ListItemText style={{ width: '100%', marginTop: -5 }}>
+                          <Box
+                            mt={1}
+                            height={40}
+                            style={{
+                              border: '1px solid #a1887f',
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              color: 'black',
+                              width: '100%',
+                              background: '#4fc3f7',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PONTUAÇÃO POR PARTICIPAÇÕES
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              REAIS
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              POSSÍVEIS
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#e3f2fd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PRESENÇA DOS MEMBROS NA CÉLULA
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.percPresentes &&
+                                PontosCelulaSelecionada.percPresentes >=
+                                  PontosCelulaSelecionada.semanas * 10
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.percPresentes || '-'}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 10}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#f0f0f0',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PRESENÇA NA CELEBRAÇÃO IGREJA
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.percCelebracaoIgreja &&
+                                PontosCelulaSelecionada.percCelebracaoIgreja >=
+                                  PontosCelulaSelecionada.semanas * 10
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.percCelebracaoIgreja
+                                ? PontosCelulaSelecionada.percCelebracaoIgreja
+                                : '-'}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 10}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#e3f2fd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PRESENÇA NA CELEBRAÇÃO ON-LINE
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.percCelebracaoLive &&
+                                PontosCelulaSelecionada.percCelebracaoLive >=
+                                  PontosCelulaSelecionada.semanas * 5
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.percCelebracaoLive
+                                ? PontosCelulaSelecionada.percCelebracaoLive
+                                : '-'}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 5}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#f0f0f0',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              RELATÓRIO DE DISCIPULADO
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.RelDiscipulado >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.RelDiscipulado}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#e3f2fd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PONTUALIDADE NA ENTREGA
+                            </Box>
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.Pontualidade >=
+                                PontosCelulaSelecionada.semanas * 1
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.Pontualidade}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 1}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#bdbdbd',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PONTUAÇÃO POR RELATÓRIOS
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.Relatorio +
+                                  PontosCelulaSelecionada.RelCelulaFeito +
+                                  PontosCelulaSelecionada.RelCelebracao +
+                                  PontosCelulaSelecionada.RelDiscipulado +
+                                  PontosCelulaSelecionada.Pontualidade >=
+                                PontosCelulaSelecionada.semanas * 5
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.Relatorio +
+                                PontosCelulaSelecionada.RelCelulaFeito +
+                                PontosCelulaSelecionada.RelCelebracao +
+                                PontosCelulaSelecionada.RelDiscipulado +
+                                PontosCelulaSelecionada.Pontualidade}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {PontosCelulaSelecionada.semanas * 5}
+                            </Box>
+                          </Box>
+                        </ListItemText>
+                      </Box>
+                    </Box>
+                  </Box>
+                )}
+                {/* 
       'Discipulados',
       'Eventos',
       'LeituraBiblica',
       'NovoMembro',
       'Pontualidade',
-      'PresentesCelula',
-      'RelCelebracao',
-      'RelCelulaFeito',
-      'RelDiscipulado',
-      'Relatorio',
+   
       'VisitantesCelebracao',
       'VisitantesCelula',
       'Visitas', */}
-                          <Box
-                            mt={1}
-                            style={{
-                              display: 'flex',
-                              marginLeft: 0,
-                              fontFamily: 'Fugaz One',
-                              fontSize: '16px',
-                              color: '#FFFF',
-                            }}
-                          >
-                            <Box ml={2} display="flex">
-                              PONTOS POR RELATÓRIOS:
-                              <Box ml={2} mr={2} color="yellow">
-                                {PontosCelulaSelecionada.Relatorio +
-                                  PontosCelulaSelecionada.RelCelebracao +
-                                  PontosCelulaSelecionada.RelCelulaFeito +
-                                  PontosCelulaSelecionada.RelDiscipulado +
-                                  PontosCelulaSelecionada.Pontualidade}
-                              </Box>
-                              de
-                              <Box ml={2} color="yellow">
-                                {PontosCelulaSelecionada.semanas * 5}
-                              </Box>
-                            </Box>
-                          </Box>
-                          <Box
-                            mt={1}
-                            style={{
-                              display: 'flex',
-                              marginLeft: 0,
-                              fontFamily: 'Rubik',
-                              fontSize: '16px',
-                              color: '#FFFF',
-                            }}
-                          >
-                            <Box ml={2}>Preencher todos os Relatórios: </Box>
-                            <Box color="yellow" ml={1} mr={2}>
-                              {PontosCelulaSelecionada.Relatorio}
-                            </Box>
-                            de
-                            <Box ml={2} color="yellow">
-                              {PontosCelulaSelecionada.semanas * 1}
-                            </Box>
-                          </Box>
-                          <Box
-                            mt={1}
-                            style={{
-                              display: 'flex',
-                              marginLeft: 0,
-                              fontFamily: 'Rubik',
-                              fontSize: '16px',
-                              color: '#FFFF',
-                            }}
-                          >
-                            <Box ml={2}>Relatório da Célula: </Box>
-                            <Box color="yellow" ml={1} mr={2}>
-                              {PontosCelulaSelecionada.RelCelulaFeito}
-                            </Box>
-                            de
-                            <Box ml={2} color="yellow">
-                              {PontosCelulaSelecionada.semanas * 1}
-                            </Box>
-                          </Box>
-                        </ListItemText>
-                      </Box>
-                    </ListItem>
-                  </Box>
-                )}
               </List>
             </TableContainer>
           </Box>{' '}
