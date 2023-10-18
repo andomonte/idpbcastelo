@@ -19,7 +19,7 @@ const Transition = React.forwardRef((props, ref) => (
 function RelCelula({ celula, setOpenPlan }) {
   //  const classes = useStyles();
   // const router = useRouter();
-  console.log('aqui celula', celula);
+
   const nomesCelulas = JSON.parse(celula.NomesMembros);
   const [openErro, setOpenErro] = React.useState(false);
   const [openObs, setOpenObs] = React.useState(false);

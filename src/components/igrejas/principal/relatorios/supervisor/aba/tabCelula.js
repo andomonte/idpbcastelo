@@ -89,7 +89,6 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
             sx={{ borderBottom: '1px solid #00a' }}
           >
             <Box display="flex" width="100%">
-              {console.log('ola nome', row)}
               <Box width="100%" display="flex" alignItems="center" ml={1}>
                 {row.Nome.length > 30
                   ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))

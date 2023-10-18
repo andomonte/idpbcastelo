@@ -17,6 +17,7 @@ import {
 import api from 'src/components/services/api';
 import Slide from '@mui/material/Slide';
 import Dialog from '@mui/material/Dialog';
+import Grafico from './grafico';
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -78,6 +79,13 @@ function createCelulaSelecionada(
     percPresentes,
   };
 }
+function getPreviousMonday(date) {
+  const previousMonday = date;
+
+  previousMonday.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+
+  return previousMonday;
+}
 export default function Pontuacao({ perfilUser }) {
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
@@ -104,11 +112,13 @@ export default function Pontuacao({ perfilUser }) {
   //= =================================================================
   const [listaFinal, setListaFinal] = React.useState('');
   const [openDialog1, setOpenDialog1] = React.useState(false);
+  const [openDialog2, setOpenDialog2] = React.useState(false);
   const [semana, setSemana] = React.useState(0);
   const [semanaF, setSemanaF] = React.useState(0);
   const [pontosCelulas, setPontosCelulas] = React.useState(0);
   const timeElapsed2 = Date.now();
-  const dataAtual2 = new Date(timeElapsed2 - 60 * 60 * 1000 * 24 * 7);
+  const dataAtual2 = new Date(timeElapsed2);
+  moment(getPreviousMonday(dataAtual2)).format('DD/MM/YYYY');
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const [inputValue, setInputValue] = React.useState(
     moment(dataAtual2).format('DD/MM/YYYY'),
@@ -128,12 +138,10 @@ export default function Pontuacao({ perfilUser }) {
     //   setSelectedDate();
     setIsPickerOpen(true);
   };
-  const timeElapsed22 = Date.now();
 
-  const dataAtual22 = new Date(timeElapsed22);
-  const [selectedDate2, setSelectedDate2] = React.useState(dataAtual22);
+  const [selectedDate2, setSelectedDate2] = React.useState(dataAtual2);
   const [inputValue2, setInputValue2] = React.useState(
-    moment(dataAtual22).format('DD/MM/YYYY'),
+    moment(dataAtual2).format('DD/MM/YYYY'),
   );
   const [anoF, setAnoF] = React.useState(dataAtual2.getFullYear());
   const [open2, setIsPickerOpen2] = React.useState(false);
@@ -222,7 +230,7 @@ export default function Pontuacao({ perfilUser }) {
   const [PontosCelulaSelecionada, setPontosCelulaSelecionada] =
     React.useState('');
 
-  const handleCheckCelula = async (celulaSelecionada) => {
+  const handleCheckCelula = async (celulaSelecionada, openD) => {
     const celulaFiltrada = pontosCelulas.filter(
       (val) => val.Celula === celulaSelecionada.Celula,
     );
@@ -267,6 +275,41 @@ export default function Pontuacao({ perfilUser }) {
           {},
         );
       }
+      let qytMembros = 0;
+
+      const nan = String(arrayTeste[15]);
+
+      if (nan === 'NaN') {
+        qytMembros = await api
+          .post('/api/consultaCelulaParaPontos', {
+            semanaI: semana,
+            semanaF,
+            anoI,
+            anoF,
+            Celula: celulaSelecionada.Celula,
+          })
+          .then((response) => {
+            if (response) {
+              if (response.data.length) {
+                const qytMembrosF = JSON.parse(
+                  response.data[0].NomesMembros,
+                ).length;
+
+                return qytMembrosF;
+              }
+              return 0;
+            }
+            return 0;
+          })
+          .catch((erro) => {
+            console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+            return 0;
+          });
+        console.log(
+          'aqui',
+          parseFloat((arrayTeste[4] * 100) / qytMembros).toFixed(2),
+        );
+      }
 
       setPontosCelulaSelecionada(
         createCelulaSelecionada(
@@ -287,14 +330,35 @@ export default function Pontuacao({ perfilUser }) {
           arrayTeste[12],
           arrayTeste[13],
           arrayTeste[14],
-          arrayTeste[15],
-          arrayTeste[16],
-          arrayTeste[17],
-          arrayTeste[18],
-          arrayTeste[19],
+          String(arrayTeste[15]) !== 'NaN'
+            ? arrayTeste[15]
+            : parseFloat(
+                parseFloat((arrayTeste[0] * 100) / qytMembros).toFixed(2) / 10,
+              ).toFixed(2),
+          String(arrayTeste[16]) !== 'NaN'
+            ? arrayTeste[16]
+            : parseFloat(
+                parseFloat((arrayTeste[1] * 100) / qytMembros).toFixed(2) / 10,
+              ).toFixed(2),
+          String(arrayTeste[17]) !== 'NaN'
+            ? arrayTeste[17]
+            : parseFloat(
+                parseFloat((arrayTeste[2] * 100) / qytMembros).toFixed(2) / 10,
+              ).toFixed(2),
+          String(arrayTeste[18]) !== 'NaN'
+            ? arrayTeste[18]
+            : parseFloat(
+                parseFloat((arrayTeste[4] * 100) / qytMembros).toFixed(2) / 10,
+              ).toFixed(2),
+          String(arrayTeste[19]) !== 'NaN'
+            ? arrayTeste[19]
+            : parseFloat(
+                parseFloat((arrayTeste[7] * 100) / qytMembros).toFixed(2) / 10,
+              ).toFixed(2),
         ),
       );
-      setOpenDialog1(true);
+      if (openD === 1) setOpenDialog1(true);
+      if (openD === 2) setOpenDialog2(true);
     }
   };
   return (
@@ -386,13 +450,7 @@ export default function Pontuacao({ perfilUser }) {
             {listaFinal && listaFinal.length ? (
               <List sx={{ width: '100%', maxWidth: 360 }}>
                 {listaFinal.map((row, index) => (
-                  <ListItem
-                    onClick={() => {
-                      handleCheckCelula(row);
-                    }}
-                    key={index}
-                    alignItems="flex-start"
-                  >
+                  <ListItem key={index} alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar
                         src=""
@@ -404,6 +462,9 @@ export default function Pontuacao({ perfilUser }) {
                           color: 'black',
                           fontSize: '18px',
                           fontWeight: 'bold',
+                        }}
+                        onClick={() => {
+                          handleCheckCelula(row, 2);
                         }}
                       >
                         {index + 1}º
@@ -419,6 +480,9 @@ export default function Pontuacao({ perfilUser }) {
                             fontSize: '12px',
                             color: '#FFFF',
                             cursor: 'pointer',
+                          }}
+                          onClick={() => {
+                            handleCheckCelula(row, 1);
                           }}
                         >
                           {row.Lider && row.Lider.length > 25
@@ -1024,7 +1088,7 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.percPresentes &&
                                 PontosCelulaSelecionada.percPresentes >=
-                                  PontosCelulaSelecionada.semanas * 10
+                                  PontosCelulaSelecionada.semanas * 8
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1078,7 +1142,7 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.percCelebracaoIgreja &&
                                 PontosCelulaSelecionada.percCelebracaoIgreja >=
-                                  PontosCelulaSelecionada.semanas * 10
+                                  PontosCelulaSelecionada.semanas * 8
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1293,21 +1357,67 @@ export default function Pontuacao({ perfilUser }) {
                               justifyContent="center"
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
-                                PontosCelulaSelecionada.percCelebracaoIgreja +
-                                  PontosCelulaSelecionada.percCelebracaoLive +
-                                  PontosCelulaSelecionada.percDiscipulado +
-                                  PontosCelulaSelecionada.percLeituraBiblica +
-                                  PontosCelulaSelecionada.percPresentes >=
+                                parseFloat(
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percCelebracaoIgreja,
+                                  ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percCelebracaoLive,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percDiscipulado,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percPresentes,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percLeituraBiblica,
+                                    ),
+                                ).toFixed(2) >=
                                 PontosCelulaSelecionada.semanas * 29 // pontos 80% celula, celebração e leitura - online + 50% do discipulado
                                   ? 'blue'
                                   : 'red'
                               }
                             >
-                              {PontosCelulaSelecionada.percCelebracaoIgreja +
-                                PontosCelulaSelecionada.percCelebracaoLive +
-                                PontosCelulaSelecionada.percDiscipulado +
-                                PontosCelulaSelecionada.percLeituraBiblica +
-                                PontosCelulaSelecionada.percPresentes}
+                              {console.log(
+                                '',
+                                PontosCelulaSelecionada.semanas,
+                                PontosCelulaSelecionada.semanas * 29,
+                                parseFloat(
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percCelebracaoIgreja,
+                                  ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percCelebracaoLive,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percDiscipulado,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percPresentes,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percLeituraBiblica,
+                                    ),
+                                ).toFixed(2),
+                              )}
+                              {parseFloat(
+                                parseFloat(
+                                  PontosCelulaSelecionada.percCelebracaoIgreja,
+                                ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percCelebracaoLive,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percDiscipulado,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percPresentes,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percLeituraBiblica,
+                                  ),
+                              ).toFixed(2)}
                             </Box>
                             <Box
                               width="20%"
@@ -1576,7 +1686,7 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.Eventos &&
                                 PontosCelulaSelecionada.Eventos >=
-                                  PontosCelulaSelecionada.semanas * 10
+                                  PontosCelulaSelecionada.semanas * 1
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1748,19 +1858,73 @@ export default function Pontuacao({ perfilUser }) {
                               justifyContent="center"
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
-                                PontosCelulaSelecionada.VisitantesCelula +
-                                  PontosCelulaSelecionada.VisitantesCelebracao +
-                                  PontosCelulaSelecionada.Visitas +
-                                  PontosCelulaSelecionada.Eventos +
-                                  PontosCelulaSelecionada.NovoMembro >=
+                                parseFloat(
+                                  parseFloat(
+                                    PontosCelulaSelecionada.VisitantesCelula,
+                                  ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.VisitantesCelebracao,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percCelebracaoIgreja,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percCelebracaoLive,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percPresentes,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percDiscipulado,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.percLeituraBiblica,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.Visitas,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.Eventos,
+                                    ) +
+                                    parseFloat(
+                                      PontosCelulaSelecionada.NovoMembro,
+                                    ),
+                                ).toFixed(2) >=
                                 PontosCelulaSelecionada.semanas * 5
                                   ? 'blue'
                                   : 'red'
                               }
                             >
-                              {PontosCelulaSelecionada.VisitantesCelula +
-                                PontosCelulaSelecionada.VisitantesCelebracao +
-                                PontosCelulaSelecionada.Visitas +
+                              {parseFloat(
+                                parseFloat(
+                                  PontosCelulaSelecionada.VisitantesCelula,
+                                ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.VisitantesCelebracao,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percCelebracaoIgreja,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percCelebracaoLive,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percPresentes,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percDiscipulado,
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.percLeituraBiblica,
+                                  ) +
+                                  parseFloat(PontosCelulaSelecionada.Visitas) +
+                                  parseFloat(PontosCelulaSelecionada.Eventos) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.NovoMembro,
+                                  ),
+                              ).toFixed(2)}
+
+                              {/* PontosCelulaSelecionada.Visitas +
                                 PontosCelulaSelecionada.Eventos +
                                 PontosCelulaSelecionada.NovoMembro +
                                 PontosCelulaSelecionada.percCelebracaoIgreja +
@@ -1772,7 +1936,7 @@ export default function Pontuacao({ perfilUser }) {
                                 PontosCelulaSelecionada.RelCelulaFeito +
                                 PontosCelulaSelecionada.RelCelebracao +
                                 PontosCelulaSelecionada.RelDiscipulado +
-                                PontosCelulaSelecionada.Pontualidade}
+                                PontosCelulaSelecionada.Pontualidade} */}
                             </Box>
                             <Box
                               width="20%"
@@ -1790,6 +1954,77 @@ export default function Pontuacao({ perfilUser }) {
               </List>
             </TableContainer>
           </Box>{' '}
+        </Box>
+      </Dialog>
+      <Dialog fullScreen open={openDialog2} TransitionComponent={Transition}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100vw"
+          minHeight={570}
+          minWidth={300}
+          bgcolor={corIgreja.principal2}
+          height="calc(100vh )"
+        >
+          <Box
+            width="96%"
+            height="97%"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            borderRadius={16}
+            ml={0}
+            bgcolor={corIgreja.principal}
+          >
+            <Box ml={2} height="5%" display="flex" alignItems="start">
+              <Box
+                display="flex"
+                alignItems="center"
+                onClick={() => {
+                  setOpenDialog2(false);
+                }}
+              >
+                <IoClose size={25} color="white" />
+              </Box>
+              <ListItem
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box width="100%">
+                  <ListItemText style={{ marginTop: -5 }}>
+                    <Box
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginLeft: 0,
+                        fontFamily: 'Fugaz One',
+                        fontSize: '18px',
+                        color: '#FFFF',
+                      }}
+                    >
+                      <Box display="flex">
+                        CÉLULA{' '}
+                        <Box ml={2} color="yellow">
+                          {' '}
+                          {PontosCelulaSelecionada.Celula}{' '}
+                        </Box>{' '}
+                      </Box>
+                    </Box>
+                  </ListItemText>
+                </Box>
+              </ListItem>
+            </Box>
+            <TableContainer
+              sx={{ background: 'white', width: '100%', height: '90%' }}
+            >
+              <Grafico dados={PontosCelulaSelecionada} />
+            </TableContainer>
+          </Box>
         </Box>
       </Dialog>
     </Box>

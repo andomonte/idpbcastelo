@@ -1299,7 +1299,7 @@ export default function TabCelula({
                             )}
                           </Box>
                         )}
-                        {console.log('quantidade', row.PresDisc)}
+
                         {tipo[contTipo] === 'Relatório do Discipulado' && (
                           <Box
                             mt={0}

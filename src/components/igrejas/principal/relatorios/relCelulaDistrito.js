@@ -154,8 +154,14 @@ function RelCelula({ perfilUser, lideranca }) {
       ano2 = contAno + 1;
       setContAno(contAno + 1);
     }
-    const simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
-    const mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
+    let simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
+    let mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
+
+    if (Number(simple) < 1) {
+      console.log(mesAgora);
+      mesAgora -= 1;
+      simple = 5;
+    }
     setContSemanaMes(simple);
 
     setContMes(mesAgora);
@@ -171,11 +177,18 @@ function RelCelula({ perfilUser, lideranca }) {
       ano2 = contAno - 1;
       setContAno(contAno - 1);
     }
+
     setContMes(PegaMes(contSemanaAtual, anoAtual));
 
-    const simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
+    let simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
+
+    let mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
+    console.log(simple);
+    if (Number(simple) < 1) {
+      mesAgora -= 1;
+      simple = 5;
+    }
     setContSemanaMes(simple);
-    const mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
     setContMes(mesAgora);
     setContSemana(contSemanaAtual);
   };

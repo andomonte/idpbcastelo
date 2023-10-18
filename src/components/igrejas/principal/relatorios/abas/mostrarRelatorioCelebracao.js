@@ -782,7 +782,7 @@ function RelCelula({
     contVisitas,
     pontos,
   ]);
-
+  console.log('pFinal', pFinal);
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
 

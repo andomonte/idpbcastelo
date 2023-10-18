@@ -261,10 +261,8 @@ function BuscarAniversariantes({ distritos, rolMembros }) {
                   }}
                   subheader={<li />}
                 >
-                
                   {niverSetorOrdenado.map((itens) => (
                     <Box ml={0} key={itens.RolMembro}>
-                    
                       <Box>
                         <Grid>
                           <SearchListMes

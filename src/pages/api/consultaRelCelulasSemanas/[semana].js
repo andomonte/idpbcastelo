@@ -13,6 +13,7 @@ export default async function handle(req, res) {
   const semana3 = Number(semana) + 3;
   const semana4 = Number(semana) + 4;
   const posts = await prisma.relatorioCelulas
+
     .findMany({
       where: {
         OR: [

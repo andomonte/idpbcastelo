@@ -31,6 +31,7 @@ function RelCelula({ perfilUser, lideranca }) {
 
   // const mesSemana = PegaMes(semanaAtual, anoAtual);
   const semanaMes = PegaSemanaMes(dataAtual); // pega a semana certa do mes
+
   const [contSemanaMes, setContSemanaMes] = React.useState(semanaMes);
 
   const [sendResumo, setSendResumo] = React.useState(false);
