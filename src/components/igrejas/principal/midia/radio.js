@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useId, useState, useRef } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '@material-ui/core';
@@ -115,8 +115,9 @@ function Player({ radioIdpb }) {
 
   const opcCategoria = categoriaInicial;
   const listaCategoriaInicial = listaCategoria.map((val, index) =>
-    createListaCategoria(index, val.categoria),
+    createListaCategoria(index, val.label),
   );
+
   listaCategoriaInicial.map((val) => {
     opcCategoria.push(val);
     return 0;
@@ -330,7 +331,6 @@ function Player({ radioIdpb }) {
   }, [categoria]);
   React.useEffect(() => {
     const newLista = [];
-    console.log('oi sel', selMusica);
     if (selMusica) {
       for (let i = 0; i < selMusica.length; i += 1) {
         const filterMusic = musics.filter((val) => val.label === selMusica[i]);
@@ -405,11 +405,35 @@ function Player({ radioIdpb }) {
     }
   }, [musica]);
   // const [value, setValue] = React.useState(null);
-  const valueRef = React.useRef();
-  const onBlurValue = () => {
-    console.log(valueRef.current);
-  };
+  const [inputValue, setInputValue] = React.useState('');
 
+  const onBlurValue = () => {
+    if (inputValue) {
+      const valorFinal = musicaValor.length ? musicaValor : [];
+      if (valorFinal.length) {
+        const valorArray = [
+          {
+            value: valorFinal.length ? valorFinal.length : 0,
+            label: inputValue,
+          },
+        ];
+        valorFinal.push(valorArray[0]);
+        console.log('novoValorDENTRO', valorFinal);
+        setMusicaValor(valorFinal);
+        setSelMusica(valorFinal.map((val) => val.label));
+      } else {
+        const valorArray = [
+          {
+            value: valorFinal.length ? valorFinal.length : 0,
+            label: inputValue,
+          },
+        ];
+        console.log('nao deu pra vir', valorArray);
+        setMusicaValor(valorArray);
+        setSelMusica(valorArray.map((val) => val.label));
+      }
+    }
+  };
   return (
     <Box
       display="flex"
@@ -443,9 +467,14 @@ function Player({ radioIdpb }) {
             <Box mb="2vh" height="97%" width="90%" maxWidth={500}>
               <CreatableSelect
                 isMulti
+                id="long-value-select"
+                instanceId
                 options={opMusics}
                 styles={customStyles2}
                 value={musicaValor}
+                inputValue={inputValue}
+                onInputChange={setInputValue}
+                // onMenuClose={onMenuClose}
                 onBlur={onBlurValue}
                 onChange={(e) => {
                   setMusicaValor(e);
@@ -455,7 +484,6 @@ function Player({ radioIdpb }) {
                 }}
                 placeholder={<div>Escolha ou digite a música e o autor</div>}
               >
-                {' '}
                 {opMusics}
               </CreatableSelect>{' '}
             </Box>
@@ -576,7 +604,6 @@ function Player({ radioIdpb }) {
                 styles={customStyles}
                 defaultValue={categoria}
                 onChange={(e) => {
-                  console.log('e', e);
                   setCategoria(e);
                 }}
                 options={opcCategoria}
