@@ -21,7 +21,7 @@ import { TiArrowBack } from 'react-icons/ti';
 import corIgreja from 'src/utils/coresIgreja';
 
 import Radio from './radio';
-import Videos from './telaPadrao'; // './videos';
+import Videos from './videos';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -131,6 +131,7 @@ function TabPanel(props) {
 
 function Midia({ title, userIgrejas, musicasSend, dataYouTube, radioIdpb }) {
   const classes = useStyles();
+  console.log('oi dataYou', dataYouTube);
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -268,7 +269,7 @@ function Midia({ title, userIgrejas, musicasSend, dataYouTube, radioIdpb }) {
             <Videos dataYouTube={dataYouTube} userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Videos />
+            <Videos dataYouTube={dataYouTube} userIgrejas={userIgrejas} />
           </TabPanel>
         </main>
       </div>

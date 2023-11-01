@@ -1,5 +1,5 @@
 import React from 'react';
-import Midia from 'src/components/igrejas/principal/midia2';
+import Midia from 'src/components/igrejas/principal/midia';
 import prisma from 'src/lib/prisma';
 
 function MidiaCelulas({ userIgrejas, data, radioIdpb }) {
@@ -35,7 +35,7 @@ export const getStaticProps = async () => {
   const res = await fetch(
     `${YOUTUBE_PLAYLIST_ITEMS_API}?part=snippet&maxResults=50&playlistId=PLwhM_8j-plGlLS-I8wleAV9TZYBal8s6L&index=1&key=AIzaSyBxqTbtKdJP3jX-k7yRiSbRi7rG40qfwqA`,
   );
-  console.log('oi json');
+
   const data = await res.json();
   return {
     props: {

@@ -9,11 +9,11 @@ export default function App({ dataYouTube }) {
   const [video, setVideo] = React.useState('video incial');
   const [numberVideo, setNumberVideo] = React.useState(0);
   const [repeat, setRepeat] = React.useState(false);
-
+  console.log('dataYouTube', dataYouTube);
   React.useEffect(() => {
     setNumberVideo(0);
     setVideo(
-      `https://www.youtube.com/watch?v=${dataYouTube.items[0].id.videoId}`,
+      `https://www.youtube.com/watch?v=${dataYouTube.items[0].snippet.resourceId.videoId}`,
     );
   }, []);
 
@@ -21,7 +21,7 @@ export default function App({ dataYouTube }) {
     let newVideo = numberVideo + 1;
     if (newVideo >= dataYouTube.items.length) newVideo = 0;
     setVideo(
-      `https://www.youtube.com/watch?v=${dataYouTube.items[numberVideo].id.videoId}`,
+      `https://www.youtube.com/watch?v=${dataYouTube.items[numberVideo].snippet.resourceId.videoId}`,
     );
     setNumberVideo(newVideo);
   };
@@ -29,7 +29,7 @@ export default function App({ dataYouTube }) {
     let newVideo = numberVideo - 1;
     if (newVideo < 0) newVideo = 5;
     setVideo(
-      `https://www.youtube.com/watch?v=${dataYouTube.items[numberVideo].id.videoId}`,
+      `https://www.youtube.com/watch?v=${dataYouTube.items[numberVideo].snippet.resourceId.videoId}`,
     );
     setNumberVideo(newVideo);
   };

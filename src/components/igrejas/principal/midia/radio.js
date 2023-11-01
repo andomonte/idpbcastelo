@@ -1,4 +1,4 @@
-import React, { useId, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Box } from '@material-ui/core';
@@ -125,7 +125,7 @@ function Player({ radioIdpb }) {
 
   const [novaLista, setNovaLista] = React.useState('');
   const [repeat, setRepeat] = React.useState(false);
-  const [video, setVideo] = React.useState('video inicial');
+  const [video, setVideo] = React.useState('');
 
   const [fimPlay, setFimPlay] = React.useState(false);
 
@@ -601,6 +601,7 @@ function Player({ radioIdpb }) {
             <Box width="90%" maxWidth={500} mt={-3}>
               <Select
                 menuPlacement="top"
+                instanceId
                 styles={customStyles}
                 defaultValue={categoria}
                 onChange={(e) => {
