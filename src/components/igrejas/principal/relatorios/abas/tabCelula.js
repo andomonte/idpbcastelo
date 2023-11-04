@@ -109,7 +109,9 @@ export default function TabCelula({
                 ) : (
                   <Box
                     color={
-                      row.status.toUpperCase() === 'ATIVO' ? 'black' : 'blue'
+                      row.status && row.status.toUpperCase() === 'ATIVO'
+                        ? 'black'
+                        : 'blue'
                     }
                   >
                     {row.Nome}

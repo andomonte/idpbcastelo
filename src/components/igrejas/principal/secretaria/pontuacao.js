@@ -53,6 +53,7 @@ function createCelulaSelecionada(
   percDiscipulado,
   percLeituraBiblica,
   percPresentes,
+  planejamento,
 ) {
   return {
     Celula,
@@ -77,6 +78,7 @@ function createCelulaSelecionada(
     percDiscipulado,
     percLeituraBiblica,
     percPresentes,
+    planejamento,
   };
 }
 function getPreviousMonday(date) {
@@ -264,6 +266,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
       'percDiscipulado',
       'percLeituraBiblica',
       'percPresentes',
+      'planejamento',
     ];
     if (detalhesPontos.length) {
       const arrayTeste = [];
@@ -277,35 +280,41 @@ export default function Pontuacao({ perfilUser, parametros }) {
       }
       let qytMembros = 0;
 
-      // const nan = String(arrayTeste[15]);
+      const nan = String(arrayTeste[15]);
+      if (nan === 'NaN') {
+        qytMembros = await api
+          .post('/api/consultaCelulaParaPontos', {
+            semanaI: semana,
+            semanaF,
+            anoI,
+            anoF,
+            Celula: celulaSelecionada.Celula,
+          })
+          .then((response) => {
+            if (response) {
+              if (response.data.length) {
+                const qytMembrosF = JSON.parse(
+                  response.data[0].NomesMembros,
+                ).length;
 
-      qytMembros = await api
-        .post('/api/consultaCelulaParaPontos', {
-          semanaI: semana,
-          semanaF,
-          anoI,
-          anoF,
-          Celula: celulaSelecionada.Celula,
-        })
-        .then((response) => {
-          if (response) {
-            if (response.data.length) {
-              const qytMembrosF = JSON.parse(
-                response.data[0].NomesMembros,
-              ).length;
-
-              return qytMembrosF;
+                return qytMembrosF;
+              }
+              return 0;
             }
             return 0;
-          }
-          return 0;
-        })
-        .catch((erro) => {
-          console.log(erro); //  updateFile(uploadedFile.id, { error: true });
-          return 0;
-        });
-      setQtdMembros(qytMembros);
-
+          })
+          .catch((erro) => {
+            console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+            return 0;
+          });
+        setQtdMembros(qytMembros);
+      } else {
+        const qytMembrosTemp = Number(
+          (arrayTeste[7] * 10) / arrayTeste[19],
+        ).toFixed(0);
+        setQtdMembros(qytMembrosTemp);
+      }
+      console.log('array', arrayTeste, detalhesPontos);
       setPontosCelulaSelecionada(
         createCelulaSelecionada(
           celulaSelecionada.Celula,
@@ -350,6 +359,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
             : parseFloat(
                 parseFloat((arrayTeste[7] * 100) / qytMembros).toFixed(2) / 10,
               ).toFixed(2),
+          String(arrayTeste[20]) !== 'NaN' ? arrayTeste[20] : 0,
         ),
       );
       if (openD === 1) setOpenDialog1(true);
