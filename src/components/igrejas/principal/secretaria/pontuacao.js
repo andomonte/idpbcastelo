@@ -314,7 +314,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
         ).toFixed(0);
         setQtdMembros(qytMembrosTemp);
       }
-      console.log('array', arrayTeste, detalhesPontos);
+
       setPontosCelulaSelecionada(
         createCelulaSelecionada(
           celulaSelecionada.Celula,
@@ -1116,10 +1116,6 @@ export default function Pontuacao({ perfilUser, parametros }) {
                                   : 'red'
                               }
                             >
-                              {console.log(
-                                'percCelula',
-                                PontosCelulaSelecionada.percPresentes,
-                              )}
                               {PontosCelulaSelecionada.percPresentes
                                 ? Number(
                                     PontosCelulaSelecionada.percPresentes,

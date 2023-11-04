@@ -303,7 +303,7 @@ export default function TabCelula({
                       justifyContent="end"
                       color={corIgreja.principal}
                     >
-                      {pontosF.RelCelebracao.toFixed(2)} Pts
+                      {pontosF.RelDiscipulado.toFixed(2)} Pts
                     </Box>
                   </Box>
                 </Box>

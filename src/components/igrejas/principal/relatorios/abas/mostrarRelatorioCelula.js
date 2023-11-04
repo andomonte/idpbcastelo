@@ -181,7 +181,7 @@ function RelCelula({
   const [nomesVisitantes, setNomesVisitantes] = React.useState(
     visitantesCelula || [],
   );
-  const [dadosCelula] = React.useState(
+  const [dadosCelula, setDadosCelula] = React.useState(
     dadosSem && dadosSem.id
       ? JSON.parse(dadosSem.NomesMembros)
       : nomesCelulas.map((row) => createData(row.Nome, false, row.Situacao)),
@@ -571,6 +571,24 @@ function RelCelula({
           return 0;
         }),
       );
+    const newValorMembros = [];
+    if (dadosCelula.length && !dadosCelula[0].status) {
+      dadosCelula.map((val, index) => {
+        nomesCelulas.map((row) => {
+          if (val.Nome === row.Nome)
+            newValorMembros[index] = createData(
+              val.Nome,
+              val.Presenca,
+              row.Situacao,
+            );
+          return 0;
+        });
+
+        return 0;
+      });
+
+      if (newValorMembros.length) setDadosCelula(newValorMembros);
+    }
   }, [dadosCelula]);
 
   React.useEffect(() => {

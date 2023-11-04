@@ -105,13 +105,21 @@ export default function TabCelula({
             <Box display="flex" width="100%">
               <Box width="100%" display="flex" alignItems="center" ml={1}>
                 {row.Nome.length > 30 ? (
-                  row.Nome.substring(0, row.Nome.lastIndexOf(' '))
+                  <Box
+                    color={
+                      row.status && row.status.toUpperCase() === 'NOVO'
+                        ? 'blue'
+                        : 'black'
+                    }
+                  >
+                    {row.Nome.substring(0, row.Nome.lastIndexOf(' '))}
+                  </Box>
                 ) : (
                   <Box
                     color={
-                      row.status && row.status.toUpperCase() === 'ATIVO'
-                        ? 'black'
-                        : 'blue'
+                      row.status && row.status.toUpperCase() === 'NOVO'
+                        ? 'blue'
+                        : 'black'
                     }
                   >
                     {row.Nome}

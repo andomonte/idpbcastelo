@@ -29,8 +29,8 @@ import TabCelebracao from './tabCelebracao';
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
 
-function createData(Nome, Presenca) {
-  return { Nome, Presenca };
+function createData(Nome, Presenca, status) {
+  return { Nome, Presenca, status };
 }
 
 function createCelebracao(
@@ -170,10 +170,10 @@ function RelCelula({
   const [nomesVisitantes, setNomesVisitantes] = React.useState(
     visitantesCelula || [],
   );
-  const [dadosCelula] = React.useState(
+  const [dadosCelula, setDadosCelula] = React.useState(
     dadosSem && dadosSem.id
       ? JSON.parse(dadosSem.NomesMembros)
-      : nomesCelulas.map((row) => createData(row.Nome, false)),
+      : nomesCelulas.map((row) => createData(row.Nome, false, row.Situacao)),
   );
 
   const qtyPresIni = dadosCelula.filter((val) => val.Presenca === 'igreja');
@@ -517,6 +517,25 @@ function RelCelula({
           return 0;
         }),
       );
+
+    const newValorMembros = [];
+    if (dadosCelula.length && !dadosCelula[0].status) {
+      dadosCelula.map((val, index) => {
+        nomesCelulas.map((row) => {
+          if (val.Nome === row.Nome)
+            newValorMembros[index] = createData(
+              val.Nome,
+              val.Presenca,
+              row.Situacao,
+            );
+          return 0;
+        });
+
+        return 0;
+      });
+
+      if (newValorMembros.length) setDadosCelula(newValorMembros);
+    }
   }, [dadosCelula]);
 
   React.useEffect(() => {
