@@ -4,7 +4,13 @@ import prisma from 'src/lib/prisma';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
-function Sec({ userIgrejas, celulas, rolMembros, LiderancaCelulas }) {
+function Sec({
+  parametros,
+  userIgrejas,
+  celulas,
+  rolMembros,
+  LiderancaCelulas,
+}) {
   const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
   const router = useRouter();
   const perfilUser = router.query;
@@ -28,6 +34,7 @@ function Sec({ userIgrejas, celulas, rolMembros, LiderancaCelulas }) {
       setPerfilUserF(result);
     }
   }, []);
+
   return (
     <div>
       {perfilUserF && (
@@ -38,6 +45,7 @@ function Sec({ userIgrejas, celulas, rolMembros, LiderancaCelulas }) {
           title="IDPB-CELULAS"
           perfilUser={perfilUserF}
           rolMembros={rolMembros}
+          parametros={parametros}
         />
       )}
     </div>
@@ -78,11 +86,14 @@ export const getStaticProps = async () => {
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });
-
+  const parametros = await prisma.desempenho.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   return {
     props: {
       userIgrejas: JSON.parse(JSON.stringify(userIgrejas)),
       celulas: JSON.parse(JSON.stringify(celulas)),
+      parametros: JSON.parse(JSON.stringify(parametros)),
       rolMembros: JSON.parse(
         JSON.stringify(
           rolMembros,

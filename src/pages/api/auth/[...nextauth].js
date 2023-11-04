@@ -59,13 +59,12 @@ const options = {
             const nascimento = moment
               .utc(user[0].Nascimento)
               .format('DD/MM/YYYY');
-            const nascimento2 = moment(user[0].Nascimento).format('DD/MM/YYYY');
-          
+
             const ano = nascimento.substring(6, 10);
-      
+
             const mes = nascimento.substring(3, 5);
             const dia = nascimento.substring(0, 2);
-   
+
             /* const ano = user[0].Nascimento.getFullYear();
            const mes =
               user[0].Nascimento.getMonth() + 1 > 9

@@ -17,7 +17,7 @@ import {
 import api from 'src/components/services/api';
 import Slide from '@mui/material/Slide';
 import Dialog from '@mui/material/Dialog';
-import Grafico from './graf';
+import Grafico from './grafico';
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -86,7 +86,7 @@ function getPreviousMonday(date) {
 
   return previousMonday;
 }
-export default function Pontuacao({ perfilUser }) {
+export default function Pontuacao({ perfilUser, parametros }) {
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
@@ -138,7 +138,7 @@ export default function Pontuacao({ perfilUser }) {
     //   setSelectedDate();
     setIsPickerOpen(true);
   };
-
+  const [qtdMembros, setQtdMembros] = React.useState(0);
   const [selectedDate2, setSelectedDate2] = React.useState(dataAtual2);
   const [inputValue2, setInputValue2] = React.useState(
     moment(dataAtual2).format('DD/MM/YYYY'),
@@ -277,39 +277,34 @@ export default function Pontuacao({ perfilUser }) {
       }
       let qytMembros = 0;
 
-      const nan = String(arrayTeste[15]);
+      // const nan = String(arrayTeste[15]);
 
-      if (nan === 'NaN') {
-        qytMembros = await api
-          .post('/api/consultaCelulaParaPontos', {
-            semanaI: semana,
-            semanaF,
-            anoI,
-            anoF,
-            Celula: celulaSelecionada.Celula,
-          })
-          .then((response) => {
-            if (response) {
-              if (response.data.length) {
-                const qytMembrosF = JSON.parse(
-                  response.data[0].NomesMembros,
-                ).length;
+      qytMembros = await api
+        .post('/api/consultaCelulaParaPontos', {
+          semanaI: semana,
+          semanaF,
+          anoI,
+          anoF,
+          Celula: celulaSelecionada.Celula,
+        })
+        .then((response) => {
+          if (response) {
+            if (response.data.length) {
+              const qytMembrosF = JSON.parse(
+                response.data[0].NomesMembros,
+              ).length;
 
-                return qytMembrosF;
-              }
-              return 0;
+              return qytMembrosF;
             }
             return 0;
-          })
-          .catch((erro) => {
-            console.log(erro); //  updateFile(uploadedFile.id, { error: true });
-            return 0;
-          });
-        console.log(
-          'aqui',
-          parseFloat((arrayTeste[4] * 100) / qytMembros).toFixed(2),
-        );
-      }
+          }
+          return 0;
+        })
+        .catch((erro) => {
+          console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+          return 0;
+        });
+      setQtdMembros(qytMembros);
 
       setPontosCelulaSelecionada(
         createCelulaSelecionada(
@@ -667,7 +662,7 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              POSSÍVEIS
+                              MÍNIMO
                             </Box>
                           </Box>
                           <Box
@@ -707,7 +702,8 @@ export default function Pontuacao({ perfilUser }) {
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
                                 PontosCelulaSelecionada.Relatorio >=
-                                PontosCelulaSelecionada.semanas * 1
+                                PontosCelulaSelecionada.semanas *
+                                  (parametros[0].Relatorios / 100).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -719,7 +715,8 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 1}
+                              {PontosCelulaSelecionada.semanas *
+                                (parametros[0].Relatorios / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -760,7 +757,8 @@ export default function Pontuacao({ perfilUser }) {
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
                                 PontosCelulaSelecionada.RelCelulaFeito >=
-                                PontosCelulaSelecionada.semanas * 1
+                                PontosCelulaSelecionada.semanas *
+                                  (parametros[0].Relatorios / 100).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -772,7 +770,8 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 1}
+                              {PontosCelulaSelecionada.semanas *
+                                (parametros[0].Relatorios / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -812,7 +811,8 @@ export default function Pontuacao({ perfilUser }) {
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
                                 PontosCelulaSelecionada.RelCelebracao >=
-                                PontosCelulaSelecionada.semanas * 1
+                                PontosCelulaSelecionada.semanas *
+                                  (parametros[0].Relatorios / 100).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -824,7 +824,8 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 1}
+                              {PontosCelulaSelecionada.semanas *
+                                (parametros[0].Relatorios / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -865,7 +866,8 @@ export default function Pontuacao({ perfilUser }) {
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
                                 PontosCelulaSelecionada.RelDiscipulado >=
-                                PontosCelulaSelecionada.semanas * 1
+                                PontosCelulaSelecionada.semanas *
+                                  (parametros[0].Relatorios / 100).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -877,7 +879,8 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 1}
+                              {PontosCelulaSelecionada.semanas *
+                                (parametros[0].Relatorios / 100).toFixed(2)}
                             </Box>
                           </Box>
 
@@ -918,7 +921,8 @@ export default function Pontuacao({ perfilUser }) {
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
                                 PontosCelulaSelecionada.Pontualidade >=
-                                PontosCelulaSelecionada.semanas * 1
+                                PontosCelulaSelecionada.semanas *
+                                  (parametros[0].Relatorios / 100).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -930,7 +934,8 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 1}
+                              {PontosCelulaSelecionada.semanas *
+                                (parametros[0].Relatorios / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -975,7 +980,9 @@ export default function Pontuacao({ perfilUser }) {
                                   PontosCelulaSelecionada.RelCelebracao +
                                   PontosCelulaSelecionada.RelDiscipulado +
                                   PontosCelulaSelecionada.Pontualidade >=
-                                PontosCelulaSelecionada.semanas * 5
+                                PontosCelulaSelecionada.semanas *
+                                  5 *
+                                  (parametros[0].Relatorios / 100).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -991,7 +998,9 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 5}
+                              {PontosCelulaSelecionada.semanas *
+                                5 *
+                                (parametros[0].Relatorios / 100).toFixed(2)}
                             </Box>
                           </Box>
                         </ListItemText>
@@ -1047,7 +1056,7 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              POSSÍVEIS
+                              MÍNIMO
                             </Box>
                           </Box>
                           <Box
@@ -1088,19 +1097,33 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.percPresentes &&
                                 PontosCelulaSelecionada.percPresentes >=
-                                  PontosCelulaSelecionada.semanas * 8
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].PresCelulas * 10) /
+                                      100
+                                    ).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
                             >
-                              {PontosCelulaSelecionada.percPresentes || '-'}
+                              {console.log(
+                                'percCelula',
+                                PontosCelulaSelecionada.percPresentes,
+                              )}
+                              {PontosCelulaSelecionada.percPresentes
+                                ? Number(
+                                    PontosCelulaSelecionada.percPresentes,
+                                  ).toFixed(2)
+                                : '-'}
                             </Box>
                             <Box
                               width="20%"
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 10}
+                              {PontosCelulaSelecionada.semanas *
+                                10 *
+                                (parametros[0].PresCelulas / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -1142,13 +1165,19 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.percCelebracaoIgreja &&
                                 PontosCelulaSelecionada.percCelebracaoIgreja >=
-                                  PontosCelulaSelecionada.semanas * 8
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].PresCelebracao * 10) /
+                                      100
+                                    ).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
                             >
                               {PontosCelulaSelecionada.percCelebracaoIgreja
-                                ? PontosCelulaSelecionada.percCelebracaoIgreja
+                                ? Number(
+                                    PontosCelulaSelecionada.percCelebracaoIgreja,
+                                  ).toFixed(2)
                                 : '-'}
                             </Box>
                             <Box
@@ -1156,7 +1185,9 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 10}
+                              {PontosCelulaSelecionada.semanas *
+                                10 *
+                                (parametros[0].PresCelebracao / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -1197,7 +1228,9 @@ export default function Pontuacao({ perfilUser }) {
                               color="black"
                             >
                               {PontosCelulaSelecionada.percCelebracaoLive
-                                ? PontosCelulaSelecionada.percCelebracaoLive
+                                ? Number(
+                                    PontosCelulaSelecionada.percCelebracaoLive,
+                                  ).toFixed(2)
                                 : '-'}
                             </Box>
                             <Box
@@ -1205,7 +1238,7 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 5}
+                              -
                             </Box>
                           </Box>
                           <Box
@@ -1247,13 +1280,19 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.percDiscipulado &&
                                 PontosCelulaSelecionada.percDiscipulado >=
-                                  PontosCelulaSelecionada.semanas * 5
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Discipulado * 10) /
+                                      100
+                                    ).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
                             >
                               {PontosCelulaSelecionada.percDiscipulado
-                                ? PontosCelulaSelecionada.percDiscipulado
+                                ? Number(
+                                    PontosCelulaSelecionada.percDiscipulado,
+                                  ).toFixed(2)
                                 : '-'}
                             </Box>
                             <Box
@@ -1261,7 +1300,11 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 10}
+                              {PontosCelulaSelecionada.semanas *
+                                (
+                                  (parametros[0].Discipulado * 10) /
+                                  100
+                                ).toFixed(2)}
                             </Box>
                           </Box>
 
@@ -1303,13 +1346,19 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.percLeituraBiblica &&
                                 PontosCelulaSelecionada.percLeituraBiblica >=
-                                  PontosCelulaSelecionada.semanas * 8
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Leitura * 10) /
+                                      100
+                                    ).toFixed(2)
                                   ? 'blue'
                                   : 'red'
                               }
                             >
                               {PontosCelulaSelecionada.percLeituraBiblica
-                                ? PontosCelulaSelecionada.percLeituraBiblica
+                                ? Number(
+                                    PontosCelulaSelecionada.percLeituraBiblica,
+                                  ).toFixed(2)
                                 : '-'}
                             </Box>
                             <Box
@@ -1317,7 +1366,8 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 10}
+                              {PontosCelulaSelecionada.semanas *
+                                ((parametros[0].Leitura * 10) / 100).toFixed(2)}
                             </Box>
                           </Box>
                           <Box
@@ -1374,33 +1424,39 @@ export default function Pontuacao({ perfilUser }) {
                                       PontosCelulaSelecionada.percLeituraBiblica,
                                     ),
                                 ).toFixed(2) >=
-                                PontosCelulaSelecionada.semanas * 29 // pontos 80% celula, celebração e leitura - online + 50% do discipulado
-                                  ? 'blue'
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].PresCelulas * 10) /
+                                      100
+                                    ).toFixed(2),
+                                ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].PresCelebracao * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].Discipulado * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].Leitura * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  )
+                                  ? // pontos 80% celula, celebração e leitura - online + 50% do discipulado
+                                    'blue'
                                   : 'red'
                               }
                             >
-                              {console.log(
-                                '',
-                                PontosCelulaSelecionada.semanas,
-                                PontosCelulaSelecionada.semanas * 29,
-                                parseFloat(
-                                  parseFloat(
-                                    PontosCelulaSelecionada.percCelebracaoIgreja,
-                                  ) +
-                                    parseFloat(
-                                      PontosCelulaSelecionada.percCelebracaoLive,
-                                    ) +
-                                    parseFloat(
-                                      PontosCelulaSelecionada.percDiscipulado,
-                                    ) +
-                                    parseFloat(
-                                      PontosCelulaSelecionada.percPresentes,
-                                    ) +
-                                    parseFloat(
-                                      PontosCelulaSelecionada.percLeituraBiblica,
-                                    ),
-                                ).toFixed(2),
-                              )}
                               {parseFloat(
                                 parseFloat(
                                   PontosCelulaSelecionada.percCelebracaoIgreja,
@@ -1424,7 +1480,34 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              {PontosCelulaSelecionada.semanas * 40}
+                              {parseFloat(
+                                PontosCelulaSelecionada.semanas *
+                                  (
+                                    (parametros[0].PresCelulas * 10) /
+                                    100
+                                  ).toFixed(2),
+                              ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].PresCelebracao * 10) /
+                                      100
+                                    ).toFixed(2),
+                                ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Discipulado * 10) /
+                                      100
+                                    ).toFixed(2),
+                                ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Leitura * 10) /
+                                      100
+                                    ).toFixed(2),
+                                )}
                             </Box>
                           </Box>
                         </ListItemText>
@@ -1480,7 +1563,7 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              POSSÍVEIS
+                              MÍNIMO
                             </Box>
                           </Box>
                           <Box
@@ -1521,7 +1604,11 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.VisitantesCelula &&
                                 PontosCelulaSelecionada.VisitantesCelula >=
-                                  PontosCelulaSelecionada.semanas * 1
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].VisCelula * qtdMembros) /
+                                      100
+                                    ).toFixed(0)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1533,7 +1620,10 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              -
+                              {(
+                                (parametros[0].VisCelula * qtdMembros) /
+                                100
+                              ).toFixed(0)}
                             </Box>
                           </Box>
                           <Box
@@ -1575,7 +1665,12 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.VisitantesCelebracao &&
                                 PontosCelulaSelecionada.VisitantesCelebracao >=
-                                  PontosCelulaSelecionada.semanas * 1
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].VisCelebracao *
+                                        qtdMembros) /
+                                      100
+                                    ).toFixed(0)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1589,7 +1684,10 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              -
+                              {(
+                                (parametros[0].VisCelebracao * qtdMembros) /
+                                100
+                              ).toFixed(0)}
                             </Box>
                           </Box>
                           <Box
@@ -1630,7 +1728,11 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.Visitas &&
                                 PontosCelulaSelecionada.Visitas >=
-                                  PontosCelulaSelecionada.semanas * 1
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Visitas * qtdMembros) /
+                                      100
+                                    ).toFixed(0)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1644,7 +1746,10 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              -
+                              {(
+                                (parametros[0].Visitas * qtdMembros) /
+                                100
+                              ).toFixed(0)}
                             </Box>
                           </Box>
                           <Box
@@ -1686,7 +1791,11 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.Eventos &&
                                 PontosCelulaSelecionada.Eventos >=
-                                  PontosCelulaSelecionada.semanas * 1
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Eventos * qtdMembros) /
+                                      100
+                                    ).toFixed(0)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1700,7 +1809,10 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              -
+                              {(
+                                (parametros[0].Eventos * qtdMembros) /
+                                100
+                              ).toFixed(0)}
                             </Box>
                           </Box>
 
@@ -1742,21 +1854,94 @@ export default function Pontuacao({ perfilUser }) {
                               color={
                                 PontosCelulaSelecionada.NovoMembro &&
                                 PontosCelulaSelecionada.NovoMembro >=
-                                  PontosCelulaSelecionada.semanas * 10
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].NovoMembro * qtdMembros) /
+                                      100
+                                    ).toFixed(0)
                                   ? 'blue'
                                   : 'red'
                               }
                             >
                               {PontosCelulaSelecionada.NovoMembro
                                 ? PontosCelulaSelecionada.NovoMembro
-                                : '-'}
+                                : '0'}
                             </Box>
                             <Box
                               width="20%"
                               display="flex"
                               justifyContent="center"
                             >
-                              -
+                              {(
+                                (parametros[0].NovoMembro * qtdMembros) /
+                                100
+                              ).toFixed(0)}
+                            </Box>
+                          </Box>
+                          <Box
+                            height={40}
+                            style={{
+                              borderBottom: '1px solid #a1887f',
+                              borderLeft: '1px solid #a1887f',
+                              borderRight: '1px solid #a1887f',
+
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginLeft: 0,
+                              fontFamily: 'Fugaz One',
+                              fontSize: '12px',
+                              width: '100%',
+                              color: 'black',
+
+                              background: '#f0f0f0',
+                            }}
+                          >
+                            <Box
+                              width="60%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                            >
+                              PLANEJAMENTO DA CÉLULA
+                            </Box>
+
+                            <Box
+                              width="20%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              sx={{ borderRight: '1px solid #a1887f' }}
+                              color={
+                                PontosCelulaSelecionada.Planejamento &&
+                                PontosCelulaSelecionada.Planejamento >=
+                                  (
+                                    (parametros[0].Planejamento *
+                                      PontosCelulaSelecionada.semanas *
+                                      10) /
+                                    100
+                                  ).toFixed(0)
+                                  ? 'blue'
+                                  : 'red'
+                              }
+                            >
+                              {PontosCelulaSelecionada.Planejamento
+                                ? PontosCelulaSelecionada.Planejamento
+                                : '0'}
+                            </Box>
+                            <Box
+                              width="20%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              {(
+                                (parametros[0].Planejamento *
+                                  PontosCelulaSelecionada.semanas *
+                                  10) /
+                                100
+                              ).toFixed(0)}
                             </Box>
                           </Box>
                           <Box
@@ -1801,7 +1986,11 @@ export default function Pontuacao({ perfilUser }) {
                                   PontosCelulaSelecionada.Visitas +
                                   PontosCelulaSelecionada.Eventos +
                                   PontosCelulaSelecionada.NovoMembro >=
-                                PontosCelulaSelecionada.semanas * 5
+                                PontosCelulaSelecionada.semanas *
+                                  (
+                                    (parametros[0].NovoMembro * qtdMembros) /
+                                    100
+                                  ).toFixed(0)
                                   ? 'blue'
                                   : 'red'
                               }
@@ -1817,7 +2006,36 @@ export default function Pontuacao({ perfilUser }) {
                               display="flex"
                               justifyContent="center"
                             >
-                              -
+                              {Number(
+                                (
+                                  (parametros[0].VisCelula * qtdMembros) /
+                                  100
+                                ).toFixed(0),
+                              ) +
+                                Number(
+                                  (
+                                    (parametros[0].VisCelebracao * qtdMembros) /
+                                    100
+                                  ).toFixed(0),
+                                ) +
+                                Number(
+                                  (
+                                    (parametros[0].Visitas * qtdMembros) /
+                                    100
+                                  ).toFixed(0),
+                                ) +
+                                Number(
+                                  (
+                                    (parametros[0].Eventos * qtdMembros) /
+                                    100
+                                  ).toFixed(0),
+                                ) +
+                                Number(
+                                  (
+                                    (parametros[0].NovoMembro * qtdMembros) /
+                                    100
+                                  ).toFixed(0),
+                                )}
                             </Box>
                           </Box>
                           <Box
@@ -2022,7 +2240,11 @@ export default function Pontuacao({ perfilUser }) {
             <TableContainer
               sx={{ background: 'white', width: '100%', height: '90%' }}
             >
-              <Grafico dados={PontosCelulaSelecionada} />
+              <Grafico
+                parametros={parametros}
+                dados={PontosCelulaSelecionada}
+                qtdMembros={qtdMembros}
+              />
             </TableContainer>
           </Box>
         </Box>

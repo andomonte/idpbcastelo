@@ -717,3 +717,18 @@ model TB_REL_FECHAMENTO {
 
   @@id([CAT_ID, GC_ID, mesReferencia, anoReferencia], map: "PK_TB_REL_FECHAMENTO")
 }
+
+model desempenho {
+  id             Int  @id(map: "PK_desempenho")
+  Relatorios     Int?
+  PresCelulas    Int?
+  PresCelebracao Int?
+  Discipulado    Int?
+  Leitura        Int?
+  VisCelula      Int?
+  VisCelebracao  Int?
+  Visitas        Int?
+  Eventos        Int?
+  Planejamento   Int?
+  NovoMembro     Int?
+}

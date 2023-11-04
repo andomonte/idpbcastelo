@@ -134,7 +134,7 @@ function TabPanel(props) {
   );
 }
 
-function Secretaria({ perfilUser, userIgrejas, title }) {
+function Secretaria({ parametros, perfilUser, userIgrejas, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -320,7 +320,7 @@ function Secretaria({ perfilUser, userIgrejas, title }) {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {perfilUser.Funcao === 'PastorDistrito' ? (
-              <Pontuacao perfilUser={perfilUser} />
+              <Pontuacao parametros={parametros} perfilUser={perfilUser} />
             ) : null}
           </TabPanel>
         </main>

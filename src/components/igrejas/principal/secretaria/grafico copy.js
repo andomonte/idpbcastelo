@@ -2,8 +2,8 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Box } from '@material-ui/core';
 
-export default function Grafico({ qtdMembros, dados, parametros }) {
-  /* const data = {
+export default function Grafico({ dados }) {
+  const data = {
     labels: [
       'Pres-Célula',
       'Pres-Culto',
@@ -49,38 +49,6 @@ export default function Grafico({ qtdMembros, dados, parametros }) {
         borderWidth: 1,
       },
     ],
-  }; */
-  const labels = [
-    'Pres-Célula',
-    'Pres-Culto',
-    'Discipulado',
-    'Leitura',
-    'Vis-Célula',
-    'Vis-Culto',
-    'Visitas',
-    'Eventos',
-  ];
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: [dados.percPresentes],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-      {
-        label: 'Dataset 2',
-        data: [parametros.presCelula],
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      },
-    ],
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
   };
   return (
     <Box width="100%">

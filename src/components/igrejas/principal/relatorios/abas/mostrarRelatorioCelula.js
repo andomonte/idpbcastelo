@@ -31,8 +31,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
 
-function createData(Nome, Presenca) {
-  return { Nome, Presenca };
+function createData(Nome, Presenca, status) {
+  return { Nome, Presenca, status };
 }
 function createRelCelula(Rol, Nome, Presenca) {
   return {
@@ -106,6 +106,8 @@ function createPontuacao(
   percCelebracaoLive,
   percDiscipulado,
   percLeituraBiblica,
+  qytMembros,
+  planejamento,
 ) {
   return {
     RelCelulaFeito, // indeca que houve célula
@@ -128,6 +130,8 @@ function createPontuacao(
     percCelebracaoLive,
     percDiscipulado,
     percLeituraBiblica,
+    qytMembros,
+    planejamento,
   };
 }
 
@@ -149,6 +153,7 @@ function RelCelula({
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
+
   const dataEscolhida2 = PegaData(semanaEnviada, anoEnviado);
   const dataFinal =
     dataEnviada !== '-' ? FormatoData(dataEnviada) : dataEscolhida2;
@@ -179,7 +184,7 @@ function RelCelula({
   const [dadosCelula] = React.useState(
     dadosSem && dadosSem.id
       ? JSON.parse(dadosSem.NomesMembros)
-      : nomesCelulas.map((row) => createData(row.Nome, false)),
+      : nomesCelulas.map((row) => createData(row.Nome, false, row.Situacao)),
   );
 
   const [openErro, setOpenErro] = React.useState(false);
@@ -202,8 +207,8 @@ function RelCelula({
   const [pFinal, setPFinal] = React.useState({});
   const [pTotalAtualRank, setPTotalAtualRank] = React.useState(0);
   const [pTotalAtual, setPTotalAtual] = React.useState(0);
-
   const [adultos, setAdultos] = React.useState(0);
+  const [planejamento, setPlanejamento] = React.useState(0);
   const [criancas, setCriancas] = React.useState(0);
 
   const [AnoAtual, setAnoAtual] = React.useState(anoEnviado);
@@ -318,6 +323,7 @@ function RelCelula({
             val.Distrito === Number(perfilUser.Distrito) &&
             String(val.Data.slice(0, 4)) === String(AnoAtual),
         );
+
         if (relatorio && relatorio.length) {
           const dataAgora = new Date();
 
@@ -336,7 +342,8 @@ function RelCelula({
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
           const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-          setMembrosCelulaHj(nomesMembros.length);
+          const semNovos = nomesMembros.filter((val) => val.status !== 'NOVO');
+          setMembrosCelulaHj(semNovos.length);
           let qtyVisCriancas = 0;
           let qtyVisitants = 0;
 
@@ -367,6 +374,9 @@ function RelCelula({
 
           setContagem(false);
         } else {
+          //  const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
+          const semNovos = dadosCelula.filter((val) => val.status !== 'NOVO');
+          setMembrosCelulaHj(semNovos.length);
           setRelPresentes(
             dadosCelula.sort((a, b) => {
               if (a.Nome > b.Nome) return 1;
@@ -433,8 +443,8 @@ function RelCelula({
           // setCheckRelatorio(true); // avisa que tem relatório nessa data
 
           const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
-
-          setMembrosCelulaHj(nomesMembros.length);
+          const semNovos = nomesMembros.filter((val) => val.status !== 'NOVO');
+          setMembrosCelulaHj(semNovos.length);
           let qtyVisCriancas = 0;
           let qtyVisitants = 0;
 
@@ -503,8 +513,9 @@ function RelCelula({
 
       if (relatorio && relatorio.length) {
         const nomesMembros = JSON.parse(relatorio[0].NomesMembros);
+        const semNovos = nomesMembros.filter((val) => val.status !== 'NOVO');
 
-        setMembrosCelula(nomesMembros.length);
+        setMembrosCelula(semNovos.length);
       }
     }
     if (errorCelulaPassada) return <div>An error occured.</div>;
@@ -527,6 +538,28 @@ function RelCelula({
         setSemana(semanaExata(selectedDate));
       }
     }
+    const anoI = selectedDate.getFullYear();
+
+    api
+      .post('/api/consultaCelulaParaPlanejamento', {
+        semana: semanaExata(selectedDate),
+        anoI,
+        Celula: Number(perfilUser.Celula),
+        Distrito: Number(perfilUser.Distrito),
+      })
+      .then((response) => {
+        if (response) {
+          if (response.data.length) {
+            setPlanejamento(response.data.length * 10);
+          } else setPlanejamento(0);
+          return 0;
+        }
+        return 0;
+      })
+      .catch((erro) => {
+        console.log(erro); //  updateFile(uploadedFile.id, { error: true });
+        return 0;
+      });
   }, [selectedDate]);
 
   React.useEffect(() => {
@@ -614,7 +647,7 @@ function RelCelula({
     const pontosEventos = contEventos;
     let pontosNovoMembro = 0;
     const pontosVisitas = contVisitas;
-
+    const pontosPlanejamento = 0;
     let pontosRelCelebracao = 0;
     let pontosCelebracaoIgreja = 0;
     let pontosCelebracaoLive = 0;
@@ -627,9 +660,15 @@ function RelCelula({
     let pontosTotalAtualRank = 0;
     let pontosPontualidade = 0;
     if (membrosCelula > 0 && membrosCelulaHj > 0) {
-      if (membrosCelula > membrosCelulaHj) pontosNovoMembro = -5; // SE PERDERU PERDE 5 PONTOS
-      if (membrosCelula < membrosCelulaHj) pontosNovoMembro = 5; // SE PERDERU PERDE 5 PONTOS
+      //      if (membrosCelula > membrosCelulaHj) pontosNovoMembro = -5; // SE PERDERU PERDE 5 PONTOS
+      if (membrosCelula < membrosCelulaHj) pontosNovoMembro = 10; // SE PERDERU PERDE 5 PONTOS
     }
+    console.log(
+      'membrosCelula',
+      pontosNovoMembro,
+      membrosCelula,
+      membrosCelulaHj,
+    );
     if (pontosAtual.length) {
       pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 
@@ -702,7 +741,8 @@ function RelCelula({
           pontosRelDiscipulado +
           Number(pontosNovoMembro) +
           Number(percDiscipulado) +
-          Number(percLeituraBiblica),
+          Number(percLeituraBiblica) +
+          Number(planejamento),
       ).toFixed(2);
 
     if (pontosTotalAtualRank === 0)
@@ -721,7 +761,8 @@ function RelCelula({
           pontosVisitantesCelebracao +
           pontosRelDiscipulado +
           Number(percDiscipulado) +
-          Number(percLeituraBiblica),
+          Number(percLeituraBiblica) +
+          Number(planejamento),
       ).toFixed(2);
 
     const TotalPercentual = pontosTotalAtual;
@@ -749,6 +790,8 @@ function RelCelula({
       Number(percCelebracaoLive),
       Number(percDiscipulado),
       Number(percLeituraBiblica),
+      Number(relPresentes.length),
+      Number(planejamento),
     );
 
     setPFinal(PontuacaoFinal);
