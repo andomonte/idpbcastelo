@@ -647,7 +647,7 @@ function RelCelula({
     const pontosEventos = contEventos;
     let pontosNovoMembro = 0;
     const pontosVisitas = contVisitas;
-    const pontosPlanejamento = 0;
+
     let pontosRelCelebracao = 0;
     let pontosCelebracaoIgreja = 0;
     let pontosCelebracaoLive = 0;
@@ -663,12 +663,7 @@ function RelCelula({
       //      if (membrosCelula > membrosCelulaHj) pontosNovoMembro = -5; // SE PERDERU PERDE 5 PONTOS
       if (membrosCelula < membrosCelulaHj) pontosNovoMembro = 10; // SE PERDERU PERDE 5 PONTOS
     }
-    console.log(
-      'membrosCelula',
-      pontosNovoMembro,
-      membrosCelula,
-      membrosCelulaHj,
-    );
+
     if (pontosAtual.length) {
       pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
 

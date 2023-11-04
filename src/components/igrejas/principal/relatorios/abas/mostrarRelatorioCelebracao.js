@@ -101,6 +101,8 @@ function createPontuacao(
   percCelebracaoLive,
   percDiscipulado,
   percLeituraBiblica,
+  qytMembros,
+  planejamento,
 ) {
   return {
     RelCelulaFeito, // indeca que houve célula
@@ -123,6 +125,8 @@ function createPontuacao(
     percCelebracaoLive,
     percDiscipulado,
     percLeituraBiblica,
+    qytMembros,
+    planejamento,
   };
 }
 
@@ -628,6 +632,7 @@ function RelCelula({
     let pontosLeituraBiblia = 0;
     let pontosTotalAtual = 0;
     let pontosTotalAtualRank = 0;
+    let planejamento = 0;
 
     if (pontosAtual.length) {
       pontuacaoAtual = JSON.parse(pontosAtual[0].Pontuacao);
@@ -656,6 +661,7 @@ function RelCelula({
         pontosNovoMembro = pontuacaoAtual.NovoMembro;
         pontosVisitas = pontuacaoAtual.Visitas;
         pontosVisitantesCelula = pontuacaoAtual.VisitantesCelula;
+        planejamento = pontuacaoAtual.planejamento;
         //        pontosCelebracaoIgreja = pontuacaoAtual.CelebracaoIgreja;
         //        pontosCelebracaoLive = pontuacaoAtual.CelebracaoLive;
       }
@@ -702,7 +708,8 @@ function RelCelula({
           pontosRelDiscipulado +
           Number(pontosNovoMembro) +
           Number(percDiscipulado) +
-          Number(percLeituraBiblica),
+          Number(percLeituraBiblica) +
+          Number(planejamento),
       ).toFixed(2);
 
     if (pontosTotalAtualRank === 0)
@@ -721,7 +728,8 @@ function RelCelula({
           pontosVisitantesCelebracao +
           pontosRelDiscipulado +
           Number(percDiscipulado) +
-          Number(percLeituraBiblica),
+          Number(percLeituraBiblica) +
+          Number(planejamento),
       ).toFixed(2);
 
     const TotalPercentual = pontosTotalAtual;
@@ -747,6 +755,8 @@ function RelCelula({
       Number(percCelebracaoLive),
       Number(percDiscipulado),
       Number(percLeituraBiblica),
+      Number(relPresentes.length),
+      Number(planejamento),
     );
 
     setPFinal(PontuacaoFinal);
