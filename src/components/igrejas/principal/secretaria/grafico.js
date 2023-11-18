@@ -102,23 +102,6 @@ export default function Grafico({ dados, qtdMembros, parametros }) {
       },
     },
   };
-  const labels = Utils.months({ count: 7 });
-  const data2 = {
-    labels,
-    datasets: [
-      {
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-      },
-    ],
-  };
-  const config2 = {
-    type: 'line',
-    data: data2,
-  };
   return (
     <Box width="100%">
       <Box textAlign="center">
@@ -127,15 +110,8 @@ export default function Grafico({ dados, qtdMembros, parametros }) {
           {dados.semanas > 1 ? 'SEMANAS' : 'SEMANA'}
         </h2>
       </Box>
-      <Bar data={data} width={400} height={200} options={config} />
+      <Bar data={data} width={400} height={200} />
       <Box mt={5} />
-      <Box textAlign="center">
-        <h2>
-          STATUS DE CRESCIMENTO {dados.semanas}{' '}
-          {dados.semanas > 1 ? 'SEMANAS' : 'SEMANA'}
-        </h2>
-      </Box>
-      <Bar data={data} width={400} height={200} options={config} />
     </Box>
   );
 }
