@@ -476,7 +476,7 @@ export default function Todos({
 
       if (inscrito.value === 'eu' || inscrito.value === 'membro')
         newValorRolMembro = Number(cpf); // na verdade é o rol do membro inscrito
-
+      console.log('newValorRow', newValorRolMembro);
       const DadosInscritos = {
         idEvento: Number(eventoEscolhido[0].id),
         Evento: eventoEscolhido[0].nomeEvento,

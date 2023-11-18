@@ -142,15 +142,16 @@ model eventosCelulas {
 }
 
 model eventosGeral {
-  id         Int       @id(map: "PK_eventosGeral") @default(autoincrement())
-  Evento     String?   @db.Text
-  Distrito   Int?      @default(0, map: "DF__eventosGe__Distr__6754599E")
-  DataIni    DateTime  @db.DateTime
-  DataFim    DateTime  @db.DateTime
-  LogoEvento String    @db.VarChar(500)
-  nomeEvento String    @db.VarChar(300)
-  inscricao  Boolean
-  DataEvento DateTime? @db.Date
+  id          Int       @id(map: "PK_eventosGeral") @default(autoincrement())
+  Evento      String?   @db.Text
+  Distrito    Int?      @default(0, map: "DF__eventosGe__Distr__6754599E")
+  DataIni     DateTime  @db.DateTime
+  DataFim     DateTime  @db.DateTime
+  LogoEvento  String    @db.VarChar(500)
+  nomeEvento  String    @db.VarChar(300)
+  inscricao   Boolean
+  DataEvento  DateTime? @db.Date
+  pagarOnline Boolean?
 }
 
 model funcao {

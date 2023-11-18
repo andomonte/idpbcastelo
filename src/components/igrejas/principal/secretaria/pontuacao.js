@@ -166,6 +166,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
       })
       .then((response) => {
         if (response) {
+          console.log('response', response);
           const pontuacao = [];
           const members = response.data;
           const distrito = members.filter(
@@ -237,14 +238,15 @@ export default function Pontuacao({ perfilUser, parametros }) {
       (val) => val.Celula === celulaSelecionada.Celula,
     );
     const detalhesPontos = [];
+    const pontosTotal = [];
     if (celulaFiltrada.length) {
       celulaFiltrada.map((val, index) => {
         detalhesPontos[index] = JSON.parse(val.Pontuacao);
-
+        pontosTotal[index] = val.TotalRank;
         return 0;
       });
     }
-
+    console.log('ponstosCelulaSelecionada', pontosTotal);
     const parametrosPontuacao = [
       'CelebracaoIgreja',
       'CelebracaoLive',
@@ -279,7 +281,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
         );
       }
       let qytMembros = 0;
-
+      console.log('detalhesPontos', detalhesPontos);
       const nan = String(arrayTeste[15]);
       if (nan === 'NaN') {
         qytMembros = await api
@@ -366,6 +368,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
       if (openD === 2) setOpenDialog2(true);
     }
   };
+
   return (
     <Box
       display="flex"
@@ -1743,6 +1746,11 @@ export default function Pontuacao({ perfilUser, parametros }) {
                                   : 'red'
                               }
                             >
+                              {console.log(
+                                'parametros[0]',
+                                parametros[0],
+                                qtdMembros,
+                              )}
                               {PontosCelulaSelecionada.Visitas
                                 ? PontosCelulaSelecionada.Visitas
                                 : '-'}
@@ -1921,8 +1929,8 @@ export default function Pontuacao({ perfilUser, parametros }) {
                               justifyContent="center"
                               sx={{ borderRight: '1px solid #a1887f' }}
                               color={
-                                PontosCelulaSelecionada.Planejamento &&
-                                PontosCelulaSelecionada.Planejamento >=
+                                PontosCelulaSelecionada.planejamento &&
+                                PontosCelulaSelecionada.planejamento >=
                                   (
                                     (parametros[0].Planejamento *
                                       PontosCelulaSelecionada.semanas *
@@ -1933,8 +1941,8 @@ export default function Pontuacao({ perfilUser, parametros }) {
                                   : 'red'
                               }
                             >
-                              {PontosCelulaSelecionada.Planejamento
-                                ? PontosCelulaSelecionada.Planejamento
+                              {PontosCelulaSelecionada.planejamento
+                                ? PontosCelulaSelecionada.planejamento
                                 : '0'}
                             </Box>
                             <Box
@@ -2234,7 +2242,6 @@ export default function Pontuacao({ perfilUser, parametros }) {
                       <Box display="flex">
                         CÉLULA{' '}
                         <Box ml={2} color="yellow">
-                          {' '}
                           {PontosCelulaSelecionada.Celula}{' '}
                         </Box>{' '}
                       </Box>
@@ -2250,6 +2257,8 @@ export default function Pontuacao({ perfilUser, parametros }) {
                 parametros={parametros}
                 dados={PontosCelulaSelecionada}
                 qtdMembros={qtdMembros}
+                semana={semana}
+                pontosCelulas={pontosCelulas}
               />
             </TableContainer>
           </Box>

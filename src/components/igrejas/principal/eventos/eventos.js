@@ -7,7 +7,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um car
 import { Carousel } from 'react-responsive-carousel';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
-
+import { useRouter } from 'next/router';
 import TableContainer from '@mui/material/TableContainer';
 import Inscricoes from './inscricoes';
 
@@ -18,7 +18,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 function Eventos({ perfilUser, rolMembros }) {
   //  const eventoIni = consultaInscricoes.filter((val) => Number(val.id) === Number(0));
-
+  const router = useRouter();
   const [todos, setTodos] = React.useState('');
   const [openPlan, setOpenPlan] = React.useState(false);
   const [eventoEscolhido, setEventoEscolhido] = React.useState('');
@@ -61,7 +61,13 @@ function Eventos({ perfilUser, rolMembros }) {
     const evento = todos.filter((val) => Number(val.id) === Number(index));
     setEventoEscolhido(evento);
   };
-
+  const handlePagar = (eventoSelecionado) => {
+    console.log('eventoSelecionado', eventoSelecionado);
+    router.push({
+      pathname: '/comprar',
+      query: { eventoSelecionado: JSON.stringify(eventoSelecionado) },
+    });
+  };
   return (
     <Box
       display="flex"
@@ -144,30 +150,58 @@ function Eventos({ perfilUser, rolMembros }) {
                         </Box>
                       </Box>
                     </TableContainer>
-                    <Box
-                      display={row.inscricao ? 'display' : 'none'}
-                      width="100%"
-                      height="9%"
-                    >
-                      <Button
-                        style={{
-                          background: corIgreja.tercenaria,
-                          color: corIgreja.texto2,
-                          fontFamily: 'Fugaz One',
-                          fontSize: '18px',
-                          width: '90%',
-                          maxWidth: 300,
-                          height: '70%',
-                          borderRadius: 16,
-                        }}
-                        component="a"
-                        variant="contained"
-                        onClick={() => {
-                          handleIncricao(row.id);
-                        }}
+                    <Box display="flex" width="100%" height="100%">
+                      <Box
+                        display={row.inscricao ? 'display' : 'none'}
+                        width="100%"
+                        height="9%"
                       >
-                        FAZER INSCRIÇÃO
-                      </Button>
+                        <Button
+                          style={{
+                            background: corIgreja.tercenaria,
+                            color: corIgreja.texto2,
+                            fontFamily: 'Fugaz One',
+                            fontSize: '14px',
+                            width: '90%',
+                            maxWidth: 300,
+                            height: '70%',
+                            borderRadius: 16,
+                          }}
+                          component="a"
+                          variant="contained"
+                          onClick={() => {
+                            handleIncricao(row.id);
+                          }}
+                        >
+                          FAZER INSCRIÇÃO
+                        </Button>
+                      </Box>
+
+                      <Box
+                        display={row.pagarOnline ? 'display' : 'none'}
+                        width="100%"
+                        height="9%"
+                      >
+                        <Button
+                          style={{
+                            background: corIgreja.secundaria,
+                            color: 'black',
+                            fontFamily: 'Fugaz One',
+                            fontSize: '14px',
+                            width: '90%',
+                            maxWidth: 300,
+                            height: '70%',
+                            borderRadius: 16,
+                          }}
+                          component="a"
+                          variant="contained"
+                          onClick={() => {
+                            handlePagar(row);
+                          }}
+                        >
+                          PAGAR INSCRIÇÃO
+                        </Button>
+                      </Box>
                     </Box>
                     <Box
                       display={row.inscricao ? 'display' : 'none'}

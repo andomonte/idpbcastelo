@@ -2,9 +2,46 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Box } from '@material-ui/core';
 
-export default function Grafico({ qtdMembros, dados, parametros }) {
-  /* const data = {
+export default function Grafico({ dados, qtdMembros, parametros }) {
+  const presCelulaDesejado =
+    dados.semanas * ((parametros[0].PresCelulas * 10) / 100).toFixed(2);
+
+  const presCelebracaoDesejado =
+    dados.semanas * ((parametros[0].PresCelebracao * 10) / 100).toFixed(2);
+
+  const discipulado =
+    dados.semanas * ((parametros[0].Discipulado * 10) / 100).toFixed(2);
+
+  const leitura =
+    dados.semanas * ((parametros[0].Leitura * 10) / 100).toFixed(2);
+
+  const visCelulaDesejado =
+    dados.semanas * ((parametros[0].VisCelula * qtdMembros) / 100).toFixed(0);
+
+  const visCelebracaoDesejado =
+    dados.semanas *
+    ((parametros[0].VisCelebracao * qtdMembros) / 100).toFixed(0);
+  const visitasLider =
+    dados.semanas * ((parametros[0].Visitas * qtdMembros) / 100).toFixed(0);
+  const eventos =
+    dados.semanas * ((parametros[0].Eventos * qtdMembros) / 100).toFixed(0);
+  const relatorios =
+    dados.Relatorio +
+    dados.Pontualidade +
+    dados.RelCelebracao +
+    dados.RelCelulaFeito +
+    dados.RelDiscipulado;
+
+  const RelatorioDesejado =
+    dados.semanas * ((parametros[0].Relatorios * 5) / 100).toFixed(0);
+  const PlanejamentoDesejado =
+    dados.semanas * ((parametros[0].Planejamento * 10) / 100).toFixed(0);
+
+  console.log('ola', visCelulaDesejado, dados, parametros[0], relatorios);
+  const data = {
     labels: [
+      'Relatórios',
+      'Planejamento',
       'Pres-Célula',
       'Pres-Culto',
       'Discipulado',
@@ -17,8 +54,11 @@ export default function Grafico({ qtdMembros, dados, parametros }) {
 
     datasets: [
       {
-        label: 'Presença na célula',
+        type: 'bar',
+        label: 'Pontos Feitos',
         data: [
+          relatorios,
+          dados.planejamento,
           dados.percPresentes,
           dados.percCelebracaoIgreja,
           dados.percDiscipulado,
@@ -28,52 +68,32 @@ export default function Grafico({ qtdMembros, dados, parametros }) {
           dados.Visitas,
           dados.Eventos,
         ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          '#ccff90',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          '#4db6ac',
-          '#ffff8d',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  }; */
-  const labels = [
-    'Pres-Célula',
-    'Pres-Culto',
-    'Discipulado',
-    'Leitura',
-    'Vis-Célula',
-    'Vis-Culto',
-    'Visitas',
-    'Eventos',
-  ];
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: [dados.percPresentes],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(59, 44, 181)',
+        backgroundColor: 'rgba(99, 147, 255, 0.6)',
       },
       {
-        label: 'Dataset 2',
-        data: [parametros.presCelula],
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        type: 'line',
+        label: 'Pontos Desejado',
+        data: [
+          RelatorioDesejado,
+          PlanejamentoDesejado,
+          presCelulaDesejado,
+          presCelebracaoDesejado,
+          discipulado,
+          leitura,
+          visCelulaDesejado,
+          visCelebracaoDesejado,
+          visitasLider,
+          eventos,
+        ],
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
       },
     ],
+  };
+  const config = {
+    type: 'scatter',
+    data,
     options: {
       scales: {
         y: {
@@ -82,19 +102,40 @@ export default function Grafico({ qtdMembros, dados, parametros }) {
       },
     },
   };
+  const labels = Utils.months({ count: 7 });
+  const data2 = {
+    labels,
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const config2 = {
+    type: 'line',
+    data: data2,
+  };
   return (
     <Box width="100%">
       <Box textAlign="center">
-        <h2>DESEMPENHO</h2>
+        <h2>
+          DESEMPENHO DE {dados.semanas}{' '}
+          {dados.semanas > 1 ? 'SEMANAS' : 'SEMANA'}
+        </h2>
       </Box>
-      <Bar
-        data={data}
-        width={400}
-        height={200}
-        options={{
-          maintainAspectRatio: false,
-        }}
-      />
+      <Bar data={data} width={400} height={200} options={config} />
+      <Box mt={5} />
+      <Box textAlign="center">
+        <h2>
+          STATUS DE CRESCIMENTO {dados.semanas}{' '}
+          {dados.semanas > 1 ? 'SEMANAS' : 'SEMANA'}
+        </h2>
+      </Box>
+      <Bar data={data} width={400} height={200} options={config} />
     </Box>
   );
 }

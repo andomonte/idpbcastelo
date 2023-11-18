@@ -6,7 +6,7 @@ function MidiaCelulas({ userIgrejas, radioIdpb, data }) {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/midia');
   }
-  console.log('oi dataYou', data);
+
   return (
     <div>
       <Midia
