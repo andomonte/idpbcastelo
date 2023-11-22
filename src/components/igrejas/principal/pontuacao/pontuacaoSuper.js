@@ -4,6 +4,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
 import { IoClose } from 'react-icons/io5';
+import { GiClick } from 'react-icons/gi';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import List from '@mui/material/List';
@@ -168,9 +169,13 @@ export default function Pontuacao({ perfilUser, parametros }) {
         if (response) {
           const pontuacao = [];
           const members = response.data;
+
           const distrito = members.filter(
-            (val) => val.Distrito === Number(perfilUser.Distrito),
+            (val2) =>
+              val2.Distrito === Number(perfilUser.Distrito) &&
+              val2.Supervisao === Number(perfilUser.Supervisao),
           );
+
           setPontosCelulas(distrito);
           const setPerson = new Set();
           const listaCelulas = distrito.filter((person) => {
@@ -391,6 +396,35 @@ export default function Pontuacao({ perfilUser, parametros }) {
       >
         <Box
           width="100%"
+          justifyContent="center"
+          display="flex"
+          alignItems="end"
+          color="white"
+          height="5%"
+        >
+          <Box
+            width="50%"
+            justifyContent="center"
+            display="flex"
+            alignItems="end"
+            color="white"
+            height="100%"
+          >
+            Data Inicial
+          </Box>
+          <Box
+            width="50%"
+            justifyContent="center"
+            display="flex"
+            alignItems="end"
+            color="white"
+            height="100%"
+          >
+            Data Final
+          </Box>
+        </Box>
+        <Box
+          width="100%"
           height="10%"
           justifyContent="center"
           display="flex"
@@ -474,7 +508,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
                           handleCheckCelula(row, 2);
                         }}
                       >
-                        {index + 1}º
+                        <GiClick color="blue" size={25} />
                       </Avatar>
                     </ListItemAvatar>
                     <Box>
@@ -512,7 +546,15 @@ export default function Pontuacao({ perfilUser, parametros }) {
                             {' '}
                             {row.Celula}
                           </Box>
-                          <Box ml={2}>Pontos: </Box>
+                          <Box
+                            onClick={() => {
+                              handleCheckCelula(row, 1);
+                            }}
+                            ml={2}
+                            sx={{ cursor: 'pointer' }}
+                          >
+                            Ver Pontos:{' '}
+                          </Box>
                           <Box color="yellow" ml={1}>
                             {' '}
                             {row.Pontos}

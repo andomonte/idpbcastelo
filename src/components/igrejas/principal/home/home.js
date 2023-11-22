@@ -6,12 +6,12 @@ import Modal from '@mui/material/Modal';
 import TableContainer from '@mui/material/TableContainer';
 import { BsMegaphone } from 'react-icons/bs';
 import { MdOutlinePublishedWithChanges } from 'react-icons/md';
-import { usePWAInstall } from 'react-use-pwa-install';
+// import { usePWAInstall } from 'react-use-pwa-install';
 // import { IoGameControllerOutline } from 'react-icons/io5';
 import { Oval } from 'react-loading-icons';
-import { RiInstallLine } from 'react-icons/ri';
+// import { RiInstallLine } from 'react-icons/ri';
 import { useRouter } from 'next/router';
-
+import { FaChartBar } from 'react-icons/fa';
 import Avisos from './Avisos';
 import Mensagem from './mensagem';
 // import PegaSemanaDomingo from 'src/utils/getSemanaDomingo';
@@ -30,6 +30,7 @@ const home = ({ perfilUser }) => {
   const [loadingHow, setLoadingHow] = React.useState(false);
   const [loadingPerfil, setLoadingPerfil] = React.useState(false);
   const [loadingCont, setLoadingCont] = React.useState(false);
+  const [loadingPontos, setLoadingPontos] = React.useState(false);
   const [loadingRel, setLoadingRel] = React.useState(false);
   const [loadingPlan, setLoadingPlan] = React.useState(false);
   const [loadingAtual, setLoadingAtual] = React.useState(false);
@@ -90,6 +91,14 @@ const home = ({ perfilUser }) => {
 
     router.push({
       pathname: '/secretaria',
+      //      query: { idCompra, qrCode, qrCodeCopy },
+    });
+  };
+  const handlePontuacao = () => {
+    setLoadingPontos(true);
+
+    router.push({
+      pathname: '/pontuacao',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
@@ -170,7 +179,7 @@ const home = ({ perfilUser }) => {
       pathname: '/midia',
     });
   };
-  const install = usePWAInstall();
+  // const install = usePWAInstall();
 
   return (
     <Box
@@ -782,61 +791,39 @@ const home = ({ perfilUser }) => {
                 <Box fontSize="12px">MUDAR PERFIL</Box>
               </Box>
             </Box>
-            {install ? (
+
+            <Box
+              onClick={handlePontuacao}
+              ml={1}
+              borderRadius={16}
+              height="100%"
+              width="32%"
+              minWidth={80}
+              bgcolor={corIgreja.principal}
+              display="flex"
+              color="white"
+              fontFamily="Rubik"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Box
-                onClick={install}
-                ml={1}
-                borderRadius={16}
-                height="100%"
-                width="32%"
-                minWidth={80}
-                bgcolor={corIgreja.principal}
                 display="flex"
-                color="white"
-                fontFamily="Rubik"
                 justifyContent="center"
                 alignItems="center"
+                flexDirection="column"
               >
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  flexDirection="column"
-                >
-                  <Box mb={1}>
-                    <RiInstallLine color="white" size={35} />
-                  </Box>
-                  <Box fontSize="12px">INSTALAR</Box>
+                <Box mb={1}>
+                  {loadingPontos ? (
+                    <Box>
+                      <Oval stroke="white" width={35} height={35} />
+                    </Box>
+                  ) : (
+                    <FaChartBar color="#f0f0f0" size={35} />
+                  )}
                 </Box>
+                <Box fontSize="12px">PONTUAÇÃO</Box>
               </Box>
-            ) : (
-              <Box
-                ml={1}
-                borderRadius={16}
-                height="100%"
-                width="32%"
-                onClick={install}
-                minWidth={80}
-                bgcolor={corIgreja.principal}
-                display="flex"
-                color="white"
-                fontFamily="Rubik"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  flexDirection="column"
-                >
-                  <Box mb={1}>
-                    <RiInstallLine color="white" size={35} />
-                  </Box>
-                  <Box fontSize="12px">INSTALAR</Box>
-                </Box>
-              </Box>
-            )}
+            </Box>
           </Box>
         </TableContainer>
       </Box>

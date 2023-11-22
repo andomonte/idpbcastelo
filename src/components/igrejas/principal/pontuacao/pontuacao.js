@@ -3,6 +3,7 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
+import IconButton from '@mui/material/IconButton';
 import { IoClose } from 'react-icons/io5';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -17,6 +18,7 @@ import {
 import api from 'src/components/services/api';
 import Slide from '@mui/material/Slide';
 import Dialog from '@mui/material/Dialog';
+import { BiCaretRight, BiCaretLeft } from 'react-icons/bi';
 import Grafico from './grafico';
 
 const Transition = React.forwardRef((props, ref) => (
@@ -88,13 +90,24 @@ function getPreviousMonday(date) {
 
   return previousMonday;
 }
-export default function Pontuacao({ perfilUser, parametros }) {
+export default function Pontuacao({
+  perfilUser,
+  parametros,
+  lideranca,
+  supervisao,
+}) {
+  const CelulasCoord = supervisao.filter(
+    (val) =>
+      val.Coordenacao === Number(perfilUser.Coordenacao) &&
+      val.Distrito === Number(perfilUser.Distrito),
+  );
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
     const Dia = dataEnviada.getDate();
     const firstSun = new Date(2021, 0, 1);
     const lastSun = new Date(Ano, Mes, Dia);
+
     while (firstSun.getDay() !== 2) {
       firstSun.setDate(firstSun.getDate() + 1);
     }
@@ -111,6 +124,24 @@ export default function Pontuacao({ perfilUser, parametros }) {
 
     return result;
   };
+
+  const [contNumeroCoord, setContNumeroCoord] = React.useState(0);
+  const coordenadores = lideranca.filter(
+    (val) =>
+      Number(val.Distrito) === Number(perfilUser.Distrito) &&
+      val.Funcao === 'Coordenador',
+  );
+
+  const coordParcial = coordenadores.map((itens) => itens.Coordenacao);
+  const numeroCoordP = [...new Set(coordParcial)];
+
+  const coordOrdenadas = numeroCoordP.sort((a, b) => {
+    if (new Date(a) > new Date(b)) return 1;
+    if (new Date(b) > new Date(a)) return -1;
+    return 0;
+  });
+
+  const numeroCoord = coordOrdenadas;
   //= =================================================================
   const [listaFinal, setListaFinal] = React.useState('');
   const [openDialog1, setOpenDialog1] = React.useState(false);
@@ -118,6 +149,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
   const [semana, setSemana] = React.useState(0);
   const [semanaF, setSemanaF] = React.useState(0);
   const [pontosCelulas, setPontosCelulas] = React.useState(0);
+  const [pontosCelulasT, setPontosCelulasT] = React.useState(0);
   const timeElapsed2 = Date.now();
   const dataAtual2 = new Date(timeElapsed2);
   moment(getPreviousMonday(dataAtual2)).format('DD/MM/YYYY');
@@ -168,9 +200,21 @@ export default function Pontuacao({ perfilUser, parametros }) {
         if (response) {
           const pontuacao = [];
           const members = response.data;
-          const distrito = members.filter(
-            (val) => val.Distrito === Number(perfilUser.Distrito),
-          );
+
+          let distrito;
+          CelulasCoord.filter((val) => {
+            if (CelulasCoord.length)
+              distrito = members.filter(
+                (val2) =>
+                  val2.Distrito === Number(perfilUser.Distrito) &&
+                  val2.supervisao === val.supervisao,
+              );
+
+            return 0;
+          });
+
+          setPontosCelulasT(distrito);
+
           setPontosCelulas(distrito);
           const setPerson = new Set();
           const listaCelulas = distrito.filter((person) => {
@@ -235,6 +279,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
     const celulaFiltrada = pontosCelulas.filter(
       (val) => val.Celula === celulaSelecionada.Celula,
     );
+
     const detalhesPontos = [];
     const pontosTotal = [];
     if (celulaFiltrada.length) {
@@ -244,7 +289,6 @@ export default function Pontuacao({ perfilUser, parametros }) {
         return 0;
       });
     }
-    console.log('ponstosCelulaSelecionada', pontosTotal);
 
     const parametrosPontuacao = [
       'CelebracaoIgreja',
@@ -280,7 +324,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
         );
       }
       let qytMembros = 0;
-      console.log('detalhesPontos', detalhesPontos);
+
       const nan = String(arrayTeste[15]);
       if (nan === 'NaN') {
         qytMembros = await api
@@ -368,6 +412,45 @@ export default function Pontuacao({ perfilUser, parametros }) {
     }
   };
 
+  const handleIncCoord = () => {
+    let contCoordAtual = contNumeroCoord + 1;
+
+    if (contCoordAtual > numeroCoord.length - 1) contCoordAtual = 0;
+    setContNumeroCoord(contCoordAtual);
+    let distritoF;
+    CelulasCoord.filter((val) => {
+      if (CelulasCoord.length)
+        distritoF = pontosCelulasT.filter(
+          (val2) =>
+            val2.Distrito === Number(perfilUser.Distrito) &&
+            val2.supervisao === val.supervisao,
+        );
+
+      return 0;
+    });
+
+    setPontosCelulas(distritoF);
+  };
+
+  const handleDecCoord = () => {
+    let contCoordAtual = contNumeroCoord - 1;
+
+    if (contCoordAtual < 0) contCoordAtual = numeroCoord.length - 1;
+    setContNumeroCoord(contCoordAtual);
+    let distritoF;
+    CelulasCoord.filter((val) => {
+      if (CelulasCoord.length)
+        distritoF = pontosCelulasT.filter(
+          (val2) =>
+            val2.Distrito === Number(perfilUser.Distrito) &&
+            val2.supervisao === val.supervisao,
+        );
+
+      return 0;
+    });
+    setPontosCelulas(distritoF);
+  };
+
   return (
     <Box
       display="flex"
@@ -389,6 +472,78 @@ export default function Pontuacao({ perfilUser, parametros }) {
         ml={0}
         bgcolor={corIgreja.principal}
       >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt={0}
+          mb={0}
+          width="100%"
+          height="8%"
+        >
+          <Box
+            bgcolor={corIgreja.principal}
+            borderRadius={16}
+            color="#000"
+            justifyContent="center"
+            width="100%"
+            display="flex"
+            height={50}
+          >
+            <Box ml={0} width="100%" display="flex">
+              <Box
+                width="10%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => {
+                    handleDecCoord();
+                  }}
+                >
+                  <BiCaretLeft size={30} color="#f0f0f0" />
+                </IconButton>
+              </Box>
+              <Box
+                width="100%"
+                ml={0}
+                color="#f0f0f0"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                fontSize="16px"
+                sx={{ fontFamily: 'Rubik' }}
+              >
+                Coordenação:
+                <Box fontFamily="arial black" ml={2} mr={2}>
+                  {numeroCoord[contNumeroCoord]}
+                </Box>
+              </Box>
+              <Box
+                width="10%"
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => {
+                    handleIncCoord();
+                  }}
+                >
+                  <BiCaretRight size={30} color="#f0f0f0" />
+                </IconButton>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
         <Box
           width="100%"
           height="10%"
@@ -1919,7 +2074,10 @@ export default function Pontuacao({ perfilUser, parametros }) {
                             >
                               PLANEJAMENTO DA CÉLULA
                             </Box>
-
+                            {console.log(
+                              'planejamento',
+                              PontosCelulaSelecionada,
+                            )}
                             <Box
                               width="20%"
                               height="100%"

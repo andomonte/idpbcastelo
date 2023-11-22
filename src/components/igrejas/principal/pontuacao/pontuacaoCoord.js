@@ -88,7 +88,13 @@ function getPreviousMonday(date) {
 
   return previousMonday;
 }
-export default function Pontuacao({ perfilUser, parametros }) {
+export default function Pontuacao({ perfilUser, parametros, supervisao }) {
+  const CelulasCoord = supervisao.filter(
+    (val) =>
+      val.Coordenacao === Number(perfilUser.Coordenacao) &&
+      val.Distrito === Number(perfilUser.Distrito),
+  );
+
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
@@ -168,9 +174,19 @@ export default function Pontuacao({ perfilUser, parametros }) {
         if (response) {
           const pontuacao = [];
           const members = response.data;
-          const distrito = members.filter(
-            (val) => val.Distrito === Number(perfilUser.Distrito),
-          );
+
+          let distrito;
+          CelulasCoord.filter((val) => {
+            if (CelulasCoord.length)
+              distrito = members.filter(
+                (val2) =>
+                  val2.supervisao === val.supervisao &&
+                  val.Distrito === Number(perfilUser.Distrito),
+              );
+
+            return 0;
+          });
+
           setPontosCelulas(distrito);
           const setPerson = new Set();
           const listaCelulas = distrito.filter((person) => {
