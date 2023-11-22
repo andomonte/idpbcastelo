@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import moment from 'moment';
@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
 import TableContainer from '@mui/material/TableContainer';
-import Autocomplete from '@mui/material/Autocomplete';
+
 import PegaDataPelaSemana from 'src/utils/getData';
 import axios from 'axios';
 import useSWR from 'swr';
@@ -68,7 +68,7 @@ function Mensagem({ mensagem, titulo2 }) {
   const [boletim, setBoletim] = React.useState('');
   const [dataBr, setDataBr] = React.useState('');
   const [diaSem, setDiaSem] = React.useState('');
-  const nomeRef = React.useRef();
+
   // const d = new Date();
   // const anoAtual = Number(d.getFullYear());
   let valorInicialTitulo = {
@@ -82,25 +82,17 @@ function Mensagem({ mensagem, titulo2 }) {
   const ref3 = React.useRef();
   const [titulo, setTitulo] = React.useState(valorInicialTitulo);
   const [pesquisaTitulo, setPesquisaTitulo] = React.useState(false);
-  const [inputValor, setInputValor] = React.useState('');
 
-  const [openPesquisa, setOpenPesquisa] = React.useState(false);
   const [contFonte, setContFonte] = React.useState(16);
   let newCont = 0;
   if (mensagem && mensagem.length) newCont = mensagem.length;
   const [contSemana, setContSemana] = React.useState(newCont);
   const semanaAtual2 = getPreviousMonday2(contSemana);
 
-  let listaNomes = '';
-  if (mensagem) listaNomes = mensagem.map((nomes) => nomes.titulo);
-
   const [mensGeral, setMensGeral] = React.useState(mensagem);
   const [mensagemF, setMensagemF] = React.useState('');
   React.useEffect(() => {
-    console.log('avisos', mensage);
-    if (mensage && mensage.length) {
-      listaNomes = mensage.map((nomes) => nomes.titulo);
-      console.log('avisos', mensage);
+    if (mensage && mensage.length && contSemana === 0) {
       setMensGeral(mensage);
       setContSemana(mensage.length);
     }
@@ -113,7 +105,6 @@ function Mensagem({ mensagem, titulo2 }) {
 
   const handleIncSemana = () => {
     let contSemanaAtual = contSemana + 1;
-
     if (contSemanaAtual > mensGeral.length) contSemanaAtual = contSemana;
     setPesquisaTitulo(false);
     setContSemana(contSemanaAtual);
@@ -123,6 +114,7 @@ function Mensagem({ mensagem, titulo2 }) {
     if (contSemanaAtual < 0) contSemanaAtual = contSemana;
     setPesquisaTitulo(false);
     setContSemana(contSemanaAtual);
+    console.log('avisos inc', mensage);
   };
 
   const handleIncFonte = () => {
@@ -142,7 +134,7 @@ function Mensagem({ mensagem, titulo2 }) {
     if (!pesquisaTitulo && mensGeral) {
       const dataMens = mensGeral.sort(compare);
       const dataMens2 = dataMens;
-      console.log('ola mensage', dataMens2);
+
       const diaSemana = [
         'Domingo',
         'Segunda',
@@ -152,8 +144,8 @@ function Mensagem({ mensagem, titulo2 }) {
         'Sexta',
         'Sábado',
       ];
-
-      if (dataMens2.length) {
+      console.log('dataMens2', dataMens2);
+      if (dataMens2.length && dataMens2[dataMens2.length - contSemana]) {
         const novaData1 = dataMens2[dataMens2.length - contSemana].Data; // nextSunday(semanaAtual2);
         setBoletim(dataMens2[dataMens2.length - contSemana]);
         setTitulo(dataMens2[dataMens2.length - contSemana].titulo);
@@ -180,7 +172,10 @@ function Mensagem({ mensagem, titulo2 }) {
     }
   }, [boletim]);
   React.useEffect(() => {
-    if (titulo && titulo.length && mensagem) {
+    console.log('e ai mensagem', mensagem);
+    const urltiluto = `https://www.idpbcastelo.com.br/principal/avisos`;
+    setShareUrl(urltiluto);
+    if (mensagem) {
       const dataMens2 = mensagem.filter(
         (val) => val.titulo.toLowerCase().indexOf(titulo.toLowerCase()) !== -1,
       );
@@ -189,8 +184,7 @@ function Mensagem({ mensagem, titulo2 }) {
         setBoletim(dataMens2[0]);
         setPesquisaTitulo(true);
       }
-      const urltiluto = `https://www.idpbcastelo.com.br/principal/mensagem?titulo=${titulo}`;
-      setShareUrl(urltiluto);
+
       const diaSemana = [
         'Domingo',
         'Segunda',
@@ -230,13 +224,7 @@ function Mensagem({ mensagem, titulo2 }) {
         setDataBr(showData);
       }
     }
-  }, [titulo]);
-  const handleEnter = (event) => {
-    if (event.key.toLowerCase() === 'enter') {
-      // const form = event.target.id;
-      //  if (form === 'Nascimento') handleCheckDadosMembro();
-    }
-  };
+  }, [mensGeral]);
 
   return (
     <Box
@@ -300,49 +288,7 @@ function Mensagem({ mensagem, titulo2 }) {
                 display="flex"
                 justifyContent="start"
               >
-                <Box
-                  ml={2}
-                  width="100%"
-                  display={openPesquisa ? 'flex' : 'none'}
-                >
-                  <Autocomplete
-                    sx={{
-                      width: '100%',
-                      textAlign: 'center',
-                      background: 'white',
-                    }}
-                    id="Nome"
-                    freeSolo
-                    value={titulo}
-                    onChange={(_, newValue) => {
-                      setOpenPesquisa(false);
-                      if (inputValor && newValue) setTitulo(newValue);
-                      else setTitulo('');
-                    }}
-                    onBlur={() => {
-                      if (inputValor.length > 0) {
-                        setTitulo(inputValor);
-                      }
-                    }}
-                    selectOnFocus
-                    inputValue={inputValor}
-                    onInputChange={(_, newInputValue) => {
-                      if (newInputValue !== '')
-                        setInputValor(newInputValue.toUpperCase());
-                      else setInputValor('');
-                    }}
-                    options={listaNomes}
-                    renderInput={(params) => (
-                      <TextField
-                        autoComplete="off"
-                        inputRef={nomeRef}
-                        {...params}
-                        onKeyDown={handleEnter}
-                        placeholder="  Digite o titulo"
-                      />
-                    )}
-                  />
-                </Box>
+                <Box ml={2} width="100%" display="none" />
               </Box>
               <Box
                 height="100%"
@@ -360,6 +306,7 @@ function Mensagem({ mensagem, titulo2 }) {
                   justifyContent="center"
                   width="100%"
                 >
+                  {console.log('oi shareUrl', shareUrl)}
                   <WhatsappShareButton
                     url={shareUrl}
                     title="title"
