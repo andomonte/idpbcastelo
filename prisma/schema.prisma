@@ -8,10 +8,11 @@ datasource db {
 }
 
 model avisos {
-  Data     DateTime @id(map: "PK_avisos") @db.DateTime
+  Data     DateTime @db.DateTime
   avisos   String?  @db.VarChar(255)
-  conteudo String?  @db.Text
+  conteudo String   @db.Text
   Distrito Int?     @default(0, map: "DF__avisos__Distrito__38996AB5")
+  codAviso BigInt   @id(map: "PK_avisos") @default(autoincrement())
 }
 
 model boletim {
@@ -142,16 +143,15 @@ model eventosCelulas {
 }
 
 model eventosGeral {
-  id          Int       @id(map: "PK_eventosGeral") @default(autoincrement())
-  Evento      String?   @db.Text
-  Distrito    Int?      @default(0, map: "DF__eventosGe__Distr__6754599E")
-  DataIni     DateTime  @db.DateTime
-  DataFim     DateTime  @db.DateTime
-  LogoEvento  String    @db.VarChar(500)
-  nomeEvento  String    @db.VarChar(300)
-  inscricao   Boolean
-  DataEvento  DateTime? @db.Date
-  pagarOnline Boolean?
+  id         Int       @id(map: "PK_eventosGeral") @default(autoincrement())
+  Evento     String?   @db.Text
+  Distrito   Int?      @default(0, map: "DF__eventosGe__Distr__6754599E")
+  DataIni    DateTime  @db.DateTime
+  DataFim    DateTime  @db.DateTime
+  LogoEvento String    @db.VarChar(500)
+  nomeEvento String    @db.VarChar(300)
+  inscricao  Boolean
+  DataEvento DateTime? @db.Date
 }
 
 model funcao {
@@ -260,60 +260,63 @@ model lideranca {
 }
 
 model membros {
-  id                Int?
-  Igreja            String    @db.VarChar(20)
-  Nome              String    @db.VarChar(255)
-  foto              String?   @db.VarChar(500)
-  Celula            Int       @default(0, map: "DF__membros__Celula__03F0984C")
-  Distrito          Int?      @default(0, map: "DF__membros__Distrit__04E4BC85")
-  Coordenacao       Int?      @default(0, map: "DF__membros__Coorden__05D8E0BE")
-  Supervisao        Int?      @default(0, map: "DF__membros__Supervi__06CD04F7")
-  Discipulador      String?   @db.VarChar(145)
-  TelCelular        String?   @db.VarChar(25)
-  TelFixo           String?   @db.VarChar(25)
-  Email             String?   @db.VarChar(255)
-  Sexo              String?   @db.VarChar(15)
-  EstadoCivil       String?   @db.VarChar(45)
-  Nascimento        DateTime? @db.Date
-  Naturalidade      String?   @db.VarChar(255)
-  Situacao          String    @db.VarChar(50)
-  MOTIVO            String?   @db.VarChar(245)
-  Conversao         DateTime? @db.Date
-  Batismo           DateTime? @db.Date
-  CEP               String?   @db.VarChar(10)
-  Logradouro        String?   @db.VarChar(255)
-  Bairro            String?   @db.VarChar(255)
-  Numero            Int?      @default(0, map: "DF__membros_Numero_DefaultValueByAdapter")
-  Complemento       String?   @db.VarChar(255)
-  Localidade        String?   @db.VarChar(255)
-  UF                String?   @db.VarChar(25)
-  CPF               String?   @default("0", map: "DF__membros__CPF__09A971A2") @db.VarChar(14)
-  RG                String?   @db.VarChar(25)
-  FormacaoAcademica String?   @db.VarChar(255)
-  Profissao         String?   @db.VarChar(255)
-  Pai               String?   @db.VarChar(255)
-  Mae               String?   @db.VarChar(255)
-  CriadoEm          DateTime? @db.DateTime
-  AtualizadoEm      DateTime? @db.DateTime
-  AtualizadoPor     String?   @db.VarChar(255)
-  CriadoPor         String?   @db.VarChar(150)
-  idFuncao          BigInt?   @default(0, map: "DF__membros__idFunca__0A9D95DB")
-  Funcao            String?   @db.VarChar(100)
-  GrauMinisterial   String?   @db.VarChar(255)
-  idNucleo          BigInt?
-  nomeNucleo        String?   @db.VarChar(255)
-  senha             String?   @db.VarChar(255)
-  conjuge           String?   @db.VarChar(255)
-  RolMembro         Int       @id(map: "PK_membros") @default(autoincrement())
+  id                    Int?
+  Igreja                String    @db.VarChar(20)
+  Nome                  String    @db.VarChar(255)
+  foto                  String?   @db.VarChar(500)
+  Celula                Int       @default(0, map: "DF__membros__Celula__03F0984C")
+  Distrito              Int?      @default(0, map: "DF__membros__Distrit__04E4BC85")
+  Coordenacao           Int?      @default(0, map: "DF__membros__Coorden__05D8E0BE")
+  Supervisao            Int?      @default(0, map: "DF__membros__Supervi__06CD04F7")
+  Discipulador          String?   @db.VarChar(145)
+  TelCelular            String?   @db.VarChar(25)
+  TelFixo               String?   @db.VarChar(25)
+  Email                 String?   @db.VarChar(255)
+  Sexo                  String?   @db.VarChar(15)
+  EstadoCivil           String?   @db.VarChar(45)
+  Nascimento            DateTime? @db.Date
+  Naturalidade          String?   @db.VarChar(255)
+  Situacao              String    @db.VarChar(50)
+  MOTIVO                String?   @db.VarChar(245)
+  Conversao             DateTime? @db.Date
+  Batismo               DateTime? @db.Date
+  CEP                   String?   @db.VarChar(10)
+  Logradouro            String?   @db.VarChar(255)
+  Bairro                String?   @db.VarChar(255)
+  Numero                Int?      @default(0, map: "DF__membros_Numero_DefaultValueByAdapter")
+  Complemento           String?   @db.VarChar(255)
+  Localidade            String?   @db.VarChar(255)
+  UF                    String?   @db.VarChar(25)
+  CPF                   String?   @default("0", map: "DF__membros__CPF__09A971A2") @db.VarChar(14)
+  RG                    String?   @db.VarChar(25)
+  FormacaoAcademica     String?   @db.VarChar(255)
+  Profissao             String?   @db.VarChar(255)
+  Pai                   String?   @db.VarChar(255)
+  Mae                   String?   @db.VarChar(255)
+  CriadoEm              DateTime? @db.DateTime
+  AtualizadoEm          DateTime? @db.DateTime
+  AtualizadoPor         String?   @db.VarChar(255)
+  CriadoPor             String?   @db.VarChar(150)
+  idFuncao              BigInt?   @default(0, map: "DF__membros__idFunca__0A9D95DB")
+  Funcao                String?   @db.VarChar(100)
+  GrauMinisterial       String?   @db.VarChar(255)
+  idNucleo              BigInt?
+  nomeNucleo            String?   @db.VarChar(255)
+  senha                 String?   @db.VarChar(255)
+  conjuge               String?   @db.VarChar(255)
+  RolMembro             Int       @id(map: "PK_membros") @default(autoincrement())
+  DtApresentacaoCrianca DateTime? @db.Date
+  ObsMembro             String?   @db.Text
 }
 
 model mensagem {
-  Data       DateTime @db.DateTime
-  titulo     String   @db.VarChar(255)
-  Mensagem   String   @db.Text
-  Autor      String   @db.VarChar(250)
-  Distrito   Int      @default(0, map: "DF__mensagem_Distrito_DefaultValueByAdapter")
-  idMensagem BigInt   @id(map: "PK_mensagem") @default(autoincrement())
+  Data     DateTime @db.DateTime
+  titulo   String   @db.VarChar(255)
+  Mensagem String   @db.Text
+  Autor    String   @db.VarChar(250)
+  Distrito Int      @default(0, map: "DF__mensagem_Distrito_DefaultValueByAdapter")
+
+  @@id([Data, Distrito], map: "PK_mensagem")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
@@ -352,11 +355,10 @@ model pontuacao {
 }
 
 model radio {
-  id         Int     @id(map: "PK_radio") @default(autoincrement())
-  url        String  @db.VarChar(255)
-  label      String  @db.VarChar(255)
-  compositor String  @db.VarChar(255)
-  categoria  String? @db.VarChar(250)
+  id         Int    @id(map: "PK_radio") @default(autoincrement())
+  url        String @db.VarChar(255)
+  label      String @db.VarChar(255)
+  compositor String @db.VarChar(255)
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
@@ -720,16 +722,27 @@ model TB_REL_FECHAMENTO {
 }
 
 model desempenho {
-  id             Int  @id(map: "PK_desempenho")
-  Relatorios     Int?
-  PresCelulas    Int?
-  PresCelebracao Int?
-  Discipulado    Int?
-  Leitura        Int?
-  VisCelula      Int?
-  VisCelebracao  Int?
-  Visitas        Int?
-  Eventos        Int?
-  Planejamento   Int?
-  NovoMembro     Int?
+  id             Int  @id(map: "PK_desempenho") @default(0, map: "DF__desempenho_id_DefaultValueByAdapter")
+  Relatorios     Int? @default(0, map: "DF__desempenho_Relatorios_DefaultValueByAdapter")
+  PresCelulas    Int? @default(0, map: "DF__desempenho_PresCelulas_DefaultValueByAdapter")
+  PresCelebracao Int? @default(0, map: "DF__desempenho_PresCelebracao_DefaultValueByAdapter")
+  Discipulado    Int? @default(0, map: "DF__desempenho_Discipulado_DefaultValueByAdapter")
+  Leitura        Int? @default(0, map: "DF__desempenho_Leitura_DefaultValueByAdapter")
+  VisCelula      Int? @default(0, map: "DF__desempenho_VisCelula_DefaultValueByAdapter")
+  VisCelebracao  Int? @default(0, map: "DF__desempenho_VisCelebracao_DefaultValueByAdapter")
+  Visitas        Int? @default(0, map: "DF__desempenho_Visitas_DefaultValueByAdapter")
+  Eventos        Int? @default(0, map: "DF__desempenho_Eventos_DefaultValueByAdapter")
+  Planejamento   Int? @default(0, map: "DF__desempenho_Planejamento_DefaultValueByAdapter")
+  NovoMembro     Int? @default(0, map: "DF__desempenho_NovoMembro_DefaultValueByAdapter")
+}
+
+model TB_MESES_FECHAMENTO_IGREJA {
+  codigoIgreja   String  @db.VarChar(10)
+  Igreja         String  @db.VarChar(255)
+  mesReferencia  BigInt  @default(0, map: "DF__TB_MESES___mesRe__0A888742")
+  anoReferencia  BigInt  @default(0, map: "DF__TB_MESES___anoRe__0B7CAB7B")
+  EntregueIgreja Boolean @default(false, map: "DF__TB_MESES___Entre__0C70CFB4")
+  recebidoIDPBAM Boolean @default(false, map: "DF__TB_MESES___receb__0D64F3ED")
+
+  @@id([codigoIgreja, mesReferencia, anoReferencia], map: "PK_TB_MESES_FECHAMENTO_IGREJA")
 }
