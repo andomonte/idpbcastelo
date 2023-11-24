@@ -18,7 +18,7 @@ export default function Grafico({
   if (pontosCelula.length) {
     pontosCelula.map((val, index) => {
       detalhesPontos[index] = JSON.parse(val.Pontuacao);
-      pontosTotal[index] = val.TotalRank;
+      pontosTotal[index] = val.Pontos;
       semanas[index] = `Sem ${val.Semana}`;
       return 0;
     });

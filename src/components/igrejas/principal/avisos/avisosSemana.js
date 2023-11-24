@@ -172,8 +172,7 @@ function Mensagem({ mensagem, titulo2 }) {
     }
   }, [boletim]);
   React.useEffect(() => {
-    console.log('e ai mensagem', mensagem);
-    const urltiluto = `https://www.idpbcastelo.com.br/principal/avisos`;
+    const urltiluto = `https://www.idpbcastelo.com.br/principal/aviso`;
     setShareUrl(urltiluto);
     if (mensagem) {
       const dataMens2 = mensagem.filter(
@@ -306,7 +305,6 @@ function Mensagem({ mensagem, titulo2 }) {
                   justifyContent="center"
                   width="100%"
                 >
-                  {console.log('oi shareUrl', shareUrl)}
                   <WhatsappShareButton
                     url={shareUrl}
                     title="title"
@@ -322,7 +320,7 @@ function Mensagem({ mensagem, titulo2 }) {
 
           <Box
             width="99%"
-            mt={3}
+            mt={0}
             mb={0}
             color="white"
             fontSize="25px"

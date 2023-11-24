@@ -2,7 +2,7 @@ import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Box from '@material-ui/core/Box';
-
+import { MdOnlinePrediction } from 'react-icons/md';
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 
 export default function TabCelula({ nomesCelulas, podeEditar }) {
@@ -17,11 +17,10 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
     let cor;
 
     if (podeEditar) dados[index].Presenca = !dados[index].Presenca;
-    if (dados[index].Presenca) {
+    if (dados[index].Presenca === 'igreja') {
       cor = '#F0FFF0';
-    } else {
-      cor = '#feff';
-    }
+    } else if (dados[index].Presenca === 'live') cor = '#fe9f';
+    else cor = '#feff';
 
     const updatedValue = { [index]: cor };
     setRespostas((shopCart) => ({
@@ -33,11 +32,10 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
   React.useEffect(() => {
     for (let index = 0; index < dados.length; index += 1) {
       let cor;
-      if (dados[index].Presenca) {
+      if (dados[index].Presenca === 'igreja') {
         cor = '#F0FFF0';
-      } else {
-        cor = '#feff';
-      }
+      } else if (dados[index].Presenca === 'live') cor = '#fe9f';
+      else cor = '#feff';
 
       const updatedValue = { [index]: cor };
       setRespostas((shopCart) => ({
@@ -49,11 +47,10 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
   React.useEffect(() => {
     for (let index = 0; index < dados.length; index += 1) {
       let cor;
-      if (dados[index].Presenca) {
+      if (dados[index].Presenca === 'igreja') {
         cor = '#F0FFF0';
-      } else {
-        cor = '#feff';
-      }
+      } else if (dados[index].Presenca === 'live') cor = '#fe9f';
+      else cor = '#feff';
 
       const updatedValue = { [index]: cor };
       setRespostas((shopCart) => ({
@@ -103,10 +100,17 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
                 alignItems="center"
                 ml={1}
               >
-                {dados[index].Presenca ? (
+                {console.log('dados', dados)}
+                {dados[index].Presenca === 'igreja' ? (
                   <BsFillCheckCircleFill color="green" />
                 ) : (
-                  <BsXCircleFill color="red" />
+                  <Box>
+                    {dados[index].Presenca === 'live' ? (
+                      <MdOnlinePrediction size={20} color="blue" />
+                    ) : (
+                      <BsXCircleFill color="red" />
+                    )}
+                  </Box>
                 )}
               </Box>
             </Box>
