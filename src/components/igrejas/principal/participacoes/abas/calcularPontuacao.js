@@ -370,6 +370,23 @@ export default function TabCelula({
                       {pontosF.Pontualidade.toFixed(2)} Pts
                     </Box>
                   </Box>
+                  <Box mt={4} width="100%" display="flex">
+                    <Box display="flex" justifyContent="start" width="70%">
+                      {' '}
+                      PLANEJAMENTO DA CÉLULA:
+                    </Box>
+                    <Box width="30%" mr={2}>
+                      <Box
+                        fontFamily="arial black"
+                        display="flex"
+                        justifyContent="end"
+                        color={corIgreja.principal}
+                      >
+                        {pontosF}
+                        {pontosF.Relatorio.toFixed(2)} Pts
+                      </Box>
+                    </Box>
+                  </Box>
                 </Box>
               </TableContainer>
             </Box>

@@ -94,7 +94,7 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
       val.Coordenacao === Number(perfilUser.Coordenacao) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
-
+  console.log('coord', CelulasCoord);
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
@@ -180,13 +180,13 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
             if (CelulasCoord.length)
               distrito = members.filter(
                 (val2) =>
-                  val2.supervisao === val.supervisao &&
-                  val.Distrito === Number(perfilUser.Distrito),
+                  val2.Distrito === val.Distrito &&
+                  val.Coordenacao === Number(perfilUser.Coordenacao),
               );
 
             return 0;
           });
-
+          console.log('coord valores', CelulasCoord, members, perfilUser);
           setPontosCelulas(distrito);
           const setPerson = new Set();
           const listaCelulas = distrito.filter((person) => {
@@ -492,7 +492,7 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
                           handleCheckCelula(row, 2);
                         }}
                       >
-                        {row.posicao}º
+                        {index + 1}º
                       </Avatar>
                     </ListItemAvatar>
                     <Box>

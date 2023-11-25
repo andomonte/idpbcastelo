@@ -7,7 +7,7 @@ const Cores = createTheme({
   principal: '#800004',
   principal2: '#B55E5E',
   secundaria: '#fafafa',
-  tercenaria: 'lime',
+  tercenaria: 'indigo',
   texto1: '#ffff',
   texto2: '#ffff8d',
   iconeOn: '#ffff8d',

@@ -78,18 +78,20 @@ function RelCelula({ perfilUser, lideranca }) {
 
   React.useEffect(() => {
     if (contSetor !== 0) {
+      console.log('entrou aqui if', lideresSetor);
       const novaLista = lideresSetor.filter(
         (results) =>
           Number(results.Distrito) === Number(perfilUser.Distrito) &&
           results.Funcao === 'Lider' &&
           Number(results.Coordenacao) === Number(numeroSetor[contSetor]),
       );
-
+      console.log('novaLista', novaLista);
       const numberCelulasF = novaLista.map((itens) => itens.Celula);
       const uniqueArrF = [...new Set(numberCelulasF)];
       const numeroCelulaF = uniqueArrF;
       setCelulaSetor(numeroCelulaF);
     } else {
+      console.log('entrou aqui no else');
       const novaLista = lideresSetor.filter(
         (results) =>
           Number(results.Distrito) === Number(perfilUser.Distrito) &&
@@ -110,6 +112,7 @@ function RelCelula({ perfilUser, lideranca }) {
   }, [contSetor]);
 
   const handleIncSetor = () => {
+    console.log('oi setor', contSetor, numeroSetor.length);
     let contTipoAtual = contSetor + 1;
     if (contTipoAtual > numeroSetor.length - 1) {
       contTipoAtual = 0;

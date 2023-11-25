@@ -371,6 +371,23 @@ export default function TabCelula({
                     </Box>
                   </Box>
                 </Box>
+                <Box mt={1} width="100%" display="flex">
+                  <Box display="flex" justifyContent="start" width="70%">
+                    {' '}
+                    PLANEJAMENTO DA CÉLULA:
+                  </Box>
+                  <Box width="30%" mr={2} mb={2}>
+                    <Box
+                      fontFamily="arial black"
+                      display="flex"
+                      justifyContent="end"
+                      color={corIgreja.principal}
+                    >
+                      {pontosF.planejamento.toFixed(2)} Pts
+                    </Box>
+                  </Box>
+                </Box>
+                {console.log('valo', pontosF)}
               </TableContainer>
             </Box>
           </Box>
