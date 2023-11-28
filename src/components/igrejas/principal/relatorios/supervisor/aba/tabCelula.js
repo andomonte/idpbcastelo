@@ -100,7 +100,8 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
                 alignItems="center"
                 ml={1}
               >
-                {dados[index].Presenca === 'igreja' ? (
+                {dados[index].Presenca === 'igreja' ||
+                dados[index].Presenca === true ? (
                   <BsFillCheckCircleFill color="green" />
                 ) : (
                   <Box>

@@ -128,6 +128,7 @@ export default function TabCelula({
 
   React.useEffect(() => {
     setPresSem1([]);
+
     if (sem1) {
       if (sem1 && sem1[0]) {
         for (let i = 0; i < numeroCelula.length; i += 1) {

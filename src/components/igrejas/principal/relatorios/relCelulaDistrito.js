@@ -77,26 +77,26 @@ function RelCelula({ perfilUser, lideranca }) {
   React.useEffect(() => {}, []);
 
   React.useEffect(() => {
+    console.log('lideresSetor', lideresSetor, contSetor);
     if (contSetor !== 0) {
-      console.log('entrou aqui if', lideresSetor);
       const novaLista = lideresSetor.filter(
         (results) =>
           Number(results.Distrito) === Number(perfilUser.Distrito) &&
           results.Funcao === 'Lider' &&
           Number(results.Coordenacao) === Number(numeroSetor[contSetor]),
       );
-      console.log('novaLista', novaLista);
+
       const numberCelulasF = novaLista.map((itens) => itens.Celula);
       const uniqueArrF = [...new Set(numberCelulasF)];
       const numeroCelulaF = uniqueArrF;
       setCelulaSetor(numeroCelulaF);
     } else {
-      console.log('entrou aqui no else');
       const novaLista = lideresSetor.filter(
         (results) =>
           Number(results.Distrito) === Number(perfilUser.Distrito) &&
           results.Funcao === 'Lider',
       );
+      console.log('novaLista', novaLista);
       const numberCelulasF = novaLista.map((itens) => itens.Celula);
       const uniqueArrF = [...new Set(numberCelulasF)];
       const numeroCelulaF = uniqueArrF;
@@ -106,13 +106,11 @@ function RelCelula({ perfilUser, lideranca }) {
         if (new Date(b) > new Date(a)) return -1;
         return 0;
       });
-
       setCelulaSetor(lideresSetor2);
     }
   }, [contSetor]);
 
   const handleIncSetor = () => {
-    console.log('oi setor', contSetor, numeroSetor.length);
     let contTipoAtual = contSetor + 1;
     if (contTipoAtual > numeroSetor.length - 1) {
       contTipoAtual = 0;
@@ -161,7 +159,6 @@ function RelCelula({ perfilUser, lideranca }) {
     let mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
 
     if (Number(simple) < 1) {
-      console.log(mesAgora);
       mesAgora -= 1;
       simple = 5;
     }
@@ -186,7 +183,7 @@ function RelCelula({ perfilUser, lideranca }) {
     let simple = PegaSemanaMes(new Date(ano2, 0, 1 + contSemanaAtual * 7));
 
     let mesAgora = new Date(ano2, 0, 1 + contSemanaAtual * 7).getMonth();
-    console.log(simple);
+
     if (Number(simple) < 1) {
       mesAgora -= 1;
       simple = 5;

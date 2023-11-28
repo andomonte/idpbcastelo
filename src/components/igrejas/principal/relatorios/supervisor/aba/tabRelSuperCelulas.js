@@ -104,7 +104,8 @@ export default function TabCelula({
 
   React.useEffect(() => {
     setPresSem1([]);
-    if (sem1) {
+    console.log('sem1', sem1, numeroCelula);
+    if (sem1 && numeroCelula.length) {
       if (sem1 && sem1[0]) {
         for (let i = 0; i < numeroCelula.length; i += 1) {
           const presCelula = sem1.filter(
@@ -128,8 +129,10 @@ export default function TabCelula({
 
           setPresSem1((presSemAtual) => [...presSemAtual, semRel]);
         }
+    } else {
+      console.log('veio aqui');
+      setPresSem1([]);
     }
-
     if (errorSem1) return <div>An error occured.</div>;
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
@@ -138,7 +141,7 @@ export default function TabCelula({
 
   React.useEffect(() => {
     setPresCelebracao([]);
-    if (celebracao) {
+    if (celebracao && numeroCelula.length) {
       if (celebracao && celebracao[0]) {
         for (let i = 0; i < numeroCelula.length; i += 1) {
           const presCeleb = celebracao.filter(
@@ -175,7 +178,7 @@ export default function TabCelula({
 
   React.useEffect(() => {
     setPresDisc([]);
-    if (discipulado) {
+    if (discipulado && numeroCelula.length) {
       if (discipulado && discipulado[0]) {
         for (let i = 0; i < numeroCelula.length; i += 1) {
           const presCelula = discipulado.filter(
@@ -301,7 +304,6 @@ export default function TabCelula({
 
     if (Object.keys(presSem1).length > 0) {
       let check = 0;
-
       presSem1.map((row, i) => {
         let check2 = 0;
         if (Object.keys(posicao0).length > 0) {
@@ -380,7 +382,7 @@ export default function TabCelula({
         }
         return 0;
       });
-    }
+    } else setPosicaoFinal([]);
   }, [posicao0, presSem1]);
   React.useEffect(() => {
     const valFinal = [];
@@ -688,7 +690,8 @@ export default function TabCelula({
         </Box>
       </Box>
       <Box height="85%">
-        {Object.keys(posicaoFinal).length ? (
+        {console.log('posicao F', Object.keys(posicaoFinal).length)}
+        {Object.keys(posicaoFinal).length && posicaoFinal[0].Celula ? (
           <TableContainer sx={{ minHeight: 335, height: '100%' }}>
             {posicaoFinal.map((row, index) => (
               <Box
@@ -972,18 +975,33 @@ export default function TabCelula({
             textAlign="center"
             width="100%"
           >
-            <Box>
-              <Box
-                fontSize="16px"
-                fontFamily="arial black"
-                mb={5}
-                mt={-2}
-                textAlign="center"
-              >
-                Buscando Dados
+            {console.log('posicaoFfff', numeroCelula)}
+            {!numeroCelula.length ? (
+              <Box>
+                <Box
+                  fontSize="16px"
+                  fontFamily="arial black"
+                  mb={5}
+                  mt={-2}
+                  textAlign="center"
+                >
+                  SEM RELATÓRIOS
+                </Box>
               </Box>
-              <Oval stroke="blue" width={50} height={50} />
-            </Box>
+            ) : (
+              <Box>
+                <Box
+                  fontSize="16px"
+                  fontFamily="arial black"
+                  mb={5}
+                  mt={-2}
+                  textAlign="center"
+                >
+                  Buscando Dados
+                </Box>
+                <Oval stroke="blue" width={50} height={50} />
+              </Box>
+            )}
           </Box>
         )}
       </Box>

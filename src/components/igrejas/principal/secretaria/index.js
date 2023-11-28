@@ -16,11 +16,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Oval } from 'react-loading-icons';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
-
+import Contato from './contato';
 import TelaPadrao from './telaPadrao';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
-import Pontuacao from './pontuacao';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -134,10 +133,10 @@ function TabPanel(props) {
   );
 }
 
-function Secretaria({ parametros, perfilUser, userIgrejas, title }) {
+function Secretaria({ perfilUser, userIgrejas, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  console.log('igreja', userIgrejas);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -313,14 +312,14 @@ function Secretaria({ parametros, perfilUser, userIgrejas, title }) {
           {/* {children} */}
 
           <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <TelaPadrao userIgrejas={userIgrejas} />
+            <Contato userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <TelaPadrao userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={2}>
             {perfilUser.Funcao === 'PastorDistrito' ? (
-              <Pontuacao parametros={parametros} perfilUser={perfilUser} />
+              <TelaPadrao userIgrejas={userIgrejas} />
             ) : null}
           </TabPanel>
         </main>
