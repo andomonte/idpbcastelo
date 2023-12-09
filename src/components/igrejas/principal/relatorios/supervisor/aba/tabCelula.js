@@ -32,7 +32,10 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
   React.useEffect(() => {
     for (let index = 0; index < dados.length; index += 1) {
       let cor;
-      if (dados[index].Presenca === 'igreja') {
+      if (
+        dados[index].Presenca === 'igreja' ||
+        dados[index].Presenca === true
+      ) {
         cor = '#F0FFF0';
       } else if (dados[index].Presenca === 'live') cor = '#fe9f';
       else cor = '#feff';
@@ -47,7 +50,10 @@ export default function TabCelula({ nomesCelulas, podeEditar }) {
   React.useEffect(() => {
     for (let index = 0; index < dados.length; index += 1) {
       let cor;
-      if (dados[index].Presenca === 'igreja') {
+      if (
+        dados[index].Presenca === 'igreja' ||
+        dados[index].Presenca === true
+      ) {
         cor = '#F0FFF0';
       } else if (dados[index].Presenca === 'live') cor = '#fe9f';
       else cor = '#feff';

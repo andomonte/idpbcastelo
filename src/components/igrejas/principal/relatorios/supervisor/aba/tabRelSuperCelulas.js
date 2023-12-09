@@ -638,7 +638,8 @@ export default function TabCelula({
                 borderBottom: '1px solid #000',
               }}
             >
-              RELATÓRIOS
+              RELATÓRIOS - SEMANA{' '}
+              {posicao0.length && posicao0[0].Semana && posicao0[0].Semana}
             </Box>
 
             <Box

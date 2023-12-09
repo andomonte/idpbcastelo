@@ -5,7 +5,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um car
 import Modal from '@mui/material/Modal';
 import TableContainer from '@mui/material/TableContainer';
 import { BsMegaphone } from 'react-icons/bs';
-import { MdOutlinePublishedWithChanges } from 'react-icons/md';
+import { MdOutlinePublishedWithChanges, MdGroups } from 'react-icons/md';
 // import { usePWAInstall } from 'react-use-pwa-install';
 // import { IoGameControllerOutline } from 'react-icons/io5';
 import { Oval } from 'react-loading-icons';
@@ -102,11 +102,20 @@ const home = ({ perfilUser }) => {
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
-  const handleQuemSomos = () => {
+  /*  const handleQuemSomos = () => {
     setLoadingHow(true);
 
     router.push({
       pathname: '/quemSomos',
+      //      query: { idCompra, qrCode, qrCodeCopy },
+    });
+  }; */
+
+  const handleMembros = () => {
+    setLoadingHow(true);
+
+    router.push({
+      pathname: '/membros',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
@@ -723,7 +732,7 @@ const home = ({ perfilUser }) => {
               </Box>
             </Box> */}
             <Box
-              onClick={handleQuemSomos}
+              onClick={handleMembros}
               ml={0}
               borderRadius={16}
               height="100%"
@@ -748,15 +757,10 @@ const home = ({ perfilUser }) => {
                       <Oval stroke="white" width={35} height={35} />
                     </Box>
                   ) : (
-                    <img
-                      src="/images/quemSomos.png"
-                      height={35}
-                      width={35}
-                      alt="bolo"
-                    />
+                    <MdGroups size={35} />
                   )}
                 </Box>
-                <Box fontSize="12px">QUEM SOMOS</Box>
+                <Box fontSize="12px">MEMBROS</Box>
               </Box>
             </Box>
             <Box
