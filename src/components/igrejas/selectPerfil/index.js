@@ -461,7 +461,6 @@ function SelectPerfil({
       }
     }
   }
-  //  console.log('session', session, listaMembros.length, start);
   return (
     <Box display="flex" align="center" justifyContent="center">
       {!start ? (

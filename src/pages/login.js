@@ -54,7 +54,6 @@ export default function Login({ providers2, rolMembros }) {
 
   const handleFieldChange = (e) => {
     const valorCPF2 = e.target.value.slice(0, 14);
-    console.log('oi filedChange', e, valorCPF2);
     setAuthState((old) => ({ ...old, [e.target.id]: valorCPF2 }));
     setPageState((old) => ({ ...old, processing: true, error: '' }));
   };
@@ -108,7 +107,6 @@ export default function Login({ providers2, rolMembros }) {
             }
             return 0;
           });
-          console.log('oi cpf', authState);
           if (user && user.length) {
             setPageState((old) => ({ ...old, processing: true, error: '' }));
             signIn('credentials', {

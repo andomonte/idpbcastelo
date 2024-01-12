@@ -6,7 +6,6 @@ export default async function handle(req, res) {
   const AnoI2 = `${dados.anoI}-12-31`;
   const AnoF1 = `${dados.anoF}-01-01`;
   const AnoF2 = `${dados.anoF}-12-31`;
-  // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
 
   try {

@@ -233,7 +233,6 @@ export default function TabCelula({
           .then((response) => {
             if (response) {
               // enviarPontuacao();
-              //  console.log(response);
               setCarregando(false);
               zerarValues();
               setOpenNovoEventoGeral(false);

@@ -10,7 +10,6 @@ function Compra() {
 
   const router = useRouter();
   const { eventoSelecionado } = router.query;
-  console.log('eventosss', eventoSelecionado);
   const [eventoSelecionadoF, setEventoSelecionadoF] = React.useState('');
   React.useEffect(() => {
     if (eventoSelecionado) {
@@ -25,7 +24,6 @@ function Compra() {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/comprar');
   }
-  console.log('oi evento', eventoSelecionadoF);
   return (
     <div>
       {eventoSelecionadoF ? (

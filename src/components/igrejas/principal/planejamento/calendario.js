@@ -33,7 +33,7 @@ function PlanMembro({ perfilUser, rolMembros }) {
   const handleIncAno = () => {
     let contAnoAtual = contAno + 1;
 
-    if (contAnoAtual > anoAtual) contAnoAtual = anoAtual;
+    if (contAnoAtual > anoAtual + 1) contAnoAtual = anoAtual + 1;
     setContAno(contAnoAtual);
   };
   const handleDecAno = () => {
@@ -47,7 +47,9 @@ function PlanMembro({ perfilUser, rolMembros }) {
     let contMesAtual = contMes + 1;
 
     if (contMesAtual > 11) {
-      contMesAtual = 0;
+      if (anoAtual + 1 !== contAno) {
+        contMesAtual = 0;
+      } else contMesAtual = 11;
       handleIncAno();
     }
     setContMes(contMesAtual);

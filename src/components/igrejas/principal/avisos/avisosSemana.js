@@ -114,7 +114,6 @@ function Mensagem({ mensagem, titulo2 }) {
     if (contSemanaAtual < 0) contSemanaAtual = contSemana;
     setPesquisaTitulo(false);
     setContSemana(contSemanaAtual);
-    console.log('avisos inc', mensage);
   };
 
   const handleIncFonte = () => {
@@ -144,7 +143,6 @@ function Mensagem({ mensagem, titulo2 }) {
         'Sexta',
         'Sábado',
       ];
-      console.log('dataMens2', dataMens2);
       if (dataMens2.length && dataMens2[dataMens2.length - contSemana]) {
         const novaData1 = dataMens2[dataMens2.length - contSemana].Data; // nextSunday(semanaAtual2);
         setBoletim(dataMens2[dataMens2.length - contSemana]);

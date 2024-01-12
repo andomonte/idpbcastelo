@@ -23,9 +23,6 @@ export default function Grafico({
       return 0;
     });
   }
-  console.log('semanas', semanas);
-  console.log('ponstosCelulaSelecionada', detalhesPontos);
-  console.log('pontosCelulas', pontosCelula);
 
   const presCelulaDesejado =
     dados.semanas * ((parametros[0].PresCelulas * 10) / 100).toFixed(2);
@@ -114,7 +111,6 @@ export default function Grafico({
       },
     ],
   };
-  console.log('oi dados', dados);
   const data2 = {
     labels: semanas,
     datasets: [

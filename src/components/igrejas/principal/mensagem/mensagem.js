@@ -141,7 +141,6 @@ function Mensagem({ mensagem, titulo2 }) {
     if (!pesquisaTitulo && mensGeral) {
       const dataMens = mensGeral.sort(compare);
       const dataMens2 = dataMens;
-      console.log('ola mensage', dataMens2);
       const diaSemana = [
         'Domingo',
         'Segunda',

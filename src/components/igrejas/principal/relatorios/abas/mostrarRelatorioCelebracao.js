@@ -519,15 +519,18 @@ function RelCelula({
       );
 
     const newValorMembros = [];
+    let contMembros = 0;
     if (dadosCelula.length && !dadosCelula[0].status) {
-      dadosCelula.map((val, index) => {
+      dadosCelula.map((val) => {
         nomesCelulas.map((row) => {
-          if (val.Nome === row.Nome)
-            newValorMembros[index] = createData(
+          if (val.Nome === row.Nome) {
+            newValorMembros[contMembros] = createData(
               val.Nome,
               val.Presenca,
               row.Situacao,
             );
+            contMembros += 1;
+          }
           return 0;
         });
 
@@ -811,7 +814,6 @@ function RelCelula({
     contVisitas,
     pontos,
   ]);
-  console.log('pFinal', pFinal);
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
 
@@ -841,9 +843,7 @@ function RelCelula({
           //    router.reload(window.location.pathname);
         }
       })
-      .catch(() => {
-        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
-      });
+      .catch(() => {});
   };
 
   const handleSalvar = () => {
@@ -890,8 +890,6 @@ function RelCelula({
       .catch(() => {
         setOpenErro(true);
         setCarregando(false);
-
-        // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
 

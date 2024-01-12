@@ -14,13 +14,11 @@ import moment from 'moment';
   const fetcher = (url) => fetch(url).then((r) => r.json());
   const { data } = useSWR('/api/getUser', fetcher);
   valorUsuario = 'JSON.parse(JSON.stringify(data))';
- // console.log(valorUsuario);
   return data;
 } */
 
 // const fetcher = (url) => fetch(url).then((r) => r.json());
 // const { data } => //useSWR('/api/getUser', fetcher);
-// console.log(data);
 const options = {
   providers: [
     // ...add more providers here
@@ -136,8 +134,6 @@ const options = {
         JSON.stringify(usuarios.filter((item) => item.email === profile.email)),
       ); */
       //   const verifiedEmail = dados[0].email;
-
-      // console.log(profile.email, dados[0], valorUsuario);
 
       if (user && account.type === 'credentials') {
         return true;

@@ -27,7 +27,6 @@ function meuCadastro({ rolMembros, lideranca }) {
     window.history.replaceState(null, '', '/cadastro');
   }
 
-  // //console.log('valor dentro do meu perfil', perfilCPF, rolMembros);
   return (
     <div>
       <Cadastro

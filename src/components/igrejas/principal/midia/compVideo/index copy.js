@@ -47,7 +47,6 @@ function App({ linkVideo, setFimPlay }) {
 
   const playPauseHandler = () => {
     // plays and pause the video (toggling)
-    console.log('oi veio aqui agora', videoState.playing);
     setVideoState({ ...videoState, playing: !videoState.playing });
   };
 
@@ -61,7 +60,6 @@ function App({ linkVideo, setFimPlay }) {
     videoPlayerRef.current.seekTo(videoPlayerRef.current.getCurrentTime() + 10);
   };
 
-  // console.log("========", (controlRef.current.style.visibility = "false"));
   const progressHandler = (state) => {
     if (count > 2) {
       telaRef.current.style.cursor = 'none';
@@ -135,15 +133,12 @@ function App({ linkVideo, setFimPlay }) {
   };
   React.useEffect(async () => {
     if (videoCarregado) {
-      console.log('tempoMusicaFinal', tempoMusica);
       setTempoMusica(duration);
     }
   }, [videoCarregado]);
 
   React.useEffect(async () => {
-    console.log('tempoMusicaF', tempoMusica);
     if (tempoMusica !== 0) {
-      console.log('tempoMusica2', tempoMusica);
       playPauseHandler();
     }
   }, [tempoMusica]);

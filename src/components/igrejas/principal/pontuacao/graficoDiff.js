@@ -30,7 +30,6 @@ export default function App({ dados, qtdMembros, parametros }) {
   const visCelebracaoDesejado =
     dados.semanas *
     ((parametros[0].VisCelebracao * qtdMembros) / 100).toFixed(0);
-  console.log('ola', visCelulaDesejado, dados, parametros[0]);
   const dataOld = [
     ['Pontos Desejados', 'Pontos Feitos'],
     ['PresCelula', presCelulaDesejado],

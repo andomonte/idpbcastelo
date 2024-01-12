@@ -3,7 +3,6 @@ import prisma from 'src/lib/prisma';
 export default async function handle(req, res) {
   const dados = req.body;
 
-  // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
 
   try {

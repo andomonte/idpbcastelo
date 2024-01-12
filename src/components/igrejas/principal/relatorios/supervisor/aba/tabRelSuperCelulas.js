@@ -104,7 +104,6 @@ export default function TabCelula({
 
   React.useEffect(() => {
     setPresSem1([]);
-    console.log('sem1', sem1, numeroCelula);
     if (sem1 && numeroCelula.length) {
       if (sem1 && sem1[0]) {
         for (let i = 0; i < numeroCelula.length; i += 1) {
@@ -130,7 +129,6 @@ export default function TabCelula({
           setPresSem1((presSemAtual) => [...presSemAtual, semRel]);
         }
     } else {
-      console.log('veio aqui');
       setPresSem1([]);
     }
     if (errorSem1) return <div>An error occured.</div>;
@@ -691,7 +689,6 @@ export default function TabCelula({
         </Box>
       </Box>
       <Box height="85%">
-        {console.log('posicao F', Object.keys(posicaoFinal).length)}
         {Object.keys(posicaoFinal).length && posicaoFinal[0].Celula ? (
           <TableContainer sx={{ minHeight: 335, height: '100%' }}>
             {posicaoFinal.map((row, index) => (
@@ -976,7 +973,6 @@ export default function TabCelula({
             textAlign="center"
             width="100%"
           >
-            {console.log('posicaoFfff', numeroCelula)}
             {!numeroCelula.length ? (
               <Box>
                 <Box

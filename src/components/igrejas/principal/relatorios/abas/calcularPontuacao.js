@@ -387,7 +387,6 @@ export default function TabCelula({
                     </Box>
                   </Box>
                 </Box>
-                {console.log('valo', pontosF)}
               </TableContainer>
             </Box>
           </Box>

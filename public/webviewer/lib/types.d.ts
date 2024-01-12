@@ -26312,7 +26312,6 @@ declare namespace Core {
          const button = this;
           const el = originalCreateInnerElement();
           el.addEventListener('click', () => {
-            console.log('check button clicked', annotation.fieldName);
           });
           return el;
         })

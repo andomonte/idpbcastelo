@@ -162,7 +162,6 @@ function Cadastro({ rolMembros, perfilCPF }) {
 
         const checarNome = searcher.search(nome);
         let valNasc = 'testar';
-        //  //console.log('searcher,checarNome', searcher, checarNome, nome);
 
         if (checarNome.length === 1) {
           setValidacaoNome(true);

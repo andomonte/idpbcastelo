@@ -237,7 +237,6 @@ export default function PontuacaoTela({ perfilUser, parametros }) {
             setPerson.add(person.Celula);
             return !duplicatedPerson;
           });
-          console.log('listaFinal', listaCelulas);
           setListaFinal(listaCelulas);
         }
       })

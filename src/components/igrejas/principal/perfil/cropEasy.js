@@ -78,7 +78,6 @@ export default function Demo({
         rotation,
       );
       // const previewUrl = window.URL.createObjectURL(blob);
-      //  console.log(previewUrl);
 
       setFileImage(croppedImage2);
 

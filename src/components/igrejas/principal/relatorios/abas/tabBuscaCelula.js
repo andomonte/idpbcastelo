@@ -264,8 +264,8 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito) &&
           val.Semana === semana0,
       );
-
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
+        console.log('presCelulaSem0', presCelulaSem0, semana0);
         setDataSem0(presCelulaSem0[0]);
       }
 
@@ -717,6 +717,7 @@ export default function TabCelula({
         >
           {semAnterior || '-'}
         </Box>
+
         {sem0 ? (
           <Box
             display="flex"
@@ -3153,7 +3154,6 @@ export default function TabCelula({
             <Oval stroke="blue" width={20} height={20} />
           </Box>
         )}
-
         {sem0 ? (
           <Box
             display="flex"

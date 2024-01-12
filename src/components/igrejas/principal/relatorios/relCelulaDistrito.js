@@ -77,7 +77,6 @@ function RelCelula({ perfilUser, lideranca }) {
   React.useEffect(() => {}, []);
 
   React.useEffect(() => {
-    console.log('lideresSetor', lideresSetor, contSetor);
     if (contSetor !== 0) {
       const novaLista = lideresSetor.filter(
         (results) =>
@@ -96,7 +95,6 @@ function RelCelula({ perfilUser, lideranca }) {
           Number(results.Distrito) === Number(perfilUser.Distrito) &&
           results.Funcao === 'Lider',
       );
-      console.log('novaLista', novaLista);
       const numberCelulasF = novaLista.map((itens) => itens.Celula);
       const uniqueArrF = [...new Set(numberCelulasF)];
       const numeroCelulaF = uniqueArrF;

@@ -100,7 +100,6 @@ function meuPerfil({ secao, perfilUser }) {
           .post('/api/delFoto', { dados: fotoDeletarFim })
           .then((responses) => {
             if (responses) {
-              // console.log('resposta deletar', responses);
             }
           })
           .catch((error) => {
@@ -129,14 +128,11 @@ function meuPerfil({ secao, perfilUser }) {
                       JSON.stringify(valPerfil),
                     );
                     window.location.reload(true);
-
-                    // console.log(response2);
                   }
                 })
                 .catch((error) => {
                   console.log(error);
                 });
-              // console.log('ccc', valCep);
             }
           })
           .catch((error) => {

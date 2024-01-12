@@ -252,7 +252,6 @@ export default function Pontuacao({ perfilUser, parametros }) {
         return 0;
       });
     }
-    console.log('ponstosCelulaSelecionada', pontosTotal);
 
     const parametrosPontuacao = [
       'CelebracaoIgreja',
@@ -288,7 +287,6 @@ export default function Pontuacao({ perfilUser, parametros }) {
         );
       }
       let qytMembros = 0;
-      console.log('detalhesPontos', detalhesPontos);
       const nan = String(arrayTeste[15]);
       if (nan === 'NaN') {
         qytMembros = await api

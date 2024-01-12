@@ -147,8 +147,6 @@ function Aniversariantes({
   };
 
   const handleDrawerClose = () => {
-    // //console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }

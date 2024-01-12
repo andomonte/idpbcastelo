@@ -6,7 +6,6 @@ export default async function handle(req, res) {
     query: { semana, Ano },
   } = req;
 
-  // //console.log('dados do api', codigoIgreja, mes, ano);
   // const action = `${rel}.findMany`
   const semana0 = semana;
 

@@ -52,7 +52,6 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
       '/selectPerfil',
     );
   }
-  // //console.log('valor dentro do meu perfil', perfilUserF, rolMembros);
   return (
     <div>
       {perfilUserF ? (

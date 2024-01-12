@@ -63,7 +63,7 @@ export default function TabCelula({
               <Box display="flex" width="100%">
                 <Box ml={1} display="flex" alignItems="center">
                   <Avatar
-                    onClick={() => console.log('vai mostrar a foto')}
+                    onClick={() => }
                     alt="User"
                     src=""
                     style={{

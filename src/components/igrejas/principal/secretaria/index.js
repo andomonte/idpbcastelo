@@ -136,7 +136,6 @@ function TabPanel(props) {
 function Secretaria({ perfilUser, userIgrejas, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  console.log('igreja', userIgrejas);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -150,8 +149,6 @@ function Secretaria({ perfilUser, userIgrejas, title }) {
   };
 
   const handleDrawerClose = () => {
-    // //console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }

@@ -127,8 +127,6 @@ function Secretaria({ parametros, perfilUser, title, lideranca, supervisao }) {
   };
 
   const handleDrawerClose = () => {
-    // //console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }

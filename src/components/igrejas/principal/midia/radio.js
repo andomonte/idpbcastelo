@@ -418,7 +418,6 @@ function Player({ radioIdpb }) {
           },
         ];
         valorFinal.push(valorArray[0]);
-        console.log('novoValorDENTRO', valorFinal);
         setMusicaValor(valorFinal);
         setSelMusica(valorFinal.map((val) => val.label));
       } else {
@@ -428,7 +427,6 @@ function Player({ radioIdpb }) {
             label: inputValue,
           },
         ];
-        console.log('nao deu pra vir', valorArray);
         setMusicaValor(valorArray);
         setSelMusica(valorArray.map((val) => val.label));
       }

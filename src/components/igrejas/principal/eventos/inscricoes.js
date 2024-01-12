@@ -476,7 +476,6 @@ export default function Todos({
 
       if (inscrito.value === 'eu' || inscrito.value === 'membro')
         newValorRolMembro = Number(cpf); // na verdade é o rol do membro inscrito
-      console.log('newValorRow', newValorRolMembro);
       const DadosInscritos = {
         idEvento: Number(eventoEscolhido[0].id),
         Evento: eventoEscolhido[0].nomeEvento,
@@ -514,7 +513,6 @@ export default function Todos({
           setInfo(
             'Não foi possível fazer sua Inscrição, tente novamente mais tarde',
           );
-          // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
         });
     }
     // const nomesMembros = JSON.parse(RelCelulaFinal.NomesMembros);
@@ -862,7 +860,6 @@ export default function Todos({
                         display="block"
                         gutterBottom
                       >
-                        {console.log('dadosUser', inscrito)}
                         {inscrito.value === 'outro' ? 'CPF' : 'RolMembro'}
                       </Typography>
                     </Box>

@@ -94,7 +94,6 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
       val.Coordenacao === Number(perfilUser.Coordenacao) &&
       val.Distrito === Number(perfilUser.Distrito),
   );
-  console.log('coord', CelulasCoord);
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
@@ -186,7 +185,6 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
 
             return 0;
           });
-          console.log('coord valores', CelulasCoord, members, perfilUser);
           setPontosCelulas(distrito);
           const setPerson = new Set();
           const listaCelulas = distrito.filter((person) => {
@@ -262,7 +260,6 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
         return 0;
       });
     }
-    console.log('ponstosCelulaSelecionada', pontosTotal);
 
     const parametrosPontuacao = [
       'CelebracaoIgreja',
@@ -298,7 +295,6 @@ export default function Pontuacao({ perfilUser, parametros, supervisao }) {
         );
       }
       let qytMembros = 0;
-      console.log('detalhesPontos', detalhesPontos);
       const nan = String(arrayTeste[15]);
       if (nan === 'NaN') {
         qytMembros = await api

@@ -572,15 +572,18 @@ function RelCelula({
         }),
       );
     const newValorMembros = [];
+    let contMembros = 0;
     if (dadosCelula.length && !dadosCelula[0].status) {
-      dadosCelula.map((val, index) => {
+      dadosCelula.map((val) => {
         nomesCelulas.map((row) => {
-          if (val.Nome === row.Nome)
-            newValorMembros[index] = createData(
+          if (val.Nome === row.Nome) {
+            newValorMembros[contMembros] = createData(
               val.Nome,
               val.Presenca,
               row.Situacao,
             );
+            contMembros += 1;
+          }
           return 0;
         });
 

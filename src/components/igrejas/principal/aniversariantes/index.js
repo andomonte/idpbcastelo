@@ -140,8 +140,6 @@ function Aniversariantes({ distritos, rolMembros, title, perfilUser }) {
   };
 
   const handleDrawerClose = () => {
-    // //console.log(mobile);
-
     if (mobile && open) {
       setOpen(false);
     }
