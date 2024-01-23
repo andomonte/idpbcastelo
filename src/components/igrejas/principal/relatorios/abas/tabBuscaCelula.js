@@ -108,17 +108,20 @@ export default function TabCelula({
   const [anoEnviado, setAnoEnviado] = React.useState(Ano);
   // para usar semanas
   let semana0 = semana - 1;
-
-  let AnoPesquisado = Ano;
+  let semanaF = semana;
+  const AnoPesquisado = Ano;
+  let AnoPesquisado0 = Ano;
   if (semana0 < 1) {
     semana0 = 52;
-    AnoPesquisado = Ano - 1;
+    semanaF = semana + 1;
+    AnoPesquisado0 = Ano - 1;
   }
-  const semana1 = semana;
-  const semana2 = semana + 1;
-  const semana3 = semana + 2;
-  const semana4 = semana + 3;
-  const semana5 = semana + 4;
+
+  const semana1 = semanaF;
+  const semana2 = semanaF + 1;
+  const semana3 = semanaF + 2;
+  const semana4 = semanaF + 3;
+  const semana5 = semanaF + 4;
   const mesSemana5 = PegaMes(semana5, Ano);
   const mes = Meses();
 
@@ -264,8 +267,8 @@ export default function TabCelula({
           val.Distrito === Number(perfilUser.Distrito) &&
           val.Semana === semana0,
       );
+
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
-        console.log('presCelulaSem0', presCelulaSem0, semana0);
         setDataSem0(presCelulaSem0[0]);
       }
 
@@ -274,11 +277,9 @@ export default function TabCelula({
           const pegaAtual = PegaSemanaAtual(val.Data);
 
           let mesSem0 = PegaMes(semana0, AnoPesquisado);
+
           if (mesSem0 + 1 === 12) mesSem0 = 1;
 
-          if (Mes === 0) {
-            setDataSem0('-');
-          }
           if (pegaAtual === PegaSemana(Mes, Ano)) setDataSem1(val);
           if (pegaAtual === PegaSemana(Mes, Ano) + 1) setDataSem2(val);
           if (pegaAtual === PegaSemana(Mes, Ano) + 2) setDataSem3(val);
@@ -742,6 +743,7 @@ export default function TabCelula({
                 setPontos(dataRSem0[0]);
               }}
             >
+              {' '}
               {(dataSem0.CriadoPor ||
                 dataSem0Celebracao.CriadoPor ||
                 dataSem0Discipulado.CriadoPor) &&
@@ -753,6 +755,7 @@ export default function TabCelula({
                       ? `${dataRSem0[0].Posicao}°`
                       : '-'}
                   </Box>
+
                   <Box fontSize="12px" color="#781080" mt={1}>
                     <Box
                       height="100%"
