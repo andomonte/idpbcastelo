@@ -10,6 +10,7 @@ import { Oval } from 'react-loading-icons';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
+
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
 import ConverteData2 from 'src/utils/convData2';
@@ -20,7 +21,7 @@ const Transition = React.forwardRef((props, ref) => (
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function TabCelula({ Mes, Ano, perfilUser }) {
+export default function TabCelula({ Mes, Ano, perfilUser, numeroCelulas }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [openPlan, setOpenPlan] = React.useState(false);
@@ -73,14 +74,13 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     setPresSem4(false);
     setDataSem5([]);
     setPresSem5(false);
-  }, [semana]);
+  }, [semana, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem1 && sem1.length) {
       const presCelula = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          Ano === new Date(val.Data).getFullYear() &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -92,16 +92,16 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
     if (!sem1) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1]);
+  }, [sem1, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem2 && sem2.length) {
       const presCelula = sem2.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          Ano === new Date(val.Data).getFullYear() &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
+
       if (presCelula.length) {
         setDataSem2(presCelula[0]);
         setPresSem2(true);
@@ -110,14 +110,13 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (errorSem2) return <div>An error occured.</div>;
     if (!sem2) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem2]);
+  }, [sem2, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem3 && sem3.length) {
       const presCelula = sem3.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          Ano === new Date(val.Data).getFullYear() &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -128,14 +127,13 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (errorSem3) return <div>An error occured.</div>;
     if (!sem3) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem3]);
+  }, [sem3, numeroCelulas]);
 
   React.useEffect(() => {
     if (sem4 && sem4.length) {
       const presCelula = sem4.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          Ano === new Date(val.Data).getFullYear() &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -146,13 +144,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (errorSem4) return <div>An error occured.</div>;
     if (!sem4) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem4]);
+  }, [sem4, numeroCelulas]);
   React.useEffect(() => {
     if (sem5 && sem5.length) {
       const presCelula = sem5.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
-          Ano === new Date(val.Data).getFullYear() &&
+          val.Celula === Number(numeroCelulas) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -163,7 +160,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (errorSem5) return <div>An error occured.</div>;
     if (!sem5) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem5]);
+  }, [sem5, numeroCelulas]);
 
   const body = (
     <Box width="100vw" height="100%">

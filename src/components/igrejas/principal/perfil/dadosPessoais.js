@@ -355,8 +355,6 @@ function DadosPessoais({ rolMembros, perfilUser }) {
         value: data[0].EstadoCivil ? data[0].EstadoCivil : '',
       };
 
-      console.log('data', data);
-
       setNome(data[0].Nome);
       setCelular(data[0].TelCelular);
       setFone(data[0].TelFixo);
@@ -377,23 +375,24 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       setCidade(data[0].Localidade);
       setComplemento(data[0].Complemento);
       setNomeNucleo(data[0].nomeNucleo);
-    }
-    setNomePai(data[0].Pai);
-    setNomeMae(data[0].Mae);
-    setFormacaoAcademica(data[0].FormacaoAcademica);
-    setProfissao(data[0].Profissao);
 
-    setConversao(
-      data[0].Conversao
-        ? moment(data[0].Conversao.substring(0, 10)).format('DD/MM/YYYY')
-        : '',
-    );
-    setBatismo(
-      data[0].Batismo
-        ? moment(data[0].Batismo.substring(0, 10)).format('DD/MM/YYYY')
-        : '',
-    );
-    setDiscipulador(data[0].Discipulador);
+      setNomePai(data[0].Pai);
+      setNomeMae(data[0].Mae);
+      setFormacaoAcademica(data[0].FormacaoAcademica);
+      setProfissao(data[0].Profissao);
+
+      setConversao(
+        data[0].Conversao
+          ? moment(data[0].Conversao.substring(0, 10)).format('DD/MM/YYYY')
+          : '',
+      );
+      setBatismo(
+        data[0].Batismo
+          ? moment(data[0].Batismo.substring(0, 10)).format('DD/MM/YYYY')
+          : '',
+      );
+      setDiscipulador(data[0].Discipulador);
+    }
     if (error) return <div>An error occured.</div>;
     if (!data) return <div>Loading ...</div>;
 

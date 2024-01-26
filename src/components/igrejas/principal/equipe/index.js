@@ -10,20 +10,20 @@ import { FaHome } from 'react-icons/fa';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { useRouter } from 'next/router';
+
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 // import PerfilIcon from 'src/components/icones/perfil';
-import PersonIcon from '@material-ui/icons/Person';
+
 import { useSession } from 'next-auth/client';
 // import Eventos from './eventos';
 import { TiArrowBack } from 'react-icons/ti';
 import { Oval } from 'react-loading-icons';
-import { MdGroupWork, MdTipsAndUpdates } from 'react-icons/md';
+import { MdGroupWork } from 'react-icons/md';
 import { IoIosPeople, IoIosSchool } from 'react-icons/io';
 import corIgreja from 'src/utils/coresIgreja';
 import { HiUserGroup } from 'react-icons/hi';
 import BuscarNome from './abas/buscarNome';
 
-import Dicas from './dicas';
 import Liderados from './liderados';
 import LideradosCoord from './lideradosCoord';
 import LideradosDistrito from './lideradosDistrito';
@@ -32,8 +32,7 @@ import MembrosCoord from './membrosCoord';
 import MembrosDistrito from './membrosDistrito';
 import MembrosIgreja from './membrosIgreja';
 import MembrosCelula from './membrosCelula';
-
-import MeuPerfil from './meuPerfil';
+import MembrosCelula2 from './membrosCelula2'; // só para os membros
 import Padrao from '../relatorios/lider/abas/telaPadrao';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -207,50 +206,12 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                   <BottomNavigationAction
                     style={
                       value === 0
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Meu Perfil"
-                    icon={
-                      value === 0 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <PersonIcon />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <PersonIcon />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 1
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Dicas"
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <MdTipsAndUpdates />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <MdTipsAndUpdates />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 2
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
-                    label="Participações"
+                    label="Célula"
                     icon={
-                      value === 2 ? (
+                      value === 0 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                           <IoIosSchool />
                         </SvgIcon>
@@ -266,74 +227,16 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
             )}
 
             {perfilUser.Funcao === 'Lider' && (
-              <Box display="flex" m={0}>
-                <BottomNavigation
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  fontSize="large"
-                  showLabels
-                  className={classes.rootTopbarIcon}
-                >
-                  <BottomNavigationAction
-                    style={
-                      value === 0
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Meu"
-                    icon={
-                      value === 0 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <PersonIcon />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <PersonIcon />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 1
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Dicas"
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <MdTipsAndUpdates />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <MdTipsAndUpdates />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 2
-                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
-                        : { color: '#eeeeee', fontSize: '12px' }
-                    }
-                    label="Celula"
-                    icon={
-                      value === 2 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <IoIosPeople />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <IoIosPeople />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                </BottomNavigation>
+              <Box
+                justifyContent="center"
+                width="100%"
+                fontFamily="Fugaz One"
+                fontSize="18px"
+                color="white"
+                display="flex"
+                m={0}
+              >
+                CÉLULA - {perfilUser.Celula}
               </Box>
             )}
             {perfilUser.Funcao === 'Secretaria' && (
@@ -353,15 +256,15 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Meu"
+                    label="Local"
                     icon={
                       value === 0 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <PersonIcon />
+                          <FaHome />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <PersonIcon />
+                          <FaHome />
                         </SvgIcon>
                       )
                     }
@@ -369,31 +272,12 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                   <BottomNavigationAction
                     style={
                       value === 1
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Local"
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <FaHome />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <FaHome />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 2
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
                     label="Celula"
                     icon={
-                      value === 2 ? (
+                      value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                           <IoIosPeople />
                         </SvgIcon>
@@ -427,15 +311,15 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Meu"
+                    label="Lideres"
                     icon={
                       value === 0 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <PersonIcon />
+                          <MdGroupWork />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <PersonIcon />
+                          <MdGroupWork />
                         </SvgIcon>
                       )
                     }
@@ -443,31 +327,12 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                   <BottomNavigationAction
                     style={
                       value === 1
-                        ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                        : { color: '#eeeeee', fontSize: '18px' }
-                    }
-                    label="Lideres"
-                    icon={
-                      value === 1 ? (
-                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <MdGroupWork />
-                        </SvgIcon>
-                      ) : (
-                        <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <MdGroupWork />
-                        </SvgIcon>
-                      )
-                    }
-                  />
-                  <BottomNavigationAction
-                    style={
-                      value === 2
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
                     label="Membros"
                     icon={
-                      value === 2 ? (
+                      value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                           <HiUserGroup />
                         </SvgIcon>
@@ -496,36 +361,21 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
             {session && (
               <Box>
                 {perfilUser.Funcao === 'Membro' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                  <MembrosCelula2
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                  />
                 ) : null}
-
                 {perfilUser.Funcao === 'Lider' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
+                  <MembrosCelula
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                  />
                 ) : null}
-                {perfilUser.Funcao === 'Secretaria' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
-                ) : null}
-                {perfilUser.Funcao === 'Supervisor' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
-                ) : null}
-                {perfilUser.Funcao === 'Coordenador' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
-                ) : null}
-                {perfilUser.Funcao === 'PastorDistrito' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
-                ) : null}
-                {perfilUser.Funcao === 'Presidente' ? (
-                  <MeuPerfil secao={session} perfilUser={perfilUser} />
-                ) : null}
-              </Box>
-            )}
-          </TabPanel>
-
-          <TabPanel value={value} index={1}>
-            {session && (
-              <Box>
-                {perfilUser.Funcao === 'Membro' ? <Dicas /> : null}
-                {perfilUser.Funcao === 'Lider' ? <Dicas /> : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <Liderados
@@ -563,19 +413,12 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
               </Box>
             )}
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          <TabPanel value={value} index={1}>
             {/*  <Eventos item={item} /> */}
             {perfilUser.Funcao === 'Membro' ? (
               <BuscarNome perfilUser={perfilUser} setOpenBuscar />
             ) : null}
-            {perfilUser.Funcao === 'Lider' ? (
-              <MembrosCelula
-                secao={session}
-                perfilUser={perfilUser}
-                lideranca={lideranca}
-                rolMembros={rolMembros}
-              />
-            ) : null}
+
             {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
             {perfilUser.Funcao === 'Supervisor' ? (
               <Membros

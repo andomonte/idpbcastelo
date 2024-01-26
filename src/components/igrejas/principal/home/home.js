@@ -4,7 +4,8 @@ import corIgreja from 'src/utils/coresIgreja';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requer um carregador
 import Modal from '@mui/material/Modal';
 import TableContainer from '@mui/material/TableContainer';
-import { BsMegaphone } from 'react-icons/bs';
+
+import { IoCalendarOutline } from 'react-icons/io5';
 import { MdOutlinePublishedWithChanges, MdGroups } from 'react-icons/md';
 // import { usePWAInstall } from 'react-use-pwa-install';
 // import { IoGameControllerOutline } from 'react-icons/io5';
@@ -38,10 +39,10 @@ const home = ({ perfilUser }) => {
   const [loadingCursos, setLoadingCursos] = React.useState(false);
   const [loadingMudar, setLoadingMudar] = React.useState(false);
 
-  const handleAvisos = () => {
+  const handleAgenda = () => {
     setLoadingAviso(true);
     router.push({
-      pathname: '/principal/aviso',
+      pathname: '/agenda',
       //      query: { idCompra, qrCode, qrCodeCopy },
     });
   };
@@ -262,11 +263,11 @@ const home = ({ perfilUser }) => {
                     />
                   )}
                 </Box>
-                <Box fontSize="12px">MENSAGENS</Box>
+                <Box fontSize="12px">BOLETIM</Box>
               </Box>
             </Box>
             <Box
-              onClick={handleAvisos}
+              onClick={handleAgenda}
               ml={1}
               borderRadius={16}
               height="100%"
@@ -291,10 +292,10 @@ const home = ({ perfilUser }) => {
                       <Oval stroke="white" width={35} height={35} />
                     </Box>
                   ) : (
-                    <BsMegaphone size={35} />
+                    <IoCalendarOutline size={35} color="white" />
                   )}
                 </Box>
-                <Box fontSize="12px">AVISOS</Box>
+                <Box fontSize="12px">AGENDA</Box>
               </Box>
             </Box>
             <Box
@@ -757,7 +758,7 @@ const home = ({ perfilUser }) => {
                       <Oval stroke="white" width={35} height={35} />
                     </Box>
                   ) : (
-                    <MdGroups size={35} />
+                    <MdGroups size={35} color="white" />
                   )}
                 </Box>
                 <Box fontSize="12px">MEMBROS</Box>

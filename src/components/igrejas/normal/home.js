@@ -266,7 +266,7 @@ const home = () => {
                   <Box width="30%" display="flex" justifyContent="center">
                     <img
                       src="/images/quemSomos.png"
-                      alt="quemSomos"
+                      alt="equipe"
                       height={35}
                       width={35}
                     />
@@ -280,7 +280,7 @@ const home = () => {
                     width="70%"
                     color="white"
                   >
-                    MEMBROS
+                    EQUIPE
                   </Box>
                 </Box>
               </Box>

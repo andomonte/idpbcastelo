@@ -317,7 +317,7 @@ export default function TabCelula({
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
         setDataSem0Celebracao(presCelulaSem0[0]);
       }
-      console.log('vamos ver', Mes, presCelulaSem0[0], presCelula.length);
+
       if (presCelula.length) {
         presCelula.map((val) => {
           const pegaAtual = PegaSemanaAtual(val.Data);
@@ -342,7 +342,7 @@ export default function TabCelula({
     if (!sem0Celebracao) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem0Celebracao, openPlanCelebracao, semana]);
-  console.log('presCeleb', dataSem0Celebracao);
+
   React.useEffect(() => {
     if (sem0Discipulado && sem0Discipulado.length) {
       const presCelula = sem0Discipulado.filter(

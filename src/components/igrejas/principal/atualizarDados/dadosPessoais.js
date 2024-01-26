@@ -22,7 +22,8 @@ import useSWR, { mutate } from 'swr';
 import ConverteData from 'src/utils/convData2';
 import ValidaData from 'src/utils/validarData';
 import validator from 'validator';
-import FormartaData from 'src/utils/formatoData';
+import FormatarData from 'src/utils/formatoData';
+import moment from 'moment';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 const useStyles = makeStyles((theme) => ({
@@ -314,6 +315,33 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   const numeroRef = React.useRef();
   const bairroRef = React.useRef();
   const localizadorRef = React.useRef();
+  const [nomePai, setNomePai] = React.useState(dadosUser[0].Pai);
+  const [validarNomePai, setValidarNomePai] = React.useState('sim');
+  const [nomeMae, setNomeMae] = React.useState(dadosUser[0].Mae);
+  const [validarNomeMae, setValidarNomeMae] = React.useState('sim');
+  const [conversao, setConversao] = React.useState('');
+  const [validarConversao, setValidarConversao] = React.useState('sim');
+  const [discipulador, setDiscipulador] = React.useState(
+    dadosUser[0].Discipulador,
+  );
+  const [validarDiscipulador, setValidarDiscipulador] = React.useState('sim');
+  const [batismo, setBatismo] = React.useState('');
+  const [validarBatismo, setValidarBatismo] = React.useState('sim');
+  const [profissao, setProfissao] = React.useState(dadosUser[0].Profissao);
+  const [validarProfissao, setValidarProfissao] = React.useState('sim');
+  const [formacaoAcademica, setFormacaoAcademica] = React.useState(
+    dadosUser[0].FormacaoAcademica,
+  );
+  const [validarFormacaoAcademica, setValidarFormacaoAcademica] =
+    React.useState('sim');
+  const nomePaiRef = React.useRef();
+  const nomeMaeRef = React.useRef();
+  const profissaoRef = React.useRef();
+  const formacaoAcademicaRef = React.useRef();
+  const discipuladorRef = React.useRef();
+  const conversaoRef = React.useRef();
+  const batismoRef = React.useRef();
+
   const url = `/api/consultaRolMembros/${dadosUser[0].id}`;
   const { data, error } = useSWR(url, fetcher);
   React.useEffect(() => {
@@ -326,6 +354,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
         label: data[0].EstadoCivil ? data[0].EstadoCivil : '',
         value: data[0].EstadoCivil ? data[0].EstadoCivil : '',
       };
+
       setNome(data[0].Nome);
       setCelular(data[0].TelCelular);
       setFone(data[0].TelFixo);
@@ -346,8 +375,24 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       setCidade(data[0].Localidade);
       setComplemento(data[0].Complemento);
       setNomeNucleo(data[0].nomeNucleo);
-    }
 
+      setNomePai(data[0].Pai);
+      setNomeMae(data[0].Mae);
+      setFormacaoAcademica(data[0].FormacaoAcademica);
+      setProfissao(data[0].Profissao);
+
+      setConversao(
+        data[0].Conversao
+          ? moment(data[0].Conversao.substring(0, 10)).format('DD/MM/YYYY')
+          : '',
+      );
+      setBatismo(
+        data[0].Batismo
+          ? moment(data[0].Batismo.substring(0, 10)).format('DD/MM/YYYY')
+          : '',
+      );
+      setDiscipulador(data[0].Discipulador);
+    }
     if (error) return <div>An error occured.</div>;
     if (!data) return <div>Loading ...</div>;
 
@@ -359,8 +404,9 @@ function DadosPessoais({ rolMembros, perfilUser }) {
   //--------------------------------------------------------------------------
   const handleSalvar = () => {
     let send = true;
-
-    const novaData = FormartaData(dataNascimento);
+    const novaConver = FormatarData(conversao);
+    const novoBatismo = FormatarData(batismo);
+    const novaData = FormatarData(dataNascimento);
     const vData = ValidaData(dataNascimento);
 
     if (!vData) {
@@ -410,6 +456,14 @@ function DadosPessoais({ rolMembros, perfilUser }) {
           Complemento: complemento,
           Localidade: cidade,
           UF: uf,
+
+          Pai: nomePai,
+          Mae: nomeMae,
+          Conversao: novaConver,
+          Batismo: novoBatismo,
+          Discipulador: discipulador,
+          Profissao: profissao,
+          FormacaoAcademica: formacaoAcademica,
         })
         .then((response) => {
           if (response) {
@@ -460,7 +514,7 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       if (formId === 'Sexo') nascimentoRef.current.focus();
       if (formId === 'DataNascimento') naturalidadeRef.current.focus();
       if (formId === 'Naturalidade') estadoCivilRef.current.focus();
-      if (formId === 'estadoCivil') estadoCivilRef.current.focus();
+      if (formId === 'estadoCivil') cepRef.current.focus();
       if (formId === 'CEP') logradouroRef.current.focus();
       if (formId === 'Logradouro') numeroRef.current.focus();
       if (formId === 'Numero') bairroRef.current.focus();
@@ -468,6 +522,14 @@ function DadosPessoais({ rolMembros, perfilUser }) {
       if (formId === 'UF') localidadeRef.current.focus();
       if (formId === 'Cidade') complementoRef.current.focus();
       if (formId === 'Complemento') localizadorRef.current.focus();
+      if (formId === 'Localizador') nomePaiRef.current.focus();
+
+      if (formId === 'NomePai') nomeMaeRef.current.focus();
+      if (formId === 'NomeMae') conversaoRef.current.focus();
+      if (formId === 'Conversao') batismoRef.current.focus();
+      if (formId === 'Batismo') formacaoAcademicaRef.current.focus();
+      if (formId === 'FormacaoAcademica') profissaoRef.current.focus();
+      if (formId === 'Profissao') discipuladorRef.current.focus();
     }
   };
 
@@ -1066,6 +1128,237 @@ function DadosPessoais({ rolMembros, perfilUser }) {
                 />
               </Box>
             </Grid>
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={12}>
+                <Box mt={1} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Nome do Pai
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="NomePai"
+                    type="text"
+                    inputRef={nomePaiRef}
+                    InputLabelProps={{
+                      style: { textTransform: 'uppercase' },
+                      shrink: true,
+                    }}
+                    value={nomePai || ''}
+                    variant="outlined"
+                    placeholder="Principalmente se for Criança"
+                    size="small"
+                    onBlur={
+                      nomePai === ''
+                        ? () => setValidarNomePai('nao')
+                        : () => setValidarNomePai('sim')
+                    }
+                    onChange={(e) => setNomePai(capitalize(e.target.value))}
+                    error={validarNomePai === 'nao'}
+                    onFocus={(e) => setNomePai(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={12}>
+                <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Nome da Mãe
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="NomeMae"
+                    inputRef={nomeMaeRef}
+                    // label="NomeMae"
+                    type="text"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={nomeMae || ''}
+                    variant="outlined"
+                    placeholder=""
+                    size="small"
+                    onBlur={
+                      nomeMae === ''
+                        ? () => setValidarNomeMae('nao')
+                        : () => setValidarNomeMae('sim')
+                    }
+                    onChange={(e) => setNomeMae(e.target.value)}
+                    error={validarNomeMae === 'nao'}
+                    onFocus={(e) => setNomeMae(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Data da Conversão
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="Conversao"
+                    inputRef={conversaoRef}
+                    // label="Número"
+                    type="tel"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={conversao ? dataMask(conversao) : ''}
+                    variant="outlined"
+                    placeholder="dd/mm/aaaa"
+                    size="small"
+                    onBlur={
+                      conversao === ''
+                        ? () => setValidarConversao('nao')
+                        : () => setValidarConversao('sim')
+                    }
+                    onChange={(e) => setConversao(e.target.value)}
+                    error={validarConversao === 'nao'}
+                    onFocus={(e) => setConversao(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Data Batismo
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="Batismo"
+                    inputRef={batismoRef}
+                    // label="Batismo"
+                    type="tel"
+                    InputLabelProps={{
+                      style: { textTransform: 'uppercase' },
+                      shrink: true,
+                    }}
+                    value={batismo ? dataMask(batismo) : ''}
+                    variant="outlined"
+                    placeholder="dd/mm/aaaa"
+                    size="small"
+                    onBlur={
+                      batismo === ''
+                        ? () => setValidarBatismo('nao')
+                        : () => setValidarBatismo('sim')
+                    }
+                    onChange={(e) => setBatismo(e.target.value)}
+                    error={validarBatismo === 'nao'}
+                    onFocus={(e) => setBatismo(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={12}>
+                <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Formação Acadêmica
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="FormacaoAcademica"
+                    inputRef={formacaoAcademicaRef}
+                    // label="Profissao"
+                    type="text"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={formacaoAcademica || ''}
+                    variant="outlined"
+                    placeholder=""
+                    size="small"
+                    onBlur={
+                      formacaoAcademica === ''
+                        ? () => setValidarFormacaoAcademica('nao')
+                        : () => setValidarFormacaoAcademica('sim')
+                    }
+                    onChange={(e) => setFormacaoAcademica(e.target.value)}
+                    error={validarFormacaoAcademica === 'nao'}
+                    onFocus={(e) => setFormacaoAcademica(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Profissão
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="Profissao"
+                    // label="Profissao"
+                    type="text"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputRef={profissaoRef}
+                    value={profissao || ''}
+                    variant="outlined"
+                    placeholder=""
+                    size="small"
+                    onBlur={
+                      profissao === ''
+                        ? () => setValidarProfissao('nao')
+                        : () => setValidarProfissao('sim')
+                    }
+                    onChange={(e) => setProfissao(e.target.value)}
+                    error={validarProfissao === 'nao'}
+                    onFocus={(e) => setProfissao(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    Discipulador
+                  </Typography>
+                </Box>
+                <Box className={classes.novoBox} mt={-2}>
+                  <TextField
+                    className={classes.tf_m}
+                    id="Discipulador"
+                    // label="Profissao"
+                    type="text"
+                    inputRef={discipuladorRef}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={discipulador || ''}
+                    variant="outlined"
+                    placeholder=""
+                    size="small"
+                    onBlur={
+                      discipulador === ''
+                        ? () => setValidarDiscipulador('nao')
+                        : () => setValidarDiscipulador('sim')
+                    }
+                    onChange={(e) => setDiscipulador(e.target.value)}
+                    error={validarDiscipulador === 'nao'}
+                    onFocus={(e) => setDiscipulador(e.target.value)}
+                    onKeyDown={handleEnter}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+
             <Grid item xs={12}>
               <Box
                 mt="1vh"
