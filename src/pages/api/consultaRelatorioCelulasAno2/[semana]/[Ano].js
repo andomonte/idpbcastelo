@@ -8,14 +8,15 @@ export default async function handle(req, res) {
 
   // const action = `${rel}.findMany`
   const semana0 = semana;
-  const inicioAno0 = `${Ano}-01-01`;
-  const finalAno0 = `${Ano}-12-31`;
+  let ano0 = Ano;
+  if (Number(semana0) === 52) ano0 = Number(Ano) - 1;
+  const inicioAno0 = `${ano0}-01-01`;
+  const finalAno0 = `${ano0}-12-31`;
 
   let semana1 = Number(semana0) + 1;
-  let ano = Ano;
+  const ano = Ano;
   if (semana1 > 52) {
     semana1 = 1;
-    ano = Number(Ano) + 1;
   }
   const inicioAno1 = `${ano}-01-01`;
   const finalAno1 = `${ano}-12-31`;
@@ -23,7 +24,6 @@ export default async function handle(req, res) {
   let semana2 = semana1 + 1;
   if (semana2 > 52) {
     semana2 = 1;
-    ano = Number(Ano) + 1;
   }
   const inicioAno2 = `${ano}-01-01`;
   const finalAno2 = `${ano}-12-31`;
@@ -31,7 +31,6 @@ export default async function handle(req, res) {
   let semana3 = semana2 + 1;
   if (semana3 > 52) {
     semana3 = 1;
-    ano = Number(Ano) + 1;
   }
   const inicioAno3 = `${ano}-01-01`;
   const finalAno3 = `${ano}-12-31`;
@@ -39,7 +38,6 @@ export default async function handle(req, res) {
   let semana4 = semana3 + 1;
   if (semana4 > 52) {
     semana4 = 1;
-    ano = Number(Ano) + 1;
   }
   const inicioAno4 = `${ano}-01-01`;
   const finalAno4 = `${ano}-12-31`;
@@ -47,14 +45,12 @@ export default async function handle(req, res) {
   let semana5 = semana4 + 1;
   if (semana5 > 52) {
     semana5 = 1;
-    ano = Number(Ano) + 1;
   }
   const inicioAno5 = `${ano}-01-01`;
   const finalAno5 = `${ano}-12-31`;
 
   //  const inicioAno1 = `${AnoIncio}-${mesInicio}-01`;
   //  const finalAno1 = `${AnoIncio}-${mesInicio}-31`;
-
   const posts = await prisma.relatorioCelulas
     .findMany({
       where: {

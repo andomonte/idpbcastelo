@@ -23,7 +23,7 @@ import corIgreja from 'src/utils/coresIgreja';
 import { HiUserGroup } from 'react-icons/hi';
 import BuscarNome from './abas/buscarNome';
 
-import Dicas from './dicas';
+import Dicas from './dadosPessoais';
 import Liderados from './liderados';
 import LideradosCoord from './lideradosCoord';
 import LideradosDistrito from './lideradosDistrito';
@@ -229,7 +229,7 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Dicas"
+                    label="Atualizar Dados"
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -301,7 +301,7 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                         ? { color: corIgreja.iconeOn, fontSize: '18px' }
                         : { color: '#eeeeee', fontSize: '18px' }
                     }
-                    label="Dicas"
+                    label="Atualizar Dados"
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
@@ -524,8 +524,12 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
           <TabPanel value={value} index={1}>
             {session && (
               <Box>
-                {perfilUser.Funcao === 'Membro' ? <Dicas /> : null}
-                {perfilUser.Funcao === 'Lider' ? <Dicas /> : null}
+                {perfilUser.Funcao === 'Membro' ? (
+                  <Dicas rolMembros={rolMembros} perfilUser={perfilUser} />
+                ) : null}
+                {perfilUser.Funcao === 'Lider' ? (
+                  <Dicas rolMembros={rolMembros} perfilUser={perfilUser} />
+                ) : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <Liderados

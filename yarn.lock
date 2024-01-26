@@ -17908,6 +17908,11 @@ webworkify@^1.5.0:
   resolved "https://registry.npmjs.org/webworkify/-/webworkify-1.5.0.tgz"
   integrity sha512-AMcUeyXAhbACL8S2hqqdqOLqvJ8ylmIbNwUIqQujRSouf4+eUFaXbG6F1Rbu+srlJMmxQWsiU7mOJi0nMBfM1g==
 
+weeknumber@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/weeknumber/-/weeknumber-1.2.1.tgz"
+  integrity sha512-F5AbhjKQhRDHweBnDuYRiJvS9/2f19/3/431+ZiZQb/jTgLKuAg8kwZzgS9/9a1SyA1KeJPEfQpf6dggaw7NBg==
+
 whatwg-encoding@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/whatwg-encoding/-/whatwg-encoding-1.0.5.tgz"

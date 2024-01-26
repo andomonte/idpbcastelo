@@ -536,7 +536,7 @@ function RelCelula({
 
       if (pontuacaoAtual !== '') {
         if (
-          semanaPontuacao === semana &&
+          semanaPontuacao === semanaEnviada &&
           pontuacaoAtual.RelCelulaFeito === 1 &&
           pontuacaoAtual.RelCelebracao === 1
         )
@@ -686,7 +686,7 @@ function RelCelula({
     criarPontuacao();
     api
       .post('/api/criarPontuacao', {
-        Semana: semana,
+        Semana: semanaEnviada,
         Celula: Number(perfilUser.Celula),
         Distrito: Number(perfilUser.Distrito),
         Supervisao: Number(perfilUser.Supervisao),
@@ -732,7 +732,7 @@ function RelCelula({
     const RelDiscipuladoFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
-      Number(semana),
+      Number(semanaEnviada),
       novaData,
       nomesCelulaFinal,
       Number(contBiblia),

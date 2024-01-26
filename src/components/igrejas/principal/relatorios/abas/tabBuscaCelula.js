@@ -2,7 +2,7 @@ import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import ConverteData2 from 'src/utils/convData2';
 import PegaMes from 'src/utils/getMes2';
-import PegaSemana from 'src/utils/getSemana';
+// import PegaSemana from 'src/utils/getSemana';
 import { Box } from '@material-ui/core';
 import Meses from 'src/utils/mesesAbrev';
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
@@ -15,13 +15,19 @@ import { Oval } from 'react-loading-icons';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
-
+import { weekNumber } from 'weeknumber';
 import 'react-toastify/dist/ReactToastify.css';
 import Slide from '@mui/material/Slide';
 import CalcularPontuacao from './calcularPontuacao';
 import MostrarRelatorioCelula from './mostrarRelatorioCelula';
 import MostrarRelatorioCelebracao from './mostrarRelatorioCelebracao';
 import MostrarRelatorioDiscipulado from './mostrarRelatorioDiscipulado';
+
+const PegaSemana = (mes, ano) => {
+  const valor = weekNumber(new Date(ano, mes, 5, 12)); // o 6 é quarta
+
+  return valor;
+};
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -58,7 +64,7 @@ export default function TabCelula({
   rolMembros,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
+  const anoAtual = new Date().getFullYear();
   const [openPlan, setOpenPlan] = React.useState(false);
   const [openPlanCelebracao, setOpenPlanCelebracao] = React.useState(false);
   const [openPlanDiscipulado, setOpenPlanDiscipulado] = React.useState(false);
@@ -107,13 +113,13 @@ export default function TabCelula({
 
   const [anoEnviado, setAnoEnviado] = React.useState(Ano);
   // para usar semanas
+
   let semana0 = semana - 1;
-  let semanaF = semana;
+  const semanaF = semana;
   const AnoPesquisado = Ano;
   let AnoPesquisado0 = Ano;
   if (semana0 < 1) {
     semana0 = 52;
-    semanaF = semana + 1;
     AnoPesquisado0 = Ano - 1;
   }
 
@@ -279,7 +285,6 @@ export default function TabCelula({
           let mesSem0 = PegaMes(semana0, AnoPesquisado);
 
           if (mesSem0 + 1 === 12) mesSem0 = 1;
-
           if (pegaAtual === PegaSemana(Mes, Ano)) setDataSem1(val);
           if (pegaAtual === PegaSemana(Mes, Ano) + 1) setDataSem2(val);
           if (pegaAtual === PegaSemana(Mes, Ano) + 2) setDataSem3(val);
@@ -301,6 +306,7 @@ export default function TabCelula({
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
+
       const presCelulaSem0 = sem0Celebracao.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
@@ -311,7 +317,7 @@ export default function TabCelula({
       if (presCelulaSem0.length && presCelulaSem0[0].Semana === semana0) {
         setDataSem0Celebracao(presCelulaSem0[0]);
       }
-
+      console.log('vamos ver', Mes, presCelulaSem0[0], presCelula.length);
       if (presCelula.length) {
         presCelula.map((val) => {
           const pegaAtual = PegaSemanaAtual(val.Data);
@@ -319,9 +325,6 @@ export default function TabCelula({
           let mesSem0 = PegaMes(semana0, AnoPesquisado);
           if (mesSem0 + 1 === 12) mesSem0 = 1;
 
-          if (Mes === 0) {
-            setDataSem0Celebracao('-');
-          }
           if (pegaAtual === PegaSemana(Mes, Ano)) setDataSem1Celebracao(val);
           if (pegaAtual === PegaSemana(Mes, Ano) + 1)
             setDataSem2Celebracao(val);
@@ -339,7 +342,7 @@ export default function TabCelula({
     if (!sem0Celebracao) return <Espera descricao="Buscando os Dados" />;
     return 0;
   }, [sem0Celebracao, openPlanCelebracao, semana]);
-
+  console.log('presCeleb', dataSem0Celebracao);
   React.useEffect(() => {
     if (sem0Discipulado && sem0Discipulado.length) {
       const presCelula = sem0Discipulado.filter(
@@ -366,9 +369,6 @@ export default function TabCelula({
           let mesSem0 = PegaMes(semana0, AnoPesquisado);
           if (mesSem0 + 1 === 12) mesSem0 = 1;
 
-          if (Mes === 0) {
-            setDataSem0Discipulado('-');
-          }
           if (pegaAtual === PegaSemana(Mes, Ano)) setDataSem1Discipulado(val);
           if (pegaAtual === PegaSemana(Mes, Ano) + 1)
             setDataSem2Discipulado(val);
@@ -854,12 +854,12 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana0 +
-                                  AnoPesquisado * 100 +
-                                  AnoPesquisado * 100 <=
-                                Ano * 100 + Ano * 100 + semanaHoje
+                                  AnoPesquisado0 * 100 +
+                                  AnoPesquisado0 * 100 <=
+                                anoAtual * 100 + anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem0);
-                                setAnoEnviado(AnoPesquisado);
+                                setAnoEnviado(AnoPesquisado0);
                                 setOpenPlan(true);
                                 setSemanaEnviada(semana0);
                                 setDataEnviada(
@@ -870,12 +870,22 @@ export default function TabCelula({
                               }
                             }}
                           >
+                            {console.log(
+                              'libera',
+                              AnoPesquisado0,
+                              Ano,
+                              semana0,
+                              semana0 +
+                                AnoPesquisado0 * 100 +
+                                AnoPesquisado0 * 100,
+                              anoAtual * 100 + anoAtual * 100 + semanaHoje,
+                            )}
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                               <MdCreateNewFolder
                                 size={25}
                                 color={
-                                  semana0 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  semana0 + AnoPesquisado0 * 100 <=
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -962,7 +972,7 @@ export default function TabCelula({
                             component="span"
                             onClick={() => {
                               setDadosSem(dataSem0Celebracao);
-                              setAnoEnviado(AnoPesquisado);
+                              setAnoEnviado(AnoPesquisado0);
                               setOpenPlanCelebracao(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
@@ -984,12 +994,12 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana0 +
-                                  AnoPesquisado * 100 +
-                                  AnoPesquisado * 100 <=
-                                Ano * 100 + Ano * 100 + semanaHoje
+                                  AnoPesquisado0 * 100 +
+                                  AnoPesquisado0 * 100 <=
+                                anoAtual * 100 + anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem0Celebracao);
-                                setAnoEnviado(AnoPesquisado);
+                                setAnoEnviado(AnoPesquisado0);
                                 setOpenPlanCelebracao(true);
                                 setSemanaEnviada(semana0);
                                 setDataEnviada(
@@ -1005,9 +1015,9 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana0 +
-                                    AnoPesquisado * 100 +
-                                    AnoPesquisado * 100 <=
-                                  Ano * 100 + Ano * 100 + semanaHoje
+                                    AnoPesquisado0 * 100 +
+                                    AnoPesquisado0 * 100 <=
+                                  anoAtual * 100 + anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -1090,7 +1100,7 @@ export default function TabCelula({
                             component="span"
                             onClick={() => {
                               setDadosSem(dataSem0Discipulado);
-                              setAnoEnviado(AnoPesquisado);
+                              setAnoEnviado(AnoPesquisado0);
                               setOpenPlanDiscipulado(true);
                               setSemanaEnviada(semana0);
                               setDataEnviada(
@@ -1112,11 +1122,11 @@ export default function TabCelula({
                             component="span"
                             onClick={() => {
                               if (
-                                semana0 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                semana0 + AnoPesquisado0 * 100 <=
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem0Discipulado);
-                                setAnoEnviado(AnoPesquisado);
+                                setAnoEnviado(AnoPesquisado0);
                                 setOpenPlanDiscipulado(true);
                                 setSemanaEnviada(semana0);
                                 setDataEnviada(
@@ -1132,8 +1142,8 @@ export default function TabCelula({
                               <MdCreateNewFolder
                                 size={25}
                                 color={
-                                  semana0 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  semana0 + AnoPesquisado0 * 100 <=
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -1332,7 +1342,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana1 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem1);
                                 setAnoEnviado(AnoPesquisado);
@@ -1351,7 +1361,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana1 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -1461,7 +1471,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana1 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem1Celebracao);
                                 setAnoEnviado(AnoPesquisado);
@@ -1480,7 +1490,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana1 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -1586,7 +1596,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana1 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem1Discipulado);
                                 setAnoEnviado(AnoPesquisado);
@@ -1605,7 +1615,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana1 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -1804,7 +1814,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana2 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem2);
                                 setAnoEnviado(AnoPesquisado);
@@ -1823,7 +1833,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana2 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -1933,7 +1943,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana2 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem2Celebracao);
                                 setAnoEnviado(AnoPesquisado);
@@ -1952,7 +1962,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana2 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -2058,7 +2068,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana2 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem2Discipulado);
                                 setAnoEnviado(AnoPesquisado);
@@ -2077,7 +2087,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana2 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -2276,7 +2286,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana3 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem3);
                                 setAnoEnviado(AnoPesquisado);
@@ -2295,7 +2305,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana3 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -2405,7 +2415,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana3 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem3Celebracao);
                                 setAnoEnviado(AnoPesquisado);
@@ -2424,7 +2434,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana3 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -2530,7 +2540,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana3 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem3Discipulado);
                                 setAnoEnviado(AnoPesquisado);
@@ -2549,7 +2559,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana3 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -2748,7 +2758,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana4 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem4);
                                 setAnoEnviado(AnoPesquisado);
@@ -2767,7 +2777,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana4 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -2877,7 +2887,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana4 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem4Celebracao);
                                 setAnoEnviado(AnoPesquisado);
@@ -2896,7 +2906,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana4 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -3002,7 +3012,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana4 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem4Discipulado);
                                 setAnoEnviado(AnoPesquisado);
@@ -3021,7 +3031,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana4 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -3220,7 +3230,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana5 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem5);
                                 setAnoEnviado(AnoPesquisado);
@@ -3239,7 +3249,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana5 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -3349,7 +3359,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana5 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem5Celebracao);
                                 setAnoEnviado(AnoPesquisado);
@@ -3368,7 +3378,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana5 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }
@@ -3473,7 +3483,7 @@ export default function TabCelula({
                             onClick={() => {
                               if (
                                 semana5 + AnoPesquisado * 100 <=
-                                Ano * 100 + semanaHoje
+                                anoAtual * 100 + semanaHoje
                               ) {
                                 setDadosSem(dataSem5Discipulado);
                                 setAnoEnviado(AnoPesquisado);
@@ -3492,7 +3502,7 @@ export default function TabCelula({
                                 size={25}
                                 color={
                                   semana5 + AnoPesquisado * 100 <=
-                                  Ano * 100 + semanaHoje
+                                  anoAtual * 100 + semanaHoje
                                     ? 'blue'
                                     : 'gray'
                                 }

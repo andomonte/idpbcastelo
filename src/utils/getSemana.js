@@ -2,6 +2,7 @@ export default function PegarSemana(Mes, Ano) {
   const currentdate = new Date(Ano, Mes);
 
   const oneJan = new Date(currentdate.getFullYear(), 0, 1);
+
   while (oneJan.getDay() !== 0) {
     oneJan.setDate(oneJan.getDate() + 1);
   }

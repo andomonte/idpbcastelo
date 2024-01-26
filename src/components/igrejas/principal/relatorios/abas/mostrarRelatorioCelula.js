@@ -155,6 +155,7 @@ function RelCelula({
   );
 
   const dataEscolhida2 = PegaData(semanaEnviada, anoEnviado);
+
   const dataFinal =
     dataEnviada !== '-' ? FormatoData(dataEnviada) : dataEscolhida2;
   const [dataEscolhida, setDataEscolhida] = React.useState(dataFinal);
@@ -860,7 +861,7 @@ function RelCelula({
     criarPontuacao();
     api
       .post('/api/criarPontuacao', {
-        Semana: semana,
+        Semana: semanaEnviada,
         Celula: Number(perfilUser.Celula),
         Distrito: Number(perfilUser.Distrito),
         Supervisao: Number(perfilUser.Supervisao),
@@ -905,7 +906,7 @@ function RelCelula({
     const RelCelulaFinal = createEstatistico(
       Number(perfilUser.Celula),
       Number(perfilUser.Distrito),
-      Number(semana),
+      Number(semanaEnviada),
       novaData,
       nomesCelulaFinal,
       String(contVisCriancas),
