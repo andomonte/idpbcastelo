@@ -8,6 +8,10 @@ const fs = require('fs');
 
 const KEY_FILE_PATH = path.join('googleDrive.json');
 const dirPath = path.join(__dirname, '../../../../public/file');
+const dirPathGoogleDrive = path.join(
+  __dirname,
+  '../../../../public/file/googleDrive.json',
+);
 console.log('caminho', dirPath, KEY_FILE_PATH);
 const multer = Multer({
   storage: Multer.diskStorage({
@@ -25,7 +29,7 @@ const multer = Multer({
 
 const authenticateGoogle = () => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: './googleDrive.json',
+    keyFile: dirPathGoogleDrive,
     scopes: 'https://www.googleapis.com/auth/drive',
   });
 

@@ -5,7 +5,6 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import Meses from 'src/utils/mesesAbrev';
-import BtDeslizante from './botaoDeslizante';
 
 import TabCelulaSuper from './abas/tabCelulaSuper';
 
