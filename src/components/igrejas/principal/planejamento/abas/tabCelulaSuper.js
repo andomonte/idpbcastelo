@@ -81,6 +81,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, numeroCelulas }) {
       const presCelula = sem1.filter(
         (val) =>
           val.Celula === Number(numeroCelulas) &&
+          Ano === new Date(val.Data).getFullYear() &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -99,6 +100,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, numeroCelulas }) {
       const presCelula = sem2.filter(
         (val) =>
           val.Celula === Number(numeroCelulas) &&
+          Ano === new Date(val.Data).getFullYear() &&
           val.Distrito === Number(perfilUser.Distrito),
       );
 
@@ -117,6 +119,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, numeroCelulas }) {
       const presCelula = sem3.filter(
         (val) =>
           val.Celula === Number(numeroCelulas) &&
+          Ano === new Date(val.Data).getFullYear() &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -134,6 +137,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, numeroCelulas }) {
       const presCelula = sem4.filter(
         (val) =>
           val.Celula === Number(numeroCelulas) &&
+          Ano === new Date(val.Data).getFullYear() &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {
@@ -150,6 +154,7 @@ export default function TabCelula({ Mes, Ano, perfilUser, numeroCelulas }) {
       const presCelula = sem5.filter(
         (val) =>
           val.Celula === Number(numeroCelulas) &&
+          Ano === new Date(val.Data).getFullYear() &&
           val.Distrito === Number(perfilUser.Distrito),
       );
       if (presCelula.length) {

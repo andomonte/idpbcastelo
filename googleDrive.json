@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "idpbcastelo-412720",
+  "private_key_id": "b315212610ce6a9f11d8a377009a00d2f33474bd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDmfbWTgtEDdjPE\n542V4L5BNDJEdbPZT6ylKUmm2tOqrJZ5ZTVmP6rc/1Xq9wWPeHQSrQdk4+UHKgHS\ny/f9b0w3vRppyDB8Vrb2uofs2G9JmQ3VFuM4J2L62Lw0Q4m58MUgWQo2f6Xldeb/\nnZ754otCPt/ASTDDP8TE7TI3Lbi+NA4TwcILelxRcNSiCH/hYSfs7txAHqK5PeJy\nLBOI81BzfxzINbujmaWV68b9cJaN/35g2zmgw09KGAwkH+IWq/JjgXM5mmh962o3\nwlgwo+u004CT+4j/CTnSDLdJlVHib2dRaVUDetuTKa5gx3w2x2QVSs8Wfwi0T/Ux\nH3v/J0vDAgMBAAECggEADQJdZEUG7Q4X3+491I7Jzj5W8/w8uXBAy1WoPY2uUrzJ\nBXML74h6aVzUCZ4Fp1JiIse3Wh9uxte9IJu4lIpan+7BdeUBr5LpYsWmdFzG8z17\nRWK0UnAOqx/eh4ikVmVbivbbl7XetDPSZO0NkwcRWxzXXjADW5HW1lKY+fpPqhSE\nodi3/JmK7pYtEftAn+OUcteUysYuPQAuvVfVJMA8O3b4CzTQ3YwFx6M32gGg2N65\nfJyzurwF1OYW6OKqksB0AS7TWBaD+ezJrl++dO4firRsM4dJLuLm1ldJmPJO5cO6\nStWG00wsx9Rgi+YoeOGpmA7c2aduRWC/CLlTe9cRUQKBgQD8h5idikjK7qJu/h3/\nnyv5DvkYM1A0AZnONboQrShIxg8J7GR+Ei5YjUwQvSmUS3grGNYCec3GLRrWrMaN\nXknC2arKjMlFcVMmBMom0r1J/G6XoJBQE5xWWM7pmz3OLem3MFrD/4HcuMEDznl3\nPBASZ3gLj5bJneATFd+l4edOOwKBgQDpqJS0BRE2BciJwYPBKnSN3DpOlGLzpzWk\nJvOI37YzF3NKjxNUPj0vkxvn/vsqx/23IAFQ77+VXlOpqwHjvnjVYr9wEamdYNZN\nzsvXoHBSoKiIVwtjrZ3oKbaBmvhdSiz1pOkUUKeru/JLdfMxaHhyBLeAkTMicuXI\n85F8wV94GQKBgBYVOXhVVmZAlf3ExRTMc4j1ET1Xh2T02uFYe2vn6ITspPYGMQeB\nSYI+4O75y8AHFXwXUOeohSEWYqlxNG+6VhLu++t4gkVLUq0ZcCAS/7CPnZAu30/R\nVzOJ0pZFGBOGmlCFrvpCxrVphp9xl9egbfteBvZj2RjKcITavdMAvTxvAoGAbU4B\nkl00efMmptqyCfEUaTB2zj+4MocsHshh8MvGbgwwUNaxkh0zfkfxLAwp7w9zbvE3\n7GbbVsKznJF05tc5q4jwSTrZ/9dHKUruLMbPBLhHXtBpcY3MasjoqaSXPvzuH1Ov\n/WLlrP7VD9vzkk9u2NfACBLkut7JA8J9csD7KjECgYEApNV54qz108HYi6JQPXlW\nmNqGovt9C5X9cUkJ33KSl7AScxh9bsoA5MFRShGFnrdGrUjvmxR+FC0IY2GolZmV\npS+cKDzxU9BbzjRCoP1+5nwrWMaXMfyLR8mYsri+bXYeX2/zjWLmEgzOp99anVsh\n0QV1/ZZbHv1+IrhBnwB5d9A=\n-----END PRIVATE KEY-----\n",
+  "client_email": "sistemacelulas@idpbcastelo-412720.iam.gserviceaccount.com",
+  "client_id": "114967253541025201790",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sistemacelulas%40idpbcastelo-412720.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

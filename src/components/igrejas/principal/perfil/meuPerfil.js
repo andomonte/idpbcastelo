@@ -2,7 +2,6 @@ import { Box, Avatar } from '@material-ui/core';
 import React from 'react';
 import QRCode from 'react-qr-code';
 import corIgreja from 'src/utils/coresIgreja';
-
 import '@fontsource/rubik';
 import api from 'src/components/services/api';
 import { styled } from '@mui/material/styles';
@@ -90,7 +89,7 @@ function meuPerfil({ secao, perfilUser }) {
         //      dataFile.append('file', uploadedFile[0], nomeFoto);
 
         dataFile2.append('file', file, nomeFoto2);
-
+        console.log('file', file);
         /*  const fotoDeletarFim = fotoDeletar.substr(
           fotoDeletar.indexOf(perfilUser.RolMembro),
           fotoDeletar.length,
@@ -107,20 +106,21 @@ function meuPerfil({ secao, perfilUser }) {
           }); */
 
         api
-          .post('/api/fotos', dataFile)
+          .post('/api/googleDrive', dataFile)
           .then((responses) => {
+            console.log('response', responses);
             if (responses) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://arquivoCastelo.s3.amazonaws.com/membros/${nomeFoto}`,
+                  fileImage: `https://docs.google.com/thumbnail?id=${responses.data.data.id}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
                   if (response2) {
                     const valPerfil = {
                       ...perfilUser,
-                      foto: `https://arquivoCastelo.s3.amazonaws.com/membros/${nomeFoto}`,
+                      foto: `https://docs.google.com/thumbnail?id=${responses.data.data.id}`,
                     };
 
                     sessionStorage.setItem(
