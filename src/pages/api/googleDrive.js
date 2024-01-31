@@ -6,24 +6,22 @@ const path = require('path');
 
 const fs = require('fs');
 
-const KEY_FILE_PATH = path.join('googleDrive.json');
+/* const KEY_FILE_PATH = path.join('googleDrive.json');
 const dirPath = path.join(__dirname, '../../../../public/file');
 const dirPathGoogleDrive = path.join(
   __dirname,
   '../../../../public/file/googleDrive.json',
+); */
+const pagesDirectory = path.resolve(
+  process.cwd(),
+  '.next/server/public/file/googleDrive.json',
 );
-const pagesDirectory = path.resolve(process.cwd(), 'pages');
-console.log(
-  'caminho',
-  pagesDirectory,
-  path.join(__dirname),
-  dirPath,
-  KEY_FILE_PATH,
-);
+const pagesDirectory2 = path.resolve(process.cwd(), '.next/server/public/file');
+console.log('caminho', pagesDirectory);
 const multer = Multer({
   storage: Multer.diskStorage({
     destination(req, file, callback) {
-      callback(null, path.join(__dirname, '../../../../public/file'));
+      callback(null, path.join(pagesDirectory2));
     },
     filename(req, file, callback) {
       callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
@@ -36,7 +34,7 @@ const multer = Multer({
 
 const authenticateGoogle = () => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: dirPathGoogleDrive,
+    keyFile: pagesDirectory,
     scopes: 'https://www.googleapis.com/auth/drive',
   });
 
