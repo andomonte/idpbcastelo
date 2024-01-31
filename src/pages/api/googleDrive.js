@@ -7,10 +7,10 @@ const path = require('path');
 const fs = require('fs');
 
 const KEY_FILE_PATH = path.join('googleDrive.json');
-const dirPath = path.join(__dirname, '../../../../public/file');
+const dirPath = path.join(__dirname, '../../public/file');
 const dirPathGoogleDrive = path.join(
   __dirname,
-  '../../../../public/file/googleDrive.json',
+  '../../public/file/googleDrive.json',
 );
 console.log('caminho', path.join(__dirname), dirPath, KEY_FILE_PATH);
 const multer = Multer({
