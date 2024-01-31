@@ -264,6 +264,7 @@ function meuPerfil({ secao, perfilUser }) {
                               }
                             }}
                           />
+                          {console.log('avatar', fileImage)}
                           <Avatar
                             style={{ width: 150, height: 150 }}
                             alt="nome"

@@ -12,7 +12,7 @@ const dirPathGoogleDrive = path.join(
   __dirname,
   '../../../../public/file/googleDrive.json',
 );
-console.log('caminho', dirPath, KEY_FILE_PATH);
+console.log('caminho', path.join(__dirname), dirPath, KEY_FILE_PATH);
 const multer = Multer({
   storage: Multer.diskStorage({
     destination(req, file, callback) {
