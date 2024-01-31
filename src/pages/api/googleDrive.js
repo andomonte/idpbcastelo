@@ -16,7 +16,7 @@ console.log('caminho', path.join(__dirname), dirPath, KEY_FILE_PATH);
 const multer = Multer({
   storage: Multer.diskStorage({
     destination(req, file, callback) {
-      callback(null, path.join(__dirname, '../../../../public/file'));
+      callback(null, path.join(__dirname, '../../public/file'));
     },
     filename(req, file, callback) {
       callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
