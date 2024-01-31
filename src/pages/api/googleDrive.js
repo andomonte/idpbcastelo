@@ -7,16 +7,23 @@ const path = require('path');
 const fs = require('fs');
 
 const KEY_FILE_PATH = path.join('googleDrive.json');
-const dirPath = path.join(__dirname, '../../public/file');
+const dirPath = path.join(__dirname, '../../../../public/file');
 const dirPathGoogleDrive = path.join(
   __dirname,
-  '../../public/file/googleDrive.json',
+  '../../../../public/file/googleDrive.json',
 );
-console.log('caminho', path.join(__dirname), dirPath, KEY_FILE_PATH);
+const pagesDirectory = path.resolve(process.cwd(), 'pages');
+console.log(
+  'caminho',
+  pagesDirectory,
+  path.join(__dirname),
+  dirPath,
+  KEY_FILE_PATH,
+);
 const multer = Multer({
   storage: Multer.diskStorage({
     destination(req, file, callback) {
-      callback(null, path.join(__dirname, '../../public/file'));
+      callback(null, path.join(__dirname, '../../../../public/file'));
     },
     filename(req, file, callback) {
       callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
