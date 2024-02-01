@@ -14,10 +14,10 @@ const dirPathGoogleDrive = path.join(
 ); */
 const pagesDirectory = path.resolve(
   process.cwd(),
-  '.next/server/public/file/googleDrive.json',
+  'public/file/googleDrive.json',
 );
-const pagesDirectory2 = path.resolve(process.cwd(), '.next/server/public/file');
-console.log('caminho', pagesDirectory);
+const pagesDirectory2 = path.resolve(process.cwd(), 'public/file');
+console.log('caminho', pagesDirectory2, pagesDirectory);
 const multer = Multer({
   storage: Multer.diskStorage({
     destination(req, file, callback) {
