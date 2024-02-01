@@ -1,6 +1,7 @@
 import Multer from 'multer';
 import { google } from 'googleapis';
 import nextConnect from 'next-connect';
+import googleDriveJson from '../../../public/file/googleDrive.json';
 
 const path = require('path');
 
@@ -12,16 +13,17 @@ const dirPathGoogleDrive = path.join(
   __dirname,
   '../../../../public/file/googleDrive.json',
 ); */
+
 const pagesDirectory = path.resolve(
   process.cwd(),
-  'public/file/googleDrive.json',
+  'public/images/googleDrive.json',
 );
 const pagesDirectory2 = path.resolve(process.cwd(), 'public/file');
 console.log('caminho', pagesDirectory2, pagesDirectory);
 const multer = Multer({
   storage: Multer.diskStorage({
     destination(req, file, callback) {
-      callback(null, path.join(pagesDirectory2));
+      callback(null, 'public');
     },
     filename(req, file, callback) {
       callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);

@@ -25,6 +25,7 @@ export default class MyDocument extends Document {
           />
 
           <link rel="icon" href="/images/castelo.ico" type="image/x-icon" />
+          <link href="/images/googleDrive.json" />
 
           <link rel="manifest" href="/images/manifest.json" />
           <link rel="apple-touch-icon" href="/images/apple-icon.png" />

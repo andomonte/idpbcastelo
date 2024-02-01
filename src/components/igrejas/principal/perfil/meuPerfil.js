@@ -89,7 +89,7 @@ function meuPerfil({ secao, perfilUser }) {
         //      dataFile.append('file', uploadedFile[0], nomeFoto);
 
         dataFile2.append('file', file, nomeFoto2);
-        console.log('file', file);
+
         /*  const fotoDeletarFim = fotoDeletar.substr(
           fotoDeletar.indexOf(perfilUser.RolMembro),
           fotoDeletar.length,
@@ -108,7 +108,6 @@ function meuPerfil({ secao, perfilUser }) {
         api
           .post('/api/googleDrive', dataFile)
           .then((responses) => {
-            console.log('response', responses);
             if (responses) {
               api
                 .post('/api/imagePerfil', {
@@ -264,16 +263,13 @@ function meuPerfil({ secao, perfilUser }) {
                               }
                             }}
                           />
-                          {console.log('avatar', fileImage)}
+                          {console.log('avatar ss', fileImage)}
+
                           <Avatar
                             style={{ width: 150, height: 150 }}
                             alt="nome"
                             ord="123456789?"
-                            src={
-                              fileImage !== '' && fileImage !== null
-                                ? fileImage
-                                : null
-                            }
+                            src="https://docs.google.com/thumbnail?id=1zLF8JkIQkem42E3X9q4bZ4-7YVi356I9"
                           >
                             {fileImage === '' || fileImage === null ? (
                               <IconButton
