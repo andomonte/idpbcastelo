@@ -269,7 +269,7 @@ function meuPerfil({ secao, perfilUser }) {
                             style={{ width: 150, height: 150 }}
                             alt="nome"
                             ord="123456789?"
-                            src="https://docs.google.com/thumbnail?id=1zLF8JkIQkem42E3X9q4bZ4-7YVi356I9"
+                            src={fileImage || ''}
                           >
                             {fileImage === '' || fileImage === null ? (
                               <IconButton
