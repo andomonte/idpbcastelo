@@ -1739,6 +1739,68 @@ function RelCelula({
                       </Box>
                     </Paper>
                   </Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    width="100%"
+                    mt={2}
+                  >
+                    <Paper
+                      style={{
+                        marginTop: 10,
+                        width: '90%',
+                        textAlign: 'center',
+                        background: '#fafafa',
+                        height: 40,
+                        borderRadius: 15,
+                        border: '1px solid #000',
+                      }}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Box
+                          width="100%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ fontFamily: 'arial black' }}
+                        >
+                          <Box width="100%" textAlign="center">
+                            <Box
+                              ml={2}
+                              justifyContent="center"
+                              display="flex"
+                              width="100%"
+                              fontSize="16px"
+                              color={planejamento ? 'blue' : 'red'}
+                            >
+                              <Box
+                                mt={0}
+                                display="flex"
+                                justifyContent="center"
+                              >
+                                {planejamento ? 'COM' : 'SEM'}
+                              </Box>
+                              <Box
+                                mt={0}
+                                ml={2}
+                                display="flex"
+                                justifyContent="center"
+                                fontSize="16px"
+                              >
+                                PLANEJAMENTO
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Paper>
+                  </Box>
                   <Box display="flex" justifyContent="center" width="100%">
                     <Box
                       width="100%"

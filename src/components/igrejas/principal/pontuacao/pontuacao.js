@@ -284,6 +284,7 @@ export default function Pontuacao({
 
     const detalhesPontos = [];
     const pontosTotal = [];
+
     if (celulaFiltrada.length) {
       celulaFiltrada.map((val, index) => {
         detalhesPontos[index] = JSON.parse(val.Pontuacao);
@@ -317,6 +318,7 @@ export default function Pontuacao({
     ];
     if (detalhesPontos.length) {
       const arrayTeste = [];
+
       for (let i = 0; i < parametrosPontuacao.length; i += 1) {
         arrayTeste[i] = detalhesPontos.reduce(
           (accumulator, currentValue) =>
