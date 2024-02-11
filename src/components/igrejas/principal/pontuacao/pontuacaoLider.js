@@ -169,14 +169,12 @@ export default function Pontuacao({ perfilUser, parametros }) {
         if (response) {
           const pontuacao = [];
           const members = response.data;
-
           const distrito = members.filter(
             (val2) =>
               val2.Celula === Number(perfilUser.Celula) &&
               val2.Distrito === Number(perfilUser.Distrito) &&
               val2.Supervisao === Number(perfilUser.Supervisao),
           );
-
           setPontosCelulas(distrito);
           const setPerson = new Set();
           const listaCelulas = distrito.filter((person) => {
@@ -208,6 +206,12 @@ export default function Pontuacao({ perfilUser, parametros }) {
               semanaF - semana + 1,
             );
           }
+          console.log(
+            'pontos',
+            distrito,
+            members,
+            pontuacao.sort((a, b) => b.Pontos - a.Pontos),
+          );
 
           setListaFinal(pontuacao.sort((a, b) => b.Pontos - a.Pontos));
         }
@@ -225,11 +229,10 @@ export default function Pontuacao({ perfilUser, parametros }) {
     }
   }, [selectedDate2, selectedDate]);
   React.useEffect(() => {
+    console.log('semana', semana, semanaF);
     if (semana !== 0 && semanaF !== 0) {
       verPontos();
     }
-
-    verPontos();
   }, [semana, semanaF]);
   const handleDateClick2 = () => {
     //   setSelectedDate();
@@ -489,6 +492,7 @@ export default function Pontuacao({ perfilUser, parametros }) {
         </Box>
         {semanaF >= semana ? (
           <TableContainer sx={{ height: '90%' }}>
+            {console.log('listaFinal', listaFinal)}
             {listaFinal && listaFinal.length ? (
               <List sx={{ width: '100%', maxWidth: 360 }}>
                 {listaFinal.map((row, index) => (
