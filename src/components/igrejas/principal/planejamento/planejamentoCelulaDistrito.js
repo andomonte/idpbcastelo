@@ -214,8 +214,6 @@ function PlanMembro({ perfilUser, lideranca }) {
                             color="black"
                             fontSize="18px"
                           >
-                            {console.log('numero célula', numeroCelulas)}
-
                             {numeroCelulas[contNumeroCelula]}
                           </Box>
                           <Box

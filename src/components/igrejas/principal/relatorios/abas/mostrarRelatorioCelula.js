@@ -785,7 +785,7 @@ function RelCelula({
     const TotalPercentual = pontosTotalAtual;
     if (pontosTotalAnterior === 0)
       pontosTotalAnterior = parseFloat(TotalPercentual).toFixed(2);
-
+    console.log('planejamento final', planejamento);
     const PontuacaoFinal = createPontuacao(
       Number(pontosRelCelula),
       Number(pontosRelatorio),
@@ -1006,7 +1006,7 @@ function RelCelula({
       justifyContent="center"
       alignItems="center"
       width="100vw"
-      minHeight={570}
+      minHeight={770}
       minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh)"
@@ -1014,7 +1014,7 @@ function RelCelula({
       <Box
         width="96%"
         height="97%"
-        minHeight={550}
+        minHeight={750}
         display="flex"
         alignItems="center"
         justifyContent="center"
@@ -1784,6 +1784,7 @@ function RelCelula({
                                 display="flex"
                                 justifyContent="center"
                               >
+                                {console.log(planejamento)}
                                 {planejamento ? 'COM' : 'SEM'}
                               </Box>
                               <Box

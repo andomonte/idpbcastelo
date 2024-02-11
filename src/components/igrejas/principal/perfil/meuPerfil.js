@@ -263,7 +263,6 @@ function meuPerfil({ secao, perfilUser }) {
                               }
                             }}
                           />
-                          {console.log('avatar ss', fileImage)}
 
                           <Avatar
                             style={{ width: 150, height: 150 }}

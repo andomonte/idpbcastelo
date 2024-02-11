@@ -33,8 +33,6 @@ const uploadFile = async (req, res) => {
       fields: 'id',
     });
 
-    console.log('ID:', response.data.id);
-
     res.send(response);
   } catch (err) {
     console.log(err);

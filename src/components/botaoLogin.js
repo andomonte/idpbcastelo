@@ -77,7 +77,6 @@ export default function BotaoLogin() {
             className={classes.avatar}
             src={foto.foto || session?.user?.image}
           />
-          {console.log('fotos', foto.foto, session?.user?.image)}
         </Box>
       )}
     </Box>

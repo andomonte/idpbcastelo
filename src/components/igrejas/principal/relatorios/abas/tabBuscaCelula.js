@@ -870,16 +870,6 @@ export default function TabCelula({
                               }
                             }}
                           >
-                            {console.log(
-                              'libera',
-                              AnoPesquisado0,
-                              Ano,
-                              semana0,
-                              semana0 +
-                                AnoPesquisado0 * 100 +
-                                AnoPesquisado0 * 100,
-                              anoAtual * 100 + anoAtual * 100 + semanaHoje,
-                            )}
                             <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                               <MdCreateNewFolder
                                 size={25}

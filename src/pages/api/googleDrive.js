@@ -78,10 +78,10 @@ const handler = nextConnect()
         return;
       }
       const auth = authenticateGoogle();
-      console.log('req.file', req.file);
+
       const response = await uploadToGoogleDrive(req.file, auth);
       deleteFile(req.file.path);
-      console.log('response', response);
+
       res.status(200).send(response);
     } catch (err) {
       console.log('olha o erro', err);
