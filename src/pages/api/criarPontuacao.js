@@ -5,7 +5,7 @@ const handler = async (req, res) => {
   // res.status(200).send('OK');
 
   const dados = req.body;
-  console.log('dados', dados);
+  console.log('dados da pontuacao', dados);
   if (dados) {
     try {
       const pontuacao = await prisma.pontuacao

@@ -640,6 +640,7 @@ function RelCelula({
   const pegarPontuacao = () => {
     if (errorPontos) return <div>An error occured.</div>;
     if (!pontos) return <div>Loading ...</div>;
+
     if (pontos) {
       const pontosSemanaAtual = pontos.filter(
         (val) => Number(val.Semana) === Number(semanaEnviada),
@@ -785,7 +786,7 @@ function RelCelula({
     const TotalPercentual = pontosTotalAtual;
     if (pontosTotalAnterior === 0)
       pontosTotalAnterior = parseFloat(TotalPercentual).toFixed(2);
-    console.log('planejamento final', planejamento);
+
     const PontuacaoFinal = createPontuacao(
       Number(pontosRelCelula),
       Number(pontosRelatorio),
@@ -824,7 +825,7 @@ function RelCelula({
   React.useEffect(() => {
     criarPontuacao();
     return 0;
-  }, [pontosAtual]); // atualiza a pontuação
+  }, [pontosAtual, planejamento]); // atualiza a pontuação
 
   React.useEffect(() => {
     pegarPontuacao();
@@ -858,7 +859,7 @@ function RelCelula({
 
   const enviarPontuacao = () => {
     const CriadoEm = new Date();
-    criarPontuacao();
+
     api
       .post('/api/criarPontuacao', {
         Semana: semanaEnviada,
@@ -1784,7 +1785,6 @@ function RelCelula({
                                 display="flex"
                                 justifyContent="center"
                               >
-                                {console.log(planejamento)}
                                 {planejamento ? 'COM' : 'SEM'}
                               </Box>
                               <Box
