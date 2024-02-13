@@ -2,6 +2,7 @@ import { Box, Avatar } from '@material-ui/core';
 import React from 'react';
 import QRCode from 'react-qr-code';
 import corIgreja from 'src/utils/coresIgreja';
+
 import '@fontsource/rubik';
 import api from 'src/components/services/api';
 import { styled } from '@mui/material/styles';
@@ -99,6 +100,7 @@ function meuPerfil({ secao, perfilUser }) {
           .post('/api/delFoto', { dados: fotoDeletarFim })
           .then((responses) => {
             if (responses) {
+              // console.log('resposta deletar', responses);
             }
           })
           .catch((error) => {
@@ -106,20 +108,20 @@ function meuPerfil({ secao, perfilUser }) {
           }); */
 
         api
-          .post('/api/googleDrive', dataFile)
+          .post('/api/fotos', dataFile)
           .then((responses) => {
             if (responses) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://docs.google.com/thumbnail?id=${responses.data.data.id}`,
+                  fileImage: `https://idpbcastelo.s3.amazonaws.com/membros/${nomeFoto}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
                   if (response2) {
                     const valPerfil = {
                       ...perfilUser,
-                      foto: `https://docs.google.com/thumbnail?id=${responses.data.data.id}`,
+                      foto: `https://idpbcastelo.s3.amazonaws.com/membros/${nomeFoto}`,
                     };
 
                     sessionStorage.setItem(
@@ -127,11 +129,14 @@ function meuPerfil({ secao, perfilUser }) {
                       JSON.stringify(valPerfil),
                     );
                     window.location.reload(true);
+
+                    // console.log(response2);
                   }
                 })
                 .catch((error) => {
                   console.log(error);
                 });
+              // console.log('ccc', valCep);
             }
           })
           .catch((error) => {
@@ -263,12 +268,15 @@ function meuPerfil({ secao, perfilUser }) {
                               }
                             }}
                           />
-
                           <Avatar
                             style={{ width: 150, height: 150 }}
                             alt="nome"
                             ord="123456789?"
-                            src={fileImage || ''}
+                            src={
+                              fileImage !== '' && fileImage !== null
+                                ? fileImage
+                                : null
+                            }
                           >
                             {fileImage === '' || fileImage === null ? (
                               <IconButton
