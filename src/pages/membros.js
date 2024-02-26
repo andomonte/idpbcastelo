@@ -5,7 +5,15 @@ import { useRouter } from 'next/router';
 import Espera from 'src/utils/espera';
 import { useSession } from 'next-auth/client';
 
-function meuPerfil({ celulas, rolMembros, lideranca }) {
+function meuPerfil({
+  distritos,
+  coordenacoes,
+  supervisoes,
+  celulas,
+  rolMembros,
+  userIgrejas,
+  lideranca,
+}) {
   const router = useRouter();
   const perfilUser = router.query;
   let mudaDados = 'sai';
@@ -52,15 +60,20 @@ function meuPerfil({ celulas, rolMembros, lideranca }) {
       '/selectPerfil',
     );
   }
+
   return (
     <div>
       {perfilUserF ? (
         <Perfil
           celulas={celulas}
+          distritos={distritos}
+          coordenacoes={coordenacoes}
+          supervisoes={supervisoes}
           title="APP-IDPB"
           rolMembros={rolMembros}
           lideranca={lideranca}
           perfilUser={perfilUserF}
+          igreja={userIgrejas}
         />
       ) : (
         <div>
@@ -76,7 +89,20 @@ export const getStaticProps = async () => {
   const celulas = await prisma.celulas.findMany().finally(async () => {
     await prisma.$disconnect();
   });
+  const supervisoes = await prisma.supervisao.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+  const coordenacoes = await prisma.cordenacao.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+  const distritos = await prisma.distrito.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
+
+  const userIgrejas = await prisma.igreja.findMany().finally(async () => {
     await prisma.$disconnect();
   });
 
@@ -104,6 +130,10 @@ export const getStaticProps = async () => {
   return {
     props: {
       celulas: JSON.parse(JSON.stringify(celulas)),
+      supervisoes: JSON.parse(JSON.stringify(supervisoes)),
+      coordenacoes: JSON.parse(JSON.stringify(coordenacoes)),
+      distritos: JSON.parse(JSON.stringify(distritos)),
+      userIgrejas: JSON.parse(JSON.stringify(userIgrejas)),
       rolMembros: JSON.parse(
         JSON.stringify(
           rolMembros,

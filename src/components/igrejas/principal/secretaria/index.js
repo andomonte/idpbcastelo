@@ -16,8 +16,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Oval } from 'react-loading-icons';
 import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
+import { MdAccountTree } from 'react-icons/md';
 import Contato from './contato';
 import TelaPadrao from './telaPadrao';
+import Estatistico from './estatistico';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 
@@ -133,7 +135,7 @@ function TabPanel(props) {
   );
 }
 
-function Secretaria({ perfilUser, userIgrejas, title }) {
+function Secretaria({ rolMembros, perfilUser, userIgrejas, title }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
@@ -266,11 +268,11 @@ function Secretaria({ perfilUser, userIgrejas, title }) {
                     icon={
                       value === 1 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                          <HomeIcon sx={{ color: corIgreja.iconeOn }} />
+                          <MdAccountTree sx={{ color: corIgreja.iconeOn }} />
                         </SvgIcon>
                       ) : (
                         <SvgIcon sx={{ color: '#eeeeee' }}>
-                          <HomeIcon sx={{ color: corIgreja.iconeOff }} />
+                          <MdAccountTree sx={{ color: corIgreja.iconeOff }} />
                         </SvgIcon>
                       )
                     }
@@ -312,7 +314,7 @@ function Secretaria({ perfilUser, userIgrejas, title }) {
             <Contato userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <TelaPadrao userIgrejas={userIgrejas} />
+            <Estatistico rolMembros={rolMembros} userIgrejas={userIgrejas} />
           </TabPanel>
           <TabPanel value={value} index={2}>
             {perfilUser.Funcao === 'PastorDistrito' ? (

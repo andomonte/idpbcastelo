@@ -31,14 +31,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 // const fetcher2 = (url2) => axios.get(url2).then((res) => res.dataVisitante);
 
-function createData(Nome, Presenca, status) {
-  return { Nome, Presenca, status };
+function createData(Rol, Nome, Presenca, status) {
+  return { Rol, Nome, Presenca, status };
 }
-function createRelCelula(Rol, Nome, Presenca) {
+function createRelCelula(Rol, Nome, Presenca, Status) {
   return {
     Rol,
     Nome,
     Presenca,
+    Status,
   };
 }
 function createRelVisitantes(Rol, Nome, Presenca) {
@@ -185,7 +186,9 @@ function RelCelula({
   const [dadosCelula, setDadosCelula] = React.useState(
     dadosSem && dadosSem.id
       ? JSON.parse(dadosSem.NomesMembros)
-      : nomesCelulas.map((row) => createData(row.Nome, false, row.Situacao)),
+      : nomesCelulas.map((row) =>
+          createData(row.RolMembro, row.Nome, false, row.Situacao),
+        ),
   );
 
   const [openErro, setOpenErro] = React.useState(false);
@@ -551,7 +554,7 @@ function RelCelula({
       .then((response) => {
         if (response) {
           if (response.data.length) {
-            setPlanejamento(response.data.length * 10);
+            setPlanejamento(10);
           } else setPlanejamento(0);
           return 0;
         }
@@ -895,13 +898,16 @@ function RelCelula({
     setCarregando(true);
 
     const criadoEm = new Date();
+
     const nomesCelulaParcial = relPresentes.map((row, index) =>
       createRelCelula(
-        row.RolMembro,
+        row.Rol,
         row.Nome,
         relPresentes[index] ? relPresentes[index].Presenca : false,
+        row.status,
       ),
     );
+
     const nomesCelulaFinal = JSON.stringify(nomesCelulaParcial);
     const novaData = new Date(ConverteData(inputValue));
     const RelCelulaFinal = createEstatistico(

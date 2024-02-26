@@ -93,6 +93,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   }, [semana]);
 
   React.useEffect(() => {
+    console.log('cursos ', cursoFeito);
     if (cursoFeito && cursoFeito.length) {
       setListaCursos(cursoFeito[0]);
     }
@@ -132,7 +133,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         setDataSem1(ConverteData(presCelula1[0].Data));
-        const pSem1 = nomes[0].filter((val) => val.Nome === perfilUser.Nome);
+        const pSem1 = nomes[0].filter(
+          (val) =>
+            val.Nome === perfilUser.Nome || val.Rol === perfilUser.RolMembro,
+        );
 
         setPresSem1(pSem1);
       }
@@ -1389,6 +1393,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '1px solid #000',
           }}
         >
+          {console.log('listaCursos', listaCursos)}
           {Object.keys(listaCursos).length ? (
             <Box>
               <Box mt={0}>{ConverteData(listaCursos.Data)}</Box>

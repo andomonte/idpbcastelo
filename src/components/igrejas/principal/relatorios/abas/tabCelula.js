@@ -94,11 +94,7 @@ export default function TabCelula({
             bgcolor={Object.keys(respostas).length && respostas[index]}
             display="flex"
             alignItems="center"
-            key={
-              row.Nome.length > 30
-                ? row.Nome.substring(0, row.Nome.lastIndexOf(' '))
-                : row.Nome
-            }
+            key={index}
             height={40}
             sx={{ borderBottom: '1px solid #00a' }}
           >

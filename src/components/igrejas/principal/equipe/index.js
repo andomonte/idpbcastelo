@@ -27,6 +27,8 @@ import BuscarNome from './abas/buscarNome';
 import Liderados from './liderados';
 import LideradosCoord from './lideradosCoord';
 import LideradosDistrito from './lideradosDistrito';
+
+import NovosDistrito from './novosDistrito';
 import Membros from './membrosSuper';
 import MembrosCoord from './membrosCoord';
 import MembrosDistrito from './membrosDistrito';
@@ -142,7 +144,16 @@ function TabPanel(props) {
   );
 }
 
-function Perfil({ title, rolMembros, lideranca, perfilUser }) {
+function Perfil({
+  title,
+  rolMembros,
+  lideranca,
+  perfilUser,
+  distritos,
+  coordenacoes,
+  supervisoes,
+  celulas,
+}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -343,6 +354,25 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                       )
                     }
                   />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Novos"
+                    icon={
+                      value === 2 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <HiUserGroup />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: '#eeeeee' }}>
+                          <HiUserGroup />
+                        </SvgIcon>
+                      )
+                    }
+                  />
                 </BottomNavigation>
               </Box>
             )}
@@ -366,6 +396,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                     perfilUser={perfilUser}
                     lideranca={lideranca}
                     rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
                   />
                 ) : null}
                 {perfilUser.Funcao === 'Lider' ? (
@@ -374,6 +408,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                     perfilUser={perfilUser}
                     lideranca={lideranca}
                     rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
                   />
                 ) : null}
                 {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
@@ -383,6 +421,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                     perfilUser={perfilUser}
                     lideranca={lideranca}
                     rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
                   />
                 ) : null}
                 {perfilUser.Funcao === 'Coordenador' ? (
@@ -391,6 +433,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                     perfilUser={perfilUser}
                     lideranca={lideranca}
                     rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
                   />
                 ) : null}
 
@@ -400,6 +446,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                     perfilUser={perfilUser}
                     lideranca={lideranca}
                     rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
                   />
                 ) : null}
                 {perfilUser.Funcao === 'Presidente' ? (
@@ -408,6 +458,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                     perfilUser={perfilUser}
                     lideranca={lideranca}
                     rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
                   />
                 ) : null}
               </Box>
@@ -426,6 +480,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                 perfilUser={perfilUser}
                 lideranca={lideranca}
                 rolMembros={rolMembros}
+                distritos={distritos}
+                coordenacoes={coordenacoes}
+                supervisoes={supervisoes}
+                celulas={celulas}
               />
             ) : null}
             {perfilUser.Funcao === 'Coordenador' ? (
@@ -434,6 +492,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                 perfilUser={perfilUser}
                 lideranca={lideranca}
                 rolMembros={rolMembros}
+                distritos={distritos}
+                coordenacoes={coordenacoes}
+                supervisoes={supervisoes}
+                celulas={celulas}
               />
             ) : null}
             {perfilUser.Funcao === 'PastorDistrito' ? (
@@ -442,6 +504,10 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                 perfilUser={perfilUser}
                 lideranca={lideranca}
                 rolMembros={rolMembros}
+                distritos={distritos}
+                coordenacoes={coordenacoes}
+                supervisoes={supervisoes}
+                celulas={celulas}
               />
             ) : null}
             {perfilUser.Funcao === 'Presidente' ? (
@@ -450,8 +516,92 @@ function Perfil({ title, rolMembros, lideranca, perfilUser }) {
                 perfilUser={perfilUser}
                 lideranca={lideranca}
                 rolMembros={rolMembros}
+                distritos={distritos}
+                coordenacoes={coordenacoes}
+                supervisoes={supervisoes}
+                celulas={celulas}
               />
             ) : null}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            {session && (
+              <Box>
+                {perfilUser.Funcao === 'Membro' ? (
+                  <MembrosCelula2
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                  />
+                ) : null}
+                {perfilUser.Funcao === 'Lider' ? (
+                  <MembrosCelula
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                  />
+                ) : null}
+                {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Supervisor' ? (
+                  <Liderados
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                  />
+                ) : null}
+                {perfilUser.Funcao === 'Coordenador' ? (
+                  <LideradosCoord
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                  />
+                ) : null}
+
+                {perfilUser.Funcao === 'PastorDistrito' ? (
+                  <NovosDistrito
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                  />
+                ) : null}
+                {perfilUser.Funcao === 'Presidente' ? (
+                  <LideradosCoord
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                  />
+                ) : null}
+              </Box>
+            )}
           </TabPanel>
         </main>
       </div>

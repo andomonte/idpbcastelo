@@ -17,7 +17,14 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
   const [contNumeroFucao, setContNumeroFucao] = React.useState(0);
   //= ===================================================================
   const membrosDistrito = rolMembros.filter(
-    (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    (val) =>
+      Number(val.Distrito) === Number(perfilUser.Distrito) &&
+      val.Situacao === 'ATIVO',
+  );
+  const membrosDistritoNovos = rolMembros.filter(
+    (val) =>
+      Number(val.Distrito) === Number(perfilUser.Distrito) &&
+      val.Situacao === 'NOVO',
   );
 
   const celulasCoordP = lideranca.filter(
@@ -114,7 +121,7 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
                           fontFamily="Roboto Mono"
                           fontSize="14px"
                           fontWeight="bold"
-                          color="white"
+                          color="yellow"
                           mt={0}
                           ml={1}
                         >
@@ -135,11 +142,32 @@ function Funcao({ perfilUser, lideranca, rolMembros }) {
                           fontSize="14px"
                           fontWeight="bold"
                           fontFamily="Roboto Mono"
-                          color="white"
+                          color="yellow"
                           mt={0}
                           ml={1}
                         >
                           {membrosDistrito.length}
+                        </Box>
+                      </Box>
+                      <Box
+                        color="white"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        ml={5}
+                        mt={0}
+                        fontSize="14px"
+                      >
+                        Novos:{' '}
+                        <Box
+                          fontSize="14px"
+                          fontWeight="bold"
+                          fontFamily="Roboto Mono"
+                          color="yellow"
+                          mt={0}
+                          ml={1}
+                        >
+                          {membrosDistritoNovos.length}
                         </Box>
                       </Box>
                     </Box>

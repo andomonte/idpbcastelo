@@ -18,17 +18,26 @@ const bannerBlurHash =
 export default function TabCelula({
   lideranca,
   Funcao,
-  //  rolMembros,
+  rolMembros,
   perfilUser,
   setBuscarNome,
   setOpenBuscar,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-  const listaParcial = lideranca.filter(
+  const listaParcial1 = lideranca.filter(
     (val) =>
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       val.Funcao === Funcao,
   );
+  const listaParcial = [];
+  listaParcial1.map((val) => {
+    const newlist = rolMembros.filter(
+      (val2) => Number(val2.RolMembro) === Number(val.RolMembro),
+    );
+
+    if (newlist.length) listaParcial.push(newlist[0]);
+    return 0;
+  });
 
   const [openModal, setOpenModal] = React.useState(false);
   const [imagem, setImagem] = React.useState('');
@@ -123,6 +132,7 @@ export default function TabCelula({
             </Box>
           ))}
       </TableContainer> */}
+
       <TableContainer sx={{ maxHeight: '100%' }}>
         <List sx={{ width: '100%', maxWidth: 360 }}>
           {lideresSetor.map((row, index) => (

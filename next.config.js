@@ -18,8 +18,9 @@ const nextConfig = {
   images: {
     domains: [
       'localhost',
-      'arquivocastelo.s3.amazonaws.com',
+      'idpbcastelo.s3.amazonaws.com',
       'idpbcastelo.com.br',
+      'arquivocastelo.s3.amazonaws.com',
     ],
   },
 };
@@ -27,7 +28,7 @@ module.exports = withPlugins([
   withImages,
   nextConfig,
   {
-    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) =>
+    webpack: (config) =>
       // Important: return the modified config
       config,
 

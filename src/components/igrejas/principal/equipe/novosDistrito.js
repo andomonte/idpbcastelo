@@ -6,27 +6,17 @@ import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import BuscarNome from '../relatorios/supervisor/buscarNome';
 import TabMembros from './abas/tabMembros';
 
-function Celula({
-  distritos,
-  coordenacoes,
-  supervisoes,
-  celulas,
-  perfilUser,
-  lideranca,
-  rolMembros,
-}) {
+function Celula({ perfilUser, lideranca, rolMembros }) {
   const [buscarNome, setBuscarNome] = React.useState([]);
   const [openBuscar, setOpenBuscar] = React.useState(false);
   const [contNumeroCelula, setContNumeroCelula] = React.useState(0);
-  const [contNumeroDistrito, setContNumeroDistrito] = React.useState(0);
   const [contNumeroCoord, setContNumeroCoord] = React.useState(0);
 
-  const [contNumeroSuper, setContNumeroSuper] = React.useState(0);
   // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
   //= ===================================================================
 
   //--------------------------------------------------------------------
-  console.log('celulas', celulas, supervisoes, coordenacoes, distritos);
+
   //= ===================================================================
   const coordenadores = lideranca.filter(
     (val) =>
@@ -42,45 +32,13 @@ function Celula({
     if (new Date(b) > new Date(a)) return -1;
     return 0;
   });
+
   const numeroCoord = coordOrdenadas;
-
-  //--------------------------------------------------------
-  const distritosParcial = distritos.map((itens) => itens.Distrito);
-  const numeroDistritosP = [...new Set(distritosParcial)];
-
-  const distritosOrdenadas = numeroDistritosP.sort((a, b) => {
-    if (new Date(a) > new Date(b)) return 1;
-    if (new Date(b) > new Date(a)) return -1;
-    return 0;
-  });
-  console.log('distritosOrde', distritos);
-  const numeroDistrito = distritosOrdenadas;
-
-  //----------------------------------------------------------------
-
-  const supervisores = lideranca.filter(
-    (val) =>
-      Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      Number(val.Coordenacao) === Number(numeroCoord[contNumeroCoord]) &&
-      val.Funcao === 'Supervisor',
-  );
-
-  const superParcial = supervisores.map((itens) => itens.Supervisao);
-  const numeroSuperP = [...new Set(superParcial)];
-
-  const superOrdenadas = numeroSuperP.sort((a, b) => {
-    if (new Date(a) > new Date(b)) return 1;
-    if (new Date(b) > new Date(a)) return -1;
-    return 0;
-  });
-
-  const numeroSuper = superOrdenadas;
   //--------------------------------------------------------------------
   const lideresSetor = lideranca.filter(
     (val) =>
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       Number(val.Coordenacao) === Number(numeroCoord[contNumeroCoord]) &&
-      Number(val.Supervisao) === Number(numeroSuper[contNumeroSuper]) &&
       val.Funcao === 'Lider',
   );
 
@@ -92,14 +50,6 @@ function Celula({
       itens.Situacao === 'ATIVO' &&
       itens.Coordenacao === Number(numeroCoord[contNumeroCoord]),
   );
-  const membrosIgreja = rolMembros.filter((val) => val.Situacao === 'ATIVO');
-  const membrosDistrito = rolMembros.filter(
-    (val) =>
-      Number(val.Distrito) === Number(numeroDistrito[contNumeroDistrito]) &&
-      val.Situacao === 'ATIVO',
-  );
-
-  console.log(membrosDistrito);
 
   const membrosDistritoNovos = rolMembros.filter(
     (val) =>
@@ -123,26 +73,13 @@ function Celula({
       Number(val.Coordenacao) === Number(numeroCoord[contNumeroCoord]) &&
       val.Celula === Number(numeroCelulas[contNumeroCelula]),
   );
+
   const membroCelulaNovo = rolMembros.filter(
     (val) =>
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
       Number(val.Coordenacao) === Number(numeroCoord[contNumeroCoord]) &&
       val.Situacao === 'NOVO' &&
       val.Celula === Number(numeroCelulas[contNumeroCelula]),
-  );
-
-  const membroCelulaSuper = rolMembros.filter(
-    (val) =>
-      Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      Number(val.Coordenacao) === Number(numeroCoord[contNumeroCoord]) &&
-      Number(val.Supervisao) === Number(numeroSuper[contNumeroSuper]),
-  );
-  const membroCelulaNovoSuper = rolMembros.filter(
-    (val) =>
-      Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      Number(val.Coordenacao) === Number(numeroCoord[contNumeroCoord]) &&
-      Number(val.Supervisao) === Number(numeroSuper[contNumeroSuper]) &&
-      val.Situacao === 'NOVO',
   );
 
   const handleIncCelula = () => {
@@ -159,26 +96,12 @@ function Celula({
     setContNumeroCelula(contCelulaAtual);
   };
 
-  const handleIncDistrito = () => {
-    let contDistritoAtual = contNumeroDistrito + 1;
-
-    if (contDistritoAtual > numeroDistrito.length - 1) contDistritoAtual = 0;
-    setContNumeroDistrito(contDistritoAtual);
-  };
-
-  const handleDecDistrito = () => {
-    let contDistritoAtual = contNumeroDistrito - 1;
-
-    if (contDistritoAtual < 0) contDistritoAtual = numeroDistrito.length - 1;
-    setContNumeroDistrito(contDistritoAtual);
-  };
-
   const handleIncCoord = () => {
     let contCoordAtual = contNumeroCoord + 1;
 
     if (contCoordAtual > numeroCoord.length - 1) contCoordAtual = 0;
     setContNumeroCoord(contCoordAtual);
-    setContNumeroSuper(0);
+    setContNumeroCelula(0);
   };
 
   const handleDecCoord = () => {
@@ -186,22 +109,6 @@ function Celula({
 
     if (contCoordAtual < 0) contCoordAtual = numeroCoord.length - 1;
     setContNumeroCoord(contCoordAtual);
-    setContNumeroSuper(0);
-  };
-
-  const handleIncSuper = () => {
-    let contSuperAtual = contNumeroSuper + 1;
-
-    if (contSuperAtual > numeroSuper.length - 1) contSuperAtual = 0;
-    setContNumeroSuper(contSuperAtual);
-    setContNumeroCelula(0);
-  };
-
-  const handleDecSuper = () => {
-    let contSuperAtual = contNumeroSuper - 1;
-
-    if (contSuperAtual < 0) contSuperAtual = numeroSuper.length - 1;
-    setContNumeroSuper(contSuperAtual);
     setContNumeroCelula(0);
   };
 
@@ -247,173 +154,6 @@ function Celula({
                   mt={0}
                   mb={0}
                   width="100%"
-                  height="15%"
-                >
-                  <Box
-                    bgcolor={corIgreja.principal}
-                    borderRadius={16}
-                    color="#000"
-                    justifyContent="center"
-                    width="100%"
-                    display="flex"
-                    height={50}
-                  >
-                    <Box ml={0} width="100%" display="flex">
-                      <Box
-                        width="10%"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                          onClick={() => {
-                            handleDecDistrito();
-                          }}
-                        >
-                          <BiCaretLeft size={30} color="#f0f0f0" />
-                        </IconButton>
-                      </Box>
-                      <Box
-                        width="100%"
-                        ml={0}
-                        color="#f0f0f0"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        fontSize="16px"
-                        sx={{ fontFamily: 'Fugaz One' }}
-                      >
-                        <Box fontFamily="arial black" ml={2} mr={2}>
-                          {
-                            distritos.filter(
-                              (val) =>
-                                val.Distrito ===
-                                numeroDistrito[contNumeroDistrito],
-                            )[0].Distrito_Nome
-                          }
-                        </Box>
-                      </Box>
-                      <Box
-                        width="10%"
-                        display="flex"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                          onClick={() => {
-                            handleIncDistrito();
-                          }}
-                        >
-                          <BiCaretRight size={30} color="#f0f0f0" />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box
-                    bgcolor="white"
-                    color="#000"
-                    justifyContent="center"
-                    width="100%"
-                    display="flex"
-                    height={50}
-                  >
-                    <Box
-                      width="100%"
-                      ml={0}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      fontSize="16px"
-                      sx={{ fontFamily: 'Fugaz One' }}
-                    >
-                      <Box ml={0.5} color="black" fontSize="12px">
-                        MEMBROS:
-                      </Box>
-                      <Box
-                        color="blue"
-                        fontSize="14px"
-                        fontFamily="arial"
-                        ml={1}
-                        mr={0.5}
-                      >
-                        {membrosDistrito.length} / {membrosIgreja.length}
-                      </Box>
-                      <Box ml={2} mt={0.2} color="black" fontSize="12px">
-                        NOVOS:
-                      </Box>
-                      <Box
-                        color="blue"
-                        fontSize="14px"
-                        fontFamily="arial"
-                        ml={1}
-                        mr={0.5}
-                      >
-                        {membroCelulaNovoSuper.length} /{' '}
-                        {membrosDistritoNovos.length}
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box
-                    bgcolor="white"
-                    color="#000"
-                    justifyContent="center"
-                    width="100%"
-                    display="flex"
-                    height={50}
-                  >
-                    <Box
-                      width="100%"
-                      ml={0}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      fontSize="16px"
-                      sx={{ fontFamily: 'Fugaz One' }}
-                    >
-                      <Box ml={0.5} color="black" fontSize="12px">
-                        COORDENAÇÕES:
-                      </Box>
-                      <Box
-                        color="blue"
-                        fontSize="14px"
-                        fontFamily="arial"
-                        ml={1}
-                        mr={0.5}
-                      >
-                        {membroCelulaSuper.length} /{' '}
-                        {membrosCoordParcial.length}
-                      </Box>
-                      <Box ml={2} mt={0.2} color="black" fontSize="12px">
-                        SUPERVISÕES:
-                      </Box>
-                      <Box
-                        color="blue"
-                        fontSize="14px"
-                        fontFamily="arial"
-                        ml={1}
-                        mr={0.5}
-                      >
-                        {membroCelulaNovoSuper.length} /{' '}
-                        {membrosDistritoNovos.length}
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  flexDirection="column"
-                  style={{ borderTop: '1px solid #f0f0f0' }}
-                  mt={0}
-                  mb={0}
-                  width="100%"
                   height="8%"
                 >
                   <Box
@@ -437,7 +177,7 @@ function Celula({
                           aria-label="upload picture"
                           component="span"
                           onClick={() => {
-                            handleDecSuper();
+                            handleDecCoord();
                           }}
                         >
                           <BiCaretLeft size={30} color="#f0f0f0" />
@@ -451,50 +191,11 @@ function Celula({
                         justifyContent="center"
                         alignItems="center"
                         fontSize="16px"
-                        sx={{ fontFamily: 'Fugaz One' }}
+                        sx={{ fontFamily: 'Rubik' }}
                       >
-                        <Box
-                          width="100%"
-                          ml={0}
-                          color="#f0f0f0"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          fontSize="16px"
-                          sx={{ fontFamily: 'Fugaz One' }}
-                        >
-                          Supervisão:
-                          <Box fontFamily="arial black" ml={2} mr={2}>
-                            {numeroSuper[contNumeroSuper]}
-                          </Box>
-                          (
-                          <Box ml={0.5} color="white" fontSize="12px">
-                            Membros:
-                          </Box>
-                          <Box
-                            color="yellow"
-                            fontSize="14px"
-                            fontFamily="arial"
-                            ml={1}
-                            mr={0.5}
-                          >
-                            {membroCelulaSuper.length} /{' '}
-                            {membrosCoordParcial.length}
-                          </Box>
-                          <Box ml={2} mt={0.2} color="white" fontSize="12px">
-                            Novos:
-                          </Box>
-                          <Box
-                            color="yellow"
-                            fontSize="14px"
-                            fontFamily="arial"
-                            ml={1}
-                            mr={0.5}
-                          >
-                            {membroCelulaNovoSuper.length} /{' '}
-                            {membrosDistritoNovos.length}
-                          </Box>
-                          )
+                        Coordenação:
+                        <Box fontFamily="arial black" ml={2} mr={2}>
+                          {numeroCoord[contNumeroCoord]}
                         </Box>
                       </Box>
                       <Box
@@ -508,7 +209,7 @@ function Celula({
                           aria-label="upload picture"
                           component="span"
                           onClick={() => {
-                            handleIncSuper();
+                            handleIncCoord();
                           }}
                         >
                           <BiCaretRight size={30} color="#f0f0f0" />
@@ -554,7 +255,7 @@ function Celula({
                         justifyContent="center"
                         alignItems="center"
                         fontSize="16px"
-                        sx={{ fontFamily: 'Fugaz One' }}
+                        sx={{ fontFamily: 'Rubik' }}
                       >
                         Célula:
                         <Box
