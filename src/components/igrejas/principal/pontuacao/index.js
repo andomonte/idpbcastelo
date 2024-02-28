@@ -164,25 +164,6 @@ function Secretaria({ parametros, perfilUser, title, lideranca, supervisao }) {
             >
               PONTUAÇÃO DAS CÉLULAS
             </Box>
-            <BottomNavigationAction
-              style={
-                value === 0
-                  ? { color: corIgreja.iconeOn, fontSize: '18px' }
-                  : { color: '#eeeeee', fontSize: '18px' }
-              }
-              label="Estatístico"
-              icon={
-                value === 0 ? (
-                  <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                    <FaChartLine />
-                  </SvgIcon>
-                ) : (
-                  <SvgIcon sx={{ color: '#eeeeee' }}>
-                    <FaChartLine />
-                  </SvgIcon>
-                )
-              }
-            />
           </Toolbar>
         </AppBar>
 
