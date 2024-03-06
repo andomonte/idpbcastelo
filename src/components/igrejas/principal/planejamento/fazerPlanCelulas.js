@@ -279,7 +279,7 @@ function RelatorioCelebracao({
   const fases = [
     { label: 'Integrar na Visão', value: 1 },
     { label: 'Comunhão', value: 2 },
-    { label: 'Edificação', value: 3 },
+    { label: 'Oração', value: 3 },
     { label: 'Evangelismo', value: 4 },
     { label: 'multiplicacao', value: 5 },
   ];
@@ -312,6 +312,7 @@ function RelatorioCelebracao({
   const [openErro, setOpenErro] = React.useState(false);
 
   const dataAtual2 = PegaData(semanaEnviada, AnoPesquisado);
+
   const [checkRelatorio, setCheckRelatorio] = React.useState(true);
   const [selectedDate, setSelectedDate] = React.useState(dataAtual2);
   const [open, setIsPickerOpen] = React.useState(false);
@@ -437,7 +438,10 @@ function RelatorioCelebracao({
         label: relatorio[0].Anfitriao,
         value: 0,
       };
+      // setSelectedDate(relatorio[0);
 
+      setInputValue(moment(new Date(relatorio[0].Data)).format('DD/MM/YYYY'));
+      setSelectedDate(new Date(relatorio[0].Data));
       setValueAnfitriao(newAnfitriao.label);
 
       const newFase = fases.filter((val) => val.label === relatorio[0].Fase);
@@ -599,6 +603,7 @@ function RelatorioCelebracao({
     valueAnfitriao,
     multiplicacao,
   ]);
+
   const handleSalvar = () => {
     if (etapas === 'completo') {
       setCarregando(true);
@@ -800,6 +805,11 @@ function RelatorioCelebracao({
                                             height: 40,
                                           }}
                                         >
+                                          {console.log(
+                                            'selectedDate',
+                                            selectedDate,
+                                            inputValue,
+                                          )}
                                           <MuiPickersUtilsProvider
                                             utils={DateFnsUtils}
                                           >
@@ -1115,10 +1125,10 @@ function RelatorioCelebracao({
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
                                       <Select
-                                        value={values4}
+                                        value={values3}
                                         onChange={(e) => {
-                                          setValues4(e);
-                                          setEvangelismo(e.label);
+                                          setValues3(e);
+                                          setEdificacao(e.label);
                                         }}
                                         options={nomesCelulaParcial}
                                       />
@@ -1141,10 +1151,10 @@ function RelatorioCelebracao({
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
                                       <Select
-                                        value={values3}
+                                        value={values4}
                                         onChange={(e) => {
-                                          setValues3(e);
-                                          setEdificacao(e.label);
+                                          setValues4(e);
+                                          setEvangelismo(e.label);
                                         }}
                                         options={nomesCelulaParcial}
                                       />
@@ -1162,7 +1172,7 @@ function RelatorioCelebracao({
                                         display="block"
                                         gutterBottom
                                       >
-                                        Lanche
+                                        Lanche da Célula
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>

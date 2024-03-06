@@ -56,6 +56,7 @@ model celulas {
   AtualizadoPor String?   @db.VarChar(255)
   Distrito      Int       @default(0, map: "DF__celulas__Distrit__403A8C7D")
   Coordenacao   Int       @default(0, map: "DF__celulas__Coorden__412EB0B6")
+  Status        Boolean?
 
   @@id([Celula, Supervisao, Coordenacao, Distrito], map: "PK_celulas")
 }
@@ -82,6 +83,7 @@ model cordenacao {
   CriadoPor        String?   @db.VarChar(150)
   AtualizadoEm     DateTime? @db.DateTime
   AtualizadoPor    String?   @db.VarChar(255)
+  Status           Boolean?
 
   @@id([Coordenacao, Distrito], map: "PK_cordenacao")
 }
@@ -109,6 +111,7 @@ model distrito {
   CriadoPor     String    @db.VarChar(150)
   AtualizadoEm  DateTime? @db.DateTime
   AtualizadoPor String?   @db.VarChar(255)
+  Status        Boolean?
 }
 
 model eventos {
@@ -183,6 +186,7 @@ model igreja {
   website           String?   @db.VarChar(1000)
   pastor_presidente String?   @db.VarChar(500)
   tesoureiro        String?   @db.VarChar(500)
+  jurisdicao        String?   @db.VarChar(250)
 }
 
 model inscritosCursos {
@@ -513,6 +517,8 @@ model TB_LANCAMENTO {
   anexo2                  String?   @db.VarChar(500)
   anexo3                  String?   @db.VarChar(500)
   idLancamentoMissao      BigInt?   @default(0, map: "DF__TB_LANCAM__idLan__51851410")
+  mesRecebido             BigInt?   @default(0, map: "DF__TB_LANCAM__mesRe__2FBA0BF1")
+  DataRecebido            DateTime? @db.Date
 }
 
 model TB_LOGIN_DEVICE {
@@ -592,6 +598,8 @@ model TB_TRANSFERENCIA {
   AtualizadoEm          DateTime? @db.DateTime
   AtualizadoPor         String?   @db.VarChar(255)
   GC_ID                 BigInt?
+  TF_CC_ORIGEM          BigInt    @default(0, map: "DF__TB_TRANSF__TF_CC__30AE302A")
+  TF_CC_DESTINO         BigInt    @default(0, map: "DF__TB_TRANSF__TF_CC__31A25463")
 }
 
 model turma {
@@ -632,6 +640,7 @@ model supervisao {
   AtualizadoPor   String?   @db.VarChar(255)
   Coordenacao     Int       @default(0, map: "DF__supervisa__Coord__4B7734FF")
   Distrito        Int       @default(0, map: "DF__supervisa__Distr__4C6B5938")
+  Status          Boolean?
 
   @@id([Supervisao, Coordenacao, Distrito], map: "PK_supervisao")
 }

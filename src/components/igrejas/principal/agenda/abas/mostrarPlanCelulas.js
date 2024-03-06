@@ -660,7 +660,7 @@ function RelatorioCelebracao({
                                       display="block"
                                       gutterBottom
                                     >
-                                      Edificação
+                                      Oração
                                     </Typography>
                                   </Box>
                                   <Box className={classes.novoBox} mt={-1.8}>
@@ -702,7 +702,7 @@ function RelatorioCelebracao({
                                       display="block"
                                       gutterBottom
                                     >
-                                      Compartilhando a Visão
+                                      Edificação
                                     </Typography>
                                   </Box>
                                   <Box className={classes.novoBox} mt={-1.8}>
@@ -744,7 +744,7 @@ function RelatorioCelebracao({
                                       display="block"
                                       gutterBottom
                                     >
-                                      LANCHE
+                                      Lanche da Celula
                                     </Typography>
                                   </Box>
                                   <Box className={classes.novoBox} mt={-1.8}>
