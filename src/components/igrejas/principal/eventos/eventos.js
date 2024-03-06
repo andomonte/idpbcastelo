@@ -77,7 +77,7 @@ function Eventos({ perfilUser, rolMembros }) {
       minWidth={300}
       bgcolor={corIgreja.principal2}
       height="calc(100vh - 56px)"
-      color={corIgreja.texto1}
+      color={corIgreja.textoP}
     >
       <Box
         height="97%"
@@ -218,7 +218,7 @@ function Eventos({ perfilUser, rolMembros }) {
               fontFamily="Fugaz One"
               fontSize="18px"
               textAlign="center"
-              color={corIgreja.texto1}
+              color={corIgreja.textoP}
             >
               NENHUM EVENTO PREVISTO NESSE PERÍODO
             </Box>

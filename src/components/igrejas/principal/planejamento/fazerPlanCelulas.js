@@ -1505,7 +1505,7 @@ function RelatorioCelebracao({
                   >
                     <Box>PLANEJAMENTO DA CÉLULA</Box>
                     <Box
-                      color={corIgreja.texto1}
+                      color={corIgreja.textoP}
                       fontFamily="arial black"
                       fontSize="20px"
                       mt={1}

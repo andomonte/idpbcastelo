@@ -1196,7 +1196,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                                         display="block"
                                         gutterBottom
                                       >
-                                        Cadeira da Bênção
+                                        Lanche da Célula
                                       </Typography>
                                     </Box>
                                     <Box className={classes.novoBox} mt={-2}>
@@ -1666,7 +1666,7 @@ function RelatorioCelebracao({ rolMembros, perfilUser }) {
                   >
                     <Box>PLANEJAMENTO DA CÉLULA</Box>
                     <Box
-                      color={corIgreja.texto1}
+                      color={corIgreja.textoP}
                       fontFamily="arial black"
                       fontSize="20px"
                       mt={1}

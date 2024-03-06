@@ -741,7 +741,7 @@ function RelatorioCelebracao({
                                       display="block"
                                       gutterBottom
                                     >
-                                      Cadeira da Bênção
+                                      Lanche da Célula
                                     </Typography>
                                   </Box>
                                   <Box className={classes.novoBox} mt={-1.8}>
