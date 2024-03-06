@@ -158,13 +158,27 @@ function Celula({
       return 0;
     });
     coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+      if (
+        Number(val.Coordenacao) ===
+        Number(
+          perfilUser.Coordenacao &&
+            Number(val.Distrito) === Number(perfilUser.Distrito),
+        )
+      ) {
         newContCoord = index + 1;
       }
       return 0;
     });
+
     supervisoes.map((val, index) => {
-      if (Number(val.Supervisao) === Number(perfilUser.Supervisao)) {
+      if (
+        Number(val.Coordenacao) ===
+          Number(
+            perfilUser.Coordenacao &&
+              Number(val.Distrito) === Number(perfilUser.Distrito),
+          ) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao)
+      ) {
         newContSuper = index + 1;
       }
       return 0;
@@ -241,6 +255,11 @@ function Celula({
         const superInicial = [
           { Supervisao: 0, Supervisao_Nome: 'TODAS AS SUPERVISÕES' },
         ];
+        console.log(
+          'coordF[contNumeroCoord]',
+          contNumeroCoord,
+          coordF[contNumeroCoord],
+        );
         if (contNumeroDistrito !== 0) {
           nSuper = supervisoes.filter(
             (val) =>
@@ -673,6 +692,7 @@ function Celula({
                         ml={0}
                         color={
                           coordF.length &&
+                          Number(coordF[contNumeroCoord]) &&
                           Number(coordF[contNumeroCoord].Distrito) ===
                             Number(perfilUser.Distrito) &&
                           Number(coordF[contNumeroCoord].Coordenacao) ===

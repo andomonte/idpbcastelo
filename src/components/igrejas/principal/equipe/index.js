@@ -25,7 +25,6 @@ import { HiUserGroup } from 'react-icons/hi';
 import Estatistico from './estatistico';
 import Membros from './membros';
 import Lideres from './lideres';
-import Padrao from '../relatorios/lider/abas/telaPadrao';
 // const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
@@ -407,7 +406,19 @@ function Perfil({
                     igreja={igreja}
                   />
                 ) : null}
-                {perfilUser.Funcao === 'Secretaria' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'Secretaria' ? (
+                  <Membros
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                    igreja={igreja}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Supervisor' ? (
                   <Lideres
                     secao={session}
@@ -435,7 +446,19 @@ function Perfil({
                   />
                 ) : null}
 
-                {perfilUser.Funcao === 'PastorDistrito' ? <Padrao /> : null}
+                {perfilUser.Funcao === 'PastorDistrito' ? (
+                  <Lideres
+                    secao={session}
+                    perfilUser={perfilUser}
+                    lideranca={lideranca}
+                    rolMembros={rolMembros}
+                    distritos={distritos}
+                    coordenacoes={coordenacoes}
+                    supervisoes={supervisoes}
+                    celulas={celulas}
+                    igreja={igreja}
+                  />
+                ) : null}
                 {perfilUser.Funcao === 'Presidente' ? (
                   <Lideres
                     secao={session}

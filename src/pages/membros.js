@@ -86,18 +86,42 @@ function meuPerfil({
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
 
-  const celulas = await prisma.celulas.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
-  const supervisoes = await prisma.supervisao.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
-  const coordenacoes = await prisma.cordenacao.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
-  const distritos = await prisma.distrito.findMany().finally(async () => {
-    await prisma.$disconnect();
-  });
+  const celulas = await prisma.celulas
+    .findMany({
+      where: {
+        Status: true,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+  const supervisoes = await prisma.supervisao
+    .findMany({
+      where: {
+        Status: true,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+  const coordenacoes = await prisma.cordenacao
+    .findMany({
+      where: {
+        Status: true,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+  const distritos = await prisma.distrito
+    .findMany({
+      where: {
+        Status: true,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   const lideranca = await prisma.lideranca.findMany().finally(async () => {
     await prisma.$disconnect();
   });
@@ -108,16 +132,6 @@ export const getStaticProps = async () => {
 
   const rolMembros = await prisma.membros
     .findMany({
-      where: {
-        OR: [
-          {
-            Situacao: 'ATIVO',
-          },
-          {
-            Situacao: 'NOVO',
-          },
-        ],
-      },
       orderBy: [
         {
           Nome: 'asc',
