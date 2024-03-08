@@ -317,7 +317,7 @@ function Celula({
               Number(superF[contNumeroSuper].Supervisao),
         ),
       );
-      console.log('oi celula', nCelula, celulas, contNumeroCelula);
+
       setCelulaF(nCelula);
     }
   }, [superF, contNumeroSuper]);

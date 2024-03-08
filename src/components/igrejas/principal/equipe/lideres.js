@@ -76,7 +76,10 @@ function Funcao({
 
   if (perfilUser.Funcao === 'PastorDistrito') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
@@ -85,13 +88,24 @@ function Funcao({
 
   if (perfilUser.Funcao === 'Coordenador') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord?.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index;
       }
       return 0;
@@ -100,13 +114,24 @@ function Funcao({
 
   if (perfilUser.Funcao === 'Supervisor') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index;
       }
       return 0;
@@ -119,13 +144,23 @@ function Funcao({
     perfilUser.Funcao === 'Professor'
   ) {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+    newCoord.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index;
       }
       return 0;
@@ -193,7 +228,6 @@ function Funcao({
         ),
       );
 
-      setContNumeroCoord(0);
       setCoordF(nCoord);
     }
   }, [contNumeroDistrito, distritoF]);
@@ -215,6 +249,7 @@ function Funcao({
 
     if (contDistritoAtual > distritoF.length - 1) contDistritoAtual = 0;
     setContNumeroDistrito(contDistritoAtual);
+    setContNumeroCoord(0);
   };
 
   const handleDecDistrito = () => {
@@ -222,6 +257,7 @@ function Funcao({
 
     if (contDistritoAtual < 0) contDistritoAtual = distritoF.length - 1;
     setContNumeroDistrito(contDistritoAtual);
+    setContNumeroCoord(0);
   };
 
   const handleIncCoord = () => {
@@ -237,6 +273,7 @@ function Funcao({
     if (contCoordAtual < 0) contCoordAtual = coordF.length - 1;
     setContNumeroCoord(contCoordAtual);
   };
+  console.log('coordF', coordF, contNumeroCoord);
   return (
     <Box
       height="90vh"
