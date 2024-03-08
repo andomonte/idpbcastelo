@@ -91,6 +91,8 @@ function Celula({
   const distritosT = coordenacoes.filter((val) => val.Status);
   const distritoF = [{ Distrito: 0, Distrito_Nome: 'TODOS OS DISTRITOS' }];
   distritosT.map((val) => distritoF.push(val));
+
+  console.log('oila', contNumeroCelula, celulas);
   const distritoNome = distritos.filter(
     (val) =>
       Number(val.Distrito) === Number(celulas[contNumeroCelula].Distrito) &&

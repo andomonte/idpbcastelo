@@ -121,10 +121,12 @@ function Celula({
   let newContCoord = 0;
   let newContSuper = 0;
   let newContCelula = 0;
-
   if (perfilUser.Funcao === 'PastorDistrito') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
@@ -133,13 +135,23 @@ function Celula({
 
   if (perfilUser.Funcao === 'Coordenador') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+    newCoord?.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index;
       }
       return 0;
@@ -148,19 +160,41 @@ function Celula({
 
   if (perfilUser.Funcao === 'Supervisor') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index;
       }
       return 0;
     });
-    supervisoes.map((val, index) => {
-      if (Number(val.Supervisao) === Number(perfilUser.Supervisao)) {
+    const newSuper = supervisoes.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao),
+    );
+
+    newSuper.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newSuper.length > 1
+      ) {
         newContSuper = index;
       }
       return 0;
@@ -173,25 +207,59 @@ function Celula({
     perfilUser.Funcao === 'Professor'
   ) {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+    newCoord.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index;
       }
       return 0;
     });
-    supervisoes.map((val, index) => {
-      if (Number(val.Supervisao) === Number(perfilUser.Supervisao)) {
+    const newSuper = supervisoes.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao),
+    );
+    newSuper.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newSuper.length > 1
+      ) {
         newContSuper = index;
       }
       return 0;
     });
-    celulas.map((val, index) => {
-      if (Number(val.Celula) === Number(perfilUser.Celula)) {
+
+    const newCelulas = celulas.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        val.Coordenacao === Number(perfilUser.Coordenacao) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao),
+    );
+
+    newCelulas.map((val, index) => {
+      if (
+        Number(val.Celula) === Number(perfilUser.Celula) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newCelulas.length > 1
+      ) {
         newContCelula = index;
       }
       return 0;
@@ -202,69 +270,54 @@ function Celula({
   const [contNumeroCoord, setContNumeroCoord] = React.useState(newContCoord);
   const [contNumeroSuper, setContNumeroSuper] = React.useState(newContSuper);
   const [contNumeroCelula, setContNumeroCelula] = React.useState(newContCelula);
-  const [distritoF, setDistritoF] = React.useState('inicio');
+
   const [coordF, setCoordF] = React.useState('inicio');
   const [superF, setSuperF] = React.useState('inicio');
   const [celulasF, setCelulaF] = React.useState(0);
   // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
   //= ===================================================================
-  React.useEffect(() => {
-    if (distritos) {
-      const distritosT = distritos.filter((val) => val.Status);
-      setDistritoF(distritosT);
-    }
-  }, []);
+  const distritosT = distritos.filter((val) => val.Status);
+  const distritoF = [];
+  distritosT.map((val) => distritoF.push(val));
 
   React.useEffect(() => {
-    if (
-      distritoF !== 'inicio' &&
-      distritos.length &&
-      distritoF[contNumeroDistrito]
-    ) {
-      const nCoord = OrdenarCoordenacoes(
-        coordenacoes.filter(
-          (val) =>
-            Number(val.Distrito) ===
-            Number(distritoF[contNumeroDistrito].Distrito),
-        ),
+    const coordT = coordenacoes.filter(
+      (val) =>
+        val.Status &&
+        Number(val.Distrito) ===
+          Number(distritoF[contNumeroDistrito].Distrito) &&
+        val.Status,
+    );
+    setCoordF(OrdenarCoordenacoes(coordT));
+  }, [contNumeroDistrito]);
+
+  React.useEffect(() => {
+    if (coordF !== 'inicio' && coordF[contNumeroCoord]) {
+      const nSuper = supervisoes.filter(
+        (val) =>
+          Number(val.Distrito) ===
+            Number(distritoF[contNumeroDistrito].Distrito) &&
+          Number(val.Coordenacao) ===
+            Number(coordF[contNumeroCoord].Coordenacao),
       );
-
-      setContNumeroCoord(0);
-      setCoordF(nCoord);
-    }
-  }, [contNumeroDistrito, distritoF]);
-
-  React.useEffect(() => {
-    if (coordF !== 'inicio' && coordF.length && coordF[contNumeroCoord]) {
-      const nSuper = OrdenarSupervisoes(
-        supervisoes.filter(
-          (val) =>
-            Number(val.Distrito) === Number(coordF[contNumeroCoord].Distrito) &&
-            Number(val.Coordenacao) ===
-              Number(coordF[contNumeroCoord].Coordenacao),
-        ),
-      );
-
-      setContNumeroSuper(0);
-      setSuperF(nSuper);
+      setSuperF(OrdenarSupervisoes(nSuper));
     }
   }, [coordF, contNumeroCoord]);
 
-  //--------------------------------------------------------------------
   React.useEffect(() => {
-    if (superF !== 'inicio' && superF.length && superF[contNumeroSuper]) {
+    if (superF !== 'inicio' && superF.length) {
       const nCelula = OrdenarCelulas(
         celulas.filter(
           (val) =>
-            Number(val.Distrito) === Number(superF[contNumeroSuper].Distrito) &&
+            Number(val.Distrito) ===
+              Number(distritoF[contNumeroDistrito].Distrito) &&
             Number(val.Coordenacao) ===
-              Number(superF[contNumeroSuper].Coordenacao) &&
+              Number(coordF[contNumeroCoord].Coordenacao) &&
             Number(val.Supervisao) ===
               Number(superF[contNumeroSuper].Supervisao),
         ),
       );
-
-      setContNumeroCelula(0);
+      console.log('oi celula', nCelula, celulas, contNumeroCelula);
       setCelulaF(nCelula);
     }
   }, [superF, contNumeroSuper]);
@@ -279,6 +332,9 @@ function Celula({
 
     if (contDistritoAtual > distritoF.length - 1) contDistritoAtual = 0;
     setContNumeroDistrito(contDistritoAtual);
+    setContNumeroCoord(0);
+    setContNumeroSuper(0);
+    setContNumeroCelula(0);
   };
 
   const handleDecDistrito = () => {
@@ -286,6 +342,9 @@ function Celula({
 
     if (contDistritoAtual < 0) contDistritoAtual = distritoF.length - 1;
     setContNumeroDistrito(contDistritoAtual);
+    setContNumeroCoord(0);
+    setContNumeroSuper(0);
+    setContNumeroCelula(0);
   };
 
   const handleIncCoord = () => {
@@ -293,6 +352,8 @@ function Celula({
 
     if (contCoordAtual > coordF.length - 1) contCoordAtual = 0;
     setContNumeroCoord(contCoordAtual);
+    setContNumeroSuper(0);
+    setContNumeroCelula(0);
   };
 
   const handleDecCoord = () => {
@@ -300,6 +361,8 @@ function Celula({
 
     if (contCoordAtual < 0) contCoordAtual = coordF.length - 1;
     setContNumeroCoord(contCoordAtual);
+    setContNumeroSuper(0);
+    setContNumeroCelula(0);
   };
 
   const handleIncSuper = () => {
@@ -307,6 +370,7 @@ function Celula({
 
     if (contSuperAtual > superF.length - 1) contSuperAtual = 0;
     setContNumeroSuper(contSuperAtual);
+    setContNumeroCelula(0);
   };
 
   const handleDecSuper = () => {
@@ -314,6 +378,7 @@ function Celula({
 
     if (contSuperAtual < 0) contSuperAtual = superF.length - 1;
     setContNumeroSuper(contSuperAtual);
+    setContNumeroCelula(0);
   };
 
   const handleIncCelula = () => {
@@ -645,8 +710,12 @@ function Celula({
                         <Box fontFamily="arial" ml={2} mr={2}>
                           <ThemeProvider theme={theme}>
                             <Typography variant="h2">
-                              {supervisoes.length && superF[contNumeroSuper]
-                                ? superF[contNumeroSuper].Supervisao_Nome
+                              {supervisoes.length &&
+                              superF[contNumeroSuper].Supervisao_Nome &&
+                              superF[contNumeroSuper]
+                                ? superF[
+                                    contNumeroSuper
+                                  ].Supervisao_Nome.toUpperCase()
                                 : ''}
                             </Typography>
                           </ThemeProvider>

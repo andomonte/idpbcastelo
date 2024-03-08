@@ -67,7 +67,6 @@ const OrdenarSupervisoes = (supervisoesF) => {
   return supervisoesF;
 };
 const OrdenarCoordenacoes = (coordenacoesF) => {
-  console.log('coordF', coordenacoesF);
   if (coordenacoesF.length && coordenacoesF !== 'inicio') {
     coordenacoesF.sort((a, b) => {
       if (a.Distrito > b.Distrito) {
@@ -125,7 +124,10 @@ function Celula({
 
   if (perfilUser.Funcao === 'PastorDistrito') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index + 1;
       }
       return 0;
@@ -134,15 +136,23 @@ function Celula({
 
   if (perfilUser.Funcao === 'Coordenador') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index + 1;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord?.map((val, index) => {
       if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
         Number(val.Distrito) === Number(perfilUser.Distrito) &&
-        Number(val.Coordenacao) === Number(perfilUser.Coordenacao)
+        newCoord.length > 1
       ) {
         newContCoord = index + 1;
       }
@@ -152,32 +162,41 @@ function Celula({
 
   if (perfilUser.Funcao === 'Supervisor') {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index + 1;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord.map((val, index) => {
       if (
-        Number(val.Coordenacao) ===
-        Number(
-          perfilUser.Coordenacao &&
-            Number(val.Distrito) === Number(perfilUser.Distrito),
-        )
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
       ) {
         newContCoord = index + 1;
       }
       return 0;
     });
 
-    supervisoes.map((val, index) => {
+    const newSuper = supervisoes.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao),
+    );
+
+    newSuper.map((val, index) => {
       if (
-        Number(val.Coordenacao) ===
-          Number(
-            perfilUser.Coordenacao &&
-              Number(val.Distrito) === Number(perfilUser.Distrito),
-          ) &&
-        Number(val.Supervisao) === Number(perfilUser.Supervisao)
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newSuper.length > 1
       ) {
         newContSuper = index + 1;
       }
@@ -191,25 +210,59 @@ function Celula({
     perfilUser.Funcao === 'Professor'
   ) {
     distritos.map((val, index) => {
-      if (Number(val.Distrito) === Number(perfilUser.Distrito)) {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
         newContDistrito = index + 1;
       }
       return 0;
     });
-    coordenacoes.map((val, index) => {
-      if (Number(val.Coordenacao) === Number(perfilUser.Coordenacao)) {
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+    newCoord.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
         newContCoord = index + 1;
       }
       return 0;
     });
-    supervisoes.map((val, index) => {
-      if (Number(val.Supervisao) === Number(perfilUser.Supervisao)) {
+    const newSuper = supervisoes.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao),
+    );
+    newSuper.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newSuper.length > 1
+      ) {
         newContSuper = index + 1;
       }
       return 0;
     });
-    celulas.map((val, index) => {
-      if (Number(val.Celula) === Number(perfilUser.Celula)) {
+
+    const newCelulas = celulas.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        val.Coordenacao === Number(perfilUser.Coordenacao) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao),
+    );
+
+    newCelulas.map((val, index) => {
+      if (
+        Number(val.Celula) === Number(perfilUser.Celula) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newCelulas.length > 1
+      ) {
         newContCelula = index + 1;
       }
       return 0;
@@ -243,28 +296,27 @@ function Celula({
     ];
     if (contNumeroDistrito !== 0) coordT.map((val) => coordInicial.push(val));
     else coordenacoes.map((val) => coordInicial.push(val));
-    if (coordT.length > 1 || !coordT.length) setCoordF(coordInicial);
-    else setCoordF(coordT);
+    if (coordT.length > 1 || !coordT.length)
+      setCoordF(OrdenarCoordenacoes(coordInicial));
+    else setCoordF(OrdenarCoordenacoes(coordT));
   }, [contNumeroDistrito]);
 
   React.useEffect(() => {
-    if (coordF !== 'inicio') {
+    if (coordF !== 'inicio' && coordF[contNumeroCoord]) {
       let nSuper;
 
       if (contNumeroCoord !== 0) {
         const superInicial = [
           { Supervisao: 0, Supervisao_Nome: 'TODAS AS SUPERVISÕES' },
         ];
-        console.log(
-          'coordF[contNumeroCoord]',
-          contNumeroCoord,
-          coordF[contNumeroCoord],
-        );
+
         if (contNumeroDistrito !== 0) {
           nSuper = supervisoes.filter(
             (val) =>
-              val.Distrito === distritoF[contNumeroDistrito].Distrito &&
-              val.Coordenacao === coordF[contNumeroCoord].Coordenacao,
+              Number(val.Distrito) ===
+                Number(distritoF[contNumeroDistrito].Distrito) &&
+              Number(val.Coordenacao) ===
+                Number(coordF[contNumeroCoord].Coordenacao),
           );
           if (nSuper) {
             nSuper.map((val) => superInicial.push(val));
@@ -274,8 +326,10 @@ function Celula({
         } else {
           nSuper = supervisoes.filter(
             (val) =>
-              val.Distrito === coordF[contNumeroCoord].Distrito &&
-              val.Coordenacao === coordF[contNumeroCoord].Coordenacao,
+              Number(val.Distrito) ===
+                Number(coordF[contNumeroCoord].Distrito) &&
+              Number(val.Coordenacao) ===
+                Number(coordF[contNumeroCoord].Coordenacao),
           );
           if (nSuper) {
             nSuper.map((val) => superInicial.push(val));
@@ -293,7 +347,9 @@ function Celula({
         ];
 
         nSuper = supervisoes.filter(
-          (val) => val.Distrito === distritoF[contNumeroDistrito].Distrito,
+          (val) =>
+            Number(val.Distrito) ===
+            Number(distritoF[contNumeroDistrito].Distrito),
         );
         nSuper.map((val) => superInicial.push(val));
 
@@ -320,7 +376,7 @@ function Celula({
         if (contNumeroCoord !== 0) {
           if (contNumeroSuper !== 0) {
             // ('os 3 em 1');
-            setContNumeroCelula(0);
+
             const celulaInicial = [{ Celula: 0, Nome: 'TODAS AS CÉLULAS' }];
             nCelula = OrdenarCelulas(
               celulas.filter(
@@ -341,7 +397,7 @@ function Celula({
             }
           } else {
             // ('distrito e coord em 1 ');
-            setContNumeroCelula(0);
+
             const celulaInicial = [{ Celula: 0, Nome: 'TODAS AS CÉLULAS' }];
             nCelula = OrdenarCelulas(
               celulas.filter(
@@ -361,7 +417,7 @@ function Celula({
           }
         } else if (contNumeroSuper !== 0) {
           // ('só Coord  em 0');
-          setContNumeroCelula(0);
+
           const celulaInicial = [{ Celula: 0, Nome: 'TODAS AS CÉLULAS' }];
           nCelula = OrdenarCelulas(
             celulas.filter(
@@ -380,7 +436,7 @@ function Celula({
           }
         } else {
           // ('so distr em 1 - feito');
-          setContNumeroCelula(0);
+
           const celulaInicial = [{ Celula: 0, Nome: 'TODAS AS CÉLULAS' }];
           nCelula = OrdenarCelulas(
             celulas.filter(
@@ -400,7 +456,6 @@ function Celula({
         if (contNumeroSuper !== 0) {
           // ('só distrito em 1');
         } else {
-          setContNumeroCelula(0);
           const celulaInicial = [{ Celula: 0, Nome: 'TODAS AS CÉLULAS' }];
           if (superF.length > 1) {
             nCelula = OrdenarCelulas(
@@ -435,7 +490,7 @@ function Celula({
         }
       } else if (contNumeroSuper !== 0) {
         // ('só super em 1');
-        setContNumeroCelula(0);
+
         const celulaInicial = [{ Celula: 0, Nome: 'TODAS AS CÉLULAS' }];
         nCelula = OrdenarCelulas(
           celulas.filter(
@@ -463,7 +518,6 @@ function Celula({
         if (nCelula.length > 1 || !nCelula.length) setCelulaF(celulaInicial);
         else setCelulaF(nCelula);
       }
-      setContNumeroCelula(0);
     }
   }, [superF, contNumeroSuper]);
   //--------------------------------------------------------------------
@@ -687,12 +741,13 @@ function Celula({
                           <BiCaretLeft size={30} color="#f0f0f0" />
                         </IconButton>
                       </Box>
+
                       <Box
                         width="100%"
                         ml={0}
                         color={
                           coordF.length &&
-                          Number(coordF[contNumeroCoord]) &&
+                          coordF[contNumeroCoord] &&
                           Number(coordF[contNumeroCoord].Distrito) ===
                             Number(perfilUser.Distrito) &&
                           Number(coordF[contNumeroCoord].Coordenacao) ===
@@ -764,6 +819,7 @@ function Celula({
                           <BiCaretLeft size={30} color="#f0f0f0" />
                         </IconButton>
                       </Box>
+
                       <Box
                         width="100%"
                         ml={0}
@@ -1003,7 +1059,8 @@ function Celula({
                             {coordF !== 'inicio' &&
                             distritoF !== 'inicio' &&
                             superF !== 'inicio' &&
-                            celulasF !== 'inicio' ? (
+                            celulasF !== 'inicio' &&
+                            celulasF.length ? (
                               <EstatisticoCelula
                                 rolMembros={rolMembros}
                                 distritos={distritos}
@@ -1015,7 +1072,15 @@ function Celula({
                                 contNumeroCelula={contNumeroCelula}
                               />
                             ) : (
-                              'AGUARDE...'
+                              <Box
+                                fontFamily="Fugaz One"
+                                color="white"
+                                height="100%"
+                                width="100%"
+                                textAlign="center"
+                              >
+                                AGUARDE...
+                              </Box>
                             )}
                           </Box>
                         )}
