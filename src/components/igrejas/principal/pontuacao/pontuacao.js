@@ -208,7 +208,6 @@ export default function Pontuacao({
 
             return 0;
           });
-
           setPontosCelulasT(distrito);
 
           setPontosCelulas(distrito);
@@ -607,6 +606,7 @@ export default function Pontuacao({
             </MuiPickersUtilsProvider>
           </Paper>
         </Box>
+        {console.log('semanaF', semanaF, semana, listaFinal)}
         {semanaF >= semana ? (
           <TableContainer sx={{ height: '90%' }}>
             {listaFinal && listaFinal.length ? (
