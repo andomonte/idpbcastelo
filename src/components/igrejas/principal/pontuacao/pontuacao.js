@@ -129,7 +129,7 @@ export default function Pontuacao({
   const coordenadores = lideranca.filter(
     (val) =>
       Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      val.Funcao === 'Coordenador',
+      val.Funcao === 'PastorDistrito',
   );
 
   const coordParcial = coordenadores.map((itens) => itens.Coordenacao);
