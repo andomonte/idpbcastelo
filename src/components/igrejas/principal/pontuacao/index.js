@@ -111,9 +111,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Secretaria({ parametros, perfilUser, title, lideranca, supervisao }) {
+function Secretaria({
+  coordenacoes,
+  parametros,
+  perfilUser,
+  title,
+  lideranca,
+  supervisao,
+  distritos,
+}) {
   const classes = useStyles();
-
+  console.log('coordenacoes index', coordenacoes);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -180,6 +188,8 @@ function Secretaria({ parametros, perfilUser, title, lideranca, supervisao }) {
               supervisao={supervisao}
               parametros={parametros}
               perfilUser={perfilUser}
+              coordenacoes={coordenacoes}
+              distritos={distritos}
             />
           ) : null}
           {perfilUser.Funcao === 'Coordenador' ? (

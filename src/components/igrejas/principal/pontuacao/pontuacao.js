@@ -93,8 +93,8 @@ function getPreviousMonday(date) {
 export default function Pontuacao({
   perfilUser,
   parametros,
-  lideranca,
   supervisao,
+  coordenacoes,
 }) {
   const CelulasCoord = supervisao.filter(
     (val) =>
@@ -126,12 +126,9 @@ export default function Pontuacao({
   };
 
   const [contNumeroCoord, setContNumeroCoord] = React.useState(0);
-  const coordenadores = lideranca.filter(
-    (val) =>
-      Number(val.Distrito) === Number(perfilUser.Distrito) &&
-      val.Funcao === 'PastorDistrito',
+  const coordenadores = coordenacoes.filter(
+    (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
   );
-
   const coordParcial = coordenadores.map((itens) => itens.Coordenacao);
   const numeroCoordP = [...new Set(coordParcial)];
 
@@ -140,7 +137,6 @@ export default function Pontuacao({
     if (new Date(b) > new Date(a)) return -1;
     return 0;
   });
-
   const numeroCoord = coordOrdenadas;
   //= =================================================================
   const [listaFinal, setListaFinal] = React.useState('');
