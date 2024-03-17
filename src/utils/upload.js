@@ -28,7 +28,7 @@ const upload = multer({
       // if (err) cb(err);
       //    const fileName = `${hash.toString('hex')}-${file.originalname}`;
       const fileName = `${file.originalname}`;
-      cb(null, `membros/${fileName}`);
+      cb(null, `secretaria/${fileName}`);
       // });
     },
   }),

@@ -19,6 +19,8 @@ import Slide from '@mui/material/Slide';
 import Dialog from '@mui/material/Dialog';
 import Grafico from './grafico';
 
+
+
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
