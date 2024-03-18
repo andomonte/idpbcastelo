@@ -96,7 +96,7 @@ export default function Pontuacao({
   supervisao,
   coordenacoes,
 }) {
-  const CelulasCoord = supervisao.filter(
+  const CelulasCoord = supervisao?.filter(
     (val) =>
       val.Coordenacao === Number(perfilUser.Coordenacao) &&
       val.Distrito === Number(perfilUser.Distrito),
@@ -126,7 +126,7 @@ export default function Pontuacao({
   };
 
   const [contNumeroCoord, setContNumeroCoord] = React.useState(0);
-  const coordenadores = coordenacoes.filter(
+  const coordenadores = coordenacoes?.filter(
     (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
   );
   const coordParcial = coordenadores.map((itens) => itens.Coordenacao);
@@ -198,9 +198,9 @@ export default function Pontuacao({
           const members = response.data;
 
           let distrito;
-          CelulasCoord.filter((val) => {
+          CelulasCoord?.filter((val) => {
             if (CelulasCoord.length)
-              distrito = members.filter(
+              distrito = members?.filter(
                 (val2) =>
                   val2.Distrito === Number(perfilUser.Distrito) &&
                   val2.supervisao === val.supervisao,
@@ -212,7 +212,7 @@ export default function Pontuacao({
 
           setPontosCelulas(distrito);
           const setPerson = new Set();
-          const listaCelulas = distrito.filter((person) => {
+          const listaCelulas = distrito?.filter((person) => {
             const duplicatedPerson = setPerson.has(person.Celula);
             setPerson.add(person.Celula);
             return !duplicatedPerson;
@@ -273,7 +273,7 @@ export default function Pontuacao({
     React.useState('');
 
   const handleCheckCelula = async (celulaSelecionada, openD) => {
-    const celulaFiltrada = pontosCelulas.filter(
+    const celulaFiltrada = pontosCelulas?.filter(
       (val) => val.Celula === celulaSelecionada.Celula,
     );
 
@@ -417,9 +417,9 @@ export default function Pontuacao({
     if (contCoordAtual > numeroCoord.length - 1) contCoordAtual = 0;
     setContNumeroCoord(contCoordAtual);
     let distritoF;
-    CelulasCoord.filter((val) => {
+    CelulasCoord?.filter((val) => {
       if (CelulasCoord.length)
-        distritoF = pontosCelulasT.filter(
+        distritoF = pontosCelulasT?.filter(
           (val2) =>
             val2.Distrito === Number(perfilUser.Distrito) &&
             val2.supervisao === val.supervisao,
@@ -437,9 +437,9 @@ export default function Pontuacao({
     if (contCoordAtual < 0) contCoordAtual = numeroCoord.length - 1;
     setContNumeroCoord(contCoordAtual);
     let distritoF;
-    CelulasCoord.filter((val) => {
+    CelulasCoord?.filter((val) => {
       if (CelulasCoord.length)
-        distritoF = pontosCelulasT.filter(
+        distritoF = pontosCelulasT?.filter(
           (val2) =>
             val2.Distrito === Number(perfilUser.Distrito) &&
             val2.supervisao === val.supervisao,
