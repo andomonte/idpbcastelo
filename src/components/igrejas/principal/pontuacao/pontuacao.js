@@ -173,7 +173,7 @@ export default function Pontuacao({
   const coordInicial = [
     { Coordenacao: 0, Coordenacao_Nome: 'TODAS AS COORDENAÇÕES' },
   ];
-  newListaCoord.map((val) => coordInicial.push(val));
+  newListaCoord?.map((val) => coordInicial.push(val));
 
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
@@ -454,7 +454,7 @@ export default function Pontuacao({
       let index = 0;
 
       if (contNumeroCoord !== 0) {
-        celulas.map((val2) => {
+        celulas?.map((val2) => {
           if (
             val2.Coordenacao === coordInicial[contNumeroCoord].Coordenacao &&
             val2.Distrito === coordInicial[contNumeroCoord].Distrito
