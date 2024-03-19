@@ -119,9 +119,9 @@ function Secretaria({
   lideranca,
   supervisao,
   distritos,
+  celulas,
 }) {
   const classes = useStyles();
-  console.log('coordenacoes index', coordenacoes);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -190,6 +190,7 @@ function Secretaria({
               perfilUser={perfilUser}
               coordenacoes={coordenacoes}
               distritos={distritos}
+              celulas={celulas}
             />
           ) : null}
           {perfilUser.Funcao === 'Coordenador' ? (

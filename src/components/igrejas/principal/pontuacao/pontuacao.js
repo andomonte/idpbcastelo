@@ -6,9 +6,11 @@ import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import { IoClose } from 'react-icons/io5';
 import Avatar from '@material-ui/core/Avatar';
+import { GiClick } from 'react-icons/gi';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { Oval } from 'react-loading-icons';
 import ListItemText from '@mui/material/ListItemText';
 import TableContainer from '@mui/material/TableContainer';
 import {
@@ -19,21 +21,73 @@ import api from 'src/components/services/api';
 import Slide from '@mui/material/Slide';
 import Dialog from '@mui/material/Dialog';
 import { BiCaretRight, BiCaretLeft } from 'react-icons/bi';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import Grafico from './grafico';
+
+const theme = createTheme();
+theme.typography.h4 = {
+  fontWeight: 'normal',
+  fontSize: '12px',
+  '@media (min-width:350px)': {
+    fontSize: '13px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '14px',
+  },
+};
+theme.typography.h3 = {
+  fontWeight: 'normal',
+  fontSize: '11px',
+  '@media (min-width:350px)': {
+    fontSize: '12px',
+  },
+  '@media (min-width:400px)': {
+    fontSize: '13px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '14px',
+  },
+};
+theme.typography.hs2 = {
+  fontWeight: 'normal',
+  fontSize: '12px',
+  '@media (min-width:350px)': {
+    fontSize: '13px',
+  },
+  '@media (min-width:400px)': {
+    fontSize: '14px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '16px',
+  },
+};
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
-function createListaNome(Celula, Lider, Pontos, semanas) {
+function createListaNome(
+  distrito,
+  Nome,
+  Celula,
+  Lider,
+  Pontos,
+  semanas,
+  loading,
+) {
   return {
+    distrito,
+    Nome,
     Celula,
     Lider,
     Pontos,
     semanas,
+    loading,
   };
 }
 function createCelulaSelecionada(
   Celula,
+  Distrito,
   semanas,
   CelebracaoIgreja,
   CelebracaoLive,
@@ -59,6 +113,7 @@ function createCelulaSelecionada(
 ) {
   return {
     Celula,
+    Distrito,
     semanas,
     CelebracaoIgreja,
     CelebracaoLive,
@@ -83,6 +138,21 @@ function createCelulaSelecionada(
     planejamento,
   };
 }
+const OrdenarSemana = (valorAordenar) => {
+  if (valorAordenar) {
+    valorAordenar.sort((a, b) => {
+      if (a.Semana > b.Semana) {
+        return 1;
+      }
+      if (a.Semana < b.Semana) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+  }
+  return valorAordenar;
+};
 function getPreviousMonday(date) {
   const previousMonday = date;
 
@@ -93,14 +163,18 @@ function getPreviousMonday(date) {
 export default function Pontuacao({
   perfilUser,
   parametros,
-  supervisao,
   coordenacoes,
+  celulas,
+  lideranca,
 }) {
-  const CelulasCoord = supervisao?.filter(
-    (val) =>
-      val.Coordenacao === Number(perfilUser.Coordenacao) &&
-      val.Distrito === Number(perfilUser.Distrito),
+  const newListaCoord = coordenacoes?.filter(
+    (val) => val.Distrito === Number(perfilUser.Distrito),
   );
+  const coordInicial = [
+    { Coordenacao: 0, Coordenacao_Nome: 'TODAS AS COORDENAÇÕES' },
+  ];
+  newListaCoord.map((val) => coordInicial.push(val));
+
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
     const Mes = dataEnviada.getMonth();
@@ -126,18 +200,7 @@ export default function Pontuacao({
   };
 
   const [contNumeroCoord, setContNumeroCoord] = React.useState(0);
-  const coordenadores = coordenacoes?.filter(
-    (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
-  );
-  const coordParcial = coordenadores.map((itens) => itens.Coordenacao);
-  const numeroCoordP = [...new Set(coordParcial)];
 
-  const coordOrdenadas = numeroCoordP.sort((a, b) => {
-    if (new Date(a) > new Date(b)) return 1;
-    if (new Date(b) > new Date(a)) return -1;
-    return 0;
-  });
-  const numeroCoord = coordOrdenadas;
   //= =================================================================
   const [listaFinal, setListaFinal] = React.useState('');
   const [openDialog1, setOpenDialog1] = React.useState(false);
@@ -175,6 +238,7 @@ export default function Pontuacao({
   );
   const [anoF, setAnoF] = React.useState(dataAtual2.getFullYear());
   const [open2, setIsPickerOpen2] = React.useState(false);
+
   const handleDateChange2 = (date, value) => {
     setInputValue2(value);
     setSelectedDate2(date);
@@ -184,6 +248,7 @@ export default function Pontuacao({
 
     // setSemana(semanaExata(dataAtual));
   };
+
   const verPontos = () => {
     api
       .post('/api/consultaPontuacao', {
@@ -194,55 +259,13 @@ export default function Pontuacao({
       })
       .then((response) => {
         if (response) {
-          const pontuacao = [];
           const members = response.data;
 
-          let distrito;
-          CelulasCoord?.filter((val) => {
-            if (CelulasCoord.length)
-              distrito = members?.filter(
-                (val2) =>
-                  val2.Distrito === Number(perfilUser.Distrito) &&
-                  val2.supervisao === val.supervisao,
-              );
+          const distrito = members?.filter(
+            (val2) => val2.Distrito === Number(perfilUser.Distrito),
+          );
 
-            return 0;
-          });
           setPontosCelulasT(distrito);
-
-          setPontosCelulas(distrito);
-          const setPerson = new Set();
-          const listaCelulas = distrito?.filter((person) => {
-            const duplicatedPerson = setPerson.has(person.Celula);
-            setPerson.add(person.Celula);
-            return !duplicatedPerson;
-          });
-
-          for (let i = 0; i < listaCelulas.length; i += 1) {
-            let pontosAgora = 0;
-            let liderAgora = 'Sem';
-            let celulaAgora = 0;
-            distrito.map((val) => {
-              if (val.Celula === listaCelulas[i].Celula) {
-                pontosAgora = Number(
-                  Number(pontosAgora) + Number(val.TotalRank),
-                ).toFixed(2);
-                celulaAgora = val.Celula;
-                liderAgora = val.CriadoPor ? val.CriadoPor : 'Sem';
-              }
-
-              return 0;
-            });
-
-            pontuacao[i] = createListaNome(
-              celulaAgora,
-              liderAgora,
-              pontosAgora,
-              semanaF - semana + 1,
-            );
-          }
-
-          setListaFinal(pontuacao.sort((a, b) => b.Pontos - a.Pontos));
         }
       })
       .catch((erro) => {
@@ -258,12 +281,9 @@ export default function Pontuacao({
     }
   }, [selectedDate2, selectedDate]);
   React.useEffect(() => {
-    if (semana !== 0 && semanaF !== 0) {
-      verPontos();
-    }
-
     verPontos();
   }, [semana, semanaF]);
+
   const handleDateClick2 = () => {
     //   setSelectedDate();
     setIsPickerOpen2(true);
@@ -272,7 +292,7 @@ export default function Pontuacao({
   const [PontosCelulaSelecionada, setPontosCelulaSelecionada] =
     React.useState('');
 
-  const handleCheckCelula = async (celulaSelecionada, openD) => {
+  const handleCheckCelula = async (celulaSelecionada, openD, indexLoading) => {
     const celulaFiltrada = pontosCelulas?.filter(
       (val) => val.Celula === celulaSelecionada.Celula,
     );
@@ -281,7 +301,7 @@ export default function Pontuacao({
     const pontosTotal = [];
 
     if (celulaFiltrada.length) {
-      celulaFiltrada.map((val, index) => {
+      celulaFiltrada?.map((val, index) => {
         detalhesPontos[index] = JSON.parse(val.Pontuacao);
         pontosTotal[index] = val.TotalRank;
         return 0;
@@ -362,6 +382,7 @@ export default function Pontuacao({
       setPontosCelulaSelecionada(
         createCelulaSelecionada(
           celulaSelecionada.Celula,
+          celulaSelecionada.distrito,
           celulaSelecionada.semanas,
           arrayTeste[0],
           arrayTeste[1],
@@ -406,6 +427,9 @@ export default function Pontuacao({
           String(arrayTeste[20]) !== 'NaN' ? arrayTeste[20] : 0,
         ),
       );
+      const newLoadingNormal = [...listaFinal];
+      newLoadingNormal[indexLoading].loading = false;
+      setListaFinal(newLoadingNormal);
       if (openD === 1) setOpenDialog1(true);
       if (openD === 2) setOpenDialog2(true);
     }
@@ -413,42 +437,120 @@ export default function Pontuacao({
 
   const handleIncCoord = () => {
     let contCoordAtual = contNumeroCoord + 1;
-
-    if (contCoordAtual > numeroCoord.length - 1) contCoordAtual = 0;
+    if (contCoordAtual > coordInicial.length - 1) contCoordAtual = 0;
     setContNumeroCoord(contCoordAtual);
-    let distritoF;
-    CelulasCoord?.filter((val) => {
-      if (CelulasCoord.length)
-        distritoF = pontosCelulasT?.filter(
-          (val2) =>
-            val2.Distrito === Number(perfilUser.Distrito) &&
-            val2.supervisao === val.supervisao,
-        );
-
-      return 0;
-    });
-
-    setPontosCelulas(distritoF);
   };
 
   const handleDecCoord = () => {
     let contCoordAtual = contNumeroCoord - 1;
 
-    if (contCoordAtual < 0) contCoordAtual = numeroCoord.length - 1;
+    if (contCoordAtual < 0) contCoordAtual = coordInicial.length - 1;
     setContNumeroCoord(contCoordAtual);
-    let distritoF;
-    CelulasCoord?.filter((val) => {
-      if (CelulasCoord.length)
-        distritoF = pontosCelulasT?.filter(
-          (val2) =>
-            val2.Distrito === Number(perfilUser.Distrito) &&
-            val2.supervisao === val.supervisao,
-        );
-
-      return 0;
-    });
-    setPontosCelulas(distritoF);
   };
+  React.useEffect(() => {
+    if (pontosCelulasT.length) {
+      let distritoF;
+      const listaCelulas = [];
+      let index = 0;
+
+      if (contNumeroCoord !== 0) {
+        celulas.map((val2) => {
+          if (
+            val2.Coordenacao === coordInicial[contNumeroCoord].Coordenacao &&
+            val2.Distrito === coordInicial[contNumeroCoord].Distrito
+          ) {
+            listaCelulas[index] = val2;
+            index += 1;
+          }
+          return 0;
+        });
+
+        let contPontos = 0;
+        const valListaPontos = [];
+        listaCelulas?.map((val) => {
+          pontosCelulasT?.map((val2) => {
+            if (
+              val2.Distrito === val.Distrito &&
+              val2.Supervisao === val.Supervisao &&
+              val2.Celula === val.Celula
+            ) {
+              valListaPontos[contPontos] = val2;
+              contPontos += 1;
+            }
+            return 0;
+          });
+
+          return 0;
+        });
+        distritoF = valListaPontos;
+      } else {
+        distritoF = pontosCelulasT?.filter(
+          (val2) => val2.Distrito === Number(perfilUser.Distrito),
+        );
+      }
+
+      setPontosCelulas(OrdenarSemana(distritoF));
+      const setPerson = new Set();
+      const pontuacao = [];
+      const listaCelulas2 = distritoF?.filter((person) => {
+        const duplicatedPerson = setPerson.has(person.Celula);
+        setPerson.add(person.Celula);
+        return !duplicatedPerson;
+      });
+
+      for (let i = 0; i < listaCelulas2.length; i += 1) {
+        let pontosAgora = 0;
+        const liderAgora = [];
+        let celulaAgora = 0;
+        let nomeCelula = 'Sem';
+        distritoF?.map((val) => {
+          if (val.Celula === listaCelulas2[i].Celula) {
+            pontosAgora = Number(
+              Number(pontosAgora) + Number(val.TotalRank),
+            ).toFixed(2);
+            celulaAgora = val.Celula;
+          }
+
+          return 0;
+        });
+
+        celulas?.map((val) => {
+          if (
+            val.Celula === listaCelulas2[i].Celula &&
+            val.Distrito === listaCelulas2[i].Distrito
+          ) {
+            nomeCelula = val.Nome;
+          }
+
+          return 0;
+        });
+        let indexLider = 0;
+        lideranca?.map((val) => {
+          if (
+            val.Celula === listaCelulas2[i].Celula &&
+            val.Distrito === listaCelulas2[i].Distrito &&
+            val.Funcao === 'Lider'
+          ) {
+            liderAgora[indexLider] = val.Nome ? val.Nome : 'Sem';
+            indexLider += 1;
+          }
+
+          return 0;
+        });
+        pontuacao[i] = createListaNome(
+          listaCelulas2[i].Distrito,
+          nomeCelula,
+          celulaAgora,
+          liderAgora[0],
+          pontosAgora,
+          semanaF - semana + 1,
+          false,
+        );
+      }
+
+      setListaFinal(pontuacao.sort((a, b) => b.Pontos - a.Pontos));
+    }
+  }, [contNumeroCoord, pontosCelulasT]);
 
   return (
     <Box
@@ -515,12 +617,11 @@ export default function Pontuacao({
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                fontSize="16px"
+                fontSize="12px"
                 sx={{ fontFamily: 'Rubik' }}
               >
-                Coordenação:
                 <Box fontFamily="arial black" ml={2} mr={2}>
-                  {numeroCoord[contNumeroCoord]}
+                  {coordInicial[contNumeroCoord].Coordenacao_Nome}
                 </Box>
               </Box>
               <Box
@@ -606,30 +707,47 @@ export default function Pontuacao({
             </MuiPickersUtilsProvider>
           </Paper>
         </Box>
-        {console.log('semanaF', semanaF, semana, listaFinal)}
         {semanaF >= semana ? (
           <TableContainer sx={{ height: '90%' }}>
             {listaFinal && listaFinal.length ? (
               <List sx={{ width: '100%', maxWidth: 360 }}>
-                {listaFinal.map((row, index) => (
+                {listaFinal?.map((row, index) => (
                   <ListItem key={index} alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar
                         src=""
                         alt="User"
                         style={{
-                          width: 50,
-                          height: 50,
+                          width: 70,
+                          height: 70,
                           background: '#aed581',
                           color: 'black',
                           fontSize: '18px',
                           fontWeight: 'bold',
                         }}
                         onClick={() => {
-                          handleCheckCelula(row, 2);
+                          const newLoadingNormal = [...listaFinal];
+                          newLoadingNormal[index].loading = true;
+                          setListaFinal(newLoadingNormal);
+                          handleCheckCelula(row, 2, index);
                         }}
                       >
-                        {index + 1}º
+                        <Box>
+                          {row.loading ? (
+                            <Box display="flex" alignItems="center">
+                              <Oval stroke="white" width={30} height={30} />
+                            </Box>
+                          ) : (
+                            <Box>
+                              <Box mt={1} textAlign="center">
+                                {index + 1}º
+                              </Box>
+                              <Box mt={0.5}>
+                                <GiClick size={25} color="gray" />
+                              </Box>
+                            </Box>
+                          )}
+                        </Box>
                       </Avatar>
                     </ListItemAvatar>
                     <Box>
@@ -644,12 +762,45 @@ export default function Pontuacao({
                             cursor: 'pointer',
                           }}
                           onClick={() => {
-                            handleCheckCelula(row, 1);
+                            handleCheckCelula(row, 1, index);
                           }}
                         >
-                          {row.Lider && row.Lider.length > 25
-                            ? row.Lider.substring(0, 25).toUpperCase()
-                            : row.Lider.toUpperCase()}
+                          <ThemeProvider theme={theme}>
+                            <Typography variant="hs2">
+                              {row.Nome && row.Nome.length > 25
+                                ? row.Nome.substring(0, 25).toUpperCase()
+                                : row.Nome.toUpperCase()}
+                            </Typography>
+                          </ThemeProvider>
+                        </Box>
+                      </ListItemText>
+                      <ListItemText style={{ marginTop: 2 }}>
+                        <Box
+                          style={{
+                            display: 'flex',
+                            marginLeft: 10,
+                            fontFamily: 'arial',
+                            fontSize: '14px',
+                            color: '#FFFF',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => {
+                            handleCheckCelula(row, 1, index);
+                          }}
+                        >
+                          <ThemeProvider theme={theme}>
+                            <Typography noWrap variant="hs2">
+                              {row.Lider ? (
+                                <Box>
+                                  {row.Lider.length > 25
+                                    ? row.Lider.substring(0, 25).toUpperCase()
+                                    : row.Lider.toUpperCase()}
+                                </Box>
+                              ) : (
+                                ''
+                              )}
+                            </Typography>
+                          </ThemeProvider>
                         </Box>
                       </ListItemText>
                       <ListItemText style={{ marginTop: -2 }}>
@@ -669,7 +820,7 @@ export default function Pontuacao({
                           <Box
                             fontSize="14px"
                             onClick={() => {
-                              handleCheckCelula(row, 1);
+                              handleCheckCelula(row, 1, index);
                             }}
                             ml={2}
                             sx={{ cursor: 'pointer' }}
@@ -696,7 +847,7 @@ export default function Pontuacao({
                 fontSize="22px"
                 color="white"
               >
-                BUSCANDO DADOS...
+                {!pontosCelulasT.length ? 'BUSCANDO DADOS...' : 'SEM RELATÓRIO'}
               </Box>
             )}
           </TableContainer>
@@ -2546,6 +2697,7 @@ export default function Pontuacao({
                 qtdMembros={qtdMembros}
                 semana={semana}
                 pontosCelulas={pontosCelulas}
+                ano={anoF}
               />
             </TableContainer>
           </Box>

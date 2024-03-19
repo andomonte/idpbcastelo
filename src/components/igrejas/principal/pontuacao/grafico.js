@@ -1,17 +1,32 @@
 import React from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { Box } from '@material-ui/core';
+import useSWR from 'swr';
+import axios from 'axios';
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
+
+function createLabelData2(label, valor) {
+  return {
+    label,
+    valor,
+  };
+}
 
 export default function Grafico({
   dados,
   qtdMembros,
   parametros,
   pontosCelulas,
+  semana,
+  ano,
 }) {
   const pontosCelula = pontosCelulas.filter(
     (val) => val.Celula === dados.Celula,
   );
-
+  console.log('parametros', parametros);
+  const [pontosGeral, setPontosGeral] = React.useState([]);
+  const pontosMes = pontosCelula.length < 2 ? pontosGeral : pontosCelula;
   const detalhesPontos = [];
   const pontosTotal = [];
   const semanas = [];
@@ -23,6 +38,25 @@ export default function Grafico({
       return 0;
     });
   }
+  const url1 = `/api/consultaPontuacaoSemanaAno4/${semana + 1}/${
+    dados.Celula
+  }/${ano}`;
+  const { data: pontosAnt, error: errorPontosAnt } = useSWR(url1, fetcher);
+  React.useEffect(() => {
+    if (errorPontosAnt) return <div>An error occured.</div>;
+    if (!pontosAnt) return <div>Loading ...</div>;
+    if (pontosAnt) {
+      const pontosCelulaTemp = pontosAnt?.filter(
+        (val) =>
+          Number(val.Celula) === Number(dados.Celula) &&
+          Number(val.Distrito) === Number(dados.Distrito),
+      );
+
+      setPontosGeral(pontosCelulaTemp);
+      //  const pontosTotal = pontosCelula.reduce((prev) => prev.TotalRank);
+    }
+    return 0;
+  }, [pontosAnt]);
 
   const presCelulaDesejado =
     dados.semanas * ((parametros[0].PresCelulas * 10) / 100).toFixed(2);
@@ -111,8 +145,22 @@ export default function Grafico({
       },
     ],
   };
+
+  //-----------------------------------------------------
+
+  const labelData2 = [];
+  pontosMes?.map((val, i) => {
+    if (val.Semana) {
+      labelData2[i] = createLabelData2(`Sem - ${val.Semana}`, val.Semana);
+    }
+
+    return 0;
+  });
+  const labelData2Final = labelData2?.map((val) => val.label);
+  const valorData2 = pontosMes?.map((val) => val.TotalRank);
+  const valorData2Parametros = pontosMes?.map(() => 46.5);
   const data2 = {
-    labels: semanas,
+    labels: labelData2Final,
     datasets: [
       {
         label: 'Total de Pontos',
@@ -133,10 +181,19 @@ export default function Grafico({
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: pontosTotal,
+        data: valorData2,
+      },
+      {
+        type: 'line',
+        label: 'Pontos Desejado',
+        data: valorData2Parametros,
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
       },
     ],
   };
+
+  //-----------------------------------------------------
 
   const options = {
     legend: {
@@ -168,7 +225,7 @@ export default function Grafico({
         <Box mt={5} />
         <Box textAlign="center">
           <Box fontFamily="Fugaz One" fontSize="14px">
-            PONTUAÇÃO TOTAL DE {dados.semanas}{' '}
+            DESEMPENHO POR TOTAL DE {pontosMes.length}{' '}
             {dados.semanas > 1 ? 'SEMANAS' : 'SEMANA'}
           </Box>
 
