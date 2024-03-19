@@ -84,7 +84,7 @@ const handler = nextConnect()
 
       res.status(200).send(response);
     } catch (err) {
-      console.log('olha o erro', err);
+      console.log('erro', err);
     }
   });
 
