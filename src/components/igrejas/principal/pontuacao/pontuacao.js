@@ -1230,8 +1230,8 @@ export default function Pontuacao({
                         handleCheckCelula(row, 2, index);
                       }}
                     >
-                      <BsFillTrophyFill color={corIgreja.button1} size={80} />
-                      <Box mt={-10} fontSize={16} fontFamily="arial black">
+                      <BsFillTrophyFill color={corIgreja.button1} size={60} />
+                      <Box mt={-7} fontSize={16} fontFamily="arial black">
                         {row.loading ? (
                           <Box ml={3} mt={1} display="flex" alignItems="center">
                             <Oval stroke="red" width={30} height={30} />
@@ -1241,8 +1241,8 @@ export default function Pontuacao({
                             <Box mt={0} textAlign="center">
                               {row.Posicao}º
                             </Box>
-                            <Box ml={4} mt={0}>
-                              <GiClick size={25} color="gray" />
+                            <Box ml={2} mt={3}>
+                              <GiClick size={25} color="white" />
                             </Box>
                           </Box>
                         )}
