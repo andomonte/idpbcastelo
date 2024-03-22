@@ -5,13 +5,14 @@ import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
 import IconButton from '@mui/material/IconButton';
 import { IoClose } from 'react-icons/io5';
-import Avatar from '@material-ui/core/Avatar';
+
 import { GiClick } from 'react-icons/gi';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Oval } from 'react-loading-icons';
 import ListItemText from '@mui/material/ListItemText';
+import { BsFillTrophyFill } from 'react-icons/bs';
 import TableContainer from '@mui/material/TableContainer';
 import {
   MuiPickersUtilsProvider,
@@ -26,17 +27,17 @@ import Typography from '@mui/material/Typography';
 import Grafico from './grafico';
 
 const theme = createTheme();
-theme.typography.h4 = {
+theme.typography.hs4 = {
   fontWeight: 'normal',
-  fontSize: '12px',
+  fontSize: '10px',
   '@media (min-width:350px)': {
-    fontSize: '13px',
+    fontSize: '11px',
   },
   [theme.breakpoints.up('md')]: {
-    fontSize: '14px',
+    fontSize: '12px',
   },
 };
-theme.typography.h3 = {
+theme.typography.hs3 = {
   fontWeight: 'normal',
   fontSize: '11px',
   '@media (min-width:350px)': {
@@ -66,7 +67,11 @@ theme.typography.hs2 = {
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
-function createListaNome(
+
+function createListaPosicao(
+  Posicao,
+  Supervisao,
+  Coordenacao,
   distrito,
   Nome,
   Celula,
@@ -74,8 +79,12 @@ function createListaNome(
   Pontos,
   semanas,
   loading,
+  loading2,
 ) {
   return {
+    Posicao,
+    Supervisao,
+    Coordenacao,
     distrito,
     Nome,
     Celula,
@@ -83,6 +92,32 @@ function createListaNome(
     Pontos,
     semanas,
     loading,
+    loading2,
+  };
+}
+function createListaNome(
+  Supervisao,
+  Coordenacao,
+  distrito,
+  Nome,
+  Celula,
+  Lider,
+  Pontos,
+  semanas,
+  loading,
+  loading2,
+) {
+  return {
+    Supervisao,
+    Coordenacao,
+    distrito,
+    Nome,
+    Celula,
+    Lider,
+    Pontos,
+    semanas,
+    loading,
+    loading2,
   };
 }
 function createCelulaSelecionada(
@@ -153,6 +188,7 @@ const OrdenarSemana = (valorAordenar) => {
   }
   return valorAordenar;
 };
+
 function getPreviousMonday(date) {
   const previousMonday = date;
 
@@ -160,20 +196,149 @@ function getPreviousMonday(date) {
 
   return previousMonday;
 }
+
+const OrdenarSupervisoes = (supervisoesF) => {
+  if (supervisoesF && supervisoesF !== 'inicio') {
+    supervisoesF.sort((a, b) => {
+      if (a.Celula > b.Celula) {
+        return 1;
+      }
+      if (a.Celula < b.Celula) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+
+    supervisoesF.sort((a, b) => {
+      if (a.Distrito > b.Distrito) {
+        return 1;
+      }
+      if (a.Distrito < b.Distrito) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+  }
+  return supervisoesF;
+};
+const OrdenarCoordenacoes = (coordenacoesF) => {
+  if (coordenacoesF.length && coordenacoesF !== 'inicio') {
+    coordenacoesF.sort((a, b) => {
+      if (a.Distrito > b.Distrito) {
+        return 1;
+      }
+      if (a.Distrito < b.Distrito) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+  }
+  return coordenacoesF;
+};
+
 export default function Pontuacao({
   perfilUser,
   parametros,
   coordenacoes,
+  supervisoes,
   celulas,
   lideranca,
+  distritos,
 }) {
-  const newListaCoord = coordenacoes?.filter(
-    (val) => val.Distrito === Number(perfilUser.Distrito),
-  );
-  const coordInicial = [
-    { Coordenacao: 0, Coordenacao_Nome: 'TODAS AS COORDENAÇÕES' },
-  ];
-  newListaCoord?.map((val) => coordInicial.push(val));
+  let newContDistrito = 0;
+  let newContCoord = 0;
+  let newContSuper = 0;
+
+  if (perfilUser.Funcao === 'PastorDistrito') {
+    distritos.map((val, index) => {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
+        newContDistrito = index + 1;
+      }
+      return 0;
+    });
+  }
+
+  if (perfilUser.Funcao === 'Coordenador') {
+    distritos.map((val, index) => {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
+        newContDistrito = index + 1;
+      }
+      return 0;
+    });
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord?.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
+        newContCoord = index + 1;
+      }
+      return 0;
+    });
+  }
+
+  if (perfilUser.Funcao === 'Supervisor') {
+    distritos.map((val, index) => {
+      if (
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        distritos.length > 1
+      ) {
+        newContDistrito = index + 1;
+      }
+      return 0;
+    });
+    const newCoord = coordenacoes.filter(
+      (val) => Number(val.Distrito) === Number(perfilUser.Distrito),
+    );
+
+    newCoord.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        newCoord.length > 1
+      ) {
+        newContCoord = index + 1;
+      }
+      return 0;
+    });
+
+    const newSuper = supervisoes.filter(
+      (val) =>
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao),
+    );
+
+    newSuper.map((val, index) => {
+      if (
+        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+        Number(val.Distrito) === Number(perfilUser.Distrito) &&
+        Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+        newSuper.length > 1
+      ) {
+        newContSuper = index + 1;
+      }
+      return 0;
+    });
+  }
+  const [loading, setLoading] = React.useState(false);
+  const [coordF, setCoordF] = React.useState('inicio');
+  const [dadosCelula, setDadosCelula] = React.useState('');
+  const [superF, setSuperF] = React.useState('inicio');
+  const [contNumeroSuper, setContNumeroSuper] = React.useState(newContSuper);
+  //  const [celulasF, setCelulaF] = React.useState(0);
 
   const semanaExata = (dataEnviada) => {
     const Ano = dataEnviada.getFullYear();
@@ -199,7 +364,9 @@ export default function Pontuacao({
     return result;
   };
 
-  const [contNumeroCoord, setContNumeroCoord] = React.useState(0);
+  const [contNumeroDistrito, setContNumeroDistrito] =
+    React.useState(newContDistrito);
+  const [contNumeroCoord, setContNumeroCoord] = React.useState(newContCoord);
 
   //= =================================================================
   const [listaFinal, setListaFinal] = React.useState('');
@@ -249,7 +416,60 @@ export default function Pontuacao({
     // setSemana(semanaExata(dataAtual));
   };
 
+  const distritosT = distritos.filter((val) => val.Status);
+  const distritoF = [{ Distrito: 0, Distrito_Nome: 'TODOS OS DISTRITOS' }];
+  distritosT.map((val) => distritoF.push(val));
+
+  React.useEffect(() => {
+    const coordT = coordenacoes.filter(
+      (val) =>
+        val.Status &&
+        Number(val.Distrito) ===
+          Number(distritoF[contNumeroDistrito].Distrito) &&
+        val.Status,
+    );
+    const coordInicial = [
+      { coordenacao: 0, Coordenacao_Nome: 'TODAS AS COORDENAÇÕES' },
+    ];
+
+    if (contNumeroDistrito !== 0) coordT.map((val) => coordInicial.push(val));
+    else coordenacoes.map((val) => coordInicial.push(val));
+    if (coordT.length > 1 || !coordT.length)
+      setCoordF(OrdenarCoordenacoes(coordInicial));
+    else setCoordF(OrdenarCoordenacoes(coordT));
+  }, [contNumeroDistrito]);
+
+  React.useEffect(() => {
+    if (coordF !== 'inicio') {
+      let superT = supervisoes.filter(
+        (val) =>
+          val.Status &&
+          Number(val.Distrito) ===
+            Number(distritoF[contNumeroDistrito].Distrito),
+      );
+
+      if (contNumeroCoord !== 0) {
+        superT = supervisoes.filter(
+          (val) =>
+            Number(val.Distrito) === Number(coordF[contNumeroCoord].Distrito) &&
+            Number(val.Coordenacao) ===
+              Number(coordF[contNumeroCoord].Coordenacao),
+        );
+      }
+
+      const superInicial = [
+        { Supervisao: 0, Supervisao_Nome: 'TODAS AS SUPERVISÕES' },
+      ];
+      if (contNumeroCoord !== 0) superT.map((val) => superInicial.push(val));
+      else supervisoes.map((val) => superInicial.push(val));
+      if (superT.length > 1 || !superT.length)
+        setSuperF(OrdenarSupervisoes(superInicial));
+      else setSuperF(OrdenarSupervisoes(superT));
+    }
+  }, [contNumeroCoord, contNumeroDistrito, coordF]);
+
   const verPontos = () => {
+    setLoading(true);
     api
       .post('/api/consultaPontuacao', {
         semanaI: semana,
@@ -260,11 +480,10 @@ export default function Pontuacao({
       .then((response) => {
         if (response) {
           const members = response.data;
-
-          const distrito = members?.filter(
-            (val2) => val2.Distrito === Number(perfilUser.Distrito),
-          );
-
+          let distrito = members;
+          if (contNumeroDistrito !== 0) {
+            distrito = members?.filter((val2) => val2);
+          }
           setPontosCelulasT(distrito);
         }
       })
@@ -272,6 +491,7 @@ export default function Pontuacao({
         console.log(erro); //  updateFile(uploadedFile.id, { error: true });
       });
   };
+
   React.useEffect(() => {
     if (selectedDate) {
       setSemana(semanaExata(selectedDate));
@@ -281,7 +501,7 @@ export default function Pontuacao({
     }
   }, [selectedDate2, selectedDate]);
   React.useEffect(() => {
-    verPontos();
+    if (semana) verPontos();
   }, [semana, semanaF]);
 
   const handleDateClick2 = () => {
@@ -294,9 +514,11 @@ export default function Pontuacao({
 
   const handleCheckCelula = async (celulaSelecionada, openD, indexLoading) => {
     const celulaFiltrada = pontosCelulas?.filter(
-      (val) => val.Celula === celulaSelecionada.Celula,
+      (val) =>
+        val.Celula === celulaSelecionada.Celula &&
+        val.Distrito === celulaSelecionada.distrito,
     );
-
+    setDadosCelula(celulaSelecionada);
     const detalhesPontos = [];
     const pontosTotal = [];
 
@@ -371,12 +593,15 @@ export default function Pontuacao({
             console.log(erro); //  updateFile(uploadedFile.id, { error: true });
             return 0;
           });
+
         setQtdMembros(qytMembros);
       } else {
         const qytMembrosTemp = Number(
           (arrayTeste[7] * 10) / arrayTeste[19],
         ).toFixed(0);
-        setQtdMembros(qytMembrosTemp);
+
+        if (qytMembrosTemp === 'NaN') setQtdMembros(0);
+        else setQtdMembros(qytMembrosTemp);
       }
 
       setPontosCelulaSelecionada(
@@ -429,82 +654,116 @@ export default function Pontuacao({
       );
       const newLoadingNormal = [...listaFinal];
       newLoadingNormal[indexLoading].loading = false;
+      newLoadingNormal[indexLoading].loading2 = false;
       setListaFinal(newLoadingNormal);
       if (openD === 1) setOpenDialog1(true);
       if (openD === 2) setOpenDialog2(true);
+    } else {
+      const newLoadingNormal = [...listaFinal];
+      newLoadingNormal[indexLoading].loading = false;
+      newLoadingNormal[indexLoading].loading2 = false;
+      setListaFinal(newLoadingNormal);
     }
+  };
+
+  const handleIncDistrito = () => {
+    let contDistritoAtual = contNumeroDistrito + 1;
+
+    if (contDistritoAtual > distritoF.length - 1) contDistritoAtual = 0;
+    setContNumeroDistrito(contDistritoAtual);
+    setContNumeroCoord(0);
+  };
+
+  const handleDecDistrito = () => {
+    let contDistritoAtual = contNumeroDistrito - 1;
+
+    if (contDistritoAtual < 0) contDistritoAtual = distritoF.length - 1;
+    setContNumeroDistrito(contDistritoAtual);
+    setContNumeroCoord(0);
   };
 
   const handleIncCoord = () => {
     let contCoordAtual = contNumeroCoord + 1;
-    if (contCoordAtual > coordInicial.length - 1) contCoordAtual = 0;
+    if (contCoordAtual > coordF.length - 1) contCoordAtual = 0;
     setContNumeroCoord(contCoordAtual);
+    setContNumeroSuper(0);
   };
 
   const handleDecCoord = () => {
     let contCoordAtual = contNumeroCoord - 1;
 
-    if (contCoordAtual < 0) contCoordAtual = coordInicial.length - 1;
+    if (contCoordAtual < 0) contCoordAtual = coordF.length - 1;
     setContNumeroCoord(contCoordAtual);
+    setContNumeroSuper(0);
   };
+
+  const handleIncSuper = () => {
+    let contSuperAtual = contNumeroSuper + 1;
+    if (contSuperAtual > superF.length - 1) contSuperAtual = 0;
+    setContNumeroSuper(contSuperAtual);
+  };
+
+  const handleDecSuper = () => {
+    let contSuperAtual = contNumeroSuper - 1;
+
+    if (contSuperAtual < 0) contSuperAtual = superF.length - 1;
+    setContNumeroSuper(contSuperAtual);
+  };
+
   React.useEffect(() => {
     if (pontosCelulasT.length) {
-      let distritoF;
       const listaCelulas = [];
-      let index = 0;
+      celulas?.map((val2, i1) => {
+        listaCelulas[i1] = val2;
+        return 0;
+      });
 
-      if (contNumeroCoord !== 0) {
-        celulas?.map((val2) => {
+      let contPontos = 0;
+      const valListaPontos = [];
+      listaCelulas?.map((val) => {
+        pontosCelulasT?.map((val2) => {
           if (
-            val2.Coordenacao === coordInicial[contNumeroCoord].Coordenacao &&
-            val2.Distrito === coordInicial[contNumeroCoord].Distrito
+            val2.Distrito === val.Distrito &&
+            val2.Supervisao === val.Supervisao &&
+            val2.Celula === val.Celula
           ) {
-            listaCelulas[index] = val2;
-            index += 1;
+            valListaPontos[contPontos] = val2;
+            contPontos += 1;
           }
           return 0;
         });
 
-        let contPontos = 0;
-        const valListaPontos = [];
-        listaCelulas?.map((val) => {
-          pontosCelulasT?.map((val2) => {
-            if (
-              val2.Distrito === val.Distrito &&
-              val2.Supervisao === val.Supervisao &&
-              val2.Celula === val.Celula
-            ) {
-              valListaPontos[contPontos] = val2;
-              contPontos += 1;
-            }
-            return 0;
-          });
-
-          return 0;
-        });
-        distritoF = valListaPontos;
-      } else {
-        distritoF = pontosCelulasT?.filter(
-          (val2) => val2.Distrito === Number(perfilUser.Distrito),
-        );
-      }
-
-      setPontosCelulas(OrdenarSemana(distritoF));
-      const setPerson = new Set();
-      const pontuacao = [];
-      const listaCelulas2 = distritoF?.filter((person) => {
-        const duplicatedPerson = setPerson.has(person.Celula);
-        setPerson.add(person.Celula);
-        return !duplicatedPerson;
+        return 0;
       });
 
-      for (let i = 0; i < listaCelulas2.length; i += 1) {
+      const distritoFT = valListaPontos;
+
+      setPontosCelulas(OrdenarSemana(distritoFT));
+
+      const filteredArr = distritoFT.reduce((acc, current) => {
+        const x = acc.find(
+          (item) =>
+            item.Celula === current.Celula &&
+            item.Distrito === current.Distrito,
+        );
+        if (!x) {
+          return acc.concat([current]);
+        }
+        return acc;
+      }, []);
+
+      const pontuacao = [];
+
+      for (let i = 0; i < filteredArr.length; i += 1) {
         let pontosAgora = 0;
         const liderAgora = [];
         let celulaAgora = 0;
         let nomeCelula = 'Sem';
-        distritoF?.map((val) => {
-          if (val.Celula === listaCelulas2[i].Celula) {
+        distritoFT?.map((val) => {
+          if (
+            val.Celula === filteredArr[i].Celula &&
+            val.Distrito === filteredArr[i].Distrito
+          ) {
             pontosAgora = Number(
               Number(pontosAgora) + Number(val.TotalRank),
             ).toFixed(2);
@@ -516,8 +775,8 @@ export default function Pontuacao({
 
         celulas?.map((val) => {
           if (
-            val.Celula === listaCelulas2[i].Celula &&
-            val.Distrito === listaCelulas2[i].Distrito
+            val.Celula === filteredArr[i].Celula &&
+            val.Distrito === filteredArr[i].Distrito
           ) {
             nomeCelula = val.Nome;
           }
@@ -527,8 +786,8 @@ export default function Pontuacao({
         let indexLider = 0;
         lideranca?.map((val) => {
           if (
-            val.Celula === listaCelulas2[i].Celula &&
-            val.Distrito === listaCelulas2[i].Distrito &&
+            val.Celula === filteredArr[i].Celula &&
+            val.Distrito === filteredArr[i].Distrito &&
             val.Funcao === 'Lider'
           ) {
             liderAgora[indexLider] = val.Nome ? val.Nome : 'Sem';
@@ -537,20 +796,84 @@ export default function Pontuacao({
 
           return 0;
         });
+        const coordAgora = celulas?.filter(
+          (val) =>
+            val.Distrito === filteredArr[i].Distrito &&
+            val.Celula === filteredArr[i].Celula &&
+            val.Supervisao === filteredArr[i].Supervisao,
+        );
+
         pontuacao[i] = createListaNome(
-          listaCelulas2[i].Distrito,
+          filteredArr[i].Supervisao,
+          coordAgora[0].Coordenacao,
+          filteredArr[i].Distrito,
           nomeCelula,
           celulaAgora,
           liderAgora[0],
           pontosAgora,
           semanaF - semana + 1,
           false,
+          false,
         );
       }
 
-      setListaFinal(pontuacao.sort((a, b) => b.Pontos - a.Pontos));
+      const newLista = pontuacao.sort((a, b) => b.Pontos - a.Pontos);
+      const pontuacao2 = [];
+      newLista?.map((val, i) => {
+        pontuacao2[i] = createListaPosicao(
+          i + 1,
+          val.Supervisao,
+          val.Coordenacao,
+          val.distrito,
+          val.Nome,
+          val.Celula,
+          val.Lider,
+          val.Pontos,
+          val.semanas,
+          val.loading,
+          val.loading2,
+        );
+        return 0;
+      });
+      let newListaF = pontuacao2;
+      if (contNumeroDistrito !== 0) {
+        newListaF = pontuacao2.filter(
+          (val) => val.distrito === distritoF[contNumeroDistrito].Distrito,
+        );
+      }
+
+      if (contNumeroCoord !== 0)
+        newListaF = pontuacao2?.filter(
+          (val) =>
+            val.Coordenacao === coordF[contNumeroCoord].Coordenacao &&
+            val.distrito === coordF[contNumeroCoord].Distrito,
+        );
+
+      if (contNumeroSuper !== 0)
+        newListaF = pontuacao2?.filter(
+          (val) =>
+            val.distrito === superF[contNumeroSuper].Distrito &&
+            val.Coordenacao === superF[contNumeroSuper].Coordenacao &&
+            val.Supervisao === superF[contNumeroSuper].Supervisao,
+        );
+      if (
+        perfilUser.Funcao === 'Membro' ||
+        perfilUser.Funcao === 'Lider' ||
+        perfilUser.Funcao === 'Professor'
+      ) {
+        newListaF = pontuacao2?.filter(
+          (val) =>
+            val.distrito === Number(perfilUser.Distrito) &&
+            val.Coordenacao === Number(perfilUser.Coordenacao) &&
+            val.Supervisao === Number(perfilUser.Supervisao) &&
+            val.Celula === Number(perfilUser.Celula),
+        );
+      }
+
+      setLoading(false);
+      setListaFinal(newListaF);
     }
-  }, [contNumeroCoord, pontosCelulasT]);
+  }, [pontosCelulasT, contNumeroCoord, contNumeroDistrito, contNumeroSuper]);
 
   return (
     <Box
@@ -574,23 +897,105 @@ export default function Pontuacao({
         bgcolor={corIgreja.principal}
       >
         <Box
-          display="flex"
+          display={perfilUser.Funcao === 'Presidente' ? 'flex' : 'none'}
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
-          mt={0}
+          mt={1}
           mb={0}
           width="100%"
           height="8%"
         >
           <Box
-            bgcolor={corIgreja.principal}
             borderRadius={16}
-            color="#000"
+            sx={{
+              border: '1px solid #000',
+            }}
+            borderColor="white"
+            color="white"
             justifyContent="center"
-            width="100%"
+            width="96%"
             display="flex"
-            height={50}
+            height={40}
+          >
+            <Box ml={0} width="100%" display="flex">
+              <Box
+                width="10%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => {
+                    handleDecDistrito();
+                  }}
+                >
+                  <BiCaretLeft size={30} color="white" />
+                </IconButton>
+              </Box>
+              <Box
+                width="100%"
+                ml={0}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                fontSize="12px"
+                sx={{ fontFamily: 'Rubik' }}
+              >
+                <Box fontFamily="arial black" ml={2} mr={2}>
+                  {distritoF[contNumeroDistrito].Distrito_Nome}
+                </Box>
+              </Box>
+              <Box
+                width="10%"
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => {
+                    handleIncDistrito();
+                  }}
+                >
+                  <BiCaretRight size={30} color="white" />
+                </IconButton>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box
+          display={
+            perfilUser.Funcao === 'Presidente' ||
+            perfilUser.Funcao === 'PastorDistrito'
+              ? 'flex'
+              : 'none'
+          }
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt={1}
+          mb={0}
+          width="100%"
+          height="8%"
+        >
+          <Box
+            borderRadius={16}
+            sx={{
+              border: '1px solid #000',
+            }}
+            borderColor="white"
+            color="white"
+            justifyContent="center"
+            width="96%"
+            display="flex"
+            height={40}
           >
             <Box ml={0} width="100%" display="flex">
               <Box
@@ -607,13 +1012,12 @@ export default function Pontuacao({
                     handleDecCoord();
                   }}
                 >
-                  <BiCaretLeft size={30} color="#f0f0f0" />
+                  <BiCaretLeft size={30} color="white" />
                 </IconButton>
               </Box>
               <Box
                 width="100%"
                 ml={0}
-                color="#f0f0f0"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -621,7 +1025,7 @@ export default function Pontuacao({
                 sx={{ fontFamily: 'Rubik' }}
               >
                 <Box fontFamily="arial black" ml={2} mr={2}>
-                  {coordInicial[contNumeroCoord].Coordenacao_Nome}
+                  {coordF[contNumeroCoord].Coordenacao_Nome}
                 </Box>
               </Box>
               <Box
@@ -638,7 +1042,89 @@ export default function Pontuacao({
                     handleIncCoord();
                   }}
                 >
-                  <BiCaretRight size={30} color="#f0f0f0" />
+                  <BiCaretRight size={30} color="white" />
+                </IconButton>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box
+          display={
+            perfilUser.Funcao === 'Presidente' ||
+            perfilUser.Funcao === 'PastorDistrito' ||
+            perfilUser.Funcao === 'Coordenador'
+              ? 'flex'
+              : 'none'
+          }
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt={1}
+          mb={2}
+          width="100%"
+          height="8%"
+        >
+          <Box
+            borderRadius={16}
+            sx={{
+              border: '1px solid #000',
+            }}
+            borderColor="white"
+            color="white"
+            justifyContent="center"
+            width="96%"
+            display="flex"
+            height={40}
+          >
+            <Box ml={0} width="100%" display="flex">
+              <Box
+                width="10%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => {
+                    handleDecSuper();
+                  }}
+                >
+                  <BiCaretLeft size={30} color="white" />
+                </IconButton>
+              </Box>
+              <Box
+                width="100%"
+                ml={0}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                fontSize="12px"
+                sx={{ fontFamily: 'Rubik' }}
+              >
+                <Box fontFamily="arial black" ml={2} mr={2}>
+                  {superF &&
+                    superF !== 'inicio' &&
+                    superF[contNumeroSuper].Supervisao_Nome.toUpperCase()}
+                </Box>
+              </Box>
+              <Box
+                width="10%"
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={() => {
+                    handleIncSuper();
+                  }}
+                >
+                  <BiCaretRight size={30} color="white" />
                 </IconButton>
               </Box>
             </Box>
@@ -707,51 +1193,63 @@ export default function Pontuacao({
             </MuiPickersUtilsProvider>
           </Paper>
         </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          fontFamily="Fugaz One"
+          color="white"
+          mt={2}
+          mb={2}
+        >
+          <ThemeProvider theme={theme}>
+            <Typography variant="hs4">
+              <Box display="flex">
+                <Box>RANK ENTRE</Box>
+                <Box ml={1} color="yellow">
+                  {pontosCelulasT.length}
+                </Box>
+                <Box ml={1}>CÉLULAS DO TOTAL DE</Box>
+                <Box ml={1} color="yellow">
+                  {celulas.length}
+                </Box>
+              </Box>
+            </Typography>
+          </ThemeProvider>
+        </Box>
         {semanaF >= semana ? (
-          <TableContainer sx={{ height: '90%' }}>
-            {listaFinal && listaFinal.length ? (
+          <TableContainer sx={{ height: '100%' }}>
+            {listaFinal && listaFinal.length && !loading ? (
               <List sx={{ width: '100%', maxWidth: 360 }}>
                 {listaFinal?.map((row, index) => (
                   <ListItem key={index} alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        src=""
-                        alt="User"
-                        style={{
-                          width: 70,
-                          height: 70,
-                          background: '#aed581',
-                          color: 'black',
-                          fontSize: '18px',
-                          fontWeight: 'bold',
-                        }}
-                        onClick={() => {
-                          const newLoadingNormal = [...listaFinal];
-                          newLoadingNormal[index].loading = true;
-                          setListaFinal(newLoadingNormal);
-                          handleCheckCelula(row, 2, index);
-                        }}
-                      >
-                        <Box>
-                          {row.loading ? (
-                            <Box display="flex" alignItems="center">
-                              <Oval stroke="white" width={30} height={30} />
+                    <ListItemAvatar
+                      onClick={() => {
+                        const newLoadingNormal = [...listaFinal];
+                        newLoadingNormal[index].loading = true;
+                        setListaFinal(newLoadingNormal);
+                        handleCheckCelula(row, 2, index);
+                      }}
+                    >
+                      <BsFillTrophyFill color={corIgreja.button1} size={80} />
+                      <Box mt={-10} fontSize={16} fontFamily="arial black">
+                        {row.loading ? (
+                          <Box ml={3} mt={1} display="flex" alignItems="center">
+                            <Oval stroke="red" width={30} height={30} />
+                          </Box>
+                        ) : (
+                          <Box>
+                            <Box mt={0} textAlign="center">
+                              {row.Posicao}º
                             </Box>
-                          ) : (
-                            <Box>
-                              <Box mt={1} textAlign="center">
-                                {index + 1}º
-                              </Box>
-                              <Box mt={0.5}>
-                                <GiClick size={25} color="gray" />
-                              </Box>
+                            <Box ml={4} mt={0}>
+                              <GiClick size={25} color="gray" />
                             </Box>
-                          )}
-                        </Box>
-                      </Avatar>
+                          </Box>
+                        )}
+                      </Box>
                     </ListItemAvatar>
                     <Box>
-                      <ListItemText style={{ marginTop: 12 }}>
+                      <ListItemText style={{ marginTop: 5 }}>
                         <Box
                           style={{
                             display: 'flex',
@@ -762,6 +1260,9 @@ export default function Pontuacao({
                             cursor: 'pointer',
                           }}
                           onClick={() => {
+                            const newLoadingNormal = [...listaFinal];
+                            newLoadingNormal[index].loading2 = true;
+                            setListaFinal(newLoadingNormal);
                             handleCheckCelula(row, 1, index);
                           }}
                         >
@@ -780,16 +1281,18 @@ export default function Pontuacao({
                             display: 'flex',
                             marginLeft: 10,
                             fontFamily: 'arial',
-                            fontSize: '14px',
-                            color: '#FFFF',
+                            color: corIgreja.textoP,
                             cursor: 'pointer',
                           }}
                           onClick={() => {
+                            const newLoadingNormal = [...listaFinal];
+                            newLoadingNormal[index].loading2 = true;
+                            setListaFinal(newLoadingNormal);
                             handleCheckCelula(row, 1, index);
                           }}
                         >
                           <ThemeProvider theme={theme}>
-                            <Typography noWrap variant="hs2">
+                            <Typography noWrap variant="hs3">
                               {row.Lider ? (
                                 <Box>
                                   {row.Lider.length > 25
@@ -804,34 +1307,100 @@ export default function Pontuacao({
                         </Box>
                       </ListItemText>
                       <ListItemText style={{ marginTop: -2 }}>
-                        <Box
-                          style={{
-                            display: 'flex',
-                            marginLeft: 0,
-                            fontFamily: 'Rubik',
-                            fontSize: '14px',
-                            color: '#FFFF',
-                          }}
-                        >
-                          <Box ml={1.2}>Célula: </Box>
-                          <Box color="yellow" ml={1}>
-                            {row.Celula}
-                          </Box>
-                          <Box
-                            fontSize="14px"
-                            onClick={() => {
-                              handleCheckCelula(row, 1, index);
-                            }}
-                            ml={2}
-                            sx={{ cursor: 'pointer' }}
-                          >
-                            Pontos:
-                          </Box>
-                          <Box fontSize="14px" color="yellow" ml={1}>
-                            {' '}
-                            {row.Pontos}
-                          </Box>
-                        </Box>
+                        <ThemeProvider theme={theme}>
+                          <Typography noWrap variant="hs3">
+                            <Box
+                              style={{
+                                display: 'flex',
+                                marginLeft: 0,
+                                fontFamily: 'Rubik',
+
+                                color: '#FFFF',
+                              }}
+                            >
+                              <Box ml={1.2}>Distrito: </Box>
+                              <Box fontFamily="Fugaz One" color="white" ml={1}>
+                                {row.distrito && distritoF.length
+                                  ? distritoF[row.distrito].Distrito_Nome
+                                  : ''}
+                              </Box>
+                            </Box>
+                          </Typography>
+                        </ThemeProvider>
+                      </ListItemText>
+                      <ListItemText style={{ marginTop: -2 }}>
+                        <ThemeProvider theme={theme}>
+                          <Typography noWrap variant="hs3">
+                            <Box
+                              style={{
+                                display: 'flex',
+                                marginLeft: 0,
+                                fontFamily: 'Rubik',
+
+                                color: '#FFFF',
+                              }}
+                            >
+                              <Box ml={1.2}>Célula: </Box>
+                              <Box color="yellow" ml={1}>
+                                {row.Celula}
+                              </Box>
+                              <Box
+                                onClick={() => {
+                                  handleCheckCelula(row, 1, index);
+                                }}
+                                ml={2}
+                                sx={{ cursor: 'pointer' }}
+                              >
+                                Pontos:
+                              </Box>
+                              <Box color="yellow" ml={1}>
+                                {row.Pontos}
+                              </Box>
+                              <Box
+                                color="yellow"
+                                onClick={() => {
+                                  handleCheckCelula(row, 1, index);
+                                }}
+                                ml={2}
+                                sx={{ cursor: 'pointer' }}
+                              >
+                                {row.loading2 ? (
+                                  <Box
+                                    ml={0}
+                                    mt={0}
+                                    display="flex"
+                                    alignItems="center"
+                                  >
+                                    <Oval
+                                      stroke="white"
+                                      width={30}
+                                      height={30}
+                                    />
+                                  </Box>
+                                ) : (
+                                  <Box>
+                                    <Box
+                                      onClick={() => {
+                                        const newLoadingNormal = [
+                                          ...listaFinal,
+                                        ];
+                                        newLoadingNormal[index].loading2 = true;
+                                        setListaFinal(newLoadingNormal);
+                                        handleCheckCelula(row, 1, index);
+                                      }}
+                                      mt={0.5}
+                                    >
+                                      <GiClick
+                                        size={25}
+                                        color={corIgreja.button1}
+                                      />
+                                    </Box>
+                                  </Box>
+                                )}
+                              </Box>
+                            </Box>
+                          </Typography>
+                        </ThemeProvider>
                       </ListItemText>
                     </Box>
                   </ListItem>
@@ -847,7 +1416,7 @@ export default function Pontuacao({
                 fontSize="22px"
                 color="white"
               >
-                {!pontosCelulasT.length ? 'BUSCANDO DADOS...' : 'SEM RELATÓRIO'}
+                {loading ? 'BUSCANDO DADOS...' : 'SEM RELATÓRIO'}
               </Box>
             )}
           </TableContainer>
@@ -2524,7 +3093,83 @@ export default function Pontuacao({
                                     PontosCelulaSelecionada.RelDiscipulado +
                                     PontosCelulaSelecionada.Pontualidade,
                                 ).toFixed(2) >=
-                                PontosCelulaSelecionada.semanas * 5
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    5 *
+                                    (parametros[0].Relatorios / 100).toFixed(2),
+                                ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].PresCelulas * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].PresCelebracao * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].Discipulado * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  ) +
+                                  parseFloat(
+                                    PontosCelulaSelecionada.semanas *
+                                      (
+                                        (parametros[0].Leitura * 10) /
+                                        100
+                                      ).toFixed(2),
+                                  ) +
+                                  PontosCelulaSelecionada.semanas *
+                                    Number(
+                                      Number(
+                                        (
+                                          (parametros[0].VisCelula *
+                                            qtdMembros) /
+                                          100
+                                        ).toFixed(0),
+                                      ) +
+                                        Number(
+                                          (
+                                            (parametros[0].VisCelebracao *
+                                              qtdMembros) /
+                                            100
+                                          ).toFixed(0),
+                                        ) +
+                                        Number(
+                                          (
+                                            (parametros[0].Visitas *
+                                              qtdMembros) /
+                                            100
+                                          ).toFixed(0),
+                                        ) +
+                                        Number(
+                                          (
+                                            (parametros[0].Eventos *
+                                              qtdMembros) /
+                                            100
+                                          ).toFixed(0),
+                                        ) +
+                                        Number(
+                                          (
+                                            (parametros[0].NovoMembro *
+                                              qtdMembros) /
+                                            100
+                                          ).toFixed(0),
+                                        ) +
+                                        Number(
+                                          (
+                                            (parametros[0].Planejamento * 10) /
+                                            100
+                                          ).toFixed(0),
+                                        ),
+                                    )
                                   ? 'blue'
                                   : 'red'
                               }
@@ -2573,47 +3218,80 @@ export default function Pontuacao({
                               justifyContent="center"
                               fontSize="14px"
                             >
-                              {PontosCelulaSelecionada.semanas *
-                                Number(
-                                  Number(
+                              {parseFloat(
+                                PontosCelulaSelecionada.semanas *
+                                  5 *
+                                  (parametros[0].Relatorios / 100).toFixed(2),
+                              ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
                                     (
-                                      (parametros[0].VisCelula * qtdMembros) /
+                                      (parametros[0].PresCelulas * 10) /
                                       100
-                                    ).toFixed(0),
-                                  ) +
+                                    ).toFixed(2),
+                                ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].PresCelebracao * 10) /
+                                      100
+                                    ).toFixed(2),
+                                ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Discipulado * 10) /
+                                      100
+                                    ).toFixed(2),
+                                ) +
+                                parseFloat(
+                                  PontosCelulaSelecionada.semanas *
+                                    (
+                                      (parametros[0].Leitura * 10) /
+                                      100
+                                    ).toFixed(2),
+                                ) +
+                                PontosCelulaSelecionada.semanas *
+                                  Number(
                                     Number(
                                       (
-                                        (parametros[0].VisCelebracao *
-                                          qtdMembros) /
+                                        (parametros[0].VisCelula * qtdMembros) /
                                         100
                                       ).toFixed(0),
                                     ) +
-                                    Number(
-                                      (
-                                        (parametros[0].Visitas * qtdMembros) /
-                                        100
-                                      ).toFixed(0),
-                                    ) +
-                                    Number(
-                                      (
-                                        (parametros[0].Eventos * qtdMembros) /
-                                        100
-                                      ).toFixed(0),
-                                    ) +
-                                    Number(
-                                      (
-                                        (parametros[0].NovoMembro *
-                                          qtdMembros) /
-                                        100
-                                      ).toFixed(0),
-                                    ) +
-                                    Number(
-                                      (
-                                        (parametros[0].Planejamento * 10) /
-                                        100
-                                      ).toFixed(0),
-                                    ),
-                                )}
+                                      Number(
+                                        (
+                                          (parametros[0].VisCelebracao *
+                                            qtdMembros) /
+                                          100
+                                        ).toFixed(0),
+                                      ) +
+                                      Number(
+                                        (
+                                          (parametros[0].Visitas * qtdMembros) /
+                                          100
+                                        ).toFixed(0),
+                                      ) +
+                                      Number(
+                                        (
+                                          (parametros[0].Eventos * qtdMembros) /
+                                          100
+                                        ).toFixed(0),
+                                      ) +
+                                      Number(
+                                        (
+                                          (parametros[0].NovoMembro *
+                                            qtdMembros) /
+                                          100
+                                        ).toFixed(0),
+                                      ) +
+                                      Number(
+                                        (
+                                          (parametros[0].Planejamento * 10) /
+                                          100
+                                        ).toFixed(0),
+                                      ),
+                                  )}
                             </Box>
                           </Box>
                         </ListItemText>
@@ -2691,14 +3369,18 @@ export default function Pontuacao({
             <TableContainer
               sx={{ background: 'white', width: '100%', height: '90%' }}
             >
-              <Grafico
-                parametros={parametros}
-                dados={PontosCelulaSelecionada}
-                qtdMembros={qtdMembros}
-                semana={semana}
-                pontosCelulas={pontosCelulas}
-                ano={anoF}
-              />
+              {distritoF && coordF ? (
+                <Grafico
+                  dadosCelula={dadosCelula}
+                  parametros={parametros}
+                  dados={PontosCelulaSelecionada}
+                  qtdMembros={qtdMembros}
+                  semana={semana}
+                  pontosCelulas={pontosCelulas}
+                  ano={anoF}
+                  distritos={distritoF}
+                />
+              ) : null}
             </TableContainer>
           </Box>
         </Box>

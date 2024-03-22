@@ -17,9 +17,6 @@ import corIgreja from 'src/utils/coresIgreja';
 // import Carrossel from '../carrossel';
 // import GoogleMaps from './googleMap';
 import Pontuacao from './pontuacao';
-import PontuacaoCoord from './pontuacaoCoord';
-import PontuacaoSuper from './pontuacaoSuper';
-import PontuacaoLider from './pontuacaoLider';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -182,30 +179,15 @@ function Secretaria({
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          {perfilUser.Funcao === 'PastorDistrito' ? (
-            <Pontuacao
-              lideranca={lideranca}
-              supervisao={supervisao}
-              parametros={parametros}
-              perfilUser={perfilUser}
-              coordenacoes={coordenacoes}
-              distritos={distritos}
-              celulas={celulas}
-            />
-          ) : null}
-          {perfilUser.Funcao === 'Coordenador' ? (
-            <PontuacaoCoord
-              supervisao={supervisao}
-              parametros={parametros}
-              perfilUser={perfilUser}
-            />
-          ) : null}
-          {perfilUser.Funcao === 'Supervisor' ? (
-            <PontuacaoSuper parametros={parametros} perfilUser={perfilUser} />
-          ) : null}
-          {perfilUser.Funcao === 'Lider' || perfilUser.Funcao === 'Membro' ? (
-            <PontuacaoLider parametros={parametros} perfilUser={perfilUser} />
-          ) : null}
+          <Pontuacao
+            lideranca={lideranca}
+            supervisoes={supervisao}
+            parametros={parametros}
+            perfilUser={perfilUser}
+            coordenacoes={coordenacoes}
+            distritos={distritos}
+            celulas={celulas}
+          />
         </main>
       </div>
     </div>
