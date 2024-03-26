@@ -273,7 +273,7 @@ function Funcao({
     if (contCoordAtual < 0) contCoordAtual = coordF.length - 1;
     setContNumeroCoord(contCoordAtual);
   };
-  console.log('coordF', coordF, contNumeroCoord);
+
   return (
     <Box
       height="90vh"

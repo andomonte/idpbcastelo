@@ -5,9 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import TamanhoJanela from 'src/utils/screenSize';
 import { TiArrowBack } from 'react-icons/ti';
-import Avatar from '@mui/material/Avatar';
+
 import { useRouter } from 'next/router';
-import { Oval } from 'react-loading-icons';
 // import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { TextField } from '@mui/material';
 import cpfMask from 'src/components/mascaras/cpf';
@@ -16,10 +15,7 @@ import AppBar from '@material-ui/core/AppBar';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fontsource/rubik';
 import '@fontsource/fugaz-one';
-// import useSWR from 'swr';
-// import axios from 'axios';
 
-// const fetcher = (url) => axios.get(url).then((res) => res.data);
 // Padrões para peso 400.
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -31,16 +27,17 @@ const useStyles = makeStyles((theme) => ({
     height: '99vh',
   },
   root2: {
-    backgroundColor: '#424242',
+    backgroundColor: '#D2691E',
     boxShadow: 'none',
     zIndex: theme.zIndex.drawer + 1,
-    height: 56,
+    height: '12vh',
+    minHeight: 56,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   paper: {
-    // backgroundColor: '#424242', // theme.palette.background.paper,
+    // backgroundColor: '#DA691D', // theme.palette.background.paper,
     backgroundImage: `url('/images/global/fundo.png')`,
     //    border: '0px solid #000',
     //    boxShadow: theme.shadows[5],
@@ -59,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: '0.5px',
     borderStyle: 'solid',
     borderRadius: '10px',
-    border: '2px solid #424242',
+    border: '2px solid #DA691D',
   },
   root: {
     height: '100vh',
@@ -75,53 +72,39 @@ const useStyles = makeStyles((theme) => ({
     background: '#fff',
     fontSize: '14px',
     fontWeight: 'bold',
-    color: '#2196f3',
+    color: '#dd2c00',
     justifyContent: 'center',
   },
   button2: {
     display: 'flex',
-    background: '#2196f3',
+    background: '#dd2c00',
     fontSize: '12px',
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
     '&:hover': {
-      backgroundColor: '#424242',
+      backgroundColor: '#df5c00',
     },
   },
 }));
 
-function TelaLogin({ eventoSelecionado }) {
+function TelaLogin() {
   // const [newData, setNewData] = React.useState('');
 
   const altura = TamanhoJanela().height;
 
   const classes = useStyles();
   const [cpf, setCPF] = React.useState('');
-  // const [dadosEvento, setDadosEvento] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [loading2, setLoading2] = React.useState(false);
+
   const cpfRef = React.useRef();
 
   const router = useRouter();
-  /* const url = `/api/consultaEventosId/${eventoSelecionado.id}`;
-  const { data, error } = useSWR(url, fetcher);
-  React.useEffect(() => {
-    if (data) {
-     
-      setDadosEvento(data);
-    }
-    if (error) return <div>An error occured.</div>;
-    if (!data) return <div>Loading ...</div>;
 
-    return 0;
-  }, [data]); */
+  // if (data) console.log(data);
 
   const voltar = () => {
-    setLoading2(true);
     router.push({
-      pathname: '/eventoIdpb',
-      query: { Evento: eventoSelecionado.nomeEvento },
+      pathname: './',
     });
   };
   const entrarNoJogo = () => {
@@ -130,12 +113,10 @@ function TelaLogin({ eventoSelecionado }) {
         pathname: './meuTicket',
         query: {
           cpf,
-          Evento: eventoSelecionado.nomeEvento,
         },
       });
   };
   const handleValida = () => {
-    setLoading(true);
     let valCPF = false;
     const valorCPF = cpf.replace(/\D/g, '');
     if (cpf.length > 0) {
@@ -146,14 +127,12 @@ function TelaLogin({ eventoSelecionado }) {
         toast.info('ESSE CPF NÃO EXISTE !', {
           position: toast.POSITION.TOP_CENTER,
         });
-        setLoading(false);
         cpfRef.current.focus();
       }
     } else {
       toast.info('PREENCHA O CAMPO CPF !', {
         position: toast.POSITION.TOP_CENTER,
       });
-      setLoading(false);
       cpfRef.current.focus();
     }
 
@@ -170,97 +149,91 @@ function TelaLogin({ eventoSelecionado }) {
   //  const janela = TamanhoJanela();
   return (
     <Box
-      bgcolor="#9e9e9e"
-      height="100vh"
+      mt="2vh"
+      bgcolor="#D2691E"
+      height="98vh"
       width="100vw"
-      minHeight={570}
+      minHeight={500}
       justifyContent="center"
       display="flex"
       alignItems="center"
     >
-      <AppBar className={classes.root2}>
-        <Box
-          width="100%"
-          // maxWidth={450}
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          style={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-          ml={0}
-        >
-          <Box ml={2} display="flex" justifyContent="center" width="15%">
-            {loading2 ? (
-              <Box>
-                <Oval stroke="white" width={25} height={25} />
-              </Box>
-            ) : (
-              <TiArrowBack size={30} onClick={voltar} />
-            )}
-          </Box>
-          <Box
-            width="85%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height={50}
-            mr={2}
-          >
-            <Box textAlign="center" fontFamily="Fugaz One">
-              {eventoSelecionado && eventoSelecionado.nomeEvento
-                ? eventoSelecionado.nomeEvento.toUpperCase()
-                : 'EVENTOS IDPB'}
-            </Box>
-          </Box>
-        </Box>
-      </AppBar>
-      <Box
-        height="93.5vh"
-        width="94vw"
-        minHeight={570}
-        mt="6.5vh"
-        justifyContent="center"
-        display="flex"
-        alignItems="center"
-      >
-        <Box height="96%" bgcolor="#424242">
+      <Box>
+        <Box>
           <Box
             mt={0}
+            bgcolor="#803300"
             color="white"
             fontFamily="Fugaz One"
             fontSize="16px"
             style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16 }}
             // borderRadius={16}
 
-            height="100%"
+            height="88vh"
             width="90vw"
             // maxWidth={450}
-            minHeight={540}
+            minHeight={470}
             //  maxWidth={400}
             justifyContent="center"
             display="flex"
             flexDirection="column"
             //            alignItems="center"
           >
-            <Box
-              mb={2}
-              mt={5}
-              width="100%"
-              display="flex"
-              justifyContent="center"
-              textAlign="center"
-            >
-              <Box justifyContent="center" height="100%">
-                <Avatar
-                  alt="Evento"
-                  src={eventoSelecionado ? eventoSelecionado.LogoEvento : ''}
-                  sx={{
-                    width: 200,
-                    height: 200,
-                  }}
-                />
+            <AppBar className={classes.root2}>
+              <Box
+                width="90%"
+                // maxWidth={450}
+                bgcolor="#803300"
+                height="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mt="4vh"
+                style={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+                ml={0}
+              >
+                <Box
+                  display="flex"
+                  justifyContent="flex-start"
+                  ml={2}
+                  width="10%"
+                >
+                  <TiArrowBack size={30} onClick={voltar} />
+                </Box>
+                <Box
+                  mb={2}
+                  mt={2}
+                  width="80%"
+                  display="flex"
+                  justifyContent="center"
+                  textAlign="center"
+                >
+                  <img
+                    src="/images/idpb.png"
+                    alt="Castelo"
+                    width={40}
+                    height={45}
+                  />
+                  <Box
+                    ml={1}
+                    color="white"
+                    display="flex"
+                    justifyContent="center"
+                    flexDirection="column"
+                    fontSize="15px"
+                    fontFamily="Fugaz One"
+                  >
+                    <Box width="100%" textAlign="left" mt={0.5}>
+                      CONVENÇÃO NACIONAL
+                    </Box>
+                    <Box width="100%" textAlign="left" mt={-0.5}>
+                      2022 ANO DA UNIDADE
+                    </Box>
+                  </Box>
+                </Box>
+                <Box width="10%" />
               </Box>
-            </Box>
+            </AppBar>
             <Box
               mt={0}
               color="white"
@@ -300,7 +273,10 @@ function TelaLogin({ eventoSelecionado }) {
                       mt={-2} // não mexer
                       ml={0}
                       sx={{ fontWeight: 'bold', fontSize: '10px' }}
-                      textAlign="center"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      flexDirection="column"
                     >
                       <Typography
                         style={{
@@ -392,32 +368,7 @@ function TelaLogin({ eventoSelecionado }) {
                                 value="value"
                                 onClick={handleValida}
                               >
-                                {!loading ? (
-                                  'GERAR CREDENCIAL'
-                                ) : (
-                                  <Box
-                                    width="100%"
-                                    height="100%"
-                                    alignItems="center"
-                                    display="flex"
-                                    justifyContent="center"
-                                  >
-                                    <Box>VERIFICANDO CPF</Box>
-
-                                    <Box
-                                      height="100%"
-                                      alignItems="center"
-                                      display="flex"
-                                      ml={2}
-                                    >
-                                      <Oval
-                                        stroke="black"
-                                        width={20}
-                                        height={20}
-                                      />
-                                    </Box>
-                                  </Box>
-                                )}
+                                Gerar Credencial
                               </Button>
                             </Box>
                           </Box>

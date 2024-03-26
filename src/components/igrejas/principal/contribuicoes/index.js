@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IdpbCastelo({ title, perfilUser }) {
+function IdpbCafinpi({ title, perfilUser }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -135,7 +135,6 @@ function IdpbCastelo({ title, perfilUser }) {
         <meta charSet="utf-8" />
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
       <div>
@@ -175,4 +174,4 @@ function IdpbCastelo({ title, perfilUser }) {
   );
 }
 
-export default IdpbCastelo;
+export default IdpbCafinpi;

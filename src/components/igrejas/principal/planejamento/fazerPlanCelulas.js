@@ -805,11 +805,6 @@ function RelatorioCelebracao({
                                             height: 40,
                                           }}
                                         >
-                                          {console.log(
-                                            'selectedDate',
-                                            selectedDate,
-                                            inputValue,
-                                          )}
                                           <MuiPickersUtilsProvider
                                             utils={DateFnsUtils}
                                           >

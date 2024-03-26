@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Head from 'next/head';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Oval } from 'react-loading-icons';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,7 +10,6 @@ import Box from '@material-ui/core/Box';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
-import Login from 'src/components/botaoLogin';
 import Evento from './eventos';
 
 // import Carrossel from '../carrossel';
@@ -99,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Eventos({ perfilUser, rolMembros }) {
+function Eventos({ title, perfilUser, rolMembros }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -109,6 +108,8 @@ function Eventos({ perfilUser, rolMembros }) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const handleDrawerClose = () => {
+    // //console.log(mobile);
+
     if (mobile && open) {
       setOpen(false);
     }
@@ -117,7 +118,9 @@ function Eventos({ perfilUser, rolMembros }) {
   const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
     setLoading(true);
-    router.back();
+    router.push({
+      pathname: './principal',
+    });
 
     // setOpen(false);
     // window.location.reload();
@@ -130,6 +133,14 @@ function Eventos({ perfilUser, rolMembros }) {
       }}
       onLoad={handleDrawerClose}
     >
+      <Head>
+        <title>{title}</title>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="content-language" content="pt-Br" />
+        <meta name="google" content="notranslate" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+
       <div>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
@@ -143,16 +154,24 @@ function Eventos({ perfilUser, rolMembros }) {
               )}
             </Box>
 
-            <Box display="flex">
-              <img
-                src="/images/logo1.png"
-                height={30}
-                width={120}
-                className={classes.logo}
-                alt="bolo"
-              />
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height={50}
+            >
+              <Box
+                ml={2}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height={50}
+                fontFamily="Fugaz One"
+              >
+                LISTA DOS EVENTOS
+              </Box>
             </Box>
-            <Login />
           </Toolbar>
         </AppBar>
 

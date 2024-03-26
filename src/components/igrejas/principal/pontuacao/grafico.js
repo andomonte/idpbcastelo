@@ -94,7 +94,6 @@ export default function Grafico({
   const PlanejamentoDesejado =
     qytSemanas * ((parametros[0].Planejamento * 10) / 100).toFixed(0);
 
-  console.log('RelatorioDesejado', qtdMembros);
   const data = {
     labels: [
       'Relatórios',

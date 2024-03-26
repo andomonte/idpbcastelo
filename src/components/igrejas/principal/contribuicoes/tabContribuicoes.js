@@ -15,7 +15,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const [entradas, setEntradas] = React.useState([]);
 
   const rolMembros = perfilUser.RolMembro;
-  const url = `/api/consultaContribuicoes/${Ano}/${Mes}/${rolMembros}`;
+  const url = `/api/consultaContribuicoes/1/1/${Ano}/${Mes}/${rolMembros}`;
   const { data: contribuicoes, errorContribuicoes } = useSWR(url, fetcher);
 
   React.useEffect(() => {
@@ -116,7 +116,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     borderRight: '1px solid #000',
                   }}
                 >
-            
                   <Box>
                     {row.CAT_NOME !== 'Recursos de Terceiros'
                       ? row.CAT_NOME

@@ -4,21 +4,15 @@ import prisma from 'src/lib/prisma';
 
 function FazerInscricoes({ rolMembros }) {
   const [perfilUser, setPerfilUser] = React.useState('');
+
   React.useEffect(() => {
     const result = JSON.parse(sessionStorage.getItem('perfilUser'));
     setPerfilUser(result);
   }, []);
-  if (typeof window !== 'undefined') {
-    window.history.replaceState(null, '', '/eventos');
-  }
 
   return (
     <div>
-      <Eventos
-        rolMembros={rolMembros}
-        perfilUser={perfilUser}
-        title="IDPB-CASTELO"
-      />
+      <Eventos rolMembros={rolMembros} perfilUser={perfilUser} title="IDPB" />
     </div>
   );
 }
@@ -29,14 +23,7 @@ export const getStaticProps = async () => {
   const rolMembros = await prisma.membros
     .findMany({
       where: {
-        OR: [
-          {
-            Situacao: 'ATIVO',
-          },
-          {
-            Situacao: 'NOVO',
-          },
-        ],
+        Situacao: 'ATIVO',
       },
       orderBy: [
         {

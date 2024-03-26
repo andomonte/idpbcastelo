@@ -248,7 +248,7 @@ function RelatorioCelebracao({
   const anfitriaoRef = React.useRef();
 
   const [openErro, setOpenErro] = React.useState(false);
-  console.log('e esse é qual', dadosSem);
+
   const [inputValue] = React.useState(
     moment(new Date(dadosSem.Data)).format('DD/MM/YYYY'),
   );

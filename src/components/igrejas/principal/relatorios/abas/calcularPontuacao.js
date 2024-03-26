@@ -385,7 +385,6 @@ export default function TabCelula({
                       justifyContent="end"
                       color={corIgreja.principal}
                     >
-                      {console.log('plan', pontosF.planejamento)}
                       {pontosF.planejamento.toFixed(2)} Pts
                     </Box>
                   </Box>

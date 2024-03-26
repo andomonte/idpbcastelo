@@ -93,7 +93,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   }, [semana]);
 
   React.useEffect(() => {
-    console.log('cursos ', cursoFeito);
     if (cursoFeito && cursoFeito.length) {
       setListaCursos(cursoFeito[0]);
     }
@@ -1393,7 +1392,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             borderRight: '1px solid #000',
           }}
         >
-          {console.log('listaCursos', listaCursos)}
           {Object.keys(listaCursos).length ? (
             <Box>
               <Box mt={0}>{ConverteData(listaCursos.Data)}</Box>

@@ -138,7 +138,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   React.useEffect(() => {
     setOferta(false);
     setDizimo(false);
-    console.log(contribuicoes);
+
     if (contribuicoes && contribuicoes.length) {
       const ofertaP = filterItems(contribuicoes, 'ferta');
       const dizimoP = filterItems(contribuicoes, 'zimo');

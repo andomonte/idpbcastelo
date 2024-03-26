@@ -146,15 +146,41 @@ model eventosCelulas {
 }
 
 model eventosGeral {
-  id         Int       @id(map: "PK_eventosGeral") @default(autoincrement())
-  Evento     String?   @db.Text
-  Distrito   Int?      @default(0, map: "DF__eventosGe__Distr__6754599E")
-  DataIni    DateTime  @db.DateTime
-  DataFim    DateTime  @db.DateTime
-  LogoEvento String    @db.VarChar(500)
-  nomeEvento String    @db.VarChar(300)
-  inscricao  Boolean
-  DataEvento DateTime? @db.Date
+  id                   Int       @id(map: "PK_eventosGeral") @default(autoincrement())
+  Evento               String?   @db.Text
+  Distrito             Int?      @default(0, map: "DF__eventosGe__Distr__6754599E")
+  DataIni              DateTime  @db.DateTime
+  DataFim              DateTime  @db.DateTime
+  LogoEvento           String    @db.VarChar(500)
+  nomeEvento           String    @db.VarChar(300)
+  inscricao            Boolean
+  DataEvento           DateTime? @db.Date
+  Jurisdicao           Int?
+  pagamento            Boolean?
+  DataFechamento       DateTime? @db.DateTime
+  TipoEvento           String?   @db.VarChar(20)
+  DataFechamentoLote1  DateTime? @db.DateTime
+  DataFechamentoLote2  DateTime? @db.DateTime
+  DataFechamentoLote3  DateTime? @db.DateTime
+  valorLote1           Decimal?  @db.Decimal(10, 2)
+  valorLote2           Decimal?  @db.Decimal(10, 2)
+  valorLote3           Decimal?  @db.Decimal(10, 2)
+  Hospedagem           Boolean?
+  AutorizacaoPastor    Boolean?
+  QtdHospedagemHomem   BigInt?
+  QtdVagaEvento        BigInt?
+  QtdHospedagemMulher  BigInt?
+  QtdHospedagemCrianca BigInt?
+  IdadeCriancasIsenta  Int?
+  ValorLote1Crianca    String?   @db.VarChar(50)
+  ValorLote2Crianca    String?   @db.VarChar(50)
+  ValorLote3Crianca    String?   @db.VarChar(50)
+  TemCrianca           Boolean?
+  Local                String?   @db.VarChar(250)
+  CartaoCredito        Boolean?
+  Boleto               Boolean?
+  Dinheiro             Boolean?
+  Pix                  Boolean?
 }
 
 model funcao {
@@ -754,4 +780,36 @@ model TB_MESES_FECHAMENTO_IGREJA {
   recebidoIDPBAM Boolean @default(false, map: "DF__TB_MESES___receb__0D64F3ED")
 
   @@id([codigoIgreja, mesReferencia, anoReferencia], map: "PK_TB_MESES_FECHAMENTO_IGREJA")
+}
+
+model inscritosEventosIgreja {
+  idPagamento     String    @id(map: "PK_inscritosEventosAM") @db.VarChar(255)
+  Nome            String    @db.VarChar(255)
+  Image           String?   @db.VarChar(255)
+  CPF             String    @db.VarChar(255)
+  Nascimento      String?   @db.VarChar(255)
+  GrauMinisterial String?   @db.VarChar(255)
+  Igreja          String?   @db.VarChar(255)
+  Jurisdicao      String?   @db.VarChar(255)
+  Email           String?   @db.VarChar(255)
+  Sexo            String?   @db.VarChar(255)
+  Estadia         String?   @db.VarChar(255)
+  DataChegada     String?   @db.VarChar(255)
+  HoraChegada     String?   @db.VarChar(255)
+  Celular         String?   @db.VarChar(255)
+  Fpagamento      String?   @db.VarChar(255)
+  status          String?   @db.VarChar(255)
+  Total           String?   @db.VarChar(255)
+  Responsavel     String?   @db.VarChar(255)
+  Secretaria      String?   @db.VarChar(255)
+  cartaDelegado   String?   @db.VarChar(255)
+  CreatedAt       DateTime? @db.DateTime
+  Evento          String    @db.VarChar(250)
+  Cidade          String?   @db.VarChar(250)
+  Distrito        String?   @db.VarChar(50)
+  qtyAdultos      Int?
+  qtyCriancas1    Int?
+  qtyCriancas2    Int?
+  transporte      String?   @db.VarChar(250)
+  pulseira        String?   @db.VarChar(50)
 }

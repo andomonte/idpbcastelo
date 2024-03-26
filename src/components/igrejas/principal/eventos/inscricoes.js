@@ -6,23 +6,19 @@ import Select from 'react-select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@mui/material/Typography';
 import api from 'src/components/services/api';
-
+import moment from 'moment';
 import dataMask from 'src/components/mascaras/datas';
 import celularMask from 'src/components/mascaras/celular';
 import 'react-image-crop/dist/ReactCrop.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { Oval } from 'react-loading-icons';
-import { useSession } from 'next-auth/client';
+
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ConvData1 from 'src/utils/convData2';
-import ValidaCPF from 'src/utils/validarCPF';
-import validator from 'validator';
-import ValidaData from 'src/utils/validarData';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -275,11 +271,11 @@ const customStyles2 = {
 const tipos = [
   {
     value: 'Participante',
-    label: 'Ouvinte do Evento',
+    label: 'Participar do Evento',
   },
   {
     value: 'Apoio',
-    label: 'Equipe de apoio do Evento',
+    label: 'Apoiar ao Evento',
   },
 ];
 const quem = [
@@ -296,12 +292,7 @@ const quem = [
     label: 'Um Convidado',
   },
 ];
-const quemLogOut = [
-  {
-    value: 'outro',
-    label: 'Um Convidado',
-  },
-];
+
 function createListaNome(value, label) {
   return {
     value,
@@ -316,7 +307,6 @@ export default function Todos({
   rolMembros,
 }) {
   const classes = useStyles();
-  const [session] = useSession();
   const dadosUser = perfilUser
     ? rolMembros.filter((val) => val.RolMembro === Number(perfilUser.RolMembro))
     : '';
@@ -337,9 +327,7 @@ export default function Todos({
     createListaNome(rol.RolMembro, rol.Nome),
   );
   const [info, setInfo] = React.useState('');
-  const [inscrito, setInscrito] = React.useState(
-    session !== null ? valorInicialInscrito : quemLogOut[0],
-  );
+  const [inscrito, setInscrito] = React.useState(valorInicialInscrito);
   const [openInfo, setOpenInfo] = React.useState(false);
   const [nome, setNome] = React.useState('');
   const [nomeMembros, setNomeMembros] = React.useState(valorInicialMembro);
@@ -371,8 +359,8 @@ export default function Todos({
   const handleSalvar = () => {
     let send = true;
 
-    if (nome.length < 6) {
-      toast.error('Preencha o Nome e Sobrenome!', {
+    if (nome === '') {
+      toast.error('Preencha o Nome!', {
         position: toast.POSITION.TOP_CENTER,
       });
       send = false;
@@ -401,20 +389,13 @@ export default function Todos({
       celularRef.current.focus();
     }
 
-    if (inscrito.value === 'outro')
-      if (cpf === '') {
-        toast.error('Informe seu CPF!', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        send = false;
-        cpfRef.current.focus();
-      } else if (!ValidaCPF(cpf) && !perfilUser) {
-        toast.error('CPF inválido', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        send = false;
-        cpfRef.current.focus();
-      }
+    if (cpf === '') {
+      toast.error('Informe seu CPF!', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      send = false;
+      cpfRef.current.focus();
+    }
 
     if (dataNascimento === '') {
       toast.error('Informe a data de Nascimento!', {
@@ -422,22 +403,9 @@ export default function Todos({
       });
       send = false;
       nascimentoRef.current.focus();
-    } else if (!ValidaData(dataNascimento)) {
-      toast.error('data digitada é inválida!', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      send = false;
-      nascimentoRef.current.focus();
     }
-
     if (email === '') {
       toast.error('Informe o Email!', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      send = false;
-      emailRef.current.focus();
-    } else if (!validator.isEmail(email)) {
-      toast.error('email inválido!', {
         position: toast.POSITION.TOP_CENTER,
       });
       send = false;
@@ -454,31 +422,25 @@ export default function Todos({
       setLoading(true);
 
       const dataInscicao = new Date();
-
-      const dia = dataNascimento.substring(0, 2);
-      const mes = dataNascimento.substring(3, 5);
-      const ano = dataNascimento.substring(6, 10);
-      const AAAAMMDD = `${ano}-${mes}-${dia} 00:00:00`;
-      //     const dateObject = moment(dataNascimento).format('YYYY-DD-MM 00:00:00');
-
-      const newDateNacimento = new Date(AAAAMMDD);
+      const dateObject = moment(dataNascimento).format('DD/MM/YYYY');
+      const newDateNacimento = new Date(dateObject);
       const newValorParticipante =
         inscrito.value === 'eu' || inscrito.value === 'membro'
-          ? 'Membro'
-          : 'Outros';
+          ? 'membro'
+          : 'outro';
 
       const newValorDocumento =
         inscrito.value === 'eu' || inscrito.value === 'membro'
           ? '0'
           : cpf.replace(/([^0-9])/g, '');
-
       let newValorRolMembro = 0;
+      if (inscrito.value === 'membro') newValorRolMembro = Number(cpf);
+      if (inscrito.value === 'eu')
+        newValorRolMembro = Number(perfilUser.RolMembro);
 
-      if (inscrito.value === 'eu' || inscrito.value === 'membro')
-        newValorRolMembro = Number(cpf); // na verdade é o rol do membro inscrito
       const DadosInscritos = {
         idEvento: Number(eventoEscolhido[0].id),
-        Evento: eventoEscolhido[0].nomeEvento,
+        Evento: eventoEscolhido[0].Evento,
         Identificador: tipo.value,
         Nome: inscrito.value === 'membro' ? nome.label : nome,
         Nascimento: newDateNacimento,
@@ -489,7 +451,7 @@ export default function Todos({
         participante: newValorParticipante,
         RolMembro: newValorRolMembro,
         Documento: newValorDocumento,
-        Distrito: perfilUser ? Number(perfilUser.Distrito) : 0,
+        Distrito: Number(perfilUser.Distrito),
         CreatedAt: dataInscicao,
       };
 
@@ -505,7 +467,7 @@ export default function Todos({
             if (response.data === 'atualizado')
               setInfo('Inscrição atualizada com Sucesso');
             else setInfo('Inscrição realizada com Sucesso');
-          } else console.log('deu erro no banco');
+          }
         })
         .catch(() => {
           setLoading(false);
@@ -513,6 +475,7 @@ export default function Todos({
           setInfo(
             'Não foi possível fazer sua Inscrição, tente novamente mais tarde',
           );
+          // console.log(erro); //  updateFile(uploadedFile.id, { error: true });
         });
     }
     // const nomesMembros = JSON.parse(RelCelulaFinal.NomesMembros);
@@ -528,16 +491,15 @@ export default function Todos({
       setNome(dadosUser[0].Nome);
       setCelular(dadosUser[0].TelCelular);
       setCPF(perfilUser.RolMembro);
-
-      setDataNascimento(ConvData1(dadosUser[0].Nascimento));
+      setDataNascimento(moment(dadosUser[0].Nascimento).format('DD/MM/YYYY'));
       setEmail(dadosUser[0].Email);
       setIgreja(dadosUser[0].Igreja);
     } else if (inscrito.value === 'membro' && dadosUser2.length) {
       setCelular(dadosUser2[0].TelCelular ? dadosUser2[0].TelCelular : '');
       setCPF(dadosUser2[0].RolMembro);
       setDataNascimento(
-        ConvData1(dadosUser2[0].Nascimento)
-          ? ConvData1(dadosUser2[0].Nascimento)
+        moment(dadosUser2[0].Nascimento).format('DD/MM/YYYY')
+          ? moment(dadosUser2[0].Nascimento).format('DD/MM/YYYY')
           : '',
       );
       setEmail(dadosUser2[0].Email ? dadosUser2[0].Email : '');
@@ -627,7 +589,7 @@ export default function Todos({
                           nome2Ref.current.focus();
                         } else nomeRef.current.focus();
                       }}
-                      options={session != null ? quem : quemLogOut}
+                      options={quem}
                     />
                   </Box>
                 </Grid>
@@ -640,14 +602,14 @@ export default function Todos({
             >
               <Box width="90%">
                 <Grid container spacing={2}>
-                  <Grid item xs={12} md={12}>
+                  <Grid item xs={12} md={3}>
                     <Box mt={-0} ml={2} color="white" sx={{ fontSize: 'bold' }}>
                       <Typography
                         variant="caption"
                         display="block"
                         gutterBottom
                       >
-                        Função no Evento
+                        Tipo de Inscrição
                       </Typography>
                     </Box>
                     <Box className={classes.novoBox} mt={-2} mb="2vh">
@@ -860,7 +822,9 @@ export default function Todos({
                         display="block"
                         gutterBottom
                       >
-                        {inscrito.value === 'outro' ? 'CPF' : 'RolMembro'}
+                        {inscrito.value !== 'outro' || !dadosUser
+                          ? 'RolMembro'
+                          : 'CPF'}
                       </Typography>
                     </Box>
                     <Box mb="2vh" className={classes.novoBox} mt={-2}>
@@ -880,7 +844,7 @@ export default function Todos({
                             //                            textAlign: 'center',
                           },
                         }}
-                        disabled={!(inscrito.value === 'outro')}
+                        disabled={inscrito.value !== 'outro' || !dadosUser}
                         value={cpf}
                         variant="outlined"
                         placeholder="999.999.999-99"
@@ -1043,6 +1007,7 @@ export default function Todos({
                   borderRadius: 15,
                   width: '100%',
                 }}
+                onClick={handleSalvar}
                 variant="contained"
                 severity="success"
                 endIcon={<Oval stroke="white" width={20} height={25} />}
