@@ -279,7 +279,7 @@ function RelatorioCelebracao({
   const fases = [
     { label: 'Integrar na Visão', value: 1 },
     { label: 'Comunhão', value: 2 },
-    { label: 'Oração', value: 3 },
+    { label: 'Edificação', value: 3 },
     { label: 'Evangelismo', value: 4 },
     { label: 'multiplicacao', value: 5 },
   ];

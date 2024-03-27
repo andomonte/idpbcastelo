@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton';
 import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-
 import EstatisticoDistrito from './estatisticoDistrito';
 import EstatisticoCoord from './estatisticoCoord';
 import EstatisticoSuper from './estatisticoSuper';

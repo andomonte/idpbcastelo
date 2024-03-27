@@ -50,7 +50,7 @@ function filterItems(array, query) {
   );
 }
 
-export default function TabCelula({ Mes, Ano, perfilUser }) {
+export default function TabCelula({ Mes, Ano, nomeBuscado, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
   const [listaCursos, setListaCursos] = React.useState([]);
   const [oferta, setOferta] = React.useState(false);
@@ -77,7 +77,8 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const [discSem3, setDiscSem3] = React.useState([]);
   const [discSem4, setDiscSem4] = React.useState([]);
   const [discSem5, setDiscSem5] = React.useState([]);
-
+  const [valorDizimo, setValorDizimo] = React.useState(0);
+  const [valorOferta, setValorOferta] = React.useState(0);
   const semana = PegaSemana(Mes, Ano);
   // para usar semanas
 
@@ -86,7 +87,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const semana3 = semana + 2;
   const semana4 = semana + 3;
   const semana5 = semana + 4;
-  const rolMembros = perfilUser.RolMembro;
+  const rolMembros = nomeBuscado.RolMembro;
   const url1 = `/api/consultaRelCelulasSemanas/${semana1}`;
   const url2 = `/api/consultaRelCelebracaoSemanas/${semana1}`;
   const url3 = `/api/consultaRelDiscipuladoSemanas/${semana1}`;
@@ -142,8 +143,22 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (contribuicoes && contribuicoes.length) {
       const ofertaP = filterItems(contribuicoes, 'ferta');
       const dizimoP = filterItems(contribuicoes, 'zimo');
-      if (ofertaP.length) setOferta(true);
-      if (dizimoP.length) setDizimo(true);
+      if (ofertaP.length) {
+        setOferta(true);
+        const valorOfertas = ofertaP.reduce(
+          (prev, curr) => Number(prev) + Number(curr.LANC_VALOR),
+          0,
+        );
+        setValorOferta(valorOfertas);
+      }
+      if (dizimoP.length) {
+        setDizimo(true);
+        const valorDizimos = dizimoP.reduce(
+          (prev, curr) => Number(prev) + Number(curr.LANC_VALOR),
+          0,
+        );
+        setValorDizimo(valorDizimos);
+      }
     }
     if (errorContribuicoes) return <div>An error occured.</div>;
     if (!contribuicoes) return <Espera descricao="Buscando os Dados" />;
@@ -154,10 +169,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (sem1 && sem1.length) {
       const presCelula1 = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
 
       if (presCelula1.length) {
@@ -166,17 +181,17 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         setDataSem1(ConverteData(presCelula1[0].Data));
-        const pSem1 = nomes[0].filter((val) => val.Nome === perfilUser.Nome);
+        const pSem1 = nomes[0].filter((val) => val.Nome === nomeBuscado.Nome);
 
         setPresSem1(pSem1);
       }
       // seman 2
       const presCelula2 = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana2) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelula2.length) {
         const nomes = Object.keys(presCelula2).map((i) =>
@@ -184,17 +199,17 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         setDataSem2(ConverteData(presCelula2[0].Data));
-        const pSem1 = nomes[0].filter((val) => val.Nome === perfilUser.Nome);
+        const pSem1 = nomes[0].filter((val) => val.Nome === nomeBuscado.Nome);
         setPresSem2(pSem1);
       }
 
       // seman 3
       const presCelula3 = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana3) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelula3.length) {
         const nomes = Object.keys(presCelula3).map((i) =>
@@ -202,17 +217,17 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         setDataSem3(ConverteData(presCelula3[0].Data));
-        const pSem1 = nomes[0].filter((val) => val.Nome === perfilUser.Nome);
+        const pSem1 = nomes[0].filter((val) => val.Nome === nomeBuscado.Nome);
         setPresSem3(pSem1);
       }
 
       // seman 4
       const presCelula4 = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana4) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelula4.length) {
         const nomes = Object.keys(presCelula4).map((i) =>
@@ -220,17 +235,17 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         setDataSem4(ConverteData(presCelula4[0].Data));
-        const pSem1 = nomes[0].filter((val) => val.Nome === perfilUser.Nome);
+        const pSem1 = nomes[0].filter((val) => val.Nome === nomeBuscado.Nome);
 
         setPresSem4(pSem1);
       }
       // seman 5
       const presCelula5 = sem1.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana5) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelula5.length) {
         const nomes = Object.keys(presCelula5).map((i) =>
@@ -238,7 +253,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         setDataSem5(ConverteData(presCelula5[0].Data));
-        const pSem1 = nomes[0].filter((val) => val.Nome === perfilUser.Nome);
+        const pSem1 = nomes[0].filter((val) => val.Nome === nomeBuscado.Nome);
         setPresSem5(pSem1);
       }
     }
@@ -251,10 +266,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (semCelebracao && semCelebracao.length) {
       const presCelebracao1 = semCelebracao.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelebracao1.length) {
         const nomes = Object.keys(presCelebracao1).map((i) =>
@@ -262,17 +277,17 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemCelebracao = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setCelebSem1(pSemCelebracao);
       }
       // seman 2
       const presCelebracao2 = semCelebracao.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana2) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelebracao2.length) {
         const nomes = Object.keys(presCelebracao2).map((i) =>
@@ -280,7 +295,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemCelebracao = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setCelebSem2(pSemCelebracao);
       }
@@ -288,10 +303,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       // seman 3
       const presCelebracao3 = semCelebracao.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana3) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelebracao3.length) {
         const nomes = Object.keys(presCelebracao3).map((i) =>
@@ -299,7 +314,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemCelebracao = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setCelebSem3(pSemCelebracao);
       }
@@ -307,10 +322,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       // seman 4
       const presCelebracao4 = semCelebracao.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana4) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelebracao4.length) {
         const nomes = Object.keys(presCelebracao4).map((i) =>
@@ -318,7 +333,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemCelebracao = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setCelebSem4(pSemCelebracao);
       }
@@ -326,10 +341,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       // seman 5
       const presCelebracao5 = semCelebracao.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana5) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presCelebracao5.length) {
         const nomes = Object.keys(presCelebracao5).map((i) =>
@@ -337,7 +352,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemCelebracao = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setCelebSem5(pSemCelebracao);
       }
@@ -351,10 +366,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
     if (semDiscipulado && semDiscipulado.length) {
       const presDiscipulado1 = semDiscipulado.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presDiscipulado1.length) {
         const nomes = Object.keys(presDiscipulado1).map((i) =>
@@ -362,17 +377,17 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemDiscipulado = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setDiscSem1(pSemDiscipulado);
       }
       // seman 2
       const presDiscipulado2 = semDiscipulado.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana2) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presDiscipulado2.length) {
         const nomes = Object.keys(presDiscipulado2).map((i) =>
@@ -380,7 +395,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemDiscipulado = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setDiscSem2(pSemDiscipulado);
       }
@@ -388,10 +403,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       // seman 3
       const presDiscipulado3 = semDiscipulado.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana3) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presDiscipulado3.length) {
         const nomes = Object.keys(presDiscipulado3).map((i) =>
@@ -399,7 +414,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemDiscipulado = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setDiscSem3(pSemDiscipulado);
       }
@@ -408,10 +423,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
 
       const presDiscipulado4 = semDiscipulado.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana4) &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presDiscipulado4.length) {
         const nomes = Object.keys(presDiscipulado4).map((i) =>
@@ -419,7 +434,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemDiscipulado = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setDiscSem4(pSemDiscipulado);
       }
@@ -427,11 +442,11 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
       // seman 5
       const presDiscipulado5 = semDiscipulado.filter(
         (val) =>
-          val.Celula === Number(perfilUser.Celula) &&
+          val.Celula === Number(nomeBuscado.Celula) &&
           val.Semana === Number(semana5) &&
           Ano === new Date(val.Data).getFullYear() &&
           Ano === new Date(val.Data).getFullYear() &&
-          val.Distrito === Number(perfilUser.Distrito),
+          val.Distrito === Number(nomeBuscado.Distrito),
       );
       if (presDiscipulado5.length) {
         const nomes = Object.keys(presDiscipulado5).map((i) =>
@@ -439,7 +454,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         );
 
         const pSemDiscipulado = nomes[0].filter(
-          (val) => val.Nome === perfilUser.Nome,
+          (val) => val.Nome === nomeBuscado.Nome,
         );
         setDiscSem5(pSemDiscipulado);
       }
@@ -1478,37 +1493,81 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
             </Typography>
           </ThemeProvider>
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="20%"
-          sx={{
-            borderRight: '1px solid #000',
-          }}
-        >
-          {dizimo ? (
-            <MdDone size={25} color="green" />
-          ) : (
-            <MdOutlineClose size={25} color="red" />
-          )}
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="20%"
-        >
-          {oferta ? (
-            <MdDone size={25} color="green" />
-          ) : (
-            <MdOutlineClose size={25} color="red" />
-          )}
-        </Box>
+        {perfilUser.Funcao === 'Presidente' ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="20%"
+            sx={{
+              borderRight: '1px solid #000',
+            }}
+          >
+            {valorDizimo ? (
+              valorDizimo.toLocaleString('pt-br', {
+                style: 'currency',
+                currency: 'BRL',
+              })
+            ) : (
+              <MdOutlineClose size={25} color="red" />
+            )}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="20%"
+            sx={{
+              borderRight: '1px solid #000',
+            }}
+          >
+            {dizimo ? (
+              <MdDone size={25} color="green" />
+            ) : (
+              <MdOutlineClose size={25} color="red" />
+            )}
+          </Box>
+        )}
+
+        {perfilUser.Funcao === 'Presidente' ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="20%"
+          >
+            {valorOferta ? (
+              valorOferta.toLocaleString('pt-br', {
+                style: 'currency',
+                currency: 'BRL',
+              })
+            ) : (
+              <MdOutlineClose size={25} color="red" />
+            )}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+            textAlign="center"
+            width="20%"
+          >
+            {oferta ? (
+              <MdDone size={25} color="green" />
+            ) : (
+              <MdOutlineClose size={25} color="red" />
+            )}
+          </Box>
+        )}
       </Box>
     </Box>
   );

@@ -71,7 +71,7 @@ const useStyles = makeStyles((themes) => ({
   },
 }));
 
-function RelCelula({ perfilUser, setOpenBuscar }) {
+function RelCelula({ nomeBuscado, setOpenBuscar, perfilUser }) {
   const classes = useStyles();
   //= ================================================================
   const mes = Meses();
@@ -157,7 +157,7 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
                     fontSize: '14px',
                   }}
                 >
-                  {perfilUser.Nome}
+                  {nomeBuscado.Nome}
                 </Box>
                 <Box
                   height="70%"
@@ -172,6 +172,7 @@ function RelCelula({ perfilUser, setOpenBuscar }) {
                   }}
                 >
                   <ResumoParticipacao
+                    nomeBuscado={nomeBuscado}
                     perfilUser={perfilUser}
                     Mes={contMes}
                     Ano={contAno}

@@ -222,7 +222,7 @@ else nomeLider = nomes;
                                   18 &&
                                 Number(GetIdade(convData2(row.Nascimento))) >
                                   11 ? (
-                                  'Adolecente'
+                                  'Adolescente'
                                 ) : (
                                   <Box>Adulto</Box>
                                 )}

@@ -610,7 +610,11 @@ function Funcao({
         </Box>
       </Box>
       <Dialog fullScreen open={openBuscar} TransitionComponent={Transition}>
-        <BuscarNome perfilUser={buscarNome} setOpenBuscar={setOpenBuscar} />
+        <BuscarNome
+          perfilUser={perfilUser}
+          nomeBuscado={buscarNome}
+          setOpenBuscar={setOpenBuscar}
+        />
       </Dialog>
     </Box>
   );
