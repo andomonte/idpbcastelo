@@ -64,16 +64,6 @@ const handler = async (req, res) => {
     },
   };
 
-  /*  const dataTime = (separator = '') => {
-    const newDate = new Date();
-    const date = newDate.getDate();
-    const month = newDate.getMonth() + 1;
-    const year = newDate.getFullYear();
-
-    return `${year}${separator}${
-      month < 10 ? `0${month}` : `${month}`
-    }${separator}${date}`;
-  }; */
   const respPagamento = await sendMercadoPago(paymentData);
   // const respPagamento1 = JSON.stringify(respPagamento);
 
