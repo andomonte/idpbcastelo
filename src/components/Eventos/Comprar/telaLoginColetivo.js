@@ -110,8 +110,11 @@ function TelaLogin({ eventoSelecionado }) {
           new Date(eventoSelecionado.DataFechamentoLote3).toISOString(),
         ).getTime() <
         0
-    )
-      valorAdultosF *= adulto;
+    ) {
+      valorAdultosF = eventoSelecionado.valorLote3;
+      valorCriancasF = eventoSelecionado.ValorLote3Crianca;
+    }
+    valorAdultosF *= adulto;
     valorCriancasF *= criancas1;
     setValorAdultos(Number(valorAdultosF));
     setValorCriancas(Number(valorCriancasF));

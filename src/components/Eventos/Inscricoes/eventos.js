@@ -75,6 +75,7 @@ function Eventos({ eventoSelecionado }) {
     });
   };
   const handleAutorizarMembros = () => {
+    // const perfilUser = JSON.parse(sessionStorage.getItem('perfilUserIdpb'));
     router.push({
       pathname: 'eventoIdpb/autorizarMembros',
       query: { eventoSelecionado: JSON.stringify(eventoSelecionado) },
@@ -90,29 +91,19 @@ function Eventos({ eventoSelecionado }) {
     if (
       dataAtual.getTime() -
         meuDataTime(
-          new Date(eventoSelecionado.DataFechamentoLote1).toISOString(),
-        ).getTime() > // se a subtração da dt atual menus a dt do fechamento do lote for menor que zero significa que ainda não chegou a data desse lote
-        0 &&
-      dataAtual.getTime() -
-        meuDataTime(
           new Date(eventoSelecionado.DataFechamentoLote2).toISOString(),
         ).getTime() > // se a subtração da dt atual menus a dt do fechamento do lote for menor que zero significa que ainda não chegou a data desse lote
-        0 &&
+      0
+    ) {
+      valorAdultosF = eventoSelecionado.valorLote2;
+      valorCriancasF = eventoSelecionado.ValorLote2Crianca;
+    } else if (
       dataAtual.getTime() -
         meuDataTime(
           new Date(eventoSelecionado.DataFechamentoLote3).toISOString(),
-        ).getTime() <
-        0
+        ).getTime() >
+      0
     ) {
-      console.log(
-        'aqui',
-        dataAtual.getTime() -
-          meuDataTime(
-            new Date(eventoSelecionado.DataFechamentoLote1).toISOString(),
-          ).getTime(),
-        valorAdultosF,
-        valorCriancasF,
-      );
       valorAdultosF = eventoSelecionado.valorLote3;
       valorCriancasF = eventoSelecionado.ValorLote3Crianca;
     }

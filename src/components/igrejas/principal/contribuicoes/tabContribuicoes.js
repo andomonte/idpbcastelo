@@ -15,7 +15,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
   const [entradas, setEntradas] = React.useState([]);
 
   const rolMembros = perfilUser.RolMembro;
-  const url = `/api/consultaContribuicoes/1/1/${Ano}/${Mes}/${rolMembros}`;
+  const url = `/api/consultaContribuicoes/1/${Ano}/${Mes}/${rolMembros}`;
   const { data: contribuicoes, errorContribuicoes } = useSWR(url, fetcher);
 
   React.useEffect(() => {
@@ -73,7 +73,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           VALOR
         </Box>
       </Box>
-      <TableContainer sx={{ minHeight: 320, height: '88%' }}>
+      <TableContainer sx={{ minHeight: 320, height: '84%' }}>
         {entradas && entradas.length ? (
           <Box width="100%" height="100%" fontSize="12px">
             {entradas.map((row, index) => (

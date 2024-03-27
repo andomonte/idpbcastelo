@@ -13,7 +13,7 @@ function Home() {
 
       .then((response) => {
         const prefID = response.data;
-        console.log(prefID);
+     
         //   setOpen(true);
       })
 

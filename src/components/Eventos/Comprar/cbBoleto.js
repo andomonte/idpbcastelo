@@ -230,8 +230,20 @@ function CbBoleto({ boleto }) {
       <Box>
         <Iframe
           url={boleto.urlBoleto}
-          width={largura > 500 ? '500px' : largura > 400 ? '400' : '300px'}
-          height={altura > 800 ? '700px' : altura > 700 ? '650px' : '460px'}
+          width={
+            largura > 500 ? (
+              '500px'
+            ) : (
+              <div> {largura > 400 ? '400' : '300px'}</div>
+            )
+          }
+          height={
+            altura > 800 ? (
+              '700px'
+            ) : (
+              <div> {altura > 700 ? '650px' : '460px'}</div>
+            )
+          }
           id=""
           className=""
           display="block"

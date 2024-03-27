@@ -377,6 +377,8 @@ function Boleto({ dadosBoleto }) {
     //    setOpenDrawerOK(true);
   };
 
+  // console.log(janela2.height);
+
   const handleDrawerClose = () => {
     setOpenDrawer(false);
   };
