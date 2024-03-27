@@ -1,4 +1,4 @@
-import GerarPdf from 'src/components/EventosAM/Comprar/pdfs/pdf';
+import GerarPdf from 'src/components/Eventos/Comprar/pdfs/pdf';
 // import React from 'react';
 
 function Comprove({ comprovante }) {
