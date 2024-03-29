@@ -6,44 +6,8 @@ import axios from 'axios';
 // import { Oval } from 'react-loading-icons';
 import ConverteData from 'src/utils/convData2';
 import TableContainer from '@mui/material/TableContainer';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
-const theme = createTheme();
-theme.typography.hs4 = {
-  fontSize: '8px',
-  '@media (min-width:360px)': {
-    fontSize: '10px',
-  },
-  '@media (min-width:400px)': {
-    fontSize: '11px',
-  },
-  '@media (min-width:500px)': {
-    fontSize: '12px',
-  },
-  [theme.breakpoints.up('md')]: {
-    fontSize: '13px',
-  },
-};
-theme.typography.hs3 = {
-  fontSize: '10px',
-  '@media (min-width:400px)': {
-    fontSize: '12px',
-  },
-  [theme.breakpoints.up('md')]: {
-    fontSize: '12px',
-  },
-};
-theme.typography.hs2 = {
-  fontSize: '12px',
-  '@media (min-width:400px)': {
-    fontSize: '12px',
-  },
-  [theme.breakpoints.up('md')]: {
-    fontSize: '12px',
-  },
-};
 
 export default function TabCelula({ Mes, Ano, perfilUser }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
@@ -84,15 +48,13 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="20%"
+          width="30%"
           sx={{
             borderLeft: '1px solid #000',
             borderRight: '1px solid #000',
           }}
         >
-          <ThemeProvider theme={theme}>
-            <Typography variant="hs2">DATA</Typography>
-          </ThemeProvider>
+          DATA
         </Box>
         <Box
           display="flex"
@@ -100,25 +62,18 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="50%"
+          width="45%"
           sx={{
             borderRight: '1px solid #000',
           }}
         >
-          {' '}
-          <ThemeProvider theme={theme}>
-            <Typography variant="hs2">Descrição</Typography>
-          </ThemeProvider>
+          TIPO DE CONTRIBUIÇÃO
         </Box>
-
-        <Box textAlign="center" width="30%">
-          <ThemeProvider theme={theme}>
-            <Typography variant="hs2">VALOR</Typography>
-          </ThemeProvider>
+        <Box textAlign="center" width="25%">
+          VALOR
         </Box>
       </Box>
-
-      <TableContainer sx={{ minHeight: 320, height: '85%' }}>
+      <TableContainer sx={{ minHeight: 320, height: '84%' }}>
         {entradas && entradas.length ? (
           <Box width="100%" height="100%" fontSize="12px">
             {entradas.map((row, index) => (
@@ -142,18 +97,13 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   alignItems="center"
                   height="100%"
                   textAlign="center"
-                  width="20%"
+                  width="30%"
                   sx={{
                     borderLeft: '1px solid #000',
                     borderRight: '1px solid #000',
                   }}
                 >
-                  {' '}
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="hs4">
-                      {row.LANC_DATA ? ConverteData(row.LANC_DATA) : '-'}
-                    </Typography>
-                  </ThemeProvider>
+                  {row.LANC_DATA ? ConverteData(row.LANC_DATA) : '-'}
                 </Box>
                 <Box
                   height="100%"
@@ -161,19 +111,15 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   justifyContent="center"
                   textAlign="center"
                   alignItems="center"
-                  width="50%"
+                  width="45%"
                   sx={{
                     borderRight: '1px solid #000',
                   }}
                 >
-                  <Box color={row.LANC_TIPO === 'Receita' ? 'black' : 'green'}>
-                    <ThemeProvider theme={theme}>
-                      <Typography variant="hs4">
-                        {row.CAT_NOME !== 'Recursos de Terceiros'
-                          ? row.CAT_NOME
-                          : row.LANC_DESCRICAO}
-                      </Typography>
-                    </ThemeProvider>
+                  <Box>
+                    {row.CAT_NOME !== 'Recursos de Terceiros'
+                      ? row.CAT_NOME
+                      : row.LANC_DESCRICAO}
                   </Box>
                 </Box>
                 <Box
@@ -182,7 +128,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   justifyContent="center"
                   textAlign="center"
                   alignItems="center"
-                  width="30%"
+                  width="25%"
                   sx={{
                     borderRight: '1px solid #000',
                   }}
@@ -190,17 +136,13 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   <Box>
                     {row.LANC_VALOR ? (
                       <Box>
-                        <ThemeProvider theme={theme}>
-                          <Typography variant="hs4">
-                            <Box>
-                              {Number(row.LANC_VALOR).toLocaleString('pt-br', {
-                                style: 'currency',
-                                currency: 'BRL',
-                              })}
-                            </Box>
-                            <Box>{row.forma_pagamento}</Box>
-                          </Typography>
-                        </ThemeProvider>
+                        <Box>
+                          {Number(row.LANC_VALOR).toLocaleString('pt-br', {
+                            style: 'currency',
+                            currency: 'BRL',
+                          })}
+                        </Box>
+                        <Box>{row.forma_pagamento}</Box>
                       </Box>
                     ) : (
                       '-'
