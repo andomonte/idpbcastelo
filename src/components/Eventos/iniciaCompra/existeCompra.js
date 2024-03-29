@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Oval } from 'react-loading-icons';
+import corIgreja from 'src/utils/coresIgreja';
 import '@fontsource/fugaz-one';
 // Padrões para peso 400.
 function PesquisaCPF({ iniCompra }) {
@@ -108,12 +109,7 @@ function PesquisaCPF({ iniCompra }) {
               justifyContent="center"
               textAlign="center"
             >
-              <img
-                src="/images/idpbAM/logo1.png"
-                alt="Castelo"
-                width={60}
-                height={75}
-              />
+              <img src={corIgreja.logo1} alt="Castelo" width={60} height={75} />
             </Box>
           </Box>
           <Box

@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { Box } from '@material-ui/core';
-import Espera from 'src/utils/espera';
-import useSWR from 'swr';
-import axios from 'axios';
+import { Box, Button } from '@material-ui/core';
 // import { Oval } from 'react-loading-icons';
 import ConverteData from 'src/utils/convData2';
 import TableContainer from '@mui/material/TableContainer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
 const theme = createTheme();
 theme.typography.hs4 = {
   fontSize: '8px',
@@ -45,22 +41,8 @@ theme.typography.hs2 = {
   },
 };
 
-export default function TabCelula({ Mes, Ano, perfilUser }) {
+export default function TabCelula({ entradas, setOpen }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
-
-  const [entradas, setEntradas] = React.useState([]);
-
-  const rolMembros = perfilUser.RolMembro;
-  const url = `/api/consultaContribuicoes/1/${Ano}/${Mes}/${rolMembros}`;
-  const { data: contribuicoes, errorContribuicoes } = useSWR(url, fetcher);
-
-  React.useEffect(() => {
-    setEntradas(contribuicoes);
-
-    if (errorContribuicoes) return <div>An error occured.</div>;
-    if (!contribuicoes) return <Espera descricao="Buscando os Dados" />;
-    return 0;
-  }, [contribuicoes]);
 
   return (
     <Box height="100%">
@@ -68,11 +50,10 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
         bgcolor="#80cbc4"
         sx={{
           fontFamily: 'arial black',
+          borderTop: '1px solid #000',
           borderBottom: '1px solid #000',
-          borderTopLeftRadius: '16px',
-          borderTopRightRadius: '16px',
         }}
-        height="15%"
+        height="10%"
         width="100%"
         display="flex"
         justifyContent="center"
@@ -117,8 +98,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           </ThemeProvider>
         </Box>
       </Box>
-
-      <TableContainer sx={{ minHeight: 320, height: '85%' }}>
+      <TableContainer sx={{ minHeight: 320, height: '80%' }}>
         {entradas && entradas.length ? (
           <Box width="100%" height="100%" fontSize="12px">
             {entradas.map((row, index) => (
@@ -151,7 +131,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   {' '}
                   <ThemeProvider theme={theme}>
                     <Typography variant="hs4">
-                      {row.LANC_DATA ? ConverteData(row.LANC_DATA) : '-'}
+                      {row.data ? ConverteData(row.data) : '-'}
                     </Typography>
                   </ThemeProvider>
                 </Box>
@@ -166,14 +146,28 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     borderRight: '1px solid #000',
                   }}
                 >
-                  <Box color={row.LANC_TIPO === 'Receita' ? 'black' : 'green'}>
+                  <Box>
                     <ThemeProvider theme={theme}>
                       <Typography variant="hs4">
-                        {row.CAT_NOME !== 'Recursos de Terceiros'
-                          ? row.CAT_NOME
-                          : row.LANC_DESCRICAO}
+                        {row.Nome ? row.Nome : null}
                       </Typography>
                     </ThemeProvider>
+                    <Box color="#ff7043">
+                      <ThemeProvider theme={theme}>
+                        <Typography variant="hs4">
+                          {row.NomeCategoria
+                            ? row.NomeCategoria.toUpperCase()
+                            : null}
+                        </Typography>
+                      </ThemeProvider>
+                    </Box>
+                    <Box color="gray">
+                      <ThemeProvider theme={theme}>
+                        <Typography variant="hs4">
+                          {row.Descricao ? row.Descricao : null}
+                        </Typography>
+                      </ThemeProvider>
+                    </Box>
                   </Box>
                 </Box>
                 <Box
@@ -188,12 +182,12 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                   }}
                 >
                   <Box>
-                    {row.LANC_VALOR ? (
+                    {row.valor ? (
                       <Box>
                         <ThemeProvider theme={theme}>
                           <Typography variant="hs4">
                             <Box>
-                              {Number(row.LANC_VALOR).toLocaleString('pt-br', {
+                              {Number(row.valor).toLocaleString('pt-br', {
                                 style: 'currency',
                                 currency: 'BRL',
                               })}
@@ -221,6 +215,21 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           </Box>
         )}
       </TableContainer>
+      <Box
+        height="10%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Button
+          style={{ width: '60%', background: '#80cbc4', color: 'black' }}
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          <Box fontFamily="Fugaz One">FECHAR</Box>
+        </Button>
+      </Box>
     </Box>
   );
 }

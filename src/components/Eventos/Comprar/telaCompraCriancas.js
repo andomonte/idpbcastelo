@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import corIgreja from 'src/utils/coresIgreja';
 import { Oval } from 'react-loading-icons';
 import '@fontsource/fugaz-one'; // Padrões para peso 400.
 import AppBar from '@material-ui/core/AppBar';
@@ -586,7 +587,7 @@ function Home({ iniCompra }) {
             textAlign="center"
           >
             <img
-              src="/images/idpbAM/logo1.png"
+              src={corIgreja.logo1}
               alt="Castelo"
               width="40vw"
               height="100%"
