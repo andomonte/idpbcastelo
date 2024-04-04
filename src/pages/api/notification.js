@@ -24,8 +24,8 @@ const Notificacao = async (req, res) => {
   if (req.body.type) topic = req.body.type;
   else topic = req.query.topic;
   let mercadoPago;
+
   if (id === '123456') id = '1245195651'; // teste
-  console.log('oi id', id, topic);
   if (topic === 'payment') {
     try {
       mercadoPago = await mercadopago.payment.findById(id);

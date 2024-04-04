@@ -1,5 +1,5 @@
 import React from 'react';
-import Contribuicao from 'src/components/igrejas/principal/contribuicoes';
+import { Contribuicao } from 'src/components/igrejas/principal/contribuicoes';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
