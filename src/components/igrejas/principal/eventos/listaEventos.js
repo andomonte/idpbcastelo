@@ -307,8 +307,8 @@ export default function TabCelula({
                         }}
                         style={{
                           width: '100%',
-                          color: 'green',
-                          fontFamily: 'Fugaz One',
+                          color: 'greay',
+                          fontFamily: 'arial black',
                         }}
                         sx={{ cursor: 'pointer' }}
                       >

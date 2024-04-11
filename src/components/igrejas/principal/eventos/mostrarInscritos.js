@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import React from 'react';
 import corIgreja from 'src/utils/coresIgreja';
 import '@fontsource/roboto-mono'; // Padrões para peso 400.
@@ -179,33 +179,39 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
   return (
     <Box
       height="100vh"
-      minHeight={570}
+      minHeight={670}
       minWidth={300}
       width="100vw"
       bgcolor={corIgreja.principal}
     >
       <Box
-        height="100%"
         width="100%"
+        height="100%"
         minWidth={300}
         mt={0}
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
-        <Box width="100%">
+        <Box height="100%" width="100%">
           <Box
-            mt={1}
-            mb={2}
-            ml={2}
             width="100%"
-            textAlign="center"
-            fontFamily="Fugaz ONE"
+            display="flex"
+            justifyContent="center"
+            alignItems="end"
+            fontFamily="Fugaz One"
             color="white"
+            height="5%"
           >
             {evento ? evento.Evento.toLocaleUpperCase() : ''}
           </Box>
-          <Box justifyContent="center" width="100%" display="flex">
+          <Box
+            alignItems="center"
+            justifyContent="center"
+            height="8%"
+            width="100%"
+            display="flex"
+          >
             <Box
               bgcolor={corIgreja.principal2}
               color="#000"
@@ -272,8 +278,14 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
               </Box>
             </Box>
           </Box>
-          <Box mt={2} justifyContent="center" width="100%" display="flex">
-            <Box bgcolor="white" width="90%" height="80vh" borderRadius={6}>
+          <Box
+            justifyContent="center"
+            width="100%"
+            height="10%"
+            display="flex"
+            alignItems="center"
+          >
+            <Box bgcolor="white" width="90%" height="100%" borderRadius={6}>
               <Box
                 mt={2}
                 ml={2}
@@ -313,13 +325,23 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
                   </Box>
                 </Typography>
               </ThemeProvider>
-
-              <TableContainer sx={{ height: '86%', marginTop: 2 }}>
+            </Box>
+          </Box>
+          <Box height="2%" />
+          <Box
+            justifyContent="center"
+            alignItems="start"
+            width="100%"
+            height="65%"
+            display="flex"
+          >
+            <Box bgcolor="white" height="100%" width="90%" borderRadius={6}>
+              <TableContainer sx={{ height: '100%' }}>
                 {newListaInscritos && newListaInscritos.length ? (
                   <Box
                     display="flex"
                     justifyContent="center"
-                    alignItems="center"
+                    alignItems="start"
                     width="90vw"
                     height="100%"
                   >
@@ -429,6 +451,29 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
                 ) : null}
               </TableContainer>
             </Box>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="10%"
+          >
+            <Button
+              onClick={() => {
+                setOpenInscritos(false);
+              }}
+              style={{
+                background: corIgreja.tercenaria,
+                color: 'white',
+                fontFamily: 'Fugaz One',
+                width: '70%',
+              }}
+              variant="contained"
+              severity="success"
+              //   endIcon={<TouchAppIcon />}
+            >
+              Fechar
+            </Button>
           </Box>
         </Box>
       </Box>
