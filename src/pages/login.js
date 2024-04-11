@@ -98,7 +98,7 @@ export default function Login({ providers2, rolMembros }) {
       }
       if (vCPF && authState.password.length > 3) {
         try {
-          const user = rolMembros.filter((val) => {
+          const user = rolMembros?.filter((val) => {
             if (val.CPF) {
               return (
                 String(val.CPF.replace(/\D/g, '')) ===
@@ -167,6 +167,7 @@ export default function Login({ providers2, rolMembros }) {
 
   const handleResetarSenha = async () => {
     let vCPF = ValidaCPF(authState.cpf.replace(/\D/g, ''));
+
     if (authState.cpf.replace(/\D/g, '').length < 10) vCPF = false;
 
     if (!vCPF) {
@@ -678,7 +679,7 @@ export default function Login({ providers2, rolMembros }) {
                                   <Oval stroke="white" width={30} height={30} />
                                 </Box>
                               ) : (
-                                'Reinicar Senha'
+                                'Reiniciar Senha'
                               )}
                             </Box>
                           </Button>
@@ -862,11 +863,11 @@ export async function getStaticProps(context) {
       redirect: { destination: '/' },
     };
   }
-
+  const csrfTokens = await csrfToken(context);
   return {
     props: {
       providers2: await providers(context),
-      csrfToken: await csrfToken(context),
+      csrfTokens: JSON.parse(JSON.stringify(csrfTokens)),
       rolMembros: JSON.parse(
         JSON.stringify(
           rolMembros,

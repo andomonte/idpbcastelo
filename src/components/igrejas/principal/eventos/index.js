@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Eventos({ title, perfilUser, rolMembros }) {
+function Eventos({ title, perfilUser, rolMembros, nomesIgrejas }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -179,7 +179,11 @@ function Eventos({ title, perfilUser, rolMembros }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Evento rolMembros={rolMembros} perfilUser={perfilUser} />
+          <Evento
+            nomesIgrejas={nomesIgrejas}
+            rolMembros={rolMembros}
+            perfilUser={perfilUser}
+          />
         </main>
       </div>
     </div>

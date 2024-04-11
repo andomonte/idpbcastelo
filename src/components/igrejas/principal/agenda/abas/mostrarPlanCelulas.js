@@ -4,8 +4,6 @@ import Stack from '@mui/material/Stack';
 import corIgreja from 'src/utils/coresIgreja';
 import TableContainer from '@mui/material/TableContainer';
 
-import PegaData from 'src/utils/getDataQuarta';
-
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Erros from 'src/utils/erros';
@@ -217,8 +215,7 @@ const useStyles = makeStyles((theme) => ({
 
 function RelatorioCelebracao({
   dadosSem,
-  semanaEnviada,
-  AnoPesquisado,
+
   setOpenPlan,
 }) {
   //  const classes = useStyles();
@@ -234,8 +231,7 @@ function RelatorioCelebracao({
 
   const [values] = React.useState(dadosSem.Encontro);
   const [values2] = React.useState(dadosSem.Exaltacao);
-  const [values3] = React.useState(dadosSem.Edificacao);
-  const [values4] = React.useState(dadosSem.Evangelismo);
+
   const [values5] = React.useState(dadosSem.Lanche);
   const [valueAnfitriao] = React.useState(dadosSem.Anfitriao);
 
@@ -253,7 +249,7 @@ function RelatorioCelebracao({
   const [openErro, setOpenErro] = React.useState(false);
 
   const [inputValue] = React.useState(
-    moment(PegaData(semanaEnviada, AnoPesquisado)).format('DD/MM/YYYY'),
+    moment(new Date(dadosSem.Data)).format('DD/MM/YYYY'),
   );
 
   return (
@@ -660,48 +656,6 @@ function RelatorioCelebracao({
                                       display="block"
                                       gutterBottom
                                     >
-                                      Oração
-                                    </Typography>
-                                  </Box>
-                                  <Box className={classes.novoBox} mt={-1.8}>
-                                    <Paper
-                                      style={{
-                                        marginBottom: 15,
-                                        textAlign: 'center',
-                                      }}
-                                    >
-                                      <Box
-                                        display="flex"
-                                        justifyContent="center"
-                                      >
-                                        <Stack spacing={2} sx={{ width: 300 }}>
-                                          <TextField
-                                            inputProps={{
-                                              style: {
-                                                textAlign: 'center',
-                                              },
-                                            }}
-                                            value={values3}
-                                            className={classes.textField}
-                                            placeholder=""
-                                          />
-                                        </Stack>
-                                      </Box>
-                                    </Paper>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={12} md={12}>
-                                  <Box
-                                    mt={-1}
-                                    ml={2}
-                                    color="white"
-                                    sx={{ fontSize: 'bold' }}
-                                  >
-                                    <Typography
-                                      variant="caption"
-                                      display="block"
-                                      gutterBottom
-                                    >
                                       Edificação
                                     </Typography>
                                   </Box>
@@ -723,7 +677,7 @@ function RelatorioCelebracao({
                                                 textAlign: 'center',
                                               },
                                             }}
-                                            value={values4}
+                                            value={dadosSem.Edificacao}
                                             className={classes.textField}
                                             placeholder=""
                                           />
@@ -744,7 +698,49 @@ function RelatorioCelebracao({
                                       display="block"
                                       gutterBottom
                                     >
-                                      Lanche da Celula
+                                      Compartilhando a Visão
+                                    </Typography>
+                                  </Box>
+                                  <Box className={classes.novoBox} mt={-1.8}>
+                                    <Paper
+                                      style={{
+                                        marginBottom: 15,
+                                        textAlign: 'center',
+                                      }}
+                                    >
+                                      <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                      >
+                                        <Stack spacing={2} sx={{ width: 300 }}>
+                                          <TextField
+                                            inputProps={{
+                                              style: {
+                                                textAlign: 'center',
+                                              },
+                                            }}
+                                            value={dadosSem.Evangelismo}
+                                            className={classes.textField}
+                                            placeholder=""
+                                          />
+                                        </Stack>
+                                      </Box>
+                                    </Paper>
+                                  </Box>
+                                </Grid>
+                                <Grid item xs={12} md={12}>
+                                  <Box
+                                    mt={-1}
+                                    ml={2}
+                                    color="white"
+                                    sx={{ fontSize: 'bold' }}
+                                  >
+                                    <Typography
+                                      variant="caption"
+                                      display="block"
+                                      gutterBottom
+                                    >
+                                      Cadeira da Bênção
                                     </Typography>
                                   </Box>
                                   <Box className={classes.novoBox} mt={-1.8}>

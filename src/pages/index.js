@@ -1,12 +1,31 @@
 import React from 'react';
 import { Pagina } from 'src/components/igrejas/normal';
 import prisma from 'src/lib/prisma';
+import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
 function Home({ userIgrejas, celulas }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-030');
+  const [session] = useSession();
+  const router = useRouter();
 
+  const dadosUser = userIgrejas;
+  if (session) {
+    router.push({
+      pathname: '/principal',
+    });
+  }
   return (
-    <Pagina celulas={celulas} userIgrejas={dadosUser} title="IDPB-CELULAS" />
+    <div>
+      {celulas && userIgrejas ? (
+        <Pagina
+          celulas={celulas}
+          userIgrejas={dadosUser}
+          title="IDPB-CELULAS"
+        />
+      ) : (
+        'oi'
+      )}
+    </div>
   );
 }
 export const getStaticProps = async () => {

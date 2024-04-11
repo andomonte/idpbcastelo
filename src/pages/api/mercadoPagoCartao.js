@@ -1,7 +1,7 @@
-// import { payment } from 'mercadopago';
-import prisma from 'src/lib/prisma';
+// import { payment } from 'mercadopago';import prisma from 'src/lib/prisma';
 import SendEmail from 'src/utils/sendEmail';
 import cpfMask from 'src/components/mascaras/cpf';
+import prisma from 'src/lib/prisma';
 
 const mercadopago = require('mercadopago');
 

@@ -9,6 +9,7 @@ import Drawer from '@material-ui/core/Drawer';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import api from 'src/components/services/api';
 import 'react-toastify/dist/ReactToastify.css';
+import corIgreja from 'src/utils/coresIgreja';
 // import { RepeatOneSharp } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import axios from 'axios';

@@ -2,7 +2,7 @@ import React from 'react';
 import Eventos from 'src/components/igrejas/principal/eventos';
 import prisma from 'src/lib/prisma';
 
-function FazerInscricoes({ rolMembros }) {
+function FazerInscricoes({ rolMembros, nomesIgrejas }) {
   const [perfilUser, setPerfilUser] = React.useState('');
 
   React.useEffect(() => {
@@ -12,14 +12,21 @@ function FazerInscricoes({ rolMembros }) {
 
   return (
     <div>
-      <Eventos rolMembros={rolMembros} perfilUser={perfilUser} title="IDPB" />
+      <Eventos
+        nomesIgrejas={nomesIgrejas}
+        rolMembros={rolMembros}
+        perfilUser={perfilUser}
+        title="IDPB"
+      />
     </div>
   );
 }
 
 export const getStaticProps = async () => {
   // pega o valor do banco de dados
-
+  const nomesIgrejas = await prisma.nucleos.findMany().finally(async () => {
+    await prisma.$disconnect();
+  });
   const rolMembros = await prisma.membros
     .findMany({
       where: {
@@ -37,6 +44,13 @@ export const getStaticProps = async () => {
 
   return {
     props: {
+      nomesIgrejas: JSON.parse(
+        JSON.stringify(
+          nomesIgrejas,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      ),
       rolMembros: JSON.parse(
         JSON.stringify(
           rolMembros,

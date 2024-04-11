@@ -152,7 +152,7 @@ function RelCelula({
   const [dataEscolhida, setDataEscolhida] = React.useState(dataFinal);
   const [contagem, setContagem] = React.useState(false);
   const [checkInicio, setCheckInicio] = React.useState('sim');
-  const visitantesCelula = visitantes.filter(
+  const visitantesCelula = visitantes?.filter(
     (val) =>
       val.Celula === Number(perfilUser.Celula) &&
       val.Distrito === Number(perfilUser.Distrito),
