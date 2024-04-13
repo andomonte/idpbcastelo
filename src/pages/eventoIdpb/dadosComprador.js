@@ -28,11 +28,12 @@ function Compra({ nomesIgrejas, nomesMembros }) {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/eventoIdpb/dadosComprador');
   }
+
   return (
     <div>
       {dadosF && dadosF.qtyA ? (
         <Comprar
-          title="SISTEMA-IDPB Global"
+          title="SISTEMA-IDPB"
           nomesIgrejas={nomesIgrejas}
           dados={dadosF}
           nomesMembros={nomesMembros}
@@ -62,7 +63,7 @@ export const getStaticProps = async () => {
             typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
         ),
       ),
-      nomesMistros: JSON.parse(
+      nomesMembros: JSON.parse(
         JSON.stringify(
           nomesMembros,
           (key, value) =>

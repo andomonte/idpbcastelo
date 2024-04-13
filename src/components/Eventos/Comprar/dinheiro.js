@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   root2: {
-    backgroundColor: '#424242',
+    backgroundColor: corIgreja.principal,
     boxShadow: 'none',
     zIndex: theme.zIndex.drawer + 1,
     height: 56,
@@ -109,7 +109,7 @@ function Boleto({ dadosDinheiro }) {
 
   const fazerCadastro = () => {
     api
-      .post('/api/cadastroDinheiroEventoAm', {
+      .post('/api/cadastroDinheiroEvento', {
         nome,
         cpf,
         total,
@@ -171,7 +171,7 @@ function Boleto({ dadosDinheiro }) {
 
   React.useEffect(async () => {
     try {
-      const url = `${window.location.origin}/api/consultaInscritosSim`;
+      const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${Evento}/${cpf}`;
       const res = await axios.get(url);
 
       if (res.data && res.data.length) {
@@ -189,6 +189,8 @@ function Boleto({ dadosDinheiro }) {
         else {
           fazerCadastro();
         }
+      } else {
+        fazerCadastro();
       }
     } catch (err) {
       console.log(err);
@@ -201,7 +203,7 @@ function Boleto({ dadosDinheiro }) {
 
   return (
     <Box
-      bgcolor="#9e9e9e"
+      bgcolor={corIgreja.principal2}
       height="100vh"
       width="100vw"
       minHeight={570}

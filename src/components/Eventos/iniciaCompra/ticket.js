@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { Oval } from 'react-loading-icons';
 import api from 'src/components/services/api';
 import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
+
 import JsPDF from 'jspdf';
 import { toPng } from 'html-to-image';
 import { useReactToPrint } from 'react-to-print';
@@ -35,7 +35,7 @@ function readFile(file) {
   });
 }
 
-function PesquisaCPF({ dadosInscrito }) {
+function PesquisaCPF({ dadosInscrito, membros }) {
   // const classes = useStyles();
 
   const { height } = TamanhoTela();
@@ -50,7 +50,7 @@ function PesquisaCPF({ dadosInscrito }) {
   const [openDrawerPend2, setOpenDrawerPend2] = React.useState(false);
   const [action, setAction] = React.useState('');
   const [nome, setNome] = React.useState(false);
-  const [distrito, setDistrito] = React.useState(false);
+
   const [matricula, setMatricula] = React.useState('');
   const [estadia, setEstadia] = React.useState('');
   const [transporte, setTransporte] = React.useState('');
@@ -59,8 +59,8 @@ function PesquisaCPF({ dadosInscrito }) {
   const [igreja, setIgreja] = React.useState('');
   const [adultos, setAdultos] = React.useState('');
   const [criancas, setCriancas] = React.useState('');
+  const [membrosF, setMembrosF] = React.useState('');
 
-  const [jurisdicao, setJurisdicao] = React.useState('');
   const [idPagamento, setIdPagamento] = React.useState('');
   const [cartaDelegado, setCartaDelegado] = React.useState('');
   const router = useRouter();
@@ -78,8 +78,10 @@ function PesquisaCPF({ dadosInscrito }) {
               val.CPF.replace(/([^0-9])/g, '') ===
               dadosInscrito.cpf.replace(/([^0-9])/g, ''),
           );
-          setPosts(inscrito);
+          const membroF = membros.filter((val) => val.CPF === inscrito[0].CPF);
 
+          setPosts(inscrito);
+          setMembrosF(membroF);
           // setArray
         } else {
           setPosts([]);
@@ -108,7 +110,6 @@ function PesquisaCPF({ dadosInscrito }) {
           if (inscrito[0].status === 'approved') {
             // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
 
-            setDistrito(inscrito[0].Distrito);
             const nomes = inscrito[0].Nome;
 
             const nomeCompleto = inscrito[0].Nome.split(' ');
@@ -137,7 +138,7 @@ function PesquisaCPF({ dadosInscrito }) {
             setNome(nomeInscrito);
             setGM(inscrito[0].GrauMinisterial);
             setIgreja(inscrito[0].Igreja);
-            setJurisdicao(inscrito[0].Jurisdicao);
+
             setMatricula(inscrito[0].idPagamento);
             setTransporte(inscrito[0].transporte);
             setEstadia(inscrito[0].Estadia);
@@ -429,43 +430,12 @@ function PesquisaCPF({ dadosInscrito }) {
                                 />
                                 <Avatar
                                   alt={nome}
-                                  src={
-                                    fileImage !== '' && fileImage !== null
-                                      ? fileImage
-                                      : null
-                                  }
+                                  src={membrosF ? membrosF[0].foto : null}
                                   sx={{
                                     width: height < 680 ? 100 : 140,
                                     height: height < 680 ? 100 : 140,
                                   }}
-                                >
-                                  {fileImage === '' || fileImage === null ? (
-                                    <IconButton
-                                      style={{ color: 'black' }}
-                                      aria-label="upload picture"
-                                      component="span"
-                                    >
-                                      <Box
-                                        display="flex"
-                                        justifyContent="center"
-                                        flexDirection="column"
-                                        fontSize={
-                                          height < 600 ? '11px' : '12px'
-                                        }
-                                        color="'#fff'"
-                                        fontFamily="arial black"
-                                      >
-                                        <Box color="'#fff'" mt={0.5}>
-                                          CLICK AQUI
-                                        </Box>
-                                        <Box mt={0.5}>PARA</Box>
-
-                                        <Box mt={0.5}>INSERIR SUA</Box>
-                                        <Box mt={0.5}>FOTO</Box>
-                                      </Box>
-                                    </IconButton>
-                                  ) : null}
-                                </Avatar>
+                                />
                               </label>
                             </Box>
                           </Box>
@@ -556,8 +526,8 @@ function PesquisaCPF({ dadosInscrito }) {
                                       fontSize: '12px',
                                     }}
                                   >
-                                    {igreja.length > 20
-                                      ? igreja.substring(0, 20)
+                                    {igreja.length > 30
+                                      ? igreja.substring(0, 30)
                                       : igreja}
                                   </Box>
                                 </Box>
@@ -570,7 +540,7 @@ function PesquisaCPF({ dadosInscrito }) {
                                     fontSize: '12px',
                                   }}
                                 >
-                                  Jurisdição:
+                                  Célula:
                                   <Box
                                     width="100%"
                                     ml={1}
@@ -581,9 +551,7 @@ function PesquisaCPF({ dadosInscrito }) {
                                       fontSize: '12px',
                                     }}
                                   >
-                                    {jurisdicao === 'MINISTÉRIO DE MISSÕES'
-                                      ? 'MISSÕES'
-                                      : jurisdicao}{' '}
+                                    {membrosF ? membrosF[0].Celula : ''}
                                   </Box>
                                 </Box>
                                 <Box
@@ -595,7 +563,7 @@ function PesquisaCPF({ dadosInscrito }) {
                                     fontSize: '12px',
                                   }}
                                 >
-                                  Distrito:
+                                  Supervisão:
                                   <Box
                                     width="100%"
                                     ml={1}
@@ -606,7 +574,7 @@ function PesquisaCPF({ dadosInscrito }) {
                                       fontSize: '12px',
                                     }}
                                   >
-                                    {distrito}{' '}
+                                    {membrosF ? membrosF[0].Supervisao : ''}
                                   </Box>
                                 </Box>
                               </Box>

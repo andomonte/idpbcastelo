@@ -179,7 +179,7 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
   return (
     <Box
       height="100vh"
-      minHeight={670}
+      minHeight={600}
       minWidth={300}
       width="100vw"
       bgcolor={corIgreja.principal}
@@ -285,46 +285,55 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
             display="flex"
             alignItems="center"
           >
-            <Box bgcolor="white" width="90%" height="100%" borderRadius={6}>
-              <Box
-                mt={2}
-                ml={2}
-                width="100%"
-                textAlign="center"
-                fontFamily="Fugaz ONE"
-                color="black"
-              >
-                TOTAL DE INSCRITOS:
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="white"
+              width="90%"
+              height="100%"
+              borderRadius={6}
+            >
+              <Box>
+                <Box
+                  ml={2}
+                  width="100%"
+                  textAlign="center"
+                  fontFamily="Fugaz ONE"
+                  color="black"
+                >
+                  TOTAL DE INSCRITOS:
+                </Box>
+                <ThemeProvider theme={theme}>
+                  <Typography variant="hs2">
+                    <Box
+                      mt={2}
+                      width="100%"
+                      display="flex"
+                      justifyContent="center"
+                      fontFamily="arial"
+                      color="black"
+                    >
+                      ADULTOS:{' '}
+                      <Box ml={1} fontFamily="Fugaz ONE" color="blue">
+                        {adultos}
+                      </Box>
+                      <Box ml={3} display="flex">
+                        0 à 6 anos:{' '}
+                        <Box ml={1} fontFamily="Fugaz ONE" color="blue">
+                          {criancas2}
+                        </Box>
+                      </Box>
+                      <Box ml={3} display="flex">
+                        7 à 11 anos:{' '}
+                        <Box ml={1} fontFamily="Fugaz ONE" color="blue">
+                          {criancas1}
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Typography>
+                </ThemeProvider>
               </Box>
-              <ThemeProvider theme={theme}>
-                <Typography variant="hs2">
-                  <Box
-                    mt={2}
-                    width="100%"
-                    display="flex"
-                    justifyContent="center"
-                    fontFamily="arial"
-                    color="black"
-                  >
-                    ADULTOS:{' '}
-                    <Box ml={1} fontFamily="Fugaz ONE" color="blue">
-                      {adultos}
-                    </Box>
-                    <Box ml={3} display="flex">
-                      0 à 6 anos:{' '}
-                      <Box ml={1} fontFamily="Fugaz ONE" color="blue">
-                        {criancas2}
-                      </Box>
-                    </Box>
-                    <Box ml={3} display="flex">
-                      7 à 11 anos:{' '}
-                      <Box ml={1} fontFamily="Fugaz ONE" color="blue">
-                        {criancas1}
-                      </Box>
-                    </Box>
-                  </Box>
-                </Typography>
-              </ThemeProvider>
             </Box>
           </Box>
           <Box height="2%" />
@@ -424,16 +433,16 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
                                         <Box ml={2} display="flex">
                                           0 à 6 anos:{' '}
                                           <Box color="blue" ml={0.5}>
-                                            {row.qtyCriancas1
-                                              ? row.qtyCriancas1
+                                            {row.qtyCriancas2
+                                              ? row.qtyCriancas2
                                               : 0}
                                           </Box>
                                         </Box>
                                         <Box ml={2} display="flex">
                                           7 à 11 anos:{' '}
                                           <Box color="blue" ml={0.5}>
-                                            {row.qtyCriancas2
-                                              ? row.qtyCriancas2
+                                            {row.qtyCriancas1
+                                              ? row.qtyCriancas1
                                               : 0}
                                           </Box>
                                         </Box>

@@ -389,6 +389,7 @@ function Home({ dados, nomesIgrejas }) {
     try {
       const url = `${window.location.origin}/api/consultaMembros/${dados.cpf}`;
       const res = await axios.get(url);
+
       if (res.data && res.data.length) {
         setNome(res.data[0].Nome);
         setGM({ label: res.data[0].GrauMinisterial, value: 0 });
@@ -472,8 +473,8 @@ function Home({ dados, nomesIgrejas }) {
     let valfone = false;
     //  if (!validacaofone) foneRef.current.focus();
 
-    if (valorfone !== '') {
-      if (fone.length < 14) {
+    if (valorfone !== '' && fone) {
+      if (fone && fone.length < 14) {
         valfone = false;
       } else {
         valfone = true;
@@ -958,7 +959,7 @@ function Home({ dados, nomesIgrejas }) {
                                       nome.length < 3 ? '#f0f4c3' : '#d0f4c3',
                                   },
                                 }}
-                                value={nome}
+                                value={nome || ''}
                                 variant="outlined"
                                 size="small"
                                 onChange={(e) => {
@@ -1012,7 +1013,7 @@ function Home({ dados, nomesIgrejas }) {
                                   },
                                   shrink: true,
                                 }}
-                                value={email}
+                                value={email || ''}
                                 variant="outlined"
                                 placeholder="Email para envio de comprovante"
                                 size="small"
@@ -1059,7 +1060,7 @@ function Home({ dados, nomesIgrejas }) {
                                 styles={customStylesGM}
                                 id="GM"
                                 ref={GMRef}
-                                value={GM}
+                                value={GM || ''}
                                 onChange={(e) => {
                                   // setValues2(e);
                                   setGM(e);
@@ -1093,7 +1094,7 @@ function Home({ dados, nomesIgrejas }) {
                                   styles={customStylesIgreja}
                                   id="Igreja"
                                   ref={igrejaRef}
-                                  value={igreja}
+                                  value={igreja || ''}
                                   onChange={(e) => {
                                     // setValues2(e);
                                     setIgreja(e);
@@ -1150,7 +1151,7 @@ function Home({ dados, nomesIgrejas }) {
                                     },
                                     shrink: true,
                                   }}
-                                  value={dataMask(nascimento)}
+                                  value={nascimento ? dataMask(nascimento) : ''}
                                   variant="outlined"
                                   placeholder="dd/mm/aaaa"
                                   size="small"
@@ -1187,7 +1188,7 @@ function Home({ dados, nomesIgrejas }) {
                                   isSearchable={false}
                                   id="Sexo"
                                   ref={sexoRef}
-                                  value={sexo}
+                                  value={sexo || ''}
                                   onChange={(e) => {
                                     setSexo(e);
                                     foneRef.current.focus();
@@ -1222,7 +1223,7 @@ function Home({ dados, nomesIgrejas }) {
                                       textAlign: 'center',
                                       fontSize: '12px',
                                       background:
-                                        celularMask(fone).length < 14
+                                        fone && celularMask(fone).length < 14
                                           ? '#f0f4c3'
                                           : '#d0f4c3',
                                     },
@@ -1236,7 +1237,7 @@ function Home({ dados, nomesIgrejas }) {
                                     shrink: true,
                                   }}
                                   onBlur={handleValidarFone}
-                                  value={celularMask(fone)}
+                                  value={fone ? celularMask(fone) : ''}
                                   variant="outlined"
                                   placeholder="(99) 9999-9999"
                                   size="small"
@@ -1274,7 +1275,7 @@ function Home({ dados, nomesIgrejas }) {
                                     isSearchable={false}
                                     id="TesteCidade"
                                     ref={testeCidadeRef}
-                                    value={testeCidade}
+                                    value={testeCidade || ''}
                                     onChange={(e) => {
                                       // setValues2(e);
                                       if (
@@ -1344,7 +1345,7 @@ function Home({ dados, nomesIgrejas }) {
                                       },
                                       shrink: true,
                                     }}
-                                    value={cidade}
+                                    value={cidade || ''}
                                     variant="outlined"
                                     placeholder="ex.: Manaus - AM"
                                     size="small"
@@ -1384,7 +1385,7 @@ function Home({ dados, nomesIgrejas }) {
                                     isSearchable={false}
                                     id="Hospedagem"
                                     ref={hospedagemRef}
-                                    value={hospedagem}
+                                    value={hospedagem || ''}
                                     onChange={(e) => {
                                       // setValues2(e);
                                       setHospedagem(e);
@@ -1437,7 +1438,9 @@ function Home({ dados, nomesIgrejas }) {
                                     InputLabelProps={{
                                       shrink: true,
                                     }}
-                                    value={dataMask(dataChegada)}
+                                    value={
+                                      dataChegada ? dataMask(dataChegada) : ''
+                                    }
                                     variant="outlined"
                                     placeholder="dd/mm/aaaa"
                                     size="small"
@@ -1480,7 +1483,7 @@ function Home({ dados, nomesIgrejas }) {
                                       <DesktopTimePicker
                                         ampm={false}
                                         inputRef={horarioRef}
-                                        value={horario}
+                                        value={horario || ''}
                                         variant="inline"
                                         onChange={(newValue) => {
                                           setHorario(newValue);
@@ -1529,7 +1532,7 @@ function Home({ dados, nomesIgrejas }) {
                                     isSearchable={false}
                                     id="Transporte"
                                     ref={transporteRef}
-                                    value={transporte}
+                                    value={transporte || ''}
                                     onChange={(e) => {
                                       // setValues2(e);
                                       setTransporte(e);
@@ -1564,7 +1567,7 @@ function Home({ dados, nomesIgrejas }) {
                                 styles={customStylesFP}
                                 id="FormaPagamento"
                                 ref={fpRef}
-                                value={fPagamento}
+                                value={fPagamento || ''}
                                 onChange={(e) => {
                                   // setValues2(e);
                                   setFPagamento(e);
@@ -1609,7 +1612,7 @@ function Home({ dados, nomesIgrejas }) {
                                     InputLabelProps={{
                                       shrink: true,
                                     }}
-                                    value={codigoSecretaria}
+                                    value={codigoSecretaria || ''}
                                     variant="outlined"
                                     placeholder="no mínimo 4 dígitos"
                                     size="small"

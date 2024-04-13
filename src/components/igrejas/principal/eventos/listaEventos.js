@@ -9,14 +9,8 @@ import meuDataTime from 'src/utils/meuDataTime';
 import { useRouter } from 'next/router';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import Dialog from '@mui/material/Dialog';
-import Slide from '@mui/material/Slide';
-import MostrarInscritos from './mostrarInscritos';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Transition = React.forwardRef((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
 const theme = createTheme();
 theme.typography.hs4 = {
   fontWeight: 'normal',
@@ -55,16 +49,10 @@ theme.typography.hs2 = {
   },
 };
 
-export default function TabCelula({
-  eventos,
-  nomesIgrejas,
-  dataAtual,
-  perfilUser,
-}) {
+export default function TabCelula({ eventos, dataAtual }) {
   const loading2 = eventos.map(() => false);
   const [loading, setLoading] = React.useState(loading2);
-  const [openInscritos, setOpenInscritos] = React.useState(false);
-  const [eventoFinal, setEventoFinal] = React.useState('');
+
   const router = useRouter();
   const handleInscricao = (eventoSelecionado) => {
     if (eventoSelecionado.TipoEvento.toUpperCase() === 'CONVENÇÃO') {
@@ -115,7 +103,12 @@ export default function TabCelula({
             alignItems="center"
             key={index}
           >
-            <Box ml={0.5} display="flex" alignItems="center">
+            <Box
+              mt={index === 0 ? 0.5 : 1.5}
+              ml={0.5}
+              display="flex"
+              alignItems="center"
+            >
               <Avatar
                 alt="User"
                 src={row.LogoEvento}
@@ -242,7 +235,7 @@ export default function TabCelula({
                 </Box>
                 <Box
                   width="100%"
-                  mt={0}
+                  mt={0.5}
                   mb={0}
                   display="flex"
                   justifyContent="flex-start"
@@ -280,57 +273,11 @@ export default function TabCelula({
                     </Typography>
                   </ThemeProvider>
                 </Box>
-
-                <Box
-                  width="100%"
-                  mt={0}
-                  mb={0}
-                  display={
-                    perfilUser &&
-                    perfilUser !== 'Membro' &&
-                    perfilUser !== 'Professor'
-                      ? 'flex'
-                      : 'none'
-                  }
-                  justifyContent="flex-start"
-                  ml={0}
-                >
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="hs2">
-                      <Box
-                        ml={2}
-                        mt={0}
-                        onClick={() => {
-                          console.log('row', row);
-                          setEventoFinal(row);
-                          setOpenInscritos(true);
-                        }}
-                        style={{
-                          width: '100%',
-                          color: 'greay',
-                          fontFamily: 'arial black',
-                        }}
-                        sx={{ cursor: 'pointer' }}
-                      >
-                        <i className="fa fa-venus-mars" aria-hidden="true" />
-                        ver inscritos
-                      </Box>
-                    </Typography>
-                  </ThemeProvider>
-                </Box>
               </Box>
             </Box>
           </Box>
         ))}
       </TableContainer>
-      <Dialog fullScreen open={openInscritos} TransitionComponent={Transition}>
-        <MostrarInscritos
-          perfilUser={perfilUser}
-          setOpenInscritos={setOpenInscritos}
-          evento={eventoFinal}
-          nomesIgrejas={nomesIgrejas}
-        />
-      </Dialog>
     </Paper>
   );
 }

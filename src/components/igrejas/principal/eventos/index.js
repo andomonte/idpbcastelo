@@ -6,21 +6,23 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { TiArrowBack } from 'react-icons/ti';
 import Box from '@material-ui/core/Box';
-// import HomeIcon from '@material-ui/icons/Home';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
+import clsx from 'clsx';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { MdOutlineEventNote } from 'react-icons/md';
+import { GiArchiveRegister } from 'react-icons/gi';
+import SvgIcon from '@mui/material/SvgIcon';
 import Evento from './eventos';
-
-// import Carrossel from '../carrossel';
-// import GoogleMaps from './googleMap';
-// import Pesquisar from './pesquisar';
+import Evento2 from './inscritos';
 
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
     backgroundColor: corIgreja.principal,
-    width: '70vw',
+    width: '80vw',
     minWidth: 80,
   },
   root: {
@@ -98,41 +100,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={0}>{children}</Box>}
+    </div>
+  );
+}
+
 function Eventos({ title, perfilUser, rolMembros, nomesIgrejas }) {
   const classes = useStyles();
-
+  const router = useRouter();
+  const [value, setValue] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = React.useState(false);
-  const router = useRouter();
-  const handleDrawerClose = () => {
-    // //console.log(mobile);
 
+  const handleVoltar = () => {
+    setLoading(true);
+    router.back();
+  };
+
+  const handleDrawerClose = () => {
     if (mobile && open) {
       setOpen(false);
     }
   };
-
-  const [loading, setLoading] = React.useState(false);
-  const handleVoltar = () => {
-    setLoading(true);
-    router.push({
-      pathname: './principal',
-    });
-
-    // setOpen(false);
-    // window.location.reload();
-  };
   return (
-    <div
-      style={{
-        minWidth: 300,
-        background: corIgreja.principal2,
-      }}
-      onLoad={handleDrawerClose}
-    >
+    <div onLoad={handleDrawerClose}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -141,49 +147,118 @@ function Eventos({ title, perfilUser, rolMembros, nomesIgrejas }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div>
+      <div className={classes.root}>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
-            <Box display="flex" alignItems="center" onClick={handleVoltar}>
-              {loading ? (
-                <Box>
-                  <Oval stroke="white" width={25} height={25} />
-                </Box>
-              ) : (
-                <TiArrowBack size={25} color="white" />
-              )}
+            <Box display="flex" alignItems="center">
+              <Box display="flex" alignItems="center" onClick={handleVoltar}>
+                {loading ? (
+                  <Box>
+                    <Oval stroke="white" width={25} height={25} />
+                  </Box>
+                ) : (
+                  <TiArrowBack size={25} color="white" />
+                )}
+              </Box>
             </Box>
+            {!perfilUser.Funcao ||
+            (perfilUser.Funcao !== 'Membro' &&
+              perfilUser.Funcao !== 'Professor') ? (
+              <Box display="flex">
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  showLabels
+                  className={classes.rootTopbarIcon}
+                >
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Eventos"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <MdOutlineEventNote />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <MdOutlineEventNote />
+                        </SvgIcon>
+                      )
+                    }
+                  />
 
-            <Box
-              width="100%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height={50}
-            >
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Inscritos"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <GiArchiveRegister />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <GiArchiveRegister />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
+              </Box>
+            ) : (
               <Box
-                ml={2}
+                width="100%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
                 height={50}
-                fontFamily="Fugaz One"
               >
-                LISTA DOS EVENTOS
+                <Box
+                  ml={2}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={50}
+                  fontFamily="Fugaz One"
+                >
+                  LISTA DOS EVENTOS
+                </Box>
               </Box>
-            </Box>
+            )}
           </Toolbar>
         </AppBar>
 
-        <main>
+        <main
+          className={clsx(classes.contentMain, {
+            [classes.contentShiftMain]: open,
+          })}
+        >
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Evento
-            nomesIgrejas={nomesIgrejas}
-            rolMembros={rolMembros}
-            perfilUser={perfilUser}
-          />
+          <TabPanel value={value} index={0} className={classes.tabPanel}>
+            <Evento
+              nomesIgrejas={nomesIgrejas}
+              rolMembros={rolMembros}
+              perfilUser={perfilUser}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Evento2
+              nomesIgrejas={nomesIgrejas}
+              rolMembros={rolMembros}
+              perfilUser={perfilUser}
+            />
+          </TabPanel>
         </main>
       </div>
     </div>
