@@ -161,9 +161,30 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
                 )}
               </Box>
             </Box>
-            {!perfilUser.Funcao ||
-            (perfilUser.Funcao !== 'Membro' &&
-              perfilUser.Funcao !== 'Professor') ? (
+            {console.log('perfilu', perfilUser)}
+            {!perfilUser ||
+            (perfilUser.Funcao &&
+              perfilUser.Funcao === 'Membro' &&
+              perfilUser.Funcao === 'Professor') ? (
+              <Box
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height={50}
+              >
+                <Box
+                  ml={2}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={50}
+                  fontFamily="Fugaz One"
+                >
+                  LISTA DOS EVENTOS
+                </Box>
+              </Box>
+            ) : (
               <Box display="flex">
                 <BottomNavigation
                   value={value}
@@ -213,25 +234,6 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
                     }
                   />
                 </BottomNavigation>
-              </Box>
-            ) : (
-              <Box
-                width="100%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height={50}
-              >
-                <Box
-                  ml={2}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={50}
-                  fontFamily="Fugaz One"
-                >
-                  LISTA DOS EVENTOS
-                </Box>
               </Box>
             )}
           </Toolbar>
