@@ -1,4 +1,4 @@
-import { Box, Avatar } from '@material-ui/core';
+import { Box, Avatar, Button } from '@material-ui/core';
 import React from 'react';
 import QRCode from 'react-qr-code';
 import corIgreja from 'src/utils/coresIgreja';
@@ -9,6 +9,7 @@ import imageCompression from 'browser-image-compression';
 import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 import useSWR from 'swr';
+import { signOut } from 'next-auth/client';
 import CropImage from './cropEasy';
 
 const Input = styled('input')({
@@ -61,7 +62,7 @@ function meuPerfil({ secao, perfilUser }) {
 
     return 0;
   }, [inscritos]);
-
+  console.log('perfilUser', perfilUser);
   const process = async (selectedImage) => {
     try {
       const createFile = async (Myfile) => {
@@ -113,6 +114,7 @@ function meuPerfil({ secao, perfilUser }) {
       console.log(err);
     }
   };
+
   const atualizarImagem = async () => {
     if (upLoadFile) {
       await process(fileImage);
@@ -419,6 +421,27 @@ function meuPerfil({ secao, perfilUser }) {
                           {perfilUser.RolMembro}{' '}
                         </Box>
                       </Box>
+                    </Box>
+                    <Box mt="3vh">
+                      <Button
+                        style={{
+                          color: 'white',
+                          borderRadius: '10px',
+                          fontFamily: 'arial black',
+                          background: corIgreja.tercenaria,
+                          width: '100%',
+                        }}
+                        onClick={() => {
+                          signOut({
+                            callbackUrl: `${window.location.origin}`,
+                          });
+                          // setOpenNovoRelatorio(false);
+                        }}
+                        variant="contained"
+                        severity="success"
+                      >
+                        FAZER LOGOUT
+                      </Button>
                     </Box>
                   </Box>
                 </Box>
