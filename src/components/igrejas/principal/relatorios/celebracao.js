@@ -63,7 +63,7 @@ function Celebracao({ rolMembros, perfilUser }) {
                     }}
                     textAlign="center"
                   >
-                    IDPB - CAFINPI{' '}
+                    IDPB - CASTELO{' '}
                   </Box>
                 </Box>
               </Box>

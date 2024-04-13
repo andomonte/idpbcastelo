@@ -116,7 +116,7 @@ function TabPanel(props) {
   );
 }
 
-function Eventos({ title, perfilUser, rolMembros, nomesIgrejas }) {
+function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
   const classes = useStyles();
   const router = useRouter();
   const [value, setValue] = React.useState(0);
@@ -250,6 +250,7 @@ function Eventos({ title, perfilUser, rolMembros, nomesIgrejas }) {
               nomesIgrejas={nomesIgrejas}
               rolMembros={rolMembros}
               perfilUser={perfilUser}
+              usuario={usuario}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>

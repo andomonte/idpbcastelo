@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Eventos({ title, eventoSelecionado }) {
+function Eventos({ title, eventoSelecionado, usuario }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -174,7 +174,7 @@ function Eventos({ title, eventoSelecionado }) {
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Evento eventoSelecionado={eventoSelecionado} />
+          <Evento usuario={usuario} eventoSelecionado={eventoSelecionado} />
         </Box>
       </Box>
     </div>

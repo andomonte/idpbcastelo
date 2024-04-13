@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-function Eventos({ perfilUser, nomesIgrejas }) {
+function Eventos({ perfilUser, usuario }) {
   //  const eventoIni = consultaInscricoes.filter((val) => Number(val.id) === Number(0));
 
   const classes = useStyles();
@@ -95,10 +95,9 @@ function Eventos({ perfilUser, nomesIgrejas }) {
         <Box height="100%" width="100%">
           {todos.length ? (
             <ListaEventos
-              perfilUser={perfilUser}
+              usuario={usuario}
               eventos={todos}
               dataAtual={dataAtual}
-              nomesIgrejas={nomesIgrejas}
             />
           ) : (
             <Box

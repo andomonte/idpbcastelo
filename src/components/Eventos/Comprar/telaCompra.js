@@ -16,7 +16,7 @@ import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import converteData from 'src/utils/convData2';
-import CheckCodigo from 'src/utils/checkCodigo';
+
 import '@fontsource/fugaz-one'; // Padrões para peso 400.
 import AppBar from '@material-ui/core/AppBar';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -201,7 +201,7 @@ function createListaIgrejas(value, label, jurisdicao) {
 
 function Home({ dados, nomesIgrejas }) {
   const classes = useStyles();
-
+  const usuario = JSON.parse(sessionStorage.getItem('usuario'));
   // const router = useRouter();
   const [nome, setNome] = React.useState('');
   const [desabilitaGM, setDesabilitaGM] = React.useState(false);
@@ -220,14 +220,14 @@ function Home({ dados, nomesIgrejas }) {
   const [cidade, setCidade] = React.useState('');
   const [nascimento, setNascimento] = React.useState('');
   const [dataChegada, setDataChegada] = React.useState('');
-  const [codigoSecretaria, setcodigoSecretaria] = React.useState('');
+
   const [fPagamento, setFPagamento] = React.useState({
     label: 'Qual a forma de pagamento',
     value: 0,
   });
   const [loading, setLoading] = React.useState(false);
   const [loading2, setLoading2] = React.useState(false);
-  const codigoSecretariaRef = useRef();
+
   const nomeRef = useRef();
   const nascimentoRef = useRef();
   const dataChegadaRef = useRef();
@@ -268,7 +268,7 @@ function Home({ dados, nomesIgrejas }) {
 
   if (eventoSelecionado.Boleto) arrayFP.push({ label: 'Boleto', value: 2 });
 
-  if (eventoSelecionado.Dinheiro)
+  if (eventoSelecionado.Dinheiro && usuario)
     arrayFP.push({ label: 'Dinheiro (apenas secretaria)', value: 3 });
 
   const opcoesFPagamento = arrayFP;
@@ -598,7 +598,7 @@ function Home({ dados, nomesIgrejas }) {
         fpRef.current.focus();
       }
     if (liberar)
-      if (!CheckCodigo(codigoSecretaria)) {
+      if (!usuario) {
         toast.error(
           'Código inválido, somente a secretaria pode escolher a opção Dinheiro, caso não seja, esolha outra forma de pagamento.',
           {
@@ -643,7 +643,7 @@ function Home({ dados, nomesIgrejas }) {
           estadia,
           transporte: transporte.label,
           Responsavel: 'Adulto',
-          Secretaria: codigoSecretaria,
+          Secretaria: usuario || '',
           Evento: eventoSelecionado.nomeEvento,
           Jurisdicao: igrejaEscolhida.NomeJurisdicao
             ? igrejaEscolhida.NomeJurisdicao
@@ -814,7 +814,7 @@ function Home({ dados, nomesIgrejas }) {
   React.useEffect(async () => {
     if (fPagamento.label === 'Dinheiro (apenas secretaria)') {
       setOcultarFp(true);
-      codigoSecretariaRef.current.focus();
+      botaoRef.current.focus();
     } else {
       setOcultarFp(false);
       botaoRef.current.focus();
@@ -1578,7 +1578,7 @@ function Home({ dados, nomesIgrejas }) {
                               />
                             </Box>
                           </Grid>
-                          <Box display={ocultarFp ? '' : 'none'}>
+                          {/* <Box display={ocultarFp ? '' : 'none'}>
                             <Grid item container xs={12}>
                               <Grid item xs={12} md={12}>
                                 <Box
@@ -1628,7 +1628,7 @@ function Home({ dados, nomesIgrejas }) {
                                 </Box>
                               </Grid>
                             </Grid>
-                          </Box>
+                          </Box> */}
                           <Grid item xs={12} md={12}>
                             <Box className={classes.novoBox} mt={2} mb={0}>
                               {loading2 ? (

@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Eventos({ eventoSelecionado }) {
+function Eventos({ eventoSelecionado, usuario }) {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -121,7 +121,7 @@ function Eventos({ eventoSelecionado }) {
     setLoading(true);
     router.push({
       pathname: '/eventoIdpb',
-      query: { Evento: eventoSelecionado.nomeEvento },
+      query: { Evento: eventoSelecionado.nomeEvento, usuario },
     });
 
     // setOpen(false);

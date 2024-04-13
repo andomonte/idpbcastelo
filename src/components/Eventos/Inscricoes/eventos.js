@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Eventos({ eventoSelecionado }) {
+function Eventos({ eventoSelecionado, usuario }) {
   //  const eventoIni = consultaInscricoes.filter((val) => Number(val.id) === Number(0));
 
   const classes = useStyles();
@@ -62,7 +62,7 @@ function Eventos({ eventoSelecionado }) {
     setCarregar1(true);
     router.push({
       pathname: 'eventoIdpb/comprar',
-      query: { eventoSelecionado: JSON.stringify(eventoSelecionado) },
+      query: { eventoSelecionado: JSON.stringify(eventoSelecionado), usuario },
     });
     // setOpen(false);
     // window.location.reload();

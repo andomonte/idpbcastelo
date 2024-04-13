@@ -4,14 +4,12 @@ import { useRouter } from 'next/router';
 import Espera from 'src/utils/espera';
 
 function Compra() {
-  // meu token de de teste andomonte assim como o do mercado pago é o meu tambem,
-  // o usuario de teste deve está logado para que seja feito os teste criei
-  // um usuario na minha conta andomonte, para outra conta tem que mudar os 3.
-
   const router = useRouter();
-  const { eventoSelecionado } = router.query;
+  const { eventoSelecionado, usuario } = router.query;
 
   const [eventoSelecionadoF, setEventoSelecionadoF] = React.useState('');
+  const [usuarioF, setUsuarioF] = React.useState('');
+
   React.useEffect(() => {
     if (eventoSelecionado) {
       setEventoSelecionadoF(JSON.parse(eventoSelecionado));
@@ -21,14 +19,28 @@ function Compra() {
         JSON.parse(sessionStorage.getItem('eventoSelecionadoIdpb')),
       );
     }
-  }, []);
+  }, [eventoSelecionado]);
+
+  React.useEffect(() => {
+    if (usuario) {
+      setUsuarioF(usuario);
+
+      sessionStorage.setItem('usuario', JSON.stringify(usuario));
+    } else {
+      setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
+    }
+  }, [usuario]);
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/eventoIdpb/comprar');
   }
   return (
     <div>
       {eventoSelecionadoF ? (
-        <Comprar eventoSelecionado={eventoSelecionadoF} title="SISTEMA-IDPB" />
+        <Comprar
+          usuario={usuarioF}
+          eventoSelecionado={eventoSelecionadoF}
+          title="SISTEMA-IDPB"
+        />
       ) : (
         <Espera descricao="Atualizando os dados" />
       )}

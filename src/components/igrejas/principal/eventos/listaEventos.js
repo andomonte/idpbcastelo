@@ -9,7 +9,6 @@ import meuDataTime from 'src/utils/meuDataTime';
 import { useRouter } from 'next/router';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme();
 theme.typography.hs4 = {
@@ -49,10 +48,9 @@ theme.typography.hs2 = {
   },
 };
 
-export default function TabCelula({ eventos, dataAtual }) {
+export default function TabCelula({ usuario, eventos, dataAtual }) {
   const loading2 = eventos.map(() => false);
   const [loading, setLoading] = React.useState(loading2);
-
   const router = useRouter();
   const handleInscricao = (eventoSelecionado) => {
     if (eventoSelecionado.TipoEvento.toUpperCase() === 'CONVENÇÃO') {
@@ -79,7 +77,7 @@ export default function TabCelula({ eventos, dataAtual }) {
     else
       router.push({
         pathname: '/eventoIdpb',
-        query: { Evento: eventoSelecionado.nomeEvento },
+        query: { Evento: eventoSelecionado.nomeEvento, usuario },
       });
   };
 
@@ -103,12 +101,7 @@ export default function TabCelula({ eventos, dataAtual }) {
             alignItems="center"
             key={index}
           >
-            <Box
-              mt={index === 0 ? 0.5 : 1.5}
-              ml={0.5}
-              display="flex"
-              alignItems="center"
-            >
+            <Box ml={0.5} display="flex" alignItems="center">
               <Avatar
                 alt="User"
                 src={row.LogoEvento}
@@ -120,7 +113,7 @@ export default function TabCelula({ eventos, dataAtual }) {
                 }}
               />
             </Box>
-            <Box mt={index === 0 ? 2 : 2} ml={-2} mb={index === 0 ? 1 : 0}>
+            <Box mt={index === 0 ? 3 : 4} ml={-2} mb={index === 0 ? 1 : 0}>
               <Box mt={0} ml={2}>
                 <Box fontFamily="Fugaz One" mt={0} ml={2} display="flex">
                   <ThemeProvider theme={theme}>
@@ -235,7 +228,7 @@ export default function TabCelula({ eventos, dataAtual }) {
                 </Box>
                 <Box
                   width="100%"
-                  mt={0.5}
+                  mt={0}
                   mb={0}
                   display="flex"
                   justifyContent="flex-start"

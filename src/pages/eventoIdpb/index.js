@@ -6,10 +6,13 @@ import prisma from 'src/lib/prisma';
 
 function Home({ eventosIDPB }) {
   const router = useRouter();
-  const { Evento } = router.query;
+  const { Evento, usuario } = router.query;
 
   const [EventoF, setEventoF] = React.useState('');
   const [eventoSelecionadoF, setEventoSelecionadoF] = React.useState('');
+
+  const [usuarioF, setUsuarioF] = React.useState('');
+
   React.useEffect(() => {
     if (Evento) {
       setEventoF(Evento);
@@ -19,6 +22,16 @@ function Home({ eventosIDPB }) {
       setEventoF(JSON.parse(sessionStorage.getItem('EventoIdpb')));
     }
   }, [Evento]);
+  React.useEffect(() => {
+    if (usuario) {
+      setUsuarioF(usuario);
+
+      sessionStorage.setItem('usuario', JSON.stringify(usuario));
+    } else {
+      setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
+    }
+  }, [usuario]);
+
   React.useEffect(() => {
     if (EventoF && eventosIDPB.length) {
       const eventoFinal = eventosIDPB.filter(
@@ -34,6 +47,7 @@ function Home({ eventosIDPB }) {
         <Inscrições
           eventoSelecionado={eventoSelecionadoF[0]}
           title="EVENTOS-IDPB "
+          usuario={usuarioF}
         />
       ) : (
         <Espera descricao="Atualizando os dados" />
