@@ -104,7 +104,9 @@ export default function TabCelula({
                 <Box fontFamily="Fugaz One" mt={0} ml={2} display="flex">
                   <ThemeProvider theme={theme}>
                     <Typography variant="hs2">
-                      {row.Evento ? row.Evento.toLocaleUpperCase() : null}
+                      {row.nomeEvento
+                        ? row.nomeEvento.toLocaleUpperCase()
+                        : null}
                     </Typography>
                   </ThemeProvider>
                 </Box>

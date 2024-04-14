@@ -161,11 +161,11 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
                 )}
               </Box>
             </Box>
-            {console.log('perfilu', perfilUser)}
+
             {!perfilUser ||
             (perfilUser.Funcao &&
-              perfilUser.Funcao === 'Membro' &&
-              perfilUser.Funcao === 'Professor') ? (
+              (perfilUser.Funcao === 'Membro' ||
+                perfilUser.Funcao === 'Professor')) ? (
               <Box
                 width="100%"
                 display="flex"

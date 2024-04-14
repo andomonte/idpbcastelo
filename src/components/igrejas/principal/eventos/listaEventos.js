@@ -118,7 +118,9 @@ export default function TabCelula({ usuario, eventos, dataAtual }) {
                 <Box fontFamily="Fugaz One" mt={0} ml={2} display="flex">
                   <ThemeProvider theme={theme}>
                     <Typography variant="hs2">
-                      {row.Evento ? row.Evento.toLocaleUpperCase() : null}
+                      {row.nomeEvento
+                        ? row.nomeEvento.toLocaleUpperCase()
+                        : null}
                     </Typography>
                   </ThemeProvider>
                 </Box>
@@ -228,7 +230,7 @@ export default function TabCelula({ usuario, eventos, dataAtual }) {
                 </Box>
                 <Box
                   width="100%"
-                  mt={0}
+                  mt={0.5}
                   mb={0}
                   display="flex"
                   justifyContent="flex-start"
