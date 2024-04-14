@@ -8,18 +8,15 @@ import validator from 'validator';
 import Espere from 'src/utils/espera';
 
 function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
-  const dadosUser = userIgrejas.filter((val) => val.codigo === 'AM-025');
+  const dadosUser = userIgrejas;
   const router = useRouter();
   const [session] = useSession();
   const perfilUser = router.query;
 
-  let mudaDados = 'sai';
-
-  if (perfilUser.id) mudaDados = 'entra';
-  const [perfilUserF, setPerfilUserF] = React.useState('');
+  const [perfilUserF, setPerfilUserF] = React.useState('inicio');
 
   React.useEffect(() => {
-    if (mudaDados === 'entra') {
+    if (perfilUser.id) {
       setPerfilUserF(perfilUser);
       sessionStorage.setItem('perfilUser', JSON.stringify(perfilUser));
     } else {
@@ -28,15 +25,12 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       setPerfilUserF(result);
       // resultado = result.id;
     }
-  }, [mudaDados]);
+  }, [perfilUser]);
 
   React.useEffect(() => {
-    if (
-      (perfilUserF === null || perfilUserF === '') &&
-      (perfilUser.length === null || !perfilUser.length)
-    ) {
-      const result = JSON.parse(sessionStorage.getItem('perfilUser'));
+    const result = JSON.parse(sessionStorage.getItem('perfilUser'));
 
+    if (perfilUserF === null || perfilUserF === '') {
       if (
         session !== null &&
         session !== undefined &&
@@ -54,11 +48,11 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
         }
       }
     }
-  }, [session]);
+  }, [session, perfilUserF]);
 
   return (
     <div>
-      {perfilUser && perfilUserF && perfilUserF && perfilUserF.id ? (
+      {perfilUserF && perfilUserF && perfilUserF.id ? (
         <div>
           <SistemaCelulas
             celulas={celulas}
@@ -72,8 +66,7 @@ function Home({ userIgrejas, celulas, LiderancaCelulas, rolMembros }) {
       ) : (
         <div>
           {(session === null || session === undefined) &&
-          (perfilUserF === null || perfilUserF === '') &&
-          (perfilUser.length === null || !perfilUser.length) ? (
+          (perfilUserF === null || perfilUserF === '') ? (
             <Pagina userIgrejas={dadosUser} title="IDPB-CELULAS" />
           ) : (
             <Espere descricao="Buscando Conexão..." />
