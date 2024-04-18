@@ -134,7 +134,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
             setCartaDelegado(inscrito[0].cartaDelegado);
             let fotoInscrito = inscrito[0].Image;
             if (!fotoInscrito)
-              fotoInscrito = `https://cafinpi.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`;
+              fotoInscrito = `https://arquivocastelo.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`;
             if (!fotoInscrito) fotoInscrito = '';
             setFileImage(fotoInscrito);
             setOpenDrawer(true);
@@ -188,7 +188,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
               api
                 .post('/api/imageEvento', {
                   idPagamento,
-                  fileImage: `https://cafinpi.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`,
+                  fileImage: `https://arquivocastelo.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
