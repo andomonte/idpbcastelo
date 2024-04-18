@@ -13,13 +13,14 @@ function TelaPagamento() {
 
   const router = useRouter();
   const { ...pagamento } = router.query;
+
   let mudaDados = 'sai';
   if (pagamento.nome) mudaDados = 'entra';
   const [pagamentoF, setPagamentoF] = React.useState();
 
   React.useEffect(() => {
-    setPagamentoF(pagamentoF);
     if (mudaDados === 'entra') {
+      setPagamentoF(pagamento);
       sessionStorage.setItem('pagamentos', JSON.stringify(pagamento));
     } else {
       const result = JSON.parse(sessionStorage.getItem('pagamentos'));
@@ -27,7 +28,7 @@ function TelaPagamento() {
       // resultado = result.id;
       setPagamentoF(result);
     }
-  }, []);
+  }, [mudaDados]);
 
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/eventoIdpb/pagamento');
@@ -47,7 +48,7 @@ function TelaPagamento() {
             <PagBol title="SISTEMA-IDPB " dadosBoleto={pagamento} />
           )}
           {pagamento.fpag === 'Isento de Pagamento' && (
-            <PagIsento title="SISTEMA-IDPB " dadosIsento={pagamento} />
+            <PagIsento title="SISTEMA-IDPB " dadosDinheiro={pagamento} />
           )}
           {pagamento.fpag === 'Dinheiro (apenas secretaria)' && (
             <PagDinheiro title="SISTEMA-IDPB " dadosDinheiro={pagamento} />
@@ -79,7 +80,7 @@ function TelaPagamento() {
           {pagamentoF && pagamentoF.fpag === 'Isento de Pagamento' && (
             <div>
               {pagamentoF && (
-                <PagIsento title="SISTEMA-IDPB" dadosIsento={pagamentoF} />
+                <PagIsento title="SISTEMA-IDPB" dadosDinheiro={pagamentoF} />
               )}
             </div>
           )}

@@ -298,7 +298,7 @@ function PesquisaCPF({ ticket }) {
                           }}
                         >
                           <Box mt={altura > 630 ? -40 : -34}>
-                            (92) 99134-4368
+                            Secretaria da Igreja
                           </Box>
                         </Typography>
                       </Box>
@@ -506,7 +506,9 @@ function PesquisaCPF({ ticket }) {
                           fontWeight: 'bold',
                         }}
                       >
-                        <Box mt={altura > 630 ? -40 : -34}>(92) 99134-4368</Box>
+                        <Box mt={altura > 630 ? -40 : -34}>
+                          Secretaria da Igreja
+                        </Box>
                       </Typography>
                     </Box>
                   </Box>
@@ -733,7 +735,7 @@ function PesquisaCPF({ ticket }) {
                           }}
                         >
                           <Box mt={altura > 570 ? (altura < 630 ? 0 : 0) : -4}>
-                            (92) 99134-4368
+                            Secretaria da Igreja
                           </Box>
                         </Typography>
                       </Box>

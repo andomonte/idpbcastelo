@@ -258,8 +258,7 @@ function Pix({ dadosPix }) {
   const voltar = () => {
     setLoading(true);
     router.push({
-      pathname: './dadosComprador',
-      //   query: { dadosMesa2, numeroGame },
+      pathname: './comprar',
     });
   };
   const FecharCompra = () => {
@@ -392,22 +391,17 @@ function Pix({ dadosPix }) {
     setOpenDrawer(false);
   };
 
-  const [largura, setLargura] = React.useState(largura2);
   const [altura, setAltura] = React.useState(altura2);
   React.useEffect(() => {
     const handleResize = () => {
       const tela = TamanhoJanela();
       let alturas;
-      let larguras;
+
       if (tela.height < 500) alturas = 500;
       else alturas = tela.height;
       // const validateDate = require('validate-date');
-      if (tela.width < 300) larguras = 300;
-      else larguras = tela.width;
-      if (tela.width > 410) larguras = 410;
-      else larguras = tela.width;
+
       setAltura(alturas);
-      setLargura(larguras);
     };
     window.addEventListener('resize', handleResize);
     return () => {
@@ -615,12 +609,12 @@ function Pix({ dadosPix }) {
                             </Box>
                           </Box>
                           <Box
-                            minWidth={350}
+                            width="100vw"
                             display="flex"
                             justifyContent="center"
                           >
                             <Box
-                              width={largura - 2}
+                              width="94%"
                               mt={1}
                               ml={0}
                               height={100}

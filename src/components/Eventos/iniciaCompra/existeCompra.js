@@ -7,7 +7,7 @@ import { Oval } from 'react-loading-icons';
 import corIgreja from 'src/utils/coresIgreja';
 import '@fontsource/fugaz-one';
 // Padrões para peso 400.
-function PesquisaCPF({ iniCompra }) {
+function PesquisaCPF({ iniCompra, eventoSelecionado }) {
   const { cpf } = iniCompra;
   // const classes = useStyles();
 
@@ -26,7 +26,7 @@ function PesquisaCPF({ iniCompra }) {
 
   React.useEffect(async () => {
     try {
-      const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${cpf}`;
+      const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${eventoSelecionado.nomeEvento}/${cpf}`;
       const res = await axios.get(url);
       if (res.data && res.data.length) {
         setPosts(() => [...res.data]);

@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(0, 3),
+
     // necessary for content to be below app bar
     justifyContent: 'flex',
     marginTop: 56,
@@ -164,7 +164,7 @@ function Eventos({ eventoSelecionado, usuario }) {
           </Toolbar>
         </AppBar>
 
-        <Box height="100%">
+        <Box height="100%" className={classes.drawerHeader}>
           {/* {children} */}
           {eventoSelecionado.TipoEvento.toUpperCase() === 'COLETIVO' ? (
             <EventoColetivo eventoSelecionado={eventoSelecionado} />

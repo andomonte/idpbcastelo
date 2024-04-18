@@ -13,7 +13,8 @@ import api from 'src/components/services/api';
 import Cards from 'react-credit-cards';
 import Drawer from '@material-ui/core/Drawer';
 import { Alert, AlertTitle } from '@material-ui/lab';
-
+import corIgreja from 'src/utils/coresIgreja';
+import { TiArrowBack } from 'react-icons/ti';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styled from 'styled-components';
 import TamanhoJanela from 'src/utils/getSize';
@@ -566,10 +567,10 @@ const useStyles = makeStyles((theme) => ({
   },
   button1: {
     display: 'flex',
-    background: '#2196f3',
+    background: corIgreja.button1,
     fontSize: '16px',
     fontWeight: 'bold',
-    color: '#fff',
+    color: corIgreja.principal,
     justifyContent: 'center',
     borderRadius: '12px',
     border: '2px solid #424242',
@@ -952,7 +953,7 @@ export default function CheckoutT({ dadosCC }) {
   }; */
   const voltar = () => {
     router.push({
-      pathname: './dadosComprador',
+      pathname: './comprar',
     });
     // window.location.reload();
   };
@@ -1478,93 +1479,7 @@ export default function CheckoutT({ dadosCC }) {
         </Box>
       </form>
 
-      {/* <Drawer
-        ref={componentRef}
-        variant="persistent"
-        anchor="bottom"
-        open={openDrawerPDF}
-      >
-        {openDrawerPDF && (
-          <PdfCompra cpf={cpf} Nome={nome} codigo={codigoPagamento} />
-        )}
-      </Drawer> */}
-
       <Drawer variant="persistent" anchor="bottom" open={openDrawerOK}>
-        {/* <Box
-          ref={componentRef}
-          height={janela.height}
-          sx={{ background: '#c5e1a5' }}
-        >
-          <Box mt={20}>
-            <Box display="flex" justifyContent="center">
-              <h2>Recebemos seu Pagamento</h2>
-            </Box>
-            <Box m={2} textAlign="center">
-              <strong>{valorErro}</strong>
-            </Box>
-            <Box m={2} mt={4} textAlign="center">
-              <strong>Anote seu Código de Pagamento.</strong>
-            </Box>
-            <Box m={2} mt={-2} textAlign="center">
-              <strong
-                style={{ color: '#3f51b5', fontSize: '25px', marginTop: '5px' }}
-              >
-                {codigoPagamento}
-              </strong>
-            </Box>
-            <Box display="flex" mt={0}>
-              <Grid item xs={12} md={12}>
-                <Box mt={-1}>
-                  <IconButton
-                    onClick={handlePDF}
-                    color="primary"
-                    aria-label="add to shopping cart"
-                  >
-                    <PictureAsPdfIcon />
-                  </IconButton>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Box mt={-1}>
-                  <IconButton
-                    onClick={handlePrint}
-                    color="primary"
-                    aria-label="add to shopping cart"
-                  >
-                    <PrintIcon />
-                  </IconButton>
-                </Box>
-                <Grid item xs={12} md={12}>
-                  <Box mt={-1}>
-                    <IconButton
-                      color="primary"
-                      aria-label="add to shopping cart"
-                    >
-                      <PhotoCameraIcon />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
-            <Box
-              mt={4}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Button
-                className={classes.button2}
-                variant="contained"
-                id="reload"
-                onClick={atualizar}
-              >
-                Fechar
-              </Button>
-            </Box>
-          </Box>
-        </Box> */}
-
         <GerarPdf
           nome={nome}
           codigo={codigoPagamento}
@@ -1684,11 +1599,16 @@ export default function CheckoutT({ dadosCC }) {
     </Box>
   );
   const deskTop = (
-    <Box className={classes.root}>
-      <Box display="flex" justifyContent="center">
+    <Box height="100vh" width="100%" bgcolor={corIgreja.principal2}>
+      <Box
+        height="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Box
           style={{
-            backgroundColor: '#424242',
+            backgroundColor: corIgreja.principal,
             height: '100%',
             width: largura2,
           }}
@@ -1703,13 +1623,9 @@ export default function CheckoutT({ dadosCC }) {
                 display="flex"
                 alignItems="center"
               >
-                <ArrowBackIcon
-                  sx={{
-                    fontSize: 20,
-                    color: '#fff',
-                  }}
-                  onClick={voltar}
-                />
+                <Box display="flex" alignItems="center" onClick={voltar}>
+                  <TiArrowBack size={25} color="white" />
+                </Box>
               </Box>
             </Grid>
             <Grid item xs={12} md={12}>

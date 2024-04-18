@@ -11,7 +11,8 @@ function Compra({ nomesIgrejas, nomesMembros }) {
   const router = useRouter();
   const { ...dados } = router.query;
   let mudaDados = 'sai';
-  if (dados.total) mudaDados = 'entra';
+
+  if (dados.cpf) mudaDados = 'entra';
   const [dadosF, setDadosF] = React.useState();
 
   React.useEffect(() => {
@@ -34,8 +35,8 @@ function Compra({ nomesIgrejas, nomesMembros }) {
       {dadosF && dadosF.qtyA ? (
         <Comprar
           title="SISTEMA-IDPB"
-          nomesIgrejas={nomesIgrejas}
           dados={dadosF}
+          nomesIgrejas={nomesIgrejas}
           nomesMembros={nomesMembros}
         />
       ) : (

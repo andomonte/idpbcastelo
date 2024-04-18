@@ -201,8 +201,11 @@ function createListaIgrejas(value, label, jurisdicao) {
 
 function Home({ dados, nomesIgrejas }) {
   const classes = useStyles();
-  const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+  const usuario = sessionStorage.getItem('usuario')
+    ? JSON.parse(sessionStorage.getItem('usuario'))
+    : '';
   // const router = useRouter();
+
   const [nome, setNome] = React.useState('');
   const [desabilitaGM, setDesabilitaGM] = React.useState(false);
   const [email, setEmail] = React.useState('');
@@ -258,12 +261,13 @@ function Home({ dados, nomesIgrejas }) {
     label: 'Como irá chegar na cidade',
     value: 0,
   });
+
   const eventoSelecionado = JSON.parse(dados.eventoSelecionado);
   const temHospedagem = eventoSelecionado.Hospedagem;
 
   const arrayFP = [];
   if (eventoSelecionado.CartaoCredito)
-    arrayFP.push({ label: 'Catão de Crédito', value: 0 });
+    arrayFP.push({ label: 'Cartão de Crédito', value: 0 });
   if (eventoSelecionado.Pix) arrayFP.push({ label: 'Pix', value: 1 });
 
   if (eventoSelecionado.Boleto) arrayFP.push({ label: 'Boleto', value: 2 });
@@ -402,7 +406,7 @@ function Home({ dados, nomesIgrejas }) {
         setFone(celularMask(res.data[0].TelCelular));
         emailRef.current.focus();
 
-        if (res.data[0].Email.length > 5) {
+        if (res.data[0].Email && res.data[0].Email.length > 5) {
           setEmail(res.data[0].Email);
           igrejaRef.current.focus();
         }
@@ -502,7 +506,7 @@ function Home({ dados, nomesIgrejas }) {
     } else setSelect(true);
     const idade = CalculaIdade(nascimento);
 
-    if (idade < 0) {
+    if (idade < 18 && eventoSelecionado.TipoEvento === 'Individual') {
       toast.error(`${idade} anos é Menor, volte e escolha a opção Menor  !`, {
         position: toast.POSITION.TOP_CENTER,
       });

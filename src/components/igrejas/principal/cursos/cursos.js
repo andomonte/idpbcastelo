@@ -11,6 +11,8 @@ import ConverterData from 'src/utils/convData2';
 import TableContainer from '@mui/material/TableContainer';
 import Inscricoes from './inscricoes';
 
+
+
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));

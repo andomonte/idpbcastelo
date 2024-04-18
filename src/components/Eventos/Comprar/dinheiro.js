@@ -95,7 +95,7 @@ function Boleto({ dadosDinheiro }) {
 
   const voltar = () => {
     router.push({
-      pathname: './dadosComprador',
+      pathname: './comprar',
     });
   };
   const FecharCompra = () => {
@@ -129,7 +129,6 @@ function Boleto({ dadosDinheiro }) {
         qtyC1: Number(qtyC1),
         qtyC2: Number(qtyC2),
         fpag,
-
         transporte,
         Evento,
         Jurisdicao,

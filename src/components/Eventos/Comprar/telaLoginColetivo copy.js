@@ -258,7 +258,7 @@ function TelaLogin({ eventoSelecionado }) {
   return (
     <Box
       bgcolor={corIgreja.principal2}
-      height="calc(100vh - 80px)"
+      height="100vh"
       width="100vw"
       minHeight={600}
     >
@@ -271,13 +271,27 @@ function TelaLogin({ eventoSelecionado }) {
         alignItems="center"
       >
         <Box
-          mt="3vh"
           width="94vw"
           minHeight={510}
-          height="calc(100vh - 90px)"
+          height="96%"
           bgcolor={corIgreja.principal}
         >
-          <Box mt={0} color="white" fontFamily="Fugaz One" fontSize="16px">
+          <Box
+            mt={0}
+            color="white"
+            fontFamily="Fugaz One"
+            fontSize="16px"
+            style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16 }}
+            // borderRadius={16}
+
+            height="100%"
+            width="100%"
+            minHeight={500}
+            justifyContent="center"
+            display="flex"
+            flexDirection="column"
+            //            alignItems="center"
+          >
             <Box
               mb={2}
               width="100%"

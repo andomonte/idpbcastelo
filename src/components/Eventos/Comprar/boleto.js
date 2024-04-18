@@ -261,8 +261,7 @@ function Boleto({ dadosBoleto }) {
   const voltar = () => {
     setLoading(true);
     router.push({
-      pathname: './dadosComprador',
-      //   query: { dadosMesa2, numeroGame },
+      pathname: './comprar',
     });
   };
   const FecharCompra = () => {

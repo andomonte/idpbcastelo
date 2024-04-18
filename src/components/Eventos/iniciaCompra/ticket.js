@@ -9,31 +9,16 @@ import TamanhoTela from 'src/utils/screenSize';
 import { useRouter } from 'next/router';
 import { Oval } from 'react-loading-icons';
 import api from 'src/components/services/api';
-import { styled } from '@mui/material/styles';
-
 import JsPDF from 'jspdf';
 import { toPng } from 'html-to-image';
 import { useReactToPrint } from 'react-to-print';
 import cpfMask from 'src/components/mascaras/cpf';
-import imageCompression from 'browser-image-compression';
 // import { TelegramShareButton, TelegramIcon } from 'react-share';
 import corIgreja from 'src/utils/coresIgreja';
 import CropImage from './cropEasy';
 import BotaoExtra from './botaoExtra';
 import '@fontsource/fugaz-one';
 // Padrões para peso 400.
-const Input = styled('input')({
-  display: 'none',
-});
-// const fetcher = (urls) => axios.get(urls).then((res) => res.data);
-
-function readFile(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => resolve(reader.result), false);
-    reader.readAsDataURL(file);
-  });
-}
 
 function PesquisaCPF({ dadosInscrito, membros }) {
   // const classes = useStyles();
@@ -55,7 +40,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
   const [estadia, setEstadia] = React.useState('');
   const [transporte, setTransporte] = React.useState('');
   const [GM, setGM] = React.useState('');
-  const [imageSize, setImageSize] = React.useState('');
+  const [imageSize] = React.useState('');
   const [igreja, setIgreja] = React.useState('');
   const [adultos, setAdultos] = React.useState('');
   const [criancas, setCriancas] = React.useState('');
@@ -64,7 +49,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
   const [idPagamento, setIdPagamento] = React.useState('');
   const [cartaDelegado, setCartaDelegado] = React.useState('');
   const router = useRouter();
-  const [upLoadFile, setUpLoadFile] = React.useState('');
+  const [upLoadFile] = React.useState('');
 
   React.useEffect(async () => {
     if (dadosInscrito.cpf) {
@@ -149,7 +134,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
             setCartaDelegado(inscrito[0].cartaDelegado);
             let fotoInscrito = inscrito[0].Image;
             if (!fotoInscrito)
-              fotoInscrito = `https://idpbparatinga.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`;
+              fotoInscrito = `https://cafinpi.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`;
             if (!fotoInscrito) fotoInscrito = '';
             setFileImage(fotoInscrito);
             setOpenDrawer(true);
@@ -201,9 +186,9 @@ function PesquisaCPF({ dadosInscrito, membros }) {
           .then((responses) => {
             if (responses) {
               api
-                .post('/api/imageConvencao', {
+                .post('/api/imageEvento', {
                   idPagamento,
-                  fileImage: `https://idpbparatinga.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`,
+                  fileImage: `https://cafinpi.s3.amazonaws.com/secretaria/${dadosInscrito.cpf}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {
@@ -253,7 +238,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
       if (data) {
         const link = document.createElement('a');
         link.href = data;
-        link.download = 'Credencial Eventos AM.jpeg';
+        link.download = 'Credencial Eventos.jpeg';
         link.click();
       }
     } catch (error) {
@@ -274,7 +259,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
         const doc = new JsPDF();
 
         doc.addImage(image, 'JPEG', 5, 25, 130, 200);
-        doc.save('Credencial Eventos AM');
+        doc.save('Credencial Eventos');
       }
 
       if (action === 3) {
@@ -397,40 +382,13 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                               justifyContent="center"
                             >
                               <label htmlFor="icon-button-file">
-                                <Input
-                                  accept="image/*"
-                                  id="icon-button-file"
-                                  type="file"
-                                  onChange={async (e) => {
-                                    const imageFile = e.target.files[0];
-
-                                    const options = {
-                                      maxSizeMB: 1,
-                                      maxWidthOrHeight: 1080,
-                                      useWebWorker: true,
-                                    };
-                                    try {
-                                      const compressedFile =
-                                        await imageCompression(
-                                          imageFile,
-                                          options,
-                                        );
-
-                                      setUpLoadFile(compressedFile);
-                                      const imageDataUrl = await readFile(
-                                        compressedFile,
-                                      );
-                                      setImageSize(compressedFile.size);
-                                      setUrlImage(imageDataUrl);
-                                      setOpenCrop(true);
-                                    } catch (error) {
-                                      console.log(error);
-                                    }
-                                  }}
-                                />
                                 <Avatar
                                   alt={nome}
-                                  src={membrosF ? membrosF[0].foto : null}
+                                  src={
+                                    membrosF && membrosF.length
+                                      ? membrosF[0].foto
+                                      : null
+                                  }
                                   sx={{
                                     width: height < 680 ? 100 : 140,
                                     height: height < 680 ? 100 : 140,
@@ -551,7 +509,9 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                                       fontSize: '12px',
                                     }}
                                   >
-                                    {membrosF ? membrosF[0].Celula : ''}
+                                    {membrosF && membrosF.length
+                                      ? membrosF[0].Celula
+                                      : ''}
                                   </Box>
                                 </Box>
                                 <Box
@@ -574,13 +534,16 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                                       fontSize: '12px',
                                     }}
                                   >
-                                    {membrosF ? membrosF[0].Supervisao : ''}
+                                    {membrosF && membrosF.length
+                                      ? membrosF[0].Supervisao
+                                      : ''}
                                   </Box>
                                 </Box>
                               </Box>
                             </Box>
                           </Box>
                         </Box>
+                        {console.log('dados', dadosInscrito)}
                         <Box
                           display={
                             adultos !== '' && criancas !== '' ? 'flex' : 'none'
@@ -593,6 +556,18 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                         >
                           <Box>Adultos: {adultos}</Box>
                           <Box ml={2}>Crianças: {criancas}</Box>
+                        </Box>
+                        <Box
+                          display={
+                            adultos !== '' && criancas !== '' ? 'flex' : 'none'
+                          }
+                          justifyContent="center"
+                          alignItems="center"
+                          width="100%"
+                          color="white"
+                          mt={2}
+                        >
+                          <Box ml={2}>Isentos: {dadosInscrito.qtyC2}</Box>
                         </Box>
                         <Box
                           display="flex"
@@ -1013,7 +988,9 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                                               fontWeight: 'bold',
                                             }}
                                           >
-                                            <Box mt={1}>(92) 99134-4368</Box>
+                                            <Box mt={1}>
+                                              Secretaria da Igreja
+                                            </Box>
                                           </Typography>
                                         </Box>
                                       </Box>
@@ -1194,7 +1171,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                                                     }}
                                                   >
                                                     <Box mt={1}>
-                                                      (92) 99134-4368
+                                                      Secretaria da Igreja
                                                     </Box>
                                                   </Typography>
                                                 </Box>

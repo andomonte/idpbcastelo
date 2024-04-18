@@ -3,7 +3,7 @@ import prisma from 'src/lib/prisma';
 export default async function handle(req, res) {
   // id = req;
   const {
-    query: { tipo },
+    query: { tipo, doc },
   } = req;
 
   try {
@@ -12,14 +12,9 @@ export default async function handle(req, res) {
         where: {
           AND: {
             Evento: tipo,
-            status: 'approved',
+            CPF: doc,
           },
         },
-        orderBy: [
-          {
-            Nome: 'asc',
-          },
-        ],
       })
       .finally(async () => {
         await prisma.$disconnect();
@@ -31,6 +26,6 @@ export default async function handle(req, res) {
 
     res.json(posts);
   } catch (error) {
-    console.log(error);
+    console.log('olha o error', error);
   }
 }

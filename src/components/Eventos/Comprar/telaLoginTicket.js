@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import { Oval } from 'react-loading-icons';
 // import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { TextField } from '@mui/material';
-import cpfMask from 'src/components/mascaras/cpf';
 import ValidaCPF from 'src/utils/validarCPF';
 import AppBar from '@material-ui/core/AppBar';
 import 'react-toastify/dist/ReactToastify.css';
@@ -101,8 +100,6 @@ function TelaLogin({ eventoSelecionado }) {
   const cpfRef = React.useRef();
 
   const router = useRouter();
-
-  // if (data) console.log(data);
 
   const voltar = () => {
     setLoading2(true);
@@ -202,13 +199,13 @@ function TelaLogin({ eventoSelecionado }) {
         </Box>
       </AppBar>
       <Box
-        height="93.5vh"
+        height="90.5vh"
         width="94vw"
         minHeight={570}
-        mt="6.5vh"
         justifyContent="center"
         display="flex"
         alignItems="center"
+        mt="8vh"
       >
         <Box height="96%" bgcolor={corIgreja.principal}>
           <Box
@@ -325,7 +322,7 @@ function TelaLogin({ eventoSelecionado }) {
                               display="block"
                               gutterBottom
                             >
-                              DIGITE SEU CPF
+                              DIGITE O DOCUMENTO
                             </Typography>
                           </Box>
                           <Box
@@ -338,7 +335,7 @@ function TelaLogin({ eventoSelecionado }) {
                               <TextField
                                 autoComplete="off"
                                 id="CPF"
-                                type="tel"
+                                type="text"
                                 inputRef={cpfRef}
                                 style={{ width: '100%' }}
                                 className={classes.tf_s}
@@ -349,11 +346,11 @@ function TelaLogin({ eventoSelecionado }) {
                                 }}
                                 value={cpf}
                                 variant="outlined"
-                                placeholder="999.999.999-99"
+                                placeholder="utilizado na inscrição"
                                 size="small"
                                 onKeyDown={handleEnter}
                                 onChange={(e) => {
-                                  setCPF(cpfMask(e.target.value));
+                                  setCPF(e.target.value);
                                 }}
                               />
                             </Box>

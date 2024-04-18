@@ -27,7 +27,10 @@ function Compra() {
 
       sessionStorage.setItem('usuario', JSON.stringify(usuario));
     } else {
-      setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
+      const neValor = sessionStorage.getItem('usuario')
+        ? JSON.parse(sessionStorage.getItem('usuario'))
+        : '';
+      if (neValor) setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
     }
   }, [usuario]);
   if (typeof window !== 'undefined') {

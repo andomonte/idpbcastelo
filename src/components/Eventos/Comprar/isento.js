@@ -1,13 +1,15 @@
 import React from 'react';
 import { Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { TiArrowBack } from 'react-icons/ti';
+import Avatar from '@mui/material/Avatar';
 import TamanhoJanela from 'src/utils/getSize';
-
+import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import api from 'src/components/services/api';
 import 'react-toastify/dist/ReactToastify.css';
+import corIgreja from 'src/utils/coresIgreja';
 // import { RepeatOneSharp } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -17,129 +19,19 @@ import { Oval } from 'react-loading-icons';
 const janela = TamanhoJanela();
 let largura = janela.width;
 if (largura > 400) largura = 400;
-let altura;
-if (janela.height < 500) altura = 500;
-else altura = janela.height;
-const useStyles = makeStyles((theme) => ({
-  img: {
-    maxWidth: '1410px',
-    maxHeight: '600px',
-    width: '100%',
-    height: '100%',
-  },
-  QrCode: {
-    //    maxWidth: '1410px',
-    //    maxHeight: '600px',
-    width: '70%',
-    height: '70%',
-  },
-  img1: {
-    width: '20px',
-    height: '20px',
-    marginLeft: 40,
-    marginRight: 8,
-  },
-  input1: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#fff',
-    justifyContent: 'center',
-  },
-  letras1: {
-    display: 'flex',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#fffd',
-    marginBottom: 0,
-  },
-  letras2: {
-    display: 'flex',
-    fontSize: '12px',
-    fontWeight: 'bold',
-    color: '#fffa',
-    justifyContent: 'center',
-  },
-  letras3: {
-    display: 'flex',
-    fontSize: '10px',
-    fontWeight: 'bold',
-    color: '#fffa',
-    justifyContent: 'center',
-    padding: 2,
-  },
-  legenda1: {
-    display: 'flex',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    color: '#fffd',
-  },
 
-  fundoBranco: {
-    display: 'flex',
-    fontSize: '12px',
-    fontWeight: 'bold',
-    color: '#fffa',
-    justifyContent: 'center',
-  },
-  button1: {
-    display: 'flex',
-    background: '#bf360c',
-    '&:hover': {
-      backgroundColor: '#d84315',
-    },
-    fontSize: '16px',
-    fontWeight: 'bold',
-    color: '#FFF',
-    justifyContent: 'center',
-  },
+const useStyles = makeStyles((theme) => ({
   button2: {
     display: 'flex',
-    background: '#e0711a',
+    background: '#2196f3',
     fontSize: '16px',
     fontWeight: 'bold',
     color: '#fff',
     justifyContent: 'center',
   },
 
-  imgMobile: {
-    maxWidth: '1110px',
-    maxHeight: '500px',
-    width: '100%',
-    height: 'auto',
-  },
-  novoBox: {
-    flexGrow: 1,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    alignItems: 'center',
-    marginLeft: '10px',
-    marginRight: '10px',
-  },
-  texto: {
-    color: '#780208',
-    fontWeight: 'bold',
-    fontSize: '12px',
-  },
-  tf_m: {
-    backgroundColor: '#f0f4c3',
-
-    width: '100%',
-    fontSize: '5px',
-  },
-  tf_s: {
-    backgroundColor: '#ffff',
-    textAlign: 'center',
-    width: '100%',
-    height: '40px',
-    fontSize: '14px',
-    borderWidth: '0.5px',
-    borderStyle: 'solid',
-    borderRadius: '10px',
-    border: '2px solid #e0711a',
-  },
   paper: {
-    // backgroundColor: '#e0711a', // theme.palette.background.paper,
+    // backgroundColor: '#2196f3', // theme.palette.background.paper,
     backgroundImage: `url('/images/global/fundo.png')`,
     //    border: '0px solid #000',
     //    boxShadow: theme.shadows[5],
@@ -149,62 +41,44 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     width: '100vw',
   },
-  modal: {
+
+  root2: {
+    backgroundColor: corIgreja.principal,
+    boxShadow: 'none',
+    zIndex: theme.zIndex.drawer + 1,
+    height: 56,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    with: '100%',
-  },
-  tf_input: {
-    backgroundColor: '#ffff',
-    borderRadius: '8px',
-    border: '2px solid #e0711a',
-
-    textAlign: 'center',
-    width: '100%',
-    height: '40px',
-    fontSize: '16px', // fonte
-    borderWidth: '0.5px',
-    borderStyle: 'solid',
-  },
-  root: {
-    height: altura,
-
-    //  overflow: 'hidden',
-    width: largura,
-    display: 'flex',
-    justifyContent: 'center',
-    padding: 0,
-    margin: 0,
+    justifyContent: 'space-between',
   },
 }));
-/* const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText('#e0711a'),
-    backgroundColor: '#e0711a',
-    '&:hover': {
-      backgroundColor: '#e0711a',
-    },
-  },
-}))(Button); */
-function Boleto({ dadosIsento }) {
-  const { email } = dadosIsento;
-  const { cpf } = dadosIsento;
-  const { nome } = dadosIsento;
-  const { Responsavel } = dadosIsento;
 
-  const { fone } = dadosIsento;
+function Boleto({ dadosDinheiro }) {
+  console.log('dadosDinheiro', dadosDinheiro);
 
-  const { estadia } = dadosIsento;
-  const { genero } = dadosIsento;
-  const { grau } = dadosIsento;
-  const { horario } = dadosIsento;
-  const { igrejas } = dadosIsento;
-  const { jEstadual } = dadosIsento;
-  const { nascimento } = dadosIsento;
-  const { dataChegada } = dadosIsento;
-
+  const { email } = dadosDinheiro;
+  const { cpf } = dadosDinheiro;
+  const { nome } = dadosDinheiro;
+  const { Responsavel } = dadosDinheiro;
+  const { Secretaria } = dadosDinheiro;
+  const { estadia } = dadosDinheiro;
+  const { genero } = dadosDinheiro;
+  const { grau } = dadosDinheiro;
+  const { horario } = dadosDinheiro;
+  const { igrejas } = dadosDinheiro;
+  const { jEstadual } = dadosDinheiro;
+  const { nascimento } = dadosDinheiro;
+  const { dataChegada } = dadosDinheiro;
+  const { qtyA } = dadosDinheiro;
+  const { qtyC1 } = dadosDinheiro;
+  const { qtyC2 } = dadosDinheiro;
+  const fpag = 'isento';
+  const { fone } = dadosDinheiro;
+  const { transporte } = dadosDinheiro;
+  const { Evento } = dadosDinheiro;
+  const { Jurisdicao } = dadosDinheiro;
+  const { Distrito } = dadosDinheiro;
+  const { logoEvento } = dadosDinheiro;
   const classes = useStyles();
   // console.log('params:', setFPagamento);
   // const router = useRouter();
@@ -219,16 +93,9 @@ function Boleto({ dadosIsento }) {
 
   const router = useRouter();
 
-  /* const handleRouter = () => {
-    router.push({
-      pathname: '/global/chavePix',
-      query: { idCompra, qrCode, qrCodeCopy },
-    });
-  }; */
-
   const voltar = () => {
     router.push({
-      pathname: './dadosComprador',
+      pathname: './comprar',
     });
   };
   const FecharCompra = () => {
@@ -242,7 +109,7 @@ function Boleto({ dadosIsento }) {
 
   const fazerCadastro = () => {
     api
-      .post('/api/cadastroIsentoConvencao', {
+      .post('/api/cadastroCriancaEvento', {
         nome,
         cpf,
         total: 0,
@@ -257,6 +124,15 @@ function Boleto({ dadosIsento }) {
         nascimento,
         dataChegada,
         Responsavel,
+        Secretaria,
+        qtyA: Number(qtyA),
+        qtyC1: Number(qtyC1),
+        qtyC2: Number(qtyC2),
+        fpag,
+        transporte,
+        Evento,
+        Jurisdicao,
+        Distrito,
       })
 
       .then((response) => {
@@ -264,7 +140,17 @@ function Boleto({ dadosIsento }) {
           if (response.data.cpf !== '')
             router.push({
               pathname: './meuTicket',
-              query: { cpf },
+              query: {
+                cpf,
+                qtyA: Number(qtyA),
+                qtyC1: Number(qtyC1),
+                qtyC2: Number(qtyC2),
+                estadia,
+                transporte,
+                Evento,
+                Jurisdicao,
+                Distrito,
+              },
             });
         }
         //        const prefID = response.data.body.point_of_interaction.transaction_data;
@@ -284,7 +170,7 @@ function Boleto({ dadosIsento }) {
 
   React.useEffect(async () => {
     try {
-      const url = `${window.location.origin}/api/consultaInscritosSim`;
+      const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${Evento}/${cpf}`;
       const res = await axios.get(url);
 
       if (res.data && res.data.length) {
@@ -302,6 +188,8 @@ function Boleto({ dadosIsento }) {
         else {
           fazerCadastro();
         }
+      } else {
+        fazerCadastro();
       }
     } catch (err) {
       console.log(err);
@@ -313,104 +201,161 @@ function Boleto({ dadosIsento }) {
   };
 
   return (
-    <Box width="100vw" display="flex" justifyContent="center">
-      <Box width="100%" height="100vh">
-        <Box>
-          <Box
-            mt={0}
-            ml={0}
-            height="25vh"
-            width="100%"
-            style={{
-              backgroundImage: `url('/images/evento/cabecalho1.png')`,
-              backgroundPosition: 'center', // centraliza imagem
-              backgroundSize: 'cover', // imagem cobre toda área do div
-            }}
-          >
-            <Box p={2}>
-              <ArrowBackIcon
-                sx={{
-                  fontSize: 20,
-                  color: '#fff',
-                }}
-                onClick={voltar}
-              />
-            </Box>
+    <Box
+      bgcolor={corIgreja.principal2}
+      height="100vh"
+      width="100vw"
+      minHeight={570}
+      justifyContent="center"
+      display="flex"
+      alignItems="center"
+    >
+      <AppBar className={classes.root2}>
+        <Box
+          width="100%"
+          // maxWidth={450}
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          ml={0}
+        >
+          <Box ml={2} display="flex" justifyContent="end" width="30px">
+            <TiArrowBack size={30} onClick={voltar} />
           </Box>
           <Box
+            fontFamily="Fugaz One"
+            display="flex"
             justifyContent="center"
-            alignItems="center"
+            width="85%"
+            mr={2}
+          >
+            EVENTOS IDPB
+          </Box>
+        </Box>
+      </AppBar>
+      <Box
+        height="93.5vh"
+        width="94vw"
+        minHeight={570}
+        mt="6.5vh"
+        justifyContent="center"
+        display="flex"
+        alignItems="center"
+      >
+        <Box height="96%" bgcolor={corIgreja.principal}>
+          <Box
+            mt={0}
+            color="white"
+            fontFamily="Fugaz One"
+            fontSize="16px"
+            style={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16 }}
+            // borderRadius={16}
+
+            height="100%"
+            width="90vw"
+            // maxWidth={450}
+            minHeight={540}
+            //  maxWidth={400}
+            justifyContent="center"
             display="flex"
             flexDirection="column"
-            height="70vh"
+            //            alignItems="center"
           >
+            <Box
+              mb={2}
+              mt={5}
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              textAlign="center"
+            >
+              <Box justifyContent="center" height="100%">
+                <Avatar
+                  alt="Evento"
+                  src={logoEvento || ''}
+                  sx={{
+                    width: 200,
+                    height: 200,
+                  }}
+                />
+              </Box>
+            </Box>
             <Box
               justifyContent="center"
               alignItems="center"
               display="flex"
-              mb={2}
+              flexDirection="column"
+              height="70vh"
             >
-              Salvando dados...
+              <Box
+                justifyContent="center"
+                alignItems="center"
+                display="flex"
+                mb={2}
+              >
+                Salvando dados...
+              </Box>
+              <Oval stroke="white" width={80} height={80} />{' '}
             </Box>
-            <Oval stroke="blue" width={80} height={80} />{' '}
-          </Box>
 
-          <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
-            <Box height={260} sx={{ background: '#ffebee' }}>
-              <Alert onClose={handleDrawerClose} severity="error">
-                <AlertTitle>ERRO DE PREENCHIMENTO </AlertTitle>
-                <strong>{valorErro}</strong>
-              </Alert>
-            </Box>
-          </Drawer>
-          <Drawer variant="persistent" anchor="bottom" open={openDrawerErro}>
-            <Box height={janela.height} sx={{ background: '#ffebee' }}>
-              <Box mt={25}>
-                {messageErro ? (
-                  <Box>
-                    <Box display="flex" justifyContent="center">
-                      <h2>DADOS ERRADOS !</h2>
-                    </Box>
-                    <Box m={2} textAlign="center">
-                      <strong>{valorErro}</strong>
-                    </Box>
+            <Drawer variant="persistent" anchor="bottom" open={openDrawer}>
+              <Box height={260} sx={{ background: '#ffebee' }}>
+                <Alert onClose={handleDrawerClose} severity="error">
+                  <AlertTitle>ERRO DE PREENCHIMENTO </AlertTitle>
+                  <strong>{valorErro}</strong>
+                </Alert>
+              </Box>
+            </Drawer>
+            <Drawer variant="persistent" anchor="bottom" open={openDrawerErro}>
+              <Box height={janela.height} sx={{ background: '#ffebee' }}>
+                <Box mt={25}>
+                  {messageErro ? (
+                    <Box>
+                      <Box display="flex" justifyContent="center">
+                        <h2>DADOS ERRADOS !</h2>
+                      </Box>
+                      <Box m={2} textAlign="center">
+                        <strong>{valorErro}</strong>
+                      </Box>
 
-                    <Box mt={4} textAlign="center">
-                      <strong>A operadora Informou:</strong>
+                      <Box mt={4} textAlign="center">
+                        <strong>A operadora Informou:</strong>
+                      </Box>
+                      <Box m={0} textAlign="center">
+                        <strong>{messageErro}</strong>
+                      </Box>
                     </Box>
-                    <Box m={0} textAlign="center">
-                      <strong>{messageErro}</strong>
+                  ) : (
+                    <Box>
+                      <Box display="flex" justifyContent="center">
+                        <h2>ERRO NO PAGAMENTO !</h2>
+                      </Box>
+                      <Box m={2} textAlign="center">
+                        <strong>{valorErro}</strong>
+                      </Box>
                     </Box>
-                  </Box>
-                ) : (
-                  <Box>
-                    <Box display="flex" justifyContent="center">
-                      <h2>ERRO NO PAGAMENTO !</h2>
-                    </Box>
-                    <Box m={2} textAlign="center">
-                      <strong>{valorErro}</strong>
-                    </Box>
-                  </Box>
-                )}
-                <Box
-                  mt={4}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Button
-                    className={classes.button2}
-                    variant="contained"
-                    id="reload"
-                    onClick={FecharCompra}
+                  )}
+                  <Box
+                    mt={4}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
                   >
-                    Fechar
-                  </Button>
+                    <Button
+                      className={classes.button2}
+                      variant="contained"
+                      id="reload"
+                      onClick={FecharCompra}
+                    >
+                      Fechar
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </Drawer>
+            </Drawer>
+          </Box>
         </Box>
       </Box>
     </Box>

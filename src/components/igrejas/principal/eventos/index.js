@@ -129,7 +129,9 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
 
   const handleVoltar = () => {
     setLoading(true);
-    router.back();
+    router.push({
+      pathname: './',
+    });
   };
 
   const handleDrawerClose = () => {

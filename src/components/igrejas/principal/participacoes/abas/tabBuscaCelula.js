@@ -10,7 +10,7 @@ import Espera from 'src/utils/espera';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { MdOutlineCheck, MdClose } from 'react-icons/md';
-import { FcSearch } from 'react-icons/fc';
+
 import { Oval } from 'react-loading-icons';
 import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
@@ -282,6 +282,7 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
           val.Celula === Number(perfilUser.Celula) &&
           val.Distrito === Number(perfilUser.Distrito),
       );
+
       const presCelulaSem0 = sem0.filter(
         (val) =>
           val.Celula === Number(perfilUser.Celula) &&
@@ -944,18 +945,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       ? `${dataRSem0[0].Posicao}°`
                       : '-'}
                   </Box>
-                  <Box fontSize="12px" color="#781080" mt={1}>
-                    <Box
-                      height="100%"
-                      mt={0.2}
-                      display="flex"
-                      justifyContent="center"
-                      fontFamily="Fugaz One"
-                      alignItems="center"
-                    >
-                      <FcSearch size={20} />
-                    </Box>
-                  </Box>
                 </Box>
               ) : (
                 '-'
@@ -1333,18 +1322,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       ? `${dataRSem1[0].Posicao}°`
                       : '-'}
                   </Box>
-                  <Box fontSize="12px" color="#781080" mt={1}>
-                    <Box
-                      height="100%"
-                      mt={0.2}
-                      display="flex"
-                      justifyContent="center"
-                      fontFamily="Fugaz One"
-                      alignItems="center"
-                    >
-                      <FcSearch size={20} />
-                    </Box>
-                  </Box>
                 </Box>
               ) : (
                 '-'
@@ -1721,18 +1698,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     {dataRSem2.length && dataRSem2[0]
                       ? `${dataRSem2[0].Posicao}°`
                       : '-'}
-                  </Box>
-                  <Box fontSize="12px" color="#781080" mt={1}>
-                    <Box
-                      height="100%"
-                      mt={0.2}
-                      display="flex"
-                      justifyContent="center"
-                      fontFamily="Fugaz One"
-                      alignItems="center"
-                    >
-                      <FcSearch size={20} />
-                    </Box>
                   </Box>
                 </Box>
               ) : (
@@ -2118,18 +2083,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                       ? `${dataRSem3[0].Posicao}°`
                       : '-'}
                   </Box>
-                  <Box fontSize="12px" color="#781080" mt={1}>
-                    <Box
-                      height="100%"
-                      mt={0.2}
-                      display="flex"
-                      justifyContent="center"
-                      fontFamily="Fugaz One"
-                      alignItems="center"
-                    >
-                      <FcSearch size={20} />
-                    </Box>
-                  </Box>
                 </Box>
               ) : (
                 '-'
@@ -2513,18 +2466,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     {dataRSem4.length && dataRSem4[0]
                       ? `${dataRSem4[0].Posicao}°`
                       : '-'}
-                  </Box>
-                  <Box fontSize="12px" color="#781080" mt={1}>
-                    <Box
-                      height="100%"
-                      mt={0.2}
-                      display="flex"
-                      justifyContent="center"
-                      fontFamily="Fugaz One"
-                      alignItems="center"
-                    >
-                      <FcSearch size={20} />
-                    </Box>
                   </Box>
                 </Box>
               ) : (
@@ -2910,18 +2851,6 @@ export default function TabCelula({ Mes, Ano, perfilUser }) {
                     {dataRSem5.length && dataRSem5[0]
                       ? `${dataRSem5[0].Posicao}°`
                       : '-'}
-                  </Box>
-                  <Box fontSize="12px" color="#781080" mt={1}>
-                    <Box
-                      height="100%"
-                      mt={0.2}
-                      display="flex"
-                      justifyContent="center"
-                      fontFamily="Fugaz One"
-                      alignItems="center"
-                    >
-                      <FcSearch size={20} />
-                    </Box>
                   </Box>
                 </Box>
               ) : (

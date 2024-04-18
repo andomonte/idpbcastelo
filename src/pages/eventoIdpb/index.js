@@ -25,10 +25,13 @@ function Home({ eventosIDPB }) {
   React.useEffect(() => {
     if (usuario) {
       setUsuarioF(usuario);
-
       sessionStorage.setItem('usuario', JSON.stringify(usuario));
     } else {
-      setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
+      const neValor = sessionStorage.getItem('usuario')
+        ? JSON.parse(sessionStorage.getItem('usuario'))
+        : '';
+      if (neValor) setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
+      sessionStorage.setItem('usuario', '');
     }
   }, [usuario]);
 
@@ -41,6 +44,7 @@ function Home({ eventosIDPB }) {
       setEventoSelecionadoF(eventoFinal);
     }
   }, [EventoF, eventosIDPB]);
+
   return (
     <div>
       {eventoSelecionadoF.length ? (

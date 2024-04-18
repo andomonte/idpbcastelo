@@ -123,7 +123,7 @@ function PesquisaCPF({ idPagamento }) {
             api
               .post('/api/cartaDelegadoConvencao', {
                 idPagamento,
-                cartaDelegado: `https://idpbparatinga.s3.amazonaws.com/secretaria/${idPagamento}`,
+                cartaDelegado: `https://cafinpi.s3.amazonaws.com/secretaria/${idPagamento}`,
                 // urlImage -> esse urlImage é o da imagem selecionada já em blob
               })
               .then((response2) => {
