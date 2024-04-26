@@ -67,12 +67,52 @@ function TelaLogin({ eventoSelecionado }) {
   const [adulto, setAdulto] = React.useState(0);
   const [criancas1, setCriancas1] = React.useState(0);
   const [criancas2, setCriancas2] = React.useState(0);
+  const [inscAdulto, setInscAdulto] = React.useState(0);
+  const [inscC1, setInscC1] = React.useState(0);
+  const [inscC2, setInscC2] = React.useState(0);
   const [posts, setPosts] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const cpfRef = React.useRef();
   const [valorAdultos, setValorAdultos] = React.useState(0);
   const [valorCriancas, setValorCriancas] = React.useState(0);
-
+  React.useEffect(async () => {
+    try {
+      const url = `${window.location.origin}/api/consultaInscritosEventosTipo/${eventoSelecionado.nomeEvento}`;
+      const res = await axios.get(url);
+      if (res.data && res.data.length) {
+        const newInscAdultos = res.data
+          .map((item) => {
+            if (item.qtyAdultos !== undefined) {
+              return item.qtyAdultos;
+            }
+            return 0;
+          })
+          .reduce((prev, curr) => prev + curr, 0);
+        const newInscC1 = res.data
+          .map((item) => {
+            if (item.qtyCriancas1 !== undefined) {
+              return item.qtyCriancas1;
+            }
+            return 0;
+          })
+          .reduce((prev, curr) => prev + curr, 0);
+        // setArray
+        const newInscC2 = res.data
+          .map((item) => {
+            if (item.qtyCriancas2 !== undefined) {
+              return item.qtyCriancas2;
+            }
+            return 0;
+          })
+          .reduce((prev, curr) => prev + curr, 0);
+        setInscAdulto(newInscAdultos);
+        setInscC1(newInscC1);
+        setInscC2(newInscC2);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
   React.useEffect(async () => {
     const dataAtualSistema = await dataSistema();
     const dataAtual = meuDataTimeBr(dataAtualSistema);
@@ -308,6 +348,7 @@ function TelaLogin({ eventoSelecionado }) {
                 width="100%"
                 sx={{ cursor: 'pointer' }}
               >
+                {console.log(eventoSelecionado.QtdVagaEvento)}
                 <Box display="flex" justifyContent="center">
                   <Box>ADULTO:</Box>
                   <Box ml={2} color="yellow">
@@ -377,109 +418,23 @@ function TelaLogin({ eventoSelecionado }) {
                   height={altura > 590 ? '53vh' : '46vh'}
                   width="100%"
                 >
-                  <Box>
-                    <Box
-                      width="90vw"
-                      ml={1}
-                      mr={1}
-                      minWidth={280}
-                      maxWidth={600}
-                      sx={{ fontSize: '10px' }}
-                      textAlign="center"
-                    >
+                  {inscAdulto + inscC1 + inscC2 <
+                    Number(eventoSelecionado.QtdVagaEvento) ||
+                  !eventoSelecionado.QtdVagaEvento ? (
+                    <Box>
                       <Box
-                        height={30}
-                        width="100%"
-                        mt={2} // não mexer
-                        ml={0}
-                        sx={{ fontWeight: 'bold', fontSize: '10px' }}
+                        width="90vw"
+                        ml={1}
+                        mr={1}
+                        minWidth={280}
+                        maxWidth={600}
+                        sx={{ fontSize: '10px' }}
                         textAlign="center"
                       >
-                        <Typography
-                          style={{
-                            fontSize: '14px',
-                            fontFamily: 'Fugaz One',
-                            color: '#fff',
-                            marginTop: -0,
-                          }}
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                        >
-                          ADULTOS (+ 12 ANOS)
-                        </Typography>
-                      </Box>
-                      <Box width="98%" display="flex" justifyContent="center">
-                        <Box width="100%">
-                          <Box
-                            height={40}
-                            style={{
-                              // fontWeight: 'bold',
-                              border: '2px solid #9e9e9e',
-                              borderRadius: 6,
-                              fontSize: '18px',
-                              fontFamily: 'Fugaz One',
-                              color: '#fff',
-                              marginTop: -0,
-                            }}
-                            display="flex"
-                            width="100%"
-                            alignItems="center"
-                            justifyContent="start"
-                            ml={0}
-                          >
-                            <Box
-                              display="flex"
-                              width="30%"
-                              height="100%"
-                              alignItems="center"
-                              justifyContent="start"
-                              onClick={() => {
-                                handleIncAdulto();
-                              }}
-                            >
-                              <BsFillPlusSquareFill size={35} />
-                            </Box>
-                            <Box
-                              display="flex"
-                              width="40%"
-                              height="100%"
-                              alignItems="center"
-                              justifyContent="center"
-                            >
-                              {adulto}
-                            </Box>
-                            <Box
-                              display="flex"
-                              width="30%"
-                              height="100%"
-                              alignItems="center"
-                              justifyContent="end"
-                              onClick={() => {
-                                handleDecAdulto();
-                              }}
-                            >
-                              <BsDashSquareFill size={35} />
-                            </Box>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box
-                      width="90vw"
-                      minWidth={280}
-                      maxWidth={600}
-                      mt={0}
-                      sx={{ fontSize: '10px' }}
-                      display={eventoSelecionado.TemCrianca ? 'flex' : 'none'}
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <Box width="100%">
                         <Box
                           height={30}
                           width="100%"
-                          // não mexer
+                          mt={2} // não mexer
                           ml={0}
                           sx={{ fontWeight: 'bold', fontSize: '10px' }}
                           textAlign="center"
@@ -495,30 +450,11 @@ function TelaLogin({ eventoSelecionado }) {
                             display="block"
                             gutterBottom
                           >
-                            QUANTIDADE DE CRIANÇAS
+                            ADULTOS (+ 12 ANOS)
                           </Typography>
                         </Box>
-                        <Box
-                          width="100%"
-                          display="flex"
-                          justifyContent="center"
-                        >
-                          <Box width="48%">
-                            <Box
-                              style={{
-                                fontSize: '12px',
-                                fontFamily: 'Fugaz One',
-                                color: '#fff',
-                                marginTop: -0,
-                              }}
-                              widt="100%"
-                              display="flex"
-                              justifyContent="center"
-                              ml={2}
-                            >
-                              ZERO - {eventoSelecionado.IdadeCriancasIsenta}{' '}
-                              ANOS
-                            </Box>
+                        <Box width="98%" display="flex" justifyContent="center">
+                          <Box width="100%">
                             <Box
                               height={40}
                               style={{
@@ -534,7 +470,7 @@ function TelaLogin({ eventoSelecionado }) {
                               width="100%"
                               alignItems="center"
                               justifyContent="start"
-                              ml={1}
+                              ml={0}
                             >
                               <Box
                                 display="flex"
@@ -543,7 +479,7 @@ function TelaLogin({ eventoSelecionado }) {
                                 alignItems="center"
                                 justifyContent="start"
                                 onClick={() => {
-                                  handleIncCriancas2();
+                                  handleIncAdulto();
                                 }}
                               >
                                 <BsFillPlusSquareFill size={35} />
@@ -555,7 +491,7 @@ function TelaLogin({ eventoSelecionado }) {
                                 alignItems="center"
                                 justifyContent="center"
                               >
-                                {criancas2}
+                                {adulto}
                               </Box>
                               <Box
                                 display="flex"
@@ -564,77 +500,7 @@ function TelaLogin({ eventoSelecionado }) {
                                 alignItems="center"
                                 justifyContent="end"
                                 onClick={() => {
-                                  handleDecCriancas2();
-                                }}
-                              >
-                                <BsDashSquareFill size={35} />
-                              </Box>
-                            </Box>
-                          </Box>
-
-                          <Box ml={2} mr={2} width="48%">
-                            <Box
-                              style={{
-                                // fontWeight: 'bold',
-                                fontSize: '12px',
-                                fontFamily: 'Fugaz One',
-                                color: '#fff',
-                                marginTop: -0,
-                              }}
-                              widt="100%"
-                              display="flex"
-                              justifyContent="center"
-                              ml={2}
-                            >
-                              DE {eventoSelecionado.IdadeCriancasIsenta + 1} -
-                              11 ANOS
-                            </Box>
-                            <Box
-                              height={40}
-                              style={{
-                                // fontWeight: 'bold',
-                                border: '2px solid #9e9e9e',
-                                borderRadius: 6,
-                                fontSize: '18px',
-                                fontFamily: 'Fugaz One',
-                                color: '#fff',
-                                marginTop: -0,
-                              }}
-                              display="flex"
-                              width="100%"
-                              alignItems="center"
-                              justifyContent="start"
-                              ml={1}
-                            >
-                              <Box
-                                display="flex"
-                                width="30%"
-                                height="100%"
-                                alignItems="center"
-                                justifyContent="start"
-                                onClick={() => {
-                                  handleIncCriancas1();
-                                }}
-                              >
-                                <BsFillPlusSquareFill size={35} />
-                              </Box>
-                              <Box
-                                display="flex"
-                                width="40%"
-                                height="100%"
-                                alignItems="center"
-                                justifyContent="center"
-                              >
-                                {criancas1}
-                              </Box>
-                              <Box
-                                display="flex"
-                                width="30%"
-                                height="100%"
-                                alignItems="center"
-                                justifyContent="end"
-                                onClick={() => {
-                                  handleDecCriancas1();
+                                  handleDecAdulto();
                                 }}
                               >
                                 <BsDashSquareFill size={35} />
@@ -643,120 +509,301 @@ function TelaLogin({ eventoSelecionado }) {
                           </Box>
                         </Box>
                       </Box>
-                    </Box>
-
-                    <Box width="100%" display="flex" justifyContent="center">
-                      <Box mt={3} width="100%">
-                        <Box mt={0}>
+                      <Box
+                        width="90vw"
+                        minWidth={280}
+                        maxWidth={600}
+                        mt={4}
+                        sx={{ fontSize: '10px' }}
+                        display={eventoSelecionado.TemCrianca ? 'flex' : 'none'}
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Box width="100%">
                           <Box
-                            mt={2}
+                            height={30}
+                            width="100%"
+                            // não mexer
                             ml={0}
                             sx={{ fontWeight: 'bold', fontSize: '10px' }}
-                            display="flex"
-                            justifyContent="center"
+                            textAlign="center"
                           >
                             <Typography
                               style={{
-                                fontFamily: 'Fugaz One',
-
                                 fontSize: '14px',
-                                color: 'white',
+                                fontFamily: 'Fugaz One',
+                                color: '#fff',
+                                marginTop: -0,
                               }}
                               variant="caption"
                               display="block"
                               gutterBottom
                             >
-                              DIGITE SEU CPF
+                              QUANTIDADE DE CRIANÇAS
                             </Typography>
                           </Box>
                           <Box
-                            mt={0}
                             width="100%"
                             display="flex"
                             justifyContent="center"
                           >
-                            <Box width="100$">
-                              <TextField
-                                autoComplete="off"
-                                id="CPF"
-                                type="tel"
-                                inputRef={cpfRef}
-                                style={{ width: '100%' }}
-                                className={classes.tf_s}
-                                inputProps={{
-                                  style: {
-                                    textAlign: 'center',
-                                  },
+                            <Box width="48%">
+                              <Box
+                                style={{
+                                  fontSize: '12px',
+                                  fontFamily: 'Fugaz One',
+                                  color: '#fff',
+                                  marginTop: -0,
                                 }}
-                                value={cpf}
-                                variant="outlined"
-                                placeholder="999.999.999-99"
-                                size="small"
-                                onKeyDown={handleEnter}
-                                onChange={(e) => {
-                                  setCPF(cpfMask(e.target.value));
+                                widt="100%"
+                                display="flex"
+                                justifyContent="center"
+                                ml={2}
+                              >
+                                ZERO - {eventoSelecionado.IdadeCriancasIsenta}{' '}
+                                ANOS
+                              </Box>
+                              <Box
+                                height={40}
+                                style={{
+                                  // fontWeight: 'bold',
+                                  border: '2px solid #9e9e9e',
+                                  borderRadius: 6,
+                                  fontSize: '18px',
+                                  fontFamily: 'Fugaz One',
+                                  color: '#fff',
+                                  marginTop: -0,
                                 }}
-                              />
+                                display="flex"
+                                width="100%"
+                                alignItems="center"
+                                justifyContent="start"
+                                ml={1}
+                              >
+                                <Box
+                                  display="flex"
+                                  width="30%"
+                                  height="100%"
+                                  alignItems="center"
+                                  justifyContent="start"
+                                  onClick={() => {
+                                    handleIncCriancas2();
+                                  }}
+                                >
+                                  <BsFillPlusSquareFill size={35} />
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  width="40%"
+                                  height="100%"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                >
+                                  {criancas2}
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  width="30%"
+                                  height="100%"
+                                  alignItems="center"
+                                  justifyContent="end"
+                                  onClick={() => {
+                                    handleDecCriancas2();
+                                  }}
+                                >
+                                  <BsDashSquareFill size={35} />
+                                </Box>
+                              </Box>
+                            </Box>
+
+                            <Box ml={2} mr={2} width="48%">
+                              <Box
+                                style={{
+                                  // fontWeight: 'bold',
+                                  fontSize: '12px',
+                                  fontFamily: 'Fugaz One',
+                                  color: '#fff',
+                                  marginTop: -0,
+                                }}
+                                widt="100%"
+                                display="flex"
+                                justifyContent="center"
+                                ml={2}
+                              >
+                                DE {eventoSelecionado.IdadeCriancasIsenta + 1} -
+                                11 ANOS
+                              </Box>
+                              <Box
+                                height={40}
+                                style={{
+                                  // fontWeight: 'bold',
+                                  border: '2px solid #9e9e9e',
+                                  borderRadius: 6,
+                                  fontSize: '18px',
+                                  fontFamily: 'Fugaz One',
+                                  color: '#fff',
+                                  marginTop: -0,
+                                }}
+                                display="flex"
+                                width="100%"
+                                alignItems="center"
+                                justifyContent="start"
+                                ml={1}
+                              >
+                                <Box
+                                  display="flex"
+                                  width="30%"
+                                  height="100%"
+                                  alignItems="center"
+                                  justifyContent="start"
+                                  onClick={() => {
+                                    handleIncCriancas1();
+                                  }}
+                                >
+                                  <BsFillPlusSquareFill size={35} />
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  width="40%"
+                                  height="100%"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                >
+                                  {criancas1}
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  width="30%"
+                                  height="100%"
+                                  alignItems="center"
+                                  justifyContent="end"
+                                  onClick={() => {
+                                    handleDecCriancas1();
+                                  }}
+                                >
+                                  <BsDashSquareFill size={35} />
+                                </Box>
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
+                      </Box>
 
-                        <Box width="100%" mt="5vh">
-                          <Box
-                            mb={0}
-                            display="flex"
-                            width="100%"
-                            justifyContent="center"
-                          >
-                            <Box>
-                              <Button
+                      <Box width="100%" display="flex" justifyContent="center">
+                        <Box mt={3} width="100%">
+                          <Box mt={0}>
+                            <Box
+                              mt={2}
+                              ml={0}
+                              sx={{ fontWeight: 'bold', fontSize: '10px' }}
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              <Typography
                                 style={{
-                                  borderRadius: 16,
-                                  background: '#ffdd55',
                                   fontFamily: 'Fugaz One',
-                                  width: 210,
-                                }}
-                                variant="contained"
-                                value="value"
-                                onClick={() => {
-                                  if (!loading) {
-                                    handleValida();
-                                  }
-                                }}
-                              >
-                                {!loading ? (
-                                  'FAZER INSCRIÇÃO'
-                                ) : (
-                                  <Box
-                                    width="100%"
-                                    height="100%"
-                                    alignItems="center"
-                                    display="flex"
-                                    justifyContent="center"
-                                  >
-                                    <Box>VERIFICANDO CPF</Box>
 
+                                  fontSize: '14px',
+                                  color: 'white',
+                                }}
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                              >
+                                DIGITE SEU CPF
+                              </Typography>
+                            </Box>
+                            <Box
+                              mt={0}
+                              width="100%"
+                              display="flex"
+                              justifyContent="center"
+                            >
+                              <Box width="100$">
+                                <TextField
+                                  autoComplete="off"
+                                  id="CPF"
+                                  type="tel"
+                                  inputRef={cpfRef}
+                                  style={{ width: '100%' }}
+                                  className={classes.tf_s}
+                                  inputProps={{
+                                    style: {
+                                      textAlign: 'center',
+                                    },
+                                  }}
+                                  value={cpf}
+                                  variant="outlined"
+                                  placeholder="999.999.999-99"
+                                  size="small"
+                                  onKeyDown={handleEnter}
+                                  onChange={(e) => {
+                                    setCPF(cpfMask(e.target.value));
+                                  }}
+                                />
+                              </Box>
+                            </Box>
+                          </Box>
+
+                          <Box width="100%" mt="5vh">
+                            <Box
+                              mb={0}
+                              display="flex"
+                              width="100%"
+                              justifyContent="center"
+                            >
+                              <Box>
+                                <Button
+                                  style={{
+                                    borderRadius: 16,
+                                    background: '#ffdd55',
+                                    fontFamily: 'Fugaz One',
+                                    width: 210,
+                                  }}
+                                  variant="contained"
+                                  value="value"
+                                  onClick={() => {
+                                    if (!loading) {
+                                      handleValida();
+                                    }
+                                  }}
+                                >
+                                  {!loading ? (
+                                    'FAZER INSCRIÇÃO'
+                                  ) : (
                                     <Box
+                                      width="100%"
                                       height="100%"
                                       alignItems="center"
                                       display="flex"
-                                      ml={2}
+                                      justifyContent="center"
                                     >
-                                      <Oval
-                                        stroke="black"
-                                        width={20}
-                                        height={20}
-                                      />
+                                      <Box>VERIFICANDO CPF</Box>
+
+                                      <Box
+                                        height="100%"
+                                        alignItems="center"
+                                        display="flex"
+                                        ml={2}
+                                      >
+                                        <Oval
+                                          stroke="black"
+                                          width={20}
+                                          height={20}
+                                        />
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                )}
-                              </Button>
+                                  )}
+                                </Button>
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
                       </Box>
                     </Box>
-                  </Box>
+                  ) : (
+                    'INSCRIÇÕES ESGOTADAS'
+                  )}
                   <ToastContainer
                     position="top-center"
                     autoClose={2000}

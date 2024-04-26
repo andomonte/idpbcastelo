@@ -564,13 +564,7 @@ function TelaLogin({ eventoSelecionado }) {
                                   ATENÇÃO!!!
                                 </Typography>
                               </Box>
-                              {console.log(
-                                'oi',
-                                eventoSelecionado,
-                                inscC2,
-                                inscC1,
-                                inscAdulto,
-                              )}
+
                               {inscC1 <
                                 Number(eventoSelecionado.QtdCriancaPagante) &&
                               inscC2 <
