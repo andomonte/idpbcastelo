@@ -20,7 +20,7 @@ const nextConfig = {
       'localhost',
       'idpbcastelo.s3.amazonaws.com',
       'idpbcastelo.com.br',
-      'arquivocastelo.s3.amazonaws.com',
+      'idpbamazonas.s3.amazonaws.com',
     ],
   },
 };

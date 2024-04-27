@@ -62,7 +62,7 @@ function meuPerfil({ secao, perfilUser }) {
 
     return 0;
   }, [inscritos]);
-  console.log('perfilUser', perfilUser);
+
   const process = async (selectedImage) => {
     try {
       const createFile = async (Myfile) => {
@@ -71,7 +71,7 @@ function meuPerfil({ secao, perfilUser }) {
         const metadata = {
           type: 'image/png',
         };
-        const nomeFoto = perfilUser.RolMembro;
+        const nomeFoto = `${perfilUser.Igreja}${perfilUser.RolMembro}`;
         const file = new File([data], perfilUser.RolMembro, metadata);
         const dataFile = new FormData();
         dataFile.append('file', file, nomeFoto);
@@ -83,7 +83,7 @@ function meuPerfil({ secao, perfilUser }) {
               api
                 .post('/api/imagePerfil', {
                   RolMembro: perfilUser.RolMembro,
-                  fileImage: `https://idpbcastelo.s3.amazonaws.com/secretaria/${nomeFoto}`,
+                  fileImage: `https://idpbamazonas.s3.amazonaws.com/membros/${nomeFoto}`,
                   // urlImage -> esse urlImage é o da imagem selecionada já em blob
                 })
                 .then((response2) => {

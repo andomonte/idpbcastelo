@@ -27,8 +27,6 @@ import PegaData from 'src/utils/getDataQuarta';
 
 import TabDiscipulado from './tabDiscipulado';
 
-
-
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 function createData(Rol, Nome, Presenca, status) {
@@ -281,9 +279,9 @@ function RelCelula({
           (val) =>
             val.Celula === Number(perfilUser.Celula) &&
             val.Distrito === Number(perfilUser.Distrito) &&
-            val.Distrito === Number(perfilUser.Distrito),
+            String(val.Data.slice(0, 4)) === String(AnoAtual),
         );
-
+        console.log('relatorio', relatorio, members);
         if (relatorio && relatorio.length) {
           const dataAgora = new Date();
           const date1 = moment(dataAgora);

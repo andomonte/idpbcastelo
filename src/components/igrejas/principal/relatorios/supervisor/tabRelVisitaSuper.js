@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Box, Button } from '@material-ui/core';
 // import PegaSemana from 'src/utils/getSemana';
 import api from 'src/components/services/api';
+// import PegaSemana from 'src/utils/getSemana';
 import Espera from 'src/utils/espera';
 import useSWR from 'swr';
 import axios from 'axios';
@@ -11,12 +12,12 @@ import corIgreja from 'src/utils/coresIgreja';
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import { MdScreenSearchDesktop, MdDeleteForever } from 'react-icons/md';
-import ConvertData from 'src/utils/convData2';
+import ConverteData from 'src/utils/convData2';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import Dialog from '@material-ui/core/Dialog';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Dialog from '@material-ui/core/Dialog';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 const theme = createTheme();
@@ -61,49 +62,49 @@ theme.typography.hs2 = {
 };
 export default function TabCelula({
   setSendResumo,
-  perfilUser,
   setDadosRelVisita,
   Mes,
   Ano,
-  coordenacoes,
+  perfilUser,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
   const [relEncontrado, setRelEncontrado] = React.useState([]);
   const [rel, setRel] = React.useState('nada');
   const [loading, setLoading] = React.useState(false);
-  const [idDeletar, setIdDeletar] = React.useState('');
   const [openDialog, setOpenDialog] = React.useState(false);
-  //  const [openRelatorio, setOpenRelatorio] = React.useState(false);
+  const [idDeletar, setIdDeletar] = React.useState('');
 
-  // para usar semanas
-
-  const url1 = `/api/consultaRelatorioSupervisao/${Mes}/${Ano}`;
+  const url1 = `/api/consultaRelSuperVisita/${Mes}/${Ano}`;
 
   const { data: sem1, errorSem1, mutate } = useSWR(url1, fetcher);
 
   React.useEffect(() => {
     setRel('nada');
+    let listaRelSuper;
     setRelEncontrado([]);
 
     if (sem1) {
       setRel(sem1);
+      if (sem1) {
+        setRel(sem1);
+        if (sem1 && sem1.length && sem1[0].Nome) {
+          listaRelSuper = sem1.filter(
+            (val) =>
+              Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
+              Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+              Number(val.Distrito) === Number(perfilUser.Distrito) &&
+              val.Funcao === perfilUser.Funcao,
+          );
 
-      if (sem1 && sem1.length && sem1[0].Nome) {
-        const listaRelSuper = sem1?.filter(
-          (val) =>
-            Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
-            Number(val.Distrito) === Number(perfilUser.Distrito) &&
-            val.Funcao === perfilUser.Funcao,
-        );
-
-        if (listaRelSuper && listaRelSuper.length) {
-          const listaMinhaVisitas = listaRelSuper.sort((a, b) => {
-            if (new Date(a.Data) > new Date(b.Data)) return 1;
-            if (new Date(b.Data) > new Date(a.Data)) return -1;
-            return 0;
-          });
-          if (listaMinhaVisitas.length) setRelEncontrado(listaMinhaVisitas);
+          if (listaRelSuper && listaRelSuper.length) {
+            const listaMinhaVisitas = listaRelSuper.sort((a, b) => {
+              if (new Date(a.Data) > new Date(b.Data)) return 1;
+              if (new Date(b.Data) > new Date(a.Data)) return -1;
+              return 0;
+            });
+            if (listaMinhaVisitas.length) setRelEncontrado(listaMinhaVisitas);
+          }
         }
       }
     }
@@ -113,6 +114,7 @@ export default function TabCelula({
     return 0;
   }, [sem1]);
 
+  //= ==================================================================
   const handleDelete = (row) => {
     if (row.id) {
       setOpenDialog(true);
@@ -121,7 +123,7 @@ export default function TabCelula({
   };
   const handleConfirmeDelete = () => {
     api
-      .post('/api/deletarRelAcompanhamento', {
+      .post('/api/deletarRelVisita', {
         id: idDeletar,
       })
       .then((response) => {
@@ -142,52 +144,69 @@ export default function TabCelula({
         setLoading(false);
       });
   };
-  //= ==================================================================
-
   return (
     <Box height="100%">
-      <Box
-        bgcolor="#80cbc4"
-        sx={{
-          fontFamily: 'arial black',
-          fontSize: '13px',
-          borderBottom: '1px solid #000',
-          borderTopLeftRadius: '16px',
-          borderTopRightRadius: '16px',
-        }}
-        height={40}
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="25%"
-        >
-          DATA
-        </Box>
-
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          textAlign="center"
-          width="60%"
-        >
-          COORDENAÇÃO
-        </Box>
-        <Box textAlign="center" width="15%">
-          VER
-        </Box>
-      </Box>
       <ThemeProvider theme={theme}>
-        <Typography variant="hs4">
+        <Typography variant="hs3">
+          <Box
+            bgcolor="#80cbc4"
+            sx={{
+              fontFamily: 'arial black',
+              borderBottom: '1px solid #000',
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+            }}
+            height="5vh"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="20%"
+            >
+              CÉL.
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="30%"
+              sx={{
+                borderLeft: '1px solid #000',
+                borderRight: '1px solid #000',
+              }}
+            >
+              DATA
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              textAlign="center"
+              width="35%"
+              sx={{
+                borderRight: '1px solid #000',
+              }}
+            >
+              RANKING
+            </Box>
+            <Box textAlign="center" width="15%">
+              VER
+            </Box>
+          </Box>
+        </Typography>
+      </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Typography variant="hs3">
           {rel !== 'nada' ? (
             <TableContainer sx={{ maxHeight: 290 }}>
               {relEncontrado && Object.keys(relEncontrado).length > 0 ? (
@@ -212,19 +231,34 @@ export default function TabCelula({
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <Box width="25%">
-                          <Box
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            height="100%"
-                            textAlign="center"
-                            width="100%"
-                          >
-                            {relEncontrado[index]
-                              ? ConvertData(relEncontrado[index].Data) // relEncontrado[index].CelulaVisitada.slice(8, 11)
-                              : '-'}
-                          </Box>
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          height="100%"
+                          textAlign="center"
+                          width="20%"
+                        >
+                          {relEncontrado[index]
+                            ? relEncontrado[index].CelulaVisitada.slice(9, 11)
+                            : '-'}
+                        </Box>
+
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          height="100%"
+                          textAlign="center"
+                          width="30%"
+                          sx={{
+                            borderLeft: '1px solid #000',
+                            borderRight: '1px solid #000',
+                          }}
+                        >
+                          {relEncontrado[index].Data
+                            ? ConverteData(relEncontrado[index].Data)
+                            : '-'}
                         </Box>
                         <Box
                           display="flex"
@@ -232,37 +266,32 @@ export default function TabCelula({
                           alignItems="center"
                           height="100%"
                           textAlign="center"
-                          width="60%"
+                          width="35%"
                           sx={{
                             borderRight: '1px solid #000',
-                            borderLeft: '1px solid #000',
                           }}
                         >
-                          <Box
-                            display="flex"
-                            justifyContent="start"
-                            alignItems="center"
-                            height="100%"
-                            color="red"
-                            width="20%"
-                            onClick={() => handleDelete(row)}
-                          >
-                            <MdDeleteForever size={20} />
-                          </Box>
                           {relEncontrado[index] ? (
-                            <Box color="blue" display="flex">
+                            <Box
+                              color="blue"
+                              display="flex"
+                              justifyContent="start"
+                            >
+                              <Box
+                                mr={1}
+                                ml={-2}
+                                display="flex"
+                                justifyContent="start"
+                                alignItems="center"
+                                height="100%"
+                                color="red"
+                                onClick={() => handleDelete(row)}
+                              >
+                                <MdDeleteForever size={20} />
+                              </Box>
                               <Box>
-                                {relEncontrado !== '' &&
-                                perfilUser.Coordenacao ? (
-                                  <Box>
-                                    {
-                                      coordenacoes?.filter(
-                                        (val) =>
-                                          Number(val.Coordenacao) ===
-                                          Number(relEncontrado[0].Coordenacao),
-                                      )[0].Coordenacao_Nome
-                                    }
-                                  </Box>
+                                {relEncontrado[index].Ranking ? (
+                                  <Box> {relEncontrado[index].Ranking}</Box>
                                 ) : (
                                   ''
                                 )}
@@ -281,22 +310,24 @@ export default function TabCelula({
                           width="15%"
                         >
                           {relEncontrado[index].Data ? (
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                              onClick={() => {
-                                setDadosRelVisita(relEncontrado[index]);
-                                setSendResumo(true);
-                              }}
-                            >
-                              <SvgIcon sx={{ color: corIgreja.iconeOn }}>
-                                <MdScreenSearchDesktop
-                                  size={25}
-                                  color="green"
-                                />
-                              </SvgIcon>
-                            </IconButton>
+                            <Box display="flex">
+                              <IconButton
+                                color="primary"
+                                aria-label="upload picture"
+                                component="span"
+                                onClick={() => {
+                                  setDadosRelVisita(relEncontrado[index]);
+                                  setSendResumo(true);
+                                }}
+                              >
+                                <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                                  <MdScreenSearchDesktop
+                                    size={25}
+                                    color="green"
+                                  />
+                                </SvgIcon>
+                              </IconButton>
+                            </Box>
                           ) : (
                             '-'
                           )}
@@ -310,7 +341,7 @@ export default function TabCelula({
                   height="30vh"
                   display="flex"
                   justifyContent="center"
-                  alignItems="center"
+                  alignItems="end"
                   fontFamily="Fugaz One"
                 >
                   SEM RELATÓRIOS

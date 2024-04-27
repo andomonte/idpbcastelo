@@ -65,7 +65,7 @@ export default function TabCelula({
   setDadosRelVisita,
   Mes,
   Ano,
-  coordenacoes,
+  supervisoes,
 }) {
   // const dados = nomesCelulas.map((row) => createData(row.Nome, true));
 
@@ -92,6 +92,7 @@ export default function TabCelula({
       if (sem1 && sem1.length && sem1[0].Nome) {
         const listaRelSuper = sem1?.filter(
           (val) =>
+            Number(val.Supervisao) === Number(perfilUser.Supervisao) &&
             Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
             Number(val.Distrito) === Number(perfilUser.Distrito) &&
             val.Funcao === perfilUser.Funcao,
@@ -167,7 +168,7 @@ export default function TabCelula({
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="25%"
+          width="30%"
         >
           DATA
         </Box>
@@ -178,16 +179,16 @@ export default function TabCelula({
           alignItems="center"
           height="100%"
           textAlign="center"
-          width="60%"
+          width="55%"
         >
-          COORDENAÇÃO
+          SUPERVISÃO
         </Box>
         <Box textAlign="center" width="15%">
           VER
         </Box>
       </Box>
       <ThemeProvider theme={theme}>
-        <Typography variant="hs4">
+        <Typography variant="hs3">
           {rel !== 'nada' ? (
             <TableContainer sx={{ maxHeight: 290 }}>
               {relEncontrado && Object.keys(relEncontrado).length > 0 ? (
@@ -212,7 +213,7 @@ export default function TabCelula({
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <Box width="25%">
+                        <Box width="30%">
                           <Box
                             display="flex"
                             justifyContent="center"
@@ -232,7 +233,7 @@ export default function TabCelula({
                           alignItems="center"
                           height="100%"
                           textAlign="center"
-                          width="60%"
+                          width="55%"
                           sx={{
                             borderRight: '1px solid #000',
                             borderLeft: '1px solid #000',
@@ -253,14 +254,14 @@ export default function TabCelula({
                             <Box color="blue" display="flex">
                               <Box>
                                 {relEncontrado !== '' &&
-                                perfilUser.Coordenacao ? (
+                                perfilUser.Supervisao ? (
                                   <Box>
                                     {
-                                      coordenacoes?.filter(
+                                      supervisoes?.filter(
                                         (val) =>
-                                          Number(val.Coordenacao) ===
-                                          Number(relEncontrado[0].Coordenacao),
-                                      )[0].Coordenacao_Nome
+                                          Number(val.Supervisao) ===
+                                          Number(relEncontrado[0].Supervisao),
+                                      )[0].Supervisao_Nome
                                     }
                                   </Box>
                                 ) : (
@@ -310,7 +311,7 @@ export default function TabCelula({
                   height="30vh"
                   display="flex"
                   justifyContent="center"
-                  alignItems="center"
+                  alignItems="end"
                   fontFamily="Fugaz One"
                 >
                   SEM RELATÓRIOS
