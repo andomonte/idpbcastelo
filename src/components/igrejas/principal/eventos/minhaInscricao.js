@@ -9,7 +9,7 @@ import meuDataTimeBr from 'src/utils/meuDataTimeBrasilia';
 
 import dataSistema from 'src/utils/pegaDataAtual';
 import { makeStyles } from '@material-ui/core/styles';
-import ListaInscritos from './listaInscritos';
+import MinhaLista from './minhaLista';
 
 const useStyles = makeStyles((theme) => ({
   ajustFont1: {
@@ -96,7 +96,7 @@ function Eventos({ perfilUser, nomesIgrejas }) {
       >
         <Box height="100%" width="100%">
           {todos.length ? (
-            <ListaInscritos
+            <MinhaLista
               perfilUser={perfilUser}
               eventos={todos}
               dataAtual={dataAtual}

@@ -10,12 +10,14 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRouter } from 'next/router';
 import corIgreja from 'src/utils/coresIgreja';
 import clsx from 'clsx';
+import { FaRegAddressBook } from 'react-icons/fa';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { MdOutlineEventNote } from 'react-icons/md';
 import { GiArchiveRegister } from 'react-icons/gi';
 import SvgIcon from '@mui/material/SvgIcon';
 import Evento from './eventos';
+import Evento1 from './minhaInscricao';
 import Evento2 from './inscritos';
 
 const useStyles = makeStyles((theme) => ({
@@ -116,10 +118,17 @@ function TabPanel(props) {
   );
 }
 
-function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
+function Eventos({
+  numeroPagina,
+  usuario,
+  title,
+  perfilUser,
+  rolMembros,
+  nomesIgrejas,
+}) {
   const classes = useStyles();
   const router = useRouter();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(Number(numeroPagina) || 0);
   const [loading, setLoading] = React.useState(false);
   const theme = useTheme();
 
@@ -168,23 +177,54 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
             (perfilUser.Funcao &&
               (perfilUser.Funcao === 'Membro' ||
                 perfilUser.Funcao === 'Professor')) ? (
-              <Box
-                width="100%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height={50}
-              >
-                <Box
-                  ml={2}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={50}
-                  fontFamily="Fugaz One"
+              <Box display="flex">
+                <BottomNavigation
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  showLabels
+                  className={classes.rootTopbarIcon}
                 >
-                  LISTA DOS EVENTOS
-                </Box>
+                  <BottomNavigationAction
+                    style={
+                      value === 0
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Eventos"
+                    icon={
+                      value === 0 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <MdOutlineEventNote />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <MdOutlineEventNote />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 1
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="minha Inscrição"
+                    icon={
+                      value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaRegAddressBook />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <FaRegAddressBook />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                </BottomNavigation>
               </Box>
             ) : (
               <Box display="flex">
@@ -215,16 +255,34 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
                       )
                     }
                   />
-
                   <BottomNavigationAction
                     style={
                       value === 1
                         ? { color: corIgreja.iconeOn, fontSize: '12px' }
                         : { color: '#eeeeee', fontSize: '12px' }
                     }
-                    label="Inscritos"
+                    label="minha Inscrição"
                     icon={
                       value === 1 ? (
+                        <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                          <FaRegAddressBook />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                          <FaRegAddressBook />
+                        </SvgIcon>
+                      )
+                    }
+                  />
+                  <BottomNavigationAction
+                    style={
+                      value === 2
+                        ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                        : { color: '#eeeeee', fontSize: '12px' }
+                    }
+                    label="Inscritos"
+                    icon={
+                      value === 2 ? (
                         <SvgIcon sx={{ color: corIgreja.iconeOn }}>
                           <GiArchiveRegister />
                         </SvgIcon>
@@ -258,6 +316,13 @@ function Eventos({ usuario, title, perfilUser, rolMembros, nomesIgrejas }) {
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
+            <Evento1
+              nomesIgrejas={nomesIgrejas}
+              rolMembros={rolMembros}
+              perfilUser={perfilUser}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
             <Evento2
               nomesIgrejas={nomesIgrejas}
               rolMembros={rolMembros}
