@@ -392,6 +392,16 @@ function RelCelula({
   };
   React.useEffect(() => {
     const diaSemana = dataAtual.getDay();
+    const ano2 = contAno;
+    const contSemanaAtual = contSemana - 1;
+    const diaF = PegaQuarta(contSemanaAtual, ano2).getDate();
+    const mesF = PegaQuarta(contSemanaAtual, ano2).getMonth();
+    const anoF = PegaQuarta(contSemanaAtual, ano2).getFullYear();
+
+    const diaFF = diaF > 9 ? diaF : `0${diaF}`;
+    const mesFF = mesF + 1 > 9 ? mesF + 1 : `0${mesF + 1}`;
+    const dtFinal = `${diaFF}/${mesFF}/${anoF}`;
+    setDataEnviada(dtFinal);
 
     if (diaSemana !== 1 && diaSemana !== 2) handleDecSemana();
   }, []);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Button } from '@material-ui/core';
-import corIgreja from 'src/utils/coresIgreja';
+import corIgreja from 'src/utils/coresIgreja2';
 import TableContainer from '@mui/material/TableContainer';
 import useSWR from 'swr';
 import axios from 'axios';
