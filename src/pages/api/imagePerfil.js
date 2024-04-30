@@ -10,7 +10,7 @@ export default async function handle(req, res) {
   // const Image = fs.readFileSync(dados.fileImage);
 
   try {
-    await prisma.membros
+    const posts = await prisma.membros
       .update({
         where: { RolMembro: Number(dados.RolMembro) },
         data: {
@@ -21,7 +21,11 @@ export default async function handle(req, res) {
         await prisma.$disconnect();
       });
 
-    res.send('ok');
+    res.send(
+      JSON.stringify(posts, (_, v) =>
+        typeof v === 'bigint' ? v.toString() : v,
+      ),
+    );
   } catch (errors) {
     console.log('erros', errors);
     res.status(400).send('vou criar o banco');
