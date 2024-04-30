@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import corIgreja from 'src/utils/coresIgreja2';
+import corIgreja from 'src/utils/coresIgreja';
 import { Oval } from 'react-loading-icons';
 import '@fontsource/rubik';
 
