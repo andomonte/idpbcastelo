@@ -281,7 +281,7 @@ function RelCelula({
             val.Distrito === Number(perfilUser.Distrito) &&
             String(val.Data.slice(0, 4)) === String(AnoAtual),
         );
-        console.log('relatorio', relatorio, members);
+
         if (relatorio && relatorio.length) {
           const dataAgora = new Date();
           const date1 = moment(dataAgora);

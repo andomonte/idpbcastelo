@@ -8,12 +8,12 @@ const Cores = createTheme({
   principal2: '#B55E5E',
   secundaria: '#fafafa',
   tercenaria: '#3f51b5',
-
+  fundo: '#e1f5fe',
   iconeOn: '#ffff8d',
   iconeOff: '#eeee',
   textoP: '#fff9c4',
   textoS: '#fafafa',
-  button1: '#e1f5fe',
+  button1: '#3f51b5',
   button2: '#e65100',
 
   logo: 'images/castelo/logo.png',

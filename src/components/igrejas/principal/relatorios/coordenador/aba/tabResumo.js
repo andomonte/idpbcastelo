@@ -14,8 +14,6 @@ import Emojis from 'src/components/icones/emojis';
 import PegaSemanaAtual from 'src/utils/getSemanaAtual';
 import { makeStyles } from '@material-ui/core/styles';
 
-
-
 const useStyles = makeStyles((theme) => ({
   fontResponsive: {
     fontSize: '3vw',

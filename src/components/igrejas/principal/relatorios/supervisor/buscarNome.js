@@ -16,8 +16,6 @@ import Meses from 'src/utils/mesesAbrev';
 
 import ResumoParticipacao from '../../equipe/abas/tabBuscar';
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
