@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import corIgreja from 'src/utils/coresIgreja';
-
-
+import corIgreja from 'src/utils/coresIgreja2';
 
 const style = {
   position: 'absolute',

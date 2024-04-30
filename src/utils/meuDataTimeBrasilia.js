@@ -9,7 +9,7 @@ function FormataStringData(data) {
   const minuto = horario.split(':')[1];
   const segundos = horario.split(':')[2];
   const segundo = segundos.split('.')[0];
-  // console.log('horario', horario);
+
   const dataFinal = new Date(ano, mes, dia, hora, minuto, segundo, 0);
 
   return dataFinal;
