@@ -390,7 +390,12 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
                             )}
                           </ListItemAvatar>
                           <Box>
-                            <ListItemText style={{ marginTop: 20 }}>
+                            <ListItemText
+                              style={{
+                                marginTop:
+                                  row.pulseira === 'entregue' ? 10 : 20,
+                              }}
+                            >
                               <Box
                                 style={{
                                   display: 'flex',
@@ -446,6 +451,35 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
                                               : 0}
                                           </Box>
                                         </Box>
+                                      </Box>
+                                    </Typography>
+                                  </ThemeProvider>
+                                </Box>
+                              </Box>
+
+                              <Box
+                                style={{
+                                  display: 'flex',
+                                  marginLeft: 10,
+                                  fontFamily: 'Rubik',
+                                  fontWeight: 'bold',
+                                  fontSize: '12px',
+                                  color: '#000',
+                                }}
+                              >
+                                {console.log('row', row)}
+                                <Box
+                                  ml={0.2}
+                                  display={
+                                    row.pulseira === 'entregue'
+                                      ? 'flex'
+                                      : 'none'
+                                  }
+                                >
+                                  <ThemeProvider theme={theme}>
+                                    <Typography variant="hs4">
+                                      <Box display="flex" color="red">
+                                        RECEBEU A PULSEIRA:{' '}
                                       </Box>
                                     </Typography>
                                   </ThemeProvider>
