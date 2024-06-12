@@ -1202,9 +1202,9 @@ export default function Pontuacao({
           mb={2}
         >
           <ThemeProvider theme={theme}>
-            <Typography variant="hs2">
+            <Typography variant="hs4">
               <Box display="flex">
-                <Box>DESEMPENHO DE</Box>
+                <Box>RANK ENTRE</Box>
                 <Box ml={1} color="yellow">
                   {pontosCelulasT.length}
                 </Box>
@@ -1216,6 +1216,7 @@ export default function Pontuacao({
             </Typography>
           </ThemeProvider>
         </Box>
+
         {semanaF >= semana ? (
           <TableContainer sx={{ height: '100%' }}>
             {listaFinal && listaFinal.length && !loading ? (

@@ -232,7 +232,7 @@ function TelaLogin({ eventoSelecionado }) {
         const pixPendente = posts.filter(
           (val) => val.status === 'pending' && val.Fpagamento === 'pix',
         );
-        console.log('insc', eventoSelecionado, adulto);
+
         if (inscrito.length && adulto) {
           setLoading(false);
           toast.info('JÁ EXISTE UMA COMPRA NESSE CPF !', {

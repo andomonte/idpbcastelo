@@ -826,7 +826,7 @@ const home = ({ perfilUser }) => {
                     <FaChartBar color="#f0f0f0" size={35} />
                   )}
                 </Box>
-                <Box fontSize="12px">PONTUAÇÃO</Box>
+                <Box fontSize="12px">DESEMPENHO</Box>
               </Box>
             </Box>
           </Box>

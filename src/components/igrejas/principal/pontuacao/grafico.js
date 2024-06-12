@@ -22,6 +22,7 @@ export default function Grafico({
   ano,
   dadosCelula,
   distritos,
+  contNumeroDistrito,
 }) {
   const pontosCelula = pontosCelulas.filter(
     (val) => val.Celula === dados.Celula && val.Distrito === dados.Distrito,
@@ -237,7 +238,7 @@ export default function Grafico({
           </Box>
           <Box mt={1} fontFamily="Fugaz One" fontSize="14px">
             {distritos.length && dadosCelula.distrito
-              ? distritos[dadosCelula.distrito].Distrito_Nome
+              ? distritos[contNumeroDistrito].Distrito_Nome
               : 'SEM'}
           </Box>
         </Box>

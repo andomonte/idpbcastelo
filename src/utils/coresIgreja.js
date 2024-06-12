@@ -13,6 +13,7 @@ const Cores = createTheme({
   iconeOff: '#eeee',
   textoP: '#fff9c4',
   textoS: '#fafafa',
+  fundo1: '#ffff8d',
   button1: '#3f51b5',
   button2: '#e65100',
 

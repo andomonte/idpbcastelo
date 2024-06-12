@@ -5,20 +5,25 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Box from '@material-ui/core/Box';
 import { useRouter } from 'next/router';
-import { TiArrowBack } from 'react-icons/ti';
-
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Box from '@material-ui/core/Box';
 import { Oval } from 'react-loading-icons';
-
+// import HomeIcon from '@material-ui/icons/Home';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { BsTrophyFill, BsFileBarGraph } from 'react-icons/bs';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { TiArrowBack } from 'react-icons/ti';
+import SvgIcon from '@mui/material/SvgIcon';
 import corIgreja from 'src/utils/coresIgreja';
+import { MdFormatListNumbered } from 'react-icons/md';
 
-// import Carrossel from '../carrossel';
-// import GoogleMaps from './googleMap';
 import Pontuacao from './pontuacao';
+import Desempenho from './feitoPeloLider';
+import Grafico from './graficos';
+// import GoogleMaps from './googleMap';
+// import Pesquisar from './pesquisar';
 
-const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   rootTopbarIcon: {
     justifyContent: 'space-around',
@@ -37,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: corIgreja.principal,
     boxShadow: 'none',
     zIndex: theme.zIndex.drawer + 1,
+    height: 56,
   },
   toolbar: {
     minHeight: 56,
@@ -49,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
     height: 28,
   },
   logo: {
-    height: 25,
-    marginLeft: theme.spacing(2),
+    height: 35,
+    marginTop: 0,
   },
   avatar: {
     cursor: 'pointer',
@@ -69,15 +75,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  contentShiftMain: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: +drawerWidth,
-    },
-  },
+
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
@@ -108,7 +106,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Secretaria({
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={0}>{children}</Box>}
+    </div>
+  );
+}
+
+function Aniversariantes({
   coordenacoes,
   parametros,
   perfilUser,
@@ -119,13 +133,15 @@ function Secretaria({
   celulas,
 }) {
   const classes = useStyles();
+  const router = useRouter();
+  const [value, setValue] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const router = useRouter();
+
   const [open, setOpen] = React.useState(false);
 
-  const [loading, setLoading] = React.useState(false);
   const handleVoltar = () => {
     setLoading(true);
     router.back();
@@ -148,7 +164,7 @@ function Secretaria({
       <div className={classes.root}>
         <AppBar className={classes.root2}>
           <Toolbar className={classes.toolbar}>
-            <Box width="10%" display="flex" alignItems="center">
+            <Box display="flex" alignItems="center">
               <Box display="flex" alignItems="center" onClick={handleVoltar}>
                 {loading ? (
                   <Box>
@@ -159,14 +175,75 @@ function Secretaria({
                 )}
               </Box>
             </Box>
-            <Box
-              fontFamily="Fugaz One"
-              width="90%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              PONTUAÇÃO DAS CÉLULAS
+
+            <Box display="flex">
+              <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                showLabels
+                className={classes.rootTopbarIcon}
+              >
+                <BottomNavigationAction
+                  style={
+                    value === 0
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Desempenho"
+                  icon={
+                    value === 0 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <BsTrophyFill />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                        <BsTrophyFill />
+                      </SvgIcon>
+                    )
+                  }
+                />
+
+                <BottomNavigationAction
+                  style={
+                    value === 1
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Participações"
+                  icon={
+                    value === 1 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <MdFormatListNumbered />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: corIgreja.iconeOff }}>
+                        <MdFormatListNumbered />
+                      </SvgIcon>
+                    )
+                  }
+                />
+                <BottomNavigationAction
+                  style={
+                    value === 2
+                      ? { color: corIgreja.iconeOn, fontSize: '12px' }
+                      : { color: '#eeeeee', fontSize: '12px' }
+                  }
+                  label="Gráficos"
+                  icon={
+                    value === 2 ? (
+                      <SvgIcon sx={{ color: corIgreja.iconeOn }}>
+                        <BsFileBarGraph />
+                      </SvgIcon>
+                    ) : (
+                      <SvgIcon sx={{ color: '#eeeeee' }}>
+                        <BsFileBarGraph />
+                      </SvgIcon>
+                    )
+                  }
+                />
+              </BottomNavigation>
             </Box>
           </Toolbar>
         </AppBar>
@@ -179,19 +256,43 @@ function Secretaria({
           <div className={classes.drawerHeader} />
           {/* {children} */}
 
-          <Pontuacao
-            lideranca={lideranca}
-            supervisoes={supervisao}
-            parametros={parametros}
-            perfilUser={perfilUser}
-            coordenacoes={coordenacoes}
-            distritos={distritos}
-            celulas={celulas}
-          />
+          <TabPanel value={value} index={0} className={classes.tabPanel}>
+            <Pontuacao
+              lideranca={lideranca}
+              supervisoes={supervisao}
+              parametros={parametros}
+              perfilUser={perfilUser}
+              coordenacoes={coordenacoes}
+              distritos={distritos}
+              celulas={celulas}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Desempenho
+              lideranca={lideranca}
+              supervisoes={supervisao}
+              parametros={parametros}
+              perfilUser={perfilUser}
+              coordenacoes={coordenacoes}
+              distritos={distritos}
+              celulas={celulas}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Grafico
+              lideranca={lideranca}
+              supervisoes={supervisao}
+              parametros={parametros}
+              perfilUser={perfilUser}
+              coordenacoes={coordenacoes}
+              distritos={distritos}
+              celulas={celulas}
+            />
+          </TabPanel>
         </main>
       </div>
     </div>
   );
 }
 
-export default Secretaria;
+export default Aniversariantes;
