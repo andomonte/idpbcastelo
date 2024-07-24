@@ -6,8 +6,6 @@ import { BiCaretLeft, BiCaretRight } from 'react-icons/bi';
 
 import TabMeusCursos from './tabMeusCursos';
 
-
-
 function RelCelula({ perfilUser }) {
   //= ================================================================
   const d = new Date();

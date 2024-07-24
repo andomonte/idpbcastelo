@@ -65,7 +65,7 @@ function ordenaArray(a, b) {
 }
 const somatorio = (presDisc, valor, qytSemanas, semana) => {
   const newDados = [];
-
+  // sem1, 'Adultos', qytSemanas, tiposSemana
   let dados;
   semana?.map((val) => {
     dados = presDisc?.filter((val2) => val2.Semana === val);
@@ -95,7 +95,6 @@ export default function TabCelula({
   celulaSetor,
 }) {
   // const dados = nomesCelulas?.map((row) => createData(row.Nome, true));
-
   const [adultosCel, setAdultosCel] = React.useState(0);
   const [criancasCel, setCriancasCel] = React.useState(0);
   const [visCCel, setVisCCel] = React.useState(0);
@@ -137,12 +136,13 @@ export default function TabCelula({
   React.useEffect(() => {
     const newTCel = [];
     for (let i = 0; i < adultosCel.length; i += 1) {
-      newTCel.push(
-        Number(adultosCel[i]) +
-          Number(criancasCel[i]) +
-          Number(visACel[i]) +
-          Number(visCCel[i]),
-      );
+      if (adultosCel && criancasCel && visACel && visCCel)
+        newTCel.push(
+          Number(adultosCel[i]) +
+            Number(criancasCel[i]) +
+            Number(visACel[i]) +
+            Number(visCCel[i]),
+        );
     }
 
     setTotalCel(newTCel);
@@ -150,12 +150,13 @@ export default function TabCelula({
   React.useEffect(() => {
     const newTCeleb = [];
     for (let i = 0; i < adultosCeleb.length; i += 1) {
-      newTCeleb.push(
-        Number(adultosCeleb[i]) +
-          Number(criancasCeleb[i]) +
-          Number(visACeleb[i]) +
-          Number(visCCeleb[i]),
-      );
+      if (adultosCeleb && criancasCeleb && visACeleb && visCCeleb)
+        newTCeleb.push(
+          Number(adultosCeleb[i]) +
+            Number(criancasCeleb[i]) +
+            Number(visACeleb[i]) +
+            Number(visCCeleb[i]),
+        );
     }
     setTotalCeleb(newTCeleb);
   }, [adultosCeleb, criancasCeleb, visACeleb, visCCeleb]);
@@ -170,6 +171,7 @@ export default function TabCelula({
       const sem1 = sem1I?.filter(
         (val) => val.Semana >= semanaI && val.Semana <= semanaF,
       );
+
       if (sem1 && sem1[0]) {
         if (
           distritos.Distrito_Nome === 'TODOS OS DISTRITOS' &&
@@ -192,7 +194,6 @@ export default function TabCelula({
                 return !duplicatedPerson;
               });
               tiposSemana?.sort(ordenaArray);
-
               setPeriodo(tiposSemana);
 
               setAdultosCel(
@@ -204,11 +205,14 @@ export default function TabCelula({
               setVisACel(
                 somatorio(sem1, 'Visitantes', qytSemanas, tiposSemana),
               );
+
               setVisCCel(
                 somatorio(sem1, 'NomesVisitantes', qytSemanas, tiposSemana),
               );
-              console.log('sem1', sem1);
-              setConvCel(somatorio(sem1, 'Conversoes', 1, tiposSemana));
+              setConvCel(
+                somatorio(sem1, 'Conversoes', qytSemanas, tiposSemana),
+              );
+
               setEventos(
                 somatorio(sem1, 'PresentesEventos', qytSemanas, tiposSemana),
               );
@@ -247,11 +251,20 @@ export default function TabCelula({
               setVisACel(
                 somatorio(sem1F, 'Visitantes', qytSemanas, tiposSemana),
               );
+
               setVisCCel(
                 somatorio(sem1F, 'NomesVisitantes', qytSemanas, tiposSemana),
               );
 
-              setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+              setConvCel(
+                somatorio(sem1F, 'Conversoes', qytSemanas, tiposSemana),
+              );
+
+              setEventos(
+                somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+              );
+              setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
+
               // ('dist 0 e coor 0 e super 1');
             }
           } else {
@@ -304,6 +317,11 @@ export default function TabCelula({
               );
 
               setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+              setEventos(
+                somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+              );
+              setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
+
               // ('dist 0 e coor 0 e super 1');
             } else {
               const sem1F = [];
@@ -344,6 +362,11 @@ export default function TabCelula({
               );
 
               setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+              setEventos(
+                somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+              );
+              setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
+
               // ('dist 0 e coor 0 e super 1');
             }
           }
@@ -379,7 +402,11 @@ export default function TabCelula({
               somatorio(sem1F, 'NomesVisitantes', qytSemanas, tiposSemana),
             );
 
-            setVisCCel(setConvCel(sem1F, 'Conversoes', 1, tiposSemana));
+            setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+            setEventos(
+              somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+            );
+            setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
           } else {
             const sem1F = [];
             sem1?.map((val) => {
@@ -414,7 +441,12 @@ export default function TabCelula({
               somatorio(sem1F, 'NomesVisitantes', qytSemanas, tiposSemana),
             );
 
-            setVisCCel(setConvCel(sem1F, 'Conversoes', 1, tiposSemana));
+            setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+            setEventos(
+              somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+            );
+            setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
+
             // ('dist 0 e coor 0 e super 1');
           }
         } else {
@@ -458,11 +490,19 @@ export default function TabCelula({
               somatorio(sem1F, 'Criancas', qytSemanas, tiposSemana),
             );
             setVisACel(somatorio(sem1F, 'Visitantes', qytSemanas, tiposSemana));
+            console.log(
+              'aqui',
+              somatorio(sem1F, 'NomesVisitantes', qytSemanas, tiposSemana),
+            );
             setVisCCel(
               somatorio(sem1F, 'NomesVisitantes', qytSemanas, tiposSemana),
             );
 
-            setVisCCel(setConvCel(sem1F, 'Conversoes', 1, tiposSemana));
+            setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+            setEventos(
+              somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+            );
+            setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
           } else {
             const sem1F = [];
             sem1?.map((val) => {
@@ -497,7 +537,12 @@ export default function TabCelula({
               somatorio(sem1F, 'NomesVisitantes', qytSemanas, tiposSemana),
             );
 
-            setVisCCel(setConvCel(sem1F, 'Conversoes', 1, tiposSemana));
+            setConvCel(somatorio(sem1F, 'Conversoes', 1, tiposSemana));
+            setEventos(
+              somatorio(sem1F, 'PresentesEventos', qytSemanas, tiposSemana),
+            );
+            setVisitas(somatorio(sem1F, 'Visitas', qytSemanas, tiposSemana));
+
             // ('dist 1 e coor 1 e super 1');
           }
         }
@@ -508,7 +553,16 @@ export default function TabCelula({
 
     if (!sem1I) return <Espera descricao="Buscando os Dados" />;
     return 0;
-  }, [sem1I, numeroCelula, distritos, coordenacoes, supervisoes, celulaSetor]);
+  }, [
+    semanaI,
+    semanaF,
+    sem1I,
+    numeroCelula,
+    distritos,
+    coordenacoes,
+    supervisoes,
+    celulaSetor,
+  ]);
 
   React.useEffect(() => {
     // pegar a quantidade de semanas do periodo selecionado
@@ -750,9 +804,7 @@ export default function TabCelula({
               ),
             );
 
-            setVisCCeleb(
-              setConvCeleb(celebracaoF, 'Conversoes', 1, tiposSemana),
-            );
+            setConvCeleb(somatorio(celebracaoF, 'Conversoes', 1, tiposSemana));
           } else {
             const celebracaoF = [];
             celebracao?.map((val) => {
@@ -794,9 +846,7 @@ export default function TabCelula({
               ),
             );
 
-            setVisCCeleb(
-              setConvCeleb(celebracaoF, 'Conversoes', 1, tiposSemana),
-            );
+            setConvCeleb(somatorio(celebracaoF, 'Conversoes', 1, tiposSemana));
             // ('dist 0 e coor 0 e super 1');
           }
         } else {
@@ -851,9 +901,7 @@ export default function TabCelula({
               ),
             );
 
-            setVisCCeleb(
-              setConvCeleb(celebracaoF, 'Conversoes', 1, tiposSemana),
-            );
+            setConvCeleb(somatorio(celebracaoF, 'Conversoes', 1, tiposSemana));
           } else {
             const celebracaoF = [];
             celebracao?.map((val) => {
@@ -895,9 +943,7 @@ export default function TabCelula({
               ),
             );
 
-            setVisCCeleb(
-              setConvCeleb(celebracaoF, 'Conversoes', 1, tiposSemana),
-            );
+            setConvCeleb(somatorio(celebracaoF, 'Conversoes', 1, tiposSemana));
             // ('dist 1 e coor 1 e super 1');
           }
         }
@@ -1503,7 +1549,6 @@ export default function TabCelula({
           </Box>
         </Box>
       )}
-      {console.log('periodo', periodo, totalCel, totalCeleb)}
 
       <Dialog fullScreen open={openAdulto}>
         <TabGrafico

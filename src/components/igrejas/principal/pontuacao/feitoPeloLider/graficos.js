@@ -83,7 +83,8 @@ export default function Pontuacao({
   pontosMes,
 }) {
   let CelulasCoord;
-  if (coordenacao.Coordenacao_Nome === 'TODAS AS COORDENAÇÕES') {
+
+  if (coordenacao && coordenacao.Coordenacao_Nome === 'TODAS AS COORDENAÇÕES') {
     CelulasCoord = supervisao?.filter(
       (val) => Number(val.Distrito) === Number(distrito.Distrito),
     );

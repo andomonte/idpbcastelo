@@ -171,7 +171,9 @@ function RelCelula({
   let newContCoord = 0;
   let newContSuper = 0;
   let newContCelula = 0;
-
+  const newCoord = novaCoord.filter(
+    (val) => val.Distrito === Number(perfilUser.Distrito),
+  );
   if (perfilUser.Funcao === 'PastorDistrito') {
     distritos.map((val, index) => {
       if (
@@ -194,16 +196,16 @@ function RelCelula({
       }
       return 0;
     });
-
-    novaCoord.map((val, index) => {
-      if (
-        Number(val.Distrito) === Number(perfilUser.Distrito) &&
-        Number(val.Coordenacao) === Number(perfilUser.Coordenacao)
-      ) {
-        newContCoord = index + 1;
-      }
-      return 0;
-    });
+    if (newCoord.length > 1)
+      novaCoord.map((val, index) => {
+        if (
+          Number(val.Distrito) === Number(perfilUser.Distrito) &&
+          Number(val.Coordenacao) === Number(perfilUser.Coordenacao)
+        ) {
+          newContCoord = index + 1;
+        }
+        return 0;
+      });
   }
 
   if (perfilUser.Funcao === 'Supervisor') {
@@ -216,16 +218,16 @@ function RelCelula({
       }
       return 0;
     });
-
-    novaCoord.map((val, index) => {
-      if (
-        Number(val.Distrito) === Number(perfilUser.Distrito) &&
-        Number(val.Coordenacao) === Number(perfilUser.Coordenacao)
-      ) {
-        newContCoord = index + 1;
-      }
-      return 0;
-    });
+    if (newCoord.length > 1)
+      novaCoord.map((val, index) => {
+        if (
+          Number(val.Distrito) === Number(perfilUser.Distrito) &&
+          Number(val.Coordenacao) === Number(perfilUser.Coordenacao)
+        ) {
+          newContCoord = index + 1;
+        }
+        return 0;
+      });
 
     const newSuper = supervisoes.filter(
       (val) =>
@@ -257,16 +259,16 @@ function RelCelula({
       }
       return 0;
     });
-
-    novaCoord.map((val, index) => {
-      if (
-        Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
-        Number(val.Distrito) === Number(perfilUser.Distrito)
-      ) {
-        newContCoord = index + 1;
-      }
-      return 0;
-    });
+    if (newCoord.length > 1)
+      novaCoord.map((val, index) => {
+        if (
+          Number(val.Coordenacao) === Number(perfilUser.Coordenacao) &&
+          Number(val.Distrito) === Number(perfilUser.Distrito)
+        ) {
+          newContCoord = index + 1;
+        }
+        return 0;
+      });
     const newSuper = supervisoes.filter(
       (val) =>
         Number(val.Distrito) === Number(perfilUser.Distrito) &&
