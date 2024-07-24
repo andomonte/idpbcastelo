@@ -37,6 +37,7 @@ function Sec({
       setPerfilUserF(result);
     }
   }, []);
+
   return (
     <div>
       {perfilUserF && (
