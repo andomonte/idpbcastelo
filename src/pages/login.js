@@ -107,6 +107,7 @@ export default function Login({ providers2, rolMembros }) {
             }
             return 0;
           });
+          console.log('user', user, authState);
           if (user && user.length) {
             setPageState((old) => ({ ...old, processing: true, error: '' }));
             signIn('credentials', {

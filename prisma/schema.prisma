@@ -58,7 +58,7 @@ model celulas {
   Coordenacao   Int       @default(0, map: "DF__celulas__Coorden__412EB0B6")
   Status        Boolean   @default(true, map: "DF__celulas_Status_DefaultValueByAdapter")
 
-  @@id([Celula, Supervisao, Coordenacao, Distrito], map: "PK_celulas")
+  @@id([Celula, Distrito], map: "PK_celulas")
 }
 
 model contribuicoes {
@@ -117,18 +117,19 @@ model distrito {
 }
 
 model eventos {
-  id       Int      @id(map: "PK_EVENTOS1") @unique(map: "id_UNIQUE") @default(autoincrement())
-  Data     DateTime @db.DateTime
-  Horario  String?  @db.VarChar(5)
-  Evento   String   @db.Text
-  Local    String?  @db.Text
-  Distrito Int?     @default(0, map: "DF__eventos__Distrit__5BE2A6F2")
-  Mes      Int?     @default(0, map: "DF__eventos__Mes__5CD6CB2B")
-  Ano      Int?     @default(0, map: "DF__eventos__Ano__5DCAEF64")
-  Objetivo String?  @db.Text
-  Publico  String?  @db.VarChar(45)
-  Numero   Int?     @default(0, map: "DF__eventos__Numero__5EBF139D")
-  Funcao   String?  @db.VarChar(100)
+  id          Int      @id(map: "PK_EVENTOS1") @unique(map: "id_UNIQUE") @default(autoincrement())
+  Data        DateTime @db.DateTime
+  Horario     String?  @db.VarChar(5)
+  Evento      String   @db.Text
+  Local       String?  @db.Text
+  Distrito    Int?     @default(0, map: "DF__eventos__Distrit__5BE2A6F2")
+  Mes         Int?     @default(0, map: "DF__eventos__Mes__5CD6CB2B")
+  Ano         Int?     @default(0, map: "DF__eventos__Ano__5DCAEF64")
+  Objetivo    String?  @db.Text
+  Publico     String?  @db.VarChar(45)
+  Numero      Int?     @default(0, map: "DF__eventos__Numero__5EBF139D")
+  Funcao      String?  @db.VarChar(100)
+  Responsavel String?  @db.VarChar(255)
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
@@ -184,6 +185,8 @@ model eventosGeral {
   Pix                  Boolean   @default(false, map: "DF__eventosGeral_Pix_DefaultValueByAdapter")
   codIgreja            String?   @db.VarChar(10)
   id                   Int       @id(map: "PK_eventosGeral") @default(autoincrement())
+  QtdCriancaIsenta     BigInt?   @default(0, map: "DF__eventosGe__QtdCr__353DDB1D")
+  QtdCriancaPagante    BigInt?   @default(0, map: "DF__eventosGe__QtdCr__3631FF56")
 }
 
 model funcao {
@@ -217,6 +220,7 @@ model igreja {
   tesoureiro           String?   @db.VarChar(500)
   jurisdicao           String?   @db.VarChar(250)
   contaibilidadeIDPBAM Boolean   @default(true, map: "DF__igreja__contaibi__57C7FD4B")
+  contador             String?   @db.VarChar(250)
 }
 
 model inscritosCursos {
@@ -224,8 +228,8 @@ model inscritosCursos {
   idTurma         BigInt    @default(0, map: "DF__inscritos__idTur__6E01572D")
   codigoCurso     BigInt    @default(0, map: "DF__inscritos__codig__6EF57B66")
   Curso           String    @db.VarChar(255)
-  DataCurso       DateTime  @db.DateTime
-  Documento       String    @default("0", map: "DF__inscritos__Docum__6FE99F9F") @db.VarChar(50)
+  DataCurso       DateTime? @db.DateTime
+  Documento       String?   @default("0", map: "DF__inscritosCursos_Documento_DefaultValueByAdapter") @db.VarChar(50)
   RolMembro       Int       @default(0, map: "DF__inscritos__RolMe__70DDC3D8")
   Nome            String    @db.VarChar(255)
   Nascimento      DateTime? @db.Date
@@ -243,7 +247,7 @@ model inscritosCursos {
   forma_pagamento String?   @db.VarChar(50)
   participante    String?   @db.VarChar(50)
 
-  @@id([codigoCurso, Documento, RolMembro], map: "PK_inscritosCursos")
+  @@id([idTurma, RolMembro], map: "PK_inscritosCursos")
 }
 
 model inscritosEventosGeral {
@@ -487,9 +491,12 @@ model relSupervisao {
 }
 
 model TB_CATEGORIA {
-  CAT_ID   BigInt @id(map: "PK_TB_CATEGORIA")
-  CAT_NOME String @db.VarChar(100)
-  GC_ID    BigInt
+  CAT_ID      BigInt
+  CAT_NOME    String  @db.VarChar(100)
+  GC_ID       BigInt
+  plano_conta BigInt?
+
+  @@id([CAT_ID, GC_ID], map: "PK_TB_CATEGORIA")
 }
 
 model TB_CENTRO_CUSTO {
@@ -499,10 +506,11 @@ model TB_CENTRO_CUSTO {
 }
 
 model TB_CONTA {
-  CT_NOME String  @db.VarChar(100)
-  CC_ID   BigInt  @default(0, map: "DF__TB_CONTA__CC_ID__5B988E2F")
-  Status  Boolean @default(true, map: "DF__TB_CONTA__Status__5C8CB268")
-  CT_ID   BigInt  @id(map: "PK_TB_CONTA") @default(autoincrement())
+  CT_NOME    String  @db.VarChar(100)
+  CC_ID      BigInt  @default(0, map: "DF__TB_CONTA__CC_ID__5B988E2F")
+  Status     Boolean @default(true, map: "DF__TB_CONTA__Status__5C8CB268")
+  CT_ID      BigInt  @id(map: "PK_TB_CONTA") @default(autoincrement())
+  planoconta BigInt? @default(0, map: "DF__TB_CONTA__planoc__4850AF91")
 }
 
 model TB_CORRENTISTA {
@@ -555,6 +563,9 @@ model TB_LANCAMENTO {
   mesRecebido             BigInt?   @default(0, map: "DF__TB_LANCAM__mesRe__2FBA0BF1")
   DataRecebido            DateTime? @db.Date
   codIgreja               String?   @db.VarChar(10)
+  anoCompetencia          BigInt    @default(0, map: "DF__TB_LANCAM__anoCo__66D536B1")
+  mesCompetencia          BigInt    @default(0, map: "DF__TB_LANCAM__mesCo__67C95AEA")
+  ID_TRIBUTOS             BigInt?   @default(0, map: "DF__TB_LANCAM__ID_TR__68BD7F23")
 }
 
 model TB_LOGIN_DEVICE {
@@ -776,7 +787,6 @@ model TB_REL_FECHAMENTO {
 }
 
 model desempenho {
-  id             Int  @id(map: "PK_desempenho") @default(0, map: "DF__desempenho_id_DefaultValueByAdapter")
   Relatorios     Int? @default(0, map: "DF__desempenho_Relatorios_DefaultValueByAdapter")
   PresCelulas    Int? @default(0, map: "DF__desempenho_PresCelulas_DefaultValueByAdapter")
   PresCelebracao Int? @default(0, map: "DF__desempenho_PresCelebracao_DefaultValueByAdapter")
@@ -788,6 +798,7 @@ model desempenho {
   Eventos        Int? @default(0, map: "DF__desempenho_Eventos_DefaultValueByAdapter")
   Planejamento   Int? @default(0, map: "DF__desempenho_Planejamento_DefaultValueByAdapter")
   NovoMembro     Int? @default(0, map: "DF__desempenho_NovoMembro_DefaultValueByAdapter")
+  id             Int  @id(map: "PK_desempenho") @default(autoincrement())
 }
 
 model TB_MESES_FECHAMENTO_IGREJA {
@@ -837,4 +848,26 @@ model inscritosEventosIgreja {
   qtyCriancas2    Int?      @default(0, map: "DF__inscritosEventosIgreja_qtyCriancas2_DefaultValueByAdapter")
   transporte      String?   @db.VarChar(250)
   pulseira        String?   @db.VarChar(50)
+}
+
+model TB_LANC_TRIB {
+  ID_TRIBUTOS BigInt  @default(0, map: "DF__TB_LANC_T__ID_TR__5C57A83E")
+  valor       Decimal @default(0, map: "DF__TB_LANC_T__valor__5D4BCC77") @db.Decimal(10, 2)
+  GC_ID       BigInt  @default(0, map: "DF__TB_LANC_T__GC_ID__5E3FF0B0")
+
+  @@id([ID_TRIBUTOS, GC_ID], map: "PK_TB_LANC_TRIB")
+}
+
+model TB_TRIBUTOS_AM_NACIONAL {
+  GC_ID        BigInt   @default(0, map: "DF__TB_TRIBUT__GC_ID__60283922")
+  GC_NOME      String   @db.VarChar(255)
+  CAT_ID       BigInt   @default(0, map: "DF__TB_TRIBUT__CAT_I__611C5D5B")
+  CAT_NOME     String   @db.VarChar(255)
+  Mes          BigInt   @default(0, map: "DF__TB_TRIBUTOS__Mes__62108194")
+  Ano          BigInt   @default(0, map: "DF__TB_TRIBUTOS__Ano__6304A5CD")
+  valor_apagar Decimal? @default(0, map: "DF__TB_TRIBUT__valor__63F8CA06") @db.Decimal(10, 2)
+  valor_pago   Decimal? @default(0, map: "DF__TB_TRIBUT__valor__64ECEE3F") @db.Decimal(10, 2)
+  Diferenca    Decimal? @default(0, map: "DF__TB_TRIBUT__Difer__65E11278") @db.Decimal(10, 2)
+
+  @@id([GC_ID, CAT_ID, Mes, Ano], map: "PK_TB_TRIBUTOS_AM_NACIONAL")
 }
