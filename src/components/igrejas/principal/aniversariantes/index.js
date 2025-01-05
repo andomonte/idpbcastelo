@@ -22,6 +22,7 @@ import { MdGroups } from 'react-icons/md';
 import Aniversarios from './aniversarios';
 import Aniversarios2 from './aniversarios2';
 import Aniversarios3 from './aniversarios3';
+
 // import GoogleMaps from './googleMap';
 // import Pesquisar from './pesquisar';
 
@@ -151,7 +152,6 @@ function Aniversariantes({ distritos, rolMembros, title, perfilUser }) {
         <meta charSet="utf-8" />
         <meta httpEquiv="content-language" content="pt-Br" />
         <meta name="google" content="notranslate" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
       <div className={classes.root}>

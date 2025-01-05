@@ -108,22 +108,34 @@ function BuscarAniversariantes({ distritos, rolMembros }) {
       'DD/MM/YYYY',
     );
 
-    const dataInicialb = converteData(semanaAtualb);
-    const dataFinalb = converteData(semanaSegunteb);
-
     const niverGeralValidob = rolMembros.filter(
       (results) => results.Nascimento !== null && results.Nascimento.length > 8,
     );
+    const niverGeralb = [];
+    niverGeralValidob.map((val) => {
+      const dia = val.Nascimento.split('-')[2].split('T')[0];
+      const mes = val.Nascimento.split('-')[1];
+      const diaSI = semanaAtualb.split('/')[0];
+      const mesSI = semanaAtualb.split('/')[1];
+      const anoSI = semanaAtualb.split('/')[2];
+      const diaSF = semanaSegunteb.split('/')[0];
+      const mesSF = semanaSegunteb.split('/')[1];
+      const anoSF = semanaSegunteb.split('/')[2];
+      const ano = anoSF > anoSI ? anoSF : anoSI;
+      const dataNiver = Number(
+        Number(dia) + Number(mes) * 30 + Number(ano) * 1000,
+      );
+      const dataI = Number(
+        Number(diaSI) + Number(mesSI) * 30 + Number(anoSI) * 1000,
+      );
+      const dataF = Number(
+        Number(diaSF) + Number(mesSF) * 30 + Number(anoSF) * 1000,
+      );
 
-    const niverGeralb = niverGeralValidob.filter(
-      (results) =>
-        converteData(
-          moment(results.Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
-        ) >= dataInicialb &&
-        converteData(
-          moment(results.Nascimento.substring(0, 10)).format('DD/MM/YYYY'),
-        ) <= dataFinalb,
-    );
+      if (dataNiver >= dataI && dataNiver <= dataF) niverGeralb.push(val);
+      return 0;
+    });
+
     setNiverSetorOrdenado(niverGeralb.sort(compare));
   }, [contSemana]);
   return (
