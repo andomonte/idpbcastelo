@@ -55,8 +55,9 @@ function PesquisaCPF({ dadosInscrito, membros }) {
     if (dadosInscrito.cpf) {
       try {
         const newCPF = cpfMask(dadosInscrito.cpf);
-        const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${dadosInscrito.Evento}/${dadosInscrito.cpf}`;
+        const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${dadosInscrito.Evento}/${newCPF}`;
         const res = await axios.post(url, { newCPF });
+        console.log('oi inscritos', newCPF);
         if (res.data && res.data.length) {
           const inscrito = res.data.filter(
             (val) =>
@@ -92,6 +93,18 @@ function PesquisaCPF({ dadosInscrito, membros }) {
           );
 
         if (inscrito.length) {
+          const totalC1 = inscrito.reduce(
+            (acc, valor) =>
+              acc + Number(valor.qtyCriancas1 ? valor.qtyCriancas1 : 0),
+            0,
+          );
+
+          const totalAd = inscrito.reduce(
+            (acc, valor) =>
+              acc + Number(valor.qtyAdultos ? valor.qtyAdultos : 0),
+            0,
+          );
+
           if (inscrito[0].status === 'approved') {
             // limitar nomes até 30 caracteres ou ultimo espaço antes de 30
 
@@ -127,9 +140,8 @@ function PesquisaCPF({ dadosInscrito, membros }) {
             setMatricula(inscrito[0].idPagamento);
             setTransporte(inscrito[0].transporte);
             setEstadia(inscrito[0].Estadia);
-            setAdultos(inscrito[0].qtyAdultos);
-            if (inscrito[0].qtyCriancas1 !== null)
-              setCriancas(Number(inscrito[0].qtyCriancas1));
+            setAdultos(totalAd);
+            setCriancas(totalC1);
             setIdPagamento(inscrito[0].CPF);
             setCartaDelegado(inscrito[0].cartaDelegado);
             let fotoInscrito = inscrito[0].Image;

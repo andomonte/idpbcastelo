@@ -70,7 +70,7 @@ function TelaLogin({ eventoSelecionado }) {
   const [inscAdulto, setInscAdulto] = React.useState(0);
   const [inscC1, setInscC1] = React.useState(0);
   const [inscC2, setInscC2] = React.useState(0);
-  const [posts, setPosts] = React.useState('');
+  // const [posts, setPosts] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const cpfRef = React.useRef();
   const [valorAdultos, setValorAdultos] = React.useState(0);
@@ -212,7 +212,7 @@ function TelaLogin({ eventoSelecionado }) {
     if (contCriancas2 < 0) contCriancas2 = 0;
     setCriancas2(contCriancas2);
   };
-  const handleVerificarInscrito = async () => {
+  /* const handleVerificarInscrito = async () => {
     try {
       const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${eventoSelecionado.nomeEvento}/${cpf}`;
       const res = await axios.get(url);
@@ -230,9 +230,9 @@ function TelaLogin({ eventoSelecionado }) {
       );
       setLoading(false);
     }
-  };
+  }; */
 
-  React.useEffect(async () => {
+  /*  React.useEffect(async () => {
     if (posts) {
       if (posts.length > 0) {
         const inscrito = posts.filter((val) => val.status === 'approved');
@@ -255,7 +255,7 @@ function TelaLogin({ eventoSelecionado }) {
         } else entrarNoJogo();
       } else entrarNoJogo(); // setOpenDrawerInval(true);
     }
-  }, [posts]);
+  }, [posts]); */
   //= ================================================
   const handleValida = () => {
     let valCPF = false;
@@ -267,7 +267,7 @@ function TelaLogin({ eventoSelecionado }) {
       if (cpf.length > 0) {
         valCPF = ValidaCPF(valorCPF);
 
-        if (valCPF) handleVerificarInscrito();
+        if (valCPF) entrarNoJogo();
         else {
           setLoading(false);
           toast.error('ESSE CPF NÃO EXISTE !', {
