@@ -24,7 +24,6 @@ function FazerInscricoes({ rolMembros, nomesIgrejas }) {
         perfilUser={perfilUser}
         title="IDPB"
         numeroPagina={Evento}
-        usuario={perfilUser.rolMembros}
       />
     </div>
   );

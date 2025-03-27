@@ -201,9 +201,6 @@ function createListaIgrejas(value, label, jurisdicao) {
 
 function Home({ dados, nomesIgrejas }) {
   const classes = useStyles();
-  const usuario = sessionStorage.getItem('usuario')
-    ? JSON.parse(sessionStorage.getItem('usuario'))
-    : '';
   // const router = useRouter();
 
   const [nome, setNome] = React.useState('');
@@ -268,14 +265,15 @@ function Home({ dados, nomesIgrejas }) {
   const temHospedagem = eventoSelecionado.Hospedagem;
 
   const arrayFP = [];
-  if (eventoSelecionado.total) {
+  console.log('eventoSelecionado', dados);
+  if (dados.qtyA > 0 || dados.qtyC1 > 0) {
     if (eventoSelecionado.CartaoCredito)
       arrayFP.push({ label: 'Cartão de Crédito', value: 0 });
     if (eventoSelecionado.Pix) arrayFP.push({ label: 'Pix', value: 1 });
 
     if (eventoSelecionado.Boleto) arrayFP.push({ label: 'Boleto', value: 2 });
 
-    if (eventoSelecionado.Dinheiro && usuario)
+    if (eventoSelecionado.Dinheiro)
       arrayFP.push({ label: 'Dinheiro (apenas secretaria)', value: 3 });
   } else arrayFP.push({ label: 'Isento de Pagamento', value: 0 });
   const opcoesFPagamento = arrayFP;
@@ -652,7 +650,7 @@ function Home({ dados, nomesIgrejas }) {
           estadia,
           transporte: transporte.label,
           Responsavel: 'Adulto',
-          Secretaria: usuario || '',
+          Secretaria: codigoSecretaria || '',
           Evento: eventoSelecionado.nomeEvento,
           Jurisdicao: igrejaEscolhida.NomeJurisdicao
             ? igrejaEscolhida.NomeJurisdicao
