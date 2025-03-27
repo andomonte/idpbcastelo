@@ -77,10 +77,11 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
 
   React.useEffect(async () => {
     try {
-      const url = `${window.location.origin}/api/consultaInscritosEventosTipo/${evento.Evento}`;
+      const url = `${window.location.origin}/api/consultaInscritosEventosTipo/${evento.nomeEvento}`;
       const res = await axios.get(url);
 
       if (res.data) {
+        console.log('veio', evento.Evento);
         setListaInscritos(res.data);
       }
     } catch (err) {

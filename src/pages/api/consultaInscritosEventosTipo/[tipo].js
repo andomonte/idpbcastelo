@@ -28,7 +28,7 @@ export default async function handle(req, res) {
     res.statuCode = 200;
     res.setHeader('Content-Type', 'aplication/json');
     //  res.end(JSON.stringify({ posts }));
-
+    console.log('posts', posts, tipo);
     res.json(posts);
   } catch (error) {
     console.log(error);
