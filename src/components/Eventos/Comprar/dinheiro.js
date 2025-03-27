@@ -12,7 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import corIgreja from 'src/utils/coresIgreja';
 // import { RepeatOneSharp } from '@material-ui/icons';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 import { Oval } from 'react-loading-icons';
 
@@ -107,8 +106,8 @@ function Boleto({ dadosDinheiro }) {
     // window.location.reload();
   };
 
-  const fazerCadastro = () => {
-    api
+  const fazerCadastro = async () => {
+    await api
       .post('/api/cadastroDinheiroEvento', {
         nome,
         cpf,
@@ -170,27 +169,11 @@ function Boleto({ dadosDinheiro }) {
 
   React.useEffect(async () => {
     try {
-      const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${Evento}/${cpf}`;
-      const res = await axios.get(url);
-
-      if (res.data && res.data.length) {
-        const inscrito = res.data.filter(
-          (val) =>
-            val.status === 'approved' &&
-            val.CPF.replace(/([^0-9])/g, '') === cpf.replace(/([^0-9])/g, ''),
-        );
-
-        if (inscrito.length)
-          router.push({
-            pathname: './meuTicket',
-            query: { cpf },
-          });
-        else {
-          fazerCadastro();
-        }
-      } else {
-        fazerCadastro();
-      }
+      await fazerCadastro();
+      router.push({
+        pathname: './meuTicket',
+        query: { cpf, Evento },
+      });
     } catch (err) {
       console.log(err);
     }

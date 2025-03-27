@@ -1,13 +1,13 @@
 export default function CheckCodigo(codigoSecretaria) {
   let check = false;
   if (
-    codigoSecretaria === 'AM2142' ||
-    codigoSecretaria === 'AM2345' ||
-    codigoSecretaria === 'AM1238' ||
-    codigoSecretaria === 'NAC5916' ||
-    codigoSecretaria === 'NAC1614' ||
-    codigoSecretaria === 'NCOR652' ||
-    codigoSecretaria === 'COR562'
+    codigoSecretaria === 'CB2040' ||
+    codigoSecretaria === 'UV4325' ||
+    codigoSecretaria === 'CS1008' ||
+    codigoSecretaria === 'BP5256' ||
+    codigoSecretaria === 'CB1712' ||
+    codigoSecretaria === 'CB6652' ||
+    codigoSecretaria === 'CB5562'
   )
     check = true;
   return check;

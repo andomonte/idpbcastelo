@@ -9,7 +9,6 @@ function Compra() {
 
   const [eventoSelecionadoF, setEventoSelecionadoF] = React.useState('');
   const [usuarioF, setUsuarioF] = React.useState('');
-
   React.useEffect(() => {
     if (eventoSelecionado) {
       setEventoSelecionadoF(JSON.parse(eventoSelecionado));
@@ -36,6 +35,8 @@ function Compra() {
   if (typeof window !== 'undefined') {
     window.history.replaceState(null, '', '/eventoIdpb/comprar');
   }
+  console.log('aqui usuario', usuario, usuarioF);
+
   return (
     <div>
       {eventoSelecionadoF ? (

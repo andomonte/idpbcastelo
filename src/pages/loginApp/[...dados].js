@@ -20,7 +20,6 @@ export default function Login() {
   const url1 = `/api/consultaMembros`;
   const { data: rolMembros } = useSWR(url1, fetcher);
   const handleAuth = async () => {
-    
     if (authState.password.length > 3 && authState.cpf.length) {
       try {
         const user = rolMembros?.filter((val) => {
@@ -32,14 +31,13 @@ export default function Login() {
           }
           return 0;
         });
-        
+
         if (user && user.length) {
           signIn('credentials', {
             ...authState,
             redirect: false,
           })
             .then((response) => {
-             
               if (response.ok && response.error === null) {
                 // Authenticate user
 

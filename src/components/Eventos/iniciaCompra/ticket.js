@@ -44,6 +44,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
   const [igreja, setIgreja] = React.useState('');
   const [adultos, setAdultos] = React.useState('');
   const [criancas, setCriancas] = React.useState('');
+  const [isentos, setIsentos] = React.useState('');
   const [membrosF, setMembrosF] = React.useState('');
 
   const [idPagamento, setIdPagamento] = React.useState('');
@@ -57,7 +58,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
         const newCPF = cpfMask(dadosInscrito.cpf);
         const url = `${window.location.origin}/api/consultaInscEventosAMCPF/${dadosInscrito.Evento}/${newCPF}`;
         const res = await axios.post(url, { newCPF });
-        console.log('oi inscritos', newCPF);
+
         if (res.data && res.data.length) {
           const inscrito = res.data.filter(
             (val) =>
@@ -96,6 +97,11 @@ function PesquisaCPF({ dadosInscrito, membros }) {
           const totalC1 = inscrito.reduce(
             (acc, valor) =>
               acc + Number(valor.qtyCriancas1 ? valor.qtyCriancas1 : 0),
+            0,
+          );
+          const totalC2 = inscrito.reduce(
+            (acc, valor) =>
+              acc + Number(valor.qtyCriancas2 ? valor.qtyCriancas2 : 0),
             0,
           );
 
@@ -142,6 +148,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
             setEstadia(inscrito[0].Estadia);
             setAdultos(totalAd);
             setCriancas(totalC1);
+            setIsentos(totalC2);
             setIdPagamento(inscrito[0].CPF);
             setCartaDelegado(inscrito[0].cartaDelegado);
             let fotoInscrito = inscrito[0].Image;
@@ -555,7 +562,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                             </Box>
                           </Box>
                         </Box>
-                        {console.log('dados', dadosInscrito)}
+
                         <Box
                           display={
                             adultos !== '' && criancas !== '' ? 'flex' : 'none'
@@ -579,7 +586,7 @@ function PesquisaCPF({ dadosInscrito, membros }) {
                           color="white"
                           mt={2}
                         >
-                          <Box ml={2}>Isentos: {dadosInscrito.qtyC2}</Box>
+                          <Box ml={2}>Isentos: {isentos}</Box>
                         </Box>
                         <Box
                           display="flex"

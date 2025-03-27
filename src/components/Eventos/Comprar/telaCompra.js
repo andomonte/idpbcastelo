@@ -16,7 +16,7 @@ import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import converteData from 'src/utils/convData2';
-
+import CheckCodigo from 'src/utils/checkCodigo';
 import '@fontsource/fugaz-one'; // Padrões para peso 400.
 import AppBar from '@material-ui/core/AppBar';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -211,6 +211,7 @@ function Home({ dados, nomesIgrejas }) {
   const [email, setEmail] = React.useState('');
   const [GM, setGM] = React.useState({ label: 'Selecione...', value: 0 });
   const [cpf] = React.useState(dados.cpf);
+  const [codigoSecretaria, setcodigoSecretaria] = React.useState('');
   const [igrejaEscolhida, setIgrejaEscolhida] = React.useState('');
   const [select, setSelect] = React.useState(false);
   //  const [ocultar, setOcultar] = React.useState(false);
@@ -232,6 +233,7 @@ function Home({ dados, nomesIgrejas }) {
   const [loading2, setLoading2] = React.useState(false);
 
   const nomeRef = useRef();
+  const codigoSecretariaRef = useRef();
   const nascimentoRef = useRef();
   const dataChegadaRef = useRef();
   const emailRef = useRef();
@@ -266,15 +268,16 @@ function Home({ dados, nomesIgrejas }) {
   const temHospedagem = eventoSelecionado.Hospedagem;
 
   const arrayFP = [];
-  if (eventoSelecionado.CartaoCredito)
-    arrayFP.push({ label: 'Cartão de Crédito', value: 0 });
-  if (eventoSelecionado.Pix) arrayFP.push({ label: 'Pix', value: 1 });
+  if (eventoSelecionado.total) {
+    if (eventoSelecionado.CartaoCredito)
+      arrayFP.push({ label: 'Cartão de Crédito', value: 0 });
+    if (eventoSelecionado.Pix) arrayFP.push({ label: 'Pix', value: 1 });
 
-  if (eventoSelecionado.Boleto) arrayFP.push({ label: 'Boleto', value: 2 });
+    if (eventoSelecionado.Boleto) arrayFP.push({ label: 'Boleto', value: 2 });
 
-  if (eventoSelecionado.Dinheiro && usuario)
-    arrayFP.push({ label: 'Dinheiro (apenas secretaria)', value: 3 });
-
+    if (eventoSelecionado.Dinheiro && usuario)
+      arrayFP.push({ label: 'Dinheiro (apenas secretaria)', value: 3 });
+  } else arrayFP.push({ label: 'Isento de Pagamento', value: 0 });
   const opcoesFPagamento = arrayFP;
 
   const { total } = dados;
@@ -601,17 +604,19 @@ function Home({ dados, nomesIgrejas }) {
         liberar = false;
         fpRef.current.focus();
       }
+
     if (liberar)
-      if (!usuario) {
+      if (!CheckCodigo(codigoSecretaria)) {
         toast.error(
-          'Código inválido, somente a secretaria pode escolher a opção Dinheiro, caso não seja, esolha outra forma de pagamento.',
+          'Código Inválido, Somente a Secretaria pode escolar a opção Dinheiro, caso não seja, esolha outra forma de pagamento.',
           {
             position: toast.POSITION.TOP_CENTER,
           },
         );
-        liberar = false;
         fpRef.current.focus();
+        liberar = false;
       }
+
     //  const novaData = new Date(ConverteData2(nascimento));
     if (liberar) {
       // valor Primeiro Lote
@@ -818,7 +823,7 @@ function Home({ dados, nomesIgrejas }) {
   React.useEffect(async () => {
     if (fPagamento.label === 'Dinheiro (apenas secretaria)') {
       setOcultarFp(true);
-      botaoRef.current.focus();
+      codigoSecretariaRef.current.focus();
     } else {
       setOcultarFp(false);
       botaoRef.current.focus();
@@ -1582,7 +1587,7 @@ function Home({ dados, nomesIgrejas }) {
                               />
                             </Box>
                           </Grid>
-                          {/* <Box display={ocultarFp ? '' : 'none'}>
+                          <Box display={ocultarFp ? '' : 'none'}>
                             <Grid item container xs={12}>
                               <Grid item xs={12} md={12}>
                                 <Box
@@ -1632,7 +1637,7 @@ function Home({ dados, nomesIgrejas }) {
                                 </Box>
                               </Grid>
                             </Grid>
-                          </Box> */}
+                          </Box>
                           <Grid item xs={12} md={12}>
                             <Box className={classes.novoBox} mt={2} mb={0}>
                               {loading2 ? (
