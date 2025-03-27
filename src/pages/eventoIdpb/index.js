@@ -27,12 +27,7 @@ function Home({ eventosIDPB }) {
       setUsuarioF(usuario);
       sessionStorage.setItem('usuario', JSON.stringify(usuario));
     } else {
-      const neValor = sessionStorage.getItem('usuario')
-        ? JSON.parse(sessionStorage.getItem('usuario'))
-        : '';
-      const perfil = JSON.parse(sessionStorage.getItem('perfilUser'));
-      if (neValor) setUsuarioF(JSON.parse(sessionStorage.getItem('usuario')));
-      sessionStorage.setItem('usuario', perfil.RolMembro);
+      sessionStorage.setItem('usuario', '');
     }
   }, [usuario]);
 
