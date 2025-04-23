@@ -395,7 +395,7 @@ export default function TabCelula({
       setLoading(filterPerson?.map(() => false));
       setSaldoMes(valorFinalLancSaldo[0]);
     }
-    /* console.log('oi transfer', transferencias);
+    /* 
     transferencias.map((val) => {
       if (val.TF_CC_DESTINO !== val.TF_CC_ORIGEM) {
         valorFinalLanc[Number(val.TF_CC_DESTINO) - 1] =

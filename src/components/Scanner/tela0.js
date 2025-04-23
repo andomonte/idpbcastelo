@@ -300,7 +300,7 @@ function App({ eventos }) {
               </Box>
             )}
           </Box>
-          {console.log('botao', botao)}
+
           <Box
             height="8vh"
             width="90vw"

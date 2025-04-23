@@ -73,6 +73,7 @@ function TelaLogin({ eventoSelecionado }) {
   // const [posts, setPosts] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const cpfRef = React.useRef();
+  const [inscAbertas, setInscAbertas] = React.useState(false);
   const [valorAdultos, setValorAdultos] = React.useState(0);
   const [valorCriancas, setValorCriancas] = React.useState(0);
   React.useEffect(async () => {
@@ -118,7 +119,27 @@ function TelaLogin({ eventoSelecionado }) {
     const dataAtual = meuDataTimeBr(dataAtualSistema);
     let valorAdultosF = eventoSelecionado.valorLote1;
     let valorCriancasF = eventoSelecionado.ValorLote1Crianca;
+    const dataAgora = meuDataTimeBr(new Date());
+    console.log('oi new data', dataAgora);
+    console.log(
+      'oi eventoSelecionado.DataFim',
+      meuDataTimeBr(new Date(eventoSelecionado.DataFim).toISOString()),
+    );
 
+    if (
+      dataAgora.getTime() -
+        meuDataTime(
+          new Date(eventoSelecionado.DataFim).toISOString(),
+        ).getTime() <
+        0 &&
+      dataAgora.getTime() -
+        meuDataTime(
+          new Date(eventoSelecionado.DataIni).toISOString(),
+        ).getTime() >
+        0
+    )
+      setInscAbertas(true);
+    else setInscAbertas(false);
     if (
       dataAtual.getTime() -
         meuDataTime(
@@ -418,8 +439,9 @@ function TelaLogin({ eventoSelecionado }) {
                   height={altura > 590 ? '53vh' : '46vh'}
                   width="100%"
                 >
-                  {inscAdulto + inscC1 + inscC2 <
-                    Number(eventoSelecionado.QtdVagaEvento) ||
+                  {(inscAbertas &&
+                    inscAdulto + inscC1 + inscC2 <
+                      Number(eventoSelecionado.QtdVagaEvento)) ||
                   !eventoSelecionado.QtdVagaEvento ? (
                     <Box>
                       <Box
@@ -802,7 +824,7 @@ function TelaLogin({ eventoSelecionado }) {
                       </Box>
                     </Box>
                   ) : (
-                    'INSCRIÇÕES ESGOTADAS'
+                    'INSCRIÇÕES ENCERRADAS'
                   )}
                   <ToastContainer
                     position="top-center"

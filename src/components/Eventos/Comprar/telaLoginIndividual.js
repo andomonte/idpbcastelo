@@ -70,6 +70,7 @@ function TelaLogin({ eventoSelecionado }) {
   const router = useRouter();
   const [adulto, setAdulto] = React.useState(true);
   const [inscAdulto, setInscAdulto] = React.useState(0);
+  const [inscAbertas, setInscAbertas] = React.useState(false);
   const [inscC1, setInscC1] = React.useState(0);
   const [inscC2, setInscC2] = React.useState(0);
   const [valorAdultos, setValorAdultos] = React.useState(0);
@@ -79,6 +80,17 @@ function TelaLogin({ eventoSelecionado }) {
     const dataAtual = meuDataTimeBr(dataAtualSistema);
     let valorAdultosF = eventoSelecionado.valorLote1;
     let valorCriancasF = eventoSelecionado.ValorLote1Crianca;
+    if (
+      dataAtual.getTime() -
+        meuDataTime(
+          new Date(eventoSelecionado.DataFim).toISOString(),
+        ).getTime() >
+        0 &&
+      meuDataTime(new Date(eventoSelecionado.DataIni).toISOString()).getTime() >
+        0
+    )
+      setInscAbertas(true);
+    else setInscAbertas(false);
     if (
       dataAtual.getTime() -
         meuDataTime(
@@ -670,23 +682,32 @@ function TelaLogin({ eventoSelecionado }) {
                               <Oval stroke="black" width={25} height={25} />
                             </Box>
                           ) : (
-                            <Button
-                              style={{
-                                borderRadius: 16,
-                                background: '#ffdd55',
-                                fontFamily: 'Fugaz One',
-                                width: '80%',
-                                height: 40,
-                              }}
-                              variant="contained"
-                              value="value"
-                              onClick={() => {
-                                setLoading(true);
-                                handleValida();
-                              }}
-                            >
-                              FAZER INSCRIÇÃO
-                            </Button>
+                            <Box>
+                              {(inscAbertas &&
+                                inscAdulto + inscC1 + inscC2 <
+                                  Number(eventoSelecionado.QtdVagaEvento)) ||
+                              !eventoSelecionado.QtdVagaEvento ? (
+                                <Button
+                                  style={{
+                                    borderRadius: 16,
+                                    background: '#ffdd55',
+                                    fontFamily: 'Fugaz One',
+                                    width: '80%',
+                                    height: 40,
+                                  }}
+                                  variant="contained"
+                                  value="value"
+                                  onClick={() => {
+                                    setLoading(true);
+                                    handleValida();
+                                  }}
+                                >
+                                  FAZER INSCRIÇÃO
+                                </Button>
+                              ) : (
+                                'INSCRIÇÕES ENCERRADAS'
+                              )}
+                            </Box>
                           )}
                         </Box>
                       </Box>

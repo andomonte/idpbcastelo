@@ -46,7 +46,7 @@ export default function BarcodeScanner({ setNumeroCPF, setStart }) {
           setStart(true);
         }
       })
-      .then((res) => console.log('result', res))
+      .then(() => console.log('result'))
       .catch((err) => {
         console.log('error', err);
       });

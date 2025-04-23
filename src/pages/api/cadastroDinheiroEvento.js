@@ -36,7 +36,7 @@ const handler = async (req, res) => {
   const { transporte } = req.body;
   const { Jurisdicao } = req.body;
   const { Distrito } = req.body;
-  console.log('chegu aqui agora');
+
   try {
     const posts = await prisma.inscritosEventosIgreja
       .create({

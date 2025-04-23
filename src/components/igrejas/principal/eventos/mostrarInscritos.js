@@ -81,7 +81,6 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
       const res = await axios.get(url);
 
       if (res.data) {
-        console.log('veio', evento.Evento);
         setListaInscritos(res.data);
       }
     } catch (err) {
@@ -468,7 +467,6 @@ function Funcao({ setOpenInscritos, nomesIgrejas, evento }) {
                                   color: '#000',
                                 }}
                               >
-                                {console.log('row', row)}
                                 <Box
                                   ml={0.2}
                                   display={

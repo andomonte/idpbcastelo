@@ -239,7 +239,6 @@ function meuPerfil({ secao, perfilUser }) {
                             ord="123456789?"
                             src={fileImage || ''}
                           >
-                            {console.log('imagemI', fileImage)}
                             {fileImage === '' || fileImage === null ? (
                               <IconButton
                                 style={{ color: 'black' }}
